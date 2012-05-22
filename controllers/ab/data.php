@@ -32,7 +32,7 @@ class data {
 		$dID = $currentDate['ID'];
 
 		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $user['settings']['list']['group']['g'];
-		$grouping_d = $user['settings']['list']['group']['o'];
+		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $user['settings']['list']['group']['o'];
 
 		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $user['settings']['list']['order']['c'];
 		$ordering_d = $user['settings']['list']['order']['o'];

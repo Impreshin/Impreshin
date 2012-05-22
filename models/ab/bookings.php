@@ -68,6 +68,7 @@ class bookings {
 
 
 
+
 		$result = F3::get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
 				ab_accounts.account AS account, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
