@@ -75,10 +75,7 @@ class general {
 				"_js/plugins/jquery.cookie.js",
 				"_js/plugins/jquery.autologout.js",
 				"_js/plugins/jquery.scrollto.min.js",
-				// ------ //
-				"plupload/browserplus-min.js",
-				"plupload/js/plupload.full.js",
-				"plupload/js/jquery.plupload.queue/jquery.plupload.queue.js"
+
 
 
 			);

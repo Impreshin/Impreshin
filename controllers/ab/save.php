@@ -73,7 +73,7 @@ class save {
 		$values['pID'] = $user['ab_pID'];
 		$values['dID'] = "";
 		$values['typeID'] = $type;
-		$values['userID'] = $userID;
+		if (!$ID) $values['userID'] = $userID;
 		//userName
 
 

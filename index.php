@@ -70,7 +70,7 @@ if (isLocal()) {
 		$app->set('ab_defaults', \models\settings::getDefaults("ab"));
 
 
-		$uID = "21";
+		$uID = "3";
 
 		$userO = new \models\user();
 		$user = $userO->get($uID);

@@ -41,6 +41,7 @@ class bookings {
 		if (count($result)) {
 			$return = bookings::currency($result[0]);
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publishDate']));
+			$return['logs'] = bookings::getLogs($return['ID']);
 
 		} else {
 			$return = $this->dbStructure;
@@ -298,30 +299,63 @@ class bookings {
 		$a = new Axon("ab_bookings");
 		$a->load("ID='$ID'");
 
-		$t = array();
 
-
+		$changes = array();
 		foreach ($values as $key=>$value){
+			$cur = $a->$key;
+			if ($cur != $value) $changes[] = array("k"=>$key,"v"=>$value,"w"=> $cur);
 			$a->$key = $value;
 		}
 
 		$a->save();
 		if (!$ID){
-			$action = "Add";
+			$label = "Booking Added";
 			$ID = $a->_id;
 		} else {
-			$action = "Edit";
+			$label = "Booking Edited";
 		}
 
+
+
+
+		bookings::logging($ID,$changes, $label);
 
 
 		$n = new bookings();
 		$n = $n->get($ID);
 
-		$n['action'] = $action;
+
 
 		$timer->stop("Models - bookings - save");
 		return $n;
+	}
+
+	private static function getLogs($ID) {
+		$timer = new timer();
+
+		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
+		$a = array();
+		foreach ($return as $record){
+			$record['log'] = json_decode($record['log']);
+			$a[] = $record;
+		}
+
+		$timer->stop("Models - bookings - getLogs");
+		return $a;
+	}
+
+	private static function logging($ID,$log=array(),$label="Log"){
+		$timer = new timer();
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$log = json_encode($log);
+
+
+		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
+
+		$timer->stop("Models - bookings - logging");
 	}
 
 	private static function dbStructure() {
