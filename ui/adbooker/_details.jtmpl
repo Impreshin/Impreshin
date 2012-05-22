@@ -173,7 +173,7 @@
 								<table class="table s log-changes-table">
 									<thead>
 									<tr class="headingrow" style="border-right:none;">
-										<th class="l" style="width: 24%;">Field</th>
+										<th class="l" style="width: 24%;text-align: right;"></th>
 										<th class="l" style="width: 38%;">From</th>
 										<th class="l" style="width: 38%;">To</th>
 									</tr>
@@ -181,7 +181,7 @@
 									<tbody>
 									<% for(var g in this.logs[i].log) { %>
 									<tr>
-										<td class="g"><%= this.logs[i].log[g].k %></td>
+										<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
 										<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
 										<td><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
 									</tr>
@@ -263,7 +263,7 @@
 		}
 
 		var show = $("#details-pane-logs .record.active").attr("data-log-id");
-		console.log(show);
+
 		$("#details-pane-logs .log-record-details").hide();
 		$("#details-pane-logs .log-record-details[data-log-id='"+show+"']").show();
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);

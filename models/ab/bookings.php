@@ -318,7 +318,7 @@ class bookings {
 
 
 
-		bookings::logging($ID,$changes, $label);
+		if (count($changes)) bookings::logging($ID,$changes, $label);
 
 
 		$n = new bookings();
