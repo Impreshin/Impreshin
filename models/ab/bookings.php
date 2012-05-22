@@ -49,7 +49,7 @@ class bookings {
 		$timer->stop("Models - bookings - get", func_get_args());
 		return $return;
 	}
-	public static function getAll($where = "", $grouping = "none", $ordering = "ASC") {
+	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC")) {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -249,9 +249,17 @@ class bookings {
 
 	}
 	private static function order($grouping, $ordering){
-		$orderby = " client ASC";
+
+		$o = explode(".", $ordering['c']);
+		$a = array();
+		foreach($o as $b) {
+			$a[] = "`" . $b . "`";
+		}
+		$a = implode(".",$a);
+		$orderby = " ". $a . " " . $ordering['o'];
 		$arrange = "";
-		switch ($grouping) {
+		$ordering = $grouping['o'];
+		switch ($grouping['g']) {
 			case "type":
 				$orderby = "COALESCE(ab_bookings_types.orderby,99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(ab_bookings_types.type,ab_bookings_types.type) as heading";

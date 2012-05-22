@@ -66,8 +66,8 @@ if (isLocal()) {
 
 		$app->set('version', $version);
 		$app->set('v', $minVersion);
-		$app->set('ab_settings', \models\settings::getSettings("ab"));
-		$app->set('ab_defaults', \models\settings::getDefaults("ab"));
+		$app->set('ab_settings', \models\ab\settings::getSettings("ab"));
+		$app->set('ab_defaults', \models\ab\settings::getDefaults("ab"));
 
 
 		$uID = "3";

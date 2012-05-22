@@ -686,6 +686,16 @@ table.records thead tr.colheading th {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 }
+table.records thead tr.colheading th.order-btn {
+  font-weight: bold;
+  cursor: pointer;
+}
+table.records thead tr.colheading th.order-btn:hover {
+  color: black;
+}
+table.records thead tr.colheading th.order-btn .indicator {
+  display: none;
+}
 table.records tbody {
   border: 1px solid #e1e1e1;
   -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
@@ -742,14 +752,14 @@ table.records .size {
 }
 #details-modal .modal-body {
   overflow: hidden;
-  height: 550px;
+  height: 500px;
   position: relative;
 }
 #details-modal .modal-header {
   position: relative;
 }
 #details-modal .nav-tabs {
-  height: 550px;
+  height: 500px;
   position: absolute;
   right: 0;
   top: 0;

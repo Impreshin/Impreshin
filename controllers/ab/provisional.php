@@ -17,6 +17,7 @@ class provisional {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 
+		//test_array($user);
 		$ab_settings = F3::get("ab_settings");
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");

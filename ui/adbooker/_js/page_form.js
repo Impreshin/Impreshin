@@ -447,6 +447,8 @@ function display_notes_cost(){
 			string += '<span class="label label-info">' + msgtext + '</span>';
 		}
 	}
+	if (shouldbe) shouldbe = Number(shouldbe).toFixed(2);
+	if (shouldbe_e) shouldbe_e = Number(shouldbe_e).toFixed(2);
 
 $("#totalShouldbe").val(shouldbe);
 $("#totalShouldbe_e").val(shouldbe_e);

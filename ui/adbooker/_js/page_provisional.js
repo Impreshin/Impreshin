@@ -58,6 +58,16 @@ $(document).ready(function () {
 		getList();
 
 	});
+	$(document).on("click", ".order-btn", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		$("#record-list .order-btn").removeClass("asc desc");
+		//$this.addClass("active");
+		$.bbq.pushState({"order":$this.attr("data-col")});
+		getList();
+		$.bbq.removeState("order");
+
+	});
 	$(document).on("click", "#record-settings li[data-order-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -128,7 +138,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/ab/save/list_settings?reset=columns,group,order", function () {
+			$.post("/ab/save/list_settings/?reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -153,7 +163,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/ab/save/list_settings",{"columns":columns,"group":group,"order":order},function(){
+		$.post("/ab/save/list_settings/",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");
@@ -181,8 +191,10 @@ function getList() {
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
 	group = (group)? group:"";
-	var order = $.bbq.getState("orderBy");
+	var order = $.bbq.getState("order");
 	order = (order)? order:"";
+	var groupOrder = $.bbq.getState("orderBy");
+	groupOrder = (groupOrder)? groupOrder:"";
 
 	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
 	highlight = (highlight)? highlight: "";
@@ -191,7 +203,7 @@ function getList() {
 
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/bookings",{"group": group,"order":order, "highlight": highlight, "filter": filter},function(data){
+	listRequest.push($.getJSON("/ab/data/bookings",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
 		data = data['data'];
 
 
@@ -205,6 +217,11 @@ function getList() {
 		}
 
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
+
+
+		var order = data['order']['c'];
+
+		$(".order-btn[data-col='"+order+"'] .indicator", $recordsList).show();
 
 		api.reinitialise();
 

@@ -31,11 +31,37 @@ class data {
 		$currentDate = dates::getCurrent($pID);
 		$dID = $currentDate['ID'];
 
-		$grouping = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $user['settings']['list']['group'];
-		$ordering = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $user['settings']['list']['order'];
+		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $user['settings']['list']['group']['g'];
+		$grouping_d = $user['settings']['list']['group']['o'];
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $user['settings']['list']['order']['c'];
+		$ordering_d = $user['settings']['list']['order']['o'];
+
+
 		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $user['settings']['list']['provisional']['highlight'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $user['settings']['list']['provisional']['filter'];
 
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
+			if ($user['settings']['list']['order']['c'] == $_REQUEST['order']){
+				if ($ordering_d=="ASC"){
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+
+			}
+
+		}
+
+		$grouping = array(
+			"g"=> $grouping_g,
+			"o"=> $grouping_d
+		);
+		$ordering = array(
+			"c"=> $ordering_c,
+			"o"=> $ordering_d
+		);
 
 		$values = array();
 		$values["list"] = array(
@@ -46,7 +72,9 @@ class data {
 				"filter"=>$filter
 			)
 		);
-		user::save_setting($values, "ab");
+
+	//	test_array($values);
+		user::save_setting($values);
 
 
 		//print_r($values);
@@ -59,6 +87,7 @@ class data {
 		$dateSQL = "AND dID = COALESCE((SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' AND ab_current='1' ORDER BY publish_date DESC), (SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' ORDER BY publish_date DESC)) ";
 
 		$where = "ab_bookings.pID = '$pID' AND dID='$dID' ";
+
 
 
 		$records = bookings::getAll($where, $grouping, $ordering);
@@ -74,6 +103,8 @@ class data {
 		$return['date'] = $currentDate['publish_date_display'];
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
 		$return['stats'] = $stats;
+		$return['group'] = $grouping;
+		$return['order'] = $ordering;
 
 
 		$return['list'] = bookings::display($records, array("highlight"=>$highlight,"filter"=>$filter));

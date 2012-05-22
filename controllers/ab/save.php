@@ -27,20 +27,24 @@ class save {
 	function list_settings(){
 		$user = F3::get("user");
 		$userID = $user['ID'];
+
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
 		$ab_defaults = F3::get("ab_defaults");
 
 		$columns = (!in_array("columns", $reset))? (isset($_POST['columns']))?explode(",",$_POST['columns']): $ab_defaults["list"]['col']: $ab_defaults['list']['col'];
-		$group = (!in_array("group", $reset)) ?(isset($_POST['group']))?$_POST['group']: $ab_defaults['list']['group'] : $ab_defaults['list']['group'];
-		$order = (!in_array("order", $reset)) ?(isset($_POST['order']))?$_POST['order']: $ab_defaults['list']['order'] : $ab_defaults['list']['order'];
+		$group = (!in_array("group", $reset)) ?(isset($_POST['group']))?$_POST['group']: $ab_defaults['list']['group']['g'] : $ab_defaults['list']['group']['g'];
+		$order = (!in_array("order", $reset)) ?(isset($_POST['order']))?$_POST['order']: $ab_defaults['list']['group']['o'] : $ab_defaults['list']['group']['o'];
 
 
 
 		$new = array();
 		$new["col"] = $columns;
 		$new["count"] = count($columns);
-		$new["group"] = $group;
-		$new["order"] = $order;
+		$new["group"] = array(
+			"g"=> $group,
+			"o"=> $order
+		);
+		//$new["order"] = $order;
 
 
 		$values = array();
@@ -48,7 +52,8 @@ class save {
 
 
 
-		user::save_setting($values,"ab");
+
+		user::save_setting($values);
 
 
 

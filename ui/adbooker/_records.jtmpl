@@ -20,7 +20,14 @@
 	</tr>
 	<tr class="colheading">
 		{% for col in _user['settings']['list']['col'] %}
-		<th>{{ _ab['settings']['columns'][col]['h'] }}</th>
+		<th {% if _ab['settings']['columns'][col]['o'] %}data-col="{{ _ab['settings']['columns'][col]['o'] }}" class="order-btn"{% endif %}>
+			{{ _ab['settings']['columns'][col]['h']|raw }}
+			{% if _ab['settings']['columns'][col]['o'] %}
+
+			<span class="indicator">&nbsp;*</span>
+
+			{% endif %}
+		</th>
 		{% endfor %}
 	</tr>
 	</thead>
@@ -55,7 +62,7 @@
 
 				{% endif %}
 			{% else %}
-				<%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %>
+				<% if (this.records[i].{{ _ab['settings']['columns'][col]['c'] }}) { %><%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %><% } %>
 
 
 
