@@ -1,0 +1,116 @@
+<div class="navbar navbar-fixed-top" id="pageheader">
+	<div class="navbar-inner" style="">
+		<div class="container">
+			<div class="clearfix">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+				<a class="brand" href="/ab/">AdBooker</a>
+
+				<div id="app-nav-bar">
+					<ul class="nav" id="app-nav">
+						<li class="divider-vertical"></li>
+						<li class="{% if page['section'] == "form" %} active {% endif %}">
+							<a href="/ab/form" class="nav-icon-btn"><i class="icon-plus icon-d-grey"></i></a></li>
+						<li class="divider-vertical"></li>
+						<li class="dropdown {% if page['section'] == "bookings" %} active {% endif %}">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">Bookings
+								<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class=" {% if page['sub_section'] == "provisional" %} active {% endif %}">
+									<a href="/ab/"><i class="icon-list-alt menu-icon"></i>Provisional List</a></li>
+								<li class=" {% if page['sub_section'] == "enquiries" %} active {% endif %}">
+									<a href="#"><i class="icon-search menu-icon"></i>Enquiries</a>
+								</li>
+								<li class="divider"></li>
+								<li class=" {% if page['sub_section'] == "form" %} active {% endif %}">
+									<a href="/ab/form"><i class="icon-plus menu-icon"></i>New Booking</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Production <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="icon-eye-open menu-icon"></i>Production View</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Layout <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="icon-eye-open menu-icon"></i>Layout View</a></li>
+
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="icon-trash menu-icon"></i>Deleted Records</a></li>
+								<li><a href="#"><i class="icon-search menu-icon"></i>Enquiries</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Load Report</a></li>
+								<li><a href="#">Discounts</a></li>
+								<li><a href="#">Categories</a></li>
+								<li><a href="#">Production</a></li>
+								<li class="nav-header">Marketers</li>
+								<li><a href="#">Summary</a></li>
+								<li><a href="#">Breakdown</a></li>
+								<li class="nav-header">Clients</li>
+								<li><a href="#">Summary</a></li>
+								<li><a href="#">Breakdown</a></li>
+								<li class="divider"></li>
+								<li><a href="#"><i class="icon-book menu-icon"></i> Publication</a></li>
+
+
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+
+
+					</ul>
+					<ul class="nav pull-right">
+
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">{{  _ab['publication']['publication'] }}
+								<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								{% for row in _ab['publications'] %}
+								<li class="{% if row['ID'] ==  _ab['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+								{% endfor %}
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="nav-header">AdBooker</li>
+								<li><a href="#">Accounts</a></li>
+								<li><a href="#">Categories</a></li>
+								<li><a href="#">Marketers</a></li>
+								<li><a href="#">Production</a></li>
+								<li><a href="#">Print Lists</a></li>
+								<li><a href="#">Load Report</a></li>
+								<li class="nav-header">System</li>
+								<li><a href="#"><i class="icon-calendar menu-icon"></i> Dates</a></li>
+								<li><a href="#"><i class="icon-user menu-icon"></i> Users</a></li>
+								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li style="margin-right: -10px;">
+							<a href="/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
+						</li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="clearfix"></div>
+</div>

@@ -1,0 +1,112 @@
+<script type="text/x-jqote-template" id="template-records">
+	<![CDATA[
+
+	<thead>
+	<tr class="heading" data-heading="<%= this.heading %>">
+		<th colspan="{{ _user['settings']['list']['count'] }}">
+			<div class="scrolllinks">
+				<% for(var g in this.groups) { %>
+				<a href="javascript:" rel='<%= this.groups[g] %>' ><%= this.groups[g] %></a>
+				<% } %>
+				<a href="javascript:" rel='top'> <i class="icon-arrow-up icon-l-grey"></i> </a>
+			</div>
+			<h3><%= this.heading %>
+				<small><%= this.count %> Records | <%= this.cm %> cm </small>
+			</h3>
+
+
+		</th>
+
+	</tr>
+	<tr class="colheading">
+		{% for col in _user['settings']['list']['col'] %}
+		<th>{{ _ab['settings']['columns'][col]['h'] }}</th>
+		{% endfor %}
+	</tr>
+	</thead>
+	<tbody>
+	<% for(var i in this.records) { %>
+	<tr class="record <% if (this.records[i].highlight) { %>highlight highlight-<%= this.records[i].highlight %><% } %>" data-ID="<%= this.records[i].ID %>">
+		{% for col in _user['settings']['list']['col'] %}
+		<td>
+
+			{% if _ab['settings']['columns'][col]['c'] == "remark" %}
+				<% if (this.records[i].remark) { %>
+					<% if (this.records[i].remarkTypeLabelClass){ %>
+						<span class="label <%= this.records[i].remarkTypeLabelClass %>" title="<%= this.records[i].remarkType %>"></span>
+					<% } else { %>
+						<span style="padding:0 5px;"></span>
+					<% } %>
+				<% } %>
+			{% endif %}
+
+			{% if _ab['settings']['columns'][col]['c'] in  ',account,percent_diff,accNum' %}
+
+				{% if _ab['settings']['columns'][col]['c'] == "percent_diff" %}
+					<% if (this.records[i].percent_diff!="0.00"){ %>
+						<span class="label <% if (this.records[i].percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.records[i].percent_diff %>% </span>
+					<% } %>
+				{% endif %}
+				{% if _ab['settings']['columns'][col]['c'] in ',account,accNum' %}
+					<% if (this.records[i].labelClass){ %>
+						<span class="label <%= this.records[i].labelClass %>"> <%= this.records[i].accountStatus %></span>
+					<% } %>
+						<%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %>
+
+				{% endif %}
+			{% else %}
+				<%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %>
+
+
+
+			{% endif %}
+
+			</td>
+		{% endfor %}
+
+	</tr>
+	<% } %>
+	</tbody>
+
+	]]>
+</script>
+<script type="text/javascript">
+
+
+	$(document).ready(function () {
+
+		$(document).on("click", "#record-list .record", function (e) {
+			var $this = $(this), ID = $this.attr("data-ID");
+			if (!$(e.target).closest("a").get(0) && !$(e.target).closest("button").get(0)) {
+				$("#record-list .record.active").removeClass("active");
+				$this.addClass("active");
+				$.bbq.pushState({"ID":ID});
+				getDetails();
+			}
+
+		});
+	});
+
+	function getDetails() {
+		var ID = $.bbq.getState("ID");
+		$("#details-modal").addClass("loading");
+		detailsRequest.push($.getJSON("/ab/data/details?r="+Math.random(), {"ID":ID}, function (data) {
+			data = data['data'];
+			$("#record-list .record.active").removeClass("active");
+			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+			$('#details-modal').jqotesub($("#template-details"), data).modal('show').removeClass("loading");
+			showContent_state();
+			if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+				var api = $("#whole-area .scroll-pane").data("jsp");
+				if($("#record-list .record[data-ID='" + ID + "']").length){
+					api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+				}
+
+			}
+
+
+		}));
+
+	}
+
+</script>

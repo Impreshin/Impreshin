@@ -1,0 +1,82 @@
+#dates_list label {
+	padding: 3px;
+	cursor: pointer;
+
+padding-left: 30px;
+	margin-right: 20px;
+}
+
+#dates_list input {
+	margin-left: -20px;
+}
+#dates_list label:hover {
+	background-color : #DEEBFF;
+}
+#dates_list_area {
+border-bottom: 1px solid #ccc;
+border-left: 1px solid #ccc;
+	padding-bottom: 30px;
+	margin-right: 30px;
+}
+#dates_list_current {
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+
+	margin-bottom: 5px;
+	margin-right: 20px;
+
+}
+#dates_list_current label {
+	margin-bottom: 0;
+	margin-right: 0;
+}
+
+.otherdates {
+	display: none;
+}
+.otherdates.showit {
+	display: block;
+}
+
+#dates_list.showit .otherdates{
+display: block;
+}
+#suggestions {
+margin-right: 30px;
+	border-left: 1px solid #ccc;
+	padding-bottom: 10px;
+}
+#suggestions h4 {
+	margin-bottom: 15px;
+	border-bottom: 1px dotted #ccc;
+	padding: 5px;
+}
+#suggestions ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#suggestions td {
+	padding: 5px;
+	margin-bottom: 3px;
+	border-bottom: 1px dotted #ccc;
+	cursor : pointer;
+}
+
+#suggestions tr:hover {
+	background-color: #DEEBFF;
+}
+.msgbox {
+	padding-left: 5px;
+}
+.msgbox .badge {
+	cursor : pointer;
+}
+.msgbox .label, .msgbox .badge {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+#colourSpot-area {
+	display: none;
+}

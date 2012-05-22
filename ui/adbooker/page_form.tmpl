@@ -1,0 +1,63 @@
+{% include "_nav_top.tmpl" %}
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav pull-left">
+				<li><h2 style="padding-left: 30px;" id="booking-heading">loading...</h2>
+				</li>
+			</ul>
+			<ul class="nav nav-pills pull-right">
+				<li style="padding-top: 6px; margin-right: 10px;">Booking Type:</li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
+						{% for row in bookingTypes %}
+						<button class="btn span1 btn-mini {% if details['ID'] %} {% if details['typeID']|default("1")==row['ID'] %}active{% endif %} {% else %}{% if _user['settings']['form']['type']==row['ID'] %}active{% endif %}{% endif %}" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
+						{% endfor %}
+					</div>
+				</li>
+
+				<li class="divider-vertical"></li>
+			</ul>
+
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container">
+
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane">
+
+					<div data-heading="top" id="scroll-container">
+						<form class="form-horizontal form-fill"></form>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="loadingmask wide"></div>
+		</article>
+
+
+	</div>
+
+</section>
+
+<div id='modal-form' class='modal hide fade'>
+
+</div>
+<script type="text/javascript">
+	var var_accounts = {{ accounts_th_json|raw }};
+	var var_clients = {{ clients_th_json|raw }};
+	var var_spots = {{ spots_th_json|raw }};
+	var var_colours = {{ colours_th_json|raw }};
+	var var_details = {{ details_th_json|raw }};
+	var var_publication = {{ _ab['json']['publication']|raw }};
+</script>

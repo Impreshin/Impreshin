@@ -1,0 +1,410 @@
+<script type="text/x-jqote-template" id="template-form">
+<![CDATA[
+
+<fieldset>
+<div class="form-header">
+
+</div>
+<section class="form-body" style="padding-top: 10px;">
+<table>
+<tr>
+<td class="span9">
+	<div class="control-group" style="margin-top: 10px;">
+		<label class="control-label" for="client">Client*</label>
+
+		<div class="controls">
+			<input type="text" placeholder="Client" class="span6" id="client" name="client" autocomplete="off"  style="" value="<% if (this.client) { %><%= this.client %><% } %>">
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="accNum" class="control-label">Account Number*</label>
+
+		<div class="controls">
+
+			<div class="input-append btn-group">
+				<input type="text" size="16" id="accNum" name="accNum" class="span1" autocomplete="off" style="float: left;" placeholder="AccNr" value="<% if (this.accNum) { %><%= this.accNum %><% } %>"><span class="add-on btn dropdown-toggle l s" data-toggle="dropdown" id="account" style="width: 282px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis; text-align: left; ">&nbsp;</span>
+
+
+				<ul class="dropdown-menu" id="all_accounts" style="max-height: 200px; overflow-y: auto; overflow-x: hidden;">
+
+				</ul>
+			</div>
+			<div id="account_remark" class="help-block" style="margin: 0;"></div>
+
+		</div>
+	</div>
+	<div id="form-diff">
+
+	</div>
+	<div class="control-group">
+		<label for="rate" class="control-label">Tariff</label>
+
+		<div class="controls">
+			<input type="text" id="rate" name="rate" class="span2 display_notes" placeholder="" value="<% if (this.rate) { %><%= this.rate %><% } %>"><span id="rate-msg" class="msgbox"></span>
+
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="totalCost" class="control-label">Total Charged</label>
+
+		<div class="controls">
+			<input type="text" id="totalCost" name="totalCost" class="span2 display_notes" value="<% if (this.totalCost) { %><%= this.totalCost %><% } %>"><span id="totalCost-msg" class="msgbox"></span>
+
+
+		</div>
+	</div>
+	<table>
+		<tr>
+			<td>
+				<div class="control-group">
+					<label for="discount" class="control-label">Discount</label>
+
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" size="16" id="discount" name="discount" class="span1 display_notes" value="<% if (this.discount) { %><%= this.discount %><% } %>"><span class="add-on s">%</span>
+						</div>
+
+					</div>
+				</div>
+			</td>
+			<td style="float:right; padding-right: 34px;">
+				<div class="control-group">
+					<label for="agencyDiscount" class="control-label">Agency Discount</label>
+
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" size="16" id="agencyDiscount" name="agencyDiscount" class="span1 display_notes" value="<% if (this.agencyDiscount) { %><%= this.agencyDiscount %><% } %>"><span class="add-on s">%</span>
+						</div>
+
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<div class="control-group">
+		<label for="marketerID" class="control-label">Marketer</label>
+
+		<div class="controls">
+			<select id="marketerID" name="marketerID" tabindex="8" style="width: 342px;">
+
+
+				{% for row in marketers %}
+				<option value="{{ row['ID'] }}" <% if (this.marketerID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['marketer'] }}</option>
+				{% endfor %}
+
+			</select>
+
+
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="keyNum" class="control-label">Key Num</label>
+
+		<div class="controls">
+			<input type="text" id="keyNum" name="keyNum" class="span2" value="<% if (this.keyNum) { %><%= this.keyNum %><% } %>">
+
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="orderNum" class="control-label">Order Num</label>
+
+		<div class="controls">
+			<input type="text" id="orderNum" name="orderNum" class="span2" value="<% if (this.orderNum) { %><%= this.orderNum %><% } %>">
+
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label for="orderNum" class="control-label">Category</label>
+
+		<div class="controls">
+			<select name="categoryID" id="categoryID" style="width: 342px;">
+				{% for row in categories %}
+				<option value="{{ row['ID'] }}"  <% if (this.categoryID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
+				{% endfor %}
+			</select>
+
+		</div>
+	</div>
+</td>
+<td class="span7 form-super-narrow">
+	<div class="control-group" id="dates_list_area" style="padding-top: 10px;">
+		<label for="dID" class="control-label">Dates</label>
+
+		<div class="controls " id="dates_list">
+			<div id="dates_list_current">
+				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" id="">
+					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['current']['ID'] }}" name="dID[]"  <% if (this.dID == "{{ dates['current']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['current']['publish_date_display'] }}
+					<span class="s g">(Current Date)</span> </label>
+			</div>
+
+			{% for row in dates['future'] %}
+
+				{% if loop.index == 4 and loop.length > 3 %}
+					<a href="#" class="dates-btn otherdates donthighlighthovered">More</a>
+				{% endif %}
+				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> {% if loop.index > 3 %} otherdates {% endif %}">
+					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ row['ID'] }}" name="dID[]" <% if (this.dID == "{{ row['ID'] }}") { %>checked="checked"<% } %>> {{ row['publish_date_display'] }}
+				</label>
+
+				{% if loop.last and loop.length > 3 %}
+					<a href="#" class="dates-btn donthighlighthovered" >More</a>
+				{% endif %}
+			{% endfor %}
+
+		</div>
+	</div>
+	<div id="suggestion-area"></div>
+
+
+</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<div class="control-group">
+			<label for="orderNum" class="control-label">Remark</label>
+			<div class="controls">
+				<div class="highlighthovered" id="remarktypearea">
+					{% for row in remarkTypes %}
+					<label class="radio inline clickable" style="padding: 5px 10px;">
+						<input type="radio" value="{{ row['ID'] }}" id="remarkTypeID-{{ row['ID'] }}" name="remarkTypeID" <% if (this.remarkTypeID == "{{ row['ID'] }}") { %>checked="checked"<% } %>>
+							{% if row['labelClass'] %}
+								<span class="label {{ row['labelClass'] }}"> {{ row['remarkType'] }} </span>
+							{% else %}
+								{{ row['remarkType']}}
+							{% endif %}
+						</label>
+					{% endfor %}
+				</div>
+
+
+				<textarea class="span12" name="remark" id="remark" cols="30" rows="5"><% if (this.remark) { %><%= this.remark %><% } %></textarea>
+
+
+			</div>
+		</div>
+
+	</td>
+</tr>
+
+</table>
+
+
+</section>
+
+<input type="hidden" name="available_dates" id="available_dates" value="{{ dates['current']['ID'] }}{% for row in dates['future'] %},{{ row['ID'] }}{% endfor %}">
+<input type="hidden" name="rate_fld" id="rate_fld" value="">
+<input type="hidden" name="totalShouldbe" id="totalShouldbe" value="0.00"/>
+<input type="hidden" name="totalShouldbe_e" id="totalShouldbe_e" value="0.00"/>
+
+<div class="form-actions form-footer">
+	<div class="row r">
+		<button class="btn btn-primary span2 offset14" type="submit">Save Record</button>
+
+	</div>
+
+</div>
+
+
+</fieldset>
+
+]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-1">
+	<![CDATA[
+	<div class="control-group">
+		<label for="placingID" class="control-label">Placing*</label>
+
+		<div class="controls">
+			<select id="placingID" name="placingID" tabindex="8" class="" style="width: 342px;">
+
+
+				{% for row in placing %}
+				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"  <% if (this.placingID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['placing'] }}</option>
+				{% endfor %}
+
+			</select>
+
+
+		</div>
+	</div>
+
+
+	<div class="control-group" style="display:none;">
+		<label class="control-label">Colours*</label>
+
+		<div class="controls">
+			<select id="colourID" name="colourID" tabindex="8" class="display_notes" style="width: 342px;">
+
+
+			</select>
+
+
+			<input type="hidden" name="colour" id="colour"/>
+		</div>
+	</div>
+
+	<div class="control-group" id="colourSpot-area">
+		<label for="colourSpot" class="control-label"></label>
+
+		<div class="controls">
+			<div class="input-prepend">
+				<span class="add-on s">Spot Colour</span><input type="text" id="colourSpot" name="colourSpot" class="span3" placeholder="" value="<% if (this.colourSpot) { %><%= this.colourSpot %><% } %>"><span id="colourSpot-msg" class="msgbox"></span>
+			</div>
+
+
+		</div>
+	</div>
+	<div id="sizearea" class="fieldgroup">
+
+
+	<table>
+		<tr>
+			<td class="span3">
+				<div class="control-group">
+					<label for="cm" class="control-label">Cm*</label>
+
+					<div class="controls">
+						<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.cm) { %><%= this.cm %><% } %>">
+
+					</div>
+				</div>
+			</td>
+			<td class="form-narrow span3">
+				<div class="control-group">
+					<label for="col" class="control-label">Columns*</label>
+
+					<div class="controls">
+						<input type="text" id="col" name="col" class="span1 display_notes" value="<% if (this.col) { %><%= this.col %><% } %>">
+
+					</div>
+				</div>
+
+			</td>
+			<td style="padding-right: 34px;">
+				<span class="uneditable-input span1" id="size-msg" style="float: right; cursor:default;"><strong></strong></span>
+			</td>
+		</tr>
+	</table>
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-2">
+	<![CDATA[
+	<div class="control-group">
+		<label for="InsertPO" class="control-label">Print Order</label>
+
+		<div class="controls">
+			<input type="text" id="InsertPO" name="InsertPO" class="span2 display_notes" placeholder="<% if (this.printOrder) { %><%= this.printOrder %><% } %>" value="<% if (this.InsertPO) { %><%= this.InsertPO %><% } %>">
+			<span class="msgbox" id="InsertPO-msg"><% if (this.printOrder) { %><span data-val="<%= this.printOrder %>" data-fld="InsertPO" class="badge"><%= this.printOrder %></span><% } %></span>
+
+
+		</div>
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-suggestions">
+	<![CDATA[
+	<section id="suggestions">
+		<h4>Suggestions
+			<small style="margin-left: 10px;">Based on account history for the past 60 Days</small>
+		</h4>
+
+		<% if (this.placing) { %>
+		<div class="control-group">
+			<label for="orderNum" class="control-label">Placing</label>
+
+			<div class="controls">
+				<div class="btn-group square">
+					<% for(var i in this.placing) { %>
+					<button type="button" class="btn  btn-mini l" data-fld="placingID" data-val="<%= this.placing[i].ID %>" style="width: 147px; padding-left: 5px;"><%= this.placing[i].placing %></button>
+					<% } %> <% if (!this.placing.length){ %>
+					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+					<% } %>
+				</div>
+
+			</div>
+		</div>
+		<% } %>
+		<% if (this.marketers) { %>
+		<div class="control-group">
+			<label for="orderNum" class="control-label">Marketer</label>
+
+			<div class="controls">
+				<div class="btn-group square">
+					<% for(var i in this.marketers) { %>
+					<button type="button" class="btn  btn-mini  l " data-fld="marketerID" data-val="<%= this.marketers[i].ID %>" style="width: 147px;padding-left: 5px;"><%= this.marketers[i].marketer %></button>
+					<% } %> <% if (!this.marketers.length){ %>
+					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+					<% } %>
+				</div>
+
+			</div>
+		</div>
+		<% } %>
+		<% if (this.category) { %>
+		<div class="control-group">
+			<label for="orderNum" class="control-label">Category</label>
+
+			<div class="controls">
+				<div class="btn-group square">
+					<% for(var i in this.category) { %>
+					<button type="button" class="btn  btn-mini  l " data-fld="categoryID" data-val="<%= this.category[i].ID %>" style="width: 147px;padding-left: 5px;"><%= this.category[i].category %></button>
+					<% } %> <% if (!this.category.length){ %>
+					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+					<% } %>
+				</div>
+
+			</div>
+		</div>
+		<% } %>
+	</section>
+
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-suggestions-accounts">
+	<![CDATA[
+	<section id="suggestions">
+		<h4>Suggested Accounts</h4>
+		<table>
+			<% for(var i in this.accounts) { %>
+			<tr data-fld="accNum" data-val="<%= this.accounts[i].accNum %>">
+				<td style="width: 60px; padding-left: 10px;"><%= this.accounts[i].accNum %></td>
+				<td>
+					<% if (this.accounts[i].labelClass){ %>
+					<span class="label <%= this.accounts[i].labelClass %>" style="margin-right: 5px;"> <%= this.accounts[i].status %> </span> <% } %>
+
+					<%= this.accounts[i].account %>
+				</td>
+			</tr>
+
+			<% } %>
+		</table>
+	</section>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-modal-form">
+	<![CDATA[
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+		<h3>Completed</h3></div>
+	<div class='modal-body'>
+		<article class="c">
+			<img src="/ui/_images/success.png" alt="Success">
+
+
+		</article>
+	</div>
+	<div class='modal-footer'>
+		<div class="btn-group c" style="margin-left: 7px;">
+			<a href="/ab/form/" class="btn span3" id="modal-btn-new">New Record</a>
+			<a href="/ab/#ID=<%= this.ID %>" class="btn span3">View Record</a>
+			<a href="/ab/" class="btn span3">Go to list</a>
+
+		</div>
+	</div>
+
+	]]>
+</script>

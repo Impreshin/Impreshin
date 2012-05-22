@@ -1,0 +1,303 @@
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>
+			<%= this.client %>
+			</h3>
+
+		<a href="/ab/form/<%= this.ID %>" class="span1 details-edit-btn" style=""><i class="icon-pencil icon-d-grey"></i></a>
+
+		<div class="modal-header-right" style="width:193px;">
+			<h3>
+				<div class="s" style="line-height: 1;"><%= this.publication %></div>
+				<small><%= this.publishDateDisplay %></small>
+			</h3>
+
+		</div>
+	</div>
+	<div class="modal-body">
+
+
+		<div class="tabbable tabs-right">
+			<ul class="nav nav-tabs">
+				<li>
+					<a href="#details-pane-details" data-toggle="tab"> Details </a>
+				</li>
+				<li class="tab-icon">
+					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+				</li>
+				<li class="tab-icon">
+					<a href="#details-pane-material" data-toggle="tab"><i class="icon-download-alt icon-grey"></i></a>
+				</li>
+
+			</ul>
+			<div class="tab-content" style="width: 520px;">
+				<div id="details-pane-details" class="tab-pane ">
+					<div class="scroll-pane">
+						<table class="table" style="margin-top: 10px; margin-bottom: 8px;">
+							<tbody>
+							<tr>
+								<th width="150" style="width: 150px; ">Account:</th>
+								<td colspan="3">:&nbsp;<% if (this.labelClass){ %><span class="label <%= this.labelClass %>" style="margin-right: 10px;"> <%= this.accountStatus %> </span> <% } %><%= this.account %> - <%= this.accNum %>
+
+								</td>
+							</tr>
+
+							<% if (this.typeID =='1') { %>
+							<tr>
+								<th>Placing</th>
+								<td colspan="3">:&nbsp;<%= this.placing %></td>
+
+							</tr>
+
+							<tr>
+								<th>Colour</th>
+								<td>: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %></td>
+								<% if (this.colour=="Spot" || this.colour =="Full") { %>
+									<th>Colour Rate</th>
+								<td>: <%= this.colourLabel %></td>
+								<% } %>
+							</tr>
+							<tr>
+								<th>Size</th>
+								<td >
+									<div style="margin-right: -50px;">: <%= this.cm %> <span class="g"> x </span> <%= this.col %>
+										<span class="g"> = </span> <%= this.totalspace %>
+										<span class="g"> col/cm's</span></div>
+								</td>
+								<th>Tariff</th>
+								<td>: <%= this.rate_C %></td>
+							</tr>
+							<% } else if (this.typeID =='2') { %>
+							<tr>
+								<th>Print Order</th>
+								<td colspan="3">:&nbsp;<%= this.InsertPO %></td>
+							</tr>
+							<tr>
+								<th>Tariff</th>
+								<td colspan="3">:&nbsp;<%= this.rate_C %></td>
+							</tr>
+
+							<% } %>
+							<tr>
+								<th>Totalcost</th>
+								<td colspan="3">: <%= this.totalCost_C %> &nbsp;&nbsp;&nbsp;
+									<% if (this.percent_diff!="0.00"){ %>
+										(<%= this.totalShouldbe_C %> - <span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff %>% </span>)
+									<% } %>
+
+								</td>
+							</tr>
+
+
+							<tr>
+								<th>Key Number</th>
+								<td colspan="3">: <%= this.keyNum %></td>
+							</tr>
+
+							<tr>
+								<th>Order Number</th>
+								<td colspan="3">:&nbsp;<%= this.orderNum %></td>
+							</tr>
+							<tr>
+								<th>Marketer</th>
+								<td colspan="3">: <%= this.marketer %></td>
+							</tr>
+							<tr>
+								<th width="80">Discount</th>
+								<td width="140">: <% if (this.discount && this.discount != '0.00') { %><%= this.discount %>%<% } %></td>
+								<th width="130">Agency Discount</th>
+								<td width="170">: <% if (this.agencyDiscount && this.agencyDiscount != '0.00') { %><%= this.agencyDiscount %>%<% } %></td>
+							</tr>
+							<tr>
+								<th>Category</th>
+								<td colspan="3">: <%= this.category %></td>
+							</tr>
+
+
+							<tr>
+								<td colspan="4" style="padding-top: 20px; padding-bottom: 20px;">
+									<span style="margin-right: 10px;">
+
+									<% if (this.remark) { %>
+										<% if (this.remarkTypeLabelClass){ %>
+											<span class="label <%= this.remarkTypeLabelClass %>" title="<%= this.remarkType %>"><%= this.remarkType %>: </span>
+										<% } else { %>
+											<span style="padding:0 5px;"></span>
+										<% } %>
+									<% } %>
+									</span>
+									<%= this.remark %>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+				<div id="details-pane-logs" class="tab-pane">
+					<div class="scroll-pane">
+					<table class="table" style="margin-top: 10px; margin-bottom: 8px;">
+						<tr>
+							<th width="100" style="width: 100px;">Booked By</th>
+							<td><%= this.byFullName %></td>
+							<td width="120" style="width: 120px;"><%= this.datein %></td>
+						</tr>
+						<tr>
+							<th>Checked</th>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Material</th>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="3"><h5>Logs</h5></td>
+						</tr>
+
+						<tr>
+							<th>Edit</th>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Material</th>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Edit</th>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Edit</th>
+							<td></td>
+							<td></td>
+						</tr>
+
+					</table>
+
+					<p>1</p>
+
+					<p>2</p>
+
+					<p>3</p>
+
+					<p>4</p>
+
+					<p>5</p>
+
+					<p>6</p>
+
+					<p>7</p>
+
+					<p>8</p>
+
+					<p>9</p>
+
+					<p>0</p>
+
+				</div>
+				</div>
+				<div id="details-pane-material" class="tab-pane">
+					<div class="scroll-pane">
+						<p>the material goes here</p>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="details-advert-size" style="width: 180px; height: 275px;">
+			<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
+			<i class="icon-ok-circle "></i>
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<div class="row">
+			<div class="span9 l">
+				<button class="btn btn-primary span2" disabled="disabled">Checked</button>
+				<button class="btn span2" disabled="disabled">Repeat</button>
+			</div>
+			<div style="padding-left: 15px; margin-right: -20px;" class="offset9">
+				<div class="btn-group">
+					<button id="details-record-prev" class="btn span2">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+	<div class="loadingmask wide"></div>
+	]]>
+</script>
+<script type="text/javascript">
+	$(document).on('show', '#details-modal .nav-tabs', function (e) {
+		var target = e.target // activated tab
+		var previous = e.relatedTarget // previous tab
+		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+		$.bbq.pushState({"details-tab":pane});
+		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+	});
+	$(document).on('hide', '#details-modal', function () {
+		$.bbq.removeState("ID");
+		$("#record-list .record.active").removeClass("active");
+	});
+	$(document).on('click', '#details-record-prev', function () {
+		prevRecord();
+	});
+	$(document).on('click', '#details-record-next', function () {
+		nextRecord();
+	});
+
+	function nextRecord(){
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.nextAll("tr.record:first");
+		$.bbq.pushState({ID:$new.attr("data-ID")});
+		getDetails();
+	}
+	function prevRecord(){
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.prevAll("tr.record:first");
+		$.bbq.pushState({ID:$new.attr("data-ID")});
+		getDetails();
+	}
+
+
+
+	function showContent_state() {
+		var ID = $.bbq.getState("ID");
+		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+			$("#details-record-prev").attr("disabled", "disabled");
+		} else {
+			$("#details-record-prev").removeAttr("disabled");
+		}
+		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+			$("#details-record-next").attr("disabled", "disabled");
+		} else {
+			$("#details-record-next").removeAttr("disabled");
+		}
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
+
+
+	}
+</script>
