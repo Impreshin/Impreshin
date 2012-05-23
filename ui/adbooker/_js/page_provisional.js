@@ -64,7 +64,10 @@ $(document).ready(function () {
 		$("#record-list .order-btn").removeClass("asc desc");
 		//$this.addClass("active");
 		$.bbq.pushState({"order":$this.attr("data-col")});
-		getList();
+		var s = [{
+			maintain_position: true
+		}];
+		getList(s);
 		$.bbq.removeState("order");
 
 	});
@@ -187,7 +190,7 @@ $(document).ready(function () {
 
 });
 
-function getList() {
+function getList(settings) {
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
 	group = (group)? group:"";
@@ -201,6 +204,7 @@ function getList() {
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter)? filter: "";
 
+	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
 	listRequest.push($.getJSON("/ab/data/bookings",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
@@ -219,11 +223,20 @@ function getList() {
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 
+
+
+
+
+		var $scrollpane = $("#whole-area .scroll-pane");
+		if (orderingactive){
+			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+		} else {
+			$scrollpane.jScrollPane(jScrollPaneOptions);
+		}
+
+
 		var order = data['order']['c'];
-
-		$(".order-btn[data-col='"+order+"'] .indicator", $recordsList).show();
-
-		api.reinitialise();
+		$(".order-btn[data-col='" + order + "'] .indicator", $recordsList).show();
 
 
 

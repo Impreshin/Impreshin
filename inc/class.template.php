@@ -39,11 +39,17 @@ class template {
 		$publication = new \models\ab\publications();
 		$publication = $publication->get($user['ab_pID']);
 
+		$cfg = F3::get('cfg');
+		if ($user['ab_pID']=='1'){
+			$cfg['upload_material']=false;
+		}
+
 
 		$publications = \models\ab\publications::getAll("uID='" . $user['ID'] . "'", "publication ASC");
 
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;
+		$this->vars['_cfg'] = $cfg;
 		$this->vars['isLocal'] = isLocal();
 
 		$this->vars['_gaq'] = F3::get("GOOGLE_ANALYTICS");

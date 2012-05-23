@@ -45,17 +45,28 @@ $app->set('EXTEND', TRUE);
 $app->set('UI', 'ui/');
 $app->set('TEMP', 'tmp/');
 
+$cfg = array(
+	"DB"=> array(
+		"host"    => "localhost",
+		"username"=> "",
+		"password"=> "",
+		"database"=> "adbooker_5"
+	),
+	"media"=>"/",
+	"upload_material"=>true
+);
+require_once('config.inc.php');
 
-if (isLocal()) {
-	$app->set('DB', new DB('mysql:host=localhost;dbname=adbooker_v5', '', ''));
-	$app->set("GOOGLE_ANALYTICS", "");
-	$app->set('MEDIA_folder', 'D:/Web/MeetPad');
 
-} else {
+$app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname="' . $cfg['DB']['database'] .'", "'. $cfg['DB']['username'] . '", "' . $cfg['DB']['password'] . '"'));
+$app->set('MEDIA_folder', $cfg['media']);
+unset($cfg['DB']);
+$app->set('cfg', $cfg);
+
+
 	$app->set('DB', new db('mysql:host=localhost;dbname=adbooker_v5', 'website', 'zoutnet015'));
-	$app->set("GOOGLE_ANALYTICS", "");
 	$app->set('MEDIA_folder', 'C:/Web/adbooker_media');
-}
+
 
 	$app->set('system', new msg());
 

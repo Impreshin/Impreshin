@@ -206,13 +206,14 @@
 			</div>
 		</div>
 	</div>
-
+	<% if (this.typeID =='1') { %>
 	<div id="details-advert-size" style="width: 180px; height: 275px;">
 		<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
 		<i class="icon-ok-circle "></i>
 
 		<a class="btn span2" href="#popup-material" data-target="popup">Material</a>
 	</div>
+	<% } %>
 
 </div>
 <div class="modal-footer">
@@ -276,10 +277,14 @@
 				<label class="control-label">Material:</label>
 
 				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
-					<div class="btn-group" data-toggle="buttons-radio" style="padding-top: 4px;">
-						<button type="button" class="btn btn-mini span3 active">Ready</button>
-						<button type="button" class="btn btn-mini span3">Not Ready</button>
-					</div>
+					{% if _cfg['upload_material'] %}
+						<input type="file" id="fileInput" class="input-file">
+					{% else %}
+						<div class="btn-group" data-toggle="buttons-radio" style="padding-top: 4px;">
+							<button type="button" class="btn btn-mini span3 active">Ready</button>
+							<button type="button" class="btn btn-mini span3">Not Ready</button>
+						</div>
+					{% endif %}
 				</div>
 			</div>
 
