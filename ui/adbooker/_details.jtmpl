@@ -1,125 +1,124 @@
 <script type="text/x-jqote-template" id="template-details">
-	<![CDATA[
+<![CDATA[
 
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
+<div class="modal-header">
+	<a class="close" data-dismiss="modal">×</a>
 
+	<h3>
+		<%= this.client %>
+	</h3>
+
+	<a href="/ab/form/<%= this.ID %>" class="span1 details-edit-btn" style=""><i class="icon-pencil icon-d-grey"></i></a>
+
+	<div class="modal-header-right" style="width:193px;">
 		<h3>
-			<%= this.client %>
-			</h3>
+			<div class="s" style="line-height: 1;"><%= this.publication %></div>
+			<small><%= this.publishDateDisplay %></small>
+		</h3>
 
-		<a href="/ab/form/<%= this.ID %>" class="span1 details-edit-btn" style=""><i class="icon-pencil icon-d-grey"></i></a>
-
-		<div class="modal-header-right" style="width:193px;">
-			<h3>
-				<div class="s" style="line-height: 1;"><%= this.publication %></div>
-				<small><%= this.publishDateDisplay %></small>
-			</h3>
-
-		</div>
 	</div>
-	<div class="modal-body">
+</div>
+<div class="modal-body">
 
 
-		<div class="tabbable tabs-right">
-			<ul class="nav nav-tabs">
-				<li>
-					<a href="#details-pane-details" data-toggle="tab"> Details </a>
-				</li>
-				<li class="tab-icon">
-					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
-				</li>
-				<li class="tab-icon">
-					<a href="#details-pane-material" data-toggle="tab"><i class="icon-download-alt icon-grey"></i></a>
-				</li>
+	<div class="tabbable tabs-right">
+		<ul class="nav nav-tabs">
+			<li>
+				<a href="#details-pane-details" data-toggle="tab"> Details </a>
+			</li>
+			<li class="tab-icon">
+				<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+			</li>
+			<li class="tab-icon">
+				<a href="#details-pane-material" data-toggle="tab"><i class="icon-download-alt icon-grey"></i></a>
+			</li>
 
-			</ul>
-			<div class="tab-content" style="width: 520px;">
-				<div id="details-pane-details" class="tab-pane ">
-					<div class="scroll-pane">
-						<table class="table" style="margin-top: 10px; margin-bottom: 8px;">
-							<tbody>
-							<tr>
-								<th width="150" style="width: 150px; ">Account:</th>
-								<td colspan="3">:&nbsp;<% if (this.labelClass){ %><span class="label <%= this.labelClass %>" style="margin-right: 10px;"> <%= this.accountStatus %> </span> <% } %><%= this.account %> - <%= this.accNum %>
+		</ul>
+		<div class="tab-content" style="width: 520px;">
+			<div id="details-pane-details" class="tab-pane ">
+				<div class="scroll-pane">
+					<table class="table" style="margin-top: 10px; margin-bottom: 8px;">
+						<tbody>
+						<tr>
+							<th width="150" style="width: 150px; ">Account:</th>
+							<td colspan="3">:&nbsp;<% if (this.labelClass){ %><span class="label <%= this.labelClass %>" style="margin-right: 10px;"> <%= this.accountStatus %> </span> <% } %><%= this.account %> - <%= this.accNum %>
 
-								</td>
-							</tr>
+							</td>
+						</tr>
 
-							<% if (this.typeID =='1') { %>
-							<tr>
-								<th>Placing</th>
-								<td colspan="3">:&nbsp;<%= this.placing %></td>
+						<% if (this.typeID =='1') { %>
+						<tr>
+							<th>Placing</th>
+							<td colspan="3">:&nbsp;<%= this.placing %></td>
 
-							</tr>
+						</tr>
 
-							<tr>
-								<th>Colour</th>
-								<td>: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %></td>
-								<% if (this.colour=="Spot" || this.colour =="Full") { %>
-									<th>Colour Rate</th>
-								<td>: <%= this.colourLabel %></td>
-								<% } %>
-							</tr>
-							<tr>
-								<th>Size</th>
-								<td >
-									<div style="margin-right: -50px;">: <%= this.cm %> <span class="g"> x </span> <%= this.col %>
-										<span class="g"> = </span> <%= this.totalspace %>
-										<span class="g"> col/cm's</span></div>
-								</td>
-								<th>Tariff</th>
-								<td>: <%= this.rate_C %></td>
-							</tr>
-							<% } else if (this.typeID =='2') { %>
-							<tr>
-								<th>Print Order</th>
-								<td colspan="3">:&nbsp;<%= this.InsertPO %></td>
-							</tr>
-							<tr>
-								<th>Tariff</th>
-								<td colspan="3">:&nbsp;<%= this.rate_C %></td>
-							</tr>
-
+						<tr>
+							<th>Colour</th>
+							<td>: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %></td>
+							<% if (this.colour=="Spot" || this.colour =="Full") { %>
+							<th>Colour Rate</th>
+							<td>: <%= this.colourLabel %></td>
 							<% } %>
-							<tr>
-								<th>Totalcost</th>
-								<td colspan="3">: <%= this.totalCost_C %> &nbsp;&nbsp;&nbsp;
-									<% if (this.percent_diff!="0.00"){ %>
-										(<%= this.totalShouldbe_C %> - <span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff %>% </span>)
-									<% } %>
+						</tr>
+						<tr>
+							<th>Size</th>
+							<td>
+								<div style="margin-right: -50px;">: <%= this.cm %>
+									<span class="g"> x </span> <%= this.col %>
+									<span class="g"> = </span> <%= this.totalspace %> <span class="g"> col/cm's</span>
+								</div>
+							</td>
+							<th>Tariff</th>
+							<td>: <%= this.rate_C %></td>
+						</tr>
+						<% } else if (this.typeID =='2') { %>
+						<tr>
+							<th>Print Order</th>
+							<td colspan="3">:&nbsp;<%= this.InsertPO %></td>
+						</tr>
+						<tr>
+							<th>Tariff</th>
+							<td colspan="3">:&nbsp;<%= this.rate_C %></td>
+						</tr>
 
-								</td>
-							</tr>
+						<% } %>
+						<tr>
+							<th>Totalcost</th>
+							<td colspan="3">: <%= this.totalCost_C %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C %> -
+								<span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff %>% </span>) <% } %>
 
-
-							<tr>
-								<th>Key Number</th>
-								<td colspan="3">: <%= this.keyNum %></td>
-							</tr>
-
-							<tr>
-								<th>Order Number</th>
-								<td colspan="3">:&nbsp;<%= this.orderNum %></td>
-							</tr>
-							<tr>
-								<th>Marketer</th>
-								<td colspan="3">: <%= this.marketer %></td>
-							</tr>
-							<tr>
-								<th width="80">Discount</th>
-								<td width="140">: <% if (this.discount && this.discount != '0.00') { %><%= this.discount %>%<% } %></td>
-								<th width="130">Agency Discount</th>
-								<td width="170">: <% if (this.agencyDiscount && this.agencyDiscount != '0.00') { %><%= this.agencyDiscount %>%<% } %></td>
-							</tr>
-							<tr>
-								<th>Category</th>
-								<td colspan="3">: <%= this.category %></td>
-							</tr>
+							</td>
+						</tr>
 
 
-							<tr>
-								<td colspan="4" style="padding-top: 20px; padding-bottom: 20px;">
+						<tr>
+							<th>Key Number</th>
+							<td colspan="3">: <%= this.keyNum %></td>
+						</tr>
+
+						<tr>
+							<th>Order Number</th>
+							<td colspan="3">:&nbsp;<%= this.orderNum %></td>
+						</tr>
+						<tr>
+							<th>Marketer</th>
+							<td colspan="3">: <%= this.marketer %></td>
+						</tr>
+						<tr>
+							<th width="80">Discount</th>
+							<td width="140">: <% if (this.discount && this.discount != '0.00') { %><%= this.discount %>%<% } %></td>
+							<th width="130">Agency Discount</th>
+							<td width="170">: <% if (this.agencyDiscount && this.agencyDiscount != '0.00') { %><%= this.agencyDiscount %>%<% } %></td>
+						</tr>
+						<tr>
+							<th>Category</th>
+							<td colspan="3">: <%= this.category %></td>
+						</tr>
+
+
+						<tr>
+							<td colspan="4" style="padding-top: 20px; padding-bottom: 20px;">
 									<span style="margin-right: 10px;">
 
 									<% if (this.remark) { %>
@@ -129,113 +128,177 @@
 											<span style="padding:0 5px;"></span>
 										<% } %>
 									<% } %>
-									</span>
-									<%= this.remark %>
-
-								</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-
-
-				</div>
-				<div id="details-pane-logs" class="tab-pane">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-					<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
-						<tr>
-							<th width="120" style="width: 120px;">Booked By</th>
-							<td><%= this.byFullName %></td>
-							<td width="120" style="width: 120px;"><%= this.datein %></td>
-						</tr>
-						<tr>
-							<th>Checked</th>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Material</th>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan="3"><h5>Logs</h5></td>
-						</tr>
-						<% for(var i in this.logs) { %>
-						<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
-							<th class="s"><%= this.logs[i].datein %></th>
-							<td><%= this.logs[i].label %></td>
-							<td class="s g"><%= this.logs[i].fullName %></td>
-						</tr>
-						<tr>
-							<td colspan="3" class="log-record-details " data-log-id="<%= this.logs[i].ID %>" style="padding:0;">
-								<table class="table s log-changes-table">
-									<thead>
-									<tr class="headingrow" style="border-right:none;">
-										<th class="l" style="width: 24%;text-align: right;"></th>
-										<th class="l" style="width: 38%;">From</th>
-										<th class="l" style="width: 38%;">To</th>
-									</tr>
-									</thead>
-									<tbody>
-									<% for(var g in this.logs[i].log) { %>
-									<tr>
-										<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
-										<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
-										<td><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
-									</tr>
-									<% } %>
-									</tbody>
-								</table>
-
-
+									</span> <%= this.remark %>
 
 							</td>
 						</tr>
-						<% } %>
-
+						</tbody>
 					</table>
-
-						</div>
 				</div>
-				</div>
-				<div id="details-pane-material" class="tab-pane">
-					<div class="scroll-pane">
-						<p>the material goes here</p>
 
+
+			</div>
+			<div id="details-pane-logs" class="tab-pane">
+				<div class="scroll-pane">
+					<div style="padding-right:1px;">
+						<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
+							<tr>
+								<th width="120" style="width: 120px;">Booked By</th>
+								<td><%= this.byFullName %></td>
+								<td width="120" style="width: 120px;"><%= this.datein %></td>
+							</tr>
+							<tr>
+								<th>Checked</th>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Material</th>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="3"><h5>Logs</h5></td>
+							</tr>
+							<% for(var i in this.logs) { %>
+							<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
+								<th class="s"><%= this.logs[i].datein %></th>
+								<td><%= this.logs[i].label %></td>
+								<td class="s g"><%= this.logs[i].fullName %></td>
+							</tr>
+							<tr>
+								<td colspan="3" class="log-record-details " data-log-id="<%= this.logs[i].ID %>" style="padding:0;">
+									<table class="table s log-changes-table">
+										<thead>
+										<tr class="headingrow" style="border-right:none;">
+											<th class="l" style="width: 24%;text-align: right;"></th>
+											<th class="l" style="width: 38%;">From</th>
+											<th class="l" style="width: 38%;">To</th>
+										</tr>
+										</thead>
+										<tbody>
+										<% for(var g in this.logs[i].log) { %>
+										<tr>
+											<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
+											<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
+											<td><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
+										</tr>
+										<% } %>
+										</tbody>
+									</table>
+
+
+								</td>
+							</tr>
+							<% } %>
+
+						</table>
 
 					</div>
 				</div>
 			</div>
-		</div>
+			<div id="details-pane-material" class="tab-pane">
+				<div class="scroll-pane">
+					<p>the material goes here</p>
 
-		<div id="details-advert-size" style="width: 180px; height: 275px;">
-			<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
-			<i class="icon-ok-circle "></i>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="details-advert-size" style="width: 180px; height: 275px;">
+		<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
+		<i class="icon-ok-circle "></i>
+
+		<a class="btn span2" href="#popup-material" data-target="popup">Material</a>
+	</div>
+
+</div>
+<div class="modal-footer">
+	<div class="row">
+		<div class="span9 l">
+			<button class="btn btn-primary span2" disabled="disabled">Checked</button>
+			<button class="btn span2" disabled="disabled">Repeat</button>
+		</div>
+		<div style="padding-left: 15px; margin-right: -20px;" class="offset9">
+			<div class="btn-group">
+				<button id="details-record-prev" class="btn span2">
+					<i class="icon-step-backward"></i> Previous
+				</button>
+				<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+			</div>
 		</div>
 
 	</div>
-	<div class="modal-footer">
-		<div class="row">
-			<div class="span9 l">
-				<button class="btn btn-primary span2" disabled="disabled">Checked</button>
-				<button class="btn span2" disabled="disabled">Repeat</button>
+
+</div>
+<div class="loadingmask wide"></div>
+
+<div class="popup" id="popup-material">
+	<form class="form">
+		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+
+			<h3>Material</h3></div>
+		<div class='popup-body' style="background-colour: red;">
+
+
+			<div class="control-group">
+				<div class="controls" id="source">
+					<label class="control-label">Source:</label>
+					<label class="radio" style="padding: 5px 10px 5px 50px; cursor:pointer; margin-bottom:0;">
+						<input type="radio" value="1" name="source" checked="checked"> Supplied
+						<span class="g s" style="margin-left:21px;">The client supplied the material, for instance agencies etc.</span>
+					</label>
+
+
+					<label class="radio" style="padding: 5px 10px 5px 50px; cursor:pointer;">
+						<input type="radio" value="2" name="source"> Production
+						<span class="g s" style="margin-left:10px;">Internal production created the material.</span>
+					</label>
+
+
+				</div>
 			</div>
-			<div style="padding-left: 15px; margin-right: -20px;" class="offset9">
-				<div class="btn-group">
-					<button id="details-record-prev" class="btn span2">
-						<i class="icon-step-backward"></i> Previous
-					</button>
-					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+
+			<div class="control-group" id="productionID-area">
+				<label class="control-label">Production Person:</label>
+
+				<div class="controls" style="padding-left: 30px;">
+					<select class="span7" id="productionID">
+						{% for row in production %}
+						<option value="{{ row['ID'] }}">{{ row['production'] }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group" style="padding-top:10px;">
+				<label class="control-label">Material:</label>
+
+				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
+					<div class="btn-group" data-toggle="buttons-radio" style="padding-top: 4px;">
+						<button type="button" class="btn btn-mini span3 active">Ready</button>
+						<button type="button" class="btn btn-mini span3">Not Ready</button>
+					</div>
 				</div>
 			</div>
 
 		</div>
+		<div class='popup-footer '>
+			<div class="row">
+				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
 
-	</div>
-	<div class="loadingmask wide"></div>
-	]]>
+				<div style="float:right;">
+
+
+					<button class="btn btn-primary span3">Save</button>
+				</div>
+
+			</div>
+		</div>
+	</form>
+</div>
+]]>
 </script>
 <script type="text/javascript">
 	$(document).on('show', '#details-modal .nav-tabs', function (e) {
@@ -244,6 +307,7 @@
 		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 		$.bbq.pushState({"details-tab":pane});
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		material_person();
 
 	});
 	$(document).on('hide', '#details-modal', function () {
@@ -255,17 +319,17 @@
 		var $clicked = $(e.target).closest("tr.record");
 		var active = true;
 
-		if ($this.hasClass("active")&&$clicked) active = false;
+		if ($this.hasClass("active") && $clicked) active = false;
 
 		$("#details-pane-logs .record.active").removeClass("active");
-		if (active){
+		if (active) {
 			$this.addClass("active");
 		}
 
 		var show = $("#details-pane-logs .record.active").attr("data-log-id");
 
 		$("#details-pane-logs .log-record-details").hide();
-		$("#details-pane-logs .log-record-details[data-log-id='"+show+"']").show();
+		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
 	});
@@ -276,22 +340,20 @@
 		nextRecord();
 	});
 
-	function nextRecord(){
+	function nextRecord() {
 		var ID = $.bbq.getState("ID");
 		var $item = $("#record-list .record[data-ID='" + ID + "']");
 		var $new = $item.nextAll("tr.record:first");
 		$.bbq.pushState({ID:$new.attr("data-ID")});
 		getDetails();
 	}
-	function prevRecord(){
+	function prevRecord() {
 		var ID = $.bbq.getState("ID");
 		var $item = $("#record-list .record[data-ID='" + ID + "']");
 		var $new = $item.prevAll("tr.record:first");
 		$.bbq.pushState({ID:$new.attr("data-ID")});
 		getDetails();
 	}
-
-
 
 	function showContent_state() {
 		var ID = $.bbq.getState("ID");
@@ -310,6 +372,15 @@
 		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 		$('#' + tab + '', $details_modal).addClass("active");
 
-
+	}
+	function material_person(){
+		console.log("woof");
+		if ($("#source input:checked").val()=="1"){
+			$("#productionID-area").addClass("disabled");
+			$("#productionID").attr("disabled","disabled");
+		} else {
+			$("#productionID-area").removeClass("disabled");
+			$("#productionID").removeAttr("disabled");
+		}
 	}
 </script>

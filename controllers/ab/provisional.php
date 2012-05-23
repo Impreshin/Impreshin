@@ -6,6 +6,7 @@
 namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
+use \models\ab\production as production;
 class provisional {
 	function __construct() {
 		$user = F3::get("user");
@@ -16,6 +17,7 @@ class provisional {
 	function page() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
+		$pID = $user['ab_pID'];
 
 		//test_array($user);
 		$ab_settings = F3::get("ab_settings");
@@ -59,9 +61,10 @@ class provisional {
 
 		}
 
-
+		$tmpl->production = production::getAll("pID='$pID'","production ASC");
 
 		$tmpl->settings = $ab_settings;
+
 		$tmpl->settings_columns = array(
 			"selected"=>$b,
 			"available"=>$a

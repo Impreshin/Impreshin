@@ -123,11 +123,23 @@
 	});
 	$(document).ready(function () {
 
-		$(document).on("click", ".modal .close-btn", function () {
+		$(document).on("click", ".modal .close-btn", function (e) {
+			e.preventDefault();
 			var $this = $(this), $modal = $this.closest(".modal");
 			$modal.modal("hide");
 		//	$("#settings-modal").modal('hide');
 		});
+		$(document).on("click", "*[data-dismiss='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.closest(".popup");
+			$popup.fadeOut(transSpeed);
+		});
+		$(document).on("click", "*[data-target='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.attr("href");
+			$($popup).fadeIn(transSpeed);
+		});
+
 
 		$(document).on("show", ".modal", function () {
 			var $this = $(this);

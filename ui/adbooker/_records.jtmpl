@@ -97,7 +97,7 @@
 	function getDetails() {
 		var ID = $.bbq.getState("ID");
 		$("#details-modal").addClass("loading");
-		detailsRequest.push($.getJSON("/ab/data/details?r="+Math.random(), {"ID":ID}, function (data) {
+		detailsRequest.push($.getJSON("/ab/data/details/?r="+Math.random(), {"ID":ID}, function (data) {
 			data = data['data'];
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
