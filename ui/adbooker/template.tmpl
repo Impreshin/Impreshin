@@ -137,7 +137,7 @@
 		$(document).on("click", "*[data-target='popup']", function (e) {
 			e.preventDefault();
 			var $this = $(this), $popup = $this.attr("href");
-			$($popup).fadeIn(transSpeed);
+			$($popup).fadeIn(transSpeed).trigger("popup-show");
 		});
 
 

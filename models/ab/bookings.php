@@ -30,7 +30,8 @@ class bookings {
 				ab_accounts.account AS account,
 				ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.labelClass,ab_accounts_status.status AS accountStatus,
 				ab_accounts.accNum AS accNum,
-				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass
+				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
+				(SELECT production FROM ab_production WHERE ab_production.ID = ab_bookings.material_productionID ) AS material_production
 			FROM (((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) INNER JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID
 			WHERE ab_bookings.ID = '$ID';
 
@@ -302,7 +303,7 @@ class bookings {
 		);
 	}
 
-	public static function save($ID="",$values=array()){
+	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
 		$timer = new timer();
 
 		$a = new Axon("ab_bookings");
@@ -316,13 +317,36 @@ class bookings {
 			$a->$key = $value;
 		}
 
-		$a->save();
+		if ($opts['dry'] || !$a->dry()){
+			$a->save();
+		}
+
+
 		if (!$ID){
 			$label = "Booking Added";
 			$ID = $a->_id;
 		} else {
 			$label = "Booking Edited";
 		}
+
+		if (isset($opts['section']) && $opts['section']){
+			switch ($opts['section']){
+				case "material":
+					if ($a->material_status == '1') {
+						$label = "Material - Ready";
+						if ($a->material_source == '1') {
+							$label .= " (Production)";
+						} else {
+							$label .= " (Supplied)";
+						}
+					} else {
+						$label = "Material - Not Ready";
+					}
+
+					break;
+			}
+		}
+
 
 
 

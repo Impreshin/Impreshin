@@ -145,4 +145,21 @@ class save {
 
 	}
 
+	function material_status(){
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+
+
+
+		$values = array();
+		if (isset($_POST['source'])) $values['material_source'] = $_POST['source'];
+		if (isset($_POST['material_productionID'])) $values['material_productionID'] = $_POST['material_productionID'];
+		if (isset($_POST['material_status'])) $values['material_status'] = $_POST['material_status'];
+
+		if ($values['material_status']=='1'){
+			$values['material_date'] = date("Y-m-d H:i:s");
+		}
+
+		bookings::save($ID, $values,array("section"=>"material","dry"=>false));
+		test_array($values);
+	}
 }

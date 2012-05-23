@@ -300,6 +300,14 @@ form .form-super-narrow .control-label {
 .btn.r {
   text-align: right;
 }
+input[disabled],
+select[disabled],
+textarea[disabled],
+input[readonly],
+select[readonly],
+textarea[readonly] {
+  cursor: default;
+}
 .clearfix:before,
 .clearfix:after {
   content: "";

@@ -154,8 +154,18 @@
 							</tr>
 							<tr>
 								<th>Material</th>
-								<td></td>
-								<td></td>
+								<% if (this.material_status=='1') { %>
+								<td>
+									<% if (this.material_source=='1') { %>
+										<%= this.material_production %>
+									<% } else { %>
+										Material Supplied
+									<% } %>
+								</td>
+								<td><%= this.material_date %></td>
+								<% } else { %>
+								<td colspan="2"> </td>
+								<% } %>
 							</tr>
 							<tr>
 								<td colspan="3"><h5>Logs</h5></td>
@@ -207,12 +217,24 @@
 		</div>
 	</div>
 	<% if (this.typeID =='1') { %>
-	<div id="details-advert-size" style="width: 180px; height: 275px;">
+	<a id="details-advert-size" style="width: 180px; height: 275px;" href="#popup-material" data-target="popup">
 		<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
-		<i class="icon-ok-circle "></i>
 
-		<a class="btn span2" href="#popup-material" data-target="popup">Material</a>
-	</div>
+
+		<div style="background-color: #e1e1e1; height: <%= (275 / {{ _ab['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _ab['publication']['columnsav'] }})*this.col %>px;">
+			<% if (this.material_status =='1') { %>
+				<i class="icon-ok-circle"></i>
+			<% } else { %>
+				<i class="icon-remove-circle icon-l-grey "></i>
+			<% } %></div>
+
+
+
+
+
+
+
+	</a>
 	<% } %>
 
 </div>
@@ -237,7 +259,7 @@
 <div class="loadingmask wide"></div>
 
 <div class="popup" id="popup-material">
-	<form class="form">
+	<form class="form" id="form-material">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
 			<h3>Material</h3></div>
@@ -245,16 +267,16 @@
 
 
 			<div class="control-group">
-				<div class="controls" id="source">
+				<div class="controls" id="source-radios">
 					<label class="control-label">Source:</label>
 					<label class="radio" style="padding: 5px 10px 5px 50px; cursor:pointer; margin-bottom:0;">
-						<input type="radio" value="1" name="source" checked="checked"> Supplied
+						<input type="radio" value="2" name="source" <% if (this.material_source =='2') { %>checked="checked"<% } %>> Supplied
 						<span class="g s" style="margin-left:21px;">The client supplied the material, for instance agencies etc.</span>
 					</label>
 
 
 					<label class="radio" style="padding: 5px 10px 5px 50px; cursor:pointer;">
-						<input type="radio" value="2" name="source"> Production
+						<input type="radio" value="1" name="source" <% if (this.material_source =='1' || !this.material_source) { %>checked="checked"<% } %>> Production
 						<span class="g s" style="margin-left:10px;">Internal production created the material.</span>
 					</label>
 
@@ -266,9 +288,11 @@
 				<label class="control-label">Production Person:</label>
 
 				<div class="controls" style="padding-left: 30px;">
-					<select class="span7" id="productionID">
+					<select class="span7" id="material_productionID" name="material_productionID">
 						{% for row in production %}
-						<option value="{{ row['ID'] }}">{{ row['production'] }}</option>
+						<option value="{{ row['ID'] }}"	<% if (this.material_productionID =='{{ row['ID'] }}') { %>selected="selected"<% } %> >
+							{{ row['production'] }}
+						</option>
 						{% endfor %}
 					</select>
 				</div>
@@ -278,11 +302,19 @@
 
 				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
 					{% if _cfg['upload_material'] %}
-						<input type="file" id="fileInput" class="input-file">
+
+					<input type="file" id="fileInput" class="input-file">
+
+					<% if (this.material_file) { %>
+					<button class="btn span1 btn-mini" style="float:right;" type="button"><i class="icon-trash icon-d-grey"></i></button>
+					<% } %>
+
+
+
 					{% else %}
-						<div class="btn-group" data-toggle="buttons-radio" style="padding-top: 4px;">
-							<button type="button" class="btn btn-mini span3 active">Ready</button>
-							<button type="button" class="btn btn-mini span3">Not Ready</button>
+						<div class="btn-group" data-toggle="buttons-radio" style="padding-top: 4px;" id="material_status">
+							<button type="button" class="btn btn-mini span3 <% if (this.material_status=='1') { %>active<% } %>"  data-val="1">Ready</button>
+							<button type="button" class="btn btn-mini span3 <% if (this.material_status=='0') { %>active<% } %>" data-val="0">Not Ready</button>
 						</div>
 					{% endif %}
 				</div>
@@ -312,12 +344,47 @@
 		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 		$.bbq.pushState({"details-tab":pane});
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-		material_person();
+
 
 	});
 	$(document).on('hide', '#details-modal', function () {
 		$.bbq.removeState("ID");
 		$("#record-list .record.active").removeClass("active");
+	});
+	$(document).on('submit', '#form-material', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+
+
+		console.log(data);
+		{% if _cfg['upload_material'] %}
+
+
+		{% else %}
+
+		data = data + "&material_status=" + $("#material_status button.active").attr("data-val");
+
+		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+
+
+
+
+		{% endif %}
+
+
+
+
+
+
+	});
+	$(document).on('popup-show', '#popup-material', function () {
+		material_person();
+	});
+	$(document).on('change', '#popup-material input[name="source"]', function () {
+		material_person();
 	});
 	$(document).on('click', '#details-pane-logs .record', function (e) {
 		var $this = $(this);
@@ -379,13 +446,13 @@
 
 	}
 	function material_person(){
-		console.log("woof");
-		if ($("#source input:checked").val()=="1"){
+		//console.log("woof");
+		if ($("#source-radios input:checked").val()=="2"){
 			$("#productionID-area").addClass("disabled");
-			$("#productionID").attr("disabled","disabled");
+			$("#material_productionID").attr("disabled","disabled");
 		} else {
 			$("#productionID-area").removeClass("disabled");
-			$("#productionID").removeAttr("disabled");
+			$("#material_productionID").removeAttr("disabled");
 		}
 	}
 </script>
