@@ -15,6 +15,9 @@ var accountLookup = [];
 
 $(document).ready(function(){
 
+
+
+
 	$(document).on("click",".dates-btn",function(){
 		var $this = $(".dates-btn"), $otherdates = $("#dates_list .otherdates"), $dates_list = $("#dates_list");
 		if ($dates_list.hasClass("showit")){
@@ -242,7 +245,11 @@ function show_checkhox(){
 }
 function resizeform(form){
 
-	$(".form-body",form).jScrollPane(jScrollPaneOptions);
+	var pane = $(".form-body", form).jScrollPane(jScrollPaneOptions);
+	var api = pane.data("jsp");
+	//api.reinitialise();
+
+	scrolling(api);
 }
 
 function account_lookup_history_suggestions(accNum){

@@ -5,6 +5,9 @@ var pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 var api = pane.data("jsp");
 $(document).ready(function () {
 
+	scrolling(api);
+
+
 	var highlight = $.bbq.getState("highlight");
 	highlight = (highlight) ? highlight : "checked";
 	var filter = $.bbq.getState("filter");

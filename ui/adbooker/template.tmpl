@@ -243,6 +243,68 @@
 
 
 	}
+	function scrolling(api){
+
+		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
+
+			if (deltaY < 0) {
+				deltaY = -deltaY;
+			} else {
+				deltaY = -deltaY;
+			}
+
+			deltaY = deltaY * 30;
+
+			api.scrollByY(deltaY, false);
+
+		}).on('keydown',function(e){
+//				console.log(api.getContentHeight);
+				var keyboardSpeed= 28, scrollPagePercent=.8;
+
+				switch (e.keyCode) {
+					case 40: // down
+						api.scrollByY(keyboardSpeed, false);
+						break;
+					case 38: // up
+						api.scrollByY(-keyboardSpeed, false);
+						break;
+					case 34: // page down
+					case 32: // space
+
+						api.scrollByY(300, false);
+						break;
+					case 33: // page up
+						api.scrollByY(-300, false);
+						break;
+
+				}
+			});
+
+
+		/*
+
+		switch (keyDown) {
+			case 40: // down
+				jsp.scrollByY(settings.keyboardSpeed, false);
+				break;
+			case 38: // up
+				jsp.scrollByY(-settings.keyboardSpeed, false);
+				break;
+			case 34: // page down
+			case 32: // space
+				jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
+				break;
+			case 33: // page up
+				jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
+				break;
+			case 39: // right
+				jsp.scrollByX(settings.keyboardSpeed, false);
+				break;
+			case 37: // left
+				jsp.scrollByX(-settings.keyboardSpeed, false);
+				break;
+		}*/
+	}
 
 </script>
 {% if page['template_js'] %}

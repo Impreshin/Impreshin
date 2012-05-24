@@ -199,7 +199,7 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
-		<button class="btn btn-primary span2 offset14" type="submit">Save Record</button>
+		<button class="btn btn-primary span2 " style="float:right; margin-right: 10px;" type="submit">Save Record</button>
 
 	</div>
 
