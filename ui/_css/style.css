@@ -922,7 +922,25 @@ table.records .size {
   border: 1px solid #cccccc;
   position: absolute;
   right: 25px;
-  bottom: 20px;
+  bottom: 33px;
+}
+#details-advert-size .material-state {
+  filter: alpha(opacity= 20 );
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  position: absolute;
+  bottom: 0;
+  margin-left: -64px;
+  left: 50%;
+  text-align: center;
+}
+#details-bottom-right-btns {
+  position: absolute;
+  right: 10px;
+  bottom: 3px;
+  width: 210px;
+  text-align: right;
 }
 .details-edit-btn {
   position: absolute;

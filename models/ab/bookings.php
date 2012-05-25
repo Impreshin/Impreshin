@@ -305,15 +305,42 @@ class bookings {
 
 	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
 		$timer = new timer();
+		$lookupColumns = array();
+		$lookupColumns["dID"] = array("sql"=>"(SELECT publish_date FROM global_dates WHERE ID = '{val}')","col"=>"publish_date","val"=>"");
+		$lookupColumns["placingID"] = array("sql"=>"(SELECT placing FROM ab_placing WHERE ID = '{val}')","col"=>"placing","val"=>"");
+		$lookupColumns["categoryID"] = array("sql"=>"(SELECT `category` FROM ab_categories WHERE ID = '{val}')","col"=>"category","val"=>"");
+		$lookupColumns["marketerID"] = array("sql"=>"(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')","col"=>"marketer","val"=>"");
+		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')","col"=>"colour","val"=>"");
+		$lookupColumns["material_productionID"] = array("sql"=>"(SELECT `production` FROM ab_production WHERE ID = '{val}')","col"=>"production","val"=>"");
+
+		$lookup = array();
+
+
 
 		$a = new Axon("ab_bookings");
 		$a->load("ID='$ID'");
 
 
 		$changes = array();
+		$material = false;
 		foreach ($values as $key=>$value){
+			if (strpos($key,"aterial_")) $material = true;
+
 			$cur = $a->$key;
-			if ($cur != $value) $changes[] = array("k"=>$key,"v"=>$value,"w"=> $cur);
+			if ($cur != $value) {
+				if (isset($lookupColumns[$key])){
+					$lookupColumns[$key]['val']=$value;
+					$lookupColumns[$key]['was']= $cur;
+					$lookup[] = $lookupColumns[$key];
+				} else {
+					$changes[] = array(
+						"k"=> $key,
+						"v"=> $value,
+						"w"=> $cur
+					);
+				}
+
+			}
 			$a->$key = $value;
 		}
 
@@ -329,13 +356,38 @@ class bookings {
 			$label = "Booking Edited";
 		}
 
+		$sql = "SELECT 1 ";
+		if ($material) {
+			$sql .= ", (SELECT `production` FROM ab_production WHERE ID = '" . $a->material_productionID . "') AS production";
+		}
+		foreach ($lookup as $col){
+			$sql .= ", ". str_replace("{val}",$col['val'],$col['sql']) ." AS ".$col['col'];
+			$sql .= ", ". str_replace("{val}",$col['was'],$col['sql']) ." AS ".$col['col']."_was";
+		}
+
+
+
+		$v = F3::get("DB")->exec($sql);
+		$v = $v[0];
+		foreach ($lookup as $col) {
+			$changes[] = array(
+				"k"=> $col['col'],
+				"v"=> $v[$col['col']],
+				"w"=> $v[$col['col'] . "_was"]
+			);
+		}
+
+
+//test_array($v);
+
 		if (isset($opts['section']) && $opts['section']){
 			switch ($opts['section']){
 				case "material":
 					if ($a->material_status == '1') {
 						$label = "Material - Ready";
 						if ($a->material_source == '1') {
-							$label .= " (Production)";
+							$production = (isset($v['production']))? $v['production']:"";
+							if ($production) $label .= " (".$production.")";
 						} else {
 							$label .= " (Supplied)";
 						}
@@ -352,7 +404,7 @@ class bookings {
 
 
 		if (count($changes)) bookings::logging($ID,$changes, $label);
-
+		test_array($changes);
 
 		$n = new bookings();
 		$n = $n->get($ID);

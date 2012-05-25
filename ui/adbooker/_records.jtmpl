@@ -111,7 +111,7 @@
 
 			}
 
-
+			$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 		}));
 
 	}

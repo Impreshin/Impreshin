@@ -217,24 +217,38 @@
 		</div>
 	</div>
 	<% if (this.typeID =='1') { %>
+
 	<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} %>px;" href="#popup-material" data-target="popup">
 		<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
 
 
 		<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} / {{ _ab['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _ab['publication']['columnsav'] }})*this.col %>px;">
-			<% if (this.material_status =='1') { %>
-				<i class="icon-ok-circle"></i>
-			<% } else { %>
-				<i class="icon-remove-circle icon-l-grey "></i>
-			<% } %></div>
 
+		</div>
 
-
-
-
-
+		<% if (this.material_status!='1') { %>
+			<img src="/ui/_images/question.png" alt="" class="material-state">
+		<% } else { %>
+			<img src="/ui/_images/success.png" alt="" class="material-state">
+		<% } %>
 
 	</a>
+
+	<div id="details-bottom-right-btns">
+		<div class="btn-group">
+			<a class="btn btn-mini " style="width: 49%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
+			<% if (this.material_status!='1') { %>
+				<a class="btn btn-mini disabled " style="width: 49%; color: #999;">Approved</a>
+			<% } else { %>
+				<% if (this.material_approved=='1') { %>
+					<a class="btn btn-mini " style="width: 49%;"><i class="icon-ok"></i> Approved</a>
+				<% } else { %>
+					<a class="btn btn-mini " style="width: 49%;"><i class="icon-remove"></i> Approved</a>
+				<% } %>
+			<% } %>
+		</div>
+	</div>
+
 	<% } %>
 
 </div>
@@ -290,7 +304,7 @@
 				<div class="controls" style="padding-left: 30px;">
 					<select class="span7" id="material_productionID" name="material_productionID">
 						{% for row in production %}
-						<option value="{{ row['ID'] }}"	<% if (this.material_productionID =='{{ row['ID'] }}') { %>selected="selected"<% } %> >
+						<option value="{{ row['ID'] }}"	<% if (this.material_productionID =='{{ row['ID'] }}' || (!this.material_productionID && ({{ row['uID'] }} == {{ _user['ID'] }})) ) { %>selected="selected"<% } %> >
 							{{ row['production'] }}
 						</option>
 						{% endfor %}
@@ -357,7 +371,7 @@
 		var data = $this.serialize();
 
 
-		console.log(data);
+		//console.log(data);
 		{% if _cfg['upload_material'] %}
 
 
