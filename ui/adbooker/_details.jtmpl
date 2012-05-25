@@ -236,14 +236,14 @@
 
 	<div id="details-bottom-right-btns">
 		<div class="btn-group">
-			<a class="btn btn-mini " style="width: 49%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
+			<a class="btn btn-mini " style="width: 83%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
 			<% if (this.material_status!='1') { %>
-				<a class="btn btn-mini disabled " style="width: 49%; color: #999;">Approved</a>
+				<a class="btn btn-mini disabled " style="width: 13%; color: #999;"><i class="icon-tag"></i></a>
 			<% } else { %>
 				<% if (this.material_approved=='1') { %>
-					<a class="btn btn-mini " style="width: 49%;"><i class="icon-ok"></i> Approved</a>
+					<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Click to mark the material as approved"><i class="icon-ok icon-white"></i></a>
 				<% } else { %>
-					<a class="btn btn-mini " style="width: 49%;"><i class="icon-remove"></i> Approved</a>
+					<a class="btn btn-mini btn-danger span1" style="width: 13%;" id="material-approval" data-material-approved="1" rel="tooltip" title="Click to mark the material as NOT approved"><i class="icon-remove icon-white"></i></a>
 				<% } %>
 			<% } %>
 		</div>
@@ -391,6 +391,20 @@
 
 
 
+
+
+	});
+	$(document).on('click', '#material-approval', function (e) {
+		var $this = $(this);
+
+		var data = {
+			"material_approved":$this.attr("data-material-approved")
+		};
+
+
+		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
 
 
 	});

@@ -396,6 +396,15 @@ class bookings {
 					}
 
 					break;
+				case "material_approved":
+					if ($a->material_approved == '1') {
+						$label = "Material Approved";
+					} else {
+						$label = "Material Not Approved";
+					}
+
+
+					break;
 			}
 		}
 
