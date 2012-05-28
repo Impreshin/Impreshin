@@ -184,7 +184,7 @@ $section = "";
 
 
 		$values = array();
-		if (isset($_POST['checked'])) $values['checked'] = $_POST['checked'];
+		if (isset($_POST['checked'])) $values['checked'] = ($_POST['checked'])?'1':'0';
 
 
 
@@ -193,6 +193,10 @@ $section = "";
 				$values['checked_date'] = date("Y-m-d H:i:s");
 				$values['checked_userID'] = $userID;
 			} else {
+				$values['checked'] = '0';
+				$values['checked_userID'] = '';
+				$values['checked_date'] = '';
+				$values['checked_user'] = '';
 			}
 
 

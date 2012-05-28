@@ -236,7 +236,7 @@ function getList(settings) {
 
 
 
-		if (ID) {
+		if ($.bbq.getState("ID")) {
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
 
