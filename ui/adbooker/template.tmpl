@@ -90,7 +90,12 @@
 	var activityRequest = [];
 	var transSpeed = '{{ transSpeed |default('400') }}';
 	$(function () {
-		$("[rel=tooltip]").tooltip({
+		$('body').tooltip({
+			selector:'[rel=tooltip]'
+		});
+
+
+		$("*[rel=tooltip]").tooltip({
 			live:true
 		});
 

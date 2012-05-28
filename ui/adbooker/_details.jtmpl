@@ -8,7 +8,12 @@
 		<%= this.client %>
 	</h3>
 
-	<a href="/ab/form/<%= this.ID %>" class="span1 details-edit-btn" style=""><i class="icon-pencil icon-d-grey"></i></a>
+	<div id="modal-header-btns">
+		<a href="javascript:;"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
+		<a href="/ab/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+
+	</div>
+
 
 	<div class="modal-header-right" style="width:193px;">
 		<h3>
@@ -149,8 +154,14 @@
 							</tr>
 							<tr>
 								<th>Checked</th>
-								<td></td>
-								<td></td>
+								<% if (this.checked=='1') { %>
+								<td>
+									<%= this.checked_user %>
+								</td>
+								<td><%= this.checked_date %></td>
+								<% } else { %>
+								<td colspan="2"> </td>
+								<% } %>
 							</tr>
 							<tr>
 								<th>Material</th>
@@ -241,9 +252,9 @@
 			<% } else { %>
 			<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
 				<% if (this.material_approved=='1') { %>
-					<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Click to mark the material as approved"><i class="icon-ok icon-white"></i></a>
+					<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Material approved"><i class="icon-ok icon-white"></i></a>
 				<% } else { %>
-					<a class="btn btn-mini btn-danger span1" style="width: 13%;" id="material-approval" data-material-approved="1" rel="tooltip" title="Click to mark the material as NOT approved"><i class="icon-remove icon-white"></i></a>
+					<a class="btn btn-mini btn-danger span1" style="width: 13%;" id="material-approval" data-material-approved="1" rel="tooltip" title="Material NOT approved"><i class="icon-remove icon-white"></i></a>
 				<% } %>
 			<% } %>
 		</div>
@@ -255,10 +266,14 @@
 <div class="modal-footer">
 	<div class="row">
 		<div class="span9 l">
-			<button class="btn btn-primary span2" disabled="disabled">Checked</button>
+			<% if (this.checked=='1') { %>
+			<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
+			<% } else { %>
+			<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
+			<% } %>
 			<button class="btn span2" disabled="disabled">Repeat</button>
 		</div>
-		<div style="padding-left: 15px; margin-right: -20px;" class="offset9">
+		<div style="padding-left: 15px; margin-right: -20px;" class="offset9" id="list-next-prev-btns">
 			<div class="btn-group">
 				<button id="details-record-prev" class="btn span2">
 					<i class="icon-step-backward"></i> Previous
@@ -352,6 +367,14 @@
 ]]>
 </script>
 <script type="text/javascript">
+	$(document).on("shown",'#details-modal', function () {
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
+		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+	});
 	$(document).on('show', '#details-modal .nav-tabs', function (e) {
 		var target = e.target // activated tab
 		var previous = e.relatedTarget // previous tab
@@ -400,9 +423,19 @@
 		var data = {
 			"material_approved":$this.attr("data-material-approved")
 		};
-
-
 		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+	});
+	$(document).on('click', '#booking-checked', function (e) {
+		var $this = $(this);
+		var checked = $this.attr("data-checked");
+		var data = {
+			"checked":checked
+		};
+
+
+		$.post("/ab/save/checked_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 		});
 
@@ -482,5 +515,34 @@
 			$("#productionID-area").removeClass("disabled");
 			$("#material_productionID").removeAttr("disabled");
 		}
+	}
+	function getDetails() {
+		var ID = $.bbq.getState("ID");
+		$("#details-modal").addClass("loading");
+		detailsRequest.push($.getJSON("/ab/data/details/?r=" + Math.random(), {"ID":ID}, function (data) {
+			data = data['data'];
+			$("#record-list .record.active").removeClass("active");
+			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+			$('#details-modal').jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+
+			if ($("#record-list").length){
+
+				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+
+					showContent_state();
+					$("#list-next-prev-btns").show();
+					var api = $("#whole-area .scroll-pane").data("jsp");
+					if ($("#record-list .record[data-ID='" + ID + "']").length) {
+						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+					}
+
+				}
+			}
+
+
+
+			$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		}));
+
 	}
 </script>

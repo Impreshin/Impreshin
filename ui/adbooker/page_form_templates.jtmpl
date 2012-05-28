@@ -1,3 +1,5 @@
+{% include '_details.jtmpl' %}
+
 <script type="text/x-jqote-template" id="template-form">
 <![CDATA[
 
@@ -400,7 +402,7 @@
 	<div class='modal-footer'>
 		<div class="btn-group c" style="margin-left: 7px;">
 			<a href="/ab/form/" class="btn span3" id="modal-btn-new">New Record</a>
-			<a href="/ab/#ID=<%= this.ID %>" class="btn span3">View Record</a>
+			<a data-id="<%= this.ID %>" class="btn span3" id="viewrecord-btn">View Record</a>
 			<a href="/ab/" class="btn span3">Go to list</a>
 
 		</div>

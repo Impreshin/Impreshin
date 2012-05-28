@@ -402,8 +402,13 @@ class bookings {
 					} else {
 						$label = "Material Not Approved";
 					}
-
-
+					break;
+				case "checked":
+					if ($a->checked == '1') {
+						$label = "Booking Checked";
+					} else {
+						$label = "Booking Not Checked";
+					}
 					break;
 			}
 		}
@@ -413,7 +418,7 @@ class bookings {
 
 
 		if (count($changes)) bookings::logging($ID,$changes, $label);
-		test_array($changes);
+
 
 		$n = new bookings();
 		$n = $n->get($ID);

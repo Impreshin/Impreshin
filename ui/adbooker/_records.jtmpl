@@ -94,26 +94,6 @@
 		});
 	});
 
-	function getDetails() {
-		var ID = $.bbq.getState("ID");
-		$("#details-modal").addClass("loading");
-		detailsRequest.push($.getJSON("/ab/data/details/?r="+Math.random(), {"ID":ID}, function (data) {
-			data = data['data'];
-			$("#record-list .record.active").removeClass("active");
-			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-			$('#details-modal').jqotesub($("#template-details"), data).modal('show').removeClass("loading");
-			showContent_state();
-			if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
-				var api = $("#whole-area .scroll-pane").data("jsp");
-				if($("#record-list .record[data-ID='" + ID + "']").length){
-					api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
-				}
 
-			}
-
-			$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-		}));
-
-	}
 
 </script>

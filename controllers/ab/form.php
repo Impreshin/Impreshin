@@ -16,6 +16,7 @@ use models\ab\colours as colours;
 use models\ab\dates as dates;
 use models\ab\bookingTypes as bookingTypes;
 use models\ab\remarkTypes as remarkTypes;
+use models\ab\production as production;
 use models\ab\publications as publications;
 
 class form {
@@ -131,6 +132,7 @@ class form {
 		$tmpl->marketers = $marketers;
 		$tmpl->details = $details;
 		$tmpl->placing = $placing;
+		$tmpl->production = production::getAll("pID='$pID'", "production ASC");
 		$tmpl->categories = categories::getAll("pID='$pID'", "orderby ASC");
 		$tmpl->dates = array(
 			"current"=> $currentDate,

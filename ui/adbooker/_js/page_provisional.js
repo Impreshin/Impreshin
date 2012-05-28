@@ -43,14 +43,7 @@ $(document).ready(function () {
 		$(this).closest(".nav > li").addClass("active");
 		$(this).closest("li").addClass("active");
 	});
-	$('#details-modal').bind("shown", function () {
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
-		if (!tab) tab = "details-pane-details";
-		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-		$('#' + tab + '', $details_modal).addClass("active");
-		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-	});
 
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();

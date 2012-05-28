@@ -51,6 +51,13 @@ $(document).ready(function(){
 
 	});
 
+	$(document).on("click", "#viewrecord-btn", function () {
+		$(this).closest(".modal").modal("hide");
+		$.bbq.pushState({"ID":$(this).attr("data-id")});
+		getDetails();
+
+	});
+
 
 
 

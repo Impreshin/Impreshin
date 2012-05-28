@@ -175,4 +175,31 @@ $section = "";
 		if ($section) bookings::save($ID, $values,array("section"=> $section,"dry"=>false));
 		test_array($values);
 	}
+	function checked_status(){
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$section = "";
+
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$values = array();
+		if (isset($_POST['checked'])) $values['checked'] = $_POST['checked'];
+
+
+
+			$section = "checked";
+			if ($values['checked'] == '1') {
+				$values['checked_date'] = date("Y-m-d H:i:s");
+				$values['checked_userID'] = $userID;
+			} else {
+			}
+
+
+
+
+
+		if ($section) bookings::save($ID, $values,array("section"=> $section,"dry"=>false));
+		test_array($values);
+	}
 }
