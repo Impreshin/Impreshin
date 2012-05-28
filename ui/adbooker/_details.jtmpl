@@ -271,7 +271,7 @@
 			<% } else { %>
 			<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
 			<% } %>
-			<button class="btn span2" disabled="disabled">Repeat</button>
+
 		</div>
 		<div style="padding-left: 15px; margin-right: -20px;" class="offset9" id="list-next-prev-btns">
 			<div class="btn-group">
@@ -436,7 +436,15 @@
 
 
 		$.post("/ab/save/checked_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
-			getDetails();
+			if ($("#record-list").length){
+				getDetails();
+				getList();
+
+			} else {
+				getDetails();
+			}
+
+
 		});
 
 

@@ -239,7 +239,16 @@ function getList(settings) {
 		if (ID) {
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-			getDetails();
+
+			var api = $("#whole-area .scroll-pane").data("jsp");
+			if ($("#record-list .record[data-ID='" + ID + "']").length) {
+				api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, false);
+			}
+
+
+			if (!$("#details-modal").is(":visible")) {
+				getDetails();
+			}
 		}
 		var goto = $.bbq.getState("scrollTo");
 		if (goto) {
