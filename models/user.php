@@ -109,7 +109,9 @@ class user {
 
 		$t->uID = $uID;
 
-		if (isset($values['pID'])) $t->pID = $values['pID'];
+		foreach ($values as $key=> $value) {
+			$t->$key = $value;
+		}
 
 
 		$t->save();

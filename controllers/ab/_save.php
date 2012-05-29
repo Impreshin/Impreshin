@@ -9,7 +9,7 @@ use models\ab\loading as loading;
 use models\ab\publications as publications;
 use models\user as user;
 
-class save {
+class _save {
 
 	function __construct() {
 
@@ -30,10 +30,13 @@ class save {
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
 		$ab_defaults = F3::get("ab_defaults");
+		$section = (isset($_GET['section'])) ? $_GET['section'] : "list";
 
-		$columns = (!in_array("columns", $reset))? (isset($_POST['columns']))?explode(",",$_POST['columns']): $ab_defaults["list"]['col']: $ab_defaults['list']['col'];
-		$group = (!in_array("group", $reset)) ?(isset($_POST['group']))?$_POST['group']: $ab_defaults['list']['group']['g'] : $ab_defaults['list']['group']['g'];
-		$order = (!in_array("order", $reset)) ?(isset($_POST['order']))?$_POST['order']: $ab_defaults['list']['group']['o'] : $ab_defaults['list']['group']['o'];
+
+		$columns = (!in_array("columns", $reset))? (isset($_POST['columns']))?explode(",",$_POST['columns']): $ab_defaults[$section]['col']: $ab_defaults[$section]['col'];
+		$group = (!in_array("group", $reset)) ?(isset($_POST['group']))?$_POST['group']: $ab_defaults[$section]['group']['g'] : $ab_defaults[$section]['group']['g'];
+		$order = (!in_array("order", $reset)) ?(isset($_POST['order']))?$_POST['order']: $ab_defaults[$section]['group']['o'] : $ab_defaults[$section]['group']['o'];
+
 
 
 
@@ -48,7 +51,7 @@ class save {
 
 
 		$values = array();
-		$values['list']=$new;
+		$values[$section]=$new;
 
 
 

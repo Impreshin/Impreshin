@@ -725,6 +725,9 @@ table.records .size {
   margin-left: 10px;
   float: right;
 }
+table.records .record-tick {
+  text-align: center;
+}
 .record.highlight {
   background-color: #ccffff;
 }

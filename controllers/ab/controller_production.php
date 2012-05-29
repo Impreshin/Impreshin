@@ -7,11 +7,14 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab\production as production;
-class provisional {
+class controller_production {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		//if (!$userID) F3::reroute("/login");
+
+
+		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 
 	}
 	function page() {
@@ -24,9 +27,9 @@ class provisional {
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_provisional",
+			"section"=> "production",
+			"sub_section"=> "list",
+			"template"=> "page_production",
 			"meta"    => array(
 				"title"=> "AdBooker",
 			)
@@ -35,10 +38,10 @@ class provisional {
 
 		$a = array();
 		$b = array();
-		if (isset($user['settings']['list']['col'])&& count($ab_settings["columns"])){
+		if (isset($user['settings']['production']['col'])&& count($ab_settings["columns"])){
 
 			foreach ($ab_settings["columns"] as $col){
-				if ( !in_array($col['c'],$user["settings"]["list"]['col'])){
+				if ( !in_array($col['c'],$user["settings"]["production"]['col'])){
 					$col["s"] = "0";
 					$a[] = $col;
 				}
@@ -48,7 +51,7 @@ class provisional {
 
 
 
-			foreach ($user["settings"]["list"]['col'] AS $col){
+			foreach ($user["settings"]["production"]['col'] AS $col){
 				$v = $ab_settings["columns"][$col];
 				$v['s'] = '1';
 				$b[] = $v;
@@ -62,6 +65,12 @@ class provisional {
 		}
 
 		$tmpl->production = production::getAll("pID='$pID'","production ASC");
+
+
+		$ab_settings['list'] = $user['settings']['production'];
+
+	//	test_array($ab_settings);
+
 
 		$tmpl->settings = $ab_settings;
 

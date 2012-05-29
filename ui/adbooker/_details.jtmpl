@@ -404,6 +404,9 @@
 
 		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
+			if ($("#record-list").length) {
+				//getList();
+			}
 		});
 
 
@@ -425,6 +428,9 @@
 		};
 		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
+			if ($("#record-list").length) {
+				//getList();
+			}
 		});
 	});
 	$(document).on('click', '#booking-checked', function (e) {
@@ -436,12 +442,9 @@
 
 
 		$.post("/ab/save/checked_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
-			if ($("#record-list").length){
-				getDetails();
+			getDetails();
+			if ($("#record-list").length) {
 				getList();
-
-			} else {
-				getDetails();
 			}
 
 

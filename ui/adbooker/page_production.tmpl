@@ -1,0 +1,217 @@
+
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+
+						<button class="btn span1 btn-mini {% if settings['list']['highlight'] == "material_approved" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="material_approved">Status</button>
+						<button class="btn span1 btn-mini {% if settings['list']['highlight'] == "approved" %}active{% endif %} " style="width:80px;" data-highlight="material_approved">Approved</button>
+					</div>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+						<button data-filter="*" class="btn  btn-mini {% if settings['list']['filter'] == "*" %}active{% endif %}" style="width:40px;"><i class="icon-asterisk"></i></button>
+						<button data-filter="1" class="btn  btn-mini {% if settings['list']['filter'] == "1" %}active{% endif %}" style="width:40px;"><i class="icon-ok"></i></button>
+						<button data-filter="0" class="btn  btn-mini {% if settings['list']['filter'] == "0" %}active{% endif %}" style="width:40px;"><i class="icon-remove"></i></button>
+					</div>
+				</li>
+				<li class="divider-vertical"></li>
+			</ul>
+			<div class="pull-right">
+				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+
+
+				</ul>
+			<ul class="nav nav-pills pull-right ">
+				<li class="divider-vertical" style="margin-right: 0;"></li>
+				<li class="dropdown pull-right">
+					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
+					<ul class="dropdown-menu" id="record-settings">
+						<li class="nav-header">Group By</li>
+						<li data-group-records-by="material_production" class="{% if settings['list']['group']['g'] == "material_production" %}active{% endif %}">
+							<a href="javascript:;">Production</a></li>
+						<li data-group-records-by="placing" class="{% if settings['list']['group']['g']|default("placing") == "placing" %}active{% endif %}"><a href="javascript:;" data-group="placing">Placing</a></li>
+						<li data-group-records-by="type" class="{% if settings['list']['group']['g'] == "type" %}active{% endif %}"><a href="javascript:;">Type</a></li>
+						<li data-group-records-by="colours" class="{% if settings['list']['group']['g'] == "colours" %}active{% endif %}"><a href="javascript:;">Colours</a></li>
+						<li data-group-records-by="marketer" class="{% if settings['list']['group']['g'] == "marketer" %}active{% endif %}"><a href="javascript:;">Marketers</a></li>
+						<li data-group-records-by="columns" class="{% if settings['list']['group']['g'] == "columns" %}active{% endif %}"><a href="javascript:;">Columns</a></li>
+						<li data-group-records-by="discountPercent" class="{% if settings['list']['group']['g'] == "discountPercent" %}active{% endif %}"><a href="javascript:;">Discount %</a></li>
+						<li data-group-records-by="accountStatus" class="{% if settings['list']['group']['g'] == "accountStatus" %}active{% endif %}"><a href="javascript:;">Account Status</a></li>
+						<li data-group-records-by="none" class="{% if settings['list']['group']['g'] == "none" %}active{% endif %}">
+							<a href="javascript:;">No Ordering</a></li>
+
+
+
+
+
+
+						<li class="nav-header clearfix">Direction</li>
+						<li data-order-records-by="ASC" class="{% if settings['list']['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+						<li data-order-records-by="DESC" class="{% if settings['list']['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+						<li class="clearfix"></li>
+						<li class="divider"></li>
+						<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
+					</ul>
+				</li>
+			</ul>
+			</div>
+
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+
+<div class="container">
+
+
+<article id="whole-area" class="span16">
+<div class="content">
+<div class="scroll-pane">
+
+<div data-heading="top" id="scroll-container">
+
+<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+
+
+</table>
+</div>
+
+</div>
+
+</div>
+
+<div class="loadingmask wide"></div>
+</article>
+</div>
+
+
+</section>
+
+<div class="modal hide fade" id="details-modal" data-show="false">
+
+</div>
+<div class="modal hide fade wide" id="settings-modal" data-show="false">
+	<form class="form-horizontal" style="padding: 0; margin: 0;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>
+			Settings
+		</h3>
+
+
+	</div>
+	<div class="modal-body" style="overflow: hidden;">
+
+		<section class="span8" style="position:absolute;top:0; bottom: 0; left: 0; border-right: 1px dotted #ccc;padding-right: 10px;">
+			<h4>
+				List Columns<br>
+				<small>Drag the items up and down to re-order the list. <br>To remove a column drag it to the "Available" column</small>
+			</h4>
+			<table style="width: 100%; border-bottom:1px solid #ccc; margin-top: 8px; ">
+				<tr class="headingrow" style="">
+					<th style="width:50%;"><h5>Selected Columns</h5></th>
+					<th style="width: 5px;"></th>
+					<th style="width:50%;"><h5>Available</h5></th>
+				</tr>
+
+			</table>
+			<div class="scroll-pane" style="position:absolute; top:85px; left:0; bottom:0;right:0; overflow: auto;  ">
+				<div >
+					<table style="width: 100%;">
+
+						<tr>
+							<td id="selected-columns" class="connectedSortable">
+								{% for row in settings_columns['selected'] %}
+								<div data-column="{{ row['c'] }}">{{ row['h']|raw }}</div>
+								{% endfor %}
+
+							</td>
+							<td style="width: 5px; background-color: #ccc;"></td>
+							<td id="available-columns" class="connectedSortable">
+
+								{% for row in settings_columns['available'] %}
+								<div data-column="{{ row['c'] }}">{{ row['h']|raw }}</div>
+								{% endfor %}
+
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+		</section>
+		<section class="" style="position:absolute;top:0; bottom: 0; right: 0; left: 505px;">
+			<h4>
+				Record Group<br>
+				<small>Group the records by this category
+				</small>
+			</h4>
+			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-group">
+				<button type="button" style="width: 135px;" data-group-records-by="material_production" class="btn {% if settings['list']['group']['g']|default("material_production") == "material_production" %}active{% endif %}">Production</button>
+
+
+				<button type="button" style="width: 135px;" data-group-records-by="placing"  class="btn {% if settings['list']['group']['g']|default("placing") == "placing" %}active{% endif %}">Placing</button>
+				<button type="button" style="width: 135px;" data-group-records-by="type"  class="btn  {% if settings['list']['group']['g'] == "type" %}active{% endif %}">Type</button>
+				<button type="button" style="width: 135px;" data-group-records-by="colours"  class="btn  {% if settings['list']['group']['g'] == "colours" %}active{% endif %}">Colours</button>
+				<button type="button" style="width: 135px;" data-group-records-by="marketer"  class="btn  {% if settings['list']['group']['g'] == "marketer" %}active{% endif %}">Marketers</button>
+				<button type="button" style="width: 135px;" data-group-records-by="columns"  class="btn  {% if settings['list']['group']['g'] == "columns" %}active{% endif %}">Columns</button>
+				<button type="button" style="width: 135px;" data-group-records-by="discountPercent"  class="btn  {% if settings['list']['group']['g'] == "discountPercent" %}active{% endif %}">Discount %</button>
+				<button type="button" style="width: 135px;" data-group-records-by="accountStatus"  class="btn  {% if settings['list']['group']['g'] == "accountStatus" %}active{% endif %}">Account Status</button>
+				<button type="button" style="width: 135px;" data-group-records-by="none"  class="btn span2 {% if settings['list']['group']['g'] == "none" %}active{% endif %}">No Ordering</button>
+			</div>
+			<div class="clearfix"></div>
+			<hr>
+			<h4>
+				Group Ordering<br>
+				<small>Order the groups this way
+				</small>
+			</h4>
+			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-order">
+				<button type="button" style="width: 202px;" data-order-records-by="ASC" class="btn {% if settings['list']['group']['o']|default("ASC") == "ASC" %}active{% endif %}">
+					<i class="icon-chevron-up icon-grey"></i> ASC
+				</button>
+				<button type="button" style="width: 202px;" data-order-records-by="DESC" class="btn  {% if settings['list']['group']['o'] == "DESC" %}active{% endif %}">
+					<i class="icon-chevron-down icon-grey"></i> DESC</button>
+
+			</div>
+			<div class="clearfix"></div>
+
+		</section>
+
+
+
+
+
+
+
+	</div>
+	<div class="modal-footer">
+		<div class="row">
+			<div class="span9 l">
+				<button class="btn btn-mini" type="reset" style="padding-left: 2px; padding-right: 2px;" rel="tooltip" title="Click to reset to defaults" data-placement="right">
+					<i class="icon icon-refresh"></i></button>
+			</div>
+			<div  class=" span6 ">
+
+
+
+					<button type="button" class="btn span2 close-btn" style="margin-left: 0;">Cancel</button>
+					<button type="submit" class="btn btn-primary span4">Save</button>
+
+			</div>
+
+		</div>
+
+	</div>
+	</form>
+	<div class="loadingmask wide"></div>
+</div>

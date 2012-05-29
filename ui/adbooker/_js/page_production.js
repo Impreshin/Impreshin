@@ -60,8 +60,10 @@ $(document).ready(function () {
 		$("#record-list .order-btn").removeClass("asc desc");
 		//$this.addClass("active");
 		$.bbq.pushState({"order":$this.attr("data-col")});
-
-		getList();
+		var s = {
+			maintain_position: true
+		};
+		getList(s);
 		$.bbq.removeState("order");
 
 	});
@@ -87,6 +89,14 @@ $(document).ready(function () {
 		$.bbq.removeState("modal");
 		$("#list-settings").removeClass("active");
 	});
+
+	$(document).on('hide', '#details-modal', function () {
+		var s =	{
+				maintain_position:true
+			};
+		getList(s);
+	});
+
 	$(document).on('shown', '#settings-modal', function () {
 		$("#settings-modal .modal-body .scroll-pane").jScrollPane(jScrollPaneOptions);
 
@@ -135,7 +145,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/ab/save/list_settings/?reset=columns,group,order", function () {
+			$.post("/ab/save/list_settings/?section=production&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -160,7 +170,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/ab/save/list_settings/",{"columns":columns,"group":group,"groupOrder":order},function(){
+		$.post("/ab/save/list_settings/?section=production",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");
@@ -185,6 +195,7 @@ $(document).ready(function () {
 });
 
 function getList(settings) {
+
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
 	group = (group)? group:"";
@@ -201,7 +212,7 @@ function getList(settings) {
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/bookings",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+	listRequest.push($.getJSON("/ab/data/production",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
 		data = data['data'];
 
 
@@ -220,12 +231,11 @@ function getList(settings) {
 
 
 
-
 		var $scrollpane = $("#whole-area .scroll-pane");
-		if (orderingactive) {
+		if (orderingactive){
 			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		} else {
-			if (settings && settings.maintain_position) {
+			if (settings && settings.maintain_position){
 				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 			} else {
 				$scrollpane.jScrollPane(jScrollPaneOptions);

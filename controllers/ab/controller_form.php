@@ -19,12 +19,12 @@ use models\ab\remarkTypes as remarkTypes;
 use models\ab\production as production;
 use models\ab\publications as publications;
 
-class form {
+class controller_form {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		if (!$userID) F3::reroute("/login");
-
+		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 	}
 
 	function page() {

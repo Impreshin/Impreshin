@@ -115,17 +115,24 @@ class settings {
 				"checked"                => array(
 					"c"=> "checked",
 					"o"=> "checked",
-					"h"=> "Checked"
+					"h"=> "Checked",
+					"b"=> true
 				),
 				"checked_date"           => array(
 					"c"=> "checked_date",
 					"o"=> "checked_date",
 					"h"=> "Checked&nbsp;Date"
 				),
+				"checked_user"           => array(
+					"c"=> "checked_user",
+					"o"=> "checked_user",
+					"h"=> "Checked&nbsp;User"
+				),
 				"repeat"                 => array(
 					"c"=> "repeat",
 					"o"=> "repeat",
-					"h"=> "Repeat"
+					"h"=> "Repeat",
+					"b"=> true
 				),
 
 
@@ -145,7 +152,35 @@ class settings {
 					"c"=> "percent_diff",
 					//"o"=> "percent_diff",
 					"h"=> "Disc %"
-				)
+				),
+				"material_source"               => array(
+					"c"=> "material_source",
+					"o"=> "material_source",
+					"h"=> "Material&nbsp;Source"
+				),
+				"material_production"               => array(
+					"c"=> "material_production",
+					"o"=> "material_production",
+					"h"=> "Material&nbsp;Production"
+				),
+				"material_status"               => array(
+					"c"=> "material_status",
+					"o"=> "material_status",
+					"h"=> "Material",
+					"b"=>true
+				),
+				"material_date"               => array(
+					"c"=> "material_date",
+					"o"=> "material_date",
+					"h"=> "Material&nbsp;Date"
+				),
+				"material_approved"               => array(
+					"c"=> "material_approved",
+					"o"=> "material_approved",
+					"h"=> "Material&nbsp;Approved",
+					"b"=>true
+				),
+
 			);
 			$return["columns"] = $columns;
 
@@ -175,11 +210,33 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
-					"provisional"=> array(
-						"highlight"=> "checked",
-						"filter"   => "*"
-					)
+					"highlight"=> "checked",
+					"filter"   => "*",
+
 				),
+				"production"=>array(
+					"col"        => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer",
+						"material_status",
+					),
+					"group"      => array(
+						"g"=>"material_production",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => 6,
+					"highlight"=> "material_approved",
+					"filter"   => "*",
+
+				),
+
 				"form"=>array(
 					"type"=>"1"
 				),

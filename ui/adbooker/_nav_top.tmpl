@@ -27,10 +27,12 @@
 								</li>
 							</ul>
 						</li>
-						<li class="dropdown">
+						<li class="dropdown {% if page['section'] == "production" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Production <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="icon-eye-open menu-icon"></i>Production View</a></li>
+								<li class=" {% if page['sub_section'] == "list" %} active {% endif %}">
+									<a href="/ab/production"><i class="icon-list-alt menu-icon"></i>Production List</a>
+								</li>
 							</ul>
 						</li>
 						<li class="dropdown">

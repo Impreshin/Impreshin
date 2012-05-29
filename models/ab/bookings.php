@@ -75,6 +75,7 @@ class bookings {
 				ab_accounts.account AS account, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status as material,
+				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
 				0 as layout
 			$select
 			FROM (((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID
@@ -89,58 +90,7 @@ class bookings {
 		return $return;
 	}
 
-	public static function stats($where){
-		$timer = new timer();
 
-		if (is_array($where)){
-			$data = $where;
-		} else {
-			$data = bookings::getAll("",$where);
-		}
-		$totals = array(
-			"records"=> count($data),
-			"cm"=>0,
-			"checked"=>0,
-			"material"=>0,
-			"layout"=>0,
-
-		);
-
-		foreach ($data as $record){
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
-			if ($record['material']) $totals['material'] = $totals['material'] + 1;
-			if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
-
-		}
-
-
-
-		$return = array(
-			"cm"=> $totals['cm'],
-			"records"=> array(
-				"total"=>$totals["records"],
-				"checked"=> array(
-					"r"=>$totals["checked"],
-					"p"=> ($totals['records']) ?number_format((($totals["checked"] / $totals["records"]) * 100), 2):0
-				),
-				"material"=> array(
-					"r"=> $totals["material"],
-					"p"=> ($totals['records']) ?number_format((($totals["material"] / $totals["records"]) * 100), 2):0
-				),
-				"layout"=> array(
-					"r"=> $totals["layout"],
-					"p"=> ($totals['records'])?number_format((($totals["layout"] / $totals["records"]) * 100), 2):0
-				),
-			),
-
-
-		);
-
-
-		$timer->stop("Models - bookings - stats");
-		return $return;
-	}
 	private static function currency($record){
 		if (is_array($record)){
 			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
@@ -290,12 +240,19 @@ class bookings {
 				$orderby = "COALESCE(ab_accounts_status.orderby,99999) $ordering,  ab_bookings_types.orderby, " . $orderby;
 				$arrange = "if(ab_accounts_status.status<>'',concat('Account - ',ab_accounts_status.status),ab_bookings_types.type) as heading";
 				break;
+
+			case "material_production":
+				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_bookings.material_production $ordering,  " . $orderby;
+				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_bookings.material_production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
+				break;
+
 			case "none":
 				$orderby = "" . $orderby;
 				$arrange = "'None' as heading";
 				break;
 
 		}
+
 
 		return array(
 			"order"=> $orderby,
