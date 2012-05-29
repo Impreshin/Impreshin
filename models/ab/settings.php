@@ -232,7 +232,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => 6,
-					"highlight"=> "material_approved",
+					"highlight"=> "material",
 					"filter"   => "*",
 
 				),

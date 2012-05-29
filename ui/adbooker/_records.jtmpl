@@ -38,7 +38,7 @@
 		<td {% if _ab['settings']['columns'][col]['b'] %} class=" record-tick"{% endif %}>
 			{% if _ab['settings']['columns'][col]['b'] %}
 				<% if ( this.records[i].{{ _ab['settings']['columns'][col]['c'] }} ) { %>
-					<i class="icon-ok "></i>
+					<i class="icon-ok {% if _ab['settings']['columns'][col]['c'] == "material_status" %}<% if(!this.records[i].material_approved) { %>icon-grey<% } %>{% endif %}"></i>
 				<% } else { %>
 
 				<% } %>
