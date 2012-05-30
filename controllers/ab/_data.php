@@ -87,7 +87,7 @@ class _data {
 		//exit();
 		$dateSQL = "AND dID = COALESCE((SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' AND ab_current='1' ORDER BY publish_date DESC), (SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' ORDER BY publish_date DESC)) ";
 
-		$where = "ab_bookings.pID = '$pID' AND dID='$dID' ";
+		$where = "(ab_bookings.pID = '$pID' AND dID='$dID') AND ab_bookings.deleted is null";
 
 
 
@@ -95,13 +95,14 @@ class _data {
 
 
 		$stats = record_stats::stats_list($records);
-		$loading = loading::getLoading($pID,$stats['cm']);
+		$loading = loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
 
 		$stats['loading'] = $loading;
 
 		$return = array();
 
 		$return['date'] = $currentDate['publish_date_display'];
+		$return['dID'] = $currentDate['ID'];
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
 		$return['stats'] = $stats;
 		$return['group'] = $grouping;
@@ -271,7 +272,7 @@ class _data {
 		//exit();
 		$dateSQL = "AND dID = COALESCE((SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' AND ab_current='1' ORDER BY publish_date DESC), (SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' ORDER BY publish_date DESC)) ";
 
-		$where = "ab_bookings.pID = '$pID' AND dID='$dID' ";
+		$where = "(ab_bookings.pID = '$pID' AND dID='$dID') AND checked = '1' AND ab_bookings.deleted is null";
 
 
 		$records = bookings::getAll($where, $grouping, $ordering);

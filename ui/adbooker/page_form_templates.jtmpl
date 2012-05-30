@@ -201,6 +201,12 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
+		<div style="float:left; margin-left:10px; padding-top: 3px;">
+			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini btn-danger span2 " style="" type="button">Delete Record</a>
+			<button class="btn btn-mini span2 " style="" type="button">Repeat Record</button>
+		</div>
+
+
 		<button class="btn btn-primary span2 " style="float:right; margin-right: 10px;" type="submit">Save Record</button>
 
 	</div>

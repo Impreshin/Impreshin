@@ -5,12 +5,15 @@
 	<a class="close" data-dismiss="modal">×</a>
 
 	<h3>
+		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px;"> Deleted </span>
+		<% } %>
 		<%= this.client %>
 	</h3>
 
 	<div id="modal-header-btns">
 		<a href="javascript:;"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
 		<a href="/ab/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+		<a href="/ab/details/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Print this booking"><i class="icon-print icon-d-grey"></i></a>
 
 	</div>
 
@@ -35,7 +38,7 @@
 				<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
 			</li>
 			<li class="tab-icon">
-				<a href="#details-pane-material" data-toggle="tab"><i class="icon-download-alt icon-grey"></i></a>
+				<a href="#details-pane-material" data-toggle="tab"><i class="icon-file icon-grey"></i></a>
 			</li>
 
 		</ul>
@@ -146,6 +149,19 @@
 			<div id="details-pane-logs" class="tab-pane">
 				<div class="scroll-pane">
 					<div style="padding-right:1px;">
+						<% if (this.deleted) { %>
+						<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
+							<tr>
+								<th width="120" style="width: 120px;">Deleted By</th>
+								<td><%= this.deleted_user %></td>
+								<td width="120" style="width: 120px;"><%= this.deleted_date %></td>
+							</tr>
+						</table>
+						<div style="padding-left:15px;">
+							<div class="alert alert-block"><strong>Reason:</strong> <%= this.deleted_reason %></div>
+						</div>
+
+						<% } %>
 						<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
 							<tr>
 								<th width="120" style="width: 120px;">Booked By</th>
@@ -248,7 +264,7 @@
 	<div id="details-bottom-right-btns">
 		<div class="btn-group">
 			<% if (this.material_status!='1') { %>
-			<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
+			<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"> Material</a>
 			<% } else { %>
 			<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
 				<% if (this.material_approved=='1') { %>

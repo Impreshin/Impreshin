@@ -97,13 +97,16 @@ body {
 	background-color   : #fff;
 	height             : 100%;
 	position           : absolute;
-	top                : 0;
+	top                : 42px;
 	bottom             : 0;
 	display            : block;
 	border-right       : #ccc 1px solid;
 	.box-shadow(4px 0px 5px rgba(150, 150, 150, 0.2));
 	margin-left        : 15px;
-
+	.scroll-pane {
+		.fillblock(0,0,42px,0);
+		overflow : auto;
+	}
 	.jspVerticalBar, .jspHorizontalBar {
 		.opacity(0);
 		.transition(all 0.5s ease-in-out);
@@ -118,9 +121,12 @@ body {
 #right-area {
 	height   : 100%;
 	position : absolute;
-	top      : 0;
+	top      : 42px;
 	bottom   : 0;
-
+	.scroll-pane {
+		.fillblock(0,0,42px,0);
+		overflow : auto;
+	}
 	.jspVerticalBar {
 		.opacity(0);
 		.transition(all 0.5s ease-in-out);

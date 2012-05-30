@@ -1,0 +1,193 @@
+{% include "_nav_top.tmpl" %}
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+						<button class="btn span1 btn-mini {% if settings["list"]['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Provisional</button>
+						<button class="btn span1 btn-mini {% if settings["list"]['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Material</button>
+						<button class="btn span1 btn-mini {% if settings["list"]['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Layout</button>
+					</div>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+						<button data-filter="*" class="btn  btn-mini {% if settings["list"]['filter'] == "*" %}active{% endif %}" style="width:40px;">
+							<i class="icon-asterisk"></i></button>
+						<button data-filter="1" class="btn  btn-mini {% if settings["list"]['filter'] == "1" %}active{% endif %}" style="width:40px;">
+							<i class="icon-ok"></i></button>
+						<button data-filter="0" class="btn  btn-mini {% if settings["list"]['filter'] == "0" %}active{% endif %}" style="width:40px;">
+							<i class="icon-remove"></i></button>
+					</div>
+				</li>
+				<li class="divider-vertical"></li>
+			</ul>
+			<div class="pull-right">
+				<ul id="provisional-stats-bar" class="nav nav-pills pull-left">
+					<li>
+						<div class="dg b" id="maintoolbar-date">25 May 2012</div>
+					</li>
+					<li id="toolbar-stats-link" style="position: relative;" class="span6">
+						<div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
+							<div id="list-stats-progress-bar" style="width: 49.18%;" class="bar"></div>
+						</div>
+						<div style="position: absolute; top: 5px; left: 0; text-align: center; right:0;" class="row">
+							<div class="span2"><span class="s dg">Pages:</span> <strong>14</strong></div>
+							<div class="span2"><span class="s dg">Cm:</span> <strong>1844</strong></div>
+							<div class="span2"><span class="s dg">Loading:</span> <strong>42.22%</strong></div>
+						</div>
+						<div class="statstable" id="toolbar-stats-pane">
+							<table class="table">
+								<tbody>
+								<tr>
+									<td class="c"><strong>61</strong>&nbsp;
+										<small>Records</small>
+									</td>
+									<td class="c"><strong>30</strong>&nbsp;
+										<small>Checked</small>
+									</td>
+									<td class="c"><strong>26</strong>&nbsp;
+										<small>Material</small>
+									</td>
+									<td class="c"><strong>0</strong>&nbsp;
+										<small>Layout</small>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+							<table>
+								<tbody>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+				<ul class="nav nav-pills pull-right ">
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
+						<ul class="dropdown-menu" id="record-settings">
+
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<div class="row">
+			<article id="left-area" class="span11">
+				<div class="content">
+					<div class="scroll-pane">
+
+						<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+							{% for spread in pages %}
+							<section class="spread {{ spread['side'] }}">
+								{% for page in spread['pages'] %}
+								<article class="pages {{ page['side'] }}" rel="{{ page['page'] }}" {% if page['colour'] %}style="background: url('/ui/_images/ab/{{ page['colour'] }}_text.png') left bottom no-repeat;"{% endif%} >
+
+									{% if page['section']['c'] %}
+									<div class="page_section" style="background-color: {{ page['section']['c'] }};"></div>
+									{% endif %}
+									<div class="pagenr">{{ page['page'] }}</div>
+									<header>
+
+									</header>
+									<div>
+										Section: {{ page['section']['n'] }}<br> Colour: {{ page['colour'] }}
+									</div>
+									<footer class="progress {% if page['percent'] > 50 %}{% if page['percent'] > 80 %}progress-danger{% else %}progress-warning{% endif%}{% endif%} ">
+										<div class="bar" style="width: {{ page['percent'] }}%;"></div>
+										<div class="text">{{ page['percent'] }}% with a total of {{ page['cm'] }}cm</div>
+
+									</footer>
+
+									{% if page['colour'] %}
+									<div class="page_colour">
+										<img src="/ui/_images/ab/{{ page['colour'] }}.png" alt="" width="20">
+
+									</div>
+									{% endif%}
+								</article>
+								{% endfor %}
+
+							</section>
+							{% endfor %}
+
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="loadingmasks wide"></div>
+
+			</article>
+			<article id="right-area" class="span5 offset11">
+				<div class="content">
+					<div class="scroll-pane" style="bottom: 100px;">
+
+						<div data-heading="top" class="scroll-container">
+							<table style="margin-right: 15px;" id="record-list" class="table table-condensed  s records">
+								<thead>
+								<tr>
+									<th class="span1">Size</th>
+									<th class="span1">Colour</th>
+									<th>Client</th>
+								</tr>
+								</thead>
+
+								<tbody>
+								{% for row in records[0]['records'] %}
+								<tr data-id="65229" class="record ">
+									<td><span class="size">{{ row['cm'] }}&nbsp;x&nbsp;{{ row['col'] }}</span></td>
+									<td>{{ row['colour'] }}</td>
+									<td>{% if row['remarkTypeLabelClass'] %}<span title="{{ row['remarkType'] }}" class="label {{ row['remarkTypeLabelClass'] }}"></span>{% else %}<span style="padding:0 5px;"></span>{% endif %}{{ row['client'] }}
+									</td>
+								</tr>
+								{% endfor %}
+
+								</tbody>
+							</table>
+
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+				<div id="record-details-bottom">
+					aaaa
+				</div>
+				<div class="loadingmasks wide"></div>
+			</article>
+		</div>
+
+
+	</div>
+
+</section>
+
+<script type="text/javascript">
+
+</script>

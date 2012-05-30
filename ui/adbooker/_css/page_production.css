@@ -1,35 +1,4 @@
-#toolbar-stats-link {
-	cursor: pointer;
 
-}
-#toolbar-stats-link .bar {
-	filter         : alpha(opacity = 20);
-	-moz-opacity   : 0.2;
-	-khtml-opacity : 0.2;
-	opacity        : 0.2;
-
-}
-#toolbar-stats-pane {
-	cursor : default;
-	display: none;
-	position: absolute;
-	top: 35px;
-	left:-100px;
-	right:-20px;
-
-	background-color: #eeeeee;
-	border-bottom: 1px solid #ccc;
-	border-left: 1px solid #ccc;
-	border-right: 1px solid #ccc;
-	-webkit-box-shadow : 0 2px 3px rgba(100, 100, 100, 0.2);
-	-moz-box-shadow    : 0 2px 3px rgba(100, 100, 100, 0.2);
-	box-shadow         : 0 2px 3px rgba(100, 100, 100, 0.2);
-
-	-webkit-border-radius : 0 0 4px 4px;
-	-moz-border-radius    : 0 0 4px 4px;
-	border-radius         : 0 0 4px 4px;
-	padding: 10px;
-}
 
 
 

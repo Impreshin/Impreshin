@@ -15,7 +15,7 @@
 		</div>
 		<div class="row" style="position: absolute; top: 5px; left: 0; text-align: center; right:0;">
 
-			<div class="span2"><span class="s dg">Pages:</span> <strong><%= this.stats.loading.pages %></strong></div>
+			<div class="span2"><span class="s dg">Pages:</span> <strong <% if (this.stats.loading.forced) { %>rel="tooltip" title="Pages have been set" data-placement="bottom" <% } %>><%= this.stats.loading.pages %><% if (this.stats.loading.forced) { %>*<% } %></strong></div>
 			<div class="span2"><span class="s dg">Cm:</span> <strong><%= this.stats.cm %></strong></div>
 			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong></div>
 
@@ -25,19 +25,19 @@
 			<table class="table" >
 				<tr>
 					<td class="c">
-						<strong><%= this.stats.records.total %></strong>
+						<strong><%= this.stats.records.total %></strong>&nbsp;
 						<small>Records</small>
 					</td>
 					<td class="c">
-						<strong><%= this.stats.records.checked.r %></strong>
+						<strong><%= this.stats.records.checked.r %></strong>&nbsp;
 						<small>Checked</small>
 					</td>
 					<td class="c">
-						<strong><%= this.stats.records.material.r %></strong>
+						<strong><%= this.stats.records.material.r %></strong>&nbsp;
 						<small>Material</small>
 					</td>
 					<td class="c">
-						<strong><%= this.stats.records.layout.r %></strong>
+						<strong><%= this.stats.records.layout.r %></strong>&nbsp;
 						<small>Layout</small>
 					</td>
 

@@ -1,0 +1,131 @@
+.pages {
+	height              : 200px;
+	width               : 143px;
+	float               : left;
+	margin-top          : 25px;
+	margin-bottom       : 5px;
+
+	background-color    : #fff;
+	position            : relative;
+	border:1px solid #444;
+
+}
+
+.spread {
+	display        : block;
+	float          : left;
+	width          : 305px;
+	padding-bottom : 20px;
+	padding-top    : 10px;
+}
+.pages.left {
+	float:left;
+	-webkit-box-shadow : -3px 2px 4px rgba(150, 150, 150, 0.2);
+	-moz-box-shadow    : -3px 2px 4px rgba(150, 150, 150, 0.2);
+	box-shadow         : -3px 2px 4px rgba(150, 150, 150, 0.2);
+}
+
+.pages.right {
+	float              : right;
+	-webkit-box-shadow : 3px 2px 4px rgba(150, 150, 150, 0.2);
+	-moz-box-shadow    : 3px 2px 4px rgba(150, 150, 150, 0.2);
+	box-shadow         : 3px 2px 4px rgba(150, 150, 150, 0.2);
+}
+.spread.left .pages.right {
+	margin-right:12px;
+}
+.spread.right .pages.left {
+	margin-left:12px;
+}
+.pages .page_section {
+	position : absolute;
+	top      : -16px;
+	height: 11px;
+}
+
+.pages.left .page_section {
+	left : -13px;
+	right:-2px;
+}
+
+.pages.right .page_section {
+	right : -13px;
+	left:-3px;
+}
+
+
+
+.pages .pagenr {
+	position: absolute;
+	top:-19px;
+	border-top: 1px solid #444;
+	border-right: 1px solid #444;
+	border-left: 1px solid #444;
+	width: 30px;
+	text-align: center;
+	color: #fff;
+background-color: rgba(100,100,100,0.8);
+
+
+
+}
+
+
+.pages.left .pagenr {
+	left:-1px;
+}
+.pages.right .pagenr {
+	right:-1px;
+}
+
+.pages .page_colour {
+	position : absolute;
+	bottom   : -10px;
+}
+.pages.left .page_colour {
+	left : -10px;
+}
+
+.pages.right .page_colour {
+	right : -10px;
+}
+
+.pages footer.progress {
+	position:absolute;
+	bottom: 0;
+	left:0;
+	right:0;
+	margin-bottom: 0;
+	webkit-border-radius : 0;
+	-moz-border-radius   : 0;
+	border-radius        : 0;
+	height: 16px;
+}
+
+.pages footer.progress .text {
+	position: absolute;
+	top:-2px;
+	left:0;
+	right:0;
+	bottom:0;
+	text-align: center;
+	font-size: 9px;
+
+}
+
+.pages footer.progress .bar {
+	filter         : alpha(opacity='50');
+	-moz-opacity   : 0.3;
+	-khtml-opacity : 0.3;
+	opacity        : 0.3;
+}
+
+
+
+#record-details-bottom {
+	position: absolute;
+	bottom: 0;
+	left:0;
+	right:0;
+	background-color: red;
+}

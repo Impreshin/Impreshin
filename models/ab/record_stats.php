@@ -93,7 +93,7 @@ class record_stats {
 				),
 				"material_approved"  => array(
 					"r"=> $totals["material_approved"],
-					"p"=> ($totals['records']) ? number_format((($totals["material_approved"] / $totals["material"]) * 100), 2) : 0
+					"p"=> ($totals['material']) ? number_format((($totals["material_approved"] / $totals["material"]) * 100), 2) : 0
 				),
 			),
 

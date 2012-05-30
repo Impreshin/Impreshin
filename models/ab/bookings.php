@@ -16,7 +16,10 @@ class bookings {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
+		$currentDate = dates::getCurrent($user['ab_pID']);
 
+		$currentDate = $currentDate['publish_date'];
+		//test_array($currentDate);
 
 		$result = F3::get("DB")->exec("
 			SELECT ab_bookings.*,
@@ -43,6 +46,14 @@ class bookings {
 			$return = bookings::currency($result[0]);
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publishDate']));
 			$return['logs'] = bookings::getLogs($return['ID']);
+			$return['state']="";
+			if ($return['publishDate'] == $currentDate){
+				$return['state'] = "Current";
+			} elseif ($return['publishDate']<$currentDate){
+				$return['state'] = "Archived";
+			} elseif ($return['publishDate']>$currentDate){
+				$return['state'] = "Future";
+			}
 
 		} else {
 			$return = $this->dbStructure;
@@ -117,7 +128,7 @@ class bookings {
 		return $record;
 
 	}
-	public static function display($data, $options=array()){
+	public static function display($data, $options=array("highlight"=>"","filter"=>"*")){
 		if (!isset($options['highlight']))$options['highlight']="";
 		if (!isset($options['filter']))$options['filter']="";
 
@@ -129,7 +140,7 @@ class bookings {
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
-						$item['size'] = $item['totalspace'] . "<span class='size'>". $item['col'] . " x " . $item['cm'] . "</span>";
+						$item['size'] = $item['totalspace'] . "<span class='size'>". $item['cm'] . "&nbsp;x&nbsp;" . $item['col'] . "</span>";
 						break;
 					case 2:
 						$item['size'] = $item["InsertPO"];
@@ -147,25 +158,28 @@ class bookings {
 
 
 
+
 		$return = array();
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
+			$showrecord = true;
 			if ($options["highlight"]) {
 				$record['highlight'] = $record[$options["highlight"]];
 			}
-			$showrecord = true;
+
 
 			if ($options["filter"]=="*"){
 				$showrecord = true;
 			} else {
-				if ($record[$options["highlight"]] == $options['filter'] ){
+				if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter'] ){
 					$showrecord = true;
 				} else {
 					$showrecord = false;
 				}
 
 			}
+
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
 			if ($showrecord){
@@ -188,7 +202,9 @@ class bookings {
 				$a[$record['heading']]["records"][] = $record;
 			}
 		}
+
 		$return = array();
+
 
 //exit();
 		foreach ($a as $record) {

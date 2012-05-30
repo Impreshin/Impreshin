@@ -31,7 +31,7 @@ class controller_production {
 			"sub_section"=> "list",
 			"template"=> "page_production",
 			"meta"    => array(
-				"title"=> "AdBooker",
+				"title"=> "AdBooker - Production",
 			)
 		);
 

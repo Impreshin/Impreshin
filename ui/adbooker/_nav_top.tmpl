@@ -35,10 +35,12 @@
 								</li>
 							</ul>
 						</li>
-						<li class="dropdown">
+						<li class="dropdown {% if page['section'] == "layout" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Layout <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="icon-eye-open menu-icon"></i>Layout View</a></li>
+								<li class=" {% if page['sub_section'] == "view" %} active {% endif %}">
+									<a href="/ab/layout"><i class="icon-eye-open menu-icon"></i>Layout View</a>
+								</li>
 
 							</ul>
 						</li>

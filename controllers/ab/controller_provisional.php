@@ -28,7 +28,7 @@ class controller_provisional {
 			"sub_section"=> "provisional",
 			"template"=> "page_provisional",
 			"meta"    => array(
-				"title"=> "AdBooker",
+				"title"=> "AdBooker - Bookings",
 			)
 		);
 

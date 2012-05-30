@@ -105,7 +105,7 @@ body {
   background-color: white;
   height: 100%;
   position: absolute;
-  top: 0;
+  top: 42px;
   bottom: 0;
   display: block;
   border-right: #cccccc 1px solid;
@@ -113,6 +113,14 @@ body {
   -moz-box-shadow: 4px 0px 5px rgba(150, 150, 150, 0.2);
   box-shadow: 4px 0px 5px rgba(150, 150, 150, 0.2);
   margin-left: 15px;
+}
+#left-area .scroll-pane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 42px;
+  left: 0;
+  overflow: auto;
 }
 #left-area .jspVerticalBar,
 #left-area .jspHorizontalBar {
@@ -136,8 +144,16 @@ body {
 #right-area {
   height: 100%;
   position: absolute;
-  top: 0;
+  top: 42px;
   bottom: 0;
+}
+#right-area .scroll-pane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 42px;
+  left: 0;
+  overflow: auto;
 }
 #right-area .jspVerticalBar {
   filter: alpha(opacity= 0 );
@@ -640,6 +656,34 @@ button[disabled] i {
   overflow: hidden;
   width: 1px;
   height: 39px;
+}
+#toolbar-stats-link {
+  cursor: pointer;
+}
+#toolbar-stats-link .bar {
+  filter: alpha(opacity= 20 );
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+}
+#toolbar-stats-pane {
+  cursor: default;
+  display: none;
+  position: absolute;
+  top: 35px;
+  left: -100px;
+  right: -20px;
+  background-color: #eeeeee;
+  border-bottom: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
+  -webkit-box-shadow: 0 2px 3px rgba(100, 100, 100, 0.2);
+  -moz-box-shadow: 0 2px 3px rgba(100, 100, 100, 0.2);
+  box-shadow: 0 2px 3px rgba(100, 100, 100, 0.2);
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  padding: 10px;
 }
 table.records .heading th {
   padding-top: 10px;

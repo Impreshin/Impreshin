@@ -119,6 +119,7 @@ $app->set('cfg', $cfg);
 
 		$app->route('GET /ab/', 'controllers\ab\controller_provisional->page');
 		$app->route('GET /ab/production', 'controllers\ab\controller_production->page');
+		$app->route('GET /ab/layout', 'controllers\ab\controller_layout->page');
 		$app->route('GET /ab/form', 'controllers\ab\controller_form->page');
 		$app->route('GET /ab/form/@ID', 'controllers\ab\controller_form->page');
 

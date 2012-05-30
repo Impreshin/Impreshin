@@ -1,7 +1,7 @@
 /*
  * Date: 2012/05/05 - 1:00 PM
  */
-var $form = $("form").data({
+var $form = $("#booking-form").data({
 	accounts   :var_accounts,
 	clients    :var_clients,
 	spots      :var_spots,
@@ -94,7 +94,7 @@ $(document).ready(function(){
 		submit_state();
 	});
 
-	$(document).on("submit", $form, function (e) {
+	$(document).on("submit", "#booking-form", function (e) {
 		e.preventDefault();
 		form_submit();
 		return false;
@@ -103,7 +103,13 @@ $(document).ready(function(){
 
 	load_form();
 
+	$(document).on("submit", "#modal-delete form", function (e) {
+		e.preventDefault();
 
+
+		alert("deleteing");
+
+	});
 
 });
 
