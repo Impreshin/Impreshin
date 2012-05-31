@@ -96,7 +96,7 @@
 								<article class="pages {{ page['side'] }}" rel="{{ page['page'] }}" {% if page['colour'] %}style="background: url('/ui/_images/ab/{{ page['colour'] }}_text.png') left bottom no-repeat;"{% endif%} >
 
 									{% if page['section']['c'] %}
-									<div class="page_section" style="background-color: {{ page['section']['c'] }};"></div>
+									<div class="page_section" style="background-color: {{ page['section']['c'] }};" title="{{ page['section']['n'] }}"></div>
 									{% endif %}
 									<div class="pagenr">{{ page['page'] }}</div>
 									<header>
@@ -133,7 +133,7 @@
 					{% for spread in pages['spreads'] %}
 					<div class="spread">
 						{% for page in spread['pages'] %}
-						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }}; {% if page['section']['c'] %} border-top-color: {{ page['section']['c'] }}; border-top-width: 2px; {% else %} margin-top: 2px; {% endif %}">{{ page['page'] }}</div>
+						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }}; {% if page['section']['c'] %} border-top-color: {{ page['section']['c'] }}; border-top-width: 2px; {% else %} margin-top: 1px; {% endif %}">{{ page['page'] }}</div>
 						{% endfor %}</div>
 
 					{% endfor %}

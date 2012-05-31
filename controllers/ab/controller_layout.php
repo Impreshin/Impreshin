@@ -51,6 +51,7 @@ class controller_layout {
 
 		$amount = $d[array_rand($d, 1)];
 
+
 		$pages = array();
 		for ($i = 0; $i < $amount; $i++) {
 			$percent = rand(0, 100);
