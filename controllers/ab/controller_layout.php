@@ -44,11 +44,15 @@ class controller_layout {
 			)
 		);
 		$colours = array("Full","Spot","none","");
+		$pagesArray = F3::get("DB")->exec("SELECT pages FROM ab_page_load WHERE pID = '$pID'");
+		$d = array();
+		foreach($pagesArray as $p)$d[] = $p['pages'];
 
 
+		$amount = $d[array_rand($d, 1)];
 
 		$pages = array();
-		for ($i = 0; $i < 18; $i++) {
+		for ($i = 0; $i < $amount; $i++) {
 			$percent = rand(0, 100);
 			$cm = (39 * 8);
 			$cm = number_format($cm * ($percent / 100),0);
