@@ -96,7 +96,9 @@ class _data {
 
 		$stats = record_stats::stats_list($records);
 		$loading = loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
+		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
 
+//		test_array($loading);
 		$stats['loading'] = $loading;
 
 		$return = array();

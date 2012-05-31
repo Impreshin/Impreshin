@@ -141,7 +141,7 @@
 					{% for spread in pages['spreads'] %}
 					<div class="spread">
 						{% for page in spread['pages'] %}
-						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }};">{{ page['page'] }}</div>
+						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }}; {% if page['section']['c'] %} border-top-color: {{ page['section']['c'] }}; border-top-width: 2px; {% else %} margin-top: 2px; {% endif %}">{{ page['page'] }}</div>
 						{% endfor %}</div>
 
 					{% endfor %}

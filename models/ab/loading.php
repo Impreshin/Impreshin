@@ -16,7 +16,8 @@ class loading {
 			"pages"  => 0,
 			"loading"=> 0,
 			"other"  => array(),
-			"forced"  => false
+			"forced"  => false,
+			"error"  => ""
 		);
 
 
@@ -75,6 +76,10 @@ class loading {
 			}
 			//$loading[$use]['current'] = $i;
 
+		if (!$use){
+			$use = $loadingData[count($loadingData)-1]['ID'];
+			$return['error']="Please check your loading settings, the current loading trumps your highest page number";
+		}
 
 			$return['pages'] = $loading[$use]['pages'];
 			$return['loading'] = $loading[$use]['loading'];

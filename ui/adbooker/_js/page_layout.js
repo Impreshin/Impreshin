@@ -31,13 +31,13 @@ $(document).ready(function () {
 	dummy_resize();
 });
 function dummy_resize(){
-	$("#dummy-area").css("bottom", $("#dummy-bottom").height() + 47);
+	$("#dummy-area").css("bottom", $("#dummy-bottom").outerHeight() + 42);
 	left_pane.reinitialise();
 	//visible_pages();
 
 }
 function records_list_resize(){
-	$("#record-list-middle").css("bottom", $("#record-details-bottom").height() + 42);
+	$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() + 42);
 	right_pane.reinitialise();
 }
 function load_list(){

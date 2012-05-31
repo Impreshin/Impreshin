@@ -15,7 +15,12 @@
 		</div>
 		<div class="row" style="position: absolute; top: 5px; left: 0; text-align: center; right:0;">
 
-			<div class="span2"><span class="s dg">Pages:</span> <strong <% if (this.stats.loading.forced) { %>rel="tooltip" title="Pages have been set" data-placement="bottom" <% } %>><%= this.stats.loading.pages %><% if (this.stats.loading.forced) { %>*<% } %></strong></div>
+			<div class="span2"><span class="s dg">Pages:</span>
+				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %>  >
+					<%= this.stats.loading.pages %>
+					<% if (this.stats.loading.forced) { %>*<% } %>
+				</strong>
+			</div>
 			<div class="span2"><span class="s dg">Cm:</span> <strong><%= this.stats.cm %></strong></div>
 			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong></div>
 
