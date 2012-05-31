@@ -240,6 +240,9 @@ class settings {
 				"form"=>array(
 					"type"=>"1"
 				),
+				"layout"=>array(
+					"placingID"=>array()
+				),
 				"last_marketer"=>""
 			);
 

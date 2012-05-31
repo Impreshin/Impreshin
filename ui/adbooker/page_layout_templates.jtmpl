@@ -1,0 +1,15 @@
+
+{% include '_details.jtmpl' %}
+
+<script type="text/x-jqote-template" id="template-records-list">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>" class="record ">
+		<td class="span1" style="padding-left: 0;">
+			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
+		<td class="span1"><%= this.colour %></td>
+		<td><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
+		</td>
+	</tr>
+	]]>
+</script>

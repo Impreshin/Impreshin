@@ -95,10 +95,10 @@
 		<div class="row">
 			<article id="left-area" class="span11">
 				<div class="content">
-					<div class="scroll-pane">
+					<div class="scroll-pane scrolly" id="dummy-area">
 
 						<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
-							{% for spread in pages %}
+							{% for spread in pages['spreads'] %}
 							<section class="spread {{ spread['side'] }}">
 								{% for page in spread['pages'] %}
 								<article class="pages {{ page['side'] }}" rel="{{ page['page'] }}" {% if page['colour'] %}style="background: url('/ui/_images/ab/{{ page['colour'] }}_text.png') left bottom no-repeat;"{% endif%} >
@@ -113,7 +113,7 @@
 									<div>
 										Section: {{ page['section']['n'] }}<br> Colour: {{ page['colour'] }}
 									</div>
-									<footer class="progress {% if page['percent'] > 50 %}{% if page['percent'] > 80 %}progress-danger{% else %}progress-warning{% endif%}{% endif%} ">
+									<footer class="progress {% if page['percent'] > 60 %}{% if page['percent'] > 80 %}progress-danger{% else %}progress-warning{% endif%}{% endif%} ">
 										<div class="bar" style="width: {{ page['percent'] }}%;"></div>
 										<div class="text">{{ page['percent'] }}% with a total of {{ page['cm'] }}cm</div>
 
@@ -137,33 +137,42 @@
 					</div>
 
 				</div>
+				<div id="dummy-bottom" class="highlighthovered">
+					{% for spread in pages['spreads'] %}
+					<div class="spread">
+						{% for page in spread['pages'] %}
+						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }};">{{ page['page'] }}</div>
+						{% endfor %}</div>
 
+					{% endfor %}
+				</div>
 				<div class="loadingmasks wide"></div>
 
 			</article>
 			<article id="right-area" class="span5 offset11">
+				<div>
+					<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0; margin-left: -2px;">
+						{% for row in placing %}
+						<option value="{{ row['ID'] }}">{{ row['placing'] }}</option>
+						{% endfor %}
+					</select>
+					<table class="table table-condensed  s records">
+						<thead>
+						<tr>
+							<th class="span1">Size</th>
+							<th class="span1">Colour</th>
+							<th>Client</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
 				<div class="content">
-					<div class="scroll-pane" style="bottom: 100px;">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 50px;">
 
 						<div data-heading="top" class="scroll-container">
-							<table style="margin-right: 15px;" id="record-list" class="table table-condensed  s records">
-								<thead>
-								<tr>
-									<th class="span1">Size</th>
-									<th class="span1">Colour</th>
-									<th>Client</th>
-								</tr>
-								</thead>
+							<table style="" id="record-list" class="table table-condensed  s records" >
+								<tbody style="border-left:none;">
 
-								<tbody>
-								{% for row in records[0]['records'] %}
-								<tr data-id="65229" class="record ">
-									<td><span class="size">{{ row['cm'] }}&nbsp;x&nbsp;{{ row['col'] }}</span></td>
-									<td>{{ row['colour'] }}</td>
-									<td>{% if row['remarkTypeLabelClass'] %}<span title="{{ row['remarkType'] }}" class="label {{ row['remarkTypeLabelClass'] }}"></span>{% else %}<span style="padding:0 5px;"></span>{% endif %}{{ row['client'] }}
-									</td>
-								</tr>
-								{% endfor %}
 
 								</tbody>
 							</table>
@@ -177,9 +186,9 @@
 
 				</div>
 				<div id="record-details-bottom">
-					aaaa
+					10 Pages
 				</div>
-				<div class="loadingmasks wide"></div>
+				<div class="loadingmask round"></div>
 			</article>
 		</div>
 

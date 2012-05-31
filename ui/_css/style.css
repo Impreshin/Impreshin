@@ -106,7 +106,7 @@ body {
   height: 100%;
   position: absolute;
   top: 42px;
-  bottom: 0;
+  bottom: 42px;
   display: block;
   border-right: #cccccc 1px solid;
   -webkit-box-shadow: 4px 0px 5px rgba(150, 150, 150, 0.2);
@@ -121,6 +121,9 @@ body {
   bottom: 42px;
   left: 0;
   overflow: auto;
+}
+#left-area .scroll-pane.scrolly {
+  overflow-x: hidden!important;
 }
 #left-area .jspVerticalBar,
 #left-area .jspHorizontalBar {
@@ -145,7 +148,7 @@ body {
   height: 100%;
   position: absolute;
   top: 42px;
-  bottom: 0;
+  bottom: 42px;
 }
 #right-area .scroll-pane {
   position: absolute;
@@ -154,6 +157,9 @@ body {
   bottom: 42px;
   left: 0;
   overflow: auto;
+}
+#right-area .scroll-pane.scrolly {
+  overflow-x: hidden !important;
 }
 #right-area .jspVerticalBar {
   filter: alpha(opacity= 0 );
@@ -186,6 +192,9 @@ body {
   bottom: 42px;
   left: 0;
   overflow: auto;
+}
+#whole-area .scroll-pane.scrolly {
+  overflow-x: hidden !important;
 }
 #whole-area .jspVerticalBar,
 #whole-area .jspHorizontalBar {

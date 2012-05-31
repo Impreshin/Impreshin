@@ -296,5 +296,22 @@ class _data {
 
 		$GLOBALS["output"]['data'] = $return;
 	}
+	function layout_list(){
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		$pID = $user['ab_pID'];
+		$currentDate = dates::getCurrent($pID);
+		$dID = $currentDate['ID'];
+
+		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : "";
+
+
+		$records = bookings::getAll("(ab_bookings.pID = '$pID' AND dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='$placingID'");
+		$records = bookings::display($records);
+
+		$return = $records;
+
+		$GLOBALS["output"]['data'] = $return;
+	}
 
 }

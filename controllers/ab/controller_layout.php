@@ -48,7 +48,7 @@ class controller_layout {
 
 
 		$pages = array();
-		for ($i = 0; $i < 8; $i++) {
+		for ($i = 0; $i < 18; $i++) {
 			$percent = rand(0, 100);
 			$cm = (39 * 8);
 			$cm = number_format($cm * ($percent / 100),0);
@@ -95,22 +95,19 @@ class controller_layout {
 		}
 
 $spread[count($spread)-1]['pages'][0]['side']="right";
-$pages=$spread;
+		$a = array();
+		foreach ($spread as $b)$a[] = $b;
+		$spread = $a;
+
+		$pages = array();
+		$pages["spreads"]=$spread;
+		$pages["count"]= $pagesCount;
 
 
 
 
-//test_array($spread);
-		$records = bookings::getAll("(ab_bookings.pID = '$pID' AND dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='1'");
+//test_array($pages);
 
-
-		$records = bookings::display($records);
-		//test_array($records);
-
-
-
-		//test_array($user);
-		$ab_settings = F3::get("ab_settings");
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
@@ -122,7 +119,7 @@ $pages=$spread;
 			)
 		);
 		$tmpl->pages = $pages;
-		$tmpl->records = $records;
+		$tmpl->placing = \models\ab\placing::getAll("pID='$pID'");
 		$tmpl->output();
 
 	}
