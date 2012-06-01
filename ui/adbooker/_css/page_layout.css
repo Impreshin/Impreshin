@@ -136,20 +136,34 @@ background-color: rgba(100,100,100,0.8);
 	border-top:1px solid #ccc;
 }
 #dummy-bottom {
+	padding-left: 7px;
 	position: absolute;
 	bottom: 42px;
-	left:0;
+	left:-5px;
 	right:0;
 	border-top:1px solid #ccc;
 	padding-bottom: 6px;
 	color : #999;
+	background-color  : #eeeeee;
+	background-repeat : repeat-x;
+	background-image  : -moz-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image  : -webkit-gradient(linear, left top, left bottom, color-stop(30%, whitesmoke), color-stop(100%, #eeeeee));
+	background-image  : -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image  : -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image  : -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	filter            : progid:DXImageTransform.Microsoft.gradient(startColorstr = whitesmoke, endColorstr = #eeeeee, GradientType = 0);
+	background-image  : linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	-webkit-box-shadow : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	-moz-box-shadow    : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	box-shadow         : 0 -1px 3px rgba(100, 100, 100, 0.2);
+
 }
 
 #dummy-bottom .spread {
 	width:56px;
 	float:left;
 	padding: 0;
-	margin: 5px 5px 0 4px;
+	margin: 5px 4px 0 4px;
 
 }
 

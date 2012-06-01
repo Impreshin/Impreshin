@@ -21,93 +21,6 @@ class controller_layout {
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
 
-		$currentDate = dates::getCurrent($pID);
-		$dID = $currentDate['ID'];
-
-
-		$sections = array(
-			"Red"=>array(
-				"n"=>"Red Section",
-				"c"=>"red"
-			),
-			"green"=> array(
-				"n"=> "Green Section",
-				"c"=> "green"
-			),
-			"blue"=> array(
-				"n"=> "Blue Section",
-				"c"=> "blue"
-			),
-			""=> array(
-				"n"=> "",
-				"c"=> ""
-			)
-		);
-		$colours = array("Full","Spot","none","");
-		$pagesArray = F3::get("DB")->exec("SELECT pages FROM ab_page_load WHERE pID = '$pID'");
-		$d = array();
-		foreach($pagesArray as $p)$d[] = $p['pages'];
-
-
-		$amount = $d[array_rand($d, 1)];
-
-
-		$pages = array();
-		for ($i = 0; $i < $amount; $i++) {
-			$percent = rand(0, 100);
-			$cm = (39 * 8);
-			$cm = number_format($cm * ($percent / 100),0);
-			$pages[] = array(
-				"page"   => $i + 1,
-				"section"=> $sections[array_rand($sections, 1)],
-				"colour" => $colours[array_rand($colours, 1)],
-				"percent"=> $percent,
-				"cm"=>$cm
-			);
-
-		}
-
-		$pagesCount = count($pages);
-		$spreads = ($pagesCount / 2)+1;
-
-
-
-		$t = array(
-			"count"=>$pagesCount,
-			"spreads"=>$spreads
-		);
-		//test_array($t);
-
-		$spread = array();
-
-		$h = 0;
-		for ($i = 0; $i < $spreads; $i++) {
-			$page = $pages[$h++];
-			$page['side']="left";
-			$spread[$i]['pages'][]= $page;
-			if ($i>0){
-				if (isset($pages[$h])){
-					$page = $pages[$h++];
-					$page['side'] = "right";
-
-					$spread[$i]['pages'][] = $page;
-				}
-			}
-			$spread[$i]['side'] = (strpos($i / 2, ".")) ? "right" : "left";
-			$spread[$i]['index']=$i;
-
-
-		}
-
-$spread[count($spread)-1]['pages'][0]['side']="right";
-		$a = array();
-		foreach ($spread as $b)$a[] = $b;
-		$spread = $a;
-
-		$pages = array();
-		$pages["spreads"]=$spread;
-		$pages["count"]= $pagesCount;
-
 
 
 
@@ -123,7 +36,7 @@ $spread[count($spread)-1]['pages'][0]['side']="right";
 				"title"=> "AdBooker - Layout",
 			)
 		);
-		$tmpl->pages = $pages;
+
 		$tmpl->placing = \models\ab\placing::getAll("pID='$pID'");
 		$tmpl->output();
 

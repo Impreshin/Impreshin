@@ -212,7 +212,7 @@ function getList(settings) {
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/production",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+	listRequest.push($.getJSON("/ab/data/production/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
 		data = data['data'];
 
 

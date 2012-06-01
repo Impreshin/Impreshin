@@ -270,7 +270,7 @@ function account_lookup_history_suggestions(accNum){
 	if(!accNum) accNum = $("#accNum").val();
 	if (!$("#all_accounts a[data-accNum='" + accNum + "']").length) accNum = "";
 			$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
-			accountLookup.push($.getJSON("/ab/data/account_lookup_history_suggestions", {"accNum":accNum,"limit":"4","type":type}, function (data) {
+			accountLookup.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum,"limit":"4","type":type}, function (data) {
 				data = data['data'];
 				if (accNum){
 					$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();

@@ -13,3 +13,92 @@
 	</tr>
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-spreads">
+	<![CDATA[
+
+	<section class="spread <%= this.side %>">
+		<% for(var i in this.pages) { %>
+		<article class="pages <%= this.pages[i].side %>" rel="<%= this.pages[i].page %>" <% if (this.pages[i].colour) { %>style="background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') left bottom no-repeat;"<% } %> >
+
+			<% if(this.pages[i].section.c) { %>
+			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>"></div>
+			<% } %>
+			<div class="pagenr"><%= this.pages[i].page %></div>
+			<header>
+
+			</header>
+			<div>
+				Section: <%= this.pages[i].section.n %><br> Colour: <%= this.pages[i].colour %>
+			</div>
+			<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+				<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
+				<div class="text"><%= this.pages[i].percent %>% with a total of <%= this.pages[i].cm %>cm</div>
+
+			</footer>
+
+			<% if(this.pages[i].colour) { %>
+			<div class="page_colour">
+				<img src="/ui/_images/ab/<%= this.pages[i].colour %>.png" alt="" width="20">
+
+			</div>
+			<% } %>
+		</article>
+		<% } %>
+	</section>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom">
+	<![CDATA[
+
+	<div class="spread">
+		<% for(var i in this.pages) { %>
+		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>"><%= this.pages[i].page %></div>
+		<% } %>
+	</div>
+
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-provisional-stats-bar">
+	<![CDATA[
+
+
+	<li>
+		<div id="maintoolbar-date" class="dg b"><%= this.date %></div>
+	</li>
+	<li class="span6" style="position: relative;" id="toolbar-stats-link">
+		<div class="progress glow" style="margin-top: 6px; margin-bottom: -5px;">
+			<div class="bar" style="width: <%= this.stats.percent_highlight %>%;" id="list-stats-progress-bar"></div>
+		</div>
+		<div class="row" style="position: absolute; top: 5px; left: 0; text-align: center; right:0;">
+
+			<div class="span2"><span class="s dg">Pages:</span>
+				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %> > <%= this.stats.loading.pages %> <% if (this.stats.loading.forced) { %>*<% } %>                </strong>
+			</div>
+			<div class="span2"><span class="s dg">Placed:</span> <strong>x</strong> of <strong>y</strong></div>
+			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong>
+			</div>
+
+		</div>
+
+		<div id="toolbar-stats-pane" class="statstable">
+			<table class="table">
+				<tr>
+
+
+				</tr>
+			</table>
+			<table>
+				<tr>
+
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</li>
+	]]>
+</script>

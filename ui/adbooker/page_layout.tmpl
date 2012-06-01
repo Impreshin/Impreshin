@@ -12,12 +12,20 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-
+					<button class="btn span1 btn-mini " id="reload-btn" style="margin:0;">
+						<i class="icon-refresh"></i></button>
 				</li>
 				<li class="divider-vertical"></li>
 			</ul>
 			<div class="pull-right">
-				<ul id="provisional-stats-bar" class="nav nav-pills pull-left">
+				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+
+
+
+
+
+
+
 					<li>
 						<div class="dg b" id="maintoolbar-date">25 May 2012</div>
 					</li>
@@ -27,7 +35,7 @@
 						</div>
 						<div style="position: absolute; top: 5px; left: 0; text-align: center; right:0;" class="row">
 							<div class="span2"><span class="s dg">Pages:</span> <strong>14</strong></div>
-							<div class="span2"><span class="s dg">Cm:</span> <strong>1844</strong></div>
+							<div class="span2"><span class="s dg">Placed:</span> <strong>18</strong> of <strong>62</strong></div>
 							<div class="span2"><span class="s dg">Loading:</span> <strong>42.22%</strong></div>
 						</div>
 						<div class="statstable" id="toolbar-stats-pane">
@@ -89,39 +97,8 @@
 				<div class="content">
 					<div class="scroll-pane scrolly" id="dummy-area">
 
-						<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
-							{% for spread in pages['spreads'] %}
-							<section class="spread {{ spread['side'] }}">
-								{% for page in spread['pages'] %}
-								<article class="pages {{ page['side'] }}" rel="{{ page['page'] }}" {% if page['colour'] %}style="background: url('/ui/_images/ab/{{ page['colour'] }}_text.png') left bottom no-repeat;"{% endif%} >
+						<div data-heading="top" class="scroll-container" style="padding-left: 15px;" id="pages-area">
 
-									{% if page['section']['c'] %}
-									<div class="page_section" style="background-color: {{ page['section']['c'] }};" title="{{ page['section']['n'] }}"></div>
-									{% endif %}
-									<div class="pagenr">{{ page['page'] }}</div>
-									<header>
-
-									</header>
-									<div>
-										Section: {{ page['section']['n'] }}<br> Colour: {{ page['colour'] }}
-									</div>
-									<footer class="progress {% if page['percent'] > 60 %}{% if page['percent'] > 80 %}progress-danger{% else %}progress-warning{% endif%}{% endif%} ">
-										<div class="bar" style="width: {{ page['percent'] }}%;"></div>
-										<div class="text">{{ page['percent'] }}% with a total of {{ page['cm'] }}cm</div>
-
-									</footer>
-
-									{% if page['colour'] %}
-									<div class="page_colour">
-										<img src="/ui/_images/ab/{{ page['colour'] }}.png" alt="" width="20">
-
-									</div>
-									{% endif%}
-								</article>
-								{% endfor %}
-
-							</section>
-							{% endfor %}
 
 
 						</div>
@@ -130,15 +107,9 @@
 
 				</div>
 				<div id="dummy-bottom" class="highlighthovered">
-					{% for spread in pages['spreads'] %}
-					<div class="spread">
-						{% for page in spread['pages'] %}
-						<div data-page_nr="{{ page['page'] }}" class="page" style="float:{{ page['side'] }}; {% if page['section']['c'] %} border-top-color: {{ page['section']['c'] }}; border-top-width: 2px; {% else %} margin-top: 1px; {% endif %}">{{ page['page'] }}</div>
-						{% endfor %}</div>
 
-					{% endfor %}
 				</div>
-				<div class="loadingmasks wide"></div>
+				<div class="loadingmask wide"></div>
 
 			</article>
 			<article id="right-area" class="span5 offset11">

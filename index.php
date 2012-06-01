@@ -36,7 +36,7 @@ $app->set('version', $version);
 $app->set('v', preg_replace("/[^0-9]/", "", $version));
 
 
-$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/');
+$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 $app->set('CACHE', TRUE);
 $app->set('DEBUG', 2);
@@ -115,6 +115,13 @@ $app->set('cfg', $cfg);
 				F3::reroute("/ab/");
 			}
 		);
+//include_once("/controllers/ab/_data.php");
+
+
+
+
+
+
 
 
 		$app->route('GET /ab/', 'controllers\ab\controller_provisional->page');
@@ -123,8 +130,12 @@ $app->set('cfg', $cfg);
 		$app->route('GET /ab/form', 'controllers\ab\controller_form->page');
 		$app->route('GET /ab/form/@ID', 'controllers\ab\controller_form->page');
 
-		$app->route('GET|POST /ab/data/@data', function() use($app) {
-				$app->call('controllers\ab\_data->' . $app->get('PARAMS.data'));
+		$app->route('GET|POST /ab/data/@function', function() use($app) {
+				$app->call("controllers\\ab\\data\\data->" . $app->get('PARAMS.function'));
+			}
+		);
+		$app->route('GET|POST /ab/data/@class/@function', function() use($app) {
+				$app->call("controllers\\ab\\data\\". $app->get('PARAMS.class')."->" . $app->get('PARAMS.function'));
 			}
 		);
 		$app->route('GET|POST /ab/save/@data', function() use($app) {
