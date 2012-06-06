@@ -15,6 +15,7 @@ class controller_provisional {
 		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 	}
 	function page() {
+		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
@@ -71,10 +72,8 @@ class controller_provisional {
 			"available"=>$a
 		);
 		$tmpl->output();
-
+		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}
-function t(){
-	return "go die";
-}
+
 
 }

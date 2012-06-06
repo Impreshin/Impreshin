@@ -134,6 +134,39 @@ background-color: rgba(100,100,100,0.8);
 	left:0;
 	right:0;
 	border-top:1px solid #ccc;
+	font-size: 10px;
+}
+#record-details-bottom h4 {
+	padding: 5px;
+	border-bottom: 1px dotted #ccc;
+
+
+
+}
+
+
+#record-details-bottom > article {
+	cursor : pointer;
+}
+
+#record-details-bottom fieldset {
+	margin-bottom: 5px;
+}
+#record-details-bottom legend {
+	font-size: 10px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	color: #999;
+	font-variant: small-caps;
+	height: 25px;
+}
+
+#record-details-bottom table {
+	margin: 0;
+
+}
+##record-details-bottom  table td {
+	padding: 0 5px;
 }
 #dummy-bottom {
 	padding-left: 7px;

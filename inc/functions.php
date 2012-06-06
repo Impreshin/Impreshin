@@ -83,7 +83,7 @@ function siteURL() {
 	$domainName = $_SERVER['HTTP_HOST'] ;
 	return $protocol . $domainName;
 }
-function convert($size) {
+function file_size($size) {
 	$unit = array('b', 'kb', 'mb', 'gb', 'tb', 'pb');
 	return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . ' ' . $unit[$i];
 }
@@ -125,4 +125,28 @@ function test_array($array){
 	header("Content-Type: application/json");
 	echo json_encode($array);
 	exit();
+}
+
+function bt_loop($trace) {
+	if (isset($trace['object'])) unset($trace['object']);
+	if (isset($trace['type'])) unset($trace['type']);
+
+
+	$args = array();
+	foreach ($trace['args'] as $arg) {
+		if (is_array($arg)) {
+			if (count($arg)<5){
+				$args[]= $arg;
+			} else {
+				$args[] = "Array " . count($arg);
+			}
+
+		} else {
+			$args[] = $arg;
+		}
+
+	}
+	$trace['args'] = $args;
+
+	return $trace;
 }

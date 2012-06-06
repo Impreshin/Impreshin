@@ -35,7 +35,7 @@ class remarkTypes {
 
 
 		$return = $result;
-		$timer->stop("Models - remarkTypes - getAll", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

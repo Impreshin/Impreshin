@@ -93,6 +93,9 @@
 		$('body').tooltip({
 			selector:'[rel=tooltip]'
 		});
+		$('body').popover({
+			selector:'[rel=popover]'
+		});
 
 
 		$("*[rel=tooltip]").tooltip({
@@ -162,7 +165,29 @@
 			}
 
 		});
+		$(document).on('click', '.btn-row-details', function (e) {
+			var $this = $(this), $table = $this.closest("table");
+			var $clicked = $(e.target).closest("tr.btn-row-details");
+			var active = true;
 
+			if ($this.hasClass("active") && $clicked) active = false;
+
+			$("tr.btn-row-details.active", $table).removeClass("active");
+			if (active) {
+				$this.addClass("active");
+			}
+
+			var show = $("tr.btn-row-details.active", $table).nextAll("tr.row-details");
+
+
+			$("tr.row-details", $table).hide();
+			if (show.length) {
+				show = show[0];
+				$(show).show();
+			}
+
+
+		});
 
 
 		$(document).on("click", "#keepalivebtn", function () {
@@ -226,23 +251,35 @@
 		var u = settings.url;
 		var d = $.parseJSON(request.responseText);
 
+		var page_size = request.getResponseHeader('Content-Length');
+
+
 		if (u == "/data/keepalive") {
 		} else {
-			updatetimerlist(d);
+			updatetimerlist(d, page_size);
 		}
 
 	});
-	function updatetimerlist(d) {
+	function updatetimerlist(d, page_size) {
 		//console.log(d);
 		$("#displaylogout").autoLogout('resetTimer');
 
 		var data = d['timer'];
 		var page = d['page'];
+		var models = d['models'];
 
+		var pageSize = (page['size'])? page['size']: page_size;
 
 		if (data) {
-			var th = '<tr class="heading"><td >' + page['page'] + '</td><td class="s g">' + page['time'] + '</td></tr>';
-			$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*"));
+			var highlight = "";
+			if (page['time'] > {{ _cfg['debug']['highlightfrom'] }}) highlight = 'style="color: red;"';
+			var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + ' : <span class="g">Size: ' + file_size(pageSize) + '</span></td><td class="s g"'+ highlight+'>' + page['time'] + '</td></tr>', thm;
+			if (models) {
+				thm = $("#template-timers-tr-models").jqote(models, "*");
+			} else {
+				thm = "";
+			}
+			$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")+ thm);
 		}
 
 
@@ -251,16 +288,18 @@
 	function scrolling(api){
 
 		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
+			if (!$(event.target).closest(".modal").length){
+				if (deltaY < 0) {
+					deltaY = -deltaY;
+				} else {
+					deltaY = -deltaY;
+				}
 
-			if (deltaY < 0) {
-				deltaY = -deltaY;
-			} else {
-				deltaY = -deltaY;
+				deltaY = deltaY * 30;
+
+				api.scrollByY(deltaY, false);
 			}
 
-			deltaY = deltaY * 30;
-
-			api.scrollByY(deltaY, false);
 
 		}).on('keydown',function(e){
 //				console.log(api.getContentHeight);
@@ -310,6 +349,23 @@
 				break;
 		}*/
 	}
+	function file_size(size) {
+		if (!size){
+			return 0;
+		}
+		var origSize = size;
+		var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		var i = 0;
+		while (size >= 1024) {
+			size /= 1024;
+			++i;
+		}
+
+		if (origSize>1024){
+			size = size.toFixed(1)
+		}
+		return size + ' ' + units[i];
+	}
 
 </script>
 {% if page['template_js'] %}
@@ -322,9 +378,62 @@
 		<td><*= this.msg *>
 			<div class="s g"><*= this.arg *></div>
 		</td>
-		<td><*= this.tim *></td>
+		<td	<* if (this.tim>{{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>><*= this.tim *></td>
 	</tr>
 
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-timers-tr-models">
+	<![CDATA[
+
+	<tr style="background-color:#f1f1f1; ">
+		<td><*= this.k *></td>
+		<td style="width: 140px; <* if ( this.t > {{ _cfg['debug']['highlightfrom'] }} ) { *>color: red;<* } *>"><*= this.t *></td>
+	</tr>
+	<* for(var i in this.m) { *>
+	<tr class="btn-row-details">
+		<td class="s g"	<* if (this.m[i].c > 1) { *>style="color: red;"<* } *>>
+			<*= this.m[i].c *>&nbsp;|&nbsp;<*= this.m[i].l *>
+		</td>
+		<td class="s g" <* if (this.m[i].t > {{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>>
+			<*= this.m[i].t *>
+		</td>
+	</tr>
+
+	<tr class="row-details">
+		<td colspan="2">
+			<table class='s g' style='width:100%'>
+
+				<tbody>
+				<* for(var g in this.m[i].m) { *>
+				<tr>
+					<td style="padding-left:30px;">
+
+						<div style="margin-left: -20px;" class="dg">
+							<*= this.m[i].m[g].arg.file *> : <*= this.m[i].m[g].arg.line *><br>
+							<em style="margin-left: 10px;"><*= this.m[i].m[g].arg.class *>-><*= this.m[i].m[g].arg.function *>(<*= this.m[i].m[g].arg.args *>)</em>
+
+						</div>
+						<* if (this.m[i].m[g].bt) { *>
+						<div style="margin-left: -20px;" class="">
+							<*= this.m[i].m[g].bt.file *> : <*= this.m[i].m[g].bt.line *><br>
+							<em style="margin-left: 10px;"><*= this.m[i].m[g].bt.class *>-><*= this.m[i].m[g].bt.function *>(<*= this.m[i].m[g].bt.args *>)</em>
+
+						</div>
+						<* } *>
+
+
+
+						</td>
+					<td style="width: 140px; <* if ( this.m[i].m[g].tim > {{ _cfg['debug']['highlightfrom'] }} ) { *>color: red;<* } *>"><*= this.m[i].m[g].tim *></td>
+				</tr>
+				<* } *>
+				</tbody>
+			</table>
+
+		</td>
+	</tr>
+	<* } *>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-logged-in-users">

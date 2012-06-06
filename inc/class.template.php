@@ -36,8 +36,6 @@ class template {
 		$curPage = explode("?", $curPageFull);
 		$_v = isset($_GET['v']) ? $_GET['v'] : F3::get('v');
 		$user = F3::get('user');
-		$publication = new \models\ab\publications();
-		$publication = $publication->get($user['ab_pID']);
 
 		$cfg = F3::get('cfg');
 		if ($user['ab_pID']=='1'){
@@ -45,7 +43,8 @@ class template {
 		}
 
 
-		$publications = \models\ab\publications::getAll("uID='" . $user['ID'] . "'", "publication ASC");
+		$publications = $user['ab_publications'];
+		$publication = $user['ab_publication'];
 
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;

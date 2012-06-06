@@ -12,6 +12,18 @@ class loading {
 	public static function getLoading($pID = "", $cm = "", $forcepages = "") {
 		$timer = new timer();
 
+
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		if (!$pID) $pID = $user['ab_pID'];
+
+		if ($pID == $user['ab_pID']){
+			$publication = $user['ab_publication'];
+		} else {
+			$publication = new publications();
+			$publication = $publication->get($pID);
+		}
+
 		$return = array(
 			"pages"  => 0,
 			"loading"=> 0,
@@ -34,8 +46,7 @@ class loading {
 
 
 
-			$publication = new publications();
-			$publication = $publication->get($pID);
+
 
 
 			$pageSize = $publication['cmav'] * ($publication['columnsav']);
@@ -101,10 +112,7 @@ class loading {
 			if (isset($loading[$cur + 2])) $return['other'][] = $loading[$cur + 2];
 
 
-
-
-
-		$timer->stop("Models - loading - getLoading", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

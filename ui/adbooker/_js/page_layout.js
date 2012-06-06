@@ -13,12 +13,12 @@ $(document).ready(function () {
 	});
 
 	$(document).on("change","#placingID",function(){
-		load_list();
+		getList();
 
 	});
 
 	$(document).on("click","#reload-btn",function(){
-		load_list();
+		getList();
 		load_pages();
 	});
 
@@ -31,8 +31,26 @@ $(document).ready(function () {
 
 
 	});
+	$(document).on("click","#record-details-bottom > article",function(){
+		var $this = $(this);
+		$.bbq.pushState({"ID":$this.attr("data-id")});
+		getDetails();
+	});
 
-	load_list();
+
+	$(document).on("click","#record-list .record",function(){
+		var $this = $(this);
+		getDetails_small($this.attr("data-id"));
+	});
+
+	$(document).on('hide', '#details-modal', function () {
+		var s = {
+			maintain_position:true
+		};
+		getList(s);
+	});
+
+	getList();
 	load_pages();
 });
 function dummy_resize(){
@@ -57,7 +75,7 @@ function PadDigits(n, totalDigits) {
 }
 
 
-function load_list(){
+function getList(){
 	var placingID = $("#placingID").val();
 
 	$("#right-area .loadingmask").show();
@@ -95,11 +113,14 @@ function load_list(){
 		var $recordsList = $("#record-list tbody");
 		if (data['records'][0]){
 			$recordsList.jqotesub($("#template-records-list"), data['records']);
+
+
+
 		} else {
 			$recordsList.html('<tr><td class="c no-records">No Records Found</td></tr>')
 		}
 
-
+		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 
 		$("#right-area .loadingmask").fadeOut(transSpeed);
@@ -118,9 +139,11 @@ function load_pages(){
 			//console.log(data['spreads']);
 			$recordsList.jqotesub($("#template-spreads"), data['spreads']);
 			$("#dummy-bottom").jqotesub($("#template-spreads-bottom"), data['spreads']);
+
 		} else {
 			$recordsList.html('<tr><td class="c no-records">No Records Found</td></tr>')
 		}
+		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 		dummy_resize();
@@ -148,4 +171,14 @@ function isScrolledIntoView(elem) {
 	var elemBottom = elemTop + $(elem).height();
 
 	return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop) );
+}
+function getDetails_small(ID){
+	detailsRequest.push($.getJSON("/ab/data/details/?r=" + Math.random(), {"ID":ID}, function (data) {
+		data = data['data'];
+		$("#record-list .record.active").removeClass("active");
+		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data);
+
+		records_list_resize();
+	}));
 }

@@ -5,13 +5,48 @@
  */
 namespace models\ab;
 class record_stats {
+	public static function stats_cm($where) {
+
+		$timer = new \timer();
+
+		if (is_array($where)) {
+			$data = $where;
+		} else {
+			$data = \models\ab\bookings::getAll($where);
+		}
+
+		$totals = array(
+			"records"   => count($data),
+			"cm"        => 0,
+
+		);
+
+
+		foreach ($data as $record) {
+			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
+		}
+
+
+		$return = array(
+			"cm"     => $totals['cm'],
+			"records"=> array(
+				"total"    => $totals["records"],
+			),
+
+
+		);
+
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
 	public static function stats_list($where) {
 		$timer = new \timer();
 
 		if (is_array($where)) {
 			$data = $where;
 		} else {
-			$data = \models\ab\bookings::getAll("", $where);
+			$data = \models\ab\bookings::getAll($where);
 		}
 		$totals = array(
 			"records" => count($data),
@@ -53,7 +88,7 @@ class record_stats {
 		);
 
 
-		$timer->stop("Models - record_stats - stats_list");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function stats_production($where) {
@@ -62,7 +97,7 @@ class record_stats {
 		if (is_array($where)) {
 			$data = $where;
 		} else {
-			$data = \models\ab\bookings::getAll("", $where);
+			$data = \models\ab\bookings::getAll($where);
 		}
 		$totals = array(
 			"records" => count($data),
@@ -101,7 +136,62 @@ class record_stats {
 		);
 
 
-		$timer->stop("Models - record_stats - stats_production");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function stats_layout($where) {
+		$timer = new \timer();
+
+		if (is_array($where)) {
+			$data = $where;
+		} else {
+			$data = \models\ab\bookings::getAll($where);
+		}
+
+		$totals = array(
+			"records" => count($data),
+			"cm"      => 0,
+			"placed" => 0,
+			"placed_cm" => 0,
+
+		);
+
+
+
+		$lastdID = "";
+		$maxPages = 0;
+		foreach ($data as $record) {
+			if ($lastdID!=$record['dID']){
+				$maxPages = pages::maxPages($record['dID'], $data);
+			}
+			$lastdID = $record['dID'];
+			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
+			if ($record['page'] && ($record['page'] <= $maxPages)) {
+				$totals['placed'] = $totals['placed'] + 1;
+				$totals['placed_cm'] = $totals['placed_cm'] + $record['totalspace'];
+			}
+
+		}
+
+
+		$return = array(
+			"cm"     => $totals['cm'],
+			"records"=> array(
+				"total"   => $totals["records"],
+
+				"placed_cm"=> $totals['placed_cm'],
+				"placed"  => array(
+					"r"=> $totals["placed"],
+					"p"=> ($totals['records']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
+				),
+
+			),
+
+
+		);
+
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

@@ -32,7 +32,7 @@ class dates {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop("Models - bookings - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function getCurrent($pID) {
@@ -53,7 +53,7 @@ class dates {
 			$return = F3::get("system")->error("D02");
 		}
 
-		$timer->stop("Models - dates - getCurrent", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -87,7 +87,7 @@ class dates {
 			$a[] = $record;
 		}
 		$return = $a;
-		$timer->stop("Models - dates - getAll", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

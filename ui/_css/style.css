@@ -106,7 +106,7 @@ body {
   height: 100%;
   position: absolute;
   top: 42px;
-  bottom: 42px;
+  bottom: 0;
   display: block;
   border-right: #cccccc 1px solid;
   -webkit-box-shadow: 4px 0px 5px rgba(150, 150, 150, 0.2);
@@ -148,7 +148,7 @@ body {
   height: 100%;
   position: absolute;
   top: 42px;
-  bottom: 42px;
+  bottom: 0;
 }
 #right-area .scroll-pane {
   position: absolute;
@@ -293,6 +293,16 @@ form.form-fill .form-actions {
   -moz-opacity: 1;
   -khtml-opacity: 1;
   opacity: 1;
+}
+.btn-row-details {
+  cursor: pointer;
+}
+.btn-row-details:hover {
+  background-color: #deebff;
+}
+.row-details {
+  padding: 0;
+  display: none;
 }
 .clickable {
   cursor: pointer;

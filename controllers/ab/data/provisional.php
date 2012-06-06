@@ -16,7 +16,7 @@ class provisional extends data {
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
 
-		$currentDate = models\dates::getCurrent($pID);
+		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $user['settings']['list']['group']['g'];
@@ -70,15 +70,14 @@ class provisional extends data {
 		$orderby = " client ASC";
 		$arrange = "";
 
-		//echo $orderby;
-		//exit();
-		$dateSQL = "AND dID = COALESCE((SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' AND ab_current='1' ORDER BY publish_date DESC), (SELECT ID FROM global_dates WHERE global_dates.pID = '$pID' ORDER BY publish_date DESC)) ";
 
-		$where = "(ab_bookings.pID = '$pID' AND dID='$dID') AND ab_bookings.deleted is null";
+
+		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
 
 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering);
+
 
 
 		$stats = models\record_stats::stats_list($records);

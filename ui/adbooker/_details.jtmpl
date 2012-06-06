@@ -246,8 +246,9 @@
 	<% if (this.typeID =='1') { %>
 
 	<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} %>px;" href="#popup-material" data-target="popup">
-		<div class="label <% if (this.typeID =='1') { %>label-info<% } else if (this.typeID =='2') { %>label-inverse<% } %>" style="position: absolute; top: -18px; right: 0;"><%= this.type %></div>
-
+		<% if (this.page){ %>
+		<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
+		<% } %>
 
 		<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} / {{ _ab['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _ab['publication']['columnsav'] }})*this.col %>px;">
 
@@ -559,7 +560,7 @@
 					showContent_state();
 					$("#list-next-prev-btns").show();
 					var api = $("#whole-area .scroll-pane").data("jsp");
-					if ($("#record-list .record[data-ID='" + ID + "']").length) {
+					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
 						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
 					}
 
@@ -573,3 +574,5 @@
 
 	}
 </script>
+<div class="modal hide fade" id="details-modal" data-show="false">
+</div>

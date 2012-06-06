@@ -47,24 +47,32 @@ class user {
 
 			//test_array($result['settings']);
 			$result['settings']['list']['count'] = count($result['settings']['list']['col']);
-			$av_publications = ab\publications::getAll("uID='".$result['ID']."'");
+			$av_publications = ab\publications::getAll("uID='".$result['ID']."'","publication ASC");
 			$ab_pID = $av_publications[0]['ID'];
 
 
 			$pubstr = array();
+			$ab_publication = "";
 			foreach ($av_publications AS $pub) $pubstr[] = $pub["ID"];
 
 			if (in_array($result['ab_pID'], $pubstr)) {
 				$ab_pID = $result['ab_pID'];
+
 			}
+
+			$ab_publication = new \models\ab\publications();
+			$ab_publication = $ab_publication->get($ab_pID);
+
 			$result['ab_pID'] = $ab_pID;
+			$result['ab_publications']=$av_publications;
+			$result['ab_publication']= $ab_publication;
 
 
 		} else {
 			$result = $this->dbStructure();
 		}
 		$return = $result;
-		$timer->stop("Models - user - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function save_setting($values = array(), $app = "ab",$uID=""){
@@ -91,8 +99,7 @@ class user {
 		$t->save();
 
 
-
-		$timer->stop("Models - user - save_setting", func_get_args());
+	$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return "done";
 	}
 
@@ -117,7 +124,7 @@ class user {
 		$t->save();
 
 
-		$timer->stop("Models - user - save_config", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $uID;
 	}
 

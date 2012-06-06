@@ -180,12 +180,17 @@ class settings {
 					"h"=> "Material&nbsp;Approved",
 					"b"=>true
 				),
+				"page"               => array(
+					"c"=> "page",
+					"o"=> "page",
+					"h"=> "Page",
+				),
 
 			);
 			$return["columns"] = $columns;
 
 
-		$timer->stop("Models - settings - getSettings", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -246,8 +251,7 @@ class settings {
 				"last_marketer"=>""
 			);
 
-
-		$timer->stop("Models - settings - getDefaults", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

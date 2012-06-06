@@ -4,6 +4,7 @@
 date_default_timezone_set('Africa/Johannesburg');
 setlocale(LC_MONETARY, 'en_ZA');
 
+$GLOBALS["models"] = array();
 $GLOBALS["output"] = array();
 $GLOBALS["render"] = "";
 if (session_id() == "") {
@@ -157,23 +158,55 @@ $app->set('cfg', $cfg);
 
 		$app->run();
 
+
+
 		$GLOBALS["render"] = ob_get_contents();
+		$pageSize = ob_get_length();
+
 		ob_end_clean();
 
+		$models = $GLOBALS['models'];
+		//test_array($models);
+		$t = array();
+		foreach($models as $model){
+
+			$c = array();
+			foreach ($model['m'] as $method) {
+				$c[] = $method;
+			}
+
+
+		$model['m'] = $c;
+			$t[] = $model;
+		}
+		$models = $t;
+//test_array($GLOBALS['models']);
 
 		$totaltime = $pageExecute->stop("Page Execute");
 		$GLOBALS["output"]['timer'] = $GLOBALS['timer'];
+		$GLOBALS["output"]['models'] = $models;
 		$GLOBALS["output"]['page'] = array(
 			"page"=> $_SERVER['REQUEST_URI'],
-			"time"=> $totaltime
+			"time"=> $totaltime,
+			"size"=> ($pageSize)
 		);
 
+
 		//ob_start("ob_gzhandler");
-		if ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || F3::get("showjson")) {
+		if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || F3::get("showjson")) || !F3::get("__runTemplate") ) {
+
+
+			ob_start('ob_gzhandler');
 			header("Content-Type: application/json");
-			exit(json_encode($GLOBALS["output"]));
+
+			echo json_encode($GLOBALS["output"]);
+
+			exit();
+
+
 		} else {
-			if (F3::get("__runTemplate")) {
+
+			//ob_start('ob_gzhandler');
 				;
 				$timersbottom = '
 					<script type="text/javascript">
@@ -181,10 +214,8 @@ $app->set('cfg', $cfg);
 					</script>
 				';
 				echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
-			} else {
-				header("Content-Type: application/json");
-				echo json_encode($GLOBALS["output"]);
-			}
+			exit();
+
 		}
 	//ob_end_flush();
 

@@ -16,9 +16,11 @@ class bookings {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$currentDate = dates::getCurrent($user['ab_pID']);
+		$currentDate = $user['ab_publication']['current_date'];
 
 		$currentDate = $currentDate['publish_date'];
+
+
 		//test_array($currentDate);
 
 		$result = F3::get("DB")->exec("
@@ -34,8 +36,9 @@ class bookings {
 				ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.labelClass,ab_accounts_status.status AS accountStatus,
 				ab_accounts.accNum AS accNum,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
+				global_pages.page,
 				(SELECT production FROM ab_production WHERE ab_production.ID = ab_bookings.material_productionID ) AS material_production
-			FROM (((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) INNER JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID
+			FROM ((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) INNER JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID
 			WHERE ab_bookings.ID = '$ID';
 
 		"
@@ -54,11 +57,14 @@ class bookings {
 			} elseif ($return['publishDate']>$currentDate){
 				$return['state'] = "Future";
 			}
+			if ($return['pageID'] && $return["page"] ){
+					$return["page"] = number_format($return['page'],0);
+			}
 
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop("Models - bookings - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC")) {
@@ -87,9 +93,10 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status as material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
-				0 as layout
+				0 as layout,
+				global_pages.page
 			$select
-			FROM (((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID
+			FROM ((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID
 
 			$where
 			$orderby
@@ -97,7 +104,8 @@ class bookings {
 
 
 		$return = $result;
-		$timer->stop("Models - bookings - getAll", func_get_args());
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -132,11 +140,16 @@ class bookings {
 		if (!isset($options['highlight']))$options['highlight']="";
 		if (!isset($options['filter']))$options['filter']="";
 
+
 		$timer = new timer();
 		if (is_array($data)){
 			$a = array();
+
+
 			foreach ($data as $item){
 
+
+				$lastdID = $item['dID'];
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
@@ -147,6 +160,12 @@ class bookings {
 						break;
 
 				}
+
+				if ($item['pageID'] && $item["page"]) {
+					$item["page"] = number_format($item['page'], 0);
+				}
+
+
 
 
 
@@ -212,7 +231,7 @@ class bookings {
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}
-		$timer->stop("Models - bookings - display");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 
 	}
@@ -402,8 +421,7 @@ class bookings {
 		$n = $n->get($ID);
 
 
-
-		$timer->stop("Models - bookings - save");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $n;
 	}
 
@@ -417,7 +435,7 @@ class bookings {
 			$a[] = $record;
 		}
 
-		$timer->stop("Models - bookings - getLogs");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $a;
 	}
 
@@ -432,7 +450,7 @@ class bookings {
 
 		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
-		$timer->stop("Models - bookings - logging");
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 	}
 
 	private static function dbStructure() {

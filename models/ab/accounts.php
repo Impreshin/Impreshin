@@ -31,7 +31,7 @@ class accounts {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop("Models - accounts - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function getAll($where = "", $orderby = "") {
@@ -58,7 +58,7 @@ class accounts {
 
 
 		$return = $result;
-		$timer->stop("Models - accounts - getAll", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

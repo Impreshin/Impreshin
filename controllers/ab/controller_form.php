@@ -6,7 +6,6 @@
 namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
-use models\ab as models;
 use models\ab\bookings as bookings;
 use models\ab\accounts as accounts;
 use models\ab\marketers as marketers;
@@ -33,7 +32,7 @@ class controller_form {
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
 
-		$currentDate = dates::getCurrent($pID);
+		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 

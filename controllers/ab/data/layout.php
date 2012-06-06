@@ -11,105 +11,139 @@ use \models\user as user;
 
 
 class layout extends data {
-	private static function stats($dID, $placeID) {
+
+	function _list() {
 		$user = \F3::get("user");
+
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
-
-
-	}
-	function _list () {
-		$user = \F3::get("user");
-		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
-		$currentDate = models\dates::getCurrent($pID);
+		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : "";
 
+		$stats = $this->_stats();
 
-		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='$placingID'");
+		$maxPage = $stats['loading']['pages'];
+
+
+
+
+		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='$placingID' AND (page is null OR page > '$maxPage')");
+		$rawBookings= $records;
 		$records = models\bookings::display($records);
 		if (count($records)) $records = $records[0]['records'];
 		$return = array();
-		$return['placing'] = F3::get("DB")->exec("SELECT ID, placing, (SELECT count(ID) FROM ab_bookings WHERE placingID =ab_placing.ID AND pID = '$pID' AND dID = '$dID' AND deleted is null AND checked = '1') AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
+		$return['placing'] = F3::get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
+
+		$cols = array(
+			"ID",
+			"client",
+			"colour",
+			"colourSpot",
+			"colourLabel",
+			"col",
+			"cm",
+			"totalspace",
+			"category",
+			"remark",
+			"remarkTypeID",
+			"userName",
+			"checked_user",
+			"material_status",
+			"material_approved",
+			"remarkType",
+			"remarkTypeLabelClass",
+		);
+
+
+		$r = array();
+		foreach ($records as $record){
+			$b = array();
+			foreach ($cols as $col){
+				$b[$col] = $record[$col];
+			}
+			$r[] = $b;
+		}
+		$records = $r;
+
 		$return['records'] = $records;
 		$return['placingID'] = $placingID;
+		$return['date'] = $currentDate['publish_date_display'];
+		$return['dID'] = $currentDate['ID'];
+		$return['stats'] = $stats;
+
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
-	function _pages(){
+
+	function _pages() {
+
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
 
-		$currentDate = models\dates::getCurrent($pID);
+		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
+		$stats = $this->_stats();
 
-		$sections = array(
-			"Red"  => array(
-				"n"=> "Red Section",
-				"c"=> "red"
-			),
-			"green"=> array(
-				"n"=> "Green Section",
-				"c"=> "green"
-			),
-			"blue" => array(
-				"n"=> "Blue Section",
-				"c"=> "blue"
-			),
-			"1"     => array(
+
+		$editionPages = $stats['loading']['pages'];
+
+
+		$blank = array(
+			"page"   => 0,
+			"section"=> array(
 				"n"=> "",
-				"c"=> ""
+				"c"=> "",
+
 			),
-			"2"     => array(
-				"n"=> "",
-				"c"=> ""
-			),
-			"3"     => array(
-				"n"=> "",
-				"c"=> ""
-			),
-			"4"     => array(
-				"n"=> "",
-				"c"=> ""
-			),
-			"5"     => array(
-				"n"=> "",
-				"c"=> ""
-			)
+			"colour" => ""
 		);
-		$colours = array(
-			"Full",
-			"Spot",
-			"none",
-			""
-		);
-		$pagesArray = F3::get("DB")->exec("SELECT pages FROM ab_page_load WHERE pID = '$pID'");
-		$d = array();
-		foreach ($pagesArray as $p) $d[] = $p['pages'];
 
 
-		$amount = $d[array_rand($d, 1)];
 
+
+
+		$pagesReal = models\pages::getAll("pID='$pID' AND dID = '$dID'","page ASC");
+
+		$r = array();
+		foreach ($pagesReal as $page){
+			$r[$page['page']] = array(
+				"page"   => $page['page'],
+				"section"=> array(
+					"n"=>$page['section'],
+					"c"=>$page['section_colour']
+				),
+				"colour" => $page['colour'],
+				//"percent"=> $percent,
+				//"cm"     => $cm
+			);
+		}
 
 		$pages = array();
-		for ($i = 0; $i < $amount; $i++) {
-			$percent = rand(0, 100);
-			$cm = (39 * 8);
-			$cm = number_format($cm * ($percent / 100), 0);
-			$pages[] = array(
-				"page"   => $i + 1,
-				"section"=> $sections[array_rand($sections, 1)],
-				"colour" => $colours[array_rand($colours, 1)],
-				"percent"=> $percent,
-				"cm"     => $cm
-			);
+		for ($i = 1; $i <= $editionPages; $i++) {
+			$p = $blank;
+			$p['page'] = $i;
+			if (isset($r[$i])){
+				$pages[] = $r[$i];
+			} else {
+				$pages[] = $p;
+			}
 
 		}
 
+
+	//test_array($pages);
+
+
+
+
 		$pagesCount = count($pages);
+
+
+
 		$spreads = ($pagesCount / 2) + 1;
 
 
@@ -149,9 +183,37 @@ class layout extends data {
 		$pages["spreads"] = $spread;
 		$pages["count"] = $pagesCount;
 
+
 		$return = $pages;
+		$return['date'] = $currentDate['publish_date_display'];
+		$return['dID'] = $currentDate['ID'];
+		$return['stats'] = $stats;
 
 		return $GLOBALS["output"]['data'] = $return;
+	}
+
+	function _stats($data="") {
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		$pID = $user['ab_pID'];
+
+		$currentDate = $user['ab_publication']['current_date'];
+		$dID = $currentDate['ID'];
+
+
+		$pages = models\pages::maxPages($currentDate, "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND 1");
+
+
+
+		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.checked = '1' AND ab_bookings.deleted is null ";
+
+		if (!is_array($data)) $data = $where;
+		$stats = models\record_stats::stats_layout($data);
+		$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $pages);
+
+
+		return $GLOBALS["output"]['data'] = $stats;
+
 	}
 
 

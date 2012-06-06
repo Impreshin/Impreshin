@@ -31,7 +31,7 @@ class production {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop("Models - production - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function getAll($where = "", $orderby = "") {
@@ -59,7 +59,7 @@ class production {
 
 
 		$return = $result;
-		$timer->stop("Models - production - getAll", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

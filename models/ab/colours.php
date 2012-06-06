@@ -31,7 +31,7 @@ class colours {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop("Models - colours - get", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 	public static function getAll($where = "", $orderby = "") {
@@ -58,7 +58,7 @@ class colours {
 
 
 		$return = $result;
-		$timer->stop("Models - colours - getAll", func_get_args());
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
