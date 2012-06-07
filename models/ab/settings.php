@@ -189,6 +189,51 @@ class settings {
 			);
 			$return["columns"] = $columns;
 
+		$groupBy = array();
+		$groupBy[] = array(
+			"n"=> "Placing",
+			"g"=> "placing"
+		);
+		$groupBy[] = array(
+			"n"=> "Type",
+			"g"=> "type"
+		);
+		$groupBy[] = array(
+			"n"=> "Colours",
+			"g"=> "colours"
+		);
+		$groupBy[] = array(
+			"n"=> "Marketers",
+			"g"=> "marketer"
+		);
+		$groupBy[] = array(
+			"n"=> "Columns",
+			"g"=> "columns"
+		);
+		$groupBy[] = array(
+			"n"=> "Discount %",
+			"g"=> "discountPercent"
+		);
+		$groupBy[] = array(
+			"n"=> "Account Status",
+			"g"=> "accountStatus"
+		);
+		$groupBy[] = array(
+			"n"=> "Layout Pages",
+			"g"=> "pages"
+		);
+		$groupBy[] = array(
+			"n"=> "No Ordering",
+			"g"=> "none"
+		);
+		$groupBy[] = array(
+			"n"=> "Production",
+			"g"=> "material_production"
+		);
+
+
+		$return["groupby"] = $groupBy;
+
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;

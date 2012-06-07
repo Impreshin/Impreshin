@@ -38,6 +38,7 @@ class controller_layout {
 		);
 
 		$tmpl->placing = \models\ab\placing::getAll("pID='$pID'");
+		$tmpl->sections = \models\ab\sections::getAll("pID='$pID'");
 		$tmpl->output();
 
 	}

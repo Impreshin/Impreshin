@@ -27,6 +27,7 @@ class pages {
 
 		if (count($result)) {
 			$return = $result[0];
+			$return['page'] = number_format($return['page'], 0);
 		} else {
 			$return = $this->dbStructure;
 		}
@@ -104,7 +105,7 @@ class pages {
 		return $return;
 	}
 
-	private static function dbStructure() {
+	public static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN global_pages;");
 		$result = array();
 		foreach ($table as $key => $value) {

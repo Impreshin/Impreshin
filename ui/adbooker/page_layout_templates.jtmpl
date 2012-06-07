@@ -27,9 +27,9 @@
 		<article class="pages <%= this.pages[i].side %>" rel="<%= this.pages[i].page %>" <% if (this.pages[i].colour) { %>style="background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') left bottom no-repeat;"<% } %> >
 
 			<% if(this.pages[i].section.c) { %>
-			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>"></div>
+			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
 			<% } %>
-			<div class="pagenr"><%= this.pages[i].page %></div>
+			<div class="pagenr" data-page="<%= this.pages[i].page %>"><%= this.pages[i].page %></div>
 			<header>
 
 			</header>
@@ -113,34 +113,7 @@
 	<![CDATA[
 	<article data-id='<%= this.ID %>'>
 	<h4 ><%= this.client %></h4>
-	<table>
-		<tr>
-			<td style="width:80%;"><% if (this.colour){ %>
-				<fieldset>
-					<legend>Colour</legend>
-					<%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %>
-				</fieldset>
-				<% } %></td>
-			<td>
 
-				<fieldset>
-					<legend class="c">Material</legend>
-					<div class="c">
-						<% if (this.material_status){ %>
-							<% if(this.material_approved) { %>
-								Approved
-							<% } else { %>
-								Ready
-							<% } %>
-						<% } else { %>
-						Not Ready
-						<% } %>
-					</div>
-
-				</fieldset>
-				</td>
-		</tr>
-	</table>
 
 	<% if (this.remark){ %>
 	<fieldset style="margin-top: -5px;">
@@ -151,6 +124,56 @@
 	<% } %>
 
 	</article>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right-page">
+	<![CDATA[
+	<header class="header"><h3>Page: <%= this.page %></h3>
+		<button class="btn close-right-over"><i class="icon-list-alt icon-d-grey "></i></button>
+
+	</header>
+	<article class="body">
+
+
+
+
+	</article>
+	<footer class="footer">
+		<form action="" style="margin:0;" id="pages_settings_form">
+			<select class="span5" id="sectionID" name="sectionID" style="margin: 5px 0;">
+				<option value="0">No Section</option>
+				<optgroup label="Sections">
+					{% for row in sections %}
+					<option value="{{ row['ID'] }}"	<% if (this.sectionID=='{{ row['ID'] }}') { %>selected="selected"<% } %>>
+						{{ row['section'] }}
+					</option>
+					{% endfor %}
+				</optgroup>
+
+			</select>
+
+			<div class="btn-group" style="margin-bottom: 5px;" data-toggle="buttons-radio" id="colours">
+				<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:36%;">Black & White</button>
+				<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:32%;">Spot Colour</button>
+				<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:32%;">Full Colour</button>
+			</div>
+		</form>
+	</footer>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right-section">
+	<![CDATA[
+	<header class="header"><h3>Section: <%= this.section %></h3>
+		<button class="btn close-right-over"><i class="icon-list-alt icon-d-grey "></i></button>
+
+	</header>
+	<article class="body">
+
+
+	</article>
+	<footer class="footer">footer</footer>
 
 	]]>
 </script>

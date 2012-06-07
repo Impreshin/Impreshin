@@ -252,7 +252,7 @@
 		var d = $.parseJSON(request.responseText);
 
 		var page_size = request.getResponseHeader('Content-Length');
-
+		page_size = (page_size)? page_size:"";
 
 		if (u == "/data/keepalive") {
 		} else {
@@ -268,7 +268,7 @@
 		var page = d['page'];
 		var models = d['models'];
 
-		var pageSize = (page['size'])? page['size']: page_size;
+		var pageSize = (page && page['size'])? page['size']: page_size;
 
 		if (data) {
 			var highlight = "";
@@ -288,7 +288,8 @@
 	function scrolling(api){
 
 		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
-			if (!$(event.target).closest(".modal").length){
+			if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length ){
+			} else {
 				if (deltaY < 0) {
 					deltaY = -deltaY;
 				} else {

@@ -1,5 +1,8 @@
 <?php
-namespace controllers\ab;
+
+
+
+namespace controllers\ab\save;
 use \F3 as F3;
 use \timer as timer;
 use models\ab as models;
@@ -9,7 +12,7 @@ use models\ab\loading as loading;
 use models\ab\publications as publications;
 use models\user as user;
 
-class _save {
+class save {
 
 	function __construct() {
 

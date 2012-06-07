@@ -64,7 +64,7 @@
 			</article>
 			<article id="right-area" class="span5 offset11">
 				<div>
-					<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0; margin-left: -2px;">
+					<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0; margin-left: -1px;">
 						{% for row in placing %}
 						<option value="{{ row['ID'] }}">{{ row['placing'] }}</option>
 						{% endfor %}
@@ -83,7 +83,7 @@
 				<div class="content">
 					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 50px;">
 
-						<div data-heading="top" class="scroll-container">
+						<div data-heading="top" class="">
 							<table style="" id="record-list" class="table table-condensed  s records" >
 								<tbody style="border-left:none;">
 
@@ -102,9 +102,15 @@
 				<div id="record-details-bottom">
 
 				</div>
+				<section id="rightsideOver">
+
+				</section>
 				<div class="loadingmask round"></div>
+
+
 			</article>
 		</div>
+
 
 
 	</div>

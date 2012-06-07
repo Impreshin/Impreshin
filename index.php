@@ -59,6 +59,10 @@ $cfg = array(
 require_once('config.inc.php');
 
 
+
+
+
+
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname="' . $cfg['DB']['database'] .'", "'. $cfg['DB']['username'] . '", "' . $cfg['DB']['password'] . '"'));
 $app->set('MEDIA_folder', $cfg['media']);
 unset($cfg['DB']);
@@ -139,10 +143,16 @@ $app->set('cfg', $cfg);
 				$app->call("controllers\\ab\\data\\". $app->get('PARAMS.class')."->" . $app->get('PARAMS.function'));
 			}
 		);
-		$app->route('GET|POST /ab/save/@data', function() use($app) {
-				$app->call('controllers\ab\_save->' . $app->get('PARAMS.data'));
+
+		$app->route('GET|POST /ab/save/@function', function() use($app) {
+				$app->call("controllers\\ab\\save\\save->" . $app->get('PARAMS.function'));
 			}
 		);
+		$app->route('GET|POST /ab/save/@class/@function', function() use($app) {
+				$app->call("controllers\\ab\\save\\". $app->get('PARAMS.class')."->" . $app->get('PARAMS.function'));
+			}
+		);
+
 
 		//$app->route('GET|POST /ab/data/@data', 'abdata->{{@PARAMS.data}}');
 		//$app->route('GET|POST /ab/save/@section', 'ab_controllers_save->{{@PARAMS.section}}');

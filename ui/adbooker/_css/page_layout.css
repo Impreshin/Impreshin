@@ -41,6 +41,7 @@
 	position : absolute;
 	top      : -16px;
 	height: 11px;
+	cursor : pointer;
 }
 
 .pages.left .page_section {
@@ -65,7 +66,7 @@
 	color: #fff;
 background-color: rgba(100,100,100,0.8);
 
-
+	cursor : pointer;
 
 }
 
@@ -219,4 +220,50 @@ background-color: rgba(100,100,100,0.8);
 #dummy-bottom .spread .page:hover {
 	background-color : #DEEBFF;
 	color: #444;
+}
+#rightsideOver {
+	position:absolute;
+	top : 0;
+	bottom : 0;
+	left : -1px;
+	right : 0;
+	background-color: rgba(250,250,250,1);
+display: none;
+}
+
+#rightsideOver  .header {
+	position: absolute;
+	top:0;
+	left: 0;
+	right: 0;
+	border-bottom: 1px dotted #ccc;
+	padding-top: 5px;
+	padding-bottom: 5px;
+
+}
+
+#rightsideOver .header .close-right-over{
+	position : absolute;
+	top : 3px;
+	right : 3px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#rightsideOver  .footer {
+	position       : absolute;
+	bottom            : 42px;
+	left           : 0;
+	right          : 0;
+	border-top  : 1px dotted #ccc;
+
+
+}
+
+#rightsideOver  .body {
+	position : absolute;
+	bottom   : 42px;
+	left  : 0;
+	right : 0;
+	top: 38px;
 }

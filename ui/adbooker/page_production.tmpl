@@ -32,17 +32,11 @@
 					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
 					<ul class="dropdown-menu" id="record-settings">
 						<li class="nav-header">Group By</li>
-						<li data-group-records-by="material_production" class="{% if settings['list']['group']['g'] == "material_production" %}active{% endif %}">
-							<a href="javascript:;">Production</a></li>
-						<li data-group-records-by="placing" class="{% if settings['list']['group']['g']|default("placing") == "placing" %}active{% endif %}"><a href="javascript:;" data-group="placing">Placing</a></li>
-						<li data-group-records-by="type" class="{% if settings['list']['group']['g'] == "type" %}active{% endif %}"><a href="javascript:;">Type</a></li>
-						<li data-group-records-by="colours" class="{% if settings['list']['group']['g'] == "colours" %}active{% endif %}"><a href="javascript:;">Colours</a></li>
-						<li data-group-records-by="marketer" class="{% if settings['list']['group']['g'] == "marketer" %}active{% endif %}"><a href="javascript:;">Marketers</a></li>
-						<li data-group-records-by="columns" class="{% if settings['list']['group']['g'] == "columns" %}active{% endif %}"><a href="javascript:;">Columns</a></li>
-						<li data-group-records-by="discountPercent" class="{% if settings['list']['group']['g'] == "discountPercent" %}active{% endif %}"><a href="javascript:;">Discount %</a></li>
-						<li data-group-records-by="accountStatus" class="{% if settings['list']['group']['g'] == "accountStatus" %}active{% endif %}"><a href="javascript:;">Account Status</a></li>
-						<li data-group-records-by="none" class="{% if settings['list']['group']['g'] == "none" %}active{% endif %}">
-							<a href="javascript:;">No Ordering</a></li>
+						{% for row in _ab['settings']['groupby'] %}
+						<li data-group-records-by="{{ row['g'] }}" class="{% if settings["list"]['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+							<a href="javascript:;">{{ row['n'] }}</a>
+						</li>
+						{% endfor %}
 
 
 
@@ -154,17 +148,13 @@
 				</small>
 			</h4>
 			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-group">
-				<button type="button" style="width: 135px;" data-group-records-by="material_production" class="btn {% if settings['list']['group']['g']|default("material_production") == "material_production" %}active{% endif %}">Production</button>
+				{% for row in _ab['settings']['groupby'] %}
+				<button type="button" style="width: 135px;" data-group-records-by="{{ row['g'] }}" class="btn {% if settings['list']['group']['g']|default("material_production") == row['g'] %}active{% endif %}">{{ row['n'] }}</button>
+
+				{% endfor %}
 
 
-				<button type="button" style="width: 135px;" data-group-records-by="placing"  class="btn {% if settings['list']['group']['g']|default("placing") == "placing" %}active{% endif %}">Placing</button>
-				<button type="button" style="width: 135px;" data-group-records-by="type"  class="btn  {% if settings['list']['group']['g'] == "type" %}active{% endif %}">Type</button>
-				<button type="button" style="width: 135px;" data-group-records-by="colours"  class="btn  {% if settings['list']['group']['g'] == "colours" %}active{% endif %}">Colours</button>
-				<button type="button" style="width: 135px;" data-group-records-by="marketer"  class="btn  {% if settings['list']['group']['g'] == "marketer" %}active{% endif %}">Marketers</button>
-				<button type="button" style="width: 135px;" data-group-records-by="columns"  class="btn  {% if settings['list']['group']['g'] == "columns" %}active{% endif %}">Columns</button>
-				<button type="button" style="width: 135px;" data-group-records-by="discountPercent"  class="btn  {% if settings['list']['group']['g'] == "discountPercent" %}active{% endif %}">Discount %</button>
-				<button type="button" style="width: 135px;" data-group-records-by="accountStatus"  class="btn  {% if settings['list']['group']['g'] == "accountStatus" %}active{% endif %}">Account Status</button>
-				<button type="button" style="width: 135px;" data-group-records-by="none"  class="btn span2 {% if settings['list']['group']['g'] == "none" %}active{% endif %}">No Ordering</button>
+
 			</div>
 			<div class="clearfix"></div>
 			<hr>

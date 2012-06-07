@@ -106,13 +106,14 @@ class layout extends data {
 
 
 
-		$pagesReal = models\pages::getAll("pID='$pID' AND dID = '$dID'","page ASC");
+		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
 		$r = array();
 		foreach ($pagesReal as $page){
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
 				"section"=> array(
+					"i"=>$page['sectionID'],
 					"n"=>$page['section'],
 					"c"=>$page['section_colour']
 				),
@@ -214,6 +215,41 @@ class layout extends data {
 
 		return $GLOBALS["output"]['data'] = $stats;
 
+	}
+
+	function _details_page(){
+		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+		$pID = $user['ab_publication']['ID'];
+
+		$dID = $user['ab_publication']['current_date']['ID'];
+
+		$page = models\pages::getAll("page='$page_nr' AND global_pages.dID = '$dID' AND global_pages.pID='$pID'");
+
+		if (count($page)) {
+			$page = $page[0];
+		} else {
+			$page = models\pages::dbStructure();
+			$page['page'] = $page_nr;
+		}
+
+
+		$GLOBALS["output"]['data'] = $page;
+	}
+	function _details_section(){
+		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$section = new models\sections();
+		$section = $section->get($ID);
+
+		$return = $section;
+
+		$GLOBALS["output"]['data'] = $return;
 	}
 
 
