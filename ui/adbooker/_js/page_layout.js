@@ -372,8 +372,4 @@ function drop(ID,page,$dragged){
 	}));
 
 
-
-
-
-
 }

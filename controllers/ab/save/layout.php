@@ -70,14 +70,14 @@ class layout extends save {
 
 			$a->save();;
 
-			$page = $a->_id;
+			$pageID = $a->_id;
 		} else {
-			$page = $a->ID;
+			$pageID = $a->ID;
 		}
 
 
 		$values=array(
-			"pageID"=>$page
+			"pageID"=> $pageID
 		);
 		models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
 
