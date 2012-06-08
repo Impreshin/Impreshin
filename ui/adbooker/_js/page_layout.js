@@ -196,7 +196,7 @@ function getList(){
 		if (data['records'][0]){
 			$recordsList.jqotesub($("#template-records-list"), data['records']);
 
-
+			tr_draggable($recordsList);
 
 		} else {
 			$recordsList.html('<tr><td class="c no-records">No Records Found</td></tr>')
@@ -204,37 +204,38 @@ function getList(){
 
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
-		$("#record-list-middle tbody tr.record, .pages .record").draggable({
-				opacity    :0.5,
-				helper     :function(e){
-					var $target = $(e.target).closest("tr.record");
-					var cm = $target.attr("data-cm");
-					var col = $target.attr("data-col");
 
-
-
-					var width = colSize * col, offsetX = width / 2;
-					var height = cmSize * cm, offsetY = height / 2;;
-
-
-					return '<div class="dragablethingy" style="width: '+width+'px; height: '+height+'px; margin-left: -'+ offsetX+'px; margin-top: -'+ offsetY+'px;">t</div>'
-				},
-				cursorAt:{left:0, top:0},
-				containment:false,
-				zIndex     :2710,
-				appendTo   :'body',
-				//snap:true,
-				//snapMode:"outer",
-				//revert: 'invalid',
-				stop       :function (event, ui) {
-
-				},
-				revert  :'invalid'
-			}
-		);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 		records_list_resize();
 	}));
+}
+
+function tr_draggable($parent){
+	$("tr.record", $parent).draggable({
+			opacity    :0.5,
+			helper     :function (e) {
+				var $target = $(e.target).closest("tr.record");
+				var cm = $target.attr("data-cm");
+				var col = $target.attr("data-col");
+
+				var width = colSize * col, offsetX = width / 2;
+				var height = cmSize * cm, offsetY = height / 2;
+				;
+
+				return '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;">t</div>'
+			},
+			cursorAt   :{left:0, top:0},
+			containment:false,
+			zIndex     :2710,
+			appendTo   :'body',
+			//snap:true,
+			//snapMode:"outer",
+			//revert: 'invalid',
+			stop       :function (event, ui) {
+
+			},
+			revert     :'invalid'
+		});
 }
 function load_pages(settings){
 	var placingID = $("#placingID").val();
@@ -254,7 +255,7 @@ function load_pages(settings){
 		}
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
-
+		tr_draggable($("#pages-area"));
 		$("#pages-area .pages").droppable({
 			accept     :"tr.record",
 			greedy:true,
@@ -366,6 +367,7 @@ function drop(ID,page,$dragged){
 		data = data['data'];
 		$dragged.remove();
 		$("#page-" + page).jqotesub($("#template-spreads-page"), data);
+		tr_draggable($("#page-" + page));
 		console.log("replace: " + page);
 	}));
 
