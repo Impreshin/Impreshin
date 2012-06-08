@@ -85,8 +85,8 @@ class layout extends data {
 
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
-
-		$stats = $this->_stats();
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' ", "client ASC");
+		$stats = $this->_stats($bookingsRaw);
 
 
 		$editionPages = $stats['loading']['pages'];
@@ -105,6 +105,23 @@ class layout extends data {
 
 
 
+		$bookings = array();
+		foreach ($bookingsRaw as $booking){
+			if ($booking['pageID']) {
+				$a = array();
+				$a['ID'] = $booking['ID'];
+				$a['client'] = $booking['client'];
+				$a['colour'] = $booking['colour'];
+				$a['colourSpot'] = $booking['colourSpot'];
+				$a['col'] = $booking['col'];
+				$a['cm'] = $booking['cm'];
+				$a['totalspace'] = $booking['totalspace'];
+
+				$bookings[$booking['pageID']][] = $a;
+			}
+		}
+
+
 
 		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
@@ -118,8 +135,9 @@ class layout extends data {
 					"c"=>$page['section_colour']
 				),
 				"colour" => $page['colour'],
-				//"percent"=> $percent,
-				//"cm"     => $cm
+				"percent"=> $page['percent'],
+				"cm"     => $page['cm'],
+				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
 			);
 		}
 
@@ -193,6 +211,77 @@ class layout extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
+
+	function _page($page){
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		$pID = $user['ab_pID'];
+
+		$page = ($page)?$page: isset($_REQUEST['page'])?$_REQUEST['page']:"";
+
+		$currentDate = $user['ab_publication']['current_date'];
+		$dID = $currentDate['ID'];
+
+
+		$blank = array(
+			"page"   => 0,
+			"section"=> array(
+				"n"=> "",
+				"c"=> "",
+
+			),
+			"colour" => "",
+			"percent"=>0,
+			"cm"=>0
+
+		);
+
+
+
+
+		$pagesReal = models\pages::getAll("page='$page' AND global_pages.pID='$pID' AND global_pages.dID = '$dID'", "page ASC, ID DESC");
+
+		$page = $pagesReal[0];
+
+
+		$r = array(
+				"page"   => $page['page'],
+				"section"=> array(
+					"i"=> $page['sectionID'],
+					"n"=> $page['section'],
+					"c"=> $page['section_colour']
+				),
+				"colour" => $page['colour'],
+				"percent"=> $page['percent'],
+				"cm"     => $page['cm']
+			);
+
+
+		$pageID = $page['ID'];
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND pageID = '$pageID' ", "client ASC");
+		$bookings = array();
+		foreach ($bookingsRaw as $booking) {
+			if ($booking['pageID']) {
+				$a = array();
+				$a['ID'] = $booking['ID'];
+				$a['client'] = $booking['client'];
+				$a['colour'] = $booking['colour'];
+				$a['colourSpot'] = $booking['colourSpot'];
+				$a['col'] = $booking['col'];
+				$a['cm'] = $booking['cm'];
+				$a['totalspace'] = $booking['totalspace'];
+
+				$bookings[] = $a;
+			}
+		}
+
+		$r['records'] = $bookings;
+
+
+		$return = $r;
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
 	function _stats($data="") {
 		$user = F3::get("user");
 		$userID = $user['ID'];

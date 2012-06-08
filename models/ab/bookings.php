@@ -67,7 +67,7 @@ class bookings {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC")) {
+	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"), $columns=array()) {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -93,7 +93,7 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status as material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
-				0 as layout,
+				if (`page`,1,0) as layout,
 				global_pages.page
 			$select
 			FROM ((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID
@@ -313,7 +313,7 @@ class bookings {
 		$lookupColumns["material_source"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END)","col"=>"material_source","val"=>"");
 		$lookupColumns["material_status"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)","col"=>"material_status","val"=>"");
 		$lookupColumns["checked"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)","col"=>"checked","val"=>"");
-
+		$lookupColumns["pageID"] = array("sql"=>"(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')","col"=>"page","val"=>"");
 		$lookup = array();
 
 
@@ -411,6 +411,14 @@ class bookings {
 						$label = "Booking Not Checked";
 					}
 					break;
+				case "layout":
+					if ($a->pageID) {
+						$label = "Booking added to a page";
+					} else {
+						$label = "Booking removed from a page";
+					}
+					break;
+
 			}
 		}
 

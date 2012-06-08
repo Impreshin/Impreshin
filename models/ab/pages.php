@@ -36,6 +36,7 @@ class pages {
 	}
 
 	public static function getAll($where="", $orderby=""){
+		$user = F3::get("user");
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -49,16 +50,18 @@ class pages {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT global_pages.*, section, section_colour
+			SELECT global_pages.*, section, section_colour,  COALESCE((SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID),0) as cm
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby
 		"
 		);
-
+		$pageSize = $user['ab_publication']['columnsav'] * $user['ab_publication']['cmav'];
 		$r = array();
 		foreach ($result as $item){
+			$percent = ($item['cm'])?($item['cm']/$pageSize)*100:0;
 			$item['page']=number_format($item['page'],0);
+			$item['percent']=number_format($percent,2);
 			$r[] = $item;
 		}
 

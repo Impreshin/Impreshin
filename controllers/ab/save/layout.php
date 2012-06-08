@@ -53,6 +53,40 @@ class layout extends save {
 
 
 	}
+	function _drop(){
+		$user = F3::get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : "";
+
+		$pID = $user['ab_pID'];
+		$dID = $user['ab_publication']['current_date']['ID'];
+
+		$a = new Axon("global_pages");
+		$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
+		if ($a->dry()){
+			$a->pID = $pID;
+			$a->dID = $dID;
+			$a->page = $page;
+
+			$a->save();;
+
+			$page = $a->_id;
+		} else {
+			$page = $a->ID;
+		}
+
+
+		$values=array(
+			"pageID"=>$page
+		);
+		models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+
+		$data = new \controllers\ab\data\layout();
+		$data = $data->_page($page);
+
+		return $GLOBALS["output"]['data'] = $data;
+
+	}
 
 
 }
