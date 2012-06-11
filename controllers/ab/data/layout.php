@@ -32,6 +32,8 @@ class layout extends data {
 		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='$placingID' AND (page is null OR page > '$maxPage')");
 		$rawBookings= $records;
 		$records = models\bookings::display($records);
+
+
 		if (count($records)) $records = $records[0]['records'];
 		$return = array();
 		$return['placing'] = F3::get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
@@ -85,7 +87,7 @@ class layout extends data {
 
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' ", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
 		$stats = $this->_stats($bookingsRaw);
 
 
@@ -116,6 +118,8 @@ class layout extends data {
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
+				$a['pageID'] = $booking['pageID'];
+				$a['page'] = $booking['page'];
 
 				$bookings[$booking['pageID']][] = $a;
 			}
@@ -212,7 +216,7 @@ class layout extends data {
 	}
 
 
-	function _page($page){
+	function _page($page=""){
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['ab_pID'];
@@ -258,10 +262,10 @@ class layout extends data {
 
 
 		$pageID = $page['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND pageID = '$pageID' ", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
 		$bookings = array();
 		foreach ($bookingsRaw as $booking) {
-			if ($booking['pageID']) {
+			if ($booking['pageID'] == $pageID) {
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
@@ -270,6 +274,8 @@ class layout extends data {
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
+				$a['pageID'] = $booking['pageID'];
+				$a['page'] = $booking['page'];
 
 				$bookings[] = $a;
 			}
@@ -277,8 +283,12 @@ class layout extends data {
 
 		$r['records'] = $bookings;
 
+		$r['stats'] = $this->_stats($bookingsRaw);;
+
 
 		$return = $r;
+		$return['date'] = $currentDate['publish_date_display'];
+		$return['dID'] = $currentDate['ID'];
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
@@ -290,16 +300,11 @@ class layout extends data {
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-
-		$pages = models\pages::maxPages($currentDate, "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND 1");
-
-
-
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.checked = '1' AND ab_bookings.deleted is null ";
+		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.checked = '1' AND ab_bookings.deleted is null AND typeID='1' ";
 
 		if (!is_array($data)) $data = $where;
-		$stats = models\record_stats::stats_layout($data);
-		$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $pages);
+		$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"));
+		$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
 
 
 		return $GLOBALS["output"]['data'] = $stats;

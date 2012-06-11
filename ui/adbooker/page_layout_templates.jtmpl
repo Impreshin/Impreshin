@@ -8,7 +8,7 @@
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><%= this.colour %></td>
-		<td><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
+		<td><% if (this.remark) { %><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span class="label"></span><% } %><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
 		</td>
 		<td style="width: 20px;">
 			<% if (this.material_status){ %>
@@ -34,7 +34,7 @@
 				<table class="s">
 					<% for(var g in this.records) { %>
 
-					<tr data-id="<%= this.records[g].ID %>" class="record " data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>">
+					<tr data-id="<%= this.records[g].ID %>" class="record " data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-page="<%= this.records[g].page %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
 						</td>
@@ -86,7 +86,7 @@
 				<table class="s">
 					<% for(var g in this.pages[i].records) { %>
 
-					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>">
+					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-page="<%= this.pages[i].records[g].page %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 

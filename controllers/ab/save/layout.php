@@ -61,28 +61,36 @@ class layout extends save {
 		$pID = $user['ab_pID'];
 		$dID = $user['ab_publication']['current_date']['ID'];
 
-		$a = new Axon("global_pages");
-		$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
-		if ($a->dry()){
-			$a->pID = $pID;
-			$a->dID = $dID;
-			$a->page = $page;
+		if ($page && ($page != "remove") ){
+			$a = new Axon("global_pages");
+			$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
+			if ($a->dry()) {
+				$a->pID = $pID;
+				$a->dID = $dID;
+				$a->page = $page;
 
-			$a->save();;
+				$a->save();
+				;
 
-			$pageID = $a->_id;
+				$pageID = $a->_id;
+			} else {
+				$pageID = $a->ID;
+			}
 		} else {
-			$pageID = $a->ID;
+			$pageID = NULL;
 		}
+
 
 
 		$values=array(
 			"pageID"=> $pageID
 		);
 		models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
-
-		$data = new \controllers\ab\data\layout();
-		$data = $data->_page($page);
+		$data = array("ID"=>$ID);
+		if ($page && ($page != "remove")) {
+			$data = new \controllers\ab\data\layout();
+			$data = $data->_page($page);
+		}
 
 		return $GLOBALS["output"]['data'] = $data;
 

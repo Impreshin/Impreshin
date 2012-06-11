@@ -5,195 +5,129 @@
  */
 namespace models\ab;
 class record_stats {
-	public static function stats_cm($where) {
-
+	public static function stats($where,$columns=array("cm")){ // "cm","checked","material","material_approved","layout","placed","placed_cm"
 		$timer = new \timer();
-
+		$totals = array();
+//$columns = array("cm","placed","placed_cm");
 		if (is_array($where)) {
 			$data = $where;
 		} else {
 			$data = \models\ab\bookings::getAll($where);
+
 		}
 
-		$totals = array(
-			"records"   => count($data),
-			"cm"        => 0,
+			$totals = array(
+				"records"   => count($data),
+			);
 
-		);
+			if (in_array("cm",$columns)) $totals['cm'] = 0;
+			if (in_array("checked",$columns)) $totals['checked'] = 0;
+			if (in_array("material",$columns)) $totals['material'] = 0;
+			if (in_array("material_approved",$columns)) $totals['material_approved'] = 0;
+			if (in_array("layout",$columns)) $totals['layout'] = 0;
+			if (in_array("placed",$columns)) $totals['placed'] = 0;
+			if (in_array("placed_cm",$columns)) $totals['placed_cm'] = 0;
 
+			$lastdID_ = "";
+			$maxPages = 0;
+
+		$dIDArray = array();
+			foreach ($data as $record) {
+				if (!array_key_exists($record['dID'], $dIDArray)) {
+					$dIDArray[$record['dID']] = array("dID"=> $record['dID'],"cm"=>0);
+				}
+				$dIDArray[$record['dID']]['cm'] = $dIDArray[$record['dID']]['cm'] + $record['totalspace'];
+
+				if (in_array("cm", $columns)) if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
+				if (in_array("checked", $columns)) if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
+				if (in_array("material", $columns)) if ($record['material']) $totals['material'] = $totals['material'] + 1;
+				if (in_array("material_approved", $columns)) if ($record['material_approved']) $totals['material_approved'] = $totals['material_approved'] + 1;
+				if (in_array("layout", $columns)) if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
+
+
+
+			}
+		//$totals['dates']= $dIDArray;
+		//test_array($dIDArray);
+
+
+
+		$maxPages = array();
+			foreach ($dIDArray as $d) {
+				$maxPages[$d['dID']] = pages::maxPages($d['dID'], $d['cm']);
+
+			}
 
 		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-		}
+
+				if (in_array("placed", $columns) || in_array("placed_cm", $columns) && $record['page']) {
+					$maxPage = $maxPages[$record['dID']];
+
+					if ($maxPage && $record['page'] && ($record['page'] > $maxPage)) {
+
+					} else {
+						if (in_array("placed", $columns)) if ($record['page']) $totals['placed'] = $totals['placed'] + 1;
+						if (in_array("placed_cm", $columns)) if ($record['page']) $totals['placed_cm'] = $totals['placed_cm'] + $record['totalspace'];
+					}
 
 
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"    => $totals["records"],
-			),
+				}
 
 
-		);
+			}
 
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return $return;
-	}
-	public static function stats_list($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-		$totals = array(
-			"records" => count($data),
-			"cm"      => 0,
-			"checked" => 0,
-			"material"=> 0,
-			"layout"  => 0,
-
-		);
-
-		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
-			if ($record['material']) $totals['material'] = $totals['material'] + 1;
-			if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
-
-		}
+			$return = array(
+				"records"=> array(
+					"total"    => $totals["records"],
+				)
 
 
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"   => $totals["records"],
-				"checked" => array(
-					"r"=> $totals["checked"],
-					"p"=> ($totals['records']) ? number_format((($totals["checked"] / $totals["records"]) * 100), 2) : 0
-				),
-				"material"=> array(
-					"r"=> $totals["material"],
-					"p"=> ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
-				),
-				"layout"  => array(
-					"r"=> $totals["layout"],
-					"p"=> ($totals['records']) ? number_format((($totals["layout"] / $totals["records"]) * 100), 2) : 0
-				),
-			),
+			);
 
+		if (in_array("cm", $columns)) $return['cm'] = $totals['cm'] ;
 
-		);
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return $return;
-	}
-	public static function stats_production($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-		$totals = array(
-			"records" => count($data),
-			"cm"      => 0,
-			"material_approved" => 0,
-			"material"=> 0,
-
-		);
-
-		//test_array($data);
-
-		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['material']) $totals['material'] = $totals['material'] + 1;
-			if ($record['material_approved']) $totals['material_approved'] = $totals['material_approved'] + 1;
-
-		}
-
-
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"   => $totals["records"],
-
-				"material"=> array(
-					"r"=> $totals["material"],
-					"p"=> ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
-				),
-				"material_approved"  => array(
+			if (in_array("checked", $columns)) $return['records']['checked'] = array(
+				"r"=> $totals["checked"],
+				"p"=> ($totals['records']) ? number_format((($totals["checked"] / $totals["records"]) * 100), 2) : 0
+			);
+			if (in_array("material", $columns)) $return['records']['material'] = array(
+				"r"=> $totals["material"],
+				"p"=> ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
+			);
+			if (in_array("material_approved", $columns)) {
+				$t = (isset($totals["material"])) ? $totals["material"] : $totals["records"];
+				$return['records']['material_approved'] = array(
 					"r"=> $totals["material_approved"],
-					"p"=> ($totals['material']) ? number_format((($totals["material_approved"] / $totals["material"]) * 100), 2) : 0
-				),
-			),
+					"p"=> ($totals['records']) ? number_format((($totals["material_approved"] / $t) * 100), 2) : 0
+				);
+			}
+
+			if (in_array("layout", $columns)) $return['records']['layout'] = array(
+				"r"=> $totals["layout"],
+				"p"=> ($totals['records']) ? number_format((($totals["layout"] / $totals["records"]) * 100), 2) : 0
+			);
 
 
-		);
+
+			if (in_array("placed", $columns)) $return['records']['placed'] = array(
+				"r"=> $totals["placed"],
+				"p"=> ($totals['records']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
+			);
+			if (in_array("placed_cm", $columns)) $return['records']['placed_cm'] = $totals['placed_cm'];
+
+
+
+
+
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function stats_layout($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-
-		$totals = array(
-			"records" => count($data),
-			"cm"      => 0,
-			"placed" => 0,
-			"placed_cm" => 0,
-
-		);
 
 
 
-		$lastdID = "";
-		$maxPages = 0;
-		foreach ($data as $record) {
-			if ($lastdID!=$record['dID']){
-				$maxPages = pages::maxPages($record['dID'], $data);
-			}
-			$lastdID = $record['dID'];
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['page'] && ($record['page'] <= $maxPages)) {
-				$totals['placed'] = $totals['placed'] + 1;
-				$totals['placed_cm'] = $totals['placed_cm'] + $record['totalspace'];
-			}
-
-		}
-
-
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"   => $totals["records"],
-
-				"placed_cm"=> $totals['placed_cm'],
-				"placed"  => array(
-					"r"=> $totals["placed"],
-					"p"=> ($totals['records']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
-				),
-
-			),
-
-
-		);
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return $return;
-	}
 
 
 }

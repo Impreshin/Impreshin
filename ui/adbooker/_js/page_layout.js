@@ -122,8 +122,31 @@ $(document).ready(function () {
 		$(this).closest("form").trigger("submit");
 	});
 
+	$("#record-list-middle").droppable({
+		accept   :".pages tr.record",
+		greedy   :true,
+		tolerance:"pointer",
+		over     :function (event, ui) {
+			var $this = $(this);
 
+			$this.addClass("droppablehover");
 
+		},
+		out:function (event, ui) {
+			var $this = $(this);
+
+			$this.removeClass("pagefull, droppablehover");
+
+		},
+		drop     :function (event, ui) {
+			var $this = $(this);
+			var $page = $(this).parent();
+			var $dragged = $(ui.draggable);
+			$this.removeClass("pagefull, droppablehover");
+
+			remove($dragged.attr("data-id"), $dragged);
+		}
+	});
 
 
 
@@ -205,6 +228,8 @@ function getList(){
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 
+
+
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 		records_list_resize();
 	}));
@@ -278,8 +303,6 @@ function load_pages(settings){
 				$this.removeClass("pagefull, pagehover");
 
 				drop($dragged.attr("data-id"),$this.attr("rel"), $dragged);
-				console.log("dropped onto:"+ $this.attr("rel"))
-				console.log("dragged:"+ $dragged.attr("data-id"))
 			}
 		});
 
@@ -362,14 +385,42 @@ function showList(){
 }
 
 function drop(ID,page,$dragged){
+	var oldPage = $($dragged).attr("data-page");
 
 	listRequest.push($.post("/ab/save/layout/_drop/?ID="+ID, {"page":page}, function (data) {
 		data = data['data'];
 		$dragged.remove();
 		$("#page-" + page).jqotesub($("#template-spreads-page"), data);
+		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 		tr_draggable($("#page-" + page));
-		console.log("replace: " + page);
+
+		if (oldPage) {
+			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
+				data = data['data'];
+				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
+				tr_draggable($("#page-" + oldPage));
+			});
+		}
 	}));
 
 
+
+}
+function remove(ID, $dragged){
+	var oldPage = $($dragged).attr("data-page");
+
+	listRequest.push($.post("/ab/save/layout/_drop/?ID=" + ID, {"page":"remove"}, function (data) {
+		data = data['data'];
+		$dragged.remove();
+
+		getList();
+
+		if (oldPage) {
+			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
+				data = data['data'];
+				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
+				tr_draggable($("#page-" + oldPage));
+			});
+		}
+	}));
 }

@@ -70,9 +70,8 @@ class pages {
 		return $return;
 	}
 
-	public static function maxPages($dID,$cm=""){
+	public static function maxPages($dID,$cm=0){
 		$timer = new timer();
-
 		if (is_array($dID)){
 			$date = $dID;
 		} else {
@@ -81,26 +80,15 @@ class pages {
 		}
 
 
-
 		if ($date['pages']){
 			$return = $date['pages'];
 		} else {
 			$pID = $date['pID'];
-			$dID = $date['ID'];
-
-
-
-				if (is_numeric($cm)){
-				} else {
-					$stats = record_stats::stats_cm($cm);
-					$cm = $stats['cm'];
-				}
-
 
 
 			$stats['loading'] = loading::getLoading($pID, $cm, $date['pages']);
 
-			//test_array($stats);
+
 			$return = $stats['loading']["pages"];
 		}
 

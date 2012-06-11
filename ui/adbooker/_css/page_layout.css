@@ -278,9 +278,12 @@ display: none;
 	background-color : #D3FFB7;
 }
 
-.pagehover {
+.pagehover, .droppablehover {
 	background-color : #D3FFB7;
 	border           : 1px solid #6C0;
+}
+.droppablehover {
+	border: none;
 }
 
 .returnhover {

@@ -75,7 +75,7 @@ class production extends data {
 		$records = models\bookings::getAll($where, $grouping, $ordering);
 
 
-		$stats = models\record_stats::stats_production($records);
+		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved"));
 
 
 
