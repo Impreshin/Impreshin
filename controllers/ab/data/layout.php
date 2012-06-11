@@ -88,7 +88,7 @@ class layout extends data {
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
-		$stats = $this->_stats($bookingsRaw);
+		$stats = $this->_stats();
 
 
 		$editionPages = $stats['loading']['pages'];
@@ -283,7 +283,7 @@ class layout extends data {
 
 		$r['records'] = $bookings;
 
-		$r['stats'] = $this->_stats($bookingsRaw);;
+		$r['stats'] = $this->_stats();;
 
 
 		$return = $r;
@@ -300,11 +300,22 @@ class layout extends data {
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.checked = '1' AND ab_bookings.deleted is null AND typeID='1' ";
 
-		if (!is_array($data)) $data = $where;
-		$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"));
-		$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
+		if (!is_array($data)) {
+			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND typeID='1' ");
+			$statsData = array();
+			$layoutcm = 0;
+			foreach ($data as $item){
+				$layoutcm = $layoutcm + $item['totalspace'];
+				if ($item['checked']=='1') $statsData[] = $item;
+			}
+			$stats = models\record_stats::stats($statsData,array("cm","placed","placed_cm"));
+			$stats['loading'] = models\loading::getLoading($pID, $layoutcm, $currentDate['pages']);
+		} else {
+			$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"));
+			$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
+		}
+
 
 
 		return $GLOBALS["output"]['data'] = $stats;
