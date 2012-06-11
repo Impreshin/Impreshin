@@ -1,5 +1,5 @@
 .pages {
-	height              : 200px;
+
 	width               : 143px;
 	float               : left;
 	margin-top          : 25px;
@@ -119,6 +119,10 @@ background-color: rgba(100,100,100,0.8);
 	-khtml-opacity : 0.3;
 	opacity        : 0.3;
 }
+.pages >article {
+	overflow-y : auto;
+	height     : 100px;
+}
 #record-list-middle {
 
 	position : absolute;
@@ -148,6 +152,7 @@ background-color: rgba(100,100,100,0.8);
 
 #record-details-bottom > article {
 	cursor : pointer;
+
 }
 
 #record-details-bottom fieldset {
@@ -208,6 +213,21 @@ background-color: rgba(100,100,100,0.8);
 	text-align: center;
 	margin: 0;
 	cursor : pointer;
+	position: relative;
+
+}
+
+
+#dummy-bottom .spread .page .bar {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	filter         : alpha(opacity = '50');
+	-moz-opacity   : 0.3;
+	-khtml-opacity : 0.3;
+	opacity        : 0.3;
+	background-color: #0E90D2;
 }
 
 #dummy-bottom .spread .page.visible {
