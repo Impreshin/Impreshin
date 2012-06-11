@@ -48,12 +48,13 @@
 					<% } %>
 				</table>
 			</div>
+			<% if (this.percent) { %>
 			<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 				<div class="bar" style="width: <%= this.percent %>%;"></div>
 				<div class="text"><%= this.percent %>% with a total of <%= this.cm %>cm</div>
 
 			</footer>
-
+			<% } %>
 			<% if(this.colour) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.colour %>.png" alt="" width="20">
@@ -101,12 +102,13 @@
 				</table>
 
 			</div>
+			<% if (this.pages[i].percent) { %>
 			<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 				<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
 				<div class="text"><%= this.pages[i].percent %>% with a total of <%= this.pages[i].cm %>cm</div>
 
 			</footer>
-
+			<% } %>
 			<% if(this.pages[i].colour) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.pages[i].colour %>.png" alt="" width="20">
