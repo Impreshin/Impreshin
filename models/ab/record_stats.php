@@ -5,7 +5,7 @@
  */
 namespace models\ab;
 class record_stats {
-	public static function stats($where,$columns=array("cm")){ // "cm","checked","material","material_approved","layout","placed","placed_cm"
+	public static function stats($where,$columns=array("cm"),$pages=""){ // "cm","checked","material","material_approved","layout","placed","placed_cm"
 		$timer = new \timer();
 		$totals = array();
 //$columns = array("cm","placed","placed_cm");
@@ -54,10 +54,11 @@ class record_stats {
 
 		$maxPages = array();
 			foreach ($dIDArray as $d) {
-				$maxPages[$d['dID']] = pages::maxPages($d['dID'], $d['cm']);
+				$maxPages[$d['dID']] = ($pages)? $pages: pages::maxPages($d['dID'], $d['cm']);
 
 			}
 
+		//test_array($maxPages);
 		foreach ($data as $record) {
 
 				if (in_array("placed", $columns) || in_array("placed_cm", $columns) && $record['page']) {

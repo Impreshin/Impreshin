@@ -9,6 +9,7 @@
 	position            : relative;
 	border:1px solid #999;
 
+
 }
 
 .spread {
@@ -111,6 +112,7 @@ background-color: rgba(100,100,100,0.8);
 	text-align: center;
 	font-size: 9px;
 
+
 }
 
 .pages footer.progress .bar {
@@ -119,9 +121,22 @@ background-color: rgba(100,100,100,0.8);
 	-khtml-opacity : 0.3;
 	opacity        : 0.3;
 }
+
+.pages  .msgs {
+	position   : absolute;
+
+	left       : 0;
+	right      : 0;
+	bottom     : 0;
+	text-align : center;
+	font-size  : 9px;
+	background-color : white;
+	display: none;
+}
+
 .pages >article {
 	overflow-y : auto;
-	height     : 100px;
+	margin-bottom: 15px;
 }
 #record-list-middle {
 
@@ -291,7 +306,7 @@ display: none;
 .dragablethingy {
 	width:50px;
 	height: 50px;
-	background-color: red;
+	background-color: #999;
 }
 
 .dropzones {
@@ -313,4 +328,14 @@ display: none;
 .pagefull {
 	background-color : #F99;
 	border           : 1px solid #F00;
+}
+
+.pages article[data-colour='none'] .record[data-colour='Full'], .pages article[data-colour='none'] .record[data-colour='full'], .pages article[data-colour='none'] .record[data-colour='Spot'], .pages article[data-colour='none'] .record[data-colour='spot'] {
+	background-color : #ffd9d0;
+}
+.pages article[data-colour='Spot'] .record[data-colour='Full'], .pages article[data-colour='Spot'] .record[data-colour='full'] {
+	background-color : #ffd9d0;
+}
+.pages .record td {
+	border-bottom: 1px dotted #e1e1e1;
 }

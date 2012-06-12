@@ -52,8 +52,8 @@ $(document).ready(function () {
 
 	$(document).on("click","#dummy-bottom .page",function(){
 		var $this=$(this);
-		var page = "#dummy-area .pages[rel='" + $this.attr("data-page_nr") + "']";
-		if ($("#dummy-area .pages[rel='" + $this.attr("data-page_nr") + "']").length){
+		var page = "#dummy-area .pages[data-page='" + $this.attr("data-page_nr") + "']";
+		if ($("#dummy-area .pages[data-page='" + $this.attr("data-page_nr") + "']").length){
 			left_pane.scrollToElement(page, true, true);
 		}
 
@@ -135,14 +135,14 @@ $(document).ready(function () {
 		out:function (event, ui) {
 			var $this = $(this);
 
-			$this.removeClass("pagefull, droppablehover");
+			$this.removeClass("pagefull droppablehover");
 
 		},
 		drop     :function (event, ui) {
 			var $this = $(this);
 			var $page = $(this).parent();
 			var $dragged = $(ui.draggable);
-			$this.removeClass("pagefull, droppablehover");
+			$this.removeClass("pagefull droppablehover");
 
 			remove($dragged.attr("data-id"), $dragged);
 		}
@@ -247,7 +247,7 @@ function tr_draggable($parent){
 				var height = cmSize * cm, offsetY = height / 2;
 				;
 
-				return '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;">t</div>'
+				return '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;"></div>'
 			},
 			cursorAt   :{left:0, top:0},
 			containment:false,
@@ -261,6 +261,140 @@ function tr_draggable($parent){
 			},
 			revert     :'invalid'
 		});
+}
+function page_droppable($element){
+	$element.droppable({
+		accept   :"tr.record",
+		greedy   :true,
+		tolerance:"pointer",
+		over     :function (event, ui) {
+			var $this = $(this);
+			var $page = $this.find("article");
+			var $dragged = ui.draggable;
+
+			if ($this.hasClass("dontDrop") == true) {
+				$this.addClass("pagefull");
+
+			} else {
+				var pageLoadingCM = $page.attr("data-cm");
+				var recordCM = $dragged.attr("data-cm") * $dragged.attr("data-col");
+				var reason = [];
+				var allowDrop = true;
+
+				if ((Number(pageLoadingCM) + Number(recordCM) > colcmAv) && $dragged.attr("data-page") != $this.attr("data-page")) {
+					allowDrop = false;
+					reason.push("Not enough space");
+				}
+
+
+
+				var pageColour = $page.attr("data-colour");
+				var draggedColour = $dragged.attr("data-colour");
+				var acceptableColours = "";
+				if (pageColour){
+					pageColour = pageColour.toLowerCase();
+					draggedColour = draggedColour.toLowerCase();
+					switch (pageColour){
+						case "full":
+							acceptableColours = ["full","spot","none"];
+							break;
+						case "spot":
+							acceptableColours = ["spot", "none"];
+							break;
+						case "none":
+							acceptableColours = ["none"];
+							break;
+						case "null":
+							acceptableColours = ["full", "spot", "none"];
+							break;
+					}
+
+					if (acceptableColours.indexOf(draggedColour)== -1){
+						allowDrop = false;
+						reason.push("Booking colour");
+					}
+
+				}
+
+
+				if (allowDrop) {
+					$this.addClass("pagehover");
+				} else {
+					$this.addClass("pagefull")
+				}
+				reason = reason.join("<br>");
+
+
+
+				var $msgs = $this.find(".msgs");
+
+				if (reason){
+					$msgs.html(reason).stop(true, true).fadeIn();
+				} else {
+					$msgs.html("").stop(true, true).fadeOut();
+				}
+
+
+
+			}
+
+		},
+		out      :function (event, ui) {
+			var $this = $(this);
+			$this.removeClass("pagefull pagehover ").find(".msgs").html("").stop(true, true).fadeOut();
+
+		},
+		drop     :function (event, ui) {
+			var $this = $(this);
+			var $page = $this.find("article");
+			var $dragged = $(ui.draggable);
+
+			var pageLoadingCM = $page.attr("data-cm");
+			var recordCM = $dragged.attr("data-cm") * $dragged.attr("data-col");
+			var allowDrop = true;
+			if ((Number(pageLoadingCM) + Number(recordCM) > colcmAv) && $dragged.attr("data-page") != $this.attr("data-page")) {
+				allowDrop = false;
+			}
+
+			var pageColour = $page.attr("data-colour");
+			var draggedColour = $dragged.attr("data-colour");
+			var acceptableColours = "";
+			if (pageColour) {
+				pageColour = pageColour.toLowerCase();
+				draggedColour = draggedColour.toLowerCase();
+				switch (pageColour) {
+					case "full":
+						acceptableColours = ["full", "spot", "none"];
+						break;
+					case "spot":
+						acceptableColours = ["spot", "none"];
+						break;
+					case "none":
+						acceptableColours = ["none"];
+						break;
+					case "null":
+						acceptableColours = ["full", "spot", "none"];
+						break;
+				}
+
+				if (acceptableColours.indexOf(draggedColour) == -1) {
+					allowDrop = false;
+				}
+
+			}
+
+
+
+			if (allowDrop) {
+				if ($dragged.attr("data-page") != $this.attr("data-page")){
+					drop($dragged.attr("data-id"), $this.attr("data-page"), $dragged);
+				}
+
+			}
+			$this.removeClass("pagefull pagehover").find(".msgs").html("").stop(true,true).fadeOut();
+
+		}
+	});
 }
 function load_pages(settings){
 	var placingID = $("#placingID").val();
@@ -281,30 +415,7 @@ function load_pages(settings){
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 		tr_draggable($("#pages-area"));
-		$("#pages-area .pages").droppable({
-			accept     :"tr.record",
-			greedy:true,
-			tolerance: "pointer",
-			over:function (event, ui) {
-				var $this = $(this);
-				var $page = $(this).parent();
-				var $dragged = ui.draggable;
-				$this.addClass("pagehover");
-
-			},
-			out: function(event, ui){
-				$(this).removeClass("pagefull").removeClass("pagehover")
-			},
-			drop       :function (event, ui) {
-				var $this = $(this)
-				var $page = $(this).parent()
-				var $dragged = $(ui.draggable)
-
-				$this.removeClass("pagefull, pagehover");
-
-				drop($dragged.attr("data-id"),$this.attr("rel"), $dragged);
-			}
-		});
+		page_droppable($("#pages-area .pages"));
 
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);
@@ -318,8 +429,8 @@ function visible_pages(){
 	$("#dummy-area .pages:visible").each(function(){
 		var $this = $(this);
 		if (isScrolledIntoView($this)) {
-			$("#dummy-bottom .page[data-page_nr='" + $this.attr("rel")+ "']").addClass("visible");
-			t.push($this.attr("rel"));
+			$("#dummy-bottom .page[data-page_nr='" + $this.attr("data-page")+ "']").addClass("visible");
+			t.push($this.attr("data-page"));
 		}
 	});
 //	console.log(t);
@@ -391,6 +502,8 @@ function drop(ID,page,$dragged){
 		data = data['data'];
 		$dragged.remove();
 		$("#page-" + page).jqotesub($("#template-spreads-page"), data);
+		page_droppable($("#page-" + page));
+		$("#dummy-bottom div[data-page_nr='" + page+"']").jqotesub($("#template-spreads-bottom-page"), data);
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 		tr_draggable($("#page-" + page));
 
@@ -398,6 +511,8 @@ function drop(ID,page,$dragged){
 			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
 				data = data['data'];
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
+				page_droppable($("#page-" + oldPage));
+				$("#dummy-bottom div[data-page_nr='" + oldPage + "']").jqotesub($("#template-spreads-bottom-page"), data);
 				tr_draggable($("#page-" + oldPage));
 			});
 		}
@@ -419,6 +534,7 @@ function remove(ID, $dragged){
 			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
 				data = data['data'];
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
+				$("#dummy-bottom div[data-page_nr='" + oldPage + "']").jqotesub($("#template-spreads-bottom-page"), data);
 				tr_draggable($("#page-" + oldPage));
 			});
 		}

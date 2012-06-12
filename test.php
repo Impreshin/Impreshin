@@ -1,217 +1,71 @@
-<?php
-/**
- * User: William
- * Date: 2012/05/29 - 2:11 PM
- */
-namespace models\ab;
-class record_stats {
-	public static function stats_cm($where) {
+</script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
+<script type="text/javascript">
+	var data = [
+		{
+			"t":"18 June 07:00",
+			"c":"-29.607335, 30.411336"
 		}
 
-		$totals = array(
-			"records"   => count($data),
-			"cm"        => 0,
+	];
 
-		);
+	function initialize() {
+		var def = data[0].c;
+		def = def.split(",");
+		var myLatlng = new google.maps.LatLng(def[0], def[1]);
+		var mapOptions = {
+			zoom     :8,
+			center   :myLatlng,
+			mapTypeId:google.maps.MapTypeId.HYBRID
+			//disableDefaultUI:true
+		};
 
+		var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
-		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
+		var flightPlanCoordinates = [];
+		for (var i in data) {
+			var item = data[i].c;
+			item = item.split(",");
+			myLatlng = new google.maps.LatLng(item[0], item[1]);
+			flightPlanCoordinates.push(myLatlng);
+
+			var marker = new google.maps.Marker({
+				position:myLatlng,
+				map     :map,
+				title   :data[i].t
+			});
+
 		}
+		var flightPath = new google.maps.Polyline({
+			path         :flightPlanCoordinates,
+			strokeColor  :"#FF0000",
+			strokeOpacity:1.0,
+			strokeWeight :2
+		});
 
+		flightPath.setMap(map);
 
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"    => $totals["records"],
-			),
+		marker = new google.maps.Marker({
+			position:new google.maps.LatLng(-33.714773, 18.956738),
+			map     :map,
+			title   :"End Destination"
+		});
 
-
-		);
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
-		return $return;
 	}
 
-	public static function stats_list($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-		$totals = array(
-			"records" => count($data),
-			"cm"      => 0,
-			"checked" => 0,
-			"material"=> 0,
-			"layout"  => 0,
-
-		);
-
-		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
-			if ($record['material']) $totals['material'] = $totals['material'] + 1;
-			if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
-
-		}
-
-
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"   => $totals["records"],
-				"checked" => array(
-					"r"=> $totals["checked"],
-					"p"=> ($totals['records']) ? number_format((($totals["checked"] / $totals["records"]) * 100), 2) : 0
-				),
-				"material"=> array(
-					"r"=> $totals["material"],
-					"p"=> ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
-				),
-				"layout"  => array(
-					"r"=> $totals["layout"],
-					"p"=> ($totals['records']) ? number_format((($totals["layout"] / $totals["records"]) * 100), 2) : 0
-				),
-			),
-
-
-		);
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
-		return $return;
-	}
-
-	public static function stats_production($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-		$totals = array(
-			"records"           => count($data),
-			"cm"                => 0,
-			"material_approved" => 0,
-			"material"          => 0,
-
-		);
-
-		//test_array($data);
-
-		foreach ($data as $record) {
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['material']) $totals['material'] = $totals['material'] + 1;
-			if ($record['material_approved']) $totals['material_approved'] = $totals['material_approved'] + 1;
-
-		}
-
-
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"              => $totals["records"],
-
-				"material"           => array(
-					"r"=> $totals["material"],
-					"p"=> ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
-				),
-				"material_approved"  => array(
-					"r"=> $totals["material_approved"],
-					"p"=> ($totals['material']) ? number_format((($totals["material_approved"] / $totals["material"]) * 100), 2) : 0
-				),
-			),
-
-
-		);
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
-		return $return;
-	}
-
-	public static function stats_layout($where) {
-		$timer = new \timer();
-
-		if (is_array($where)) {
-			$data = $where;
-		} else {
-			$data = \models\ab\bookings::getAll($where);
-		}
-
-		$totals = array(
-			"records"   => count($data),
-			"cm"        => 0,
-			"placed"    => 0,
-			"placed_cm" => 0,
-
-		);
-
-
-		$lastdID = "";
-		$maxPages = 0;
-		foreach ($data as $record) {
-			if ($lastdID != $record['dID']) {
-				$maxPages = pages::maxPages($record['dID'], $data);
-			}
-			$lastdID = $record['dID'];
-			if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
-			if ($record['page'] && ($record['page'] <= $maxPages)) {
-				$totals['placed'] = $totals['placed'] + 1;
-				$totals['placed_cm'] = $totals['placed_cm'] + $record['totalspace'];
-			}
-
-		}
-
-
-		$return = array(
-			"cm"     => $totals['cm'],
-			"records"=> array(
-				"total"    => $totals["records"],
-
-				"placed_cm"=> $totals['placed_cm'],
-				"placed"   => array(
-					"r"=> $totals["placed"],
-					"p"=> ($totals['records']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
-				),
-
-			),
-
-
-		);
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
-		return $return;
-	}
-
-
-}
+	initialize();
+	$(document).ready(function () {
+		$(".tweet").tweet({
+			join_text             :"auto",
+			username              :"freedom_trail",
+			avatar_size           :48,
+			count                 :6,
+			auto_join_text_default:"we said,",
+			auto_join_text_ed     :"we",
+			auto_join_text_ing    :"we were",
+			auto_join_text_reply  :"we replied",
+			auto_join_text_url    :"we were checking out",
+			loading_text          :"loading tweets..."
+		});
+	});

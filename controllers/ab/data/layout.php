@@ -120,6 +120,8 @@ class layout extends data {
 				$a['totalspace'] = $booking['totalspace'];
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
+				$a['material'] = $booking['material'];
+				$a['material_approved'] = $booking['material_approved'];
 
 				$bookings[$booking['pageID']][] = $a;
 			}
@@ -276,6 +278,8 @@ class layout extends data {
 				$a['totalspace'] = $booking['totalspace'];
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
+				$a['material'] = $booking['material'];
+				$a['material_approved'] = $booking['material_approved'];
 
 				$bookings[] = $a;
 			}
@@ -309,12 +313,17 @@ class layout extends data {
 				$layoutcm = $layoutcm + $item['totalspace'];
 				if ($item['checked']=='1') $statsData[] = $item;
 			}
-			$stats = models\record_stats::stats($statsData,array("cm","placed","placed_cm"));
-			$stats['loading'] = models\loading::getLoading($pID, $layoutcm, $currentDate['pages']);
+			$loading = models\loading::getLoading($pID, $layoutcm, $currentDate['pages']);
+			$stats = models\record_stats::stats($statsData,array("cm","placed","placed_cm"), $loading['pages']);
+			$stats['loading'] = $loading;
+
 		} else {
-			$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"));
-			$stats['loading'] = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
+			$stats = models\record_stats::stats($data,array("cm"));
+			$loading = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
+			$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"), $loading['pages']);
+			$stats['loading'] = $loading;
 		}
+
 
 
 

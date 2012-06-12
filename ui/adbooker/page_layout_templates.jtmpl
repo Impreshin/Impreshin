@@ -4,7 +4,7 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record " data-cm="<%= this.cm %>" data-col="<%= this.col %>">
+	<tr data-id="<%= this.ID %>" class="record " data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><%= this.colour %></td>
@@ -21,7 +21,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-spreads-page">
 	<![CDATA[
-		<article style="<% if (this.colour) { %>background: url('/ui/_images/ab/<%= this.colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>">
+		<article style="<% if (this.colour) { %>background: url('/ui/_images/ab/<%= this.colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>"  data-colour="<%= this.colour %>" >
 
 			<% if(this.section.c) { %>
 			<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
@@ -34,7 +34,7 @@
 				<table class="s">
 					<% for(var g in this.records) { %>
 
-					<tr data-id="<%= this.records[g].ID %>" class="record " data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-page="<%= this.records[g].page %>">
+					<tr data-id="<%= this.records[g].ID %>" class="record " data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material) { %><% if(this.records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
 						</td>
@@ -54,7 +54,9 @@
 				<div class="text"><%= this.percent %>% with a total of <%= this.cm %>cm</div>
 
 			</footer>
+
 			<% } %>
+			<div class="msgs"></div>
 			<% if(this.colour) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.colour %>.png" alt="" width="20">
@@ -72,9 +74,8 @@
 
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
-		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %>" rel="<%= this.pages[i].page %>">
-		<article   style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>"
-		       >
+		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %>" data-page="<%= this.pages[i].page %>">
+		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
 
 			<% if(this.pages[i].section.c) { %>
 			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
@@ -87,7 +88,7 @@
 				<table class="s">
 					<% for(var g in this.pages[i].records) { %>
 
-					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-page="<%= this.pages[i].records[g].page %>">
+					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material) { %><% if(this.pages[i].records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 
@@ -109,6 +110,7 @@
 
 			</footer>
 			<% } %>
+			<div class="msgs">Not enough space</div>
 			<% if(this.pages[i].colour) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.pages[i].colour %>.png" alt="" width="20">
@@ -127,14 +129,32 @@
 
 	<div class="spread">
 		<% for(var i in this.pages) { %>
-		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>"><%= this.pages[i].page %> <% if (this.pages[i].percent) { %>
-				<div class="bar" style="width: <%= this.pages[i].percent %>%; <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
-			<% } %>
+		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
 
-			</footer>
+			<div>
+				<%= this.pages[i].page %> <% if (this.pages[i].percent) { %>
+				<div class="bar" style="width: <%= this.pages[i].percent %>%; <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
+				<% } %>
+			</div>
+
+
 		</div>
 		<% } %>
 	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom-page">
+	<![CDATA[
+
+
+	<div>
+		<%= this.page %>
+		<% if (this.percent) { %>
+			<div class="bar" style="width: <%= this.percent %>%; <% if (this.percent > 60){ %><% if (this.percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
+			<% } %>
+	</div>
+
 
 	]]>
 </script>
@@ -228,9 +248,12 @@
 			</select>
 
 			<div class="btn-group" style="margin-bottom: 5px;" data-toggle="buttons-radio" id="colours">
-				<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:36%;">Black & White</button>
-				<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:32%;">Spot Colour</button>
-				<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:32%;">Full Colour</button>
+				<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;">Black & White</button>
+				<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;">Spot Colour</button>
+				<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;">Full Colour</button>
+				<% if (this.colour) { %><button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="" type="button" style="width:9%;">
+					<i class="icon-remove-sign"></i></button>
+				<% } %>
 			</div>
 		</form>
 	</footer>

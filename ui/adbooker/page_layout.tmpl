@@ -7,12 +7,12 @@
 				<li>
 					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
 						<button class="btn span1 btn-mini active " style="width:120px; margin-left: 10px;" data-highlight="checked">Planning</button>
-						<button class="btn span1 btn-mini " style="width:120px;" data-highlight="material" disabled="disabled">Overview</button>
+						<button class="btn span1 btn-mini " style="width:120px;" data-highlight="material" disabled="disabled" >Overview</button>
 					</div>
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<button class="btn span1 btn-mini " id="reload-btn" style="margin:0;">
+					<button class="btn span1 btn-mini " id="reload-btn" style="margin:0;" data-tooltip="hahaha">
 						<i class="icon-refresh"></i></button>
 				</li>
 				<li class="divider-vertical"></li>
@@ -118,7 +118,15 @@
 </section>
 
 <script type="text/javascript">
-var pageSize ="{{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}";
-var cmSize ="{{ ((((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10)) / _ab['publication']['cmav'] }}";
-var colSize ="{{ 143 / _ab['publication']['columnsav'] }}";
+	var pageSize = "0";
+	var cmSize = "0";
+	var colSize = "0";
+	var colcmAv = "0";
+	{% if _ab['publication']['pagewidth'] and _ab['publication']['cmav'] %}
+		pageSize ="{{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}";
+		cmSize ="{{ ((((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10)) / _ab['publication']['cmav'] }}";
+		colSize ="{{ 143 / _ab['publication']['columnsav'] }}";
+		colcmAv = "{{  _ab['publication']['cmav'] * _ab['publication']['columnsav'] }}";
+	{% endif %}
+
 </script>
