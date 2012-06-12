@@ -182,16 +182,11 @@
 		</div>
 
 		<div id="toolbar-stats-pane" class="statstable">
-			<table class="table">
-				<tr>
 
-
-				</tr>
-			</table>
 			<table>
 				<tr>
 
-					<td></td>
+					<td>aa</td>
 					<td></td>
 					<td></td>
 					<td></td>

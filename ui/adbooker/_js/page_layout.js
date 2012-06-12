@@ -12,6 +12,14 @@ $(document).ready(function () {
 
 	scrolling(left_pane);
 
+	$(document).on("click", "#toolbar-stats-link", function (e) {
+		if (!$(e.target).closest("#toolbar-stats-pane").get(0)) {
+			$("#toolbar-stats-pane").slideToggle(transSpeed);
+		}
+
+	});
+
+
 	$(document).on("scroll", "#left-area .scroll-pane",function(){
 		visible_pages();
 	});

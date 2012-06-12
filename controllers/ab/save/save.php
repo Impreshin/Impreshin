@@ -84,7 +84,11 @@ class save {
 		$values['pID'] = $user['ab_pID'];
 		$values['dID'] = "";
 		$values['typeID'] = $type;
-		if (!$ID) $values['userID'] = $userID;
+		if ($ID) {
+			$values['checked'] = "0";
+		} else {
+			$values['userID'] = $userID;
+		}
 		//userName
 
 
@@ -203,6 +207,7 @@ $section = "";
 				$values['checked_userID'] = '';
 				$values['checked_date'] = '';
 				$values['checked_user'] = '';
+				$values['pageID'] = null;
 			}
 
 

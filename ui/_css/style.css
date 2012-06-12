@@ -343,6 +343,11 @@ select[readonly],
 textarea[readonly] {
   cursor: default;
 }
+.placeholder:-moz-placeholder,
+.placeholder:-ms-input-placeholder,
+.placeholder::-webkit-input-placeholder {
+  color: #999999;
+}
 .clearfix:before,
 .clearfix:after {
   content: "";
