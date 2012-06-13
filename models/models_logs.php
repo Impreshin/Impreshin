@@ -11,7 +11,6 @@ class logs {
 
 	public static function getAllContent($contentID,$returnshort=false){
 		$timer = new timer();
-		$return = "";
 
 		$return = F3::get("DB")->sql("SELECT mp_logs.*, mp_users.name  FROM mp_logs LEFT JOIN mp_users ON mp_logs.userID = mp_users.ID WHERE contentID = '$contentID' ORDER BY datein DESC");
 

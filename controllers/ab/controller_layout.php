@@ -30,7 +30,7 @@ class controller_layout {
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "layout",
-			"sub_section"=> "view",
+			"sub_section"=> "planning",
 			"template"=> "page_layout",
 			"meta"    => array(
 				"title"=> "AdBooker - Layout",

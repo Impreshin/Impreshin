@@ -393,8 +393,8 @@
 
 	});
 	$(document).on('show', '#details-modal .nav-tabs', function (e) {
-		var target = e.target // activated tab
-		var previous = e.relatedTarget // previous tab
+		var target = e.target; // activated tab
+		var previous = e.relatedTarget; // previous tab
 		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 		$.bbq.pushState({"details-tab":pane});
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
