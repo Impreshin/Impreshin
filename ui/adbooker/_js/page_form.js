@@ -57,6 +57,11 @@ $(document).ready(function(){
 		getDetails();
 
 	});
+	$(document).on("click", "#view-record-btn", function () {
+		$.bbq.pushState({"ID":$(this).attr("data-id")});
+		getDetails();
+
+	});
 
 
 
@@ -106,8 +111,21 @@ $(document).ready(function(){
 	$(document).on("submit", "#modal-delete form", function (e) {
 		e.preventDefault();
 
+	var data = $(this).serialize();
 
-		alert("deleteing");
+		if ($("#delete_reason").val() == ""){
+			alert("You must specify a reason");
+		} else {
+			$("input",$(this)).attr("disabled","disabled");
+			$.post("/ab/save/booking_delete/?ID="+$("#record-ID").val(),data,function(r){
+				alert("Booking deleted");
+				document.location = "/ab/";
+			});
+
+
+		}
+
+
 
 	});
 
@@ -245,7 +263,7 @@ function load_colours(){
 }
 
 function show_checkhox(){
-	$("#dates_list .otherdates input:checkbox").each(function(){
+	$("#dates_list .otherdates input:checkbox, #dates_list .otherdates input:radio").each(function(){
 		var $this = $(this), $label = $this.closest(".otherdates");
 		if ($this.is(":checked")){
 			$label.addClass("showit");

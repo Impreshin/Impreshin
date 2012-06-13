@@ -29,7 +29,7 @@ class bookings {
 				ab_bookings_types.type AS type,
 				ab_marketers.marketer AS marketer,
 				global_publications.publication AS publication,
-				global_dates.publish_date AS publish_date,
+				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') as dateStatus,
 				ab_categories.category AS category,
 				global_users.fullName AS byFullName,
 				ab_accounts.account AS account,
@@ -298,7 +298,33 @@ class bookings {
 			"select"=> $arrange
 		);
 	}
+	public static function _delete($ID = "",$reason=""){
+		$timer = new timer();
 
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$a = new Axon("ab_bookings");
+		$a->load("ID='$ID'");
+
+		if (!$a->dry()){
+			$a->deleted = "1";
+			$a->deleted_userID = $userID;
+			$a->deleted_user = $user['fullName'];
+			$a->deleted_date = date("Y-m-d H:i:s");
+			$a->deleted_reason = nl2br($reason);
+
+			$a->save();
+		}
+
+
+
+
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return "deleted";
+	}
 	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
 		$timer = new timer();
 		$lookupColumns = array();
@@ -465,7 +491,7 @@ class bookings {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 	}
 
-	private static function dbStructure() {
+	public static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN ab_bookings;");
 		$result = array();
 		foreach ($table as $key => $value) {

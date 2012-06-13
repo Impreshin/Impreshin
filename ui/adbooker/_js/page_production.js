@@ -244,6 +244,8 @@ function getList(settings) {
 		}
 
 
+
+
 		var order = data['order']['c'];
 		$(".order-btn[data-col='" + order + "'] .indicator", $recordsList).show();
 
@@ -266,15 +268,13 @@ function getList(settings) {
 		var goto = $.bbq.getState("scrollTo");
 		if (goto) {
 			if ($("#record-list .record[data-ID='" + goto + "']").length) {
-				console.log("scroll: " + goto);
-				console.log(api);
-				api.scrollToElement("#record-list .record[data-ID='" + goto + "']", false, true);
+				var api = $scrollpane.data("jsp");
+				if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
+					api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
+				}
 
 			}
-
-			//$.bbq.removeState("scrollTo");
-		} else {
-
+			$.bbq.removeState("scrollTo");
 		}
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);

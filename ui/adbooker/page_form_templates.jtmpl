@@ -134,10 +134,17 @@
 		<label for="dID" class="control-label">Dates</label>
 
 		<div class="controls " id="dates_list">
-			<div id="dates_list_current">
-				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" id="">
+			{% if dates['selected']['ID'] %}
+			<div class="">
+				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> dates_list_current" id="">
+					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['selected']['ID'] }}" name="dID[]"  <% if (this.dID == "{{ dates['selected']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['selected']['publish_date_display'] }}
+					 <span class="s g"> (Selected Date)</span> </label>
+			</div>
+			{% endif %}
+			<div>
+				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>{% if dates['selected']['ID']=="" %} <% if (!this.dID || this.dID=="{{ dates['current']['ID'] }}") { %>dates_list_current<% } %>{% endif %}" id="">
 					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['current']['ID'] }}" name="dID[]"  <% if (this.dID == "{{ dates['current']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['current']['publish_date_display'] }}
-					<span class="s g">(Current Date)</span> </label>
+					 <span class="s g"> (Active Date)</span> </label>
 			</div>
 
 			{% for row in dates['future'] %}
@@ -145,7 +152,7 @@
 				{% if loop.index == 4 and loop.length > 3 %}
 					<a href="#" class="dates-btn otherdates donthighlighthovered">More</a>
 				{% endif %}
-				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> {% if loop.index > 3 %} otherdates {% endif %}">
+				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> {% if loop.index > 3 %} otherdates {% endif %}<% if (this.dID == "{{ row['ID'] }}") { %>dates_list_current<% } %>" >
 					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ row['ID'] }}" name="dID[]" <% if (this.dID == "{{ row['ID'] }}") { %>checked="checked"<% } %>> {{ row['publish_date_display'] }}
 				</label>
 
@@ -201,14 +208,24 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
+		<% if (this.ID) { %>
 		<div style="float:left; margin-left:10px; padding-top: 3px;">
-			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini btn-danger span2 " style="" type="button">Delete Record</a>
-			<button class="btn btn-mini span2 " style="" type="button">Repeat Record</button>
+			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+
 		</div>
+		<% } %>
+		<div style="float:right; margin-right: 10px;">
+			<% if (this.ID) { %>
+			<button class="btn btn-mini  span1 " style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this booking" data-position="above">
+				<i class="icon-fullscreen icon-d-grey"></i></button>
+			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above" >
+				<i class="icon-list-alt icon-d-grey"></i></a>
+			<a href="/ab/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above" >
+				<i class="icon-plus"></i></a>
+			<% } %>
+			<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
 
-
-		<button class="btn btn-primary span2 " style="float:right; margin-right: 10px;" type="submit">Save Record</button>
-
+		</div>
 	</div>
 
 </div>
@@ -409,7 +426,7 @@
 		<div class="btn-group c" style="margin-left: 7px;">
 			<a href="/ab/form/" class="btn span3" id="modal-btn-new">New Record</a>
 			<a data-id="<%= this.ID %>" class="btn span3" id="viewrecord-btn">View Record</a>
-			<a href="/ab/" class="btn span3">Go to list</a>
+			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn span3">Go to list</a>
 
 		</div>
 	</div>

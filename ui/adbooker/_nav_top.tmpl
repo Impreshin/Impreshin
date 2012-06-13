@@ -10,10 +10,17 @@
 					<ul class="nav" id="app-nav">
 						<li class="divider-vertical"></li>
 						<li class="{% if page['section'] == "form" %} active {% endif %}">
-							<a href="/ab/form" class="nav-icon-btn"><i class="icon-plus icon-d-grey"></i></a></li>
+							<a href="/ab/form" class="nav-icon-btn">
+								{% if  page['section'] == "form" and details['ID']!="" %}
+									<i class="icon-pencil icon-d-grey"></i>
+								{% else %}
+									<i class="icon-plus icon-d-grey"></i>
+								{% endif %}
+							</a>
+						</li>
 						<li class="divider-vertical"></li>
 						<li class="{% if page['section'] == "bookings" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="/ab/">Bookings</a>
+							<a  href="/ab/">Bookings</a>
 
 						</li>
 						<li class="{% if page['section'] == "production" %} active {% endif %}">

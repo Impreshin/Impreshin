@@ -66,6 +66,20 @@ class save {
 		echo json_encode(array("result"=> "1"));
 		exit();
 	}
+
+	function booking_delete() {
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$delete_reason = (isset($_POST['delete_reason']))? $_POST['delete_reason']:"";
+
+		$result = bookings::_delete($ID,$delete_reason);
+
+		echo json_encode(array("result"=> $result));
+		exit();
+	}
+
 	function form(){
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -78,15 +92,20 @@ class save {
 		$ID = (isset($_GET['ID'])) ?  $_GET['ID'] : "";
 		$type = (isset($_GET['type'])) ?  $_GET['type'] : "";
 
+		$details = new bookings();
+		$details = $details->get($ID);
+		$ID = $details['ID'];
 
 		$values = array();
 
 		$values['pID'] = $user['ab_pID'];
 		$values['dID'] = "";
 		$values['typeID'] = $type;
-		if ($ID) {
-			$values['checked'] = "0";
-		} else {
+		if ($ID) { // changes when editing
+			if ($details['dateStatus']!="0"){ // not archived
+				$values['checked'] = "0";
+			}
+		} else { // when adding
 			$values['userID'] = $userID;
 		}
 		//userName

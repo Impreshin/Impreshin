@@ -105,10 +105,17 @@ class controller_form {
 
 //test_array($user);
 
-		$details = new bookings();
-		$details = $details->get($ID);
+		$detailsO = new bookings();
+		$details = $detailsO->get($ID);
+		if ($details['ID'] && ($details['pID']!= $pID || $details['deleted']=='1')){
+			$details =$detailsO->dbStructure();
+		}
 
 
+		$title = "New Booking";
+		if ($details['ID']){
+			$title = "".$details['client'];
+		}
 
 		$tmpl = new \template("template.tmpl", "ui/adbooker/");
 		$tmpl->page = array(
@@ -116,9 +123,22 @@ class controller_form {
 			"sub_section"=> "form",
 			"template"   => "page_form",
 			"meta"       => array(
-				"title"=> "AdBooker - Form",
+				"title"=> "AdBooker - Form - $title",
 			)
 		);
+
+
+		$selectedDate = new dates();
+		$selectedDate = $selectedDate->get($details['dID']);
+
+		$d = array();
+		foreach ($dates as $date){
+			$d[] = $date['ID'];
+		}
+
+		if ($selectedDate['ID'] == $currentDate['ID'] || in_array($selectedDate['ID'],$d) ){
+			$selectedDate = array();
+		}
 
 
 		$tmpl->bookingTypes = bookingTypes::getAll("", "orderby ASC");
@@ -134,6 +154,7 @@ class controller_form {
 		$tmpl->production = production::getAll("pID='$pID'", "production ASC");
 		$tmpl->categories = categories::getAll("pID='$pID'", "orderby ASC");
 		$tmpl->dates = array(
+			"selected"=>$selectedDate,
 			"current"=> $currentDate,
 		    "future"=> $dates
 		);
