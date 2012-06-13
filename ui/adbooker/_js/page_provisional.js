@@ -44,6 +44,10 @@ $(document).ready(function () {
 		$(this).closest("li").addClass("active");
 	});
 
+	$(document).on('hide', '#details-modal', function () {
+		getList();
+	});
+
 
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();

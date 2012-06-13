@@ -89,6 +89,14 @@ class production extends data {
 		$return['order'] = $ordering;
 
 
+		if ($highlight == 'material_approved'){
+			$r = array();
+			foreach ($records as $record){
+				if ($record['material']) $r[] = $record;
+			}
+			$records = $r;
+		}
+
 		$return['list'] = models\bookings::display($records, array("highlight"=> $highlight, "filter"   => $filter));
 
 		$GLOBALS["output"]['data'] = $return;

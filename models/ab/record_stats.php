@@ -100,7 +100,7 @@ class record_stats {
 				$t = (isset($totals["material"])) ? $totals["material"] : $totals["records"];
 				$return['records']['material_approved'] = array(
 					"r"=> $totals["material_approved"],
-					"p"=> ($totals['records']) ? number_format((($totals["material_approved"] / $t) * 100), 2) : 0
+					"p"=> ($t) ? number_format((($totals["material_approved"] / $t) * 100), 2) : 0
 				);
 			}
 

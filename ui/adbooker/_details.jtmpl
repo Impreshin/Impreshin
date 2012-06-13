@@ -461,7 +461,7 @@
 		$.post("/ab/save/checked_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 			if ($("#record-list").length) {
-				getList();
+				//getList();
 			}
 
 
