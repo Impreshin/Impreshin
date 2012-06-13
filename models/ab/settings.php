@@ -189,52 +189,72 @@ class settings {
 			);
 			$return["columns"] = $columns;
 
-		$groupBy = array();
-		$groupBy[] = array(
-			"n"=> "Placing",
-			"g"=> "placing"
-		);
-		$groupBy[] = array(
-			"n"=> "Type",
-			"g"=> "type"
-		);
-		$groupBy[] = array(
-			"n"=> "Colours",
-			"g"=> "colours"
-		);
-		$groupBy[] = array(
-			"n"=> "Marketers",
-			"g"=> "marketer"
-		);
-		$groupBy[] = array(
-			"n"=> "Columns",
-			"g"=> "columns"
-		);
-		$groupBy[] = array(
-			"n"=> "Discount %",
-			"g"=> "discountPercent"
-		);
-		$groupBy[] = array(
-			"n"=> "Account Status",
-			"g"=> "accountStatus"
-		);
-		$groupBy[] = array(
-			"n"=> "Layout Pages",
-			"g"=> "pages"
-		);
-		$groupBy[] = array(
-			"n"=> "No Ordering",
-			"g"=> "none"
-		);
-		$groupBy[] = array(
-			"n"=> "Production",
-			"g"=> "material_production"
+		$groupByoptions = array(
+			"placing"=>array(
+				"n"=> "Placing",
+				"g"=> "placing"
+			),
+			"type"=> array(
+				"n"=> "Type",
+				"g"=> "type"
+			),
+			"colours"=> array(
+				"n"=> "Colours",
+				"g"=> "colours"
+			),
+			"marketer"=> array(
+				"n"=> "Marketers",
+				"g"=> "marketer"
+			),
+			"columns"=> array(
+				"n"=> "Columns",
+				"g"=> "columns"
+			),
+			"discountPercent"=> array(
+				"n"=> "Discount %",
+				"g"=> "discountPercent"
+			),
+			"accountStatus"=> array(
+				"n"=> "Account Status",
+				"g"=> "accountStatus"
+			),
+			"pages"=>array(
+				"n"=> "Layout Pages",
+				"g"=> "pages"
+			),
+			"material_production"=> array(
+				"n"=> "Production",
+				"g"=> "material_production"
+			),
+			"none"=> array(
+				"n"=> "No Ordering",
+				"g"=> "none"
+			)
 		);
 
 
-		$return["groupby"] = $groupBy;
 
 
+		$sections = array(
+			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
+			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","none"),
+			"production"=>array("placing","type","colours","columns","pages","material_production","none"),
+			"search"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
+		);
+
+		$groupby = array();
+		foreach ($sections as $key=>$value){
+			$opts = array();
+			foreach($value as $col){
+				$opts[] = $groupByoptions[$col];
+			}
+			$groupby[$key] = $opts;
+		}
+
+
+
+
+		$return["groupby"] = $groupby;
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
@@ -284,6 +304,27 @@ class settings {
 					"count"      => 6,
 					"highlight"=> "material",
 					"filter"   => "*",
+
+
+				),
+				"search"=> array(
+					"col"        => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=> "placing",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
+
 
 				),
 

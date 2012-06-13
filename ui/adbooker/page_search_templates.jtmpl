@@ -1,0 +1,56 @@
+
+{% include '_records.jtmpl' %}
+{% include '_details.jtmpl' %}
+
+<script type="text/x-jqote-template" id="template-provisional-stats-bar">
+	<![CDATA[
+
+
+	<li>
+		<div id="maintoolbar-date" class="dg b"><%= this.date %></div>
+	</li>
+	<li class="span6" style="position: relative;" id="toolbar-stats-link">
+		<div class="progress glow" style="margin-top: 6px; margin-bottom: -5px;">
+			<div class="bar" style="width: <%= this.stats.percent_highlight %>%;" id="list-stats-progress-bar"></div>
+		</div>
+		<div class="row" style="position: absolute; top: 5px; left: 0; text-align: center; right:0;">
+
+			<div class="span2"><span class="s dg">Cm:</span> <strong><%= this.stats.cm %></strong></div>
+			<div class="span2"><span class="s dg">Material:</span> <strong><%= this.stats.records.material.r %></strong> of <strong><%= this.stats.records.total %></strong></div>
+			<div class="span2"><span class="s dg">Approved:</span> <strong><%= this.stats.records.material_approved.r %></strong> of <strong><%= this.stats.records.material.r %></strong></div>
+
+		</div>
+
+		<div id="toolbar-stats-pane" class="statstable">
+			<table class="table" >
+				<tr>
+					<td class="c">
+						<strong><%= this.stats.records.total %></strong>
+						<small>Records</small>
+					</td>
+
+					<td class="c">
+						<strong><%= this.stats.records.material.r %></strong>
+						<small>Material</small>
+					</td>
+					<td class="c">
+						<strong><%= this.stats.records.material_approved.r %></strong>
+						<small>Approved</small>
+					</td>
+
+				</tr>
+			</table>
+			<table>
+				<tr>
+
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</li>
+	]]>
+</script>

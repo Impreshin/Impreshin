@@ -10,7 +10,7 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class production extends data {
+class search extends data {
 	function _list() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -19,7 +19,7 @@ class production extends data {
 		$currentDate = $user['ab_publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-		$section = 'production';
+		$section = 'search';
 		$usersettings = $user['settings'][$section];
 
 		$grouping_g = (isset($_REQUEST['group']) && $_REQUEST['group'] != "") ? $_REQUEST['group'] : $usersettings['group']['g'];
@@ -29,8 +29,7 @@ class production extends data {
 		$ordering_d = $usersettings['order']['o'];
 
 
-		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $usersettings['highlight'];
-		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter'] != "") ? $_REQUEST['filter'] : $usersettings['filter'];
+
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
@@ -59,8 +58,6 @@ class production extends data {
 			"group"      => $grouping,
 			"order"      => $ordering,
 
-			"highlight"=> $highlight,
-			"filter"   => $filter
 
 		);
 
@@ -72,35 +69,25 @@ class production extends data {
 		$orderby = " client ASC";
 		$arrange = "";
 
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null";
+		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID')  AND ab_bookings.deleted is null";
 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering);
 
-
-		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved"));
 
 
 
 		$return = array();
 
 
-		$return['date'] = $currentDate['publish_date_display'];
-		$stats['percent_highlight'] = ($highlight) ? $stats['records'][$highlight]['p'] : "0";
-		$return['stats'] = $stats;
+
 		$return['group'] = $grouping;
 		$return['order'] = $ordering;
 
 
-		if ($highlight == 'material_approved'){
-			$r = array();
-			foreach ($records as $record){
-				if ($record['material']) $r[] = $record;
-			}
-			$records = $r;
-		}
 
-		$return['list'] = models\bookings::display($records, array("highlight"=> $highlight, "filter"   => $filter));
+
+		$return['list'] = models\bookings::display($records);
 
 		$GLOBALS["output"]['data'] = $return;
 	}

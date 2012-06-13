@@ -37,19 +37,7 @@ $(document).ready(function () {
 	}
 	getList();
 //$("#whole-area .loadingmask").show();
-	$("#pageheader li ul a").click(function () {
-		$("#pagecontent").css({"opacity":0.5});
-		$("#pageheader li.active").removeClass("active");
-		$(this).closest(".nav > li").addClass("active");
-		$(this).closest("li").addClass("active");
-	});
 
-	$(document).on('hide', '#details-modal', function () {
-		var s = {
-			maintain_position:true
-		};
-		getList(s);
-	});
 
 
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
@@ -67,8 +55,10 @@ $(document).ready(function () {
 		$("#record-list .order-btn").removeClass("asc desc");
 		//$this.addClass("active");
 		$.bbq.pushState({"order":$this.attr("data-col")});
-
-		getList();
+		var s = {
+			maintain_position: true
+		};
+		getList(s);
 		$.bbq.removeState("order");
 
 	});
@@ -94,6 +84,14 @@ $(document).ready(function () {
 		$.bbq.removeState("modal");
 		$("#list-settings").removeClass("active");
 	});
+
+	$(document).on('hide', '#details-modal', function () {
+		var s =	{
+				maintain_position:true
+			};
+		getList(s);
+	});
+
 	$(document).on('shown', '#settings-modal', function () {
 		$("#settings-modal .modal-body .scroll-pane").jScrollPane(jScrollPaneOptions);
 
@@ -142,7 +140,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/ab/save/list_settings/?reset=columns,group,order", function () {
+			$.post("/ab/save/list_settings/?section=search&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -167,7 +165,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/ab/save/list_settings/",{"columns":columns,"group":group,"groupOrder":order},function(){
+		$.post("/ab/save/list_settings/?section=search",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");
@@ -192,6 +190,7 @@ $(document).ready(function () {
 });
 
 function getList(settings) {
+
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
 	group = (group)? group:"";
@@ -208,7 +207,7 @@ function getList(settings) {
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+	listRequest.push($.getJSON("/ab/data/search/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
 		data = data['data'];
 
 
@@ -221,24 +220,24 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
-
 
 
 
 
 
 		var $scrollpane = $("#whole-area .scroll-pane");
-		if (orderingactive) {
+		if (orderingactive){
 			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		} else {
-			if (settings && settings.maintain_position) {
+			if (settings && settings.maintain_position){
 				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 			} else {
 				$scrollpane.jScrollPane(jScrollPaneOptions);
 			}
 
 		}
+
+
 
 
 		var order = data['order']['c'];
@@ -260,8 +259,6 @@ function getList(settings) {
 				getDetails();
 			}
 		}
-
-
 		var goto = $.bbq.getState("scrollTo");
 		if (goto) {
 			if ($("#record-list .record[data-ID='" + goto + "']").length) {
@@ -269,8 +266,6 @@ function getList(settings) {
 				if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
 					api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
 				}
-
-
 
 			}
 			$.bbq.removeState("scrollTo");

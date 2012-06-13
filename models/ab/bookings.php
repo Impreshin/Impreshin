@@ -256,19 +256,19 @@ class bookings {
 				$arrange = "COALESCE(ab_placing.placing,ab_bookings_types.type) as heading";
 				break;
 			case "marketer":
-				$orderby = "COALESCE(ab_marketers.marketer,99999) $ordering, " . $orderby;
+				$orderby = "COALESCE(ab_marketers.marketer,'zzzzzzzzz') $ordering, " . $orderby;
 				$arrange = "COALESCE(ab_marketers.marketer,'None') as heading";
 				break;
 			case "columns":
 				$orderby = "if(typeID='1',ab_bookings.col,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',ab_bookings.col,ab_bookings_types.type) as heading";
+				$arrange = "if(typeID='1',concat('Columns: ',ab_bookings.col),ab_bookings_types.type) as heading";
 				break;
 			case "pages":
 				$orderby = "if(typeID='1',global_pages.page,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
 				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
 				break;
 			case "colours":
-				$orderby = "if(typeID='1',ab_bookings.colour,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
+				$orderby = "if(typeID='1',COALESCE(ab_bookings.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
 				$arrange = "if(typeID='1',ab_bookings.colour,ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
@@ -291,6 +291,7 @@ class bookings {
 				break;
 
 		}
+
 
 
 		return array(
