@@ -65,8 +65,11 @@ body {
   z-index: 100;
 }
 #pageheader .nav > li > a {
-  padding: 10px 32px 11px 22px;
+  padding: 10px 22px 11px 22px;
   position: relative;
+}
+#pageheader .nav > li.dropdown > a {
+  padding: 10px 32px 11px 22px;
 }
 #pageheader .nav .dropdown-toggle .caret,
 #pageheader .nav .open.dropdown .caret {
@@ -342,11 +345,6 @@ input[readonly],
 select[readonly],
 textarea[readonly] {
   cursor: default;
-}
-.placeholder:-moz-placeholder,
-.placeholder:-ms-input-placeholder,
-.placeholder::-webkit-input-placeholder {
-  color: #999999;
 }
 .clearfix:before,
 .clearfix:after {

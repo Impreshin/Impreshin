@@ -12,47 +12,26 @@
 						<li class="{% if page['section'] == "form" %} active {% endif %}">
 							<a href="/ab/form" class="nav-icon-btn"><i class="icon-plus icon-d-grey"></i></a></li>
 						<li class="divider-vertical"></li>
-						<li class="dropdown {% if page['section'] == "bookings" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">Bookings
-								<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class=" {% if page['sub_section'] == "provisional" %} active {% endif %}">
-									<a href="/ab/"><i class="icon-list-alt menu-icon"></i>Provisional List</a></li>
-								<li class=" {% if page['sub_section'] == "enquiries" %} active {% endif %}">
-									<a href="#"><i class="icon-search menu-icon"></i>Enquiries</a>
-								</li>
-								<li class="divider"></li>
-								<li class=" {% if page['sub_section'] == "form" %} active {% endif %}">
-									<a href="/ab/form"><i class="icon-plus menu-icon"></i>New Booking</a>
-								</li>
-							</ul>
-						</li>
-						<li class="dropdown {% if page['section'] == "production" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Production <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class=" {% if page['sub_section'] == "list" %} active {% endif %}">
-									<a href="/ab/production"><i class="icon-list-alt menu-icon"></i>Production List</a>
-								</li>
-							</ul>
-						</li>
-						<li class="dropdown {% if page['section'] == "layout" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Layout <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class=" {% if page['sub_section'] == "view" %} active {% endif %}">
-									<a href="/ab/layout"><i class="icon-eye-open menu-icon"></i>Layout View</a>
-								</li>
+						<li class="{% if page['section'] == "bookings" %} active {% endif %}">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="/ab/">Bookings</a>
 
-							</ul>
+						</li>
+						<li class="{% if page['section'] == "production" %} active {% endif %}">
+							<a href="/ab/production/">Production</a>
+						</li>
+						<li class="{% if page['section'] == "layout" %} active {% endif %}">
+							<a href="/ab/layout/">Layout </a>
+
 						</li>
 						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Records <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#"><i class="icon-trash menu-icon"></i>Deleted Records</a></li>
 								<li><a href="#"><i class="icon-search menu-icon"></i>Enquiries</a></li>
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">Reports <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Load Report</a></li>
 								<li><a href="#">Discounts</a></li>
@@ -77,7 +56,7 @@
 					<ul class="nav pull-right">
 
 						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">{{  _ab['publication']['publication'] }}
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">{{  _ab['publication']['publication'] }}
 								<b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								{% for row in _ab['publications'] %}
@@ -87,7 +66,7 @@
 						</li>
 						<li class="divider-vertical"></li>
 						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
+							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:void(0)" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="nav-header">AdBooker</li>
