@@ -36,7 +36,12 @@ class save {
 		$section = (isset($_GET['section'])) ? $_GET['section'] : "list";
 
 
-		$columns = (!in_array("columns", $reset))? (isset($_POST['columns']))?explode(",",$_POST['columns']): $ab_defaults[$section]['col']: $ab_defaults[$section]['col'];
+		if (in_array("columns", $reset)){
+			$columns = $ab_defaults[$section]['col'];
+		} else {
+			$columns = (isset($_POST['columns'])) ? explode(",", $_POST['columns']) : $ab_defaults[$section]['col'];
+		}
+
 		$group = (!in_array("group", $reset)) ?(isset($_POST['group']))?$_POST['group']: $ab_defaults[$section]['group']['g'] : $ab_defaults[$section]['group']['g'];
 		$order = (!in_array("order", $reset)) ?(isset($_POST['order']))?$_POST['order']: $ab_defaults[$section]['group']['o'] : $ab_defaults[$section]['group']['o'];
 
@@ -55,6 +60,7 @@ class save {
 
 		$values = array();
 		$values[$section]=$new;
+
 
 
 

@@ -92,6 +92,10 @@ class user {
 
 		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
 		if (isset($values['list']['col'])) $v['list']['col'] = $values['list']['col'];
+		if (isset($values['production']['col'])) $v['production']['col'] = $values['production']['col'];
+		if (isset($values['provisional']['col'])) $v['provisional']['col'] = $values['provisional']['col'];
+		if (isset($values['search']['col'])) $v['search']['col'] = $values['search']['col'];
+		if (isset($values['deleted']['col'])) $v['deleted']['col'] = $values['deleted']['col'];
 		//test_array($v);
 
 		if(count($values)) $t->settings = serialize($v);

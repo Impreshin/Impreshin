@@ -186,6 +186,29 @@ class settings {
 					"h"=> "Page",
 				),
 
+				"deleted"               => array(
+					"c"=> "deleted",
+					"o"=> "deleted",
+					"h"=> "Deleted",
+					"b"=> true
+				),
+				"deleted_user"               => array(
+					"c"=> "deleted_user",
+					"o"=> "deleted_user",
+					"h"=> "Deleted&nbsp;By",
+				),
+				"deleted_date"               => array(
+					"c"=> "deleted_date",
+					"o"=> "deleted_date",
+					"h"=> "Deleted&nbsp;Date",
+				),
+				"deleted_reason"               => array(
+					"c"=> "deleted_reason",
+					"o"=> "deleted_reason",
+					"h"=> "Deleted&nbsp;Reason",
+				),
+
+
 			);
 			$return["columns"] = $columns;
 
@@ -193,6 +216,10 @@ class settings {
 			"placing"=>array(
 				"n"=> "Placing",
 				"g"=> "placing"
+			),
+			"date"=>array(
+				"n"=> "Date",
+				"g"=> "date"
 			),
 			"type"=> array(
 				"n"=> "Type",
@@ -239,7 +266,7 @@ class settings {
 			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
 			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","none"),
 			"production"=>array("placing","type","colours","columns","pages","material_production","none"),
-			"search"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
+			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
 		);
 
 		$groupby = array();
@@ -251,7 +278,7 @@ class settings {
 			$groupby[$key] = $opts;
 		}
 
-
+		$groupby['deleted'] = $groupby['search'];
 
 
 		$return["groupby"] = $groupby;
@@ -327,6 +354,27 @@ class settings {
 
 
 				),
+				"deleted"=> array(
+					"col"        => array(
+						"client",
+						"size",
+						"colour",
+						"deleted_user",
+						"deleted_date",
+						"deleted_reason"
+					),
+					"group"      => array(
+						"g"=> "date",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "6",
+
+
+				),
 
 				"form"=>array(
 					"type"=>"1"
@@ -341,5 +389,42 @@ class settings {
 		return $return;
 	}
 
+	function _read($section){
+		$timer = new timer();
+		$settings = self::getSettings();
+		$user = F3::get("user");
+
+		$a = array();
+		$b = array();
+		if (isset($user['settings'][$section]['col']) && count($settings["columns"])) {
+
+			foreach ($settings["columns"] as $col) {
+				if (!in_array($col['c'], $user["settings"][$section]['col'])) {
+					$col["s"] = "0";
+					$a[] = $col;
+				}
+
+			}
+
+
+			foreach ($user["settings"][$section]['col'] AS $col) {
+				$v = $settings["columns"][$col];
+				$v['s'] = '1';
+				$b[] = $v;
+			}
+
+			$settings[1] = array_merge($b, $a);
+
+
+		}
+
+
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $settings;
+	}
+	function write(){
+
+	}
 
 }

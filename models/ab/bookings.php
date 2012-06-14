@@ -251,6 +251,10 @@ class bookings {
 				$orderby = "COALESCE(ab_bookings_types.orderby,99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(ab_bookings_types.type,ab_bookings_types.type) as heading";
 				break;
+			case "date":
+				$orderby = "COALESCE(ab_bookings.publishDate,99999) $ordering, " . $orderby;
+				$arrange = "(ab_bookings.publishDate) as heading";
+				break;
 			case "placing":
 				$orderby = "COALESCE(ab_placing.orderby,99999) $ordering,  ab_bookings_types.orderby," . $orderby;
 				$arrange = "COALESCE(ab_placing.placing,ab_bookings_types.type) as heading";
@@ -314,7 +318,7 @@ class bookings {
 			$a->deleted_userID = $userID;
 			$a->deleted_user = $user['fullName'];
 			$a->deleted_date = date("Y-m-d H:i:s");
-			$a->deleted_reason = nl2br($reason);
+			$a->deleted_reason = ($reason);
 
 			$a->save();
 		}

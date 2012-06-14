@@ -35,7 +35,7 @@ class provisional extends data {
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
-			if ($user['settings']['list']['order']['c'] == $_REQUEST['order']){
+			if ($user['settings'][$section]['order']['c'] == $_REQUEST['order']){
 				if ($ordering_d=="ASC"){
 					$ordering_d = "DESC";
 				} else {

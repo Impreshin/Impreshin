@@ -21,7 +21,7 @@ class general {
 		} else {
 
 			$files = array(
-				"/ui/_css/ui-lightness/jquery-ui.css",
+				//"/ui/_css/ui-lightness/jquery-ui.css",
 				"/ui/_css/bootstrap.css",
 				"/ui/_css/jquery.jscrollpane.css",
 				"/ui/_css/ui.daterangepicker.css",
@@ -63,9 +63,10 @@ class general {
 			$files = array(
 				"_js/libs/jquery-ui.js",
 				"_js/libs/bootstrap.min.js",
-				"_js/plugins/bootstrap-datepicker.js",
+
 				// ------ //
 				"_js/plugins/date.js",
+
 				"_js/plugins/jquery.daterangepicker.js",
 				"_js/plugins/jquery.mousewheel.js",
 				"_js/plugins/mwheelIntent.js",
@@ -75,7 +76,7 @@ class general {
 				"_js/plugins/jquery.cookie.js",
 				"_js/plugins/jquery.autologout.js",
 				"_js/plugins/jquery.scrollto.min.js",
-
+				//"_js/plugins/bootstrap-datepicker.js",
 
 
 			);
