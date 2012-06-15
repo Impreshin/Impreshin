@@ -187,19 +187,34 @@ $(document).ready(function () {
 	}).disableSelection();
 	//
 
+	var thisMonth = {
+				"startDate":Date.parse('today').moveToFirstDayOfMonth(),
+				"endDate":Date.parse('today').moveToLastDayOfMonth()
+			};
+	var prevMonth = {
+				"startDate":Date.parse('- 1month').moveToFirstDayOfMonth(),
+				"endDate":Date.parse('- 1month').moveToLastDayOfMonth()
+			};
+
+
+
 
 	$('#date-picker').daterangepicker({
 		presetRanges     :[
 			{heading:'Preset Ranges'},
 			{text     :'This Month', dateStart:function () {
-				return Date.parse('today').moveToFirstDayOfMonth();
+				//console.log("this From: " + thisMonth.startDate)
+				return thisMonth.startDate;
 			}, dateEnd:function () {
-				return Date.parse('today').moveToLastDayOfMonth();
+				//console.log("this To: " + thisMonth.endDate)
+				return thisMonth.endDate;
 			} },
 			{text     :'Previous Month', dateStart:function () {
-				return Date.parse('1 month ago').moveToFirstDayOfMonth();
+				//console.log("prev From: " + prevMonth.startDate)
+				return prevMonth.startDate;
 			}, dateEnd:function () {
-				return Date.parse('1 month ago').moveToLastDayOfMonth();
+				//console.log("prev To: " + prevMonth.endDate)
+				return prevMonth.endDate;
 			} },
 
 			{heading:'Selectable Ranges'}
@@ -224,12 +239,30 @@ $(document).ready(function () {
 		},
 		onClose          :function () {
 
+			setTimeout(function () {
+				$("#search-form").trigger("submit");
+			}, 400);
+
 		}
+
+	});
+	$(document).on("submit","#search-form",function(e){
+		e.preventDefault();
+
+
+
+		getList();
+
+
+		return false;
 	});
 
 });
 
 function getList(settings) {
+
+	var search = $("#search").val();
+	var dates = $("#date-picker").val();
 
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
@@ -247,7 +280,9 @@ function getList(settings) {
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+	var $search_stats = $("#search-stats").html("Searching");
+
+	listRequest.push($.getJSON("/ab/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates},function(data){
 		data = data['data'];
 
 
@@ -260,7 +295,7 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-
+		$search_stats.html("Result:  <strong>" + data['stats']['records'] + "</strong> records");
 
 
 

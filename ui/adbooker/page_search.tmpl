@@ -2,43 +2,62 @@
 <section id="maintoolbar">
 	<div class="container">
 		<div class="toolbar clearfix  ">
+			<form class="" style="margin: 0;" id="search-form">
 			<ul class="nav nav-pills pull-left">
 				<li>
 					<h2 style="padding-left: 30px;">Search</h2>
 				</li>
 
 				<li class="divider-vertical"></li>
+
 			</ul>
 			<div class="pull-right">
 
-			<ul class="nav nav-pills pull-right ">
-				<li class="divider-vertical" style="margin-right: 0;"></li>
-				<li class="dropdown pull-right">
-					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
-					<ul class="dropdown-menu" id="record-settings">
-						<li class="nav-header">Group By</li>
-						{% for row in _ab['settings']['groupby']['search'] %}
-						<li data-group-records-by="{{ row['g'] }}" class="{% if settings["list"]['group']['g']|default("placing") == row['g'] %}active{% endif %}">
-							<a href="javascript:;">{{ row['n'] }}</a>
-						</li>
-						{% endfor %}
+				<ul class="nav nav-pills pull-right ">
+					<li id="search-stats"></li>
+					<li>
+						<input type="text" class="span3 search-query" id="search" name="search" placeholder="Search string" value="{{ settings["list"]['search']['search']|default("") }}">
+					</li>
+
+					<li style="padding-left: 10px;">
+						<div class="input-append">
+							<input id="date-picker" name="date-picker" type="text" placeholder="Date Filter" class="span3" value="{{ settings["list"]['search']['dates']|default(_user['ab_publication']['current_date']['publish_date']) }}">
+							<span class="add-on" style="margin-left: -4px; border-left:none; "><i class="icon-calendar"></i></span>
+						</div>
+
+
+
+					</li>
+					<li>
+						<button class="btn span2 btn-mini" type="submit">Search</button></li>
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
+						<ul class="dropdown-menu" id="record-settings">
+							<li class="nav-header">Group By</li>
+							{% for row in _ab['settings']['groupby']['deleted'] %}
+							<li data-group-records-by="{{ row['g'] }}" class="{% if settings["list"]['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+								<a href="javascript:;">{{ row['n'] }}</a>
+							</li>
+							{% endfor %}
 
 
 
 
 
 
-						<li class="nav-header clearfix">Direction</li>
-						<li data-order-records-by="ASC" class="{% if settings['list']['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
-						<li data-order-records-by="DESC" class="{% if settings['list']['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
-						<li class="clearfix"></li>
-						<li class="divider"></li>
-						<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
-					</ul>
-				</li>
-			</ul>
+							<li class="nav-header clearfix">Direction</li>
+							<li data-order-records-by="ASC" class="{% if settings['list']['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+							<li data-order-records-by="DESC" class="{% if settings['list']['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+							<li class="clearfix"></li>
+							<li class="divider"></li>
+							<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
+						</ul>
+					</li>
+				</ul>
+
 			</div>
-
+		</form>
 
 		</div>
 		<div class="toolbar-end"></div>
@@ -55,19 +74,22 @@
 <div class="content">
 <div class="scroll-pane">
 
-<div data-heading="top" id="scroll-container">
-
-<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+<div data-heading="top" id="scroll-container" >
+<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px; margin-bottom: 50px;">
 
 
 </table>
-</div>
 
 </div>
 
 </div>
 
-<div class="loadingmask wide"></div>
+</div>
+	<div class="pagination pagination-centered" id="pagination">
+
+
+	</div>
+	<div class="loadingmask wide"></div>
 </article>
 </div>
 
@@ -133,8 +155,8 @@
 				</small>
 			</h4>
 			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-group">
-				{% for row in _ab['settings']['groupby']['search'] %}
-				<button type="button" style="width: 135px;" data-group-records-by="{{ row['g'] }}" class="btn {% if settings['list']['group']['g']|default("material_production") == row['g'] %}active{% endif %}">{{ row['n'] }}</button>
+				{% for row in _ab['settings']['groupby']['deleted'] %}
+				<button type="button" style="width: 135px;" data-group-records-by="{{ row['g'] }}" class="btn {% if settings['list']['group']['g']|default("placing") == row['g'] %}active{% endif %}">{{ row['n'] }}</button>
 
 				{% endfor %}
 
@@ -188,3 +210,14 @@
 	</form>
 	<div class="loadingmask wide"></div>
 </div>
+<script type="text/javascript">
+
+	var editions = [
+		{heading:'Editions'}
+		{% for row in dates %}
+		,{text:'{{ row['publish_date_display'] }}', date:'{{ row['publish_date'] }}'}
+		{% endfor %}
+
+	]
+
+</script>

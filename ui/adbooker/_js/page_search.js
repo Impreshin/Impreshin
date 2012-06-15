@@ -40,6 +40,12 @@ $(document).ready(function () {
 
 
 
+	$(document).on("click", ".pagination a", function (e) {
+		e.preventDefault();
+		var $this = $(this).parent();
+		$.bbq.pushState({"page":$this.attr("data-page")});
+		getList();
+	});
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -187,9 +193,82 @@ $(document).ready(function () {
 	}).disableSelection();
 	//
 
+	var thisMonth = {
+				"startDate":Date.parse('today').moveToFirstDayOfMonth(),
+				"endDate":Date.parse('today').moveToLastDayOfMonth()
+			};
+	var prevMonth = {
+				"startDate":Date.parse('- 1month').moveToFirstDayOfMonth(),
+				"endDate":Date.parse('- 1month').moveToLastDayOfMonth()
+			};
+
+
+
+
+	$('#date-picker').daterangepicker({
+		presetRanges     :[
+			{heading:'Preset Ranges'},
+			{text     :'This Month', dateStart:function () {
+				//console.log("this From: " + thisMonth.startDate)
+				return thisMonth.startDate;
+			}, dateEnd:function () {
+				//console.log("this To: " + thisMonth.endDate)
+				return thisMonth.endDate;
+			} },
+			{text     :'Previous Month', dateStart:function () {
+				//console.log("prev From: " + prevMonth.startDate)
+				return prevMonth.startDate;
+			}, dateEnd:function () {
+				//console.log("prev To: " + prevMonth.endDate)
+				return prevMonth.endDate;
+			} },
+
+			{heading:'Selectable Ranges'}
+		],
+		presetDates      :editions,
+		presets          :{
+			//specificDate:'Specific Date',
+			allDatesAfter :'All Dates After',
+			dateRange     :'Date Range'
+		},
+		posX             :null,
+		posY             :null,
+		arrows           :false,
+		dateFormat       :'yy-mm-dd',
+		rangeSplitter    :'to',
+		datepickerOptions:{
+			changeMonth:true,
+			changeYear :true
+		},
+		onOpen           :function () {
+
+		},
+		onClose          :function () {
+
+			setTimeout(function () {
+				$("#search-form").trigger("submit");
+			}, 400);
+
+		}
+
+	});
+	$(document).on("submit","#search-form",function(e){
+		e.preventDefault();
+
+
+
+		getList();
+
+
+		return false;
+	});
+
 });
 
 function getList(settings) {
+
+	var search = $("#search").val();
+	var dates = $("#date-picker").val();
 
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
@@ -199,6 +278,10 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder)? groupOrder:"";
 
+	var page = $.bbq.getState("page");
+	page = (page)? page:"";
+
+
 	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
 	highlight = (highlight)? highlight: "";
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
@@ -207,19 +290,31 @@ function getList(settings) {
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/search/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+
+	var $search_stats = $("#search-stats").html("Searching");
+
+	listRequest.push($.getJSON("/ab/data/search/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates,"page":page},function(data){
 		data = data['data'];
 
 
 
 
 		var $recordsList = $("#record-list");
+		var $pagenation = $("#pagination");
 		if (data['list'][0]){
 			$recordsList.jqotesub($("#template-records"), data['list']);
+
+			if (data['pagination']['pages'].length>1){
+				$pagenation.stop(true,true).slideDown(transSpeed).jqotesub($("#template-records-pagination"), data['pagination']);
+			} else {
+				$pagenation.stop(true, true).slideUp(transSpeed)
+			}
+
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
+		$search_stats.html("Result:  <strong>"+data['stats']['records']+"</strong> records");
 
 
 

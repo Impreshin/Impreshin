@@ -29,11 +29,12 @@ class search extends data {
 		$ordering_d = $usersettings['order']['o'];
 
 
-
+		$search_string = (isset($_REQUEST['search'])) ? $_REQUEST['search'] : $usersettings['search']['search'];
+		$search_dates = (isset($_REQUEST['dates']) && $_REQUEST['dates'] != "") ? $_REQUEST['dates'] : $usersettings['search']['dates'];
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
-			if ($user['settings']['list']['order']['c'] == $_REQUEST['order']) {
+			if ($user['settings'][$section]['order']['c'] == $_REQUEST['order']) {
 				if ($ordering_d == "ASC") {
 					$ordering_d = "DESC";
 				} else {
@@ -57,9 +58,14 @@ class search extends data {
 		$values[$section] = array(
 			"group"      => $grouping,
 			"order"      => $ordering,
+			"search"=>array(
+				"search"=> $search_string,
+				"dates"=> $search_dates
+			)
 
 
 		);
+
 
 		user::save_setting($values);
 
@@ -69,10 +75,36 @@ class search extends data {
 		$orderby = " client ASC";
 		$arrange = "";
 
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID')  AND ab_bookings.deleted is null";
+		$searchsql = "";
+		if ($search_string){
+			$searchsql .= " AND (client like '%$search_string%') ";
+		}
+		if ($search_dates){
+			$search_dates = explode("to",$search_dates);
+
+			if (count($search_dates)==1){
+				$searchsql .= " AND global_dates.publish_date = '".$search_dates[0]."'";
+			} else {
+				$searchsql .= " AND (global_dates.publish_date >= '" . $search_dates[0]."' AND global_dates.publish_date <= '" . $search_dates[1]."')";
+			}
+
+		}
 
 
-		$records = models\bookings::getAll($where, $grouping, $ordering);
+		$where = "(ab_bookings.pID = '$pID') AND deleted is null $searchsql";
+
+		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] :"";
+		if (!$selectedpage) $selectedpage = 1;
+
+		$recordsFound = models\bookings::getAll_count($where);
+
+		$limit = 30;
+
+		$pagination = new \pagination();
+		$pagination = $pagination->calculate_pages($recordsFound,30,$selectedpage);
+
+
+		$records = models\bookings::getAll($where, $grouping, $ordering, array("limit"=> $pagination['limit']));
 
 
 
@@ -83,6 +115,9 @@ class search extends data {
 
 		$return['group'] = $grouping;
 		$return['order'] = $ordering;
+		$return['pagination'] = $pagination;
+
+		$return['stats']['records']= $recordsFound;
 
 
 

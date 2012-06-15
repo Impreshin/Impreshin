@@ -1,3 +1,26 @@
+<script type="text/x-jqote-template" id="template-records-pagination">
+	<![CDATA[
+	<div style="margin-right: 130px;">
+	<ul>
+		<li data-page="<%= this.previous %>" class="<% if (this.previous==this.current) { %>disabled<% } %>">
+			<a href="#">«</a>
+		</li>
+		<% for(var i in this.pages) { %>
+		<li data-page="<%= this.pages[i].p %>" class="<% if (this.current==this.pages[i].p) { %>active<% } %>">
+			<a href="#"><%= this.pages[i].p %></a></li>
+		<% } %>
+		<li data-page="<%= this.next %>" class="<% if (this.next==this.current) { %>disabled<% } %>">
+			<a href="#">»</a>
+		</li>
+
+	</ul>
+	</div>
+	<div id="pagination-info" style="">
+		<%= this.info %>
+	</div>
+
+	]]>
+</script>
 <script type="text/x-jqote-template" id="template-records">
 	<![CDATA[
 

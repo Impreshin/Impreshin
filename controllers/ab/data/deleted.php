@@ -30,6 +30,8 @@ class deleted extends data {
 
 
 
+		$search_string = (isset($_REQUEST['search'])) ? $_REQUEST['search'] : $usersettings['search']['search'];
+		$search_dates = (isset($_REQUEST['dates']) && $_REQUEST['dates'] != "") ? $_REQUEST['dates'] : $usersettings['search']['dates'];
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
@@ -57,7 +59,10 @@ class deleted extends data {
 		$values[$section] = array(
 			"group"      => $grouping,
 			"order"      => $ordering,
-
+			"search"=> array(
+				"search"=> $search_string,
+				"dates" => $search_dates
+			)
 
 		);
 
@@ -70,7 +75,24 @@ class deleted extends data {
 		$orderby = " client ASC";
 		$arrange = "";
 
-		$where = "(ab_bookings.pID = '$pID')  AND ab_bookings.deleted = '1'";
+		$searchsql = "";
+		if ($search_string){
+			$searchsql .= " AND (client like '%$search_string%') ";
+		}
+		if ($search_dates){
+			$search_dates = explode("to",$search_dates);
+
+			if (count($search_dates)==1){
+				$searchsql .= " AND global_dates.publish_date = '".$search_dates[0]."'";
+			} else {
+				$searchsql .= " AND (global_dates.publish_date >= '" . $search_dates[0]."' AND global_dates.publish_date <= '" . $search_dates[1]."')";
+			}
+
+		}
+
+
+		$where = "(ab_bookings.pID = '$pID')  AND ab_bookings.deleted = '1' $searchsql";
+
 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering);
@@ -86,9 +108,10 @@ class deleted extends data {
 		$return['order'] = $ordering;
 
 
-
+		$return['stats']['records'] = count($records);
 
 		$return['list'] = models\bookings::display($records);
+		$return['stats']['groups'] = count($return['list']);
 
 		$GLOBALS["output"]['data'] = $return;
 	}

@@ -67,7 +67,28 @@ class bookings {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"), $columns=array()) {
+	public static function getAll_count($where = "") {
+		$timer = new timer();
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+
+		$return = F3::get("DB")->exec("
+			SELECT count(ab_bookings.ID) as records
+			FROM (((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID
+			$where
+		");
+		if (count($return)){
+			$return = $return[0]['records'];
+		}
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"),$options=array("limit"=>"")) {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -84,6 +105,19 @@ class bookings {
 			$select = " ," . $select;
 		}
 
+		if ($options['limit']) {
+			if (strpos($options['limit'],"LIMIT")==-1){
+				$limit = " LIMIT " . $options['limit'];
+			} else {
+				$limit = $options['limit'];
+			}
+
+		} else {
+			$limit = " ";
+		}
+
+
+
 
 
 
@@ -96,10 +130,10 @@ class bookings {
 				if (`page`,1,0) as layout,
 				format(global_pages.page,0) as page
 			$select
-			FROM ((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID
-
+			FROM (((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum) INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID)  INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID
 			$where
 			$orderby
+			$limit
 		");
 
 
@@ -321,6 +355,25 @@ class bookings {
 			$a->deleted_reason = ($reason);
 
 			$a->save();
+			$changes = array(
+				array(
+					"k"=> "Deleted",
+					"v"=> "1",
+					"w"=> ""
+				),
+				array(
+					"k"=> "deleted_user",
+					"v"=> $user['fullName'],
+					"w"=> ""
+				),
+				array(
+					"k"=> "deleted_reason",
+					"v"=> $reason,
+					"w"=> ""
+				)
+			);
+
+			bookings::logging($a->ID, $changes, "Booking Deleted");
 		}
 
 

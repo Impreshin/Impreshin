@@ -343,15 +343,18 @@ class settings {
 						"marketer"
 					),
 					"group"      => array(
-						"g"=> "placing",
-						"o"=> "ASC"
+						"g"=> "date",
+						"o"=> "DESC"
 					),
 					"order"      => array(
 						"c"=> "client",
 						"o"=> "ASC"
 					),
 					"count"      => "5",
-
+					"search"=> array(
+						"search"=> "",
+						"dates" => ""
+					)
 
 				),
 				"deleted"=> array(
@@ -372,6 +375,10 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "6",
+					"search"=>array(
+						"search"=>"",
+						"dates"=>""
+					)
 
 
 				),

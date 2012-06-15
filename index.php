@@ -20,7 +20,7 @@ $pageExecute = new timer(true);
 
 
 require_once('inc/functions.php');
-require_once('inc/class.timer.php');
+require_once('inc/class.pagination.php');
 
 
 $app = require('lib/f3/base.php');

@@ -31,9 +31,10 @@ class controller_search {
 			"sub_section"=> "search",
 			"template"=> "page_search",
 			"meta"    => array(
-				"title"=> "AdBooker - Enquiries",
+				"title"=> "AdBooker - Search",
 			)
 		);
+
 
 
 		$a = array();
@@ -63,8 +64,14 @@ class controller_search {
 		}
 		//foreach ($ab_settings[''])
 
+		$dates = models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['ab_publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
+
+	//test_array($dates);
+
+
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
+		$tmpl->dates = $dates;
 
 
 		$ab_settings['list'] = $user['settings']['search'];
@@ -73,6 +80,8 @@ class controller_search {
 
 
 		$tmpl->settings = $ab_settings;
+
+
 
 		$tmpl->settings_columns = array(
 			"selected"=>$b,

@@ -113,8 +113,56 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 	cursor: default;
 }
 
+#pagination {
+	position : absolute;
+	bottom   : 40px;
+	left     : 0;
+	right    : 0;
+	background-color : rgba(250,250,250,0.9);
+	margin: 0;
+	border-top:1px solid #ccc;
+	padding-top: 3px;
+	height : auto;
+	a {
+		width: 29px;
+		padding: 4px;
+		line-height : normal;
+		background-color : #fff;
+		&:hover {
 
+			background-color : rgb(221, 238, 255);
+			color            : rgb(0, 114, 188);
+		}
+		&.active {
+			&:hover {
 
+			}
+		}
+	}
+	li.active a {
+		color: #ccc;
+		&:hover {
+			background-color : #fff;
+		}
+	}
+	li.disabled a {
+		color : #ccc;
+		&:hover {
+			background-color : #fff;
+		}
+	}
+
+}
+#pagination-info {
+	position : absolute;
+	right    : 0;
+	top      : 7px;
+
+	padding-right: 10px;
+
+	color: #999;
+	font-size: 11px;
+}
 
 
 .clearfix:before, .clearfix:after {
