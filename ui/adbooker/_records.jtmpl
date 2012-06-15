@@ -1,6 +1,6 @@
 <script type="text/x-jqote-template" id="template-records-pagination">
 	<![CDATA[
-	<div style="margin-right: 130px;">
+	<div style="margin-right: 120px;">
 	<ul>
 		<li data-page="1" class="<% if ('1'==this.current) { %>disabled<% } %>">
 			<a href="#">«</a>
