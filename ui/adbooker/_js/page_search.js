@@ -46,6 +46,10 @@ $(document).ready(function () {
 		$.bbq.pushState({"page":$this.attr("data-page")});
 		getList();
 	});
+	$(document).on("click", "#date-picker-area > span.add-on", function (e) {
+		e.preventDefault();
+		//$("#date-picker").trigger("focus").trigger("click")
+	});
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -305,9 +309,9 @@ function getList(settings) {
 			$recordsList.jqotesub($("#template-records"), data['list']);
 
 			if (data['pagination']['pages'].length>1){
-				$pagenation.stop(true,true).slideDown(transSpeed).jqotesub($("#template-records-pagination"), data['pagination']);
+				$pagenation.jqotesub($("#template-records-pagination"), data['pagination']).stop(true, true).fadeIn(transSpeed);
 			} else {
-				$pagenation.stop(true, true).slideUp(transSpeed)
+				$pagenation.stop(true, true).fadeOut(transSpeed)
 			}
 
 		} else {

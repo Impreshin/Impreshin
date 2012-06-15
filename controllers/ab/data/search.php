@@ -98,10 +98,15 @@ class search extends data {
 
 		$recordsFound = models\bookings::getAll_count($where);
 
-		$limit = 30;
+		//$selectedpage = 2;
+		//$recordsFound = 55;
 
+
+		$limit = 100;
 		$pagination = new \pagination();
-		$pagination = $pagination->calculate_pages($recordsFound,30,$selectedpage);
+		$pagination = $pagination->calculate_pages($recordsFound, $limit,$selectedpage);
+
+		//test_array($pagination);
 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering, array("limit"=> $pagination['limit']));

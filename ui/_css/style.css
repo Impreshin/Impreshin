@@ -351,10 +351,21 @@ textarea[readonly] {
   bottom: 40px;
   left: 0;
   right: 0;
-  background-color: rgba(250, 250, 250, 0.9);
+  background-color: #eeeeee;
+  background-repeat: repeat-x;
+  background-image: -moz-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(30%, whitesmoke), color-stop(100%, #eeeeee));
+  background-image: -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+  background-image: -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+  background-image: -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
+  background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+  -webkit-box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
+  -moz-box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
+  box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
   margin: 0;
   border-top: 1px solid #cccccc;
-  padding-top: 3px;
+  padding-top: 4px;
   height: auto;
 }
 #pagination a {
