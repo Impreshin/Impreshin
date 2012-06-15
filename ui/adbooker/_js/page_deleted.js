@@ -40,6 +40,13 @@ $(document).ready(function () {
 
 
 
+	$(document).on("click", ".pagination a", function (e) {
+		e.preventDefault();
+		var $this = $(this).parent();
+		$.bbq.pushState({"page":$this.attr("data-page")});
+		getList();
+	});
+	
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -272,6 +279,10 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder)? groupOrder:"";
 
+	var page = $.bbq.getState("page");
+	page = (page)? page:"";
+
+
 	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
 	highlight = (highlight)? highlight: "";
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
@@ -282,15 +293,23 @@ function getList(settings) {
 	$("#whole-area .loadingmask").show();
 	var $search_stats = $("#search-stats").html("Searching");
 
-	listRequest.push($.getJSON("/ab/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates},function(data){
+	listRequest.push($.getJSON("/ab/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates,"page":page},function(data){
 		data = data['data'];
 
 
 
 
 		var $recordsList = $("#record-list");
+		var $pagenation = $("#pagination");
 		if (data['list'][0]){
 			$recordsList.jqotesub($("#template-records"), data['list']);
+
+			if (data['pagination']['pages'].length>1){
+				$pagenation.jqotesub($("#template-records-pagination"), data['pagination']).stop(true, true).fadeIn(transSpeed);
+			} else {
+				$pagenation.stop(true, true).fadeOut(transSpeed)
+			}
+
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}

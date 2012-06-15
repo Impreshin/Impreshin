@@ -5,7 +5,7 @@
 			<form class="" style="margin: 0;" id="search-form">
 			<ul class="nav nav-pills pull-left">
 				<li>
-					<h2 style="padding-left: 30px;">Search</h2>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Search</h2>
 				</li>
 
 				<li class="divider-vertical"></li>
@@ -217,7 +217,7 @@
 	var editions = [
 		{heading:'Editions'}
 		{% for row in dates %}
-		,{text:'{{ row['publish_date_display'] }}', date:'{{ row['publish_date'] }}'}
+		,{text:'{{ row['publish_date_display'] }}', date:'{{ row['publish_date'] }}', selected: '{% if settings["list"]['search']['dates']|default(_user['ab_publication']['current_date']['publish_date']) ==row['publish_date'] %}1{% else %}0{% endif %}'}
 		{% endfor %}
 
 	]

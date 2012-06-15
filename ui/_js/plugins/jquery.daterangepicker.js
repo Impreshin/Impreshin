@@ -122,11 +122,18 @@ jQuery.fn.daterangepicker = function(settings){
 	var rp = jQuery('<div class="ui-daterangepicker"></div>');
 	var rpPresets = (function(){
 		var ul = jQuery('<ul class=""></ul>').appendTo(rp);
+
+		var current = rangeInput.val(), selected;
 		jQuery.each(options.presetDates, function () {
 			if (!this.text && this.heading){
 				jQuery('<li class="ui-daterangepicker-heading">' + this.heading + '</li>').appendTo(ul)
 			} else {
-				jQuery('<li class="ui-daterangepicker-presetDate"><a href="#">' + this.text + '</a></li>').data('dateStart', this.date).appendTo(ul);
+				if (current== this.date){
+					selected = "active";
+				} else {
+					selected = "";
+				}
+				jQuery('<li class="ui-daterangepicker-presetDate '+selected+'"><a href="#">' + this.text + '</a></li>').data('dateStart', this.date).appendTo(ul);
 			}
 		});
 		jQuery.each(options.presetRanges,function(){

@@ -731,6 +731,9 @@ button[disabled] i {
   width: 1px;
   height: 39px;
 }
+.toolbar input {
+  margin-bottom: 0;
+}
 #toolbar-stats-link {
   cursor: pointer;
 }

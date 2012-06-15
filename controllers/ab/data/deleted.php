@@ -93,9 +93,23 @@ class deleted extends data {
 
 		$where = "(ab_bookings.pID = '$pID')  AND ab_bookings.deleted = '1' $searchsql";
 
+		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] :"";
+		if (!$selectedpage) $selectedpage = 1;
+
+		$recordsFound = models\bookings::getAll_count($where);
+
+		//$selectedpage = 2;
+		//$recordsFound = 55;
 
 
-		$records = models\bookings::getAll($where, $grouping, $ordering);
+		$limit = 100;
+		$pagination = new \pagination();
+		$pagination = $pagination->calculate_pages($recordsFound, $limit,$selectedpage);
+
+		//test_array($pagination);
+
+
+		$records = models\bookings::getAll($where, $grouping, $ordering, array("limit"=> $pagination['limit']));
 
 
 
@@ -106,12 +120,12 @@ class deleted extends data {
 
 		$return['group'] = $grouping;
 		$return['order'] = $ordering;
+		$return['pagination'] = $pagination;
 
-
-		$return['stats']['records'] = count($records);
+		$return['stats']['records']= $recordsFound;
 
 		$return['list'] = models\bookings::display($records);
-		$return['stats']['groups'] = count($return['list']);
+	
 
 		$GLOBALS["output"]['data'] = $return;
 	}

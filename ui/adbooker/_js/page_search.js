@@ -46,10 +46,7 @@ $(document).ready(function () {
 		$.bbq.pushState({"page":$this.attr("data-page")});
 		getList();
 	});
-	$(document).on("click", "#date-picker-area > span.add-on", function (e) {
-		e.preventDefault();
-		//$("#date-picker").trigger("focus").trigger("click")
-	});
+	
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
