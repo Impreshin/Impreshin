@@ -56,7 +56,7 @@ class pages {
 			$orderby
 		"
 		);
-		$pageSize = $user['ab_publication']['columnsav'] * $user['ab_publication']['cmav'];
+		$pageSize = $user['publication']['columnsav'] * $user['publication']['cmav'];
 		$r = array();
 		foreach ($result as $item){
 			$percent = ($item['cm'])?($item['cm']/$pageSize)*100:0;

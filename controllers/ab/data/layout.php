@@ -16,8 +16,8 @@ class layout extends data {
 		$user = \F3::get("user");
 
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
-		$currentDate = $user['ab_publication']['current_date'];
+		$pID = $user['pID'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : "";
@@ -83,9 +83,9 @@ class layout extends data {
 
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
 		$stats = $this->_stats();
@@ -221,11 +221,11 @@ class layout extends data {
 	function _page($page=""){
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
 		$page = ($page)?$page: isset($_REQUEST['page'])?$_REQUEST['page']:"";
 
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 
@@ -299,9 +299,9 @@ class layout extends data {
 	function _stats($data="") {
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 
@@ -336,9 +336,9 @@ class layout extends data {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 
-		$pID = $user['ab_publication']['ID'];
+		$pID = $user['publication']['ID'];
 
-		$dID = $user['ab_publication']['current_date']['ID'];
+		$dID = $user['publication']['current_date']['ID'];
 
 		$page = models\pages::getAll("page='$page_nr' AND global_pages.dID = '$dID' AND global_pages.pID='$pID'");
 

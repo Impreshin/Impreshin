@@ -5,17 +5,21 @@
 	<a class="close" data-dismiss="modal">×</a>
 
 	<h3>
-		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px;"> Deleted </span>
+		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span>
 		<% } %>
 		<%= this.client %>
 	</h3>
 
 	<div id="modal-header-btns">
-		<% if (!this.deleted) { %>
+		<% if (this.a.repeat) { %>
 		<a href="javascript:;"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
+		<% } %>
+		<% if (this.a.edit) { %>
 		<a href="/ab/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% } %>
+		<% if (this.a.print) { %>
 		<a href="/ab/details/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Print this booking"><i class="icon-print icon-d-grey"></i></a>
+		<% } %>
 
 	</div>
 
@@ -39,9 +43,11 @@
 			<li class="tab-icon">
 				<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
 			</li>
+			<% if (this.a.material_pane) { %>
 			<li class="tab-icon">
 				<a href="#details-pane-material" data-toggle="tab"><i class="icon-file icon-grey"></i></a>
 			</li>
+			<% } %>
 
 		</ul>
 		<div class="tab-content" style="width: 520px;">
@@ -236,6 +242,7 @@
 					</div>
 				</div>
 			</div>
+			<% if (this.a.material_pane) { %>
 			<div id="details-pane-material" class="tab-pane">
 				<div class="scroll-pane">
 					<p>the material goes here</p>
@@ -243,11 +250,12 @@
 
 				</div>
 			</div>
+			<% } %>
 		</div>
 	</div>
 	<% if (this.typeID =='1') { %>
 
-	<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} %>px;" <% if (!this.deleted) { %> href="#popup-material"<% } %> data-target="popup">
+	<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }} %>px;" <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %>>
 		<% if (this.page){ %>
 		<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 		<% } %>
@@ -262,7 +270,8 @@
 			<img src="/ui/_images/success.png" alt="" class="material-state">
 		<% } %>
 
-	</a> <% if (!this.deleted) { %>
+	</a>
+	<% if (this.a.material) { %>
 	<div id="details-bottom-right-btns">
 		<div class="btn-group">
 			<% if (this.material_status!='1') { %>
@@ -284,16 +293,17 @@
 </div>
 <div class="modal-footer">
 	<div class="row">
-		<% if (!this.deleted) { %>
-		<div class="span9 l">
-			<% if (this.checked=='1') { %>
-			<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
-			<% } else { %>
-			<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
-			<% } %>
 
+		<div class="span9 l">
+			<% if (this.a.checked) { %>
+				<% if (this.checked=='1') { %>
+					<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
+				<% } else { %>
+					<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
+				<% } %>
+			<% } %>
 		</div>
-		<% } %>
+
 		<div style="padding-left: 15px; margin-right: -20px;" class="offset9" id="list-next-prev-btns">
 			<div class="btn-group">
 				<button id="details-record-prev" class="btn span2">
@@ -307,7 +317,7 @@
 
 </div>
 <div class="loadingmask wide"></div>
-
+<% if (this.a.material) { %>
 <div class="popup" id="popup-material">
 	<form class="form" id="form-material">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
@@ -351,7 +361,7 @@
 				<label class="control-label">Material:</label>
 
 				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
-					{% if _cfg['upload_material'] %}
+					{% if _cfg['upload']['material'] %}
 
 					<input type="file" id="fileInput" class="input-file">
 
@@ -385,6 +395,7 @@
 		</div>
 	</form>
 </div>
+<% } %>
 ]]>
 </script>
 <script type="text/javascript">

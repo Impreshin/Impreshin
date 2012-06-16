@@ -7,6 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab\production as production;
+use \models\ab as models;
 class controller_production {
 	function __construct() {
 		$user = F3::get("user");
@@ -14,16 +15,16 @@ class controller_production {
 		//if (!$userID) F3::reroute("/login");
 
 
-		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
+		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 
 	}
 	function page() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
 		//test_array($user);
-		$ab_settings = F3::get("ab_settings");
+		$ab_settings = F3::get("settings");
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(

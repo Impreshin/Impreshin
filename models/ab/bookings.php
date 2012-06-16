@@ -16,7 +16,7 @@ class bookings {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 
 		$currentDate = $currentDate['publish_date'];
 
@@ -50,6 +50,7 @@ class bookings {
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publishDate']));
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state']="";
+
 			if ($return['publishDate'] == $currentDate){
 				$return['state'] = "Current";
 			} elseif ($return['publishDate']<$currentDate){
@@ -286,8 +287,8 @@ class bookings {
 				$arrange = "COALESCE(ab_bookings_types.type,ab_bookings_types.type) as heading";
 				break;
 			case "date":
-				$orderby = "COALESCE(ab_bookings.publishDate,99999) $ordering, " . $orderby;
-				$arrange = "(ab_bookings.publishDate) as heading";
+				$orderby = "COALESCE(global_dates.publish_date,99999) $ordering, " . $orderby;
+				$arrange = "DATE_FORMAT(global_dates.publish_date, '%d %M %Y' ) as heading";
 				break;
 			case "placing":
 				$orderby = "COALESCE(ab_placing.orderby,99999) $ordering,  ab_bookings_types.orderby," . $orderby;

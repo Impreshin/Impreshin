@@ -83,9 +83,7 @@ class Index {
 		$userO = new \models\user();
 		$user = $userO->get($uID);
 
-		if ((isset($_GET['apID'])&&$_GET['apID'])&&$_GET['apID']!=$user['ab_pID']){
-			$user = $userO->get(\models\user::save_config(array("pID"=> $_GET['apID']), "ab", $uID));
-		}
+
 		$app->set('user', $user);
 
 

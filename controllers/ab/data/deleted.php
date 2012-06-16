@@ -14,9 +14,9 @@ class deleted extends data {
 	function _list() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 		$section = 'deleted';
@@ -67,7 +67,7 @@ class deleted extends data {
 		);
 
 
-		user::save_setting($values);
+		models\user_settings::save_setting($values);
 
 
 		//print_r($values);

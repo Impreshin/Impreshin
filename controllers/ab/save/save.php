@@ -32,7 +32,7 @@ class save {
 		$userID = $user['ID'];
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
-		$ab_defaults = F3::get("ab_defaults");
+		$ab_defaults = F3::get("defaults");
 		$section = (isset($_GET['section'])) ? $_GET['section'] : "list";
 
 
@@ -62,10 +62,7 @@ class save {
 		$values[$section]=$new;
 
 
-
-
-
-		user::save_setting($values);
+		models\user_settings::save_setting($values);
 
 
 
@@ -91,7 +88,7 @@ class save {
 		$userID = $user['ID'];
 
 		$publication = new publications();
-		$publication = $publication->get($user['ab_pID']);
+		$publication = $publication->get($user['pID']);
 
 
 
@@ -104,7 +101,7 @@ class save {
 
 		$values = array();
 
-		$values['pID'] = $user['ab_pID'];
+		$values['pID'] = $user['pID'];
 		$values['dID'] = "";
 		$values['typeID'] = $type;
 		if ($ID) { // changes when editing

@@ -6,20 +6,18 @@
 namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
-use \models\ab\dates as dates;
-use \models\ab\bookings as bookings;
-use \models\ab\production as production;
+use \models\ab as models;
 class controller_layout {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		//if (!$userID) F3::reroute("/login");
-		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
+		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 	}
 	function page() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
 
 
@@ -37,8 +35,8 @@ class controller_layout {
 			)
 		);
 
-		$tmpl->placing = \models\ab\placing::getAll("pID='$pID'");
-		$tmpl->sections = \models\ab\sections::getAll("pID='$pID'");
+		$tmpl->placing = models\placing::getAll("pID='$pID'");
+		$tmpl->sections = models\sections::getAll("pID='$pID'");
 		$tmpl->output();
 
 	}

@@ -22,13 +22,13 @@ class user {
 	public function get($ID = "") {
 		$timer = new timer();
 
-		$ab_defaults = F3::get("ab_defaults");
+
+
+		$defaults = F3::get("defaults");
 
 		$result = F3::get("DB")->exec("
-			SELECT global_users.*,
-				ab_users_settings.settings,
-				ab_users_settings.pID as ab_pID
-			FROM `global_users` LEFT JOIN ab_users_settings ON global_users.ID = ab_users_settings.uID
+			SELECT *
+			FROM global_users
 			WHERE global_users.ID = '$ID'
 		"
 		);
@@ -39,33 +39,51 @@ class user {
 			$result = $result[0];
 
 
+			$app = F3::get("app");
+			if ($app){
+
+
+				$appClass = "\\models\\". $app."\\user_settings";
+				$appO = new $appClass();
+				$app = $appO->_read($result['ID']);
+
+
+				if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $app['pID']) {
+					$appClass::save_config(array("pID"=> $_GET['apID']), $result['ID']);
+					$app = $appO->_read($result['ID']);
+				}
 
 
 
 
-			$result['settings']= array_replace_recursive((array)$ab_defaults, (array)($result['settings'])?unserialize($result['settings']):array());;
-
-			//test_array($result['settings']);
-			$result['settings']['list']['count'] = count($result['settings']['list']['col']);
-			$av_publications = ab\publications::getAll("uID='".$result['ID']."'","publication ASC");
-			$ab_pID = $av_publications[0]['ID'];
 
 
-			$pubstr = array();
-			$ab_publication = "";
-			foreach ($av_publications AS $pub) $pubstr[] = $pub["ID"];
 
-			if (in_array($result['ab_pID'], $pubstr)) {
-				$ab_pID = $result['ab_pID'];
 
+
+				$result['settings']= array_replace_recursive((array)$defaults, (array)($app['settings'])?unserialize($app['settings']):array());;
+
+
+				$publications = ab\publications::getAll("uID='".$result['ID']."'","publication ASC");
+				$pID = $publications[0]['ID'];
+
+
+				$pubstr = array();
+				$publication = "";
+				foreach ($publications AS $pub) $pubstr[] = $pub["ID"];
+
+				if (in_array($app['pID'], $pubstr)) {
+					$pID = $app['pID'];
+
+				}
+
+				$publication = new \models\ab\publications();
+				$publication = $publication->get($pID);
+
+				$result['pID'] = $pID;
+				$result['publications']=$publications;
+				$result['publication']= $publication;
 			}
-
-			$ab_publication = new \models\ab\publications();
-			$ab_publication = $ab_publication->get($ab_pID);
-
-			$result['ab_pID'] = $ab_pID;
-			$result['ab_publications']=$av_publications;
-			$result['ab_publication']= $ab_publication;
 
 
 		} else {
@@ -75,62 +93,7 @@ class user {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function save_setting($values = array(), $app = "ab",$uID=""){
-		$timer = new timer();
-		if (!$uID){
-			$user = F3::get("user");
-			$uID = $user['ID'];
-		}
 
-
-
-
-		$t = New Axon("ab_users_settings");
-		$t->load("uID='$uID'");
-
-		$t->uID=$uID;
-
-		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
-		if (isset($values['list']['col'])) $v['list']['col'] = $values['list']['col'];
-		if (isset($values['production']['col'])) $v['production']['col'] = $values['production']['col'];
-		if (isset($values['provisional']['col'])) $v['provisional']['col'] = $values['provisional']['col'];
-		if (isset($values['search']['col'])) $v['search']['col'] = $values['search']['col'];
-		if (isset($values['deleted']['col'])) $v['deleted']['col'] = $values['deleted']['col'];
-		//test_array($v);
-
-		if(count($values)) $t->settings = serialize($v);
-
-		$t->save();
-
-
-	$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return "done";
-	}
-
-	public static function save_config($values = array(), $app = "ab", $uID = "") {
-		$timer = new timer();
-		if (!$uID) {
-			$user = F3::get("user");
-			$uID = $user['ID'];
-		}
-
-
-		$t = New Axon("ab_users_settings");
-		$t->load("uID='$uID'");
-
-		$t->uID = $uID;
-
-		foreach ($values as $key=> $value) {
-			$t->$key = $value;
-		}
-
-
-		$t->save();
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return $uID;
-	}
 
 	private static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN global_users;");

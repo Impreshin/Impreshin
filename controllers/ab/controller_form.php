@@ -6,33 +6,23 @@
 namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
-use models\ab\bookings as bookings;
-use models\ab\accounts as accounts;
-use models\ab\marketers as marketers;
-use models\ab\categories as categories;
-use models\ab\placing as placing;
-use models\ab\colours as colours;
-use models\ab\dates as dates;
-use models\ab\bookingTypes as bookingTypes;
-use models\ab\remarkTypes as remarkTypes;
-use models\ab\production as production;
-use models\ab\publications as publications;
+use models\ab as models;
 
 class controller_form {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		if (!$userID) F3::reroute("/login");
-		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
+		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 	}
 
 	function page() {
 		$ID = F3::get('PARAMS["ID"]');
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
-		$currentDate = $user['ab_publication']['current_date'];
+		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
 
@@ -63,11 +53,11 @@ class controller_form {
 		}
 		$spotlist = json_encode($a);
 
-		$accounts = accounts::getAll("pID='$pID'", "account ASC");
-		$marketers = marketers::getAll("pID='$pID'", "marketer ASC");
-		$dates = dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
-		$placing = placing::getAll("pID='$pID'", "orderby ASC", "");
-		$colours = colours::getAll("pID='$pID'", "orderby ASC", "");
+		$accounts = models\accounts::getAll("pID='$pID'", "account ASC");
+		$marketers = models\marketers::getAll("pID='$pID'", "marketer ASC");
+		$dates = models\dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
+		$placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
+		$colours = models\colours::getAll("pID='$pID'", "orderby ASC", "");
 
 		$c = array();
 		foreach ($colours as $record) {
@@ -105,7 +95,7 @@ class controller_form {
 
 //test_array($user);
 
-		$detailsO = new bookings();
+		$detailsO = new models\bookings();
 		$details = $detailsO->get($ID);
 		if ($details['ID'] && ($details['pID']!= $pID || $details['deleted']=='1')){
 			$details =$detailsO->dbStructure();
@@ -128,7 +118,7 @@ class controller_form {
 		);
 
 
-		$selectedDate = new dates();
+		$selectedDate = new models\dates();
 		$selectedDate = $selectedDate->get($details['dID']);
 
 		$d = array();
@@ -141,8 +131,8 @@ class controller_form {
 		}
 
 
-		$tmpl->bookingTypes = bookingTypes::getAll("", "orderby ASC");
-		$tmpl->remarkTypes = remarkTypes::getAll("");
+		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");
+		$tmpl->remarkTypes = models\remarkTypes::getAll("");
 		$tmpl->clients_th_json = $clientlist;
 		$tmpl->spots_th_json = $spotlist;
 		$tmpl->accounts_th_json = $accountData;
@@ -151,8 +141,8 @@ class controller_form {
 		$tmpl->marketers = $marketers;
 		$tmpl->details = $details;
 		$tmpl->placing = $placing;
-		$tmpl->production = production::getAll("pID='$pID'", "production ASC");
-		$tmpl->categories = categories::getAll("pID='$pID'", "orderby ASC");
+		$tmpl->production = models\production::getAll("pID='$pID'", "production ASC");
+		$tmpl->categories = models\categories::getAll("pID='$pID'", "orderby ASC");
 		$tmpl->dates = array(
 			"selected"=>$selectedDate,
 			"current"=> $currentDate,

@@ -4,7 +4,7 @@
 			<div class="clearfix">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
-				<a class="brand" href="/ab/">AdBooker</a>
+				<a class="brand" href="/ab/">Adverts</a>
 
 				<div id="app-nav-bar">
 					<ul class="nav" id="app-nav">
@@ -27,19 +27,14 @@
 							<a href="/ab/production/">Production</a>
 						</li>
 
-						<li class="dropdown {% if page['section'] == "layout" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Layout <b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li class=" {% if page['sub_section'] == "planning" %} active {% endif %}">
-									<a href="/ab/layout/"><i class="icon-edit menu-icon"></i>Planning</a>
-								</li>
-								<li class=" {% if page['sub_section'] == "overview" %} active {% endif %}">
-									<a href="/ab/layout/overview/"><i class="icon-th menu-icon"></i>Overview</a>
-								</li>
-
-
-							</ul>
+						<li class="{% if page['section'] == "layout" %} active {% endif %}">
+							<a href="/ab/layout/">Layout</a>
 						</li>
+						<li class="{% if page['section'] == "overview" %} active {% endif %}">
+							<a href="/ab/overview/">Overview</a>
+						</li>
+
+
 						<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Records <b class="caret"></b></a>
 							<ul class="dropdown-menu">

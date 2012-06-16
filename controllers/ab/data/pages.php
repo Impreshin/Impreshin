@@ -16,9 +16,9 @@ class pages extends data {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 
-		$pID = $user['ab_publication']['ID'];
+		$pID = $user['publication']['ID'];
 
-		$dID = $user['ab_publication']['current_date']['ID'];
+		$dID = $user['publication']['current_date']['ID'];
 
 		$page = models\pages::getAll("page='$page_nr' AND dID = '$dID' AND pID='$pID'");
 

@@ -15,10 +15,10 @@ class loading {
 
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		if (!$pID) $pID = $user['ab_pID'];
+		if (!$pID) $pID = $user['pID'];
 
-		if ($pID == $user['ab_pID']){
-			$publication = $user['ab_publication'];
+		if ($pID == $user['pID']){
+			$publication = $user['publication'];
 		} else {
 			$publication = new publications();
 			$publication = $publication->get($pID);

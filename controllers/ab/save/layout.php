@@ -18,8 +18,8 @@ class layout extends save {
 		$page = isset($_REQUEST['page'])?$_REQUEST['page']:"";
 		$sectionID = isset($_REQUEST['sectionID'])?$_REQUEST['sectionID']:"";
 		$colour = isset($_REQUEST['colour'])?$_REQUEST['colour']:"";
-		$pID = $user['ab_publication']['ID'];
-		$dID = $user['ab_publication']['current_date']['ID'];
+		$pID = $user['publication']['ID'];
+		$dID = $user['publication']['current_date']['ID'];
 
 		if ($sectionID == "0"){
 			$sectionID = "";
@@ -58,8 +58,8 @@ class layout extends save {
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : "";
 
-		$pID = $user['ab_pID'];
-		$dID = $user['ab_publication']['current_date']['ID'];
+		$pID = $user['pID'];
+		$dID = $user['publication']['current_date']['ID'];
 
 		if ($page && ($page != "remove") ){
 			$a = new Axon("global_pages");

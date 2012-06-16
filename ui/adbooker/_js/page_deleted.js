@@ -301,11 +301,14 @@ function getList(settings) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
+		var bottomChanges = 42;
 		if (data['list'][0]){
 			$recordsList.jqotesub($("#template-records"), data['list']);
 
 			if (data['pagination']['pages'].length>1){
 				$pagenation.jqotesub($("#template-records-pagination"), data['pagination']).stop(true, true).fadeIn(transSpeed);
+				bottomChanges = $pagenation.outerHeight() + bottomChanges;
+
 			} else {
 				$pagenation.stop(true, true).fadeOut(transSpeed)
 			}
@@ -320,6 +323,8 @@ function getList(settings) {
 
 
 		var $scrollpane = $("#whole-area .scroll-pane");
+
+		$scrollpane.css("bottom", bottomChanges);
 		if (orderingactive){
 			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		} else {

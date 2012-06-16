@@ -14,16 +14,16 @@ class controller_search {
 		//if (!$userID) F3::reroute("/login");
 
 
-		\models\user::save_config(array("page"=> $_SERVER['REQUEST_URI']));
+		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 
 	}
 	function page() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
 		//test_array($user);
-		$ab_settings = F3::get("ab_settings");
+		$ab_settings = F3::get("settings");
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
@@ -64,7 +64,7 @@ class controller_search {
 		}
 		//foreach ($ab_settings[''])
 
-		$dates = models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['ab_publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
+		$dates = models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
 
 	//test_array($dates);
 

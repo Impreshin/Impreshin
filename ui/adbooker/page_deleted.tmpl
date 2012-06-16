@@ -5,7 +5,7 @@
 			<form class="" style="margin: 0;" id="search-form">
 			<ul class="nav nav-pills pull-left">
 				<li>
-					<h2 style="padding-left: 30px;">Deleted Records</h2>
+					<h2 style="padding-left: 30px;margin-bottom: -5px;">Deleted Records</h2>
 				</li>
 
 				<li class="divider-vertical"></li>
@@ -22,7 +22,7 @@
 					<li style="padding-left: 10px;">
 						<div class="input-append" id="date-picker-area">
 							<label for="date-picker">
-							<input id="date-picker" name="date-picker" type="text" placeholder="Date Filter" class="span3" value="{{ settings["list"]['search']['dates']|default(_user['ab_publication']['current_date']['publish_date']) }}">
+							<input id="date-picker" name="date-picker" type="text" placeholder="Date Filter" class="span3" value="{{ settings["list"]['search']['dates']|default(_user['publication']['current_date']['publish_date']) }}">
 								<span class="add-on" style="margin-left: -4px; border-left:none; "><i class="icon-calendar"></i></span></label>
 
 						</div>
@@ -76,7 +76,7 @@
 <div class="scroll-pane">
 
 <div data-heading="top" id="scroll-container" >
-<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px; margin-bottom: 50px;">
+<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px; ">
 
 
 </table>

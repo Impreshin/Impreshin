@@ -18,7 +18,7 @@ class form extends data {
 		$type = (isset($_REQUEST['type'])) ? $_REQUEST['type'] : "1";
 		$user = F3::get("user");
 		$userID = $user['ID'];
-		$pID = $user['ab_pID'];
+		$pID = $user['pID'];
 
 		$timer = new timer();
 

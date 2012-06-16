@@ -38,13 +38,10 @@ class template {
 		$user = F3::get('user');
 
 		$cfg = F3::get('cfg');
-		if ($user['ab_pID']=='1'){
-			$cfg['upload_material']=false;
-		}
 
 
-		$publications = $user['ab_publications'];
-		$publication = $user['ab_publication'];
+		$publications = $user['publications'];
+		$publication = $user['publication'];
 
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;
@@ -55,7 +52,7 @@ class template {
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
 		$this->vars['_ab'] = array(
-			"settings"=> F3::get('ab_settings'),
+			"settings"=> F3::get('settings'),
 			"publication"=> $publication,
 			"publications"=> $publications,
 			"json"=>array(
