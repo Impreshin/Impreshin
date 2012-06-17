@@ -130,7 +130,7 @@ class controller_form {
 			$selectedDate = array();
 		}
 
-
+		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");
 		$tmpl->remarkTypes = models\remarkTypes::getAll("");
 		$tmpl->clients_th_json = $clientlist;

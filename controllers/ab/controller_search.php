@@ -71,6 +71,7 @@ class controller_search {
 
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
+		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->dates = $dates;
 
 
@@ -78,8 +79,15 @@ class controller_search {
 
 	//	test_array($ab_settings);
 
+		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
+		if (count($date_range)){
+			$date_range = $date_range[0];
+		}
+
+		$tmpl->date_range = json_encode($date_range);
 
 		$tmpl->settings = $ab_settings;
+
 
 
 

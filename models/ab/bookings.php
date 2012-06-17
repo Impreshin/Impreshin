@@ -384,7 +384,72 @@ class bookings {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return "deleted";
 	}
+	public static function repeat($ID="",$dID){
+		$timer = new timer();
+		$user = F3::get("user");
+
+
+		$dataO = new bookings();
+		$data = $dataO->get($ID);
+
+		if (!$data['ID'] || $data["accountBlocked"] == '1') {
+			exit();
+		}
+
+		$values = $data;
+
+
+		unset($values['ID']);
+		unset($values['logs']);
+		unset($values['publishDate']);
+		unset($values['dID']);
+		unset($values['userName']);
+
+		$values['userID'] = $user['ID'];
+		$values['checked'] = "0";
+		$values['checked_date'] = null;
+		$values['checked_userID'] = null;
+		$values['checked_user'] = null;
+		$values['userName'] = $user['fullName'];
+		$values['repeat_from'] = $data['ID'];
+
+
+		$values['dID'] = $dID;
+
+
+		$a = new Axon("ab_bookings");
+		foreach ($values as $key=> $value) {
+			$a->$key = $value;
+		}
+
+
+		$a->save();
+		$ID = $a->_id;
+
+		$n= $dataO->get($ID);
+
+		$log = array(
+			array(
+				"k"=>"Repeated",
+				"v"=>$ID,
+				"w"=> $data['ID']
+			),
+			array(
+				"k"=>"Date",
+				"v"=> $n['publishDate'],
+				"w"=>$data['publishDate']
+			)
+		);
+
+		bookings::logging($data['ID'], $log, "Booking was repeated");
+		bookings::logging($ID, $log, "Repeat Booking");
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__)), func_get_args());
+		return $n;
+	}
 	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
+
+		//test_array($values);
 		$timer = new timer();
 		$lookupColumns = array();
 		$lookupColumns["dID"] = array("sql"=>"(SELECT publish_date FROM global_dates WHERE ID = '{val}')","col"=>"publish_date","val"=>"");
@@ -435,6 +500,8 @@ class bookings {
 		}
 
 
+
+
 		if (!$ID){
 			$label = "Booking Added";
 			$ID = $a->_id;
@@ -453,6 +520,7 @@ class bookings {
 
 
 
+
 		$v = F3::get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
@@ -464,7 +532,7 @@ class bookings {
 		}
 
 
-//test_array($v);
+
 
 		if (isset($opts['section']) && $opts['section']){
 			switch ($opts['section']){
@@ -503,6 +571,7 @@ class bookings {
 						$label = "Booking removed from a page";
 					}
 					break;
+
 
 			}
 		}

@@ -34,7 +34,7 @@ class controller_layout {
 				"title"=> "AdBooker - Layout",
 			)
 		);
-
+		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->placing = models\placing::getAll("pID='$pID'");
 		$tmpl->sections = models\sections::getAll("pID='$pID'");
 		$tmpl->output();

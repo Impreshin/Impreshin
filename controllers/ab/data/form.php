@@ -78,12 +78,29 @@ class form extends data {
 				$return["category"]= $categories;
 		} else {
 			$accounts = F3::get("DB")->exec("
-				SELECT DISTINCT ab_accounts.*
+				SELECT ab_accounts.*
 				FROM ab_bookings INNER JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum
 				WHERE ab_bookings.userID = '$userID' AND pID = '$pID'
-				ORDER BY publishDate DESC
-				LIMIT 0,5
+				ORDER BY datein DESC
+				LIMIT 0,50
 			");
+
+			$limit = (isset($_REQUEST['limit'])) ?  $_REQUEST['limit'] : "";
+
+			$a = array();
+			$aa = array();
+			$i = 0;
+			foreach ($accounts as $account){
+				if (!in_array($account['ID'],$aa)){
+					$a[] = $account;
+				}
+				$aa[] = $account['ID'];
+				if ($limit && $i++ == $limit+1){
+					break;
+				}
+
+			}
+			$accounts = $a;
 			$return = array(
 				'accounts'=> $accounts
 			);

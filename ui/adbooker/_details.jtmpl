@@ -5,14 +5,15 @@
 	<a class="close" data-dismiss="modal">×</a>
 
 	<h3>
-		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span>
-		<% } %>
+
+		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span><% } %>
+		<% if (this.repeat_from) { %> <span class="label label-info" style="margin-right: 10px; margin-top:-8px;"> Repeat </span><% } %>
 		<%= this.client %>
 	</h3>
 
 	<div id="modal-header-btns">
 		<% if (this.a.repeat) { %>
-		<a href="javascript:;"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
+		<a href="#popup-repeat" data-target="popup"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.edit) { %>
 		<a href="/ab/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
@@ -225,8 +226,13 @@
 										<% for(var g in this.logs[i].log) { %>
 										<tr>
 											<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
+
+
+
+											<% if (this.logs[i].log[g].w!="-"){ %>
 											<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
-											<td><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
+											<% } %>
+											<td <% if (this.logs[i].log[g].w=="-"){ %>colspan='2'<% } %>><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
 										</tr>
 										<% } %>
 										</tbody>
@@ -396,6 +402,48 @@
 	</form>
 </div>
 <% } %>
+<% if (this.a.repeat) { %>
+<div class="popup" id="popup-repeat" style="height: 230px;">
+	<form class="form form-horizontal" id="form-repeat">
+		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+
+			<h3>Repeat - <%= this.client %></h3></div>
+		<div class='popup-body' style="height: 126px;">
+
+			<div class="control-group date_list" style="margin-left: -10px;">
+
+
+				<div class="controls" style="margin-left: 50px;">
+
+					{% for row in repeat_dates%}
+					<label class="radio <% if (this.dID == "{{ row['ID'] }}") { %>dates_list_current<% } %>">
+						<input type="radio" value="{{ row['ID'] }}" name="dID"> {{ row['publish_date_display'] }}<% if (this.dID == "{{ row['ID'] }}") { %><span class="help-inline">Currently in this date</span><% } %>
+					</label>
+					{% endfor %}
+
+
+				</div>
+			</div>
+
+
+
+
+		</div>
+		<div class='popup-footer '>
+			<div class="row">
+				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+
+				<div style="float:right;">
+
+
+					<button class="btn btn-primary span3">Repeat</button>
+				</div>
+
+			</div>
+		</div>
+	</form>
+</div>
+<% } %>
 ]]>
 </script>
 <script type="text/javascript">
@@ -420,6 +468,44 @@
 		$.bbq.removeState("ID");
 		$("#record-list .record.active").removeClass("active");
 	});
+
+	$(document).on('submit', '#form-repeat', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+
+		var $inputs = $("input",$this).attr("disabled","disabled");
+
+		var dID = $("input:radio:checked",$this).val();
+
+		if (dID){
+			$.post("/ab/save/bookings/repeat/?ID=" + $.bbq.getState("ID"), data, function (response) {
+				console.log(response);
+				var ID;
+				if (confirm("Click ok to view the new record \n or \n cancel to stay with the old")) {
+
+					ID = response.ID;
+					console.log("New: " + ID);
+					$.bbq.pushState({"ID":ID});
+					getDetails();
+				} else {
+					console.log("OLD: " + $.bbq.getState("ID"));
+					ID = $.bbq.getState("ID");
+					getDetails();
+				}
+
+			});
+		} else {
+			alert("Please select a date");
+		}
+
+
+
+
+	});
+
+
+
 	$(document).on('submit', '#form-material', function (e) {
 		e.preventDefault();
 		var $this = $(this);

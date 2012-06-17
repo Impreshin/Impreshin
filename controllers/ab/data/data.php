@@ -42,7 +42,10 @@ class data {
 
 		if (!$return['deleted']){
 
-			$allow['repeat'] = '1';
+			if (!$return['accountBlocked']){
+				$allow['repeat'] = '1';
+			}
+
 
 
 			if ($return['state']=='Current'){

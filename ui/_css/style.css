@@ -1039,6 +1039,29 @@ table.records .record-tick {
 #details-modal .popup .popup-footer:after {
   clear: both;
 }
+#details-modal .popup .date_list label {
+  padding: 3px;
+  cursor: pointer;
+  padding-left: 30px;
+  margin-right: 20px;
+}
+#details-modal .popup .date_list label:hover {
+  background-color: #deebff;
+}
+#details-modal .popup .date_list label .help-inline {
+  font-size: 10px;
+  color: #cccccc;
+}
+#details-modal .popup .date_list input {
+  margin-left: -20px;
+}
+#details-modal .popup .date_list .dates_list_current {
+  border: 1px solid #cccccc;
+  background-color: #f1f1f1;
+  margin-bottom: 5px;
+  margin-right: 20px;
+  padding-left: 29px;
+}
 #details-modal .log-changes-table th {
   text-align: left !important;
 }

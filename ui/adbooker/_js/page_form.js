@@ -117,7 +117,7 @@ $(document).ready(function(){
 			alert("You must specify a reason");
 		} else {
 			$("input",$(this)).attr("disabled","disabled");
-			$.post("/ab/save/booking_delete/?ID="+$("#record-ID").val(),data,function(r){
+			$.post("/ab/save/bookings/booking_delete/?ID="+$("#record-ID").val(),data,function(r){
 				alert("Booking deleted");
 				document.location = "/ab/";
 			});
@@ -534,8 +534,19 @@ function form_submit(){
 	if (!$fld.val()){
 		submit = error_msg($fld,"<strong>Account Number</strong>, is Required");
 	}
+	$account = "";
 
+	for (i in var_accounts){
+		if (var_accounts[i].accNum == $fld.val()){
+			$account = var_accounts[i];
+			break;
+		}
 
+	}
+
+	if ($account.record.blocked){
+		submit = error_msg($fld, "<strong>Account</strong>, is Blocked");
+	}
 
 	var cm = $("#cm").val();
 	var col = $("#col").val();
@@ -550,13 +561,15 @@ function form_submit(){
 
 
 
+
+
 	resizeform();
 
 	if (submit){
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
 
-		$.post("/ab/save/form?ID=" + details['ID'] + "&type=" + type, data, function (response) {
+		$.post("/ab/save/bookings/form?ID=" + details['ID'] + "&type=" + type, data, function (response) {
 
 			$("#pagecontent .loadingmask").fadeOut(transSpeed);
 			$("#modal-form").jqotesub($("#template-modal-form"), response[0]).modal("show");

@@ -66,6 +66,7 @@ class controller_production {
 		}
 
 		$tmpl->production = production::getAll("pID='$pID'","production ASC");
+		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 
 
 		$ab_settings['list'] = $user['settings']['production'];

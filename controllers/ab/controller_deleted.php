@@ -68,7 +68,12 @@ class controller_deleted {
 
 	//test_array($ab_settings);
 
+		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
+		if (count($date_range)) {
+			$date_range = $date_range[0];
+		}
 
+		$tmpl->date_range = json_encode($date_range);
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
 		$tmpl->dates = $dates;

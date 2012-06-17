@@ -203,8 +203,10 @@ $(document).ready(function () {
 				"endDate":Date.parse('- 1month').moveToLastDayOfMonth()
 			};
 
-
-
+	var earliestDate = date_range.earliestDate;
+	earliestDate = Date.parse(earliestDate);
+	var latestDate = date_range.latestDate;
+	latestDate = Date.parse(latestDate);
 
 	$('#date-picker').daterangepicker({
 		presetRanges     :[
@@ -239,7 +241,9 @@ $(document).ready(function () {
 		rangeSplitter    :'to',
 		datepickerOptions:{
 			changeMonth:true,
-			changeYear :true
+			changeYear :true,
+			minDate:earliestDate,
+			maxDate:latestDate
 		},
 		onOpen           :function () {
 

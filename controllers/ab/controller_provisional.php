@@ -20,10 +20,16 @@ class controller_provisional {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
-
+		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
 		$ab_settings = F3::get("settings");
 		//test_array($ab_settings);
+
+
+
+
+
+
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "bookings",
@@ -65,6 +71,7 @@ class controller_provisional {
 		$ab_settings['list'] = $user['settings']['list'];
 	//	test_array($ab_settings);
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
+		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 
 		$tmpl->settings = $ab_settings;
 
