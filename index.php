@@ -158,13 +158,16 @@ $app->route('GET|POST /logout', function() use ($user) {
 		F3::reroute("/login");
 	});
 
-
 $app->route('GET|POST /', function() use ($user) {
-		echo "hmm";
 		if ($user['ID']) {
 
-			$last_app = $user['last_app'] ? $user['last_app'] : "ab";
-			F3::reroute("/" . $last_app ."/");
+			$last_app = $user['last_page'] ? $user['last_page']:"" ;
+			if (!$last_app){
+				$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/ab/";
+			}
+;
+
+			F3::reroute($last_app);
 		} else {
 			F3::reroute("/login");
 		}

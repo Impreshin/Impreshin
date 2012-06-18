@@ -13,6 +13,7 @@ class controller_form {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		if (!$userID) F3::reroute("/login");
+		F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 	}
 
