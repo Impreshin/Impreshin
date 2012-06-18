@@ -9,7 +9,7 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<select name="force_pages" id="force_pages" class="span2" style="margin-top: 2px; margin-bottom: 0; margin-right: 10px;">
+					<select name="force_pages" id="force_pages" class="span2" style="margin-top: 2px; margin-bottom: 0; margin-right: 10px;" rel="tooltip" title="Select Automatic for the pages to be based on loading" data-placement="bottom">
 						<option value="auto">Automatic</option>
 						{% for row in page_loading %}
 						<option value="{{ row['pages'] }}">{{ row['pages'] }} Pages</option>

@@ -491,11 +491,12 @@ function isScrolledIntoView(elem) {
 	return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop) );
 }
 function getDetails_small(ID){
+	$('#record-details-bottom').stop(true,true).fadeTo(transSpeed,0.5);
 	detailsRequest.push($.getJSON("/ab/data/details/?r=" + Math.random(), {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#record-list .record.active").removeClass("active");
 		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data);
+		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data).stop(true, true).fadeTo(transSpeed,1);
 
 		records_list_resize();
 	}));

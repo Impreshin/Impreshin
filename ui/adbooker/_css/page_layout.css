@@ -155,6 +155,18 @@ background-color: rgba(100,100,100,0.8);
 	right:0;
 	border-top:1px solid #ccc;
 	font-size: 10px;
+	background-color   : #eeeeee;
+	background-repeat  : repeat-x;
+	background-image   : -moz-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image   : -webkit-gradient(linear, left top, left bottom, color-stop(30%, whitesmoke), color-stop(100%, #eeeeee));
+	background-image   : -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image   : -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	background-image   : -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	filter             : progid:DXImageTransform.Microsoft.gradient(startColorstr = whitesmoke, endColorstr = #eeeeee, GradientType = 0);
+	background-image   : linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
+	-webkit-box-shadow : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	-moz-box-shadow    : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	box-shadow         : 0 -1px 3px rgba(100, 100, 100, 0.2);
 }
 #record-details-bottom h4 {
 	padding: 5px;

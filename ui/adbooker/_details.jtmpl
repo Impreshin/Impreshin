@@ -54,6 +54,7 @@
 		<div class="tab-content" style="width: 520px;">
 			<div id="details-pane-details" class="tab-pane ">
 				<div class="scroll-pane">
+					<div style="padding-right:1px;">
 					<table class="table" style="margin-top: 10px; margin-bottom: 8px;">
 						<tbody>
 						<tr>
@@ -151,6 +152,7 @@
 						</tr>
 						</tbody>
 					</table>
+				</div>
 				</div>
 
 
