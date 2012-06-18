@@ -77,7 +77,7 @@ class search extends data {
 
 		$searchsql = "";
 		if ($search_string){
-			$searchsql .= " AND (client like '%$search_string%') ";
+			$searchsql .= " AND (client like '%$search_string%' OR ab_placing.placing like '%$search_string%' OR ab_marketers.marketer like '%$search_string%' OR ab_accounts.account like '%$search_string%') ";
 		}
 		if ($search_dates){
 			$search_dates = explode("to",$search_dates);
