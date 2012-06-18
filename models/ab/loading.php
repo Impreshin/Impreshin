@@ -9,6 +9,34 @@ class loading {
 	private $classname;
 
 
+	public static function getAll($where = "", $orderby = "") {
+		$timer = new timer();
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+
+
+
+
+		$result = F3::get("DB")->exec("
+			SELECT ab_page_load.*
+			FROM ab_page_load
+			$where
+			$orderby
+		");
+
+
+		$return = $result;
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
 	public static function getLoading($pID = "", $cm = "", $forcepages = "") {
 		$timer = new timer();
 

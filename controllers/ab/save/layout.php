@@ -95,6 +95,23 @@ class layout extends save {
 		return $GLOBALS["output"]['data'] = $data;
 
 	}
+	function _force(){
+		$user = F3::get("user");
+		$pages = isset($_REQUEST['pages']) ? $_REQUEST['pages'] : "";
+
+		$a = new Axon("global_dates");
+		$a->load("ID='".$user['publication']['current_date']['ID']."'");
+
+		if (!$a->dry()){
+			if ($pages=="auto" || $pages ==""){
+				$a->pages = null;
+			} else {
+				$a->pages = $pages;
+			}
+			$a->save();
+		}
+		return $pages;
+	}
 
 
 }

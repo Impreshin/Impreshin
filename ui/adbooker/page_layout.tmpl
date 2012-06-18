@@ -4,7 +4,26 @@
 		<div class="toolbar clearfix  ">
 			<ul class="nav nav-pills pull-left">
 
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Layout</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<select name="force_pages" id="force_pages" class="span2" style="margin-top: 2px; margin-bottom: 0; margin-right: 10px;">
+						<option value="auto">Automatic</option>
+						{% for row in page_loading %}
+						<option value="{{ row['pages'] }}">{{ row['pages'] }} Pages</option>
+						{% endfor %}
+					</select>
+				</li>
+				<li>
+					<div class="btn-group" id="force_pages_btns">
+						<button class="btn btn-mini" style="padding-left: 10px; padding-right: 10px;" data-direction="down"><i class="icon-minus-sign icon-d-grey"></i></button>
 
+						<button class="btn btn-mini" style="padding-left: 10px; padding-right: 10px;" data-direction="up"><i class="icon-plus-sign icon-d-grey"></i></button>
+					</div>
+
+				</li>
 				<li class="divider-vertical"></li>
 			</ul>
 			<div class="pull-right">

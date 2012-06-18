@@ -139,6 +139,7 @@ $app->route('GET /', function() {
 $app->route('GET /ab/', 'controllers\ab\controller_provisional->page');
 $app->route('GET /ab/production', 'controllers\ab\controller_production->page');
 $app->route('GET /ab/layout', 'controllers\ab\controller_layout->page');
+$app->route('GET /ab/overview', 'controllers\ab\controller_overview->page');
 $app->route('GET /ab/records/search', 'controllers\ab\controller_search->page');
 $app->route('GET /ab/records/deleted', 'controllers\ab\controller_deleted->page');
 $app->route('GET /ab/form', 'controllers\ab\controller_form->page');

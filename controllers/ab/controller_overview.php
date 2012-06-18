@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_layout {
+class controller_overview {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -27,17 +27,16 @@ class controller_layout {
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
-			"section"=> "layout",
-			"sub_section"=> "planning",
-			"template"=> "page_layout",
+			"section"=> "overview",
+			"sub_section"=> "view",
+			"template"=> "page_overview",
 			"meta"    => array(
-				"title"=> "AdBooker - Layout",
+				"title"=> "AdBooker - Overview",
 			)
 		);
 		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->placing = models\placing::getAll("pID='$pID'");
 		$tmpl->sections = models\sections::getAll("pID='$pID'");
-		$tmpl->page_loading = models\loading::getAll("pID='$pID'","pages ASC");
 		$tmpl->output();
 
 	}
