@@ -1,0 +1,34 @@
+<section role="main" id="pagecontent">
+
+	<div class="container">
+
+
+		<article id="whole-area" class="span16" style="top:0;">
+				<form class="form-horizontal well" style="" id="login-form" method="POST">
+					<fieldset>
+						<legend>{{ msg }}</legend>
+						<div class="control-group">
+							<label for="email" class="control-label">Email</label>
+
+							<div class="controls">
+								<input type="email" id="email" class="span4" name="email" placeholder="Email" value="{{ username }}">
+
+							</div>
+						</div>
+						<div class="control-group">
+							<label for="password" class="control-label">Password</label>
+
+							<div class="controls">
+								<input type="password" id="password" class="span3" name="password" placeholder="Password">
+
+							</div>
+						</div>
+
+						<div class="form-actions ">
+							<button class="btn btn-primary span3" type="submit" style="float:right;">Sign in</button>
+						</div>
+					</fieldset>
+				</form>
+		</article>
+	</div>
+</section>

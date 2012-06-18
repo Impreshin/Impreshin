@@ -93,21 +93,44 @@ $version = '0.0.1';
 $version = date("YmdH");
 $minVersion = preg_replace("/[^0-9]/", "", $version);
 
-$settingsmodel = "\\models\\$folder\\settings";
+
 
 $app->set('version', $version);
 $app->set('v', $minVersion);
+$user = "";
+
+$uID = isset($_SESSION['uID'])?$_SESSION['uID']:"";
+$username = isset($_POST['email'])?$_POST['email']:"";
+$password = isset($_POST['password'])?$_POST['password']:"";
+$userO = new \models\user();
+
+if ($username && $password){
+	$uID = $userO->login($username,$password);
+}
+
+
 if ($folder) {
+
+
+	$settingsmodel = "\\models\\$folder\\settings";
 	$app->set('settings', $settingsmodel::getSettings());
 	$app->set('defaults', $settingsmodel::getDefaults());
 
-	$uID = "3";
 
-	$userO = new \models\user();
-	$user = $userO->get($uID);
 
-	$app->set('user', $user);
+
+
+
 }
+
+$user = $userO->get($uID);
+if (!$user['ID']&&$folder) {
+	F3::reroute("/login/");
+}
+
+
+$app->set('user', $user);
+
 
 
 
@@ -129,10 +152,28 @@ $app->route('GET /min/js*', 'general->js_min', $ttl);
 
 $app->route('GET /charts/line', 'charts->line');
 
-$app->route('GET /', function() {
-		F3::reroute("/ab/");
+$app->route('GET|POST /logout', function() use ($user) {
+		session_unset();
+		//session_destroy();
+		F3::reroute("/login");
+	});
+
+
+$app->route('GET|POST /', function() use ($user) {
+		echo "hmm";
+		if ($user['ID']) {
+
+			$last_app = $user['last_app'] ? $user['last_app'] : "ab";
+			F3::reroute("/" . $last_app ."/");
+		} else {
+			F3::reroute("/login");
+		}
+
 	}
 );
+$app->route('GET|POST /login', 'controllers\controller_login->page');
+$app->route('GET|POST /register', 'controllers\controller_register->page');
+
 //include_once("/controllers/ab/_data.php");
 
 
