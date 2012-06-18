@@ -179,6 +179,10 @@ $(document).ready(function () {
 
 	getList();
 	load_pages();
+	if ($.bbq.getState("ID")) {
+		getDetails();
+		getDetails_small($.bbq.getState("ID"));
+	}
 });
 function save_forced_pages(){
 	var pages = $("#force_pages").val();

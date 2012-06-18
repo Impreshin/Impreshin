@@ -125,7 +125,7 @@ if ($folder) {
 
 $user = $userO->get($uID);
 if (!$user['ID']&&$folder) {
-	F3::reroute("/login/");
+	F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
 }
 
 
@@ -161,15 +161,20 @@ $app->route('GET|POST /logout', function() use ($user) {
 $app->route('GET|POST /', function() use ($user) {
 		if ($user['ID']) {
 
-			$last_app = $user['last_page'] ? $user['last_page']:"" ;
-			if (!$last_app){
-				$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/ab/";
+			if (isset($_GET['to'])&& $_GET['to']){
+				$last_app = $_GET['to'];
+			} else {
+				$last_app = $user['last_page'] ? $user['last_page'] : "";
+				if (!$last_app) {
+					$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/ab/";
+				}
 			}
+
 ;
 
 			F3::reroute($last_app);
 		} else {
-			F3::reroute("/login");
+			F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
 		}
 
 	}
