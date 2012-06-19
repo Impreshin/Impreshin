@@ -650,6 +650,7 @@
 	function getDetails() {
 		var ID = $.bbq.getState("ID");
 		$("#details-modal").addClass("loading");
+		for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
 		detailsRequest.push($.getJSON("/ab/data/details/?r=" + Math.random(), {"ID":ID}, function (data) {
 			data = data['data'];
 			$("#record-list .record.active").removeClass("active");

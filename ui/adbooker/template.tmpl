@@ -263,6 +263,9 @@
 	});
 	function updatetimerlist(d, page_size) {
 		//console.log(d);
+		if (!d){
+			return false;
+		}
 		$("#displaylogout").autoLogout('resetTimer');
 
 		var data = d['timer'];
