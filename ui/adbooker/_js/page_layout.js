@@ -86,7 +86,8 @@ $(document).ready(function () {
 		var $this = $(this);
 		getDetails_small($this.attr("data-id"));
 	});
-	$(document).on("dblclick","#record-list .record, .pages .record",function(){
+	$(document).on("dblclick","#record-list .record, .pages .record",function(e){
+		e.stopPropagation();
 		var $this = $(this);
 		$.bbq.pushState({"ID":$this.attr("data-id")});
 		getDetails();
@@ -141,6 +142,7 @@ $(document).ready(function () {
 	$(document).on('click', '#pages_settings_form #lock-btn', function (e) {
 		e.preventDefault();
 		var $this = $(this);
+		$this.tooltip("hide");
 		var lockState = $this.attr("data-value");
 
 		var page = $.bbq.getState("details");
