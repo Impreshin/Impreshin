@@ -125,7 +125,7 @@
 			<% } %>
 			<% if(this.pages[i].locked) { %>
 			<div class="page_locked">
-				<i class="icon-lock icon-white"></i>
+				<i class="icon-lock icon-d-grey"></i>
 
 			</div>
 			<% } %>
