@@ -86,6 +86,13 @@ $(document).ready(function () {
 		var $this = $(this);
 		getDetails_small($this.attr("data-id"));
 	});
+	$(document).on("dblclick","#record-list .record, .pages .record",function(){
+		var $this = $(this);
+		$.bbq.pushState({"ID":$this.attr("data-id")});
+		getDetails();
+	});
+
+
 
 	$(document).on('hide', '#details-modal', function () {
 		var s = {
