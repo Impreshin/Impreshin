@@ -70,12 +70,10 @@
 
 	<div class="spread">
 		<% for(var i in this.pages) { %>
-		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
+		<div data-page_nr="<%= this.pages[i].page %>" class="page highlight-<%= this.pages[i].highlight %>" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
 
 			<div>
-				<%= this.pages[i].page %> <% if (this.pages[i].percent) { %>
-				<div class="bar" style="width: <%= this.pages[i].percent %>%; <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
-				<% } %>
+				<%= this.pages[i].page %>
 			</div>
 
 

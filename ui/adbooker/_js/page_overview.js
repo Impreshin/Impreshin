@@ -23,9 +23,6 @@ $(document).ready(function () {
 	});
 
 
-	$(document).on("scroll", "#whole-area .scroll-pane",function(){
-		visible_pages();
-	});
 
 
 	$(document).on("click","#reload-btn",function(){
@@ -63,7 +60,7 @@ function dummy_resize(settings){
 		whole_pane.reinitialise();
 	}
 
-	//visible_pages();
+
 
 }
 function load_pages(settings){
@@ -92,27 +89,4 @@ function load_pages(settings){
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 		dummy_resize(settings);
 	}));
-}
-
-function visible_pages(){
-	var t = new Array();
-	$("#dummy-bottom .page.visible").removeClass("visible");
-	$("#dummy-area .pages:visible").each(function(){
-		var $this = $(this);
-		if (isScrolledIntoView($this)) {
-			$("#dummy-bottom .page[data-page_nr='" + $this.attr("data-page")+ "']").addClass("visible");
-			t.push($this.attr("data-page"));
-		}
-	});
-//	console.log(t);
-
-}
-function isScrolledIntoView(elem) {
-	var docViewTop = $(window).scrollTop();
-	var docViewBottom = docViewTop + $(window).height();
-
-	var elemTop = $(elem).offset().top;
-	var elemBottom = elemTop + $(elem).height();
-
-	return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop) );
 }

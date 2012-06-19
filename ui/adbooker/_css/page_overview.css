@@ -200,7 +200,7 @@ background-color: rgba(100,100,100,0.8);
 	padding-left: 7px;
 	position: absolute;
 	bottom: 42px;
-	left:-5px;
+	left:0;
 	right:0;
 	border-top:1px solid #ccc;
 	padding-bottom: 6px;
@@ -263,86 +263,14 @@ background-color: rgba(100,100,100,0.8);
 	background-color : #DEEBFF;
 	color: #444;
 }
-#rightsideOver {
-	position:absolute;
-	top : 0;
-	bottom : 0;
-	left : -1px;
-	right : 0;
-	background-color: rgba(250,250,250,1);
-display: none;
-}
 
-#rightsideOver  .header {
-	position: absolute;
-	top:0;
-	left: 0;
-	right: 0;
-	border-bottom: 1px dotted #ccc;
-	padding-top: 5px;
-	padding-bottom: 5px;
-
-}
-
-#rightsideOver .header .close-right-over{
-	position : absolute;
-	top : 3px;
-	right : 3px;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-#rightsideOver  .footer {
-	position       : absolute;
-	bottom            : 42px;
-	left           : 0;
-	right          : 0;
-	border-top  : 1px dotted #ccc;
-
-
-}
-
-#rightsideOver  .body {
-	position : absolute;
-	bottom   : 42px;
-	left  : 0;
-	right : 0;
-	top: 38px;
-}
-
-.dragablethingy {
-	width:50px;
-	height: 50px;
-	background-color: #999;
-}
-
-.dropzones {
-	background-color : #D3FFB7;
-}
-
-.pagehover, .droppablehover, .highlight-yes {
+.highlight-yes {
 	background-color : #D3FFB7;
 	border           : 1px solid #6C0;
 }
-.droppablehover {
-	border: none;
-}
 
-.returnhover {
-	background-color : #D3FFB7;
-}
 
-.pagefull, .highlight-no {
-	background-color : #F99;
+.highlight-no {
+	background-color : #ffd1cc;
 	border           : 1px solid #F00;
-}
-
-.pages article[data-colour='none'] .record[data-colour='Full'], .pages article[data-colour='none'] .record[data-colour='full'], .pages article[data-colour='none'] .record[data-colour='Spot'], .pages article[data-colour='none'] .record[data-colour='spot'] {
-	background-color : #ffd9d0;
-}
-.pages article[data-colour='Spot'] .record[data-colour='Full'], .pages article[data-colour='Spot'] .record[data-colour='full'] {
-	background-color : #ffd9d0;
-}
-.pages .record td {
-	border-bottom: 1px dotted #e1e1e1;
 }
