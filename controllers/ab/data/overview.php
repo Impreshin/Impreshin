@@ -63,6 +63,7 @@ class overview extends data {
 
 		$blank = array(
 			"page"   => 0,
+			"locked"   => 0,
 			"highlight"   => 0,
 			"section"=> array(
 				"n"=> "",
@@ -131,11 +132,15 @@ class overview extends data {
 					if ($stats['records']['material_approved']['n']) $h = "no";
 					if (!$stats['records']['material_approved']['n'] && $stats['records']['material_approved']['y']) $h = "yes";
 					break;
+				case "locked":
+					if ($page['locked']=='1') $h = "no";
+					break;
 			}
 
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"locked"   => $page['locked'],
 				"highlight"   => $h,
 				"section"=> array(
 					"i"=>$page['sectionID'],

@@ -118,6 +118,7 @@ $(document).ready(function () {
 				maintain_position: true
 			};
 			load_pages(s);
+			getDetails_right();
 		}));
 
 		return false;
@@ -126,9 +127,37 @@ $(document).ready(function () {
 		$(this).closest("form").trigger("submit");
 	});
 
-	$(document).on('click', '#pages_settings_form button', function () {
+	$(document).on('click', '#pages_settings_form #colours button', function () {
 		$(this).closest("form").trigger("submit");
 	});
+
+	$(document).on('click', '#pages_settings_form #lock-btn', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var lockState = $this.attr("data-value");
+
+		var page = $.bbq.getState("details");
+		page = (page.match(/\d+/));
+		page = page.join("");
+		var data = {
+			"page"     :page,
+			"locked":lockState
+		};
+
+		activityRequest.push($.post("/ab/save/layout/_page", data, function (response) {
+			var s = {
+				maintain_position:true
+			};
+			load_pages(s);
+			getDetails_right();
+		}));
+
+		return false;
+
+
+	});
+
+
 
 	$("#record-list-middle").droppable({
 		accept   :".pages tr.record",
@@ -280,7 +309,8 @@ function getList(){
 }
 
 function tr_draggable($parent){
-	$("tr.record", $parent).draggable({
+
+	$("tr.record.dragable", $parent).draggable({
 			opacity    :0.5,
 			helper     :function (e) {
 				var $target = $(e.target).closest("tr.record");
@@ -360,6 +390,13 @@ function page_droppable($element){
 
 				}
 
+				if ($this.hasClass("locked")) {
+					allowDrop = false;
+					reason = [];
+					reason.push("Page Locked");
+				}
+
+
 
 				if (allowDrop) {
 					$this.addClass("pagehover");
@@ -425,6 +462,10 @@ function page_droppable($element){
 					allowDrop = false;
 				}
 
+			}
+
+			if ($this.hasClass("locked")){
+				allowDrop = false;
 			}
 
 

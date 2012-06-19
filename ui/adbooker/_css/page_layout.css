@@ -79,6 +79,24 @@ background-color: rgba(100,100,100,0.8);
 	right:-1px;
 }
 
+.pages .page_locked {
+	position : absolute;
+	top   : -19px;
+	border : 1px solid #444;
+	background-color : rgba(100, 100, 100, 0.8);
+padding: 0 3px;
+}
+
+.pages.left .page_locked {
+	right : -1px;
+}
+
+.pages.right .page_locked {
+	left : -1px;
+}
+
+
+
 .pages .page_colour {
 	position : absolute;
 	bottom   : -10px;
@@ -321,6 +339,9 @@ display: none;
 	background-color: #999;
 }
 
+.locked {
+	background-color : #ffedf2;
+}
 .dropzones {
 	background-color : #D3FFB7;
 }

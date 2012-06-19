@@ -96,6 +96,7 @@ class layout extends data {
 
 		$blank = array(
 			"page"   => 0,
+			"locked"   => 0,
 			"section"=> array(
 				"n"=> "",
 				"c"=> "",
@@ -135,6 +136,7 @@ class layout extends data {
 		foreach ($pagesReal as $page){
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"locked"   => $page['locked'],
 				"section"=> array(
 					"i"=>$page['sectionID'],
 					"n"=>$page['section'],
@@ -231,6 +233,7 @@ class layout extends data {
 
 		$blank = array(
 			"page"   => 0,
+			"locked"   => 0,
 			"section"=> array(
 				"n"=> "",
 				"c"=> "",
@@ -252,6 +255,7 @@ class layout extends data {
 
 		$r = array(
 				"page"   => $page['page'],
+				"locked"   => $page['locked'],
 				"section"=> array(
 					"i"=> $page['sectionID'],
 					"n"=> $page['section'],

@@ -21,17 +21,34 @@ class layout extends save {
 		$pID = $user['publication']['ID'];
 		$dID = $user['publication']['current_date']['ID'];
 
-		if ($sectionID == "0"){
-			$sectionID = "";
-		}
+		$locked = isset($_REQUEST['locked']) ? $_REQUEST['locked'] : "";
+
+
 
 		$values = array(
 			"pID"=>$pID,
 			"dID"=>$dID,
-			"sectionID"=>$sectionID,
 			"page"=>$page,
-			"colour"=>$colour
 		);
+
+		if ($sectionID!=""){
+			if ($sectionID == "0") {
+				$sectionID = "";
+			}
+			$values['sectionID']= $sectionID;
+		}
+		if ($colour!=""){
+			if ($colour == "0") {
+				$colour = "";
+			}
+			$values['colour']= $colour;
+		}
+		if ($locked!=""){
+			$values['locked']= $locked;
+		}
+
+
+
 		$a = new Axon("global_pages");
 		$a->load("page='$page' AND pID = '$pID' AND dID='$dID'");
 		$changes = array();
