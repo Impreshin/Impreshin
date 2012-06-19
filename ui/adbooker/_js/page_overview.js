@@ -70,6 +70,7 @@ function load_pages(settings){
 	var placingID = $("#placingID").val();
 
 	$("#whole-area .loadingmask").show();
+	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
 	listRequest.push($.getJSON("/ab/data/overview/_pages/", {"highlight":highlight}, function (data) {
 		data = data['data'];
 
