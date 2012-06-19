@@ -245,7 +245,7 @@
 			<table>
 				<tr>
 					<td>
-						<select class="" id="sectionID" name="sectionID" style="margin: 5px 0; width: 250px;">
+						<select class="" id="sectionID" name="sectionID" style="margin: 5px 0; width: 250px;" <% if (this.locked) { %>disabled="disabled"<% } %>>
 							<option value="0">No Section</option>
 							<optgroup label="Sections">
 								{% for row in sections %}
@@ -277,11 +277,11 @@
 				<tr>
 					<td colspan="2">
 						<div class="btn-group" style="margin-bottom: 5px;" data-toggle="buttons-radio" id="colours">
-							<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;">Black & White</button>
-							<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;">Spot Colour</button>
-							<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;">Full Colour</button>
+							<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;" <% if (this.locked) { %>disabled="disabled"<% } %>>Black & White</button>
+							<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" <% if (this.locked) { %>disabled="disabled"<% } %>>Spot Colour</button>
+							<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" 	<% if (this.locked) { %>disabled="disabled"<% } %>>Full Colour</button>
 							<% if (this.colour) { %>
-							<button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="0" type="button" style="width:9%;">
+							<button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="0" type="button" style="width:9%;" <% if (this.locked) { %>disabled="disabled"<% } %>>
 								<i class="icon-remove-sign"></i></button>
 							<% } %>
 						</div>
