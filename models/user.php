@@ -43,7 +43,10 @@ class user {
 
 
 			if ($app){
-				F3::get("DB")->exec("UPDATE global_users SET last_app = '$app', last_activity = now() WHERE ID = '". $result['ID']."'");
+
+					F3::get("DB")->exec("UPDATE global_users SET last_app = '$app', last_activity = now() WHERE ID = '" . $result['ID'] . "'");
+
+
 
 
 				$appClass = "\\models\\". $app."\\user_settings";

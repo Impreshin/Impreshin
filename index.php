@@ -128,7 +128,6 @@ if (!$user['ID']&&$folder) {
 	F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
 }
 
-
 $app->set('user', $user);
 
 
@@ -181,6 +180,28 @@ $app->route('GET|POST /', function() use ($user) {
 );
 $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /register', 'controllers\controller_register->page');
+$app->route('GET /data/keepalive', function() use ($user){
+
+
+		$last_activity =  new DateTime($user['last_activity']);
+		$now = new DateTime('now');
+
+		$interval = $last_activity->diff($now);
+		$diff = $interval->format('%s');
+
+		if (isset($_GET['keepalive'])){
+			F3::get("DB")->exec("UPDATE global_users SET last_activity = now() WHERE ID = '" . $user['ID'] . "'");
+			$diff = 0;
+			// upadate the last_activity
+		}
+		$t = array(
+			"ID"=>$user['ID'],
+			"idle"=>$diff
+		);
+
+		test_array($t);
+
+	});
 
 //include_once("/controllers/ab/_data.php");
 

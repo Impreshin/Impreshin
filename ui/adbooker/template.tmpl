@@ -47,9 +47,10 @@
 		</div>
 		<div class="clearfix">
 			<div class="row">
-				<div class="span1">a</div>
-				<div class="span1">b</div>
-				<div class="span1">c</div>
+				<div class="span14" style="position:relative;">
+					<div id="notice-area" class="c span10">&nbsp;</div>
+					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
+				</div>
 				<div class="s" style="float: right;">
 					<a href="javascript:" style="padding-right: 30px; color: #999;"><i class="icon-user icon-d-grey" style="margin-right: 10px;"></i>{{ _user['fullName']}}</a>
 				</div>
@@ -75,6 +76,15 @@
 	</div>
 </div>
 
+<div id="displaylogout">
+	<div class='box'>
+		<h2>Inactivity</h2>
+
+		<div class="timer"></div>
+		<button class='btn primary ' style='margin-top: 20px; width: 190px;' id='keepalivebtn'>Keep me logged in</button>
+		<a class='btn  ' style='margin-top: 20px; margin-left: 10px; width: 92px;' href='/logout'>logout</a>
+	</div>
+</div>
 
 
 <script src="/ui/_js/libs/jquery.{{_v}}.js"></script>
@@ -193,7 +203,7 @@
 
 		$(document).on("click", "#keepalivebtn", function () {
 			$("#displaylogout").autoLogout('resetTimer');
-			$.getJSON("/data/keepalive", function (d) {
+			$.getJSON("/data/keepalive?keepalive=true", function (d) {
 				$("#displaylogout").fadeOut(1000);
 			})
 		});
@@ -203,39 +213,71 @@
 		});
 
 	});
+	var autologoutRequest = [];
+	var $noticeareaIdle = $("#notice-area-idle");
+
+	//logout 5 minutes
+	// warning 4 minutes
+	// show idle 2 minutes
+
 	$("#displaylogout").autoLogout({
-		LogoutTime          :900,
-		logout              :function (e) {
+		LogoutTime          :60,
+
+		onResetTimer        :function (e) {
+			$noticeareaIdle.stop(true, true).fadeOut(1000)
+
+		},
+		onLogout: function (timer){
+			console.info("logout now");
 			window.location = "/logout?msg=You+were+logged+out+due+to+inactivity";
 		},
-		ShowLogoutCountdown :60,
-		onLogoutCountdown   :function () {
-			$("#displaylogout").fadeIn(1000);
-		},
-		keepAliveSelector   :".keepalive:visible",
-		keepAlive           :function () {
-
-			$.getJSON("/data/keepalive");
-		},
-		onResetTimer        :function (e) {
-			$("#notice-area-idle").stop(true,true).fadeOut(1000)
+		keepAlive: function(){
+			$.getJSON("/data/keepalive/?keepalive=true", function (result) {});
 
 		},
-		onTimerSecond : function(timer){
-			var logouttime = this.data("settings").LogoutTime, idle = logouttime - timer;
-				idle = (idle<0)?0:idle;
+		onTimerSecond       :function (idle) {
+			var $this = this;
+			var settings = $this.data("settings");
+			var LogoutTime = settings.LogoutTime;
+			var parts = LogoutTime / 10;
 
-			if (idle>360){
-				var c = idle, minVar = Math.floor(c / 60), secVar = c % 60;
-				var s = c - (minVar * 60);
 
-				var str = 'You have been inactive for '+ minVar+' minutes and '+s+' seconds';
-				$("#notice-area-idle").stop(true, true).fadeIn(1000).html(str);
+
+			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 7) || idle >= LogoutTime-3) {
+				for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
+				autologoutRequest.push($.getJSON("/data/keepalive", function (result) {
+					var real_idle = result.idle;
+					$this.data("timer", real_idle);
+					idle = real_idle;
+					if (idle >= LogoutTime) {
+						this.autoLogout('logout');
+					}
+				}));
 			}
-		},
-		countingDownSelector:".timer",
-		countingDownLook    :'you will be loged out in {s} seconds',
-		countingDownLookShow:"you will be loged out in {s} seconds"
+
+
+
+			if (idle >= (parts * 4)+2){
+				remaining = LogoutTime - idle;
+				$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in "+ (remaining) +" seconds").fadeIn(1000)
+			} else {
+				$noticeareaIdle.stop(true, true).fadeOut(1000)
+			}
+
+			if (idle >= (parts * 7)+2){
+				remaining = LogoutTime - idle;
+				$this.stop(true,true).fadeIn(1000).find(".timer").html("You will be automaticaly logged out in " + (remaining) + " seconds");
+			} else {
+				$this.stop(true, true).fadeOut(1000);
+			}
+
+
+
+
+
+
+
+		}
 	});
 
 	var uID = "{{ _user['ID'] }}";

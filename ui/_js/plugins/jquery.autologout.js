@@ -19,23 +19,9 @@
 	var methods = {
 		init      :function (options) {
 			return this.each(function () {
-				var $this = $(this), old = $this.data("settings");
-				$this.data('countShow', "0");
-				if (options.logout != "none") {
-					$this.data("settings", options);
-
-					if (old) {
-						if (old.LogoutTime != options.LogoutTime) {
-							doResetTimer($this);
-						}
-					} else {
-						var remainingSeconds = parseFloat(options.LogoutTime) + 1;
-						$this.data("remainingSeconds", remainingSeconds);
-						doTimer($this);
-					}
-				} else {
-					$.error("logout option is required for '" + $this.attr("id") + "'");
-				}
+				var $this = $(this);
+				$this.data("settings", options).data("timer",0);
+				doTimer($this);
 			});
 		},
 		logout    :function () {
@@ -47,10 +33,9 @@
 				doLogout($this);
 			});
 		},
-		resetTimer:function () {
+		resetTimer:function (e) {
 			return this.each(function () {
 				var $this = $(this);
-				$this.data('countShow', "0");
 				doResetTimer($this)
 			});
 		}
@@ -60,90 +45,49 @@
 	// ------------------------------------plugins functions-----------------------------------------------
 	// the counter plugin
 	var doTimer = function (e) {
-		var force = e.data('forceLogout');
+
 		function timedCount() {
-			var t, options = e.data("settings");
+			var t, options = e.data("settings"), timer = e.data("timer")||0;
+			clearTimeout(t);
+			 timer++;
 
-			if (force != "force") {
-				c = e.data('remainingSeconds');
-				//console.log(c)
-				if (c <= 0) {
-					clearTimeout(t);
-					doLogout(e);
-				} else {
-					c = c - 1, minVar = Math.floor(c / 60), secVar = c % 60;
-					if (secVar < 10) {
-						secVar = "0" + secVar;
-					}
-					var t, str = options.countingDownLook.replace(/{s}/g, c).replace(/{m}/g, minVar + ":" + secVar);
-					if (c <= parseFloat(options.ShowLogoutCountdown) && options.countingDownLookShow) {
-						if (c == options.ShowLogoutCountdown){
-
-							if (options.keepAliveSelector && ($(options.keepAliveSelector).length  || $("iframe").contents().find(options.keepAliveSelector).length)) {
-								options.keepAlive.call(e);
-								e.data("remainingSeconds", parseFloat(options.LogoutTime) + 1);
-								c = parseFloat(options.LogoutTime) + 1;
-
-							} else {
-								options.onLogoutCountdown.call(e);
-							}
-
-						}
-
-						str = options.countingDownLookShow.replace(/{s}/g, c).replace(/{m}/g, minVar + ":" + secVar);
-					}
-					$element = e.data("remainingSeconds", c);
-					if (options.countingDownSelector && $element.find(options.countingDownSelector)) {
-						$element = $element.find(options.countingDownSelector);
-					}
-					$element.html(str);
-
-					options.onTimerSecond.call(e,c);
+			e.data("timer", timer);
+			options.onTimerSecond.call(e, timer);
 
 
-
-					t = setTimeout(timedCount, 1000);
-				}
+			if (e.data("timer")== options.LogoutTime) {
+				options.onLogout.call(e, timer);
+			} else {
+				t = setTimeout(timedCount, 1000);
 			}
+
+
+
+
 		}
 
 		timedCount();
 	};
 	// reset the timer function
 	var doResetTimer = function (e) {
-		var options = e.data("settings"), remainingSeconds = e.data("remainingSeconds");
-		e.data("forceLogout", "clear");
-		c = options.LogoutTime
-		minVar = Math.floor(c / 60);
-		secVar = c % 60;
-		if (secVar < 10) {
-			secVar = "0" + secVar;
-		}
-		options.onResetTimer.call(e);
-		$element = e.data("remainingSeconds", parseFloat(options.LogoutTime) + 1);
-		if (options.countingDownSelector && $element.find(options.countingDownSelector)) {
-			$element = $element.find(options.countingDownSelector);
-		}
-		$element.html(options.countingDownLook.replace(/{s}/g, c).replace(/{m}/g, minVar + ":" + secVar));
+		var options = e.data("settings"), timer = e.data("timer");
+		//e.data("timer", 0);
+		//doTimer(e);
 
+		//console.log(timer)
+		//console.log(options.LogoutTime)
 
-		if (remainingSeconds <= 0) {
+		e.data("timer", 0);
+		if (timer>=options.LogoutTime){
 			doTimer(e);
 		}
 
 	};
 	// the function that does the logging out
 	var doLogout = function (e) {
-		var $this = e, options = $this.data("settings"), force = $this.data('forceLogout');
-		if (options) {
-			if (options.keepAliveSelector && ($(options.keepAliveSelector).length > 0 || $("iframe").contents().find(options.keepAliveSelector).length > 0) && force != "force") {
-				options.keepAlive.call($this);
-				$this.data("remainingSeconds", parseFloat(options.LogoutTime) + 1);
-				doTimer($this);
-			} else {
-				options.logout($this);
-			}
-		}
+		var $this = e, options = $this.data("settings");
+
+
 	};
 	// ----------------------------------------------------------------------------------------------------
 
