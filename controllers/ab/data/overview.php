@@ -19,24 +19,58 @@ class overview extends data {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
+		$usersettings = $user['settings']['overview'];
+		$defaults = F3::get("defaults");
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
 		$stats = $this->_stats();
 
+		$highlight = isset($_GET['highlight'])? $_GET['highlight']: $usersettings['highlight'];
+		if (!$highlight){
+			$highlight = $defaults['overview']['heighlight'];
+		}
 
 		$editionPages = $stats['loading']['pages'];
 
 
+		$values = array();
+		$values["overview"] = array(
+			"highlight"    => $highlight,
+		);
+
+
+		models\user_settings::save_setting($values);
+		//test_array($usersettings);
+
+
+
+		$statsBlank = array(
+			"records"=> array(
+				"total"            => 0,
+				"material"         => array(
+					"y"=> 0,
+					"n"=> 0
+				),
+				"material_approved"=> array(
+					"y"=> 0,
+					"n"=> 0
+				)
+			)
+
+		);
+
 		$blank = array(
 			"page"   => 0,
+			"highlight"   => 0,
 			"section"=> array(
 				"n"=> "",
 				"c"=> "",
 
 			),
-			"colour" => ""
+			"colour" => "",
+			"stats"=> $statsBlank
 		);
 
 
@@ -66,10 +100,43 @@ class overview extends data {
 
 		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
+
+
 		$r = array();
 		foreach ($pagesReal as $page){
+			$records = isset($bookings[$page['ID']]) ? $bookings[$page['ID']] : array();
+			$stats = $statsBlank;
+			foreach ($records as $record){
+				if ($record['material']){
+					$stats['records']['material']['y']++;
+					if ($record['material_approved']){
+						$stats['records']['material_approved']['y']++;
+					} else {
+						$stats['records']['material_approved']['n']++;
+					}
+				} else {
+					$stats['records']['material']['n']++;
+				}
+
+
+			}
+			$stats['records']['total']=count($records);
+			$h = "";
+			switch ($highlight){
+				case "material":
+					if ($stats['records']['material']['n']) $h = "no";
+					if (!$stats['records']['material']['n'] && $stats['records']['material']['y']) $h = "yes";
+					break;
+				case "material_approved":
+					if ($stats['records']['material_approved']['n']) $h = "no";
+					if (!$stats['records']['material_approved']['n'] && $stats['records']['material_approved']['y']) $h = "yes";
+					break;
+			}
+
+
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"highlight"   => $h,
 				"section"=> array(
 					"i"=>$page['sectionID'],
 					"n"=>$page['section'],
@@ -78,7 +145,8 @@ class overview extends data {
 				"colour" => $page['colour'],
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm'],
-				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
+				//"records"=> $records,
+				"stats"=>$stats
 			);
 		}
 

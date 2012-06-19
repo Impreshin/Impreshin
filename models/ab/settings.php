@@ -382,6 +382,9 @@ class settings {
 
 
 				),
+				"overview"=>array(
+					"highlight"=>"material"
+				),
 
 				"form"=>array(
 					"type"=>"1"

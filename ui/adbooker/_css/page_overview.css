@@ -1,6 +1,6 @@
 .pages {
 
-	width               : 143px;
+	width               : 97px;
 	float               : left;
 	margin-top          : 25px;
 	margin-bottom       : 5px;
@@ -15,9 +15,16 @@
 .spread {
 	display        : block;
 	float          : left;
-	width          : 305px;
+	width          : 213px;
 	padding-bottom : 20px;
 	padding-top    : 10px;
+
+}
+.spread.left {
+	margin-left:12px;
+}
+.spread.right {
+	margin-right:12px;
 }
 .pages.left {
 	float:left;
@@ -313,7 +320,7 @@ display: none;
 	background-color : #D3FFB7;
 }
 
-.pagehover, .droppablehover {
+.pagehover, .droppablehover, .highlight-yes {
 	background-color : #D3FFB7;
 	border           : 1px solid #6C0;
 }
@@ -325,7 +332,7 @@ display: none;
 	background-color : #D3FFB7;
 }
 
-.pagefull {
+.pagefull, .highlight-no {
 	background-color : #F99;
 	border           : 1px solid #F00;
 }

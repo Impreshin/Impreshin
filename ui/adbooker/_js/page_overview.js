@@ -5,6 +5,24 @@ var whole_pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions).d
 
 $(document).ready(function () {
 
+	if ($.bbq.getState("highlight")) {
+		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
+		$("#list-highlight-btns button[data-highlight='" + $.bbq.getState("highlight") + "']").addClass("active");
+	}
+
+	$(document).on("click", "#list-highlight-btns button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
+
+
+		$.bbq.pushState({"highlight":highlight});
+		load_pages();
+
+	});
+
+
 	$(document).on("scroll", "#whole-area .scroll-pane",function(){
 		visible_pages();
 	});
@@ -49,10 +67,13 @@ function dummy_resize(settings){
 
 }
 function load_pages(settings){
+
+	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
+	highlight = (highlight) ? highlight : "";
 	var placingID = $("#placingID").val();
 
 	$("#whole-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/layout/_pages/", {"placingID":placingID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/overview/_pages/", {"highlight":highlight}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#pages-area");
@@ -62,9 +83,9 @@ function load_pages(settings){
 			$("#dummy-bottom").jqotesub($("#template-spreads-bottom"), data['spreads']);
 
 		} else {
-			$recordsList.html('<tr><td class="c no-records">No Records Found</td></tr>')
+
 		}
-		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
+
 
 
 
