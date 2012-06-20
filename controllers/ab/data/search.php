@@ -104,7 +104,7 @@ class search extends data {
 
 		$limit = 100;
 		$pagination = new \pagination();
-		$pagination = $pagination->calculate_pages($recordsFound, $limit,$selectedpage);
+		$pagination = $pagination->calculate_pages($recordsFound, $limit,$selectedpage, 19);
 
 		//test_array($pagination);
 

@@ -997,7 +997,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 }
 
 .ui-datepicker td .ui-state-default {
-  border:0px;
+  border: 1px solid #f1f1f1;
   background:none;
   margin-bottom:0px;
   padding:5px;

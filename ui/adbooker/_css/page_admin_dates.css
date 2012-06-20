@@ -1,0 +1,29 @@
+#pagination {
+	display : none;
+	text-align: center;
+}
+
+#form-bottom {
+	position: absolute;
+	bottom:42px;
+	left : 0;
+	right : 0;
+}
+
+#form-bottom .form-actions{
+	margin: 0;
+	padding: 5px;
+}
+
+#form-bottom .form-actions .btn {
+
+}
+#suggested_dates {
+	margin:0;
+	padding: 0;
+	list-style: none;
+}
+#suggested_dates td {
+	padding: 5px;
+
+}

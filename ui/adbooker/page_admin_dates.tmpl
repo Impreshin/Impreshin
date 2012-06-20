@@ -1,0 +1,110 @@
+{% include "_nav_top.tmpl" %}
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Administration
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;"><small>Dates</small>
+					</h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+
+				</ul>
+				<ul class="nav nav-pills pull-right ">
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a id="reload-btn" href="javascript:" style="width:15px;"><i class="icon-refresh"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<div class="row">
+			<article id="left-area" class="span11">
+				<form class="form-horizontal" id="capture-form">
+				<div class="content" id="form-area">
+
+				</div>
+				<div class="loadingmask wide"></div>
+			</form>
+			</article>
+			<article id="right-area" class="span5 offset11">
+				<div>
+					<table class="table table-condensed  s records">
+						<thead>
+						<tr>
+							<th class="">Date</th>
+
+							<th style="width: 40px;">Current</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="content">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px;">
+
+						<div data-heading="top" class="">
+							<table style="" id="record-list" class="table table-condensed  s records" >
+								<tbody style="border-left:none;">
+
+
+								</tbody>
+							</table>
+
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+				<div id="record-details-bottom">
+					<div id="pagination" class="pagination"></div>
+				</div>
+				<section id="rightsideOver">
+
+				</section>
+				<div class="loadingmask round"></div>
+
+
+			</article>
+		</div>
+
+
+
+	</div>
+
+</section>
+
+<script type="text/javascript">
+	var pageSize = "0";
+	var cmSize = "0";
+	var colSize = "0";
+	var colcmAv = "0";
+	{% if _ab['publication']['pagewidth'] and _ab['publication']['cmav'] %}
+		pageSize ="{{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}";
+		cmSize ="{{ ((((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10)) / _ab['publication']['cmav'] }}";
+		colSize ="{{ 143 / _ab['publication']['columnsav'] }}";
+		colcmAv = "{{  _ab['publication']['cmav'] * _ab['publication']['columnsav'] }}";
+	{% endif %}
+
+</script>

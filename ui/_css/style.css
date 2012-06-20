@@ -382,7 +382,7 @@ textarea[readonly] {
 }
 #pagination {
   position: absolute;
-  bottom: 40px;
+  bottom: 42px;
   left: 0;
   right: 0;
   background-color: #eeeeee;

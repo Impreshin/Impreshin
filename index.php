@@ -204,7 +204,7 @@ $app->route('GET /data/keepalive', function() use ($user){
 	});
 
 //include_once("/controllers/ab/_data.php");
-
+// --------------------------------------------------------------------------------
 
 $app->route('GET /ab/', 'controllers\ab\controller_provisional->page');
 $app->route('GET /ab/production', 'controllers\ab\controller_production->page');
@@ -215,8 +215,15 @@ $app->route('GET /ab/records/deleted', 'controllers\ab\controller_deleted->page'
 $app->route('GET /ab/form', 'controllers\ab\controller_form->page');
 $app->route('GET /ab/form/@ID', 'controllers\ab\controller_form->page');
 
+// --------------------------------------------------------------------------------
 
-$app->route('GET /ab/test', 'controllers\ab\controller_test->page');
+$app->route('GET /ab/admin/dates', 'controllers\ab\controller_admin_dates->page');
+
+
+// --------------------------------------------------------------------------------
+
+
+
 
 
 $app->route('GET|POST /ab/data/@function', function() use($app) {

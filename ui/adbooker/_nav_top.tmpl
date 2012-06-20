@@ -84,7 +84,7 @@
 							</ul>
 						</li>
 						<li class="divider-vertical"></li>
-						<li class="dropdown">
+						<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:void(0)" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 							</a>
 							<ul class="dropdown-menu">
@@ -97,7 +97,9 @@
 								<li><a href="#">Placing</a></li>
 								<li><a href="#">Loading</a></li>
 								<li class="nav-header">System</li>
-								<li><a href="#"><i class="icon-calendar menu-icon"></i> Dates</a></li>
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
+									<a href="/ab/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
+								</li>
 								<li><a href="#"><i class="icon-user menu-icon"></i> Users</a></li>
 								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
 								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>

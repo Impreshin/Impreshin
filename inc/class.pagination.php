@@ -3,7 +3,7 @@ class pagination {
 	public function __construct() {
 	}
 
-	public function calculate_pages($total_rows, $rows_per_page, $page_num) {
+	public function calculate_pages($total_rows, $rows_per_page, $page_num, $amountofblocks=5) {
 		$arr = array();
 		// calculate last page
 		$last_page = ceil($total_rows / $rows_per_page);
@@ -24,13 +24,13 @@ class pagination {
 			$arr['next'] = $page_num + 1;
 		$arr['last'] = $last_page;
 		$arr['info'] = 'Page (' . $page_num . ' of ' . $last_page . ')';
-		$arr['pages'] = $this->get_surrounding_pages($page_num, $last_page, $arr['next']);
+		$arr['pages'] = $this->get_surrounding_pages($page_num, $last_page, $arr['next'], $amountofblocks);
 		return $arr;
 	}
 
-	function get_surrounding_pages($page_num, $last_page, $next) {
+	function get_surrounding_pages($page_num, $last_page, $next, $amountofblocks) {
 		$arr = array();
-		$show = 19; // how many boxes
+		$show = $amountofblocks; // how many boxes
 		// at first
 		if ($page_num == 1) {
 			// case of 1 page only
