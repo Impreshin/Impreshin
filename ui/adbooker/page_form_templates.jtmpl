@@ -91,7 +91,7 @@
 
 
 				{% for row in marketers %}
-				<option value="{{ row['ID'] }}" <% if (this.ID) { %><% if (this.marketerID == {{ row['ID'] }}) { %>selected="selected"<% } %><% } else { %><% if ({{ row['ID'] }} == {{ settings['last_marketer'] }}) { %>selected="selected"<% } %><% } %>>{{ row['marketer'] }}</option>
+				<option value="{{ row['ID'] }}" <% if (this.ID) { %><% if (this.marketerID == {{ row['ID'] }}) { %>selected="selected"<% } %><% } else { %><% if ('{{ row['ID'] }}' == '{{ settings['last_marketer'] }}') { %>selected="selected"<% } %><% } %>>{{ row['marketer'] }}</option>
 				{% endfor %}
 
 			</select>

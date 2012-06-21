@@ -380,21 +380,20 @@ function page_droppable($element){
 					draggedColour = draggedColour.toLowerCase();
 					switch (pageColour){
 						case "full":
-							acceptableColours = ["full","spot","none"];
+							acceptableColours = ["full","spot","none","null",""];
 							break;
 						case "spot":
-							acceptableColours = ["spot", "none"];
+							acceptableColours = ["spot", "none", "null", ""];
 							break;
 						case "none":
-							acceptableColours = ["none"];
+							acceptableColours = ["none", "null", ""];
 							break;
-						case "null":
-							acceptableColours = ["full", "spot", "none"];
+						default:
+							acceptableColours = ["full", "spot", "none", "null", ""];
 							break;
-						case "":
-							acceptableColours = ["full", "spot", "none"];
-							break;
+
 					}
+
 
 					if (acceptableColours.indexOf(draggedColour)== -1){
 						allowDrop = false;
@@ -458,17 +457,18 @@ function page_droppable($element){
 				draggedColour = draggedColour.toLowerCase();
 				switch (pageColour) {
 					case "full":
-						acceptableColours = ["full", "spot", "none"];
+						acceptableColours = ["full", "spot", "none", "null", ""];
 						break;
 					case "spot":
-						acceptableColours = ["spot", "none"];
+						acceptableColours = ["spot", "none", "null", ""];
 						break;
 					case "none":
-						acceptableColours = ["none"];
+						acceptableColours = ["none", "null", ""];
 						break;
-					case "null":
-						acceptableColours = ["full", "spot", "none"];
+					default :
+						acceptableColours = ["full", "spot", "none", "null", ""];
 						break;
+
 				}
 
 				if (acceptableColours.indexOf(draggedColour) == -1) {
