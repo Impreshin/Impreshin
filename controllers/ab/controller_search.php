@@ -14,7 +14,6 @@ class controller_search {
 		if (!$userID) F3::reroute("/login");
 
 		F3::get("DB")->exec("UPDATE global_users SET last_page = '". $_SERVER['REQUEST_URI']."' WHERE ID = '" . $user['ID'] . "'");
-		models\user_settings::save_config(array("page"=> $_SERVER['REQUEST_URI']));
 
 	}
 	function page() {
@@ -25,6 +24,13 @@ class controller_search {
 		//test_array($user);
 		$ab_settings = F3::get("settings");
 		//test_array($ab_settings);
+
+
+		$settings = models\settings::_read("search");
+
+
+			//test_array($settings);
+
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "records",
@@ -36,33 +42,25 @@ class controller_search {
 		);
 
 
-
 		$a = array();
 		$b = array();
-		if (isset($user['settings']['search']['col'])&& count($ab_settings["columns"])){
 
+		foreach ($settings['col'] as $col){
+			$a[] = $col;
+			$b[] = $col['c'];
+
+		}
+
+
+
+		$selected = $a;
+		$available = array();
 			foreach ($ab_settings["columns"] as $col){
-				if ( !in_array($col['c'],$user["settings"]["search"]['col'])){
-					$col["s"] = "0";
-					$a[] = $col;
+				if ( !in_array($col['c'],$b)){
+					$available[] = $col;
 				}
 
 			}
-
-
-			foreach ($user["settings"]["search"]['col'] AS $col){
-				$v = $ab_settings["columns"][$col];
-				$v['s'] = '1';
-				$b[] = $v;
-			}
-
-			$ab_settings[1] = array_merge($b,$a);
-
-
-
-
-		}
-		//foreach ($ab_settings[''])
 
 		$dates = models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
 
@@ -75,9 +73,6 @@ class controller_search {
 		$tmpl->dates = $dates;
 
 
-		$ab_settings['list'] = $user['settings']['search'];
-
-	//	test_array($ab_settings);
 
 		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
 		if (count($date_range)){
@@ -86,14 +81,14 @@ class controller_search {
 
 		$tmpl->date_range = json_encode($date_range);
 
-		$tmpl->settings = $ab_settings;
+		$tmpl->settings = $settings;
 
 
 
 
 		$tmpl->settings_columns = array(
-			"selected"=>$b,
-			"available"=>$a
+			"selected"=> $selected,
+			"available"=> $available
 		);
 		$tmpl->output();
 

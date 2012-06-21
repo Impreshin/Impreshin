@@ -218,6 +218,7 @@ $app->route('GET /ab/form/@ID', 'controllers\ab\controller_form->page');
 // --------------------------------------------------------------------------------
 
 $app->route('GET /ab/admin/dates', 'controllers\ab\controller_admin_dates->page');
+$app->route('GET /ab/admin/users', 'controllers\ab\controller_admin_users->page');
 
 
 // --------------------------------------------------------------------------------

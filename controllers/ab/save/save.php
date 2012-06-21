@@ -33,7 +33,9 @@ class save {
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
 		$ab_defaults = F3::get("defaults");
-		$section = (isset($_GET['section'])) ? $_GET['section'] : "list";
+		$ab_defaults = $ab_defaults['settings'];
+		$section = (isset($_GET['section'])) ? $_GET['section'] : "";
+
 
 
 		if (in_array("columns", $reset)){
@@ -60,6 +62,7 @@ class save {
 
 		$values = array();
 		$values[$section]=$new;
+
 
 
 		models\user_settings::save_setting($values);

@@ -142,7 +142,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/ab/save/list_settings/?reset=columns,group,order", function () {
+			$.post("/ab/save/list_settings/?section=provisional&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -167,7 +167,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/ab/save/list_settings/",{"columns":columns,"group":group,"groupOrder":order},function(){
+		$.post("/ab/save/list_settings/?section=provisional",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");

@@ -100,6 +100,16 @@ class bookings extends save {
 		//if (isset($_POST['accNum'])) $values['accNum'] = $_POST['accNum'];
 
 
+		$ss = array();
+		$ss["form"] = array(
+			"type"      => $type,
+			"last_marketer"      => $values['marketerID']
+		);
+
+
+		models\user_settings::save_setting($ss);
+
+
 
 
 

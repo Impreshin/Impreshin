@@ -26,7 +26,7 @@
 
 	<thead>
 	<tr class="heading" data-heading="<%= this.heading %>">
-		<th colspan="{{ settings['list']['count'] }}">
+		<th colspan="{{ settings['count'] }}">
 			<div class="scrolllinks">
 				<% for(var g in this.groups) { %>
 				<a href="javascript:" rel='<%= this.groups[g] %>' ><%= this.groups[g] %></a>
@@ -42,13 +42,11 @@
 
 	</tr>
 	<tr class="colheading">
-		{% for col in settings['list']['col'] %}
-		<th {% if _ab['settings']['columns'][col]['o'] %}data-col="{{ _ab['settings']['columns'][col]['o'] }}" class="order-btn"{% endif %}>
-			{{ _ab['settings']['columns'][col]['h']|raw }}
-			{% if _ab['settings']['columns'][col]['o'] %}
-
+		{% for col in settings['col'] %}
+		<th {% if col['o'] %}data-col="{{ col['o'] }}" class="order-btn"{% endif %}>
+			{{ col['h']|raw }}
+			{% if col['o'] %}
 			<span class="indicator">&nbsp;*</span>
-
 			{% endif %}
 		</th>
 		{% endfor %}
@@ -57,18 +55,18 @@
 	<tbody>
 	<% for(var i in this.records) { %>
 	<tr class="record <% if (this.records[i].highlight) { %>highlight highlight-<%= this.records[i].highlight %><% } %>" data-ID="<%= this.records[i].ID %>">
-		{% for col in settings['list']['col'] %}
-		<td {% if _ab['settings']['columns'][col]['b'] %} class=" record-tick"{% endif %}>
-			{% if _ab['settings']['columns'][col]['b'] %}
-				<% if ( this.records[i].{{ _ab['settings']['columns'][col]['c'] }} ) { %>
-					<i class="icon-ok {% if _ab['settings']['columns'][col]['c'] == "material_status" %}<% if(!this.records[i].material_approved) { %>icon-grey<% } %>{% endif %}"></i>
+		{% for col in settings['col'] %}
+		<td {% if col['b'] %} class=" record-tick"{% endif %}>
+			{% if col['b'] %}
+				<% if ( this.records[i].{{ col['c'] }} ) { %>
+					<i class="icon-ok {% if col['c'] == "material_status" %}<% if(!this.records[i].material_approved) { %>icon-grey<% } %>{% endif %}"></i>
 				<% } else { %>
 
 				<% } %>
 
 			{% else %}
 
-				{% if _ab['settings']['columns'][col]['c'] == "remark" %}
+				{% if col['c'] == "remark" %}
 					<% if (this.records[i].remark) { %>
 						<% if (this.records[i].remarkTypeLabelClass){ %>
 							<span class="label <%= this.records[i].remarkTypeLabelClass %>" title="<%= this.records[i].remarkType %>"></span>
@@ -78,22 +76,22 @@
 					<% } %>
 				{% endif %}
 
-				{% if _ab['settings']['columns'][col]['c'] in  ',account,percent_diff,accNum' %}
+				{% if col['c'] in  ',account,percent_diff,accNum' %}
 
-					{% if _ab['settings']['columns'][col]['c'] == "percent_diff" %}
+					{% if col['c'] == "percent_diff" %}
 						<% if (this.records[i].percent_diff!="0.00"){ %>
 							<span class="label <% if (this.records[i].percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.records[i].percent_diff %>% </span>
 						<% } %>
 					{% endif %}
-					{% if _ab['settings']['columns'][col]['c'] in ',account,accNum' %}
+					{% if col['c'] in ',account,accNum' %}
 						<% if (this.records[i].labelClass){ %>
 							<span class="label <%= this.records[i].labelClass %>"> <%= this.records[i].accountStatus %></span>
 						<% } %>
-							<%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %>
+							<%= this.records[i].{{ col['c'] }} %>
 
 					{% endif %}
 				{% else %}
-					<% if (this.records[i].{{ _ab['settings']['columns'][col]['c'] }}) { %><%= this.records[i].{{ _ab['settings']['columns'][col]['c'] }} %><% } %>
+					<% if (this.records[i].{{ col['c'] }}) { %><%= this.records[i].{{ col['c'] }} %><% } %>
 
 
 

@@ -16,13 +16,13 @@
 				<ul class="nav nav-pills pull-right ">
 					<li id="search-stats"></li>
 					<li>
-						<input type="text" class="span3 search-query" id="search" name="search" placeholder="Search string" value="{{ settings["list"]['search']['search']|default("") }}">
+						<input type="text" class="span3 search-query" id="search" name="search" placeholder="Search string" value="{{ settings['search']['search']|default("") }}">
 					</li>
 
 					<li style="padding-left: 10px;">
 						<div class="input-append" id="date-picker-area">
 							<label for="date-picker">
-							<input id="date-picker" name="date-picker" type="text" placeholder="Date Filter" class="span3" value="{{ settings["list"]['search']['dates']|default(_user['publication']['current_date']['publish_date']) }}">
+							<input id="date-picker" name="date-picker" type="text" placeholder="Date Filter" class="span3" value="{{ settings['search']['dates']|default(_user['publication']['current_date']['publish_date']) }}">
 								<span class="add-on" style="margin-left: -4px; border-left:none; "><i class="icon-calendar"></i></span></label>
 
 						</div>
@@ -37,8 +37,8 @@
 						<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
 						<ul class="dropdown-menu" id="record-settings">
 							<li class="nav-header">Group By</li>
-							{% for row in _ab['settings']['groupby']['deleted'] %}
-							<li data-group-records-by="{{ row['g'] }}" class="{% if settings["list"]['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+							{% for row in settings['groupby'] %}
+							<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("dates") == row['g'] %}active{% endif %}">
 								<a href="javascript:;">{{ row['n'] }}</a>
 							</li>
 							{% endfor %}
@@ -49,8 +49,8 @@
 
 
 							<li class="nav-header clearfix">Direction</li>
-							<li data-order-records-by="ASC" class="{% if settings['list']['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
-							<li data-order-records-by="DESC" class="{% if settings['list']['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+							<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+							<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
 							<li class="clearfix"></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
@@ -157,8 +157,8 @@
 				</small>
 			</h4>
 			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-group">
-				{% for row in _ab['settings']['groupby']['deleted'] %}
-				<button type="button" style="width: 135px;" data-group-records-by="{{ row['g'] }}" class="btn {% if settings['list']['group']['g']|default("placing") == row['g'] %}active{% endif %}">{{ row['n'] }}</button>
+				{% for row in settings['groupby'] %}
+				<button type="button" style="width: 135px;" data-group-records-by="{{ row['g'] }}" class="btn {% if settings['group']['g']|default("dates") == row['g'] %}active{% endif %}">{{ row['n'] }}</button>
 
 				{% endfor %}
 
@@ -173,10 +173,10 @@
 				</small>
 			</h4>
 			<div class="btn-group square" data-toggle="buttons-radio" id="settings-records-order">
-				<button type="button" style="width: 202px;" data-order-records-by="ASC" class="btn {% if settings['list']['group']['o']|default("ASC") == "ASC" %}active{% endif %}">
+				<button type="button" style="width: 202px;" data-order-records-by="ASC" class="btn {% if settings['group']['o']|default("ASC") == "ASC" %}active{% endif %}">
 					<i class="icon-chevron-up icon-grey"></i> ASC
 				</button>
-				<button type="button" style="width: 202px;" data-order-records-by="DESC" class="btn  {% if settings['list']['group']['o'] == "DESC" %}active{% endif %}">
+				<button type="button" style="width: 202px;" data-order-records-by="DESC" class="btn  {% if settings['group']['o'] == "DESC" %}active{% endif %}">
 					<i class="icon-chevron-down icon-grey"></i> DESC</button>
 
 			</div>

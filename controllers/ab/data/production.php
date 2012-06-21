@@ -20,22 +20,27 @@ class production extends data {
 		$dID = $currentDate['ID'];
 
 		$section = 'production';
-		$usersettings = $user['settings'][$section];
 
-		$grouping_g = (isset($_REQUEST['group']) && $_REQUEST['group'] != "") ? $_REQUEST['group'] : $usersettings['group']['g'];
-		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $usersettings['group']['o'];
-
-		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $usersettings['order']['c'];
-		$ordering_d = $usersettings['order']['o'];
+		$settings = models\settings::_read($section);
 
 
-		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $usersettings['highlight'];
-		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter'] != "") ? $_REQUEST['filter'] : $usersettings['filter'];
 
 
-		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
-			if ($user['settings'][$section]['order']['c'] == $_REQUEST['order']) {
-				if ($ordering_d == "ASC") {
+
+		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
+		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+
+
+		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
+		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
+			if ($settings['order']['c'] == $_REQUEST['order']){
+				if ($ordering_d=="ASC"){
 					$ordering_d = "DESC";
 				} else {
 					$ordering_d = "ASC";

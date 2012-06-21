@@ -100,7 +100,9 @@
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
 									<a href="/ab/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
 								</li>
-								<li><a href="#"><i class="icon-user menu-icon"></i> Users</a></li>
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
+									<a href="/ab/admin/users"><i class="icon-user menu-icon"></i> Users</a>
+								</li>
 								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
 								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 							</ul>

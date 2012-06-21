@@ -61,23 +61,6 @@ class user {
 
 
 
-
-
-				$app_settings = $app['settings'];
-				if ($app_settings){
-					$settings = array_replace_recursive((array)$defaults, (array)($app_settings) ? unserialize($app_settings) : array());
-					;
-				} else {
-					$settings = $defaults;
-				}
-
-
-
-
-				$result['settings']= $settings;
-
-
-
 				$publications = ab\publications::getAll("uID='".$result['ID']."'","publication ASC");
 				$pID = $publications[0]['ID'];
 

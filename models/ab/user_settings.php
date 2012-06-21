@@ -30,7 +30,7 @@ class user_settings extends \models\user {
 		return $return;
 	}
 
-	public static function save_setting($values = array(), $app = "ab", $uID = "") {
+	public static function save_setting($values = array(), $uID = "") {
 		$timer = new timer();
 		if (!$uID) {
 			$user = F3::get("user");
@@ -44,23 +44,18 @@ class user_settings extends \models\user {
 		$t->uID = $uID;
 
 		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
-		if (isset($values['list']['col'])) $v['list']['col'] = $values['list']['col'];
 		if (isset($values['production']['col'])) $v['production']['col'] = $values['production']['col'];
 		if (isset($values['provisional']['col'])) $v['provisional']['col'] = $values['provisional']['col'];
 		if (isset($values['search']['col'])) $v['search']['col'] = $values['search']['col'];
 		if (isset($values['deleted']['col'])) $v['deleted']['col'] = $values['deleted']['col'];
-		//test_array($v);
+
 
 		if (count($values)) $t->settings = serialize($v);
 
 		$t->save();
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return "done";
 	}
 

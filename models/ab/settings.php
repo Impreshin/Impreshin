@@ -289,8 +289,8 @@ class settings {
 	public static function getDefaults($application = "ab", $ID = "") {
 		$timer = new timer();
 		$return = array();
-			$return = array(
-				"list"=>array(
+			$settings = array(
+				"provisional"=>array(
 					"col"        => array(
 						"client",
 						"size",
@@ -387,7 +387,8 @@ class settings {
 				),
 
 				"form"=>array(
-					"type"=>"1"
+					"type"=>"1",
+					"last_marketer"=>""
 				),
 				"layout"=>array(
 					"placingID"=>array()
@@ -395,43 +396,63 @@ class settings {
 				"last_marketer"=>""
 			);
 
+		$return['settings'] = $settings;
+
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	function _read($section){
+	public static function _read($section){
+
 		$timer = new timer();
 		$settings = self::getSettings();
+		$defaults = self::getDefaults();
+		$settings_raw = $settings;
 		$user = F3::get("user");
+		$user_settings = new user_settings();
+		$user_settings = $user_settings->_read($user['ID']);
+		$user_settings['settings'] = @unserialize($user_settings['settings']);
 
-		$a = array();
-		$b = array();
-		if (isset($user['settings'][$section]['col']) && count($settings["columns"])) {
+		if ($user_settings['settings']){
+			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
+		} else {
+			$user_settings = $defaults;
+		}
 
-			foreach ($settings["columns"] as $col) {
-				if (!in_array($col['c'], $user["settings"][$section]['col'])) {
-					$col["s"] = "0";
-					$a[] = $col;
+
+
+
+
+		$return = array();
+
+		//test_array($user_settings);
+		$return = $user_settings['settings'][$section];
+
+
+
+
+
+		if (isset($user_settings['settings'][$section]['col']) && count($settings["columns"])) {
+			$columns = array();
+
+			foreach ($user_settings['settings'][$section]['col'] as $col){
+				if (isset($settings['columns'][$col])){
+					$columns[] = $settings['columns'][$col];
 				}
 
 			}
 
 
-			foreach ($user["settings"][$section]['col'] AS $col) {
-				$v = $settings["columns"][$col];
-				$v['s'] = '1';
-				$b[] = $v;
-			}
 
-			$settings[1] = array_merge($b, $a);
-
-
+			$return['col'] = $columns;
+			$return['count']=count($columns);
 		}
+		if (isset($settings_raw['groupby'][$section])) $return['groupby']= $settings_raw['groupby'][$section];
 
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
-		return $settings;
+		return $return;
 	}
 	function write(){
 

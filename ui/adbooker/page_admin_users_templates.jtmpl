@@ -48,54 +48,6 @@
 
 
 
-
-				<div class="control-group">
-					<label for="datepicker" class="control-label">Publish Date</label>
-
-					<div class="controls">
-						<table>
-							<tr>
-								<td style="width:50%;">
-									<div id="datepicker"></div>
-									<input type="hidden" name="publish_date" id="publish_date" value="<% if (this.publish_date) { %><%= this.publish_date %><% } %>">
-								</td>
-								<td style="padding-right: 5px;"><% if (!this.ID) { %>
-									<h4>Suggested Dates</h4>
-
-									<table id="suggested_dates">
-										<% for(var i in this.suggestions) { %>
-										<tr data-date="<%= this.suggestions[i].date %>" class="record">
-											<td><%= this.suggestions[i].display %></td>
-										</tr>
-										<% } %>
-									</table>
-									<% } %>
-								</td>
-							</tr>
-						</table>
-
-
-					</div>
-				</div>
-				<div class="control-group">
-					<label for="current" class="control-label">Current Date</label>
-
-					<div class="controls">
-						<label class="checkbox g">
-
-
-						<input type="checkbox" name="current" id="current" value="1" <% if (this.current=='1') { %>checked="checked"<% } %> >
-						Ticking this box will make this the current system date</label>
-					</div>
-				</div>
-
-				<hr>
-
-				<% if (this.ID) { %> <% if (this.records!=0) { %>
-				<div class="alert">
-					 This date has records associated with it. Therfore it is not permissible to delete it
-				</div>
-				<% } %> <% } %>
 			</fieldset>
 
 

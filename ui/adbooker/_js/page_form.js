@@ -142,7 +142,7 @@ function load_form(){
 	} else {
 		$("#booking-heading").html("New Booking");
 		var type = $.bbq.getState("type");
-			type = (type)?type:"1";
+			type = (type)?type: "";
 		if (type){
 			$("#booking-type button.active").removeClass("active");
 			$("#booking-type button[data-type='" + type + "']").addClass("active");

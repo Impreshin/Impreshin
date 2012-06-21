@@ -11,7 +11,7 @@
 				<li>
 					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
 						{% for row in bookingTypes %}
-						<button class="btn span1 btn-mini {% if details['ID'] %} {% if details['typeID']|default("1")==row['ID'] %}active{% endif %} {% else %}{% if _user['settings']['form']['type']==row['ID'] %}active{% endif %}{% endif %}" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
+						<button class="btn span1 btn-mini {% if details['ID'] %} {% if details['typeID']|default("1")==row['ID'] %}active{% endif %} {% else %}{% if settings['type']==row['ID'] %}active{% endif %}{% endif %}" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
 						{% endfor %}
 					</div>
 				</li>

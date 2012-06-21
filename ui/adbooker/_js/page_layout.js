@@ -228,6 +228,7 @@ function save_forced_pages(){
 	$("#left-area .loadingmask").show();
 	listRequest.push($.post("/ab/save/layout/_force/", {"pages":pages}, function (data) {
 		load_pages();
+		getList();
 	}));
 
 
@@ -388,6 +389,9 @@ function page_droppable($element){
 							acceptableColours = ["none"];
 							break;
 						case "null":
+							acceptableColours = ["full", "spot", "none"];
+							break;
+						case "":
 							acceptableColours = ["full", "spot", "none"];
 							break;
 					}

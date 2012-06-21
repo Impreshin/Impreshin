@@ -19,7 +19,9 @@ class overview extends data {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
-		$usersettings = $user['settings']['overview'];
+
+		$settings = models\settings::_read("overview");
+
 		$defaults = F3::get("defaults");
 
 		$currentDate = $user['publication']['current_date'];
@@ -27,7 +29,7 @@ class overview extends data {
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
 		$stats = $this->_stats();
 
-		$highlight = isset($_GET['highlight'])? $_GET['highlight']: $usersettings['highlight'];
+		$highlight = isset($_GET['highlight'])? $_GET['highlight']: $settings['highlight'];
 		if (!$highlight){
 			$highlight = $defaults['overview']['heighlight'];
 		}
