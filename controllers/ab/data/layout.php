@@ -298,6 +298,8 @@ class layout extends data {
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
 
+
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
 	function _stats($data="") {
@@ -352,6 +354,8 @@ class layout extends data {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
 		}
+
+		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;
 
 
 		$GLOBALS["output"]['data'] = $page;

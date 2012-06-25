@@ -38,7 +38,8 @@ class user_permissions {
 			),
 			"layout"=>array(
 				"page"=>0,
-				"pagecount"=>0
+				"pagecount"=>0,
+				"editpage"=>0
 			),
 			"overview"=>array(
 				"page"=>0

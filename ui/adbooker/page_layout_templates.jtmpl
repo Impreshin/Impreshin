@@ -241,6 +241,7 @@
 
 	</article>
 	<footer class="footer">
+		<% if (this.a.edit){ %>
 		<form action="" style="margin:0;" id="pages_settings_form">
 			<table>
 				<tr>
@@ -293,6 +294,7 @@
 
 
 		</form>
+		<% } %>
 	</footer>
 
 	]]>
