@@ -39,7 +39,7 @@ class user_permissions {
 				)
 			),
 			"reports"=>array(
-				"page"=>0
+
 			),
 			"administration"=>array(
 				"accounts"=> array(

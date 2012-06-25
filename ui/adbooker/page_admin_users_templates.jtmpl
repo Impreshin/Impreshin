@@ -105,7 +105,7 @@
 								{% for k,v in value %}
 								{% if loop.first and (v != 1 and v != 0)%}
 								{% endif %}
-									<label class="checkbox {% if (v == 1 or v == 0) or v['page'] == '1' or v['page'] =='0' %}hoverable{% endif %}" style="padding-top: 3px;padding-bottom: 3px;">
+									<label class="checkbox {% if (v == 1 or v == 0) or v['page'] == '1' or v['page'] =='0' %}hoverable{% endif %}" style="padding-top: 5px;padding-bottom: 5px;">
 										{% if v == 1 or v == 0 %}
 											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}) { %>checked="checked"<% } %>>
 										{% endif %}
@@ -119,7 +119,7 @@
 									</label>
 									{% for sk,sv in v %}
 										{% if sk != 'page' %}
-										<label class="checkbox {% if sv == 1 or sv == 0 %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 3px;padding-bottom: 3px;">
+										<label class="checkbox {% if sv == 1 or sv == 0 %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 5px;padding-bottom: 5px;">
 											{% if sv == 1 or sv == 0 %}
 												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}) { %>checked="checked"<% } %>>
 											{% endif %}
