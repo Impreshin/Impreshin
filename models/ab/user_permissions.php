@@ -17,8 +17,6 @@ class user_permissions {
 
 			"form"=>array(
 				"page"=>0,
-				"inserts"=>0,
-				"adverts"=>0
 			),
 			"provisional"=>array(
 				"page"=>0
@@ -35,8 +33,6 @@ class user_permissions {
 			"records"=>array(
 				"deleted"=>array(
 					"page"=>0,
-					"search"=>0,
-					"settings"=>0
 				),
 				"search"=>array(
 					"page"=>0

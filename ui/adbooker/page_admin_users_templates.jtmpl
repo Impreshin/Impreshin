@@ -104,7 +104,6 @@
 							<div class="controls">
 								{% for k,v in value %}
 								{% if loop.first and (v != 1 and v != 0)%}
-								<div style="height: 25px;"></div>
 								{% endif %}
 									<label class="checkbox {% if (v == 1 or v == 0) or v['page'] == '1' or v['page'] =='0' %}hoverable{% endif %}" style="padding-top: 3px;padding-bottom: 3px;">
 										{% if v == 1 or v == 0 %}
