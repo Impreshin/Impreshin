@@ -22,37 +22,43 @@ class admin_users extends save {
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$fullName = isset($_POST['fullName']) ? $_POST['fullName'] : "";
-		$email = isset($_POST['email']) ? $_POST['email'] : "";
+		$email = isset($_POST['email']) ? strtolower($_POST['email']) : "";
 		$password= isset($_POST['password']) ? $_POST['password'] : "";
-		$publications= isset($_POST['publications']) ? $_POST['publications'] : "";
-		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : "";
+		$publications= isset($_POST['publications']) ? $_POST['publications'] : array();
+		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : array();
 
 
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$return = array(
+			"error"   => array(),
+			"ID"      => $ID
 
-		$pstr = array();
-		foreach ($publications as $u) $pstr[] = $u['ID'];
-
-
-
-
+		);
 
 
 		//test_array($p);
 		$submit = true;
 
+		$email_check = user::check_email($email);
+		if (isset($email_check['ID'])){
+			if ($email_check['ID']!=$ID){
+				$submit = false;
+				//$return['error'][] = "User already Exists - ". $email_check['fullName']." - <a href='#' data-id='". $email_check['ID']. "' class='loaddetailspage'>click here to add them to the company</a>";
+				$return['exists'] = $email_check['ID'];
+			}
 
-		$return = array(
-			"error"   =>array(),
-			"ID"=>$ID
+		}
 
-		);
+		if ($ID=="" && $password==""){
+			$submit = false;
+			$return['error'][] = "You need to specify a password";
+		}
+
+
 
 		$values = array(
 			"fullName"         => $fullName,
 			"email"=> $email,
 			"publications"     => $publications,
-			"available_publications"     => $pstr,
 			"cID"=> $cID
 		);
 
@@ -64,12 +70,17 @@ class admin_users extends save {
 //$values = $values['p']['p'];
 
 
-
-
 		if ($submit){
+			$passed_ID = $ID;
 			$ID = user::save($ID, $values);
 
 			// save to company here
+
+			if ($passed_ID!=''){
+				user::_add_company($ID, $cID);
+			} else {
+				user::_add_app($ID, $cID,"ab");
+			}
 
 
 			models\user_permissions::write($ID, $cID, $permissions);
@@ -83,12 +94,43 @@ class admin_users extends save {
 		return $GLOBALS["output"]['data'] = $return;
 
 	}
-	function _delete(){
+	function add_company(){
 		$user = F3::get("user");
-		$pID = $user['publication']['ID'];
+		$cID = $user['publication']['cID'];
+
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		models\dates::_delete($ID);
+
+		user::_add_company($ID, $cID);
+		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
+	}
+	function add_app(){
+		$user = F3::get("user");
+		$cID = $user['publication']['cID'];
+
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		$app = F3::get("app");
+
+		user::_add_app($ID, $cID, $app);
+		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
+	}
+	function remove_app(){
+		$user = F3::get("user");
+		$cID = $user['publication']['cID'];
+
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		$app = F3::get("app");
+
+		user::_remove_app($ID, $cID, $app);
+		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
+	}
+	function _delete(){
+		$user = F3::get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+
 
 	}
 

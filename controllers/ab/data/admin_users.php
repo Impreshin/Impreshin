@@ -62,8 +62,15 @@ class admin_users extends data {
 		$return = array();
 		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
 
+		if (!$details['ID']){
+			$userPublications = array();
+		} else {
+			$userPublications = models\publications::getAll_user("uID='" . $details['ID'] . "'", "publication ASC");
+		}
+
+
 		$pstr = array();
-		foreach ($details['publications'] as $u) $pstr[] = $u['ID'];
+		foreach ($userPublications as $u) $pstr[] = $u['ID'];
 
 		$pubarray = array();
 		foreach ($publications as $pub){
@@ -78,11 +85,24 @@ class admin_users extends data {
 		$publications = $pubarray;
 		$return['details'] = $details;
 		$return['publications'] = $publications;
-		$return['permissions'] = $publications;
+
+
+		$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
+
+		if (count($extra)) {
+			$extra = $extra[0];
+			$return['details']['ab'] = $extra['ab'];
+			$return['details']['permissions'] = models\user_permissions::_read($extra['ab_permissions']);
+		} else {
+			$return['details']['ab'] = '1';
+
+		}
+
 
 
 
 		$GLOBALS["output"]['data'] = $return;
 	}
+
 
 }

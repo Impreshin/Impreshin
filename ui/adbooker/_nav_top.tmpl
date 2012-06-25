@@ -8,6 +8,8 @@
 
 				<div id="app-nav-bar">
 					<ul class="nav" id="app-nav">
+
+						{% if _user['permissions']['form']['page'] %}
 						<li class="divider-vertical"></li>
 						<li class="{% if page['section'] == "form" %} active {% endif %}">
 							<a href="/ab/form/" class="nav-icon-btn">
@@ -18,41 +20,52 @@
 								{% endif %}
 							</a>
 						</li>
+						{% endif %}
 						<li class="divider-vertical"></li>
+						{% if _user['permissions']['provisional']['page'] %}
 						<li class="{% if page['section'] == "bookings" %} active {% endif %}">
 							<a  href="/ab/">Bookings</a>
 
 						</li>
+						{% endif %}
+						{% if _user['permissions']['production']['page'] %}
 						<li class="{% if page['section'] == "production" %} active {% endif %}">
 							<a href="/ab/production/">Production</a>
 						</li>
-
+						{% endif %} {% if _user['permissions']['layout']['page'] %}
 						<li class="{% if page['section'] == "layout" %} active {% endif %}">
 							<a href="/ab/layout/">Layout</a>
 						</li>
+						{% endif %} {% if _user['permissions']['overview']['page'] %}
 						<li class="{% if page['section'] == "overview" %} active {% endif %}">
 							<a href="/ab/overview/">Overview</a>
 						</li>
 
 
+						{% endif %}
+						{% if _user['permissions']['records']['_nav'] %}
 						<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Records <b class="caret"></b></a>
 							<ul class="dropdown-menu">
+								{% if _user['permissions']['records']['deleted']['page'] %}
 								<li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
 									<a href="/ab/records/deleted/"><i class="icon-trash menu-icon"></i>Deleted Records</a>
 								</li>
+								{% endif %} {% if _user['permissions']['records']['search']['page'] %}
 								<li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
 									<a href="/ab/records/search/"><i class="icon-search menu-icon"></i>Enquiries</a>
 								</li>
 
-
+								{% endif %}
 							</ul>
 						</li>
-
+						{% endif %}
+						{% if _user['permissions']['reports']['_nav'] %}
 						<li class="dropdown">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">Reports <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Load Report</a></li>
+
 								<li><a href="#">Discounts</a></li>
 								<li><a href="#">Categories</a></li>
 								<li><a href="#">Production</a></li>
@@ -68,6 +81,7 @@
 
 							</ul>
 						</li>
+						{% endif %}
 						<li class="divider-vertical"></li>
 
 
@@ -84,30 +98,45 @@
 							</ul>
 						</li>
 						<li class="divider-vertical"></li>
+						{% if _user['permissions']['administration']['_nav'] %}
 						<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:void(0)" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="nav-header">AdBooker</li>
+								{% if _user['permissions']['administration']['accounts']['page'] %}
 								<li><a href="#">Accounts</a></li>
+								{% endif %}{% if _user['permissions']['administration']['categories']['page'] %}
 								<li><a href="#">Categories</a></li>
+								{% endif %}{% if _user['permissions']['administration']['marketers']['page'] %}
 								<li><a href="#">Marketers</a></li>
+								{% endif %}{% if _user['permissions']['administration']['production']['page'] %}
 								<li><a href="#">Production</a></li>
+								{% endif %}{% if _user['permissions']['administration']['sections']['page'] %}
 								<li><a href="#">Sections</a></li>
+								{% endif %}{% if _user['permissions']['administration']['placing']['page'] %}
 								<li><a href="#">Placing</a></li>
+								{% endif %}{% if _user['permissions']['administration']['loading']['page'] %}
 								<li><a href="#">Loading</a></li>
+								{% endif %}
 								<li class="nav-header">System</li>
+								{% if _user['permissions']['administration']['dates']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
 									<a href="/ab/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
 								</li>
+								{% endif %}{% if _user['permissions']['administration']['users']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
 									<a href="/ab/admin/users"><i class="icon-user menu-icon"></i> Users</a>
 								</li>
+								{% endif %}{% if _user['permissions']['administration']['publications']['page'] %}
 								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
+								{% endif %}{% if _user['permissions']['administration']['company']['page'] %}
 								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
+								{% endif %}
 							</ul>
 						</li>
 						<li class="divider-vertical"></li>
+						{% endif %}
 						<li style="margin-right: -10px;">
 							<a href="/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
 						</li>

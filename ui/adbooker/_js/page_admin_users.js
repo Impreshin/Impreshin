@@ -36,6 +36,28 @@ $(document).ready(function(){
 		}
 
 	});
+	$(document).on("click", "#btn-add-app", function () {
+		var ID = $.bbq.getState("ID");
+		if (confirm("Are you sure you want to allow access to Adverts?")){
+			$("#left-area .loadingmask").show();
+			$.post("/ab/save/admin_users/add_app/?ID=" + ID, function (r) {
+				getList();
+				getDetails();
+			});
+		}
+
+	});
+	$(document).on("click", "#btn-remove-app", function () {
+		var ID = $.bbq.getState("ID");
+		if (confirm("Are you sure you want to remove access to Adverts?")){
+			$("#left-area .loadingmask").show();
+			$.post("/ab/save/admin_users/remove_app/?ID=" + ID, function (r) {
+				getList();
+				getDetails();
+			});
+		}
+
+	});
 	$(document).on("submit", "#capture-form", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -44,13 +66,34 @@ $(document).ready(function(){
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");
+		if (ID=="undefined"){
+			ID="";
+		}
+		if (!ID){
+			ID = "";
+		}
 		$("#left-area .loadingmask").show();
 		$.post("/ab/save/admin_users/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
+			if (r['exists']){
+				if (confirm("This user already exists. do you want to add them to the application / company?")){
+					$.post("/ab/save/admin_users/add_company/?ID=" + r['exists'], function () {
+						$.bbq.pushState({"ID":r['exists']});
+						getList();
+						getDetails();
+					});
+				} else {
+					str = '<div class="alert alert-error">A user with that email already exists</div>';
+					$("#left-area .loadingmask").fadeOut(transSpeed);
+					$errorArea.html(str);
+				}
+
+				return false;
+			}
 			if (r['error'].length){
 				var str="";
 				for (var i in r['error']) {
-					str += '<div class="alert alert-error">' + r['error'][i] + '</div>'
+					str += '<div class="alert alert-error">' + r['error'][i] + '</div>';
 				}
 				$("#left-area .loadingmask").fadeOut(transSpeed);
 				$errorArea.html(str);

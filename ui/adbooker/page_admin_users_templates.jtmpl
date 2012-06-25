@@ -70,6 +70,7 @@
 
 
 			</fieldset>
+			<% if (this.details.ab=='1') { %>
 			<fieldset style="margin-top: 20px;">
 				<legend>Publications
 					<small> - this user is allowed to see records for:</small>
@@ -127,7 +128,7 @@
 
 
 			</fieldset>
-
+				<% } %>
 
 		</div>
 
@@ -137,9 +138,18 @@
 	<div id="form-bottom">
 		<div class="form-actions">
 			<div style="float:left; margin-left:0; padding-top: 3px;">
-
 				<% if (this.details.ID) { %>
-				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this Record" data-position="above" id="btn-delete">
+				<% if (this.details.ab=='1') { %>
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Remove access to this Application" data-position="above" id="btn-remove-app">
+					<i class="icon-eye-close icon-d-grey"></i>
+				</button>
+				<% } else { %>
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Grant access to this Application" data-position="above" id="btn-add-app">
+					<i class="icon-eye-open icon-d-grey"></i>
+				</button>
+				<% } %>
+
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Remove this user from the Company" data-position="above" id="btn-delete" disabled="disabled">
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
 				<% } %>

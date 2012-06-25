@@ -103,12 +103,13 @@ $app->set('v', $minVersion);
 $user = "";
 
 $uID = isset($_SESSION['uID'])?$_SESSION['uID']:"";
-$username = isset($_POST['email'])?$_POST['email']:"";
-$password = isset($_POST['password'])?$_POST['password']:"";
+$username = isset($_POST['login_email'])?$_POST['login_email']:"";
+$password = isset($_POST['login_password'])?$_POST['login_password']:"";
 $userO = new \models\user();
 
 if ($username && $password){
 	$uID = $userO->login($username,$password);
+	F3::reroute("/");
 }
 
 
@@ -126,14 +127,14 @@ if ($folder) {
 
 }
 
-$user = $userO->get($uID);
+$user = $userO->user($uID);
 if (!$user['ID']&&$folder) {
 	F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
 }
 if ($folder && $user['ID']){
-	if ($user['last_app']!=$folder){
-		F3::get("DB")->exec("UPDATE global_users SET last_app = '$folder', last_activity = now() WHERE ID = '" . $user['ID'] . "'");
-	}
+
+	F3::get("DB")->exec("UPDATE global_users SET last_app = '$folder', last_activity = now() WHERE ID = '" . $user['ID'] . "'");
+
 
 	F3::get("DB")->exec("UPDATE " . $folder . "_users_settings SET  last_activity = now() WHERE uID = '" . $user['ID'] . "'");
 }
@@ -188,6 +189,10 @@ $app->route('GET|POST /', function() use ($user) {
 
 	}
 );
+$app->route('GET|POST /noaccess', function(){
+		echo "you dont have access for that app";
+		exit();
+	});
 $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /register', 'controllers\controller_register->page');
 $app->route('GET /data/keepalive', function() use ($user){

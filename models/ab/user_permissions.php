@@ -14,40 +14,74 @@ class user_permissions {
 		$timer = new timer();
 		$return = array();
 		$return['p'] = array(
+
+			"form"=>array(
+				"page"=>0
+			),
 			"provisional"=>array(
-				"access"=>0
+				"page"=>0
 			),
 			"production"=>array(
-				"access"=>0
+				"page"=>0
 			),
 			"layout"=>array(
-				"access"=>0,
-				"edit"=>0,
-				"place"=>0
+				"page"=>0
 			),
 			"overview"=>array(
-				"access"=>0
+				"page"=>0
 			),
 			"records"=>array(
 				"deleted"=>array(
-					"access"=>0,
+					"page"=>0,
 				),
 				"search"=>array(
-					"access"=>0
+					"page"=>0
 				)
 			),
 			"reports"=>array(
-				"access"=>0
+				"page"=>0
 			),
-			"details"=>array(
-				"access"=>0
+			"administration"=>array(
+				"accounts"=> array(
+					"page"=> 0
+				),
+				"categories"=> array(
+					"page"=> 0
+				),
+				"marketers"=> array(
+					"page"=> 0
+				),
+				"production"=> array(
+					"page"=> 0
+				),
+				"sections"=> array(
+					"page"=> 0
+				),
+				"placing"=> array(
+					"page"=> 0
+				),
+				"loading"=> array(
+					"page"=> 0
+				),
+				"dates"=>array(
+					"page"=> 0
+				),
+				"users"=> array(
+					"page"=> 0
+				),
+				"publications"=> array(
+					"page"=> 0
+				),
+				"company"=>array(
+					"page"=> 0
+				)
 			)
 
 		);
 
 		$return['d'] = array(
 			"provisional"=> array(
-				"access"=> "you want to do WHAT!!!???"
+				"page"=> "you want to do WHAT!!!???"
 			),
 			"records"=> array(
 				"deleted"=> array(
@@ -64,6 +98,9 @@ class user_permissions {
 
 
 	public static function _read($user_permissions){
+
+
+
 
 		$timer = new timer();
 		$permissions = self::permissions();
