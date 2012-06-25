@@ -892,7 +892,7 @@ table.records .record-tick {
 .record.active {
   background-color: #deebff;
   cursor: pointer;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 1px rgba(250, 250, 250, 0.25);
   color: #444444;
 }
 .record:hover {

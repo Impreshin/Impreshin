@@ -129,11 +129,11 @@
 	var cmSize = "0";
 	var colSize = "0";
 	var colcmAv = "0";
-	{% if _ab['publication']['pagewidth'] and _ab['publication']['cmav'] %}
-		pageSize ="{{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}";
-		cmSize ="{{ ((((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10)) / _ab['publication']['cmav'] }}";
-		colSize ="{{ 143 / _ab['publication']['columnsav'] }}";
-		colcmAv = "{{  _ab['publication']['cmav'] * _ab['publication']['columnsav'] }}";
+	{% if _user['publication']['pagewidth'] and _user['publication']['cmav'] %}
+		pageSize ="{{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}";
+		cmSize ="{{ ((((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10)) / _user['publication']['cmav'] }}";
+		colSize ="{{ 143 / _user['publication']['columnsav'] }}";
+		colcmAv = "{{  _user['publication']['cmav'] * _user['publication']['columnsav'] }}";
 	{% endif %}
 
 </script>

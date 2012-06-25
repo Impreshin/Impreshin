@@ -36,7 +36,7 @@ class publications {
 		return $return;
 	}
 
-	public static function getAll($where="", $orderby=""){
+	public static function getAll_user($where="", $orderby=""){
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -59,6 +59,40 @@ class publications {
 
 
 		$return = $result;
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function getAll($where="", $orderby=""){
+		$timer = new timer();
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+
+
+		$result = F3::get("DB")->exec("
+			SELECT DISTINCT global_publications.*
+			FROM global_publications
+			$where
+			$orderby
+		"
+		);
+
+
+		$return = $result;
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function addUser($publications=array(),$available_publications=array()){
+		$timer = new timer();
+
+
+
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}

@@ -55,10 +55,7 @@ if ($uri) {
 }
 $folder = strtolower($folder);
 
-$allowed = array("ab");
-$folder = (in_array($folder, $allowed)) ? $folder : "";
 
-$app->set('app', $folder);
 
 
 $cfg = array(
@@ -75,11 +72,17 @@ $cfg = array(
 		"material"=> false,
 		"pages"   => false,
 		"folder"  => $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $folder
-	)
+	),
+	"apps"=>array("ab")
 );
 require_once('config.inc.php');
 
+$allowed = $cfg['apps'];
+$folder = (in_array($folder, $allowed)) ? $folder : "";
 
+//test_array($folder);
+
+$app->set('app', $folder);
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '',  $cfg['DB']['username'] , $cfg['DB']['password'] ));
 
 unset($cfg['DB']);
@@ -126,6 +129,13 @@ if ($folder) {
 $user = $userO->get($uID);
 if (!$user['ID']&&$folder) {
 	F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
+}
+if ($folder && $user['ID']){
+	if ($user['last_app']!=$folder){
+		F3::get("DB")->exec("UPDATE global_users SET last_app = '$folder', last_activity = now() WHERE ID = '" . $user['ID'] . "'");
+	}
+
+	F3::get("DB")->exec("UPDATE " . $folder . "_users_settings SET  last_activity = now() WHERE uID = '" . $user['ID'] . "'");
 }
 
 $app->set('user', $user);
@@ -187,9 +197,13 @@ $app->route('GET /data/keepalive', function() use ($user){
 		$now = new DateTime('now');
 
 		$interval = $last_activity->diff($now);
-		$diff = $interval->format('%s');
+		$diff = (($interval->h*60)*60)+ ($interval->i * 60)+ ($interval->s);
 
-		if (isset($_GET['keepalive'])){
+		//$interval['diff']=$diff;
+
+
+
+		if (isset($_GET['keepalive'])&& $_GET['keepalive']){
 			F3::get("DB")->exec("UPDATE global_users SET last_activity = now() WHERE ID = '" . $user['ID'] . "'");
 			$diff = 0;
 			// upadate the last_activity
@@ -206,7 +220,7 @@ $app->route('GET /data/keepalive', function() use ($user){
 //include_once("/controllers/ab/_data.php");
 // --------------------------------------------------------------------------------
 
-$app->route('GET /ab/', 'controllers\ab\controller_provisional->page');
+$app->route('GET /ab', 'controllers\ab\controller_provisional->page');
 $app->route('GET /ab/production', 'controllers\ab\controller_production->page');
 $app->route('GET /ab/layout', 'controllers\ab\controller_layout->page');
 $app->route('GET /ab/overview', 'controllers\ab\controller_overview->page');
@@ -223,7 +237,7 @@ $app->route('GET /ab/admin/users', 'controllers\ab\controller_admin_users->page'
 
 // --------------------------------------------------------------------------------
 
-
+$app->route('GET /nf', 'controllers\nf\controller_test->page');
 
 
 

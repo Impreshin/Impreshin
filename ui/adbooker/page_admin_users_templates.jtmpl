@@ -1,18 +1,18 @@
-
-
 <script type="text/x-jqote-template" id="template-list">
 	<![CDATA[
 
 	<tr data-id="<%= this.ID %>" class="record">
-		<td class="" >
-			<%= this.publish_date_display %>
+		<td class="">
+			<%= this.fullName %>
 		</td>
+		{% for row in _cfg['apps'] %}
+		<th style="width: 20px;" title="<%= this.{{ row }}_last_activity.display %>">
+			<% if (this.{{ row }}){ %>
+			<i class="icon-ok <% if (!this.{{ row }}_last_activity.active){ %>icon-grey<% } %>"></i> <% } %>
+		</th>
+		{% endfor %}
 
-		<td style="width: 20px;">
-			<% if (this.current){ %>
-			<i class="icon-ok"></i>
-			<% } %>
-		</td>
+
 	</tr>
 
 	]]>
@@ -42,9 +42,87 @@
 
 
 			<fieldset style="margin-top: 20px;">
-				<legend><% if (this.ID) { %>Edit<% if (this.records!=0) { %> -<span class="g" style="font-size: 12px;"> Records:<%= this.records  %></span> <% } %><% } else { %>New<% } %></legend>
+				<legend><% if (this.details.ID) { %>Edit<% } else { %>New<% } %></legend>
 				<div id="errorArea"></div>
 
+				<div class="control-group">
+					<label for="fullName" class="control-label">Full Name</label>
+
+					<div class="controls">
+						<input type="text" id="fullName" name="fullName" class="input-xlarge" value="<% if (this.details.fullName) { %><%= this.details.fullName %><% } %>">
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="email" class="control-label">Email</label>
+
+					<div class="controls">
+						<input type="email" id="email" name="email"  class="" value="<% if (this.details.email) { %><%= this.details.email %><% } %>">
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="password" class="control-label">Password</label>
+
+					<div class="controls">
+						<input type="password" id="password" name="password"  class="span2">
+					</div>
+				</div>
+
+
+
+			</fieldset>
+			<fieldset style="margin-top: 20px;">
+				<legend>Publications
+					<small> - this user is allowed to see records for:</small>
+				</legend>
+				<div id="errorArea"></div>
+
+				<div class="control-group">
+					<label for="optionsCheckboxList" class="control-label">Publications</label>
+
+					<div class="controls highlighthovered">
+						<% for(var i in this.publications) { %>
+						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %>><%= this.publications[i].publication %>
+						</label>
+						<% } %>
+
+
+					</div>
+				</div>
+				<fieldset style="margin-top: 20px;" id="permissions" >
+				<legend>Permissions
+					<small> - Are applied at company level</small>
+				</legend>
+				<div id="errorArea"></div>
+
+					{% for key,value in permissions %}
+						<div class="control-group" style="{% if loop.first==false %}border-top: 1px dotted #ccc;{% endif %} padding-top: 10px; margin-bottom: 0; padding-bottom:5px;">
+							<label for="optionsCheckboxList" class="control-label">{{ key|capitalize }}</label>
+
+
+							<div class="controls">
+								{% for k,v in value %}
+								{% if loop.first and (v != 1 and v != 0)%}
+								<div style="height: 25px;"></div>
+								{% endif %}
+									<label class="checkbox {% if v == 1 or v == 0 %}hoverable{% endif %}" style="padding-top: 3px;padding-bottom: 3px;">
+										{% if v == 1 or v == 0 %}
+											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}) { %>checked="checked"<% } %>>
+										{% endif %}{{ k|capitalize }} {% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
+										<span class="help-inline">{{ permissions_desc[key][k] }}</span> {% endif %}
+									</label>
+									{% for sk,sv in v %}
+									<label class="checkbox {% if sv == 1 or sv == 0 %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 3px;padding-bottom: 3px;">
+										{% if sv == 1 or sv == 0 %}<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}) { %>checked="checked"<% } %>>{% endif %}{{ sk|capitalize }}{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
+										<span class="help-inline">{{ permissions_desc[key][k][sk] }}</span> {% endif %}
+									</label>
+									{% endfor %}
+								{% endfor %}
+
+
+							</div>
+						</div>
+					{% endfor %}
 
 
 
@@ -60,17 +138,15 @@
 		<div class="form-actions">
 			<div style="float:left; margin-left:0; padding-top: 3px;">
 
-				<% if (this.ID) { %>
-				<% if (this.records==0) { %>
+				<% if (this.details.ID) { %>
 				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this Record" data-position="above" id="btn-delete">
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
 				<% } %>
-				<% } %>
 			</div>
 			<div style="float:right; margin-right: 10px;">
 
-				<% if (this.ID) { %>
+				<% if (this.details.ID) { %>
 				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="New Record" data-position="above" id="btn-new">
 					<i class="icon-plus icon-d-grey"></i>
 				</button>

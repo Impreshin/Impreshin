@@ -70,16 +70,4 @@
 
 </section>
 
-<script type="text/javascript">
-	var pageSize = "0";
-	var cmSize = "0";
-	var colSize = "0";
-	var colcmAv = "0";
-	{% if _ab['publication']['pagewidth'] and _ab['publication']['cmav'] %}
-		pageSize ="{{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}";
-		cmSize ="{{ ((((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10)) / _ab['publication']['cmav'] }}";
-		colSize ="{{ 143 / _ab['publication']['columnsav'] }}";
-		colcmAv = "{{  _ab['publication']['cmav'] * _ab['publication']['columnsav'] }}";
-	{% endif %}
 
-</script>

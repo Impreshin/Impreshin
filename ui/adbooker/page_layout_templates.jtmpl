@@ -7,7 +7,7 @@
 	<tr data-id="<%= this.ID %>" class="record dragable" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
-		<td class="span1"><%= this.colour %></td>
+		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
 		<td><% if (this.remark) { %><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span class="label"></span><% } %><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
 		</td>
 		<td style="width: 20px;">
@@ -21,7 +21,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-spreads-page">
 	<![CDATA[
-		<article style="<% if (this.colour) { %>background: url('/ui/_images/ab/<%= this.colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>"  data-colour="<%= this.colour %>" >
+		<article style="<% if (this.colour) { %>background: url('/ui/_images/ab/<%= this.colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>"  data-colour="<%= this.colour %>" >
 
 			<% if(this.section.c) { %>
 			<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
@@ -81,7 +81,7 @@
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
 		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked) { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
-		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _ab['publication']['pagewidth'] / 100 ))*_ab['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
+		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
 
 			<% if(this.pages[i].section.c) { %>
 			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>

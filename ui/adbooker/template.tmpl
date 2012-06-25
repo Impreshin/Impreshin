@@ -87,7 +87,7 @@
 </div>
 
 
-<script src="/ui/_js/libs/jquery.{{_v}}.js"></script>
+<script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
 
 
 <script src="/min/js.{{_v}}.js"></script>
@@ -221,14 +221,15 @@
 	// show idle 2 minutes
 
 	$("#displaylogout").autoLogout({
-		LogoutTime          :300,
+		LogoutTime          :600,
 
 		onResetTimer        :function (e) {
+			this.css("background-color", "rgba(250, 250, 250, 0.8)");
 			$noticeareaIdle.stop(true, true).fadeOut(1000)
 
 		},
 		onLogout: function (timer){
-			console.info("logout now");
+
 			window.location = "/logout?msg=You+were+logged+out+due+to+inactivity";
 		},
 		keepAlive: function(){
@@ -250,7 +251,7 @@
 					$this.data("timer", real_idle);
 					idle = real_idle;
 					if (idle >= LogoutTime) {
-						this.autoLogout('logout');
+						settings.autoLogout('logout');
 					}
 				}));
 			}
@@ -271,6 +272,20 @@
 				$this.stop(true, true).fadeOut(1000);
 			}
 
+			var remaining = (LogoutTime - idle);
+			var remain_p = (remaining / LogoutTime) * 100
+
+			if (remain_p < 30){
+
+				var new_p = (remain_p / 30)
+				new_p = 1 - new_p;
+
+				if (new_p>0.8)	this.css("background-color", "rgba(250, 250, 250, "+ new_p+")");
+			}
+
+			if ((LogoutTime - idle) < 80){
+				//this.css("opacity", (LogoutTime - idle) / 100);
+			}
 
 
 

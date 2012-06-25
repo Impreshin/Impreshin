@@ -51,7 +51,7 @@ class template {
 		$this->vars['_gaq'] = F3::get("GOOGLE_ANALYTICS");
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
-		$this->vars['_ab'] = array(
+		$this->vars['_settings'] = array(
 			"settings"=> F3::get('settings'),
 			"publication"=> $publication,
 			"publications"=> $publications,

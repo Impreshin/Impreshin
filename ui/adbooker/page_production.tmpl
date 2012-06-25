@@ -32,7 +32,7 @@
 					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
 					<ul class="dropdown-menu" id="record-settings">
 						<li class="nav-header">Group By</li>
-						{% for row in _ab['settings']['groupby']['production'] %}
+						{% for row in settings['groupby'] %}
 						<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
 							<a href="javascript:;">{{ row['n'] }}</a>
 						</li>

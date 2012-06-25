@@ -402,6 +402,7 @@ function page_droppable($element){
 
 				}
 
+
 				if ($this.hasClass("locked")) {
 					allowDrop = false;
 					reason = [];

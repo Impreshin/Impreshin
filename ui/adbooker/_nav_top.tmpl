@@ -75,11 +75,11 @@
 					<ul class="nav pull-right">
 
 						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">{{  _ab['publication']['publication'] }}
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">{{  _user['publication']['publication'] }}
 								<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								{% for row in _ab['publications'] %}
-								<li class="{% if row['ID'] ==  _ab['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+								{% for row in _user['publications'] %}
+								<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
 								{% endfor %}
 							</ul>
 						</li>

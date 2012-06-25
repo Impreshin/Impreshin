@@ -35,6 +35,10 @@ class controller_admin_users {
 			)
 		);
 
+		$permissions = models\user_permissions::permissions();
+
+		$tmpl->permissions = $permissions['p'];
+		$tmpl->permissions_desc = $permissions['d'];
 		$tmpl->output();
 
 	}

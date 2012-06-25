@@ -11,18 +11,34 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class admin_dates extends save {
+class admin_users extends save {
 
 	function _save() {
 		$user = F3::get("user");
 		$pID = $user['publication']['ID'];
+		$cID = $user['publication']['cID'];
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		$publish_date = isset($_POST['publish_date']) ? $_POST['publish_date'] : "";
-		$current = isset($_POST['current']) ? $_POST['current'] : "";
+
+		$fullName = isset($_POST['fullName']) ? $_POST['fullName'] : "";
+		$email = isset($_POST['email']) ? $_POST['email'] : "";
+		$password= isset($_POST['password']) ? $_POST['password'] : "";
+		$publications= isset($_POST['publications']) ? $_POST['publications'] : "";
+		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : "";
 
 
+		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+
+		$pstr = array();
+		foreach ($publications as $u) $pstr[] = $u['ID'];
+
+
+
+
+
+
+		//test_array($p);
 		$submit = true;
 
 
@@ -31,27 +47,34 @@ class admin_dates extends save {
 			"ID"=>$ID
 
 		);
-		if ($publish_date){
-			$publish_date = date("Y-m-d",strtotime($publish_date));
-			$exists = models\dates::getAll("global_dates.publish_date='$publish_date' AND global_dates.ID <> '$ID' AND pID='$pID'");
 
-
-			if (count($exists)){
-				$submit = false;
-				$return['error'][] ="The date already exists";
-			}
-		}
 		$values = array(
-			"pID"         => $pID,
-			"publish_date"=> $publish_date,
-			"current"     => $current,
+			"fullName"         => $fullName,
+			"email"=> $email,
+			"publications"     => $publications,
+			"available_publications"     => $pstr,
+			"cID"=> $cID
 		);
 
+
+		if ($password)$values['password'] = $password;
+
+
+
+//$values = $values['p']['p'];
+
+
+
+
 		if ($submit){
-			$ID = models\dates::save($ID, $values);
+			$ID = user::save($ID, $values);
+
+			// save to company here
+
+
+			models\user_permissions::write($ID, $cID, $permissions);
 			$return['ID'] = $ID;
 		}
-
 
 
 	//	test_array(array("ID"=>$ID,"values"=>$values,"result"=>$return));
