@@ -113,19 +113,7 @@ if ($username && $password){
 }
 
 
-if ($folder) {
 
-
-	$settingsmodel = "\\models\\$folder\\settings";
-	$app->set('settings', $settingsmodel::getSettings());
-	$app->set('defaults', $settingsmodel::getDefaults());
-
-
-
-
-
-
-}
 
 $user = $userO->user($uID);
 if (!$user['ID']&&$folder) {
@@ -142,7 +130,14 @@ if ($folder && $user['ID']){
 $app->set('user', $user);
 
 
+if ($folder) {
 
+	$settingsmodel = "\\models\\$folder\\settings";
+	$app->set('settings', $settingsmodel::getSettings($user['permissions']));
+	$app->set('defaults', $settingsmodel::getDefaults());
+
+
+}
 
 
 

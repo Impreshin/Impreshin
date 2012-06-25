@@ -15,6 +15,18 @@ class user_permissions {
 		$return = array();
 		$return['p'] = array(
 
+			"actions"=>array(
+				"check"=>0,
+				"material"=>0,
+				"repeat"=>0,
+				"edit"=>0,
+				"delete"=>0,
+			),
+			"fields"=>array(
+				"rate"=>0,
+				"totalCost"=>0,
+				"totalShouldbe"=>0
+			),
 			"form"=>array(
 				"page"=>0,
 			),
@@ -25,7 +37,8 @@ class user_permissions {
 				"page"=>0
 			),
 			"layout"=>array(
-				"page"=>0
+				"page"=>0,
+				"pagecount"=>0
 			),
 			"overview"=>array(
 				"page"=>0
@@ -80,13 +93,9 @@ class user_permissions {
 		);
 
 		$return['d'] = array(
-			"provisional"=> array(
-				"page"=> "you want to do WHAT!!!???"
-			),
-			"records"=> array(
-				"deleted"=> array(
 
-				)
+			"layout"=> array(
+				"pagecount"=> "Allows this user to set how many pages the edition will be"
 			)
 		);
 

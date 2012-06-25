@@ -24,6 +24,7 @@ class data {
 	function details(){
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : exit(json_encode(array("error"=> F3::get("system")->error("B01"))));
 
+		$user = F3::get("user");
 
 		$cfg = F3::get("cfg");
 		$record = new models\bookings();
@@ -57,6 +58,13 @@ class data {
 			}
 			if ($cfg['upload']['material']) $allow['material_pane'] = '1';
 		}
+
+		$permissions = $user['permissions'];
+		if ($permissions['actions']['check']=='0') $allow['checked'] = 0;
+		if ($permissions['actions']['material']=='0') $allow['material'] = 0;
+		if ($permissions['actions']['repeat']=='0') $allow['repeat'] = 0;
+		if ($permissions['actions']['edit']=='0') $allow['edit'] = 0;
+		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
 
 		$return['a'] = $allow;

@@ -73,22 +73,26 @@
 
 						<tr>
 							<th>Colour</th>
-							<td>: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %></td>
+							<td <% if (this.colour!="Spot" && this.colour !="Full") { %> <% } %>>
+							: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %>
+							</td>
 							<% if (this.colour=="Spot" || this.colour =="Full") { %>
-							<th>Colour Rate</th>
-							<td>: <%= this.colourLabel %></td>
+								<th>Colour Rate</th>
+								<td>: <%= this.colourLabel %></td>
 							<% } %>
 						</tr>
 						<tr>
 							<th>Size</th>
-							<td>
+							<td	<% if (!this.rate_C) { %> <% } %>>
 								<div style="margin-right: -50px;">: <%= this.cm %>
 									<span class="g"> x </span> <%= this.col %>
 									<span class="g"> = </span> <%= this.totalspace %> <span class="g"> col/cm's</span>
 								</div>
 							</td>
+							<% if (this.rate_C) { %>
 							<th>Tariff</th>
 							<td>: <%= this.rate_C %></td>
+							<% } %>
 						</tr>
 						<% } else if (this.typeID =='2') { %>
 						<tr>
@@ -101,6 +105,7 @@
 						</tr>
 
 						<% } %>
+						<% if (this.totalCost_C) { %>
 						<tr>
 							<th>Totalcost</th>
 							<td colspan="3">: <%= this.totalCost_C %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C %> -
@@ -108,7 +113,7 @@
 
 							</td>
 						</tr>
-
+						<% } %>
 
 						<tr>
 							<th>Key Number</th>

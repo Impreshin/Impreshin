@@ -23,10 +23,17 @@ class controller_provisional {
 		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
 		$ab_settings = F3::get("settings");
-		//test_array($ab_settings);
 
 
-		$settings = models\settings::_read("provisional");
+
+
+
+
+
+		$settings = models\settings::_read("provisional",$user['permissions']);
+
+
+
 
 
 			//test_array($settings);

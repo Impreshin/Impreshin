@@ -10,7 +10,7 @@ class settings {
 
 	}
 
-	public static function getSettings($ID = "") {
+	public static function getSettings($permissions=array()) {
 		$timer = new timer();
 		$return = array();
 			$columns = array(
@@ -210,6 +210,7 @@ class settings {
 
 
 			);
+
 			$return["columns"] = $columns;
 
 		$groupByoptions = array(
@@ -282,6 +283,19 @@ class settings {
 
 
 		$return["groupby"] = $groupby;
+
+
+		if (isset($permissions['fields'])) {
+			foreach ($permissions['fields'] as $key=> $value) {
+				if ($value == 0) {
+					if (isset($return['columns'][$key])) unset($return['columns'][$key]);
+					if (isset($return['columns'][$key . "_C"])) unset($return['columns'][$key . "_C"]);
+				}
+			}
+		}
+
+
+
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
@@ -398,20 +412,29 @@ class settings {
 
 		$return['settings'] = $settings;
 
+
+
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function _read($section){
-
+	public static function _read($section, $permission=array()){
+		$user = F3::get("user");
 		$timer = new timer();
-		$settings = self::getSettings();
+		$settings = self::getSettings($user['permissions']);
 		$defaults = self::getDefaults();
 		$settings_raw = $settings;
-		$user = F3::get("user");
+
 		$user_settings = new user_settings();
 		$user_settings = $user_settings->_read($user['ID']);
 		$user_settings['settings'] = @unserialize($user_settings['settings']);
+
+
+
+
+
+
+
 
 		if ($user_settings['settings']){
 			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
@@ -448,6 +471,7 @@ class settings {
 			$return['count']=count($columns);
 		}
 		if (isset($settings_raw['groupby'][$section])) $return['groupby']= $settings_raw['groupby'][$section];
+
 
 
 

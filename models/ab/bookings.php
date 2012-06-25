@@ -61,6 +61,16 @@ class bookings {
 			if ($return['pageID'] && $return["page"] ){
 					$return["page"] = number_format($return['page'],0);
 			}
+			if (isset($user['permissions']['fields'])) {
+				foreach ($user['permissions']['fields'] as $key=> $value) {
+					if ($value == 0) {
+						if (isset($return[$key])) unset($return[$key]);
+						if (isset($return[$key . "_C"])) unset($return[$key . "_C"]);
+					}
+				}
+			}
+
+
 
 		} else {
 			$return = $this->dbStructure;
@@ -91,6 +101,7 @@ class bookings {
 	}
 	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"),$options=array("limit"=>"")) {
 		$timer = new timer();
+
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -138,6 +149,8 @@ class bookings {
 		");
 
 
+
+
 		$return = $result;
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
@@ -177,6 +190,8 @@ class bookings {
 
 
 		$timer = new timer();
+		$user = F3::get("user");
+
 		if (is_array($data)){
 			$a = array();
 
@@ -213,10 +228,21 @@ class bookings {
 
 
 
+
+
 		$return = array();
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
+			if (isset($user['permissions']['fields'])) {
+				foreach ($user['permissions']['fields'] as $key=> $value) {
+					if ($value == 0) {
+						if (isset($record[$key])) unset($record[$key]);
+						if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
+					}
+				}
+			}
+
 			$showrecord = true;
 			if ($options["highlight"]) {
 				$record['highlight'] = $record[$options["highlight"]];
