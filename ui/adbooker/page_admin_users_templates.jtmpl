@@ -106,17 +106,30 @@
 								{% if loop.first and (v != 1 and v != 0)%}
 								<div style="height: 25px;"></div>
 								{% endif %}
-									<label class="checkbox {% if v == 1 or v == 0 %}hoverable{% endif %}" style="padding-top: 3px;padding-bottom: 3px;">
+									<label class="checkbox {% if (v == 1 or v == 0) or v['page'] == '1' or v['page'] =='0' %}hoverable{% endif %}" style="padding-top: 3px;padding-bottom: 3px;">
 										{% if v == 1 or v == 0 %}
 											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}) { %>checked="checked"<% } %>>
-										{% endif %}{{ k|capitalize }} {% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
-										<span class="help-inline">{{ permissions_desc[key][k] }}</span> {% endif %}
+										{% endif %}
+										{% if v['page'] == '1' or v['page'] =='0' %}
+										<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.page) { %>checked="checked"<% } %>>
+										{% endif %}
+										{{ k|capitalize }}
+										{% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
+											<span class="help-inline">{{ permissions_desc[key][k] }}</span>
+										{% endif %}
 									</label>
 									{% for sk,sv in v %}
-									<label class="checkbox {% if sv == 1 or sv == 0 %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 3px;padding-bottom: 3px;">
-										{% if sv == 1 or sv == 0 %}<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}) { %>checked="checked"<% } %>>{% endif %}{{ sk|capitalize }}{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
-										<span class="help-inline">{{ permissions_desc[key][k][sk] }}</span> {% endif %}
-									</label>
+										{% if sk != 'page' %}
+										<label class="checkbox {% if sv == 1 or sv == 0 %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 3px;padding-bottom: 3px;">
+											{% if sv == 1 or sv == 0 %}
+												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}) { %>checked="checked"<% } %>>
+											{% endif %}
+											{{ sk|capitalize }}
+											{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
+												<span class="help-inline">{{ permissions_desc[key][k][sk] }}</span>
+											{% endif %}
+										</label>
+										{% endif %}
 									{% endfor %}
 								{% endfor %}
 
