@@ -230,7 +230,7 @@
 		},
 		onLogout: function (timer){
 
-			window.location = "/logout?msg=You+were+logged+out+due+to+inactivity";
+			window.location = "/logout/?msg=You+were+logged+out+due+to+inactivity";
 		},
 		keepAlive: function(){
 			$.getJSON("/data/keepalive/?keepalive=true", function (result) {});
@@ -251,7 +251,7 @@
 					$this.data("timer", real_idle);
 					idle = real_idle;
 					if (idle >= LogoutTime) {
-						settings.autoLogout('logout');
+						window.location = "/logout/?msg=You+were+logged+out+due+to+inactivity";
 					}
 				}));
 			}
@@ -283,9 +283,7 @@
 				if (new_p>0.8)	this.css("background-color", "rgba(250, 250, 250, "+ new_p+")");
 			}
 
-			if ((LogoutTime - idle) < 80){
-				//this.css("opacity", (LogoutTime - idle) / 100);
-			}
+
 
 
 
