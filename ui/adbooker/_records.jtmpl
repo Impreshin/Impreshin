@@ -34,7 +34,7 @@
 				<a href="javascript:" rel='top'> <i class="icon-arrow-up icon-l-grey"></i> </a>
 			</div>
 			<h3><%= this.heading %>
-				<small><%= this.count %> Records | <%= this.cm %> cm </small>
+				<small><%= this.count %> Records | <%= this.cm %> cm <% if (this.totalCost) { %>| <%= this.totalCost %><% } %></small>
 			</h3>
 
 

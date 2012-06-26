@@ -5,7 +5,7 @@
 		<th colspan="{{ settings['count']+1 }}">
 
 			<h3>{{ group['heading'] }}
-				<small>{{ group['count'] }} Records | {{ group['cm'] }} cm</small>
+				<small>{{ group['count'] }} Records | {{ group['cm'] }} cm {% if group['totalCost'] %}| {{ group['totalCost']|raw }}{% endif %}</small>
 			</h3>
 
 

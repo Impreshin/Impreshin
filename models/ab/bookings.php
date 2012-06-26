@@ -265,19 +265,31 @@ class bookings {
 			if ($showrecord){
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
-					$a[$record['heading']] = array(
+
+					$arr = array(
 						"heading" => $record['heading'],
 						"count"   => "",
 						"cm"      => 0,
 						"percent" => "",
 						"pages"   => "",
-						"groups"  => "",
-						"records" => ""
+
 					);
+					if (isset($record['totalCost'])) $arr['totalCost']=0;
+					$arr['groups'] = "";
+					$arr['records']="";
+
+
+					$a[$record['heading']] = $arr;
 				}
 				if ($record['typeID'] == '1') {
 					$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['totalspace'];
 				}
+
+				if (isset($record['totalCost'])){
+					$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
+				}
+
+
 
 				$a[$record['heading']]["records"][] = $record;
 			}
@@ -289,6 +301,7 @@ class bookings {
 //exit();
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
+			if (isset($record['totalCost'])) $record['totalCost'] = currency($record['totalCost']);
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}

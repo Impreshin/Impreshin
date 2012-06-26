@@ -45,7 +45,7 @@ class controller_provisional {
 			"template"=> "page_provisional",
 			"print"=> "/ab/print/provisional",
 			"meta"    => array(
-				"title"=> "AdBooker - Bookings",
+				"title"=> "AdBooker - Provisional",
 			)
 		);
 
@@ -103,14 +103,14 @@ class controller_provisional {
 			"sub_section"=> "provisional",
 			"template"=> "page_provisional",
 			"meta"    => array(
-				"title"=> "AdBooker - Print - Bookings",
+				"title"=> "AdBooker - Print - Provisional",
 			)
 		);
 
 		$tmpl->settings=$settings;
 		$tmpl->data=$data;
 
-		//test_array($settings);
+		//test_array($data);
 
 		$tmpl->output();
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
