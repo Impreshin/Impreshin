@@ -99,7 +99,7 @@ class provisional extends data {
 
 
 
-		$stats = models\record_stats::stats($records,array("cm","checked","material","layout"));
+		$stats = models\record_stats::stats($records,array("cm","checked","material","layout","totalCost"));
 		$loading = models\loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
 		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
 

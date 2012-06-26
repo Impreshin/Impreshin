@@ -48,6 +48,7 @@
 
 				</tr>
 			</table>
+			<% if (this.stats.totalCost) { %>Total Revenue: <%= this.stats.totalCost %><% } %>
 			<table>
 				<tr>
 

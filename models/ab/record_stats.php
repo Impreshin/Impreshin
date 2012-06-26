@@ -7,6 +7,7 @@ namespace models\ab;
 class record_stats {
 	public static function stats($where,$columns=array("cm"),$pages=""){ // "cm","checked","material","material_approved","layout","placed","placed_cm"
 		$timer = new \timer();
+		$user = \F3::get("user");
 
 //$columns = array("cm","placed","placed_cm");
 		if (is_array($where)) {
@@ -27,6 +28,7 @@ class record_stats {
 			if (in_array("layout",$columns)) $totals['layout'] = 0;
 			if (in_array("placed",$columns)) $totals['placed'] = 0;
 			if (in_array("placed_cm",$columns)) $totals['placed_cm'] = 0;
+			if (in_array("totalCost",$columns)) $totals['totalCost'] = 0;
 
 			$lastdID_ = "";
 			$maxPages = 0;
@@ -43,6 +45,7 @@ class record_stats {
 				if (in_array("material", $columns)) if ($record['material']) $totals['material'] = $totals['material'] + 1;
 				if (in_array("material_approved", $columns)) if ($record['material_approved']) $totals['material_approved'] = $totals['material_approved'] + 1;
 				if (in_array("layout", $columns)) if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
+				if (in_array("totalCost", $columns)) if ($record['totalCost']) $totals['totalCost'] = $totals['totalCost'] + $record['totalCost'];
 
 
 
@@ -87,6 +90,7 @@ class record_stats {
 			);
 
 		if (in_array("cm", $columns)) $return['cm'] = $totals['cm'] ;
+		if (in_array("totalCost", $columns)&&$user['permissions']['lists']['totals']['totalCost']) $return['totalCost'] = currency($totals['totalCost']) ;
 
 			if (in_array("checked", $columns)) $return['records']['checked'] = array(
 				"r"=> $totals["checked"],

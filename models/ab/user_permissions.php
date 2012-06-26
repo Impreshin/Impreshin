@@ -15,17 +15,32 @@ class user_permissions {
 		$return = array();
 		$return['p'] = array(
 
-			"actions"=>array(
-				"check"=>0,
-				"material"=>0,
-				"repeat"=>0,
-				"edit"=>0,
-				"delete"=>0,
+
+			"details"=> array(
+				"actions"=> array(
+					"check"   => 0,
+					"material"=> 0,
+					"repeat"  => 0,
+					"edit"    => 0,
+					"delete"  => 0,
+				),
+				"fields"=> array(
+					"rate"         => 0,
+					"totalCost"    => 0,
+					"totalShouldbe"=> 0
+				),
 			),
-			"fields"=>array(
-				"rate"=>0,
-				"totalCost"=>0,
-				"totalShouldbe"=>0
+			"lists"=>array(
+				"fields"=> array(
+					"rate"         => 0,
+					"totalCost"    => 0,
+					"totalShouldbe"=> 0
+				),
+				"totals"=>array(
+					"totalCost"=>0
+				),
+
+
 			),
 			"form"=>array(
 				"page"=>0,

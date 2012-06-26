@@ -61,8 +61,8 @@ class bookings {
 			if ($return['pageID'] && $return["page"] ){
 					$return["page"] = number_format($return['page'],0);
 			}
-			if (isset($user['permissions']['fields'])) {
-				foreach ($user['permissions']['fields'] as $key=> $value) {
+			if (isset($user['permissions']['details']['fields'])) {
+				foreach ($user['permissions']['details']['fields'] as $key=> $value) {
 					if ($value == 0) {
 						if (isset($return[$key])) unset($return[$key]);
 						if (isset($return[$key . "_C"])) unset($return[$key . "_C"]);
@@ -191,7 +191,7 @@ class bookings {
 
 		$timer = new timer();
 		$user = F3::get("user");
-
+		$permissions = $user['permissions'];
 		if (is_array($data)){
 			$a = array();
 
@@ -274,7 +274,7 @@ class bookings {
 						"pages"   => "",
 
 					);
-					if (isset($record['totalCost'])) $arr['totalCost']=0;
+					$arr['totalCost']=0;
 					$arr['groups'] = "";
 					$arr['records']="";
 
@@ -285,10 +285,17 @@ class bookings {
 					$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['totalspace'];
 				}
 
-				if (isset($record['totalCost'])){
-					$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
-				}
 
+					$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
+
+				if (isset($permissions['lists']['fields'])) {
+					foreach ($permissions['lists']['fields'] as $key=> $value) {
+						if ($value == 0) {
+							if (isset($record[$key])) unset($record[$key]);
+							if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
+						}
+					}
+				}
 
 
 				$a[$record['heading']]["records"][] = $record;
@@ -301,7 +308,12 @@ class bookings {
 //exit();
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
-			if (isset($record['totalCost'])) $record['totalCost'] = currency($record['totalCost']);
+
+			if (isset($permissions['lists']['totals']['totalCost'])&& $permissions['lists']['totals']['totalCost']) {
+				$record['totalCost'] = currency($record['totalCost']);
+			} else {
+				if (isset($record['totalCost'])) unset($record['totalCost']);
+			};
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}

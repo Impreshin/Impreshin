@@ -31,6 +31,8 @@ class data {
 		$return = $record->get($ID);
 
 
+
+
 		$allow = array(
 			"repeat"=>0,
 			"edit"=>0,
@@ -60,10 +62,10 @@ class data {
 		}
 
 		$permissions = $user['permissions'];
-		if ($permissions['actions']['check']=='0') $allow['checked'] = 0;
-		if ($permissions['actions']['material']=='0') $allow['material'] = 0;
-		if ($permissions['actions']['repeat']=='0') $allow['repeat'] = 0;
-		if ($permissions['actions']['edit']=='0') $allow['edit'] = 0;
+		if ($permissions['details']['actions']['check']=='0') $allow['checked'] = 0;
+		if ($permissions['details']['actions']['material']=='0') $allow['material'] = 0;
+		if ($permissions['details']['actions']['repeat']=='0') $allow['repeat'] = 0;
+		if ($permissions['details']['actions']['edit']=='0') $allow['edit'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
 

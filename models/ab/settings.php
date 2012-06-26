@@ -285,8 +285,8 @@ class settings {
 		$return["groupby"] = $groupby;
 
 
-		if (isset($permissions['fields'])) {
-			foreach ($permissions['fields'] as $key=> $value) {
+		if (isset($permissions['lists']['fields'])) {
+			foreach ($permissions['lists']['fields'] as $key=> $value) {
 				if ($value == 0) {
 					if (isset($return['columns'][$key])) unset($return['columns'][$key]);
 					if (isset($return['columns'][$key . "_C"])) unset($return['columns'][$key . "_C"]);
