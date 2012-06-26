@@ -21,8 +21,8 @@ class controller_login {
 			)
 		);
 
-		$username = isset($_POST['email']) ? $_POST['email'] : "";
-		$password = isset($_POST['password']) ? $_POST['password'] : "";
+		$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
+		$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
 
 		$msg = "Please Login";
 		if (($username && $password) ){

@@ -175,6 +175,7 @@ $app->route('GET|POST /', function() use ($user) {
 				}
 			}
 
+
 ;
 
 			F3::reroute($last_app);
@@ -220,41 +221,57 @@ $app->route('GET /data/keepalive', function() use ($user){
 //include_once("/controllers/ab/_data.php");
 // --------------------------------------------------------------------------------
 
-$app->route('GET /ab', 'controllers\ab\controller_provisional->page');
-$app->route('GET /ab/production', 'controllers\ab\controller_production->page');
-$app->route('GET /ab/layout', 'controllers\ab\controller_layout->page');
-$app->route('GET /ab/overview', 'controllers\ab\controller_overview->page');
-$app->route('GET /ab/records/search', 'controllers\ab\controller_search->page');
-$app->route('GET /ab/records/deleted', 'controllers\ab\controller_deleted->page');
-$app->route('GET /ab/form', 'controllers\ab\controller_form->page');
-$app->route('GET /ab/form/@ID', 'controllers\ab\controller_form->page');
+function last_page(){
+	$user = F3::get("user");
+	F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+}
+function access(){
+	$user = F3::get("user");
+	if (!$user['ID']) F3::reroute("/login");
+}
+
+$app->route('GET /ab', 'access; last_page; controllers\ab\controller_provisional->page');
+$app->route('GET /ab/provisional', 'access; last_page; controllers\ab\controller_provisional->page');
+$app->route('GET /ab/print/provisional', 'access; controllers\ab\controller_provisional->_print');
+
+$app->route('GET /ab/production', 'access; last_page; controllers\ab\controller_production->page');
+$app->route('GET /ab/layout', 'access; last_page; controllers\ab\controller_layout->page');
+$app->route('GET /ab/overview', 'access; last_page; controllers\ab\controller_overview->page');
+$app->route('GET /ab/records/search', 'access; last_page; controllers\ab\controller_search->page');
+$app->route('GET /ab/records/deleted', 'access; last_page; controllers\ab\controller_deleted->page');
+$app->route('GET /ab/form', 'access; last_page; controllers\ab\controller_form->page');
+$app->route('GET /ab/form/@ID', 'access; last_page; controllers\ab\controller_form->page');
 
 // --------------------------------------------------------------------------------
 
-$app->route('GET /ab/admin/dates', 'controllers\ab\controller_admin_dates->page');
-$app->route('GET /ab/admin/users', 'controllers\ab\controller_admin_users->page');
+$app->route('GET /ab/admin/dates', 'access; last_page;  controllers\ab\controller_admin_dates->page');
+$app->route('GET /ab/admin/users', 'access; last_page; controllers\ab\controller_admin_users->page');
 
 
 // --------------------------------------------------------------------------------
 
-$app->route('GET /nf', 'controllers\nf\controller_test->page');
+$app->route('GET /nf', 'access; controllers\nf\controller_test->page');
 
 
 
 $app->route('GET|POST /ab/data/@function', function() use($app) {
+		access();
 		$app->call("controllers\\ab\\data\\data->" . $app->get('PARAMS.function'));
 	}
 );
 $app->route('GET|POST /ab/data/@class/@function', function() use($app) {
+		access();
 		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 	}
 );
 
 $app->route('GET|POST /ab/save/@function', function() use($app) {
+		access();
 		$app->call("controllers\\ab\\save\\save->" . $app->get('PARAMS.function'));
 	}
 );
 $app->route('GET|POST /ab/save/@class/@function', function() use($app) {
+		access();
 		$app->call("controllers\\ab\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 	}
 );
@@ -325,10 +342,16 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 	;
 	$timersbottom = '
 					<script type="text/javascript">
+
 				       updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
 					</script>
 				';
-	echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
+	if (strpos($GLOBALS["render"],"<!--print version-->")==-1){
+		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
+	} else {
+		echo $GLOBALS["render"];
+	}
+
 	exit();
 
 }

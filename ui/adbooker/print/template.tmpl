@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>{{ page['meta']['title']|default("") }}</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/ui/_css/_print_bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="/ui/_css/_print.css"/>
+
+
+
+	<link rel="shortcut icon" type="image/x-icon" href="/ui/_images/favicon.ico">
+	<link rel="apple-touch-icon" href="/ui/_images/apple-touch.png">
+
+
+</head>
+<body>
+{% if page['template'] %} {% include page['template'] %} {% endif %}
+</body>
+<!--print version-->
+</html>

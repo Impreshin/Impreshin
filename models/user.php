@@ -46,7 +46,7 @@ class user {
 
 		$result = $user;
 
-		if ($app){
+		if ($app && $user['ID']){
 
 			$appClass = "\\models\\" . $app . "\\user_settings";
 

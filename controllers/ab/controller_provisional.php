@@ -13,11 +13,11 @@ class controller_provisional {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		if (!$userID) F3::reroute("/login");
-		F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 	}
 	function page() {
 		$timer = new timer();
 		$user = F3::get("user");
+		//F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 		$currentDate = $user['publication']['current_date'];
@@ -43,6 +43,7 @@ class controller_provisional {
 			"section"=> "bookings",
 			"sub_section"=> "provisional",
 			"template"=> "page_provisional",
+			"print"=> "/ab/print/provisional",
 			"meta"    => array(
 				"title"=> "AdBooker - Bookings",
 			)
@@ -80,6 +81,37 @@ class controller_provisional {
 			"selected"=> $selected,
 			"available"=> $available
 		);
+		$tmpl->output();
+		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
+	}
+
+	function _print() {
+		$timer = new timer();
+		$user = F3::get("user");
+
+		$settings = models\settings::_read("provisional", $user['permissions']);
+
+
+		$dataO = new \controllers\ab\data\provisional();
+		$data = $dataO->_list();
+
+		//test_array($data);
+
+		$tmpl = new \template("template.tmpl","ui/adbooker/print/");
+		$tmpl->page = array(
+			"section"=> "bookings",
+			"sub_section"=> "provisional",
+			"template"=> "page_provisional",
+			"meta"    => array(
+				"title"=> "AdBooker - Print - Bookings",
+			)
+		);
+
+		$tmpl->settings=$settings;
+		$tmpl->data=$data;
+
+		//test_array($settings);
+
 		$tmpl->output();
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}

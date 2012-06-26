@@ -28,6 +28,10 @@
 			</ul>
 			<ul class="nav nav-pills pull-right ">
 				<li class="divider-vertical" style="margin-right: 0;"></li>
+				<li>
+					<a  href="{{ page['print'] }}" target="_blank" class="toolbar-print"><i class="icon-print icon-d-grey"></i></a>
+				</li>
+
 				<li class="dropdown pull-right">
 					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
 					<ul class="dropdown-menu" id="record-settings">
@@ -42,9 +46,11 @@
 						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
 						<li class="clearfix"></li>
 						<li class="divider"></li>
+
 						<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
 					</ul>
 				</li>
+
 			</ul>
 			</div>
 
