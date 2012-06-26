@@ -71,7 +71,6 @@ class production extends data {
 
 		models\user_settings::save_setting($values);
 
-
 		//print_r($values);
 		//exit();
 		$orderby = " client ASC";
@@ -84,6 +83,7 @@ class production extends data {
 
 
 		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved"));
+
 
 
 

@@ -37,10 +37,8 @@ class user_permissions {
 					"totalShouldbe"=> 0
 				),
 				"totals"=>array(
-					"totalCost"=>0
-				),
-
-
+					"totalCost"=>0,
+				)
 			),
 			"form"=>array(
 				"page"=>0,

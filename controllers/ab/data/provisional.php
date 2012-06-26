@@ -80,7 +80,7 @@ class provisional extends data {
 
 		);
 
-	//	test_array($values);
+
 		models\user_settings::save_setting($values);
 
 
