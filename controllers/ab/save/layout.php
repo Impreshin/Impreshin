@@ -12,7 +12,13 @@ use \models\user as user;
 
 
 class layout extends save {
+	function __construct() {
 
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+
+	}
 	function _page() {
 		$user = F3::get("user");
 		$page = isset($_REQUEST['page'])?$_REQUEST['page']:"";

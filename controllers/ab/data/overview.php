@@ -11,7 +11,13 @@ use \models\user as user;
 
 
 class overview extends data {
+	function __construct() {
 
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+
+	}
 
 
 	function _pages() {

@@ -11,7 +11,15 @@ use \models\user as user;
 
 
 class deleted extends data {
-	function _list() {
+	function __construct() {
+
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+
+	}
+
+	function _list($nolimits = false) {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
@@ -98,18 +106,23 @@ class deleted extends data {
 
 		$recordsFound = models\bookings::getAll_count($where);
 
-		//$selectedpage = 2;
-		//$recordsFound = 55;
+		if ($nolimits == true) {
+			$limits = false;
+			$pagination = array();
+		} else {
+			$limit = 100;
+			$pagination = new \pagination();
+			$pagination = $pagination->calculate_pages($recordsFound, $limit, $selectedpage, 19);
+
+			//test_array($pagination);
+
+			$limits = array("limit"=> $pagination['limit']);
 
 
-		$limit = 100;
-		$pagination = new \pagination();
-		$pagination = $pagination->calculate_pages($recordsFound, $limit,$selectedpage, 19);
-
-		//test_array($pagination);
+		}
 
 
-		$records = models\bookings::getAll($where, $grouping, $ordering, array("limit"=> $pagination['limit']));
+		$records = models\bookings::getAll($where, $grouping, $ordering, $limits);
 
 
 
@@ -127,7 +140,7 @@ class deleted extends data {
 		$return['list'] = models\bookings::display($records);
 	
 
-		$GLOBALS["output"]['data'] = $return;
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 }

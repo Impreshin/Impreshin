@@ -33,6 +33,7 @@ class controller_search {
 			"section"=> "records",
 			"sub_section"=> "search",
 			"template"=> "page_search",
+			"print"=> "/ab/print/search",
 			"meta"    => array(
 				"title"=> "AdBooker - Search",
 			)
@@ -89,6 +90,37 @@ class controller_search {
 		);
 		$tmpl->output();
 
+	}
+
+	function _print() {
+		$timer = new timer();
+		$user = F3::get("user");
+
+		$settings = models\settings::_read("search", $user['permissions']);
+
+
+		$dataO = new \controllers\ab\data\search();
+		$data = $dataO->_list(true);
+
+
+
+		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl->page = array(
+			"section"    => "bookings",
+			"sub_section"=> "search",
+			"template"   => "page_search",
+			"meta"       => array(
+				"title"=> "AdBooker - Print - Search",
+			)
+		);
+
+		$tmpl->settings = $settings;
+		$tmpl->data = $data;
+
+		//test_array($data);
+
+		$tmpl->output();
+		$timer->stop("Controller - " . __CLASS__ . " - " . __FUNCTION__, func_get_args());
 	}
 
 }

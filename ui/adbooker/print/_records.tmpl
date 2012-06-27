@@ -1,6 +1,6 @@
 <table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
 	{% for group in data['list'] %}
-	<thead>
+	<tbody class="thead">
 	<tr class="heading" data-heading="<%= this.heading %>">
 		<th colspan="{{ settings['count']+1 }}">
 
@@ -20,7 +20,7 @@
 		</th>
 		{% endfor %}
 	</tr>
-	</thead>
+	</tbody>
 	<tbody>
 {% for row in group['records'] %}
 	<tr class="record ">
@@ -29,7 +29,17 @@
 		<td {% if col['b'] %} class=" record-tick"{% endif %}>
 			{% if col['b'] %}
 				{% if row[col['c']] %}
-					<i class="icon-ok {% if col['c'] == "material_status" %}{% if row['material']!='1' %}icon-grey{% endif %}{% endif %}"></i>
+					 {% if col['c'] == "material_status" %}
+						{% if row['material_approved']=='1' %}
+							<img src="/ui/_images/icons/dark-tick.gif" alt="1">
+						{% else %}
+							<img src="/ui/_images/icons/grey-tick.gif" alt="1">
+						{% endif %}
+					{% else %}
+						<img src="/ui/_images/icons/dark-tick.gif" alt="1">
+					{% endif %}
+
+
 				{% endif %}
 			{% else %}
 

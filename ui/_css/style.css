@@ -829,13 +829,15 @@ table.records .heading:hover .scrolllinks {
   -khtml-opacity: 1;
   opacity: 1;
 }
-table.records thead tr.colheading {
+table.records thead tr.colheading,
+table.records tbody.thead tr.colheading {
   border: 1px solid #e1e1e1;
   -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
   -moz-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
   box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
 }
-table.records thead tr.colheading th {
+table.records thead tr.colheading th,
+table.records tbody.thead tr.colheading th {
   padding-top: 0;
   padding-bottom: 0;
   color: #999999;
@@ -849,23 +851,26 @@ table.records thead tr.colheading th {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 }
-table.records thead tr.colheading th.order-btn {
+table.records thead tr.colheading th.order-btn,
+table.records tbody.thead tr.colheading th.order-btn {
   font-weight: bold;
   cursor: pointer;
 }
-table.records thead tr.colheading th.order-btn:hover {
+table.records thead tr.colheading th.order-btn:hover,
+table.records tbody.thead tr.colheading th.order-btn:hover {
   color: black;
 }
-table.records thead tr.colheading th.order-btn .indicator {
+table.records thead tr.colheading th.order-btn .indicator,
+table.records tbody.thead tr.colheading th.order-btn .indicator {
   display: none;
 }
-table.records tbody {
+table.records tbody:not(.thead) {
   border: 1px solid #e1e1e1;
   -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
   -moz-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
   box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
 }
-table.records tbody tr td:first-child {
+table.records tbody:not(.thead) tr td:first-child {
   padding-left: 10px;
 }
 table.records h3 small {

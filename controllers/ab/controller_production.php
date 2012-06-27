@@ -51,6 +51,7 @@ class controller_production {
 			"section"=> "production",
 			"sub_section"=> "list",
 			"template"=> "page_production",
+			"print"=> "/ab/print/production",
 			"meta"    => array(
 				"title"=> "AdBooker - Production",
 			)
@@ -69,8 +70,36 @@ class controller_production {
 		$tmpl->output();
 
 	}
-function t(){
-	return "go die";
-}
+
+	function _print() {
+		$timer = new timer();
+		$user = F3::get("user");
+
+		$settings = models\settings::_read("production", $user['permissions']);
+
+
+		$dataO = new \controllers\ab\data\production();
+		$data = $dataO->_list();
+
+		//test_array($data);
+
+		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl->page = array(
+			"section"    => "bookings",
+			"sub_section"=> "production",
+			"template"   => "page_production",
+			"meta"       => array(
+				"title"=> "AdBooker - Print - Production",
+			)
+		);
+
+		$tmpl->settings = $settings;
+		$tmpl->data = $data;
+
+		//test_array($data);
+
+		$tmpl->output();
+		$timer->stop("Controller - " . __CLASS__ . " - " . __FUNCTION__, func_get_args());
+	}
 
 }

@@ -251,7 +251,11 @@ $(document).ready(function () {
 		onClose          :function () {
 
 			setTimeout(function () {
-				$("#search-form").trigger("submit");
+				var $form = $("#search-form");
+				var val = $("#date-picker").val();
+				if (val != $form.attr("data-date-picker")) {
+					$form.trigger("submit");
+				}
 			}, 400);
 
 		}
@@ -274,6 +278,8 @@ function getList(settings) {
 
 	var search = $("#search").val();
 	var dates = $("#date-picker").val();
+	$("#search-form").attr("data-date-picker", dates);
+
 
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");

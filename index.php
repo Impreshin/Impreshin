@@ -235,10 +235,20 @@ $app->route('GET /ab/provisional', 'access; last_page; controllers\ab\controller
 $app->route('GET /ab/print/provisional', 'access; controllers\ab\controller_provisional->_print');
 
 $app->route('GET /ab/production', 'access; last_page; controllers\ab\controller_production->page');
+$app->route('GET /ab/print/production', 'access; controllers\ab\controller_production->_print');
+
+
 $app->route('GET /ab/layout', 'access; last_page; controllers\ab\controller_layout->page');
 $app->route('GET /ab/overview', 'access; last_page; controllers\ab\controller_overview->page');
+
+
 $app->route('GET /ab/records/search', 'access; last_page; controllers\ab\controller_search->page');
+$app->route('GET /ab/print/search', 'access; controllers\ab\controller_search->_print');
+
 $app->route('GET /ab/records/deleted', 'access; last_page; controllers\ab\controller_deleted->page');
+$app->route('GET /ab/print/deleted', 'access; controllers\ab\controller_deleted->_print');
+
+
 $app->route('GET /ab/form', 'access; last_page; controllers\ab\controller_form->page');
 $app->route('GET /ab/form/@ID', 'access; last_page; controllers\ab\controller_form->page');
 
@@ -255,23 +265,19 @@ $app->route('GET /nf', 'access; controllers\nf\controller_test->page');
 
 
 $app->route('GET|POST /ab/data/@function', function() use($app) {
-		access();
 		$app->call("controllers\\ab\\data\\data->" . $app->get('PARAMS.function'));
 	}
 );
 $app->route('GET|POST /ab/data/@class/@function', function() use($app) {
-		access();
 		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 	}
 );
 
 $app->route('GET|POST /ab/save/@function', function() use($app) {
-		access();
 		$app->call("controllers\\ab\\save\\save->" . $app->get('PARAMS.function'));
 	}
 );
 $app->route('GET|POST /ab/save/@class/@function', function() use($app) {
-		access();
 		$app->call("controllers\\ab\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 	}
 );

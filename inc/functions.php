@@ -119,7 +119,9 @@ function curl_get_contents($url) {
 	return $file_contents;
 }
 function currency($number){
-	return 'R&nbsp;' . number_format($number, 2, '.', '');
+	$number = 'R ' . number_format($number, 2, '.', ' ');
+	return str_replace(" ", "&nbsp;", $number);
+
 }
 function test_array($array){
 	header("Content-Type: application/json");

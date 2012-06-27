@@ -159,6 +159,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		var $this = $(this);
 
+
 		var columns = [];
 		$("#selected-columns div").each(function(){
 			var $thisC = $(this);
@@ -252,7 +253,13 @@ $(document).ready(function () {
 		onClose          :function () {
 
 			setTimeout(function () {
-				$("#search-form").trigger("submit");
+
+				var $form = $("#search-form");
+				var val = $("#date-picker").val();
+				if (val != $form.attr("data-date-picker")){
+					$form.trigger("submit");
+				}
+
 			}, 400);
 
 		}
@@ -260,7 +267,6 @@ $(document).ready(function () {
 	});
 	$(document).on("submit","#search-form",function(e){
 		e.preventDefault();
-
 
 
 		getList();
@@ -275,6 +281,8 @@ function getList(settings) {
 
 	var search = $("#search").val();
 	var dates = $("#date-picker").val();
+	$("#search-form").attr("data-date-picker", dates);
+
 
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");

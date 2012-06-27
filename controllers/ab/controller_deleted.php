@@ -59,6 +59,7 @@ class controller_deleted {
 			"section"=> "records",
 			"sub_section"=> "deleted",
 			"template"=> "page_deleted",
+			"print"=> "/ab/print/deleted",
 			"meta"    => array(
 				"title"=> "AdBooker - Deleted Bookings",
 			)
@@ -81,6 +82,36 @@ class controller_deleted {
 		);
 		$tmpl->output();
 
+	}
+
+	function _print() {
+		$timer = new timer();
+		$user = F3::get("user");
+
+		$settings = models\settings::_read("deleted", $user['permissions']);
+
+
+		$dataO = new \controllers\ab\data\deleted();
+		$data = $dataO->_list(true);
+
+
+		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl->page = array(
+			"section"    => "bookings",
+			"sub_section"=> "deleted",
+			"template"   => "page_deleted",
+			"meta"       => array(
+				"title"=> "AdBooker - Print - Deleted",
+			)
+		);
+
+		$tmpl->settings = $settings;
+		$tmpl->data = $data;
+
+		//test_array($data);
+
+		$tmpl->output();
+		$timer->stop("Controller - " . __CLASS__ . " - " . __FUNCTION__, func_get_args());
 	}
 
 }

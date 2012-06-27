@@ -11,6 +11,13 @@ use \models\user as user;
 
 
 class production extends data {
+	function __construct() {
+
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+
+	}
 	function _list() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -107,7 +114,7 @@ class production extends data {
 
 		$return['list'] = models\bookings::display($records, array("highlight"=> $highlight, "filter"   => $filter));
 
-		$GLOBALS["output"]['data'] = $return;
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 }

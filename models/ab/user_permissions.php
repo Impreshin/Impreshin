@@ -106,6 +106,8 @@ class user_permissions {
 
 		);
 
+
+
 		$return['d'] = array(
 
 			"layout"=> array(
