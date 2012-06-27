@@ -23,8 +23,11 @@
 <body>
 {% if page['template'] %} {% include page['template'] %} {% endif %}
 <script>
-	//window.print();
+	{% if isLocal %}
 
+	{% else %}
+	window.print();
+	{% endif %}
 </script>
 </body>
 <!--print version-->

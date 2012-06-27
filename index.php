@@ -231,6 +231,9 @@ function access(){
 }
 
 $app->route('GET /ab', 'access; last_page; controllers\ab\controller_provisional->page');
+
+$app->route('GET /ab/print/details', 'access; controllers\ab\controller_details->_print');
+
 $app->route('GET /ab/provisional', 'access; last_page; controllers\ab\controller_provisional->page');
 $app->route('GET /ab/print/provisional', 'access; controllers\ab\controller_provisional->_print');
 
