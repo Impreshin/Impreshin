@@ -407,7 +407,26 @@ class settings {
 				"layout"=>array(
 					"placingID"=>array()
 				),
-				"last_marketer"=>""
+
+				"admin_accounts"=>array(
+					"order"=>array(
+						"c"=>"account",
+						"o"=>"ASC"
+					)
+				),
+				"admin_users"=>array(
+					"order"=>array(
+						"c"=>"fullName",
+						"o"=>"ASC"
+					)
+				),
+				"admin_dates"=>array(
+					"order"=>array(
+						"c"=>"publish_date",
+						"o"=>"DESC"
+					)
+				)
+
 			);
 
 		$return['settings'] = $settings;

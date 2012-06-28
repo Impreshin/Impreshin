@@ -26,6 +26,40 @@ class admin_dates extends data {
 		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : "";
 		$nrrecords = (isset($_REQUEST['nr'])) ? $_REQUEST['nr'] : 10;
 
+		$section = "admin_dates";
+
+		$settings = models\settings::_read($section);
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
+			if ($settings['order']['c'] == $_REQUEST['order']) {
+				if ($ordering_d == "ASC") {
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+
+			}
+
+		}
+
+
+		$values = array();
+		$values[$section] = array(
+			"order"      => array(
+				"c"=> $ordering_c,
+				"o"=> $ordering_d
+			),
+
+		);
+
+		models\user_settings::save_setting($values);
+
+
+
+
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
@@ -36,7 +70,7 @@ class admin_dates extends data {
 		$pagination = new \pagination();
 		$pagination = $pagination->calculate_pages($recordsFound, $limit, $selectedpage, 7);
 
-		$records = models\dates::getAll("pID='$pID'","publish_date DESC", $pagination['limit']);
+		$records = models\dates::getAll("pID='$pID'", $ordering_c . " " .$ordering_d . ",publish_date DESC", $pagination['limit']);
 
 		$return = array();
 		$return['pagination'] = $pagination;

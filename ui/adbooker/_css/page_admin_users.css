@@ -3,45 +3,8 @@
 	text-align: center;
 }
 
-#form-bottom {
-	position: absolute;
-	bottom:42px;
-	left : 0;
-	right : 0;
-
-	background-color   : #eeeeee;
-	background-repeat  : repeat-x;
-	background-image   : -moz-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	background-image   : -webkit-gradient(linear, left top, left bottom, color-stop(30%, whitesmoke), color-stop(100%, #eeeeee));
-	background-image   : -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	background-image   : -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	background-image   : -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	filter             : progid:DXImageTransform.Microsoft.gradient(startColorstr = whitesmoke, endColorstr = #eeeeee, GradientType = 0);
-	background-image   : linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	-webkit-box-shadow : 0 0 3px rgba(100, 100, 100, 0.2);
-	-moz-box-shadow    : 0 0 3px rgba(100, 100, 100, 0.2);
-	box-shadow         : 0 0 3px rgba(100, 100, 100, 0.2);
 
 
-}
-
-#form-bottom .form-actions{
-	margin: 0;
-	padding: 5px;
-}
-
-#form-bottom .form-actions .btn {
-
-}
-#suggested_dates {
-	margin:0;
-	padding: 0;
-	list-style: none;
-}
-#suggested_dates td {
-	padding: 5px;
-
-}
 
 #left-area .scroll-pane.scrolly {
 	bottom: 84px;
@@ -63,4 +26,17 @@
 }
 #permissions .help-inline {
 	color: #ccc;
+}
+
+.order-btn {
+	font-weight : bold;
+	cursor      : pointer;
+}
+.order-btn:hover {
+	color            : #000;
+	background-color : #f1f1f1;
+}
+
+.order-btn.indicator {
+	display : none;
 }

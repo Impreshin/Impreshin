@@ -31,7 +31,7 @@ class form extends data {
 
 		if ($accNum){
 
-			$where = "AND accNum = '$accNum' AND pID = '$pID' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
+			$where = "AND accountID = '$accNum' AND pID = '$pID' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
 
 
 			$placing = F3::get("DB")->exec("
@@ -86,11 +86,12 @@ class form extends data {
 		} else {
 			$accounts = F3::get("DB")->exec("
 				SELECT ab_accounts.*
-				FROM ab_bookings INNER JOIN ab_accounts ON ab_bookings.accNum = ab_accounts.accNum
+				FROM ab_bookings INNER JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID
 				WHERE ab_bookings.userID = '$userID' AND pID = '$pID'
 				ORDER BY datein DESC
 				LIMIT 0,50
 			");
+
 
 			$limit = (isset($_REQUEST['limit'])) ?  $_REQUEST['limit'] : "";
 

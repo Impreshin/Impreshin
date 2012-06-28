@@ -3,22 +3,13 @@
 	text-align: center;
 }
 
-#suggested_dates {
-	margin:0;
-	padding: 0;
-	list-style: none;
-}
-#suggested_dates td {
-	padding: 5px;
-
-}
-
 .order-btn {
 	font-weight : bold;
 	cursor      : pointer;
 }
+
 .order-btn:hover {
-	color            : #000;
+	color : #000;
 	background-color : #f1f1f1;
 }
 

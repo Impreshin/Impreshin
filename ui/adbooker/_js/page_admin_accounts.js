@@ -28,6 +28,17 @@ $(document).ready(function(){
 
 	});
 
+	$(document).on("change", "#searchform select", function () {
+		$("#searchform").trigger("submit")
+	});
+	$(document).on("submit", "#searchform", function (e) {
+		e.preventDefault();
+		getList();
+		return false;
+	});
+
+
+
 
 	$(document).on("click", "#reload-btn", function () {
 		getList();
@@ -39,9 +50,9 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to delete this date?")){
+		if (confirm("Are you sure you want to delete this account?")){
 			$("#left-area .loadingmask").show();
-			$.post("/ab/save/admin_dates/_delete/?ID=" + ID, function (r) {
+			$.post("/ab/save/admin_accounts/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -58,7 +69,7 @@ $(document).ready(function(){
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/ab/save/admin_dates/_save/?ID=" + ID, data, function (r) {
+		$.post("/ab/save/admin_accounts/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length){
 				var str="";
@@ -67,6 +78,7 @@ $(document).ready(function(){
 				}
 				$("#left-area .loadingmask").fadeOut(transSpeed);
 				$errorArea.html(str);
+				$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 			} else {
 
 				$.bbq.pushState({"ID":r['ID']});
@@ -92,6 +104,9 @@ $(document).ready(function(){
 	});
 
 
+
+
+
 });
 
 function getList(){
@@ -104,13 +119,17 @@ function getList(){
 
 	var ID = $.bbq.getState("ID");
 
+	var search = $("#search").val();
+	var statusID = $("#statusID").val();
+
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
 
 
+
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_dates/_list/",{"page":page,"nr":records, "order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_accounts/_list/",{"page":page,"nr":records, "search": search, "statusID":statusID, "order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -128,7 +147,7 @@ function getList(){
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() + 42);
-		right_pane.reinitialise();
+		$("#record-list-middle").jScrollPane(jScrollPaneOptions);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 
 	}));
@@ -144,34 +163,12 @@ function getDetails(){
 
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/ab/data/admin_dates/_details/", {"ID":ID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/admin_accounts/_details/", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
-
-
-
-		var default_date = "";
-		if (data['ID']){
-			default_date = data['publish_date'];
-		} else {
-			default_date = data['suggestions'][0]['date'];
-		}
-		//console.log(default_date)
-		$("#suggested_dates tr.active").removeClass("active");
-		$("#suggested_dates tr[data-date='"+ default_date+"']").addClass("active");
-
-		if (!default_date)default_date = 'today';
-
-		default_date = Date.parse(default_date);
-		$("#datepicker").datepicker({
-			format     :"yy-mm-dd",
-			altField   :"#publish_date",
-			altFormat  :"yy-mm-dd",
-			changeMonth:true,
-			changeYear :true,
-			defaultDate:default_date
-		});
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	}));

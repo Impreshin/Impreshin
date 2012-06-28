@@ -36,7 +36,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-details">
 	<![CDATA[
-	<div class="scroll-pane scrolly">
+	<div class="scroll-pane scrolly" style="bottom: 85px;">
 
 		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
 
@@ -75,7 +75,7 @@
 				<legend>Publications
 					<small> - this user is allowed to see records for:</small>
 				</legend>
-				<div id="errorArea"></div>
+
 
 				<div class="control-group">
 					<label for="optionsCheckboxList" class="control-label">Publications</label>

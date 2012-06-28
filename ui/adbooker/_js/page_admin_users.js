@@ -109,11 +109,17 @@ $(document).ready(function(){
 		return false;
 	});
 
+	$(document).on("click", ".order-btn", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		$this.closest("table").find(".order-btn").removeClass("asc desc");
+		//$this.addClass("active");
+		$.bbq.pushState({"order":$this.attr("data-col")});
 
+		getList();
+		$.bbq.removeState("order");
 
-
-
-
+	});
 
 
 });
@@ -121,9 +127,12 @@ $(document).ready(function(){
 function getList(){
 	var ID = $.bbq.getState("ID");
 
+	var order = $.bbq.getState("order");
+	order = (order) ? order : "";
+
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_users/_list/",function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_users/_list/",{"order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -157,10 +166,8 @@ function getDetails(){
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 
+
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
-
-
-
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	}));

@@ -259,6 +259,7 @@ $app->route('GET /ab/form/@ID', 'access; last_page; controllers\ab\controller_fo
 
 $app->route('GET /ab/admin/dates', 'access; last_page;  controllers\ab\controller_admin_dates->page');
 $app->route('GET /ab/admin/users', 'access; last_page; controllers\ab\controller_admin_users->page');
+$app->route('GET /ab/admin/accounts', 'access; last_page; controllers\ab\controller_admin_accounts->page');
 
 
 // --------------------------------------------------------------------------------

@@ -105,7 +105,9 @@
 							<ul class="dropdown-menu">
 								<li class="nav-header">AdBooker</li>
 								{% if _user['permissions']['administration']['application']['accounts']['page'] %}
-								<li><a href="#">Accounts</a></li>
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts" %} active {% endif %}">
+									<a href="/ab/admin/accounts">Accounts</a>
+								</li>
 								{% endif %}{% if _user['permissions']['administration']['application']['categories']['page'] %}
 								<li><a href="#">Categories</a></li>
 								{% endif %}{% if _user['permissions']['administration']['application']['marketers']['page'] %}
