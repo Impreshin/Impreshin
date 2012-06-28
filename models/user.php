@@ -72,6 +72,7 @@ class user {
 			}
 
 
+
 			$publication = new $appPublications();
 			$publication = $publication->get($pID);
 
@@ -99,8 +100,12 @@ class user {
 			foreach ($permissions['records'] as $p){
 				if ($p['page']) $permissions['records']['_nav'] = '1';
 			}
+
 			$permissions['administration']['_nav'] = '0';
-			foreach ($permissions['administration'] as $p){
+			foreach ($permissions['administration']['application'] as $p){
+				if ($p['page']) $permissions['administration']['_nav'] = '1';
+			}
+			foreach ($permissions['administration']['system'] as $p){
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
 

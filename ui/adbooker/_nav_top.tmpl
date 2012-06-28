@@ -104,33 +104,33 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li class="nav-header">AdBooker</li>
-								{% if _user['permissions']['administration']['accounts']['page'] %}
+								{% if _user['permissions']['administration']['application']['accounts']['page'] %}
 								<li><a href="#">Accounts</a></li>
-								{% endif %}{% if _user['permissions']['administration']['categories']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['categories']['page'] %}
 								<li><a href="#">Categories</a></li>
-								{% endif %}{% if _user['permissions']['administration']['marketers']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['marketers']['page'] %}
 								<li><a href="#">Marketers</a></li>
-								{% endif %}{% if _user['permissions']['administration']['production']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['production']['page'] %}
 								<li><a href="#">Production</a></li>
-								{% endif %}{% if _user['permissions']['administration']['sections']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['sections']['page'] %}
 								<li><a href="#">Sections</a></li>
-								{% endif %}{% if _user['permissions']['administration']['placing']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['placing']['page'] %}
 								<li><a href="#">Placing</a></li>
-								{% endif %}{% if _user['permissions']['administration']['loading']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['application']['loading']['page'] %}
 								<li><a href="#">Loading</a></li>
 								{% endif %}
 								<li class="nav-header">System</li>
-								{% if _user['permissions']['administration']['dates']['page'] %}
+								{% if _user['permissions']['administration']['system']['dates']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
 									<a href="/ab/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
 								</li>
-								{% endif %}{% if _user['permissions']['administration']['users']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['system']['users']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
 									<a href="/ab/admin/users"><i class="icon-user menu-icon"></i> Users</a>
 								</li>
-								{% endif %}{% if _user['permissions']['administration']['publications']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['system']['publications']['page'] %}
 								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
-								{% endif %}{% if _user['permissions']['administration']['company']['page'] %}
+								{% endif %}{% if _user['permissions']['administration']['system']['company']['page'] %}
 								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 								{% endif %}
 							</ul>

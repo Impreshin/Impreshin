@@ -69,38 +69,42 @@ class user_permissions {
 
 			),
 			"administration"=>array(
-				"accounts"=> array(
-					"page"=> 0
+				"application"=>array(
+					"accounts"=> array(
+						"page"=> 0
+					),
+					"categories"=> array(
+						"page"=> 0
+					),
+					"marketers"=> array(
+						"page"=> 0
+					),
+					"production"=> array(
+						"page"=> 0
+					),
+					"sections"=> array(
+						"page"=> 0
+					),
+					"placing"=> array(
+						"page"=> 0
+					),
+					"loading"=> array(
+						"page"=> 0
+					),
 				),
-				"categories"=> array(
-					"page"=> 0
-				),
-				"marketers"=> array(
-					"page"=> 0
-				),
-				"production"=> array(
-					"page"=> 0
-				),
-				"sections"=> array(
-					"page"=> 0
-				),
-				"placing"=> array(
-					"page"=> 0
-				),
-				"loading"=> array(
-					"page"=> 0
-				),
-				"dates"=>array(
-					"page"=> 0
-				),
-				"users"=> array(
-					"page"=> 0
-				),
-				"publications"=> array(
-					"page"=> 0
-				),
-				"company"=>array(
-					"page"=> 0
+				"system"=>array(
+					"dates"=>array(
+						"page"=> 0
+					),
+					"users"=> array(
+						"page"=> 0
+					),
+					"publications"=> array(
+						"page"=> 0
+					),
+					"company"=>array(
+						"page"=> 0
+					)
 				)
 			)
 
