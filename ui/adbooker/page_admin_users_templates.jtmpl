@@ -132,6 +132,22 @@
 											{% endif %}
 										</label>
 										{% endif %}
+										{% for ssk,ssv in sv %}
+											{% if ssk != 'page' %}
+											<label class="checkbox {% if ssv == 1 or ssv == 0  or ssv['page'] == '1' or ssv['page'] =='0' %}hoverable{% endif %}" style="padding-left: 120px; padding-top: 5px;padding-bottom: 5px;">
+												{% if ssv == 1 or ssv == 0 %}
+													<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}) { %>checked="checked"<% } %>>
+												{% endif %}
+												{% if ssv['page'] == '1' or ssv['page'] =='0' %}
+												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}.page) { %>checked="checked"<% } %>>
+												{% endif %}
+												{{ ssk|capitalize }}
+												{% if permissions_desc[key][k][sk][ssk] and permissions_desc[key][k][sk][ssk] is not iterable %}
+													<span class="help-inline">{{ permissions_desc[key][k][sk][ssk] }}</span>
+												{% endif %}
+											</label>
+											{% endif %}
+										{% endfor %}
 									{% endfor %}
 								{% endfor %}
 

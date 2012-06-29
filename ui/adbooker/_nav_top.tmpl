@@ -108,7 +108,15 @@
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts" %} active {% endif %}">
 									<a href="/ab/admin/accounts">Accounts</a>
 								</li>
-								{% endif %}{% if _user['permissions']['administration']['application']['categories']['page'] %}
+								{% endif %}
+								{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
+									<a href="/ab/admin/accounts/status" style="padding-left: 30px;">Status</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['categories']['page'] %}
 								<li><a href="#">Categories</a></li>
 								{% endif %}{% if _user['permissions']['administration']['application']['marketers']['page'] %}
 								<li><a href="#">Marketers</a></li>

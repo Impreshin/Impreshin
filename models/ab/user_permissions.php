@@ -71,7 +71,10 @@ class user_permissions {
 			"administration"=>array(
 				"application"=>array(
 					"accounts"=> array(
-						"page"=> 0
+						"page"=> 0,
+						"status"=>array(
+							"page"=>0
+						)
 					),
 					"categories"=> array(
 						"page"=> '-'
@@ -116,6 +119,13 @@ class user_permissions {
 
 			"layout"=> array(
 				"pagecount"=> "Allows this user to set how many pages the edition will be"
+			),
+			"administration"=>array(
+				"application"=>array(
+					"accounts"=>array(
+						"status"=>"Edit / Add the account status types"
+					)
+				)
 			)
 		);
 
