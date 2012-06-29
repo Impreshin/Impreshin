@@ -261,6 +261,7 @@ $app->route('GET /ab/admin/dates', 'access; last_page;  controllers\ab\controlle
 $app->route('GET /ab/admin/users', 'access; last_page; controllers\ab\controller_admin_users->page');
 $app->route('GET /ab/admin/accounts', 'access; last_page; controllers\ab\controller_admin_accounts->page');
 $app->route('GET /ab/admin/accounts/status', 'access; last_page; controllers\ab\controller_admin_accounts_status->page');
+$app->route('GET /ab/admin/sections', 'access; last_page; controllers\ab\controller_admin_sections->page');
 
 
 // --------------------------------------------------------------------------------

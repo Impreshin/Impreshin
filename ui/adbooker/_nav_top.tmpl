@@ -116,15 +116,25 @@
 								{% endif %}
 
 
+
+
 								{% if _user['permissions']['administration']['application']['categories']['page'] %}
 								<li><a href="#">Categories</a></li>
 								{% endif %}{% if _user['permissions']['administration']['application']['marketers']['page'] %}
 								<li><a href="#">Marketers</a></li>
 								{% endif %}{% if _user['permissions']['administration']['application']['production']['page'] %}
 								<li><a href="#">Production</a></li>
-								{% endif %}{% if _user['permissions']['administration']['application']['sections']['page'] %}
-								<li><a href="#">Sections</a></li>
-								{% endif %}{% if _user['permissions']['administration']['application']['placing']['page'] %}
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['sections']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "sections" %} active {% endif %}">
+									<a href="/ab/admin/sections">Sections</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['placing']['page'] %}
 								<li><a href="#">Placing</a></li>
 								{% endif %}{% if _user['permissions']['administration']['application']['loading']['page'] %}
 								<li><a href="#">Loading</a></li>

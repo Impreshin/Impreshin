@@ -26,6 +26,7 @@ class general {
 				"/ui/_css/jquery.jscrollpane.css",
 				"/ui/_css/ui.daterangepicker.css",
 				"/ui/_css/select2.css",
+				"/ui/_css/jquery.miniColors.css",
 				"/ui/_css/style.css"
 			);
 
@@ -77,6 +78,7 @@ class general {
 				"_js/plugins/jquery.cookie.js",
 				"_js/plugins/jquery.autologout.js",
 				"_js/plugins/select2.js",
+				"_js/plugins/jquery.miniColors.js",
 				//"_js/plugins/bootstrap-datepicker.js",
 
 

@@ -90,7 +90,11 @@
 
 					</div>
 				</div>
+				<% if (this.details.ID == "{{ _user['ID'] }}"){ %>
+				<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
+				<% } %>
 				<fieldset style="margin-top: 20px;" id="permissions" >
+
 				<legend>Permissions
 					<small> - Are applied at company level</small>
 				</legend>

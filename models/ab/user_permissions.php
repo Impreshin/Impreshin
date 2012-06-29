@@ -86,7 +86,7 @@ class user_permissions {
 						"page"=> '-'
 					),
 					"sections"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 					"placing"=> array(
 						"page"=> '-'
