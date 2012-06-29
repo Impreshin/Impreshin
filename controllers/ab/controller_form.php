@@ -139,6 +139,7 @@ class controller_form {
 		$tmpl->marketers = $marketers;
 		$tmpl->details = $details;
 		$tmpl->placing = $placing;
+		$tmpl->accounts = $accounts;
 		$tmpl->production = models\production::getAll("pID='$pID'", "production ASC");
 		$tmpl->categories = models\categories::getAll("pID='$pID'", "orderby ASC");
 		$tmpl->dates = array(

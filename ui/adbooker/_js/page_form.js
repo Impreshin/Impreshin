@@ -160,7 +160,7 @@ function load_form(){
 
 	$(".form-body", $form).css({"top":$(".form-header", $form).outerHeight(), "bottom":$(".form-footer", $form).outerHeight()});
 
-	setup_accounts();
+
 
 	//console.log(clients);
 	$("#client").typeahead({
@@ -181,48 +181,76 @@ function load_form(){
 	account_lookup_history_suggestions();
 	submit_state();
 	display_notes();
-}
-function setup_accounts(){
-	var all_accounts = $.map($form.data("accounts"), function (item) {
 
-		var label = "";
-		if (item.record.labelClass) {
-			label = '<span class="label ' + item.record.labelClass + '"> ' + item.record.status + '</span>&nbsp;';
-		}
-		return '<li><a href="#' + item.accNum + '" data-accNum="' + item.accNum + '" data-account="' + item.account + '" data-blocked="' + item.record.blocked + '" data-remark="' + item.record.remark + '">' + label + item.account + '</a></li>'
-	});
-	all_accounts = all_accounts.join("");
 
-	$("#all_accounts").html(all_accounts);
-	$("#accNum").typeahead({
-		source:$form.data("accounts"),
-		menu  :'<div class="dropdown-menu"><table class="typeahead table"></table></div>',
-		item  :'<tr><td>{accNum}</td><td>{account}</td></tr>',
-		select:function (item) {
-			var accNum = item.accNum;
-			$("#account").html(item.account).removeClass("btn-danger");
-			$("#all_accounts .active").removeClass("active");
-			$("#all_accounts a[data-accNum='" + accNum + "']").closest("li").addClass("active");
-			if (item.record.blocked) {
-				$("#account").addClass("btn-danger");
-			}
-			$remark = $("#account_remark").html("");
-			if (item.record.remark) {
-				$remark.html(item.record.remark);
-			}
-			$("#accNum").trigger("change");
-			//account_lookup_history_suggestions(item.accNum);
-			submit_state();
-		}
-	}).change(function () {
-		account_lookup_history_suggestions($("#accNum").val());
-	});
+
+
+
+
+
+
+
+
 }
+
 function load_form_diff() {
 	var type = $("#booking-type button.active").attr("data-type");
 
 	var_details['printOrder'] = $form.data("publication")['printOrder'];
 	if ($("#template-form-" + type).length) $("#form-diff").jqotesub($("#template-form-" + type), var_details);
+
+	$("#accountID").select2({
+		formatResult   :function (result, query, markup) {
+			var $el = $(result.element);
+			var $return = "";
+			if ($el.attr("data-accNum")){
+
+
+				if ($el.attr("data-labelClass")) {
+					$return = "<div class='accnum_in_list'><span class='label " + $el.attr("data-labelClass") + "'>" + $el.attr("data-accNum") + "<span></div>";
+				} else {
+					$return = "<div class='accnum_in_list'>" + $el.attr("data-accNum") + "</div>";
+				}
+				if ($el.attr("data-blocked") == '1') {
+					$return += "<span class='label label-important blocked'>Blocked</span><span class='g'>" + $el.attr("data-account") + "</span>";
+				} else {
+					$return += $el.attr("data-account");
+				}
+			}
+
+			return $return;
+		},
+		formatSelection:function (result) {
+
+
+			return result.text;
+		}
+
+
+	}).on("change", function () {
+			var $this = $(this);
+			var $select = $this.data("select2");
+
+			var $opt = $("option:selected", $this);
+
+			if ($opt.attr("data-blocked") == '1') {
+				$($select.container).addClass("select-error");
+			} else {
+				$($select.container).removeClass("select-error");
+			}
+
+			$("#account_remark").html("");
+			if ($opt.attr("data-remark")) {
+				$("#account_remark").html($opt.attr("data-remark"))
+			}
+			account_lookup_history_suggestions();
+
+		});
+	if (type=='1') $("#placingID").select2({});
+	$("#marketerID").select2({});
+	$("#categoryID").select2({});
+
+
 }
 function load_colours(){
 	var colours = $form.data("colours");
@@ -283,21 +311,23 @@ function resizeform(form){
 	scrolling(api);
 }
 
-function account_lookup_history_suggestions(accNum){
+function account_lookup_history_suggestions(){
 	var type = $("#booking-type button.active").attr("data-type");
-	if(!accNum) accNum = $("#accNum").val();
-	if (!$("#all_accounts a[data-accNum='" + accNum + "']").length) accNum = "";
-			$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
-			accountLookup.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum,"limit":"4","type":type}, function (data) {
-				data = data['data'];
-				if (accNum){
-					$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
-				} else {
-					$suggestions.jqotesub($("#template-suggestions-accounts"), data).stop(true, true).fadeIn();
-				}
-				resizeform();
+	var accNum = $("#accountID").val();
+	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
+	accountLookup.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum, "limit":"4", "type":type}, function (data) {
+		data = data['data'];
+		if (accNum) {
+			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
+		} else {
+			$suggestions.jqotesub($("#template-suggestions-accounts"), data).stop(true, true).fadeIn();
+		}
+		resizeform();
 
-			}));
+	}));
+
+
+
 
 
 
@@ -530,21 +560,15 @@ function form_submit(){
 	if (!$fld.val()){
 		submit = error_msg($fld,"<strong>Client</strong>, is Required");
 	}
-	$fld = $("#accNum");
+
+	$fld = $("#accountID");
 	if (!$fld.val()){
 		submit = error_msg($fld,"<strong>Account Number</strong>, is Required");
 	}
 	$account = "";
 
-	for (i in var_accounts){
-		if (var_accounts[i].accNum == $fld.val()){
-			$account = var_accounts[i];
-			break;
-		}
 
-	}
-
-	if ($account.record.blocked){
+	if ($("option:selected",$fld).attr("data-blocked") == '1'){
 		submit = error_msg($fld, "<strong>Account</strong>, is Blocked");
 	}
 

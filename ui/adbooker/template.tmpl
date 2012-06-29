@@ -351,7 +351,7 @@
 	function scrolling(api){
 
 		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
-			if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length ){
+			if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length || $(event.target).closest(".select2-container").length ){
 			} else {
 				if (deltaY < 0) {
 					deltaY = -deltaY;
@@ -367,6 +367,11 @@
 
 		}).on('keydown',function(e){
 //				console.log(api.getContentHeight);
+
+				if ($(e.target).closest(".select2-container").length) {
+				} else {
+
+
 				var keyboardSpeed= 28, scrollPagePercent=.8;
 
 				switch (e.keyCode) {
@@ -386,32 +391,10 @@
 						break;
 
 				}
+				}
 			});
 
 
-		/*
-
-		switch (keyDown) {
-			case 40: // down
-				jsp.scrollByY(settings.keyboardSpeed, false);
-				break;
-			case 38: // up
-				jsp.scrollByY(-settings.keyboardSpeed, false);
-				break;
-			case 34: // page down
-			case 32: // space
-				jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
-				break;
-			case 33: // page up
-				jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
-				break;
-			case 39: // right
-				jsp.scrollByX(settings.keyboardSpeed, false);
-				break;
-			case 37: // left
-				jsp.scrollByX(-settings.keyboardSpeed, false);
-				break;
-		}*/
 	}
 	function file_size(size) {
 		if (!size){

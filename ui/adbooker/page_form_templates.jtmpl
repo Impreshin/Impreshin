@@ -19,22 +19,23 @@
 		</div>
 	</div>
 	<div class="control-group">
-		<label for="accNum" class="control-label">Account Number*</label>
+		<label for="placingID" class="control-label">Account Number*</label>
 
 		<div class="controls">
+			<select id="accountID" name="accountID" tabindex="8" class="" style="width: 342px;"  placeholder="Select an Account">
 
-			<div class="input-append btn-group">
-				<input type="text" size="16" id="accNum" name="accNum" class="span1" autocomplete="off" style="float: left;" placeholder="AccNr" value="<% if (this.accNum) { %><%= this.accNum %><% } %>"><span class="add-on btn dropdown-toggle l s" data-toggle="dropdown" id="account" style="width: 282px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis; text-align: left; ">&nbsp;</span>
+				<option></option>
+				{% for row in accounts %}
+				<option value="{{ row['ID'] }}"  data-accNum="{{ row['accNum'] }}" data-account="{{ row['account'] }}" data-blocked="{{ row['blocked'] }}" data-labelClass="{{ row['labelClass'] }}" data-remark="{{ row['remark'] }}" <% if (this.accountID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['accNum'] }} | {{ row['account'] }}</option>
+				{% endfor %}
 
+			</select>
 
-				<ul class="dropdown-menu" id="all_accounts" style="max-height: 200px; overflow-y: auto; overflow-x: hidden;">
-
-				</ul>
-			</div>
-			<div id="account_remark" class="help-block" style="margin: 0;"></div>
+			<div style="margin: 0;" class="help-block" id="account_remark">	</div>
 
 		</div>
 	</div>
+
 	<div id="form-diff">
 
 	</div>

@@ -95,7 +95,7 @@ class bookings extends save {
 		if (isset($_POST['rate']) && $type == "2") $values['InsertRate'] = ($_POST['rate']) ? $_POST['rate'] : $publication['InsertRate'];
 
 
-		if (isset($_POST['accNum'])) $values['accNum'] = $_POST['accNum'];
+		if (isset($_POST['accountID'])) $values['accountID'] = $_POST['accountID'];
 		if (isset($_POST['orderNum'])) $values['orderNum'] = $_POST['orderNum'];
 		if (isset($_POST['keyNum'])) $values['keyNum'] = $_POST['keyNum'];
 		if (isset($_POST['remark'])) $values['remark'] = $_POST['remark'];

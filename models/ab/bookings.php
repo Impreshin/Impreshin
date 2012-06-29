@@ -515,6 +515,7 @@ class bookings {
 		$lookupColumns["material_status"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)","col"=>"material_status","val"=>"");
 		$lookupColumns["checked"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)","col"=>"checked","val"=>"");
 		$lookupColumns["pageID"] = array("sql"=>"(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')","col"=>"page","val"=>"");
+		$lookupColumns["accountID"] = array("sql"=>"(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')","col"=>"Account","val"=>"");
 		$lookup = array();
 
 
