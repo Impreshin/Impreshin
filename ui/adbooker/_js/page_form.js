@@ -186,6 +186,25 @@ function load_form(){
 
 
 
+	$(document).on("change", "#accountID", function () {
+		var $this = $(this);
+		var $select = $this.data("select2");
+
+		var $opt = $("option:selected", $this);
+
+		if ($opt.attr("data-blocked") == '1') {
+			$($select.container).addClass("select-error");
+		} else {
+			$($select.container).removeClass("select-error");
+		}
+
+		$("#account_remark").html("");
+		if ($opt.attr("data-remark")) {
+			$("#account_remark").html($opt.attr("data-remark"))
+		}
+		account_lookup_history_suggestions();
+
+	});
 
 
 
@@ -227,25 +246,7 @@ function load_form_diff() {
 		}
 
 
-	}).on("change", function () {
-			var $this = $(this);
-			var $select = $this.data("select2");
-
-			var $opt = $("option:selected", $this);
-
-			if ($opt.attr("data-blocked") == '1') {
-				$($select.container).addClass("select-error");
-			} else {
-				$($select.container).removeClass("select-error");
-			}
-
-			$("#account_remark").html("");
-			if ($opt.attr("data-remark")) {
-				$("#account_remark").html($opt.attr("data-remark"))
-			}
-			account_lookup_history_suggestions();
-
-		});
+	});
 	if (type=='1') $("#placingID").select2({});
 	$("#marketerID").select2({});
 	$("#categoryID").select2({});
