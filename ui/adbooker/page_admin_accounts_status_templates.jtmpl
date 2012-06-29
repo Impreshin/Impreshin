@@ -49,6 +49,7 @@
 					<div class="controls">
 						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
 							<input type="checkbox" id="blocked" value="1" name="blocked" <% if ("1" == this.details.blocked){ %>checked="checked"<% } %>> Blocked
+							<div class="s g inline-helo">Check this box to block any bookings from being added to this account status group</div>
 						</label>
 					</div>
 				</div>
