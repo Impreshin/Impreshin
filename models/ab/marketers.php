@@ -2,6 +2,7 @@
 
 namespace models\ab;
 use \F3 as F3;
+use \Axon as Axon;
 use \timer as timer;
 class marketers {
 	private $classname;
@@ -36,6 +37,8 @@ class marketers {
 	}
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$user = F3::get("user");
+		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -50,8 +53,8 @@ class marketers {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT DISTINCT ab_marketers.*
-			FROM ab_marketers INNER JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
+			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			FROM ab_marketers LEFT JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
 			$where
 			$orderby
 		");
@@ -60,6 +63,70 @@ class marketers {
 		$return = $result;
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
+	}
+	public static function save($ID, $values) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_marketers");
+		$a->load("ID='$ID'");
+
+		foreach ($values as $key=> $value) {
+			$a->$key = $value;
+		}
+
+		$a->save();
+
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+
+		$cID = $values['cID'];
+		if (!$cID) {
+			$cID = $user['publication']['cID'];
+		}
+
+		$p = new Axon("ab_marketers_pub");
+		$publications = publications::getAll("cID='$cID'", "publication ASC");
+
+		foreach ($publications as $publication) {
+			$p->load("pID='" . $publication['ID'] . "' AND mID='" . $ID . "'");
+			if (in_array($publication['ID'], $values['publications'])) {
+				$p->pID = $publication['ID'];
+				$p->mID = $ID;
+				$p->save();
+			} else {
+				if (!$p->dry()) {
+					$p->erase();
+				}
+			}
+			$p->reset();
+		}
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return $ID;
+
+	}
+
+	public static function _delete($ID) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_marketers");
+		$a->load("ID='$ID'");
+
+		$a->erase();
+
+		$a->save();
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return "done";
+
 	}
 
 

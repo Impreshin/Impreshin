@@ -103,28 +103,40 @@
 							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:void(0)" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="nav-header">AdBooker</li>
+								<li class="nav-header">Application</li>
 								{% if _user['permissions']['administration']['application']['accounts']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts" %} active {% endif %}">
 									<a href="/ab/admin/accounts">Accounts</a>
 								</li>
 								{% endif %}
-								{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
+								{% if _user['permissions']['administration']['application']['accounts']['status']['page'] and _user['permissions']['administration']['application']['accounts']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
 									<a href="/ab/admin/accounts/status" style="padding-left: 30px;">Status</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['categories']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "categories" %} active {% endif %}">
+									<a href="/ab/admin/categories">Categories</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['marketers']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "marketers" %} active {% endif %}">
+									<a href="/ab/admin/marketers">Marketers</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['production']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "production" %} active {% endif %}">
+									<a href="/ab/admin/production">Production</a>
 								</li>
 								{% endif %}
 
 
 
 
-								{% if _user['permissions']['administration']['application']['categories']['page'] %}
-								<li><a href="#">Categories</a></li>
-								{% endif %}{% if _user['permissions']['administration']['application']['marketers']['page'] %}
-								<li><a href="#">Marketers</a></li>
-								{% endif %}{% if _user['permissions']['administration']['application']['production']['page'] %}
-								<li><a href="#">Production</a></li>
-								{% endif %}
 
 
 								{% if _user['permissions']['administration']['application']['sections']['page'] %}
@@ -135,8 +147,20 @@
 
 
 								{% if _user['permissions']['administration']['application']['placing']['page'] %}
-								<li><a href="#">Placing</a></li>
-								{% endif %}{% if _user['permissions']['administration']['application']['loading']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "placing" %} active {% endif %}">
+									<a href="/ab/admin/placing">Placing</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['accounts']['status']['page'] and _user['permissions']['administration']['application']['placing']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "placing_colours" %} active {% endif %}">
+									<a href="/ab/admin/placing/colours" style="padding-left: 30px;">Colours</a>
+								</li>
+								{% endif %}
+
+
+
+								{% if _user['permissions']['administration']['application']['loading']['page'] %}
 								<li><a href="#">Loading</a></li>
 								{% endif %}
 								<li class="nav-header">System</li>

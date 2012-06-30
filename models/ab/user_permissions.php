@@ -77,22 +77,25 @@ class user_permissions {
 						)
 					),
 					"categories"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 					"marketers"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 					"production"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 					"sections"=> array(
 						"page"=> 0
 					),
 					"placing"=> array(
-						"page"=> '-'
+						"page"=> 0,
+						"colours"=>array(
+							"page"=> 0
+						)
 					),
 					"loading"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 				),
 				"system"=>array(
@@ -103,10 +106,10 @@ class user_permissions {
 						"page"=> 0
 					),
 					"publications"=> array(
-						"page"=> '-'
+						"page"=> 0
 					),
 					"company"=>array(
-						"page"=> '-'
+						"page"=> 0
 					)
 				)
 			)

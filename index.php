@@ -262,6 +262,10 @@ $app->route('GET /ab/admin/users', 'access; last_page; controllers\ab\controller
 $app->route('GET /ab/admin/accounts', 'access; last_page; controllers\ab\controller_admin_accounts->page');
 $app->route('GET /ab/admin/accounts/status', 'access; last_page; controllers\ab\controller_admin_accounts_status->page');
 $app->route('GET /ab/admin/sections', 'access; last_page; controllers\ab\controller_admin_sections->page');
+$app->route('GET /ab/admin/categories', 'access; last_page; controllers\ab\controller_admin_categories->page');
+$app->route('GET /ab/admin/marketers', 'access; last_page; controllers\ab\controller_admin_marketers->page');
+$app->route('GET /ab/admin/production', 'access; last_page; controllers\ab\controller_admin_production->page');
+$app->route('GET /ab/admin/placing', 'access; last_page; controllers\ab\controller_admin_placing->page');
 
 
 // --------------------------------------------------------------------------------
