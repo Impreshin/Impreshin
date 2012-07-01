@@ -98,6 +98,27 @@ class admin_production extends save {
 
 	}
 
+	function _pub() {
+		$user = F3::get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		$pID = $user['publication']['ID'];
+
+
+		$p = new Axon("ab_production_pub");
+		$p->load("productionID='$ID' and pID='$pID'");
+		if (!$p->ID) {
+			$p->productionID = $ID;
+			$p->pID = $pID;
+			$p->save();
+		} else {
+			$p->erase();
+
+		}
+
+
+		return "done";
+	}
 
 
 }

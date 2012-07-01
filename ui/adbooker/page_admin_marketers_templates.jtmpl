@@ -5,7 +5,7 @@
 		<td class="">
 			<%= this.marketer %>
 		</td>
-		<td style="width:20px;" class="c">
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
 			<% if (this.currentPub){ %> <i class="icon-ok"></i> <% } %>
 		</td>
 

@@ -51,9 +51,9 @@
 
 
 			</fieldset>
-			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
+			<div class="alert">Drag the options in the list on the right up and down to reorder them</div>
 			<% if (this.details.ID) { %>
-			<div class="alert alert-success">Some info on the colours admin aswell <a href="/ab/admin/placing/colours#p=<%= this.details.ID %>">Colours</a> </div>
+			<div class="alert alert-info">Some info on the colours admin aswell <a href="/ab/admin/placing/colours#p=<%= this.details.ID %>">Colours</a> </div>
 			<% } %>
 
 		</div>

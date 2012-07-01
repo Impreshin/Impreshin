@@ -55,9 +55,18 @@ class admin_users extends save {
 
 		}
 
+
 		if ($ID=="" && $password==""){
 			$submit = false;
 			$return['error'][] = "You need to specify a password";
+		}
+		if ($fullName==""){
+			$submit = false;
+			$return['error'][] = "You need to specify a Name";
+		}
+		if ($email==""){
+			$submit = false;
+			$return['error'][] = "You need to specify an Email";
 		}
 
 

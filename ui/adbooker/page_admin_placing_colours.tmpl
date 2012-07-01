@@ -10,15 +10,14 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<h2 style=" margin-bottom: -5px;"><small>Users</small>
-					</h2>
+					<h2 style=" margin-bottom: -5px;"><small>Placing - Colours</small></h2>
 				</li>
 			</ul>
 			<div class="pull-right">
-				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
 
-				</ul>
 				<ul class="nav nav-pills pull-right ">
+
+
 					<li class="divider-vertical" style="margin-right: 0;"></li>
 					<li class="dropdown pull-right">
 						<a id="reload-btn" href="javascript:" style="width:15px;"><i class="icon-refresh"></i></a>
@@ -48,13 +47,12 @@
 			</article>
 			<article id="right-area" class="span5 offset11">
 				<div>
+
 					<table class="table table-condensed  s records">
 						<thead>
 						<tr>
-							<th data-col="fullName" class="order-btn">Full Name</th>
-							{% for row in _cfg['apps'] %}
-								<th style="width: 20px;" data-col="{{ row }}" class="order-btn">{{ row }}</th>
-							{% endfor %}
+							<th>Placing</th>
+							<th style="width: 40px;"  class="c">Rate</th>
 
 
 						</tr>
@@ -62,10 +60,10 @@
 					</table>
 				</div>
 				<div class="content">
-					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px;">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px; bottom: 42px;">
 
 						<div data-heading="top" class="">
-							<table style="" id="record-list" class="table table-condensed  s records" >
+							<table style="margin:0;" id="record-list" class="table table-condensed  s records" >
 								<tbody style="border-left:none;">
 
 

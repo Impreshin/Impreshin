@@ -103,7 +103,7 @@
 
 
 			</fieldset>
-			<div class="alert">Drag the options in the list on the right up and down to reorder them</div>
+			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
 
 		</div>
 

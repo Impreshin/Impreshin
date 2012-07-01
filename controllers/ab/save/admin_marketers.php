@@ -101,6 +101,27 @@ class admin_marketers extends save {
 
 	}
 
+	function _pub() {
+		$user = F3::get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		$pID = $user['publication']['ID'];
+
+
+		$p = new Axon("ab_marketers_pub");
+		$p->load("mID='$ID' and pID='$pID'");
+		if (!$p->ID) {
+			$p->mID = $ID;
+			$p->pID = $pID;
+			$p->save();
+		} else {
+			$p->erase();
+
+		}
+
+
+		return "done";
+	}
 
 
 }

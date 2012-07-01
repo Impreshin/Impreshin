@@ -13,24 +13,20 @@ $(document).ready(function(){
 		getList();
 	});
 
-	$(document).on("click", "#record-list .record", function (e) {
-		var $this = $(this), ID = $this.attr("data-id");
-
-		var $cur_pub = $(e.target).closest(".cur-pub");
-		$.bbq.pushState({"ID":ID});
-		if ($cur_pub.length){
-			$.post("/ab/save/admin_accounts/_pub/?ID=" + ID, function (r) {
-				getList();
-				getDetails();
-			});
-		} else {
-			getDetails();
-		}
-
-
+	$(document).on("click", "#record-list .record, .pages .record", function () {
+		var $this = $(this);
+		$.bbq.pushState({"ID":$this.attr("data-id")});
+		getDetails();
 	});
 
+	$(document).on("click", "#suggested_dates tr", function () {
+		var default_date = $(this).attr("data-date");
+		$("#suggested_dates tr.active").removeClass("active");
+		$("#suggested_dates tr[data-date='" + default_date + "']").addClass("active");
+		default_date = Date.parse(default_date);
+		$('#datepicker').datepicker('setDate', default_date);
 
+	});
 
 	$(document).on("change", "#searchform select", function () {
 		$("#searchform").trigger("submit")
@@ -54,9 +50,9 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to delete this account?")){
+		if (confirm("Are you sure you want to delete this placing?")){
 			$("#left-area .loadingmask").show();
-			$.post("/ab/save/admin_accounts/_delete/?ID=" + ID, function (r) {
+			$.post("/ab/save/admin_placing/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -73,7 +69,7 @@ $(document).ready(function(){
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/ab/save/admin_accounts/_save/?ID=" + ID, data, function (r) {
+		$.post("/ab/save/admin_placing/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length){
 				var str="";
@@ -114,17 +110,10 @@ $(document).ready(function(){
 });
 
 function getList(){
-	var page = $.bbq.getState("page");
-	page = (page) ? page : "";
 
-	var height = $("#record-list-middle").height();
-	var records = height / 27;
-	records = Math.floor(records)-1;
 
 	var ID = $.bbq.getState("ID");
 
-	var search = $("#search").val();
-	var statusID = $("#statusID").val();
 
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
@@ -133,7 +122,7 @@ function getList(){
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_accounts/_list/",{"page":page,"nr":records, "search": search, "statusID":statusID, "order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_placing/_list/",{"order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -142,14 +131,29 @@ function getList(){
 			$recordsList.jqotesub($("#template-list"), data['records']);
 			$("#record-list tr.active").removeClass("active");
 			$("#record-list tr[data-id='" + ID + "']").addClass("active");
-			if (data['pagination']['pages'].length > 1) {
-				$pagenation.jqotesub($("#template-pagination"), data['pagination']).stop(true, true).fadeIn(transSpeed);
-			} else {
-				$pagenation.stop(true, true).fadeOut(transSpeed)
-			}
+
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
+		$recordsList.find("tbody").sortable({
+			'axis'       :"y",
+			'containment':"#record-list-middle",
+			update       :function (event, ui) {
+				var rec = [];
+				$("#record-list tr").each(function () {
+					rec.push($(this).attr("data-id"));
+				});
+				rec = rec.join(",");
+
+				$.post("/ab/save/admin_placing/_sort/", {"order":rec}, function (t) {
+
+				});
+			}
+		});
+		$recordsList.find("tbody").disableSelection();
+
+
+
 		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() + 42);
 		$("#record-list-middle").jScrollPane(jScrollPaneOptions);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
@@ -167,10 +171,12 @@ function getDetails(){
 
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/ab/data/admin_accounts/_details/", {"ID":ID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/admin_placing/_details/", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$("#uID").select2({});
+
 
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);

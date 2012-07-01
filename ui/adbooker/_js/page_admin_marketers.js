@@ -13,18 +13,19 @@ $(document).ready(function(){
 		getList();
 	});
 
-	$(document).on("click", "#record-list .record, .pages .record", function () {
-		var $this = $(this);
-		$.bbq.pushState({"ID":$this.attr("data-id")});
-		getDetails();
-	});
+	$(document).on("click", "#record-list .record", function (e) {
+		var $this = $(this), ID = $this.attr("data-id");
 
-	$(document).on("click", "#suggested_dates tr", function () {
-		var default_date = $(this).attr("data-date");
-		$("#suggested_dates tr.active").removeClass("active");
-		$("#suggested_dates tr[data-date='" + default_date + "']").addClass("active");
-		default_date = Date.parse(default_date);
-		$('#datepicker').datepicker('setDate', default_date);
+		var $cur_pub = $(e.target).closest(".cur-pub");
+		$.bbq.pushState({"ID":ID});
+		if ($cur_pub.length) {
+			$.post("/ab/save/admin_marketers/_pub/?ID=" + ID, function (r) {
+				getList();
+				getDetails();
+			});
+		} else {
+			getDetails();
+		}
 
 	});
 

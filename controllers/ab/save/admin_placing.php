@@ -11,7 +11,7 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class admin_categories extends save {
+class admin_placing extends save {
 	function __construct() {
 
 		$user = F3::get("user");
@@ -28,8 +28,10 @@ class admin_categories extends save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$category = isset($_POST['category']) ? $_POST['category'] : "";
-		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
+		$placing = isset($_POST['placing']) ? $_POST['placing'] : "";
+		$rate = isset($_POST['rate']) ? $_POST['rate'] : "";
+
+
 
 
 		$return = array(
@@ -44,9 +46,14 @@ class admin_categories extends save {
 
 
 
-		if ($category==""){
+		if ($placing==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a Category Name";
+			$return['error'][] = "Need to specify a Placing";
+		}
+
+		if ($rate==""){
+			$submit = false;
+			$return['error'][] = "Need to specify a Rate";
 		}
 
 
@@ -58,9 +65,9 @@ class admin_categories extends save {
 
 
 		$values = array(
-			"category"         => $category,
-			"publications"     => $publications,
-			"cID"=> $cID
+			"placing"         => $placing,
+			"pID"         => $pID,
+			"rate"     => $rate,
 		);
 
 
@@ -72,7 +79,7 @@ class admin_categories extends save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\categories::save($ID, $values);
+			$ID = models\placing::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -90,7 +97,7 @@ class admin_categories extends save {
 	function _delete(){
 		$user = F3::get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\categories::_delete($ID);
+		models\placing::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
@@ -98,13 +105,14 @@ class admin_categories extends save {
 	function _sort() {
 		$user = F3::get("user");
 		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
 
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			F3::get("DB")->exec("UPDATE ab_placing SET orderby = '$i' WHERE ID = '$id' AND pID = '$pID'");
 			$i++;
 		}
 
@@ -113,25 +121,5 @@ class admin_categories extends save {
 
 	}
 
-	function _pub() {
-		$user = F3::get("user");
-		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$pID = $user['publication']['ID'];
-
-
-		$p = new Axon("ab_category_pub");
-		$p->load("catID='$ID' and pID='$pID'");
-		if (!$p->ID) {
-			$p->catID = $ID;
-			$p->pID = $pID;
-			$p->save();
-		} else {
-			$p->erase();
-
-		}
-
-
-		return "done";
-	}
 }

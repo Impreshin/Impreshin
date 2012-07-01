@@ -12,7 +12,7 @@
 			<%= this.accNum %>
 			<% } %>
 		</td>
-		<td style="width:20px;">
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
 			<% if (this.currentPub){ %>
 			<i class="icon-ok"></i>
 			<% } %>

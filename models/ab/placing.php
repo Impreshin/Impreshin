@@ -2,6 +2,7 @@
 
 namespace models\ab;
 use \F3 as F3;
+use \Axon as Axon;
 use \timer as timer;
 class placing {
 	private $classname;
@@ -62,6 +63,49 @@ class placing {
 		return $return;
 	}
 
+	public static function save($ID, $values) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_placing");
+		$a->load("ID='$ID'");
+
+		foreach ($values as $key=> $value) {
+			$a->$key = $value;
+		}
+
+		$a->save();
+
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return $ID;
+
+	}
+
+	public static function _delete($ID) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_placing");
+		$a->load("ID='$ID'");
+
+		$a->erase();
+
+		$a->save();
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return "done";
+
+	}
 
 
 	private static function dbStructure() {
