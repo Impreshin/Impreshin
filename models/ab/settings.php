@@ -146,7 +146,8 @@ class settings {
 				"marketer"               => array(
 					"c"=> "marketer",
 					"o"=> "ab_bookings.marketer",
-					"h"=> "Marketer"
+					"h"=> "Marketer",
+					"m"=>"120" // minimum width
 				),
 				"percent_diff"           => array(
 					"c"=> "percent_diff",

@@ -47,15 +47,15 @@ class bookings {
 
 		if (count($result)) {
 			$return = bookings::currency($result[0]);
-			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publishDate']));
+			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state']="";
 
-			if ($return['publishDate'] == $currentDate){
+			if ($return['publish_date'] == $currentDate){
 				$return['state'] = "Current";
-			} elseif ($return['publishDate']<$currentDate){
+			} elseif ($return['publish_date']<$currentDate){
 				$return['state'] = "Archived";
-			} elseif ($return['publishDate']>$currentDate){
+			} elseif ($return['publish_date']>$currentDate){
 				$return['state'] = "Future";
 			}
 			if ($return['pageID'] && $return["page"] ){

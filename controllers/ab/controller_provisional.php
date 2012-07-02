@@ -71,7 +71,7 @@ class controller_provisional {
 			}
 
 
-	//	test_array($ab_settings);
+
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
 		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 

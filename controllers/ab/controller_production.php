@@ -45,6 +45,7 @@ class controller_production {
 
 
 
+
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(

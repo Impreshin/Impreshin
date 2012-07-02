@@ -15,7 +15,7 @@
 	<tr class="colheading">
 		<th></th>
 		{% for col in settings['col'] %}
-		<th {% if col['o'] %}data-col="{{ col['o'] }}" class="order-btn"{% endif %}>
+		<th {% if col['o'] %}data-col="{{ col['o'] }}" class="order-btn"{% endif %} {% if col['m'] %} style="min-width: {{ col['m'] }}px"{% endif %}>
 			{{ col['h']|raw }} {% if col['o'] %} <span class="indicator">&nbsp;*</span> {% endif %}
 		</th>
 		{% endfor %}
