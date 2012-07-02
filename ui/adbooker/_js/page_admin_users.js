@@ -7,13 +7,21 @@ $(document).ready(function(){
 	getList();
 	getDetails();
 
+	$(document).on("click", "#record-list .record", function (e) {
+		var $this = $(this), ID = $this.attr("data-id");
 
-	$(document).on("click", "#record-list .record", function () {
-		var $this = $(this);
-		$.bbq.pushState({"ID":$this.attr("data-id")});
-		getDetails();
+		var $cur_pub = $(e.target).closest(".cur-pub");
+		$.bbq.pushState({"ID":ID});
+		if ($cur_pub.length) {
+			$.post("/ab/save/admin_users/_pub/?ID=" + ID, function (r) {
+				getList();
+				getDetails();
+			});
+		} else {
+			getDetails();
+		}
+
 	});
-
 
 
 	$(document).on("click", "#reload-btn", function () {

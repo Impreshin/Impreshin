@@ -52,10 +52,8 @@
 						<thead>
 						<tr>
 							<th data-col="fullName" class="order-btn">Full Name</th>
-							{% for row in _cfg['apps'] %}
-								<th style="width: 20px;" data-col="{{ row }}" class="order-btn">{{ row }}</th>
-							{% endfor %}
-
+							<th style="width: 80px;" data-col="ab_last_activity" class="order-btn">Activity</th>
+							<th style="width: 20px;" class="c order-btn" data-col="currentPub">Pub</th>
 
 						</tr>
 						</thead>

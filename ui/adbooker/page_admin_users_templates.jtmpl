@@ -3,14 +3,23 @@
 
 	<tr data-id="<%= this.ID %>" class="record">
 		<td class="">
-			<%= this.fullName %>
+			<span class="<% if (!this.ab) { %>g<% } %>"><%= this.fullName %></span>
+
 		</td>
-		{% for row in _cfg['apps'] %}
-		<th style="width: 20px;" title="<%= this.{{ row }}_last_activity.display %>">
-			<% if (this.{{ row }}){ %>
-			<i class="icon-ok <% if (!this.{{ row }}_last_activity.active){ %>icon-grey<% } %>"></i> <% } %>
+
+		<th style="width: 80px;" title="<%= this.ab_last_activity.display %>">
+			<% if (this.ab){ %>
+			<span class="s g " style="text-shadow:none;">
+			<%= this.ab_last_activity.display %>
+			</span>
+
+
+			<% } %>
 		</th>
-		{% endfor %}
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
+			<% if (this.currentPub){ %> <i class="icon-ok"></i> <% } %>
+		</td>
+
 
 
 	</tr>

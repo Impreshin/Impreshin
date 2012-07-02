@@ -150,4 +150,25 @@ class admin_users extends save {
 
 	}
 
+	function _pub() {
+		$user = F3::get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		$pID = $user['publication']['ID'];
+
+
+		$p = new Axon("ab_users_pub");
+		$p->load("uID='$ID' and pID='$pID'");
+		if (!$p->ID) {
+			$p->uID = $ID;
+			$p->pID = $pID;
+			$p->save();
+		} else {
+			$p->erase();
+
+		}
+
+
+		return "done";
+	}
 }

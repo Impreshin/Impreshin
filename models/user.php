@@ -170,7 +170,8 @@ class user {
 	}
 	static function getAll($where="",$orderby="fullName ASC",$limit=""){
 		$timer = new timer();
-
+		$user = F3::get("user");
+		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -191,7 +192,7 @@ class user {
 
 		$apps_str = "";
 		foreach ($apps as $app){
-			$apps_str .= "global_users_company.". $app.", (SELECT last_activity FROM ".$app."_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity, ";
+			$apps_str .= "global_users_company.". $app.", (SELECT last_activity FROM ".$app."_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
 		}
 
 
