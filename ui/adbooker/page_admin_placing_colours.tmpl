@@ -47,11 +47,22 @@
 			</article>
 			<article id="right-area" class="span5 offset11">
 				<div>
+					<form action="" style="margin: 0;" id="searchform">
+						<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0;">
+
+								{% for row in placing %}
+								<option value="{{ row['ID'] }}">{{ row['placing'] }}</option>
+								{% endfor %}
+
+						</select>
+
+					</form>
 
 					<table class="table table-condensed  s records">
 						<thead>
 						<tr>
-							<th>Placing</th>
+							<th>Label</th>
+							<th style="width: 60px;">Colour</th>
 							<th style="width: 40px;"  class="c">Rate</th>
 
 
@@ -60,7 +71,7 @@
 					</table>
 				</div>
 				<div class="content">
-					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px; bottom: 42px;">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 55px; bottom: 42px;">
 
 						<div data-heading="top" class="">
 							<table style="margin:0;" id="record-list" class="table table-condensed  s records" >

@@ -51,7 +51,7 @@ class placing {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT *
+			SELECT *, (SELECT count(ID) FROM ab_colour_rates WHERE ab_colour_rates.placingID = ab_placing.ID) as colourCount
 			FROM ab_placing
 			$where
 			$orderby

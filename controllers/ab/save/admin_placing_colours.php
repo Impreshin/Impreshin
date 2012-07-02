@@ -28,8 +28,10 @@ class admin_placing_colours extends save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$category = isset($_POST['category']) ? $_POST['category'] : "";
-		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
+		$label = isset($_POST['label']) ? $_POST['label'] : "";
+		$colour = isset($_POST['colour']) ? $_POST['colour'] : array();
+		$rate = isset($_POST['rate']) ? $_POST['rate'] : array();
+		$placingID = isset($_REQUEST['placingID']) ? $_REQUEST['placingID'] : array();
 
 
 		$return = array(
@@ -43,10 +45,22 @@ class admin_placing_colours extends save {
 		$submit = true;
 
 
-
-		if ($category==""){
+		if ($label == "") {
 			$submit = false;
-			$return['error'][] = "Need to specify a Category Name";
+			$return['error'][] = "Label is Required";
+		}
+		if ($colour == "") {
+			$submit = false;
+			$return['error'][] = "Colour is Required";
+		}
+		if ($rate == "") {
+			$submit = false;
+			$return['error'][] = "Need to specify a Rate";
+		} else {
+			if (!is_numeric($rate)) {
+				$submit = false;
+				$return['error'][] = "Rate must be a number";
+			}
 		}
 
 
@@ -58,9 +72,11 @@ class admin_placing_colours extends save {
 
 
 		$values = array(
-			"category"         => $category,
-			"publications"     => $publications,
-			"cID"=> $cID
+			"label"         => $label,
+			"colour"     => $colour,
+			"rate"     => $rate,
+			"placingID"=> $placingID,
+			"pID"=> $pID
 		);
 
 
@@ -72,7 +88,7 @@ class admin_placing_colours extends save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\categories::save($ID, $values);
+			$ID = models\colours::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -90,7 +106,7 @@ class admin_placing_colours extends save {
 	function _delete(){
 		$user = F3::get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\categories::_delete($ID);
+		models\colours::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
@@ -99,12 +115,13 @@ class admin_placing_colours extends save {
 		$user = F3::get("user");
 		$cID = $user['publication']['cID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
+		$placingID = isset($_REQUEST['placingID']) ? $_REQUEST['placingID'] : "";
 		$order = explode(",", $order);
 
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			F3::get("DB")->exec("UPDATE ab_colour_rates SET orderby = '$i' WHERE ID = '$id' AND placingID = '$placingID'");
 			$i++;
 		}
 
@@ -113,25 +130,5 @@ class admin_placing_colours extends save {
 
 	}
 
-	function _pub() {
-		$user = F3::get("user");
-		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$pID = $user['publication']['ID'];
-
-
-		$p = new Axon("ab_category_pub");
-		$p->load("catID='$ID' and pID='$pID'");
-		if (!$p->ID) {
-			$p->catID = $ID;
-			$p->pID = $pID;
-			$p->save();
-		} else {
-			$p->erase();
-
-		}
-
-
-		return "done";
-	}
 }

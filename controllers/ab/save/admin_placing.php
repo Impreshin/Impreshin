@@ -56,7 +56,15 @@ class admin_placing extends save {
 			$return['error'][] = "Need to specify a Rate";
 		}
 
-
+		if ($rate == "") {
+			$submit = false;
+			$return['error'][] = "Need to specify a Rate";
+		} else {
+			if (!is_numeric($rate)) {
+				$submit = false;
+				$return['error'][] = "Rate must be a number";
+			}
+		}
 
 
 

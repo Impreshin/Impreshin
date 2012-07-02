@@ -34,6 +34,7 @@ class controller_admin_placing_colours {
 		);
 
 
+		$tmpl->placing = models\placing::getAll("pID='$pID'","orderby ASC");
 		$tmpl->output();
 
 	}

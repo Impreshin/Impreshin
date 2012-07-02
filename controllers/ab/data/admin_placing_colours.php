@@ -26,7 +26,7 @@ class admin_placing_colours extends data {
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
-		$placingID = (isset($_REQUEST['$placingID']))?$_REQUEST['$placingID']:"";
+		$placingID = (isset($_REQUEST['placingID']))?$_REQUEST['placingID']:"";
 
 
 
@@ -38,8 +38,10 @@ class admin_placing_colours extends data {
 
 		$return = array();
 
-		$return['records'] = $records;
+		$placings = models\placing::getAll("pID='$pID'", "orderby ASC");
 
+		$return['records'] = $records;
+		$return['placing'] = $placings;
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
@@ -61,34 +63,16 @@ class admin_placing_colours extends data {
 
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
-
-		if (!$details['ID']) {
-			$userPublications = array();
-		} else {
-			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_category_pub WHERE catID = '$ID'");
-		}
 
 
-		$pstr = array();
-		foreach ($userPublications as $u) $pstr[] = $u['pID'];
 
-		$pubarray = array();
-		$pIDarray = array();
-		foreach ($publications as $pub) {
-			$pub['selected'] = 0;
-			if (in_array($pub['ID'], $pstr)) {
-				$pub['selected'] = 1;
-			}
-			$pIDarray[] = $pub['ID'];
-			$pubarray[] = $pub;
-		}
 
-		$publications = $pubarray;
+
 		$return['details'] = $details;
-		$return['publications'] = $publications;
+
+
 		if ($details['ID']) {
-			$where = "categoryID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
+			$where = "colourID='" . $details['ID'] . "'";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

@@ -5,7 +5,8 @@
 		<td class="">
 			<%= this.publication %>
 		</td>
-		<td style="width:20px;" class="c">
+
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentUser %>">
 			<% if (this.currentUser){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 

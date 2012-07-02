@@ -67,12 +67,17 @@ $(document).ready(function(){
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
+		var colour = $("#colour button.active").attr("data-val");
+		data = data + "&colour="+colour;
+
+		var placingID = $("#placingID").val();
+
 
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/ab/save/admin_placing_colours/_save/?ID=" + ID, data, function (r) {
+		$.post("/ab/save/admin_placing_colours/_save/?ID=" + ID+"&placingID="+placingID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length){
 				var str="";
@@ -121,12 +126,41 @@ function getList(){
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
 
+	var placingID = $("#placingID").val();
 
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list/",{"order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list/",{"order":order,"placingID":placingID}, function (data) {
 		data = data['data'];
+
+		var placings = $.map(data['placing'], function (record) {
+			var selected = "";
+			if (placingID == record['ID']) {
+				selected = 'selected="selected"';
+			} else {
+				selected = "";
+			}
+			var padding = "";
+
+			var recordcount = record['colourCount'];
+			if (recordcount == '0') {
+				padding = "";
+			} else {
+
+				padding = ' (' + record['colourCount'] + ')';
+			}
+			padding = PadDigits(padding, 10);
+
+			return '<option value="' + record['ID'] + '" ' + selected + '>' + padding + record['placing'] + '</option>';
+		});
+		placings = placings.join("");
+
+		$("#placingID").html(placings);
+
+
+
+
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -149,7 +183,7 @@ function getList(){
 				});
 				rec = rec.join(",");
 
-				$.post("/ab/save/admin_placing_colours/_sort/", {"order":rec}, function (t) {
+				$.post("/ab/save/admin_placing_colours/_sort/?placingID="+placingID, {"order":rec}, function (t) {
 
 				});
 			}
@@ -185,4 +219,14 @@ function getDetails(){
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	}));
+}
+function PadDigits(n, totalDigits) {
+	n = n.toString();
+	var pd = '';
+	if (totalDigits > n.length) {
+		for (i = 0; i < (totalDigits - n.length); i++) {
+			pd += '&nbsp';
+		}
+	}
+	return  n.toString() + pd;
 }
