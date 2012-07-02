@@ -6,7 +6,7 @@
 			<%= this.marketer %>
 		</td>
 		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
-			<% if (this.currentPub){ %> <i class="icon-ok"></i> <% } %>
+			<% if (this.currentPub){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 
 
