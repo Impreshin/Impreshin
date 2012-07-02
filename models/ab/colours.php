@@ -2,6 +2,7 @@
 
 namespace models\ab;
 use \F3 as F3;
+use \Axon as Axon;
 use \timer as timer;
 class colours {
 	private $classname;
@@ -19,7 +20,7 @@ class colours {
 
 		$result = F3::get("DB")->exec("
 			SELECT *
-			FROM ab_placing
+			FROM ab_colour_rates
 			WHERE ID = '$ID';
 
 		"
@@ -63,6 +64,49 @@ class colours {
 	}
 
 
+	public static function save($ID, $values) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_colour_rates");
+		$a->load("ID='$ID'");
+
+		foreach ($values as $key=> $value) {
+			$a->$key = $value;
+		}
+
+		$a->save();
+
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return $ID;
+
+	}
+
+	public static function _delete($ID) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_colour_rates");
+		$a->load("ID='$ID'");
+
+		$a->erase();
+
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return "done";
+
+	}
 
 	private static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN ab_colour_rates;");

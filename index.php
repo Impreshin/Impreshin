@@ -267,6 +267,9 @@ $app->route('GET /ab/admin/marketers', 'access; last_page; controllers\ab\contro
 $app->route('GET /ab/admin/production', 'access; last_page; controllers\ab\controller_admin_production->page');
 $app->route('GET /ab/admin/placing', 'access; last_page; controllers\ab\controller_admin_placing->page');
 $app->route('GET /ab/admin/placing/colours', 'access; last_page; controllers\ab\controller_admin_placing_colours->page');
+$app->route('GET /ab/admin/loading', 'access; last_page; controllers\ab\controller_admin_loading->page');
+
+$app->route('GET /ab/admin/publications', 'access; last_page; controllers\ab\controller_admin_publications->page');
 
 
 // --------------------------------------------------------------------------------

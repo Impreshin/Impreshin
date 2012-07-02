@@ -420,6 +420,18 @@ class settings {
 						"o"=>"ASC"
 					)
 				),
+				"admin_marketers"=>array(
+					"order"=>array(
+						"c"=>"marketer",
+						"o"=>"ASC"
+					)
+				),
+				"admin_production"=>array(
+					"order"=>array(
+						"c"=>"production",
+						"o"=>"ASC"
+					)
+				),
 				"admin_dates"=>array(
 					"order"=>array(
 						"c"=>"publish_date",

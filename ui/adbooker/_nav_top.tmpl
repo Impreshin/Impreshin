@@ -159,10 +159,13 @@
 								{% endif %}
 
 
-
 								{% if _user['permissions']['administration']['application']['loading']['page'] %}
-								<li><a href="#">Loading</a></li>
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "loading" %} active {% endif %}">
+									<a href="/ab/admin/loading">Loading</a>
+								</li>
 								{% endif %}
+
+
 								<li class="nav-header">System</li>
 								{% if _user['permissions']['administration']['system']['dates']['page'] %}
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
@@ -172,9 +175,13 @@
 								<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
 									<a href="/ab/admin/users"><i class="icon-user menu-icon"></i> Users</a>
 								</li>
-								{% endif %}{% if _user['permissions']['administration']['system']['publications']['page'] %}
-								<li><a href="#"><i class="icon-book menu-icon"></i> Publications</a></li>
-								{% endif %}{% if _user['permissions']['administration']['system']['company']['page'] %}
+								{% endif %}
+								{% if _user['permissions']['administration']['system']['publications']['page'] %}
+									<li class="{% if page['section']=="admin" and page['sub_section'] == "publications" %} active {% endif %}">
+										<a href="/ab/admin/publications"><i class="icon-book menu-icon"></i> Publications</a>
+									</li>
+								{% endif %}
+								{% if _user['permissions']['administration']['system']['company']['page'] %}
 								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 								{% endif %}
 							</ul>

@@ -54,8 +54,7 @@ class production {
 
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_production.*, if ((SELECT count(ID) FROM ab_production_pub WHERE ab_production_pub.productionID = ab_production.ID AND ab_production_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
-			FROM ab_production_pub LEFT JOIN ab_production ON ab_production_pub.productionID = ab_production.ID
-
+			FROM ab_production LEFT JOIN ab_production_pub ON ab_production.ID = ab_production_pub.productionID
 			$where
 			$orderby
 		");

@@ -10,7 +10,7 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class admin_marketers extends data {
+class admin_placing_colours extends data {
 	function __construct() {
 
 		$user = F3::get("user");
@@ -26,46 +26,15 @@ class admin_marketers extends data {
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
-
-		$section = "admin_marketers";
-
-		$settings = models\settings::_read($section);
-
-		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
-		$ordering_d = $settings['order']['o'];
-
-		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
-			if ($settings['order']['c'] == $_REQUEST['order']) {
-				if ($ordering_d == "ASC") {
-					$ordering_d = "DESC";
-				} else {
-					$ordering_d = "ASC";
-				}
-
-			}
-
-		}
-
-
-		$values = array();
-		$values[$section] = array(
-			"order"      => array(
-				"c"=> $ordering_c,
-				"o"=> $ordering_d
-			),
-
-		);
-
-		models\user_settings::save_setting($values);
+		$placingID = (isset($_REQUEST['$placingID']))?$_REQUEST['$placingID']:"";
 
 
 
-
-		$where = "cID='$cID'";
-
+		$where = "placingID='$placingID'";
 
 
-		$records = models\marketers::getAll($where, $ordering_c . " " . $ordering_d . ", marketer ASC");
+
+		$records = models\colours::getAll($where, "orderby ASC");
 
 		$return = array();
 
@@ -82,7 +51,7 @@ class admin_marketers extends data {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\marketers();
+		$o = new models\colours();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];
@@ -97,7 +66,7 @@ class admin_marketers extends data {
 		if (!$details['ID']) {
 			$userPublications = array();
 		} else {
-			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_marketers_pub WHERE mID = '$ID'");
+			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_category_pub WHERE catID = '$ID'");
 		}
 
 
@@ -118,9 +87,8 @@ class admin_marketers extends data {
 		$publications = $pubarray;
 		$return['details'] = $details;
 		$return['publications'] = $publications;
-
 		if ($details['ID']) {
-			$where = "marketerID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
+			$where = "categoryID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

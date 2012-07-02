@@ -107,9 +107,6 @@ class user_permissions {
 					),
 					"publications"=> array(
 						"page"=> 0
-					),
-					"company"=>array(
-						"page"=> 0
 					)
 				)
 			)

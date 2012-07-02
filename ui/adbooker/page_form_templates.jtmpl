@@ -395,7 +395,7 @@
 		<h4>Suggested Accounts</h4>
 		<table>
 			<% for(var i in this.accounts) { %>
-			<tr data-fld="accNum" data-val="<%= this.accounts[i].accNum %>">
+			<tr data-fld="accountID" data-val="<%= this.accounts[i].ID %>">
 				<td style="width: 60px; padding-left: 10px;"><%= this.accounts[i].accNum %></td>
 				<td>
 					<% if (this.accounts[i].labelClass){ %>

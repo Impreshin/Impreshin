@@ -2,6 +2,7 @@
 
 namespace models\ab;
 use \F3 as F3;
+use \Axon as Axon;
 use \timer as timer;
 class publications {
 	private $classname;
@@ -64,6 +65,8 @@ class publications {
 	}
 	public static function getAll($where="", $orderby=""){
 		$timer = new timer();
+		$user = F3::get("user");
+		$uID = $user['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -76,7 +79,7 @@ class publications {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT DISTINCT global_publications.*
+			SELECT DISTINCT global_publications.* , if ((SELECT count(ID) FROM ab_users_pub WHERE ab_users_pub.pID = global_publications.ID AND ab_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) as currentUser
 			FROM global_publications
 			$where
 			$orderby
@@ -97,6 +100,48 @@ class publications {
 		return $return;
 	}
 
+	public static function save($ID, $values) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("global_publications");
+		$a->load("ID='$ID'");
+
+		foreach ($values as $key=> $value) {
+			$a->$key = $value;
+		}
+
+		$a->save();
+
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return $ID;
+
+	}
+
+	public static function _delete($ID) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("global_publications");
+		$a->load("ID='$ID'");
+
+		$a->erase();
+
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return "done";
+
+	}
 
 	private static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN global_publications;");
