@@ -344,13 +344,8 @@ $GLOBALS["output"]['page'] = array(
 	"size"=> ($pageSize)
 );
 
-$GLOBALS["output"]['notifications'] = false;
-$notifications = array();
-if (count($user['marketer'])){
-	$notifications['marketer'] = $user['marketer'];
-}
+$GLOBALS["output"]['notifications'] = \models\ab\user_notifications::show();
 
-if (count($notifications))$GLOBALS["output"]['notifications'] = $notifications;
 
 
 //ob_start("ob_gzhandler");

@@ -456,13 +456,23 @@
 	<![CDATA[
 
 	<% if (this.marketer) { %>
-		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; ">
+		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; margin-right: 20px; ">
 			Marketer -
 			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.marketer.targets.done %> [<%= this.marketer.targets.records %>]
 				<% if (this.marketer.targets.target) { %>&nbsp; &nbsp; &nbsp; Target: <%= this.marketer.targets.target %><% } %>
 			</span>
 			<% if (this.marketer.targets.target) { %>
 				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.marketer.targets.percent>100) { %>100<% } else { %><%= this.marketer.targets.percent %><% } %>%; z-index:-1;"></div>
+			<% } %>
+		</span>
+	<% } %>
+	<% if (this.production) { %>
+		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; margin-right: 20px;">
+			Production -
+			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.production.records %>&nbsp; &nbsp; &nbsp; Done: <%= this.production.done %>&nbsp; &nbsp; &nbsp; Remaining:  <%= this.production.remaining %>
+			</span>
+			<% if (this.production.percent) { %>
+				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.production.percent>100) { %>100<% } else { %><%= this.production.percent %><% } %>%; z-index:-1;"></div>
 			<% } %>
 		</span>
 	<% } %>
