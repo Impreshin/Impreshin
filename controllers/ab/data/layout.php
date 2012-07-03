@@ -35,7 +35,7 @@ class layout extends data {
 
 
 
-		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND placingID='$placingID' AND (page is null OR page > '$maxPage')");
+		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.placingID='$placingID' AND (page is null OR page > '$maxPage')");
 		$rawBookings= $records;
 		$records = models\bookings::display($records);
 

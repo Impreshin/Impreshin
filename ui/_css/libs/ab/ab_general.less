@@ -66,3 +66,27 @@ form #form-bottom {
 	}
 
 }
+
+#notice-area {
+	&>span {
+		position     : relative;
+		border-right : 1px solid #666;
+		border-left  : 1px solid #666;
+		padding      : 2px 5px;
+		margin-left  : -10px;
+		margin-right : 20px;
+		color : #c7c7c7;
+
+		&>span {
+			color: #999;
+		}
+		&>div {
+			position         : absolute;
+			left             : 0;
+			top              : 0;
+			bottom           : 0;
+			background-color : #666;
+			z-index : -1;
+		}
+	}
+}

@@ -11,16 +11,56 @@ class user_notifications {
 	public static function show(){
 		$timer = new timer();
 		$user = F3::get("user");
-
-		$return = array();
+		$return = $records = array();
 
 		if (isset($user['marketer'])) {
 			$return['marketer'] = $user['marketer'];
 		}
 
+		if ((isset($user['ab_productionID']) && $user['ab_productionID']) || $user['permissions']['details']['actions']['check'] || $user['permissions']['layout']['page']) {
+			$records = bookings::getAll("ab_bookings.pID = '" . $user['publication']['ID'] . "' AND ab_bookings.dID = '" . $user['publication']['current_date']['ID'] . "'");
+			$recordsCount = count($records);
+		}
+
+		if ($user['permissions']['details']['actions']['check']){
+			$checked=0;
+			foreach ($records as $record) {
+				if ($record['checked'] )$checked++;
+
+			}
+
+			$return['checked'] = array(
+				"total"=> $recordsCount,
+				"done"=> $checked,
+				"percent"=> ($recordsCount - $checked) ? number_format((($checked / $recordsCount) * 100), 2) : ""
+			);
+		}
+
+		if ($user['permissions']['layout']['page']){
+			$done=0;
+			$recordsCount=0;
+			foreach ($records as $record) {
+				if ($record['checked']){
+					$recordsCount++;
+					if ($record['pageID']) $done++;
+				}
+
+
+			}
+
+			$return['placed'] = array(
+				"total"=> $recordsCount,
+				"done"=> $done,
+				"percent"=> ($recordsCount - $done) ? number_format((($done / $recordsCount) * 100), 2) : ""
+			);
+		}
+
+
+
+
 		if (isset($user['ab_productionID']) && $user['ab_productionID']){
 
-			$records = bookings::getAll("ab_bookings.pID = '". $user['publication']['ID'] ."' AND ab_bookings.dID = '". $user['publication']['current_date']['ID'] ."'");
+
 
 			$assigned = 0;
 			$assigned_done = 0;
@@ -36,7 +76,7 @@ class user_notifications {
 					$done++;
 				}
 			}
-			$recordsCount = count($records);
+
 			$remaining = $recordsCount - $done;
 			$return['production'] = array(
 				"records"=> array(

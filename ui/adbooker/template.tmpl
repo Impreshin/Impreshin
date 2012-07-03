@@ -455,24 +455,44 @@
 <script type="text/x-jqote-template" id="template-notifications">
 	<![CDATA[
 
+	<% if (this.checked) { %>
+		<span>
+			Checked -
+			<span>&nbsp; <%= this.checked.done %> of <%= this.checked.total %> &nbsp;
+			</span>
+			<% if (this.checked.percent) { %>
+				<div style=" width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%; "></div>
+			<% } %>
+		</span>
+	<% } %>
+	<% if (this.placed) { %>
+		<span>
+			Placed -
+			<span>&nbsp; <%= this.placed.done %> of <%= this.placed.total %> &nbsp;
+			</span>
+			<% if (this.placed.percent) { %>
+				<div style=" width: <% if (this.placed.percent>100) { %>100<% } else { %><%= this.placed.percent %><% } %>%; "></div>
+			<% } %>
+		</span>
+	<% } %>
 	<% if (this.marketer) { %>
-		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; margin-right: 20px; ">
+		<span>
 			Marketer -
-			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.marketer.targets.done %> [<%= this.marketer.targets.records %>]
-				<% if (this.marketer.targets.target) { %>&nbsp; &nbsp; &nbsp; Target: <%= this.marketer.targets.target %><% } %>
+			<span>&nbsp;Total: <%= this.marketer.targets.done %> [<%= this.marketer.targets.records %>]
+				<% if (this.marketer.targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.targets.target %><% } %>
 			</span>
 			<% if (this.marketer.targets.target) { %>
-				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.marketer.targets.percent>100) { %>100<% } else { %><%= this.marketer.targets.percent %><% } %>%; z-index:-1;"></div>
+				<div style="width: <% if (this.marketer.targets.percent>100) { %>100<% } else { %><%= this.marketer.targets.percent %><% } %>%;"></div>
 			<% } %>
 		</span>
 	<% } %>
 	<% if (this.production) { %>
-		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; margin-right: 20px;">
+		<span>
 			Production -
-			<span class="g">&nbsp; &nbsp; &nbsp; Total Done: <%= this.production.records.done %> of <%= this.production.records.total %>&nbsp; &nbsp; &nbsp; Assigned Done: <%= this.production.assigned.done %> of <%= this.production.assigned.total %>
+			<span>&nbsp;Total Done: <%= this.production.records.done %> of <%= this.production.records.total %>&nbsp; &nbsp; Assigned Done: <%= this.production.assigned.done %> of <%= this.production.assigned.total %>
 			</span>
 			<% if (this.production.records.percent) { %>
-				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.production.records.percent>100) { %>100<% } else { %><%= this.production.records.percent %><% } %>%; z-index:-1;"></div>
+				<div style="width: <% if (this.production.records.percent>100) { %>100<% } else { %><%= this.production.records.percent %><% } %>%;"></div>
 			<% } %>
 		</span>
 	<% } %>

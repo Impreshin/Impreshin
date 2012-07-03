@@ -741,6 +741,26 @@ form #form-bottom .form-actions {
   margin: 0;
   padding: 5px;
 }
+#notice-area > span {
+  position: relative;
+  border-right: 1px solid #666666;
+  border-left: 1px solid #666666;
+  padding: 2px 5px;
+  margin-left: -10px;
+  margin-right: 20px;
+  color: #c7c7c7;
+}
+#notice-area > span > span {
+  color: #999999;
+}
+#notice-area > span > div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #666666;
+  z-index: -1;
+}
 #maintoolbar {
   position: absolute;
   top: 40px;
