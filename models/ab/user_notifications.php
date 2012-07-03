@@ -14,27 +14,42 @@ class user_notifications {
 
 		$return = array();
 
-		if (count($user['marketer'])) {
+		if (isset($user['marketer'])) {
 			$return['marketer'] = $user['marketer'];
 		}
 
-		if ($user['ab_productionID']){
+		if (isset($user['ab_productionID']) && $user['ab_productionID']){
 
-			$records = bookings::getAll("material_productionID='". $user['ab_productionID']."' AND ab_bookings.pID = '". $user['publication']['ID'] ."' AND ab_bookings.dID = '". $user['publication']['current_date']['ID'] ."'");
+			$records = bookings::getAll("ab_bookings.pID = '". $user['publication']['ID'] ."' AND ab_bookings.dID = '". $user['publication']['current_date']['ID'] ."'");
 
-			$t = 0;
+			$assigned = 0;
+			$assigned_done = 0;
+			$done = 0;
 			foreach ($records as $record){
-				if ($record['material_status']){
-					$t = $t + 1;
+				if ($record['material_productionID']== $user['ab_productionID']){
+					$assigned++;
+					if ($record['material_status']) {
+						$assigned_done++;
+					}
+				}
+				if ($record['material_status']) {
+					$done++;
 				}
 			}
 			$recordsCount = count($records);
-			$remaining = $recordsCount - $t;
+			$remaining = $recordsCount - $done;
 			$return['production'] = array(
-				"records"=> $recordsCount,
-				"done"=>$t,
-				"remaining"=> $remaining,
-				"percent"=>($remaining)? number_format((($t/ $recordsCount)*100),2):""
+				"records"=> array(
+					"total"=> $recordsCount,
+					"done"=>$done,
+					"percent"=> ($remaining) ? number_format((($done / $recordsCount) * 100), 2) : ""
+				),
+				"assigned"=>array(
+					"total"=>$assigned,
+					"done"=>$assigned_done,
+					"percent"=> ($assigned - $assigned_done) ? number_format((($assigned_done / $assigned) * 100), 2) : ""
+				)
+
 			);
 
 		}
