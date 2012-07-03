@@ -80,7 +80,10 @@ class user_permissions {
 						"page"=> 0
 					),
 					"marketers"=> array(
-						"page"=> 0
+						"page"=> 0,
+						"targets"=>array(
+							"page"=>0
+						)
 					),
 					"production"=> array(
 						"page"=> 0

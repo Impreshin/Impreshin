@@ -1,0 +1,78 @@
+<script type="text/x-jqote-template" id="template-list">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>" class="record">
+		<td class="">
+			<%= this.marketer %>
+		</td>
+		<td style="width:80px;">
+			<% if (this.currentTarget){ %><%= this.currentTarget %> <% } %>
+		</td>
+
+
+
+	</tr>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+	<div class="scroll-pane scrolly" style="bottom: 85px;">
+
+		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+
+
+
+
+			<fieldset style="margin-top: 20px;">
+				<legend>Target</legend>
+				<div id="errorArea"></div>
+
+				<% if (!this.details) { %>
+				Please select a marketer from the right
+
+				<% } %>
+
+				<% for(var i in this.details) { %>
+				<div class="control-group" <% if (this.details[i].current) { %>style="background-color: #f1f1f1"<% } %>>
+					<label for="target-<%= this.details[i].month %>" class="control-label" <% if (this.details[i].current) { %>style="font-weight: bold"<% } %>><%= this.details[i].label %></label>
+
+					<div class="controls">
+						<input type="text" id="target-<%= this.details[i].month %>" name="target-<%= this.details[i].month %>" class="span2" value="<% if (this.details[i].target) { %><%= this.details[i].target %><% } %>">
+					</div>
+				</div>
+				<% } %>
+
+
+
+
+
+
+
+
+			</fieldset>
+
+
+		</div>
+
+	</div>
+
+
+	<div id="form-bottom">
+		<div class="form-actions">
+			<div style="float:left; margin-left:0; padding-top: 3px;">
+
+			</div>
+			<div style="float:right; margin-right: 10px;">
+
+
+				<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
+
+
+			</div>
+		</div>
+	</div>
+
+	]]>
+</script>
+

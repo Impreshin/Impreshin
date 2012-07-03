@@ -114,6 +114,13 @@ class user {
 			unset($result['password']);
 			//unset($result[$app . '_permissions']);
 
+			if ($app=="ab"){
+				$marketer = \models\ab\marketers_targets::_current($result['ID'],$result['publication']['ID']);
+				if (isset($marketer['ID']) && $marketer['ID']){
+					$result['marketer'] = $marketer;
+				}
+			}
+
 
 
 			} else {
@@ -130,7 +137,9 @@ class user {
 
 
 
-		//test_array($result);
+
+
+
 		$return = $result;
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;

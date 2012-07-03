@@ -81,12 +81,12 @@ class template {
 			} else {
 				$page['template_css'] = "";
 			}
-			if (file_exists('' . $this->vars['folder'] . '' . $tfile . '_templates.jtmpl')) {
+			if (file_exists('' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl')) {
 				//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
 
-				$file = '/' . $this->vars['folder'] . '' . $tfile . '_templates.jtmpl';
+				$file = '/' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl';
 
-				$page['template_tmpl'] = '' . $tfile . '_templates.jtmpl';
+				$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
 			} else {
 				$page['template_tmpl'] = "";
 			}

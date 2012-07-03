@@ -52,7 +52,9 @@
 		<div class="clearfix">
 			<div class="row">
 				<div class="span14" style="position:relative;">
-					<div id="notice-area" class="c span10">&nbsp;</div>
+					<div id="notice-area" class="span10">
+
+						&nbsp;</div>
 					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
 				</div>
 				<div class="s" style="float: right;">
@@ -331,6 +333,10 @@
 		var page = d['page'];
 		var models = d['models'];
 
+		if (d['notifications']){
+			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']);
+		}
+
 		var pageSize = (page && page['size'])? page['size']: page_size;
 
 		if (data) {
@@ -446,6 +452,25 @@
 {% if page['template_js'] %}
 <script src='{{ page['template_js'] }}'></script>
 {% endif %}
+<script type="text/x-jqote-template" id="template-notifications">
+	<![CDATA[
+
+	<% if (this.marketer.ID) { %>
+		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; ">
+			Marketer -
+			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.marketer.stats.done %> [<%= this.marketer.stats.records %>]
+				<% if (this.marketer.stats.target) { %>&nbsp; &nbsp; &nbsp; Target: <%= this.marketer.stats.target %><% } %>
+			</span>
+			<% if (this.marketer.stats.target) { %>
+				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.marketer.stats.percent>100) { %>100<% } else { %><%= this.marketer.stats.percent %><% } %>%; z-index:-1;"></div>
+			<% } %>
+		</span>
+	<% } %>
+
+
+
+	]]>
+</script>
 <script type="text/x-jqote-template" id="template-timers-tr">
 	<![CDATA[
 

@@ -427,6 +427,12 @@ class settings {
 						"o"=>"ASC"
 					)
 				),
+				"admin_marketers_targets"=>array(
+					"order"=>array(
+						"c"=>"marketer",
+						"o"=>"ASC"
+					)
+				),
 				"admin_production"=>array(
 					"order"=>array(
 						"c"=>"production",

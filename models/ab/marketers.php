@@ -49,18 +49,29 @@ class marketers {
 			$orderby = " ORDER BY " . $orderby;
 		}
 
+		$month = date("m");
+		$year = date("Y");
+
+		$target = ", (SELECT target FROM ab_marketers_targets WHERE ab_marketers_targets.mID = ab_marketers.ID AND ab_marketers_targets.pID ='$pID' AND monthin='$month' AND yearin='$year' ORDER BY ab_marketers_targets.ID DESC LIMIT 0,1) as currentTarget";
 
 
 
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			$target
 			FROM ab_marketers LEFT JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
 			$where
 			$orderby
 		");
+		$a = array();
+		foreach ($result as $record){
+			if ($record['currentTarget']) $record['currentTarget'] = currency($record['currentTarget']);
+			$a[] = $record;
+		}
 
 
-		$return = $result;
+
+		$return = $a;
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}

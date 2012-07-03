@@ -264,6 +264,7 @@ $app->route('GET /ab/admin/accounts/status', 'access; last_page; controllers\ab\
 $app->route('GET /ab/admin/sections', 'access; last_page; controllers\ab\controller_admin_sections->page');
 $app->route('GET /ab/admin/categories', 'access; last_page; controllers\ab\controller_admin_categories->page');
 $app->route('GET /ab/admin/marketers', 'access; last_page; controllers\ab\controller_admin_marketers->page');
+$app->route('GET /ab/admin/marketers/targets', 'access; last_page; controllers\ab\controller_admin_marketers_targets->page');
 $app->route('GET /ab/admin/production', 'access; last_page; controllers\ab\controller_admin_production->page');
 $app->route('GET /ab/admin/placing', 'access; last_page; controllers\ab\controller_admin_placing->page');
 $app->route('GET /ab/admin/placing/colours', 'access; last_page; controllers\ab\controller_admin_placing_colours->page');
@@ -342,6 +343,14 @@ $GLOBALS["output"]['page'] = array(
 	"time"=> $totaltime,
 	"size"=> ($pageSize)
 );
+
+$GLOBALS["output"]['notifications'] = false;
+$notifications = array();
+if (isset($user['marketer']) && $user['marketer']['ID']){
+	$notifications['marketer'] = $user['marketer'];
+}
+
+if (count($notifications))$GLOBALS["output"]['notifications'] = $notifications;
 
 
 //ob_start("ob_gzhandler");
