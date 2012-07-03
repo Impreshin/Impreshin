@@ -344,6 +344,7 @@ $GLOBALS["output"]['page'] = array(
 	"size"=> ($pageSize)
 );
 
+
 $GLOBALS["output"]['notifications'] = \models\ab\user_notifications::show();
 
 

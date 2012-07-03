@@ -76,9 +76,11 @@ form #form-bottom {
 		margin-left  : -10px;
 		margin-right : 20px;
 		color : #c7c7c7;
+		.transition(all 0.5s ease-in-out);
 
 		&>span {
 			color: #999;
+			.transition(all 0.5s ease-in-out);
 		}
 		&>div {
 			position         : absolute;
@@ -87,6 +89,12 @@ form #form-bottom {
 			bottom           : 0;
 			background-color : #666;
 			z-index : -1;
+		}
+		&:hover {
+			color : #FFF;
+			& > span {
+				color : #FFF;
+			}
 		}
 	}
 }

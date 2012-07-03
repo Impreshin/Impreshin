@@ -749,9 +749,19 @@ form #form-bottom .form-actions {
   margin-left: -10px;
   margin-right: 20px;
   color: #c7c7c7;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 #notice-area > span > span {
   color: #999999;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 #notice-area > span > div {
   position: absolute;
@@ -760,6 +770,12 @@ form #form-bottom .form-actions {
   bottom: 0;
   background-color: #666666;
   z-index: -1;
+}
+#notice-area > span:hover {
+  color: white;
+}
+#notice-area > span:hover  > span {
+  color: white;
 }
 #maintoolbar {
   position: absolute;
