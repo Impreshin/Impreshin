@@ -64,25 +64,7 @@
 
 					</div>
 				</div>
-				<div class="control-group">
-					<label for="uID" class="control-label">Application User</label>
 
-					<div class="controls">
-						<select name="uID" id="uID" placeholder="Select user">
-							<option></option>
-							<option value="" <% if (this.details.uID=="") { %>selected="selected"<% } %>>Not a user</option>
-							<optgroup label="Users">
-								{% for row in users %}
-								<option value="{{ row['ID'] }}"
-								<% if (this.details.uID=="{{ row['ID'] }}") { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>                            {% endfor %}
-							</optgroup>
-
-						</select>
-
-						<div class="inline-help s g">By selecting a user for this marketer when they log in they will get a detailed self report</div>
-
-					</div>
-				</div>
 
 
 

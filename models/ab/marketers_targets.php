@@ -12,14 +12,16 @@ class marketers_targets {
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	public static function _current($uID,$pID){
+	public static function _current($mID,$pID){
 		$timer = new timer();
 		$result = array();
-		$marketer = marketers::getAll("uID='$uID'");
-		if (count($marketer)){
-			$marketer = $marketer[0];
 
-			$ID = $marketer['ID'];
+
+
+			$ID = $mID;
+		if ($ID){
+
+
 			$month = date("m");
 			$year = date("Y");
 
@@ -35,21 +37,20 @@ class marketers_targets {
 			}
 			//test_array($b);
 
-			$return = $marketer;
-			$return['stats']['records'] = count($b);
-			$return['stats']['done'] = currency($done);
+
+			$return['targets']['records'] = count($b);
+			$return['targets']['done'] = currency($done);
 			if (count($result)) {
-				$return['stats']['target'] = currency($result[0]['target']);
-				$return['stats']['percent'] = number_format((($done / $result[0]['target'])*100),2);
+				$return['targets']['target'] = currency($result[0]['target']);
+				$return['targets']['percent'] = number_format((($done / $result[0]['target'])*100),2);
 			} else {
 
 
 			}
 
-		} else {
-			$return = array();
+	} else {
+			$return = "";
 		}
-
 
 
 

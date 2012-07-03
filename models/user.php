@@ -111,12 +111,16 @@ class user {
 
 			$result['permissions'] = $permissions;
 
+
+			$result['ab_marketerID'] = $extra['ab_marketerID'];
+			$result['ab_productionID'] = $extra['ab_productionID'];
+
 			unset($result['password']);
 			//unset($result[$app . '_permissions']);
 
 			if ($app=="ab"){
-				$marketer = \models\ab\marketers_targets::_current($result['ID'],$result['publication']['ID']);
-				if (isset($marketer['ID']) && $marketer['ID']){
+				$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'],$result['publication']['ID']);
+				if (count($marketer)){
 					$result['marketer'] = $marketer;
 				}
 			}
@@ -138,6 +142,7 @@ class user {
 
 
 
+//test_array($result);
 
 
 		$return = $result;

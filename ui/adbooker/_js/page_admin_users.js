@@ -174,6 +174,9 @@ function getDetails(){
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 
+		$("#ab_marketerID").select2({});
+		$("#ab_productionID").select2({});
+
 
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#left-area .loadingmask").fadeOut(transSpeed);

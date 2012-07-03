@@ -34,6 +34,9 @@ class admin_users extends save {
 		$publications= isset($_POST['publications']) ? $_POST['publications'] : array();
 		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : array();
 
+		$ab_marketerID= isset($_POST['ab_marketerID']) ? $_POST['ab_marketerID'] : "";
+		$ab_productionID= isset($_POST['ab_productionID']) ? $_POST['ab_productionID'] : "";
+
 
 		$return = array(
 			"error"   => array(),
@@ -99,7 +102,18 @@ class admin_users extends save {
 			}
 
 
+
+
+
+
+
 			models\user_permissions::write($ID, $cID, $permissions);
+			$a = new \Axon("global_users_company");
+			$a->load("uID='$ID' AND cID = '$cID'");
+			$a->ab_marketerID = $ab_marketerID;
+			$a->ab_productionID = $ab_productionID;
+			$a->save();
+
 			$return['ID'] = $ID;
 		}
 

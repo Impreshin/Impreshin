@@ -455,14 +455,14 @@
 <script type="text/x-jqote-template" id="template-notifications">
 	<![CDATA[
 
-	<% if (this.marketer.ID) { %>
+	<% if (this.marketer) { %>
 		<span style="position:relative; border-right: 1px solid #ccc; border-left: 1px solid #ccc; padding: 2px 5px; margin-left: -10px; ">
 			Marketer -
-			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.marketer.stats.done %> [<%= this.marketer.stats.records %>]
-				<% if (this.marketer.stats.target) { %>&nbsp; &nbsp; &nbsp; Target: <%= this.marketer.stats.target %><% } %>
+			<span class="g">&nbsp; &nbsp; &nbsp; Total: <%= this.marketer.targets.done %> [<%= this.marketer.targets.records %>]
+				<% if (this.marketer.targets.target) { %>&nbsp; &nbsp; &nbsp; Target: <%= this.marketer.targets.target %><% } %>
 			</span>
-			<% if (this.marketer.stats.target) { %>
-				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.marketer.stats.percent>100) { %>100<% } else { %><%= this.marketer.stats.percent %><% } %>%; z-index:-1;"></div>
+			<% if (this.marketer.targets.target) { %>
+				<div style="position: absolute; left:0; top:0; bottom: 0; background-color: #666; width: <% if (this.marketer.targets.percent>100) { %>100<% } else { %><%= this.marketer.targets.percent %><% } %>%; z-index:-1;"></div>
 			<% } %>
 		</span>
 	<% } %>

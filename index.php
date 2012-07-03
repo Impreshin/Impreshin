@@ -346,7 +346,7 @@ $GLOBALS["output"]['page'] = array(
 
 $GLOBALS["output"]['notifications'] = false;
 $notifications = array();
-if (isset($user['marketer']) && $user['marketer']['ID']){
+if (count($user['marketer'])){
 	$notifications['marketer'] = $user['marketer'];
 }
 

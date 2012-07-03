@@ -36,6 +36,8 @@ class controller_admin_users {
 
 		$tmpl->permissions = $permissions['p'];
 		$tmpl->permissions_desc = $permissions['d'];
+		$tmpl->marketers = models\marketers::getAll("pID='$pID'", "marketer ASC");;
+		$tmpl->production = models\production::getAll("pID='$pID'", "production ASC");;
 		$tmpl->output();
 
 	}

@@ -161,7 +161,7 @@ function getDetails(){
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
-		$("#uID").select2({});
+
 
 
 

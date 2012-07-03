@@ -363,7 +363,7 @@
 				<div class="controls" style="padding-left: 30px;">
 					<select class="span7" id="material_productionID" name="material_productionID">
 						{% for row in production %}
-						<option value="{{ row['ID'] }}"	<% if (this.material_productionID =='{{ row['ID'] }}' || (!this.material_productionID && ({{ row['uID'] }} == {{ _user['ID'] }})) ) { %>selected="selected"<% } %> >
+						<option value="{{ row['ID'] }}"	<% if (this.material_productionID =='{{ row['ID'] }}' || (!this.material_productionID && ({{ row['ID'] }} == '{{ _user['ab_productionID'] }}')) ) { %>selected="selected"<% } %> >
 							{{ row['production'] }}
 						</option>
 						{% endfor %}

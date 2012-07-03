@@ -79,6 +79,7 @@
 
 
 			</fieldset>
+
 			<% if (this.details.ab=='1') { %>
 			<fieldset style="margin-top: 20px;">
 				<legend>Publications
@@ -99,15 +100,56 @@
 
 					</div>
 				</div>
-				<% if (this.details.ID == "{{ _user['ID'] }}"){ %>
-				<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
-				<% } %>
-				<fieldset style="margin-top: 20px;" id="permissions" >
+				<fieldset style="margin-top: 20px;">
+					<legend>Links</legend>
+					<div id="errorArea"></div>
+
+					<div class="control-group">
+						<label for="ab_marketerID" class="control-label">Marketer</label>
+
+						<div class="controls">
+							<select name="ab_marketerID" id="ab_marketerID" placeholder="Select Marketer">
+
+								<option value="" <% if (this.details.ab_marketerID=="") { %>selected="selected"<% } %>>Not a Marketer</option>
+								<optgroup label="Marketers">
+									{% for row in marketers %}
+									<option value="{{ row['ID'] }}"
+									<% if (this.details.ab_marketerID=="{{ row['ID'] }}") { %>selected="selected"<% } %>>{{ row['marketer'] }}</option>                                    {% endfor %}
+								</optgroup>
+
+							</select>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label for="ab_productionID" class="control-label">Production</label>
+
+						<div class="controls">
+							<select name="ab_productionID" id="ab_productionID" placeholder="Select Production">
+								<option value="" <% if (this.details.ab_productionID=="") { %>selected="selected"<% } %>>Not Production</option>
+								<optgroup label="Production">
+									{% for row in production %}
+									<option value="{{ row['ID'] }}"
+									<% if (this.details.ab_productionID=="{{ row['ID'] }}") { %>selected="selected"<% } %>>{{ row['production'] }}</option>                                    {% endfor %}
+								</optgroup>
+
+							</select>
+						</div>
+					</div>
+
+
+				</fieldset>
+
 
 				<legend>Permissions
 					<small> - Are applied at company level</small>
 				</legend>
-				<div id="errorArea"></div>
+
+					<% if (this.details.ID == "{{ _user['ID'] }}"){ %>
+				<div class="clearfix" style="margin-top:-20px;"></div>
+					<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
+					<% } %>
+					<fieldset style="margin-top: 20px;" id="permissions">
 
 					{% for key,value in permissions %}
 						<div class="control-group" style="{% if loop.first==false %}border-top: 1px dotted #ccc;{% endif %} padding-top: 10px; margin-bottom: 0; padding-bottom:5px;">

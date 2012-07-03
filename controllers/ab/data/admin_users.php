@@ -145,6 +145,8 @@ class admin_users extends data {
 			$extra = $extra[0];
 			$return['details']['ab'] = $extra['ab'];
 			$return['details']['permissions'] = models\user_permissions::_read($extra['ab_permissions']);
+			$return['details']['ab_marketerID'] = $extra['ab_marketerID'];
+			$return['details']['ab_productionID'] = $extra['ab_productionID'];
 		} else {
 			$return['details']['ab'] = '1';
 
