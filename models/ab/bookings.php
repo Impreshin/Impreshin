@@ -618,14 +618,16 @@ class bookings {
 					$lookupColumns[$key]['was']= $cur;
 					$lookup[] = $lookupColumns[$key];
 				} else {
+					$w = $cur;
+					$v = $value;
 					if ($key=="material_file_filesize") {
-						$value = file_size($value);
-						$cur = file_size($cur);
+						$v = file_size($v);
+						$w = file_size($w);
 					}
 					$changes[] = array(
 						"k"=> $key,
-						"v"=> $value,
-						"w"=> str_replace("0000-00-00 00:00:00","",$cur)
+						"v"=> $v,
+						"w"=> str_replace("0000-00-00 00:00:00","", $w)
 					);
 				}
 

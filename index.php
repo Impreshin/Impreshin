@@ -302,7 +302,7 @@ $app->route('GET|POST /ab/save/@class/@function', function() use($app) {
 	}
 );
 
-$app->route('GET|POST /ab/download/@folder/@ID/@filename', function() use($app) {
+$app->route('GET|POST /ab/download/@folder/@ID/*', function() use($app) {
 		$app->call("controllers\\ab\\controller_download->" . $app->get('PARAMS.folder'));
 	}
 );
