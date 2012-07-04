@@ -404,6 +404,9 @@
 								</div>
 							</td>
 							<td>
+								<img src="/ui/_images/loading-small.gif" alt="" width="24" id="generating-thumb" style="display:none;" >
+							</td>
+							<td>
 								<% if (this.material_status) { %>
 								<button class="btn span1 btn-mini" style="float:right;" type="button" title="Click here to mark this booking as Not Ready" id="btn-material-not-ready" >
 									<i class="icon-trash icon-d-grey"></i></button>
@@ -411,7 +414,6 @@
 							</td>
 						</tr>
 					</table>
-
 
 					<input type="hidden" name="material_file_filename" id="material_file_filename" value="<% if (this.material_file_filename) { %><%= this.material_file_filename %><% } %>">
 					<input type="hidden" name="material_file_filesize" id="material_file_filesize" value="<% if (this.material_file_filesize) { %><%= this.material_file_filesize %><% } %>">
@@ -793,6 +795,8 @@ function set_upload(){
 		$("#material_file_filename").val(file.name);
 		$("#material_file_filesize").val(file.size);
 		$("#material_file_store").val(file.target_name);
+
+
 
 		$("#material-file-area .progress").fadeOut(500, function () {
 			$("#material-file-area .progress .bar").css("width", "0%");

@@ -34,7 +34,7 @@ class controller_thumb {
 
 					if (!file_exists($thumb) && file_exists($folder . $filename)) {
 						$exportPath = $thumb;
-						$res = "150";
+						$res = "96";
 						$pdf = $folder . $filename;
 
 						$str = "gs -dCOLORSCREEN -dNOPAUSE -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
@@ -62,12 +62,12 @@ class controller_thumb {
 
 			}
 			\Graphics::fakeImage(0, 0);
-			exit();
+
 
 
 		}
 
-
+		exit();
 
 
 

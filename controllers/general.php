@@ -242,6 +242,11 @@ class general {
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
+
+
+
+			//\controllers\ab\controller_thumb::create_thumb($folder, $fileName);
+
 		}
 
 
