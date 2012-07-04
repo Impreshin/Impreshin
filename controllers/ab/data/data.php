@@ -60,7 +60,7 @@ class data {
 				$allow['edit'] = '1';
 			}
 			if ($cfg['upload']['material']) {
-				if ($return['material_file_filename']){
+				if ($return['material_file_filename']&& $return['material_status']){
 					$allow['material_pane'] = '1';
 				}
 
