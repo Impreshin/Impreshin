@@ -302,7 +302,10 @@ $app->route('GET|POST /ab/save/@class/@function', function() use($app) {
 	}
 );
 
-
+$app->route('GET|POST /ab/download/@folder/@ID/@filename', function() use($app) {
+		$app->call("controllers\\ab\\controller_download->" . $app->get('PARAMS.folder'));
+	}
+);
 //$app->route('GET|POST /ab/data/@data', 'abdata->{{@PARAMS.data}}');
 //$app->route('GET|POST /ab/save/@section', 'ab_controllers_save->{{@PARAMS.section}}');
 //$app->route('GET|POST /ab/data/bookings', 'ab_data->bookings');

@@ -154,6 +154,16 @@ class settings {
 					//"o"=> "percent_diff",
 					"h"=> "Disc %"
 				),
+				"material_file_filename"               => array(
+					"c"=> "material_file_filename",
+					"o"=> "material_file_filename",
+					"h"=> "File&nbsp;Name"
+				),
+				"material_file_filesize"               => array(
+					"c"=> "material_file_filesize",
+					"o"=> "material_file_filesize",
+					"h"=> "File&nbsp;Size"
+				),
 				"material_source"               => array(
 					"c"=> "material_source",
 					"o"=> "material_source",

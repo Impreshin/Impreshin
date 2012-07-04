@@ -233,6 +233,9 @@ class bookings {
 				if ($item['pageID'] && $item["page"]) {
 					$item["page"] = number_format($item['page'], 0);
 				}
+				if ($item['material_file_filesize']) {
+					$item["material_file_filesize"] = file_size($item['material_file_filesize']);
+				}
 
 
 

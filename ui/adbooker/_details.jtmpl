@@ -258,6 +258,8 @@
 			<% if (this.a.material_pane) { %>
 			<div id="details-pane-material" class="tab-pane">
 				<div class="scroll-pane">
+
+					<a href="/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>"><%= this.material_file_filename %> (<%= this.material_file_filesize_display %>)</a>
 					<p>the material goes here</p>
 
 
@@ -379,7 +381,7 @@
 					<table>
 						<tr>
 							<td>
-								<div id="material-file-area" rel="tooltip" title="Click here to upload a file and mark this record as material ready">
+								<div id="material-file-area" title="Click here to upload a file and mark this record as material ready">
 
 
 									<div class="progress progress-striped active" id="material-upload-progress">
@@ -393,7 +395,7 @@
 							</td>
 							<td>
 								<% if (this.material_status) { %>
-								<button class="btn span1 btn-mini" style="float:right;" type="button" rel="tooltip" title="Click here to mark this booking as Not Ready" id="btn-material-not-ready" >
+								<button class="btn span1 btn-mini" style="float:right;" type="button" title="Click here to mark this booking as Not Ready" id="btn-material-not-ready" >
 									<i class="icon-trash icon-d-grey"></i></button>
 								<% } %>
 							</td>
