@@ -1,104 +1,97 @@
-<style type="text/css">
-table {
-	background-color: rgb(250, 117, 107);
-}
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<form class="" style="margin: 0;">
+				<ul class="nav nav-pills pull-left">
+
+				</ul>
+				<div class="pull-right">
 
 
-	#map_canvas {
-		height : 350px;
+				</div>
+			</form>
 
-	}
-</style>
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
 
-<div class="item gradient ui-corner-all shadow-all">
-	<div id="map_canvas">&nbsp;</div>
-</div>
+</section>
+
+<section role="main" id="pagecontent">
+
+	<div class="container">
 
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<article id="whole-area" class="span16">
+
+
+			<div id="container">
+				<div id="filelist">No runtime found.</div>
+				<br/> <a id="pickfiles" href="javascript:;">[Select files]</a>
+				<a id="uploadfiles" href="javascript:;">[Upload files]</a>
+			</div>
+
+		</article>
+	</div>
+
+
+</section>
+
 
 <script type="text/javascript">
-	var data =[
-		{
-			"t":"09:00",
-			"c":"-23.056271, 29.994656"
-		},{
-			"t":"08:00",
-			"c":"-23.056241, 29.964656"
-		},
-		{
-			"t": "07:00",
-			"c": "-23.046241, 29.924656"
-		},
-		{
-			"t":"06:00",
-			"c":"-23.046241, 29.904656"
-		}
-	];
-
-	function initialize() {
-		var def = data[0].c;
-			def = def.split(",");
-		var myLatlng = new google.maps.LatLng(def[0],def[1]);
-		var mapOptions = {
-			zoom     :13,
-			center   :myLatlng,
-			mapTypeId:google.maps.MapTypeId.HYBRID
-			//disableDefaultUI:true
-		};
-
-		var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-
-		var pinColor = "FE7569";
-		var pinImageC = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor, new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
-		pinColor = "FFCACA";
-		var pinImageO = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor, new google.maps.Size(21, 34), new google.maps.Point(0, 0), new google.maps.Point(10, 34));
-
-		var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow", new google.maps.Size(40, 37), new google.maps.Point(0, 0), new google.maps.Point(12, 35));
-
-
-
-
-		var flightPlanCoordinates = [];
-		for (var i in data) {
-			var item = data[i].c;
-				item = item.split(",");
-			    myLatlng = new google.maps.LatLng(item[0], item[1]);
-			flightPlanCoordinates.push(myLatlng);
-
-			var marker = new google.maps.Marker({
-				position:myLatlng,
-				map  :map,
-				title:data[i].t,
-				icon:(i==0)? pinImageC:pinImageO,
-				shadow:pinShadow
-			});
-
-
-
-		}
-		var flightPath = new google.maps.Polyline({
-			path        :flightPlanCoordinates,
-			strokeColor :"#FF0000",
-			strokeOpacity:1.0,
-			strokeWeight:2
-		});
-
-		flightPath.setMap(map);
-
-
-		marker = new google.maps.Marker({
-			position:new google.maps.LatLng(-33.714773, 18.956738),
-			map     :map,
-			title   :"End Destination"
-		});
-
-	}
-
-	initialize();
-
-
 
 </script>
+<script type="text/javascript" src="/ui/_js/libs/jquery.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/browserplus-min.js"></script>
 
+<script type="text/javascript" src="/ui/plupload/js/plupload.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.gears.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.silverlight.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.flash.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.browserplus.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.html4.js"></script>
+<script type="text/javascript" src="/ui/plupload/js/plupload.html5.js"></script>
+
+<script type="text/javascript">
+
+	console.log($('#whole-area').length)
+
+	var uploader = new plupload.Uploader({
+		runtimes           :'gears,html5,flash,silverlight',
+		browse_button      :'pickfiles',
+		container          :'container',
+		max_file_size      :'10mb',
+		url                :'/ab/upload/?folder=1/3/1040/',
+		resize             :{width:320, height:240, quality:90},
+		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
+		silverlight_xap_url:'/ui/plupload/js/plupload.silverlight.xap',
+		filters            :[
+			//{title:"Image files", extensions:"jpg,gif,png"},
+			//{title:"Zip files", extensions:"zip"}
+		]
+	});
+	uploader.bind('Init', function (up, params) {
+		$('filelist').innerHTML = "<div>Current runtime: " + params.runtime + "</div>";
+	});
+
+	uploader.bind('FilesAdded', function (up, files) {
+		for (var i in files) {
+			console.log(files[i].name)
+			$('filelist').innerHTML += '<div id="' + files[i].id + '">' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') <b></b></div>';
+		}
+	});
+
+	uploader.bind('UploadProgress', function (up, file) {
+		$(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+	});
+
+	$('#uploadfiles').on("click", function () {
+		console.log("starting");
+		uploader.start();
+		return false;
+	});
+
+	uploader.init();
+
+	console.log(uploader);
+</script>

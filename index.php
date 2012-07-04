@@ -89,6 +89,8 @@ unset($cfg['DB']);
 $app->set('cfg', $cfg);
 
 
+
+
 $app->set('system', new msg());
 
 
@@ -154,6 +156,9 @@ $app->route('GET /min/css/@filename', 'general->css_min', $ttl);
 $app->route('GET /min/css*', 'general->css_min', $ttl);
 $app->route('GET /min/js/@filename', 'general->js_min', $ttl);
 $app->route('GET /min/js*', 'general->js_min', $ttl);
+
+
+$app->route('GET|POST /@app/upload/', 'general->upload');
 
 $app->route('GET /charts/line', 'charts->line');
 
@@ -275,7 +280,7 @@ $app->route('GET /ab/admin/publications', 'access; last_page; controllers\ab\con
 
 // --------------------------------------------------------------------------------
 
-$app->route('GET /nf', 'access; controllers\nf\controller_test->page');
+$app->route('GET /ab/test', 'access; controllers\ab\controller_test->page');
 
 
 

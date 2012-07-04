@@ -40,6 +40,8 @@ class template {
 		$cfg = F3::get('cfg');
 
 
+
+
 		$publications = $user['publications'];
 		$publication = $user['publication'];
 

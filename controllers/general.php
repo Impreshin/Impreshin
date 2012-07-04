@@ -82,6 +82,18 @@ class general {
 				//"_js/plugins/bootstrap-datepicker.js",
 
 
+
+
+				"plupload/js/browserplus-min.js" ,
+				"plupload/js/plupload.js" ,
+				"plupload/js/plupload.gears.js" ,
+				"plupload/js/plupload.silverlight.js" ,
+				"plupload/js/plupload.flash.js" ,
+				"plupload/js/plupload.browserplus.js" ,
+				"plupload/js/plupload.html4.js" ,
+				"plupload/js/plupload.html5.js" ,
+
+
 			);
 
 
@@ -102,43 +114,55 @@ class general {
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
 
-		if ($folder) {
+		$cfg = F3::get("cfg");
 
-			$folder = F3::get("MEDIA_folder") . $folder;
-			if (!file_exists($folder)) mkdir($folder, 01777, true);
-		}
 
-		//exit();
 
-		// HTTP headers for no cache etc
+		$user = F3::get("user");
+
+
+		$app = F3::get('PARAMS.app');
+
+
+
+		$folder = $cfg['upload']['folder'] . $app . "/". $folder;
+
+
+		if (!file_exists($folder)) @mkdir($folder, 0777, true);
+
+		//$targetDir = $cfg['upload']['folder'] . $app . "/temp/";
+		//if (!file_exists($targetDir)) @mkdir($targetDir, 0777, true);
+
+		$targetDir = $folder;
+
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 
-		// Settings
-		//$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-		$targetDir = $folder;
+// Settings
 
-		//$cleanupTargetDir = false; // Remove old files
-		//$maxFileAge = 60 * 60; // Temp file age in seconds
+//$targetDir = 'uploads';
 
-		// 5 minutes execution time
+		$cleanupTargetDir = true; // Remove old files
+		$maxFileAge = 5 * 3600; // Temp file age in seconds
+
+// 5 minutes execution time
 		@set_time_limit(5 * 60);
 
-		// Uncomment this one to fake upload time
-		// usleep(5000);
+// Uncomment this one to fake upload time
+// usleep(5000);
 
-		// Get parameters
-		$chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
-		$chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
+// Get parameters
+		$chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
+		$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 		$fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
-		// Clean the fileName for security reasons
-		$fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+// Clean the fileName for security reasons
+		$fileName = preg_replace('/[^\w\._]+/', '_', $fileName);
 
-		// Make sure the fileName is unique but only if chunking is disabled
+// Make sure the fileName is unique but only if chunking is disabled
 		if ($chunks < 2 && file_exists($targetDir . DIRECTORY_SEPARATOR . $fileName)) {
 			$ext = strrpos($fileName, '.');
 			$fileName_a = substr($fileName, 0, $ext);
@@ -150,36 +174,37 @@ class general {
 			$fileName = $fileName_a . '_' . $count . $fileName_b;
 		}
 
-		// Create target dir
+		$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+
+// Create target dir
 		if (!file_exists($targetDir)) @mkdir($targetDir);
 
-		// Remove old temp files
-		/* this doesn't really work by now
+// Remove old temp files
+		if ($cleanupTargetDir && is_dir($targetDir) && ($dir = opendir($targetDir))) {
+			while (($file = readdir($dir)) !== false) {
+				$tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
 
-		 if (is_dir($targetDir) && ($dir = opendir($targetDir))) {
-			 while (($file = readdir($dir)) !== false) {
-				 $filePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+				// Remove temp file if it is older than the max age and is not the current file
+				if (preg_match('/\.part$/', $file) && (filemtime($tmpfilePath) < time() - $maxFileAge) && ($tmpfilePath != "{$filePath}.part")) {
+					@unlink($tmpfilePath);
+				}
+			}
 
-				 // Remove temp files if they are older than the max age
-				 if (preg_match('/\\.tmp$/', $file) && (filemtime($filePath) < time() - $maxFileAge))
-					 @unlink($filePath);
-			 }
+			closedir($dir);
+		} else
+			die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
 
-			 closedir($dir);
-		 } else
-			 die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
-		 */
 
-		// Look for the content type header
+// Look for the content type header
 		if (isset($_SERVER["HTTP_CONTENT_TYPE"])) $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
 
 		if (isset($_SERVER["CONTENT_TYPE"])) $contentType = $_SERVER["CONTENT_TYPE"];
 
-		// Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
+// Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
 		if (strpos($contentType, "multipart") !== false) {
 			if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
 				// Open temp file
-				$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+				$out = fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
 				if ($out) {
 					// Read binary input stream and append it to temp file
 					$in = fopen($_FILES['file']['tmp_name'], "rb");
@@ -197,7 +222,7 @@ class general {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
 		} else {
 			// Open temp file
-			$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+			$out = fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
 			if ($out) {
 				// Read binary input stream and append it to temp file
 				$in = fopen("php://input", "rb");
@@ -213,8 +238,16 @@ class general {
 				die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
 		}
 
-		// Return JSON-RPC response
+// Check if file has been uploaded
+		if (!$chunks || $chunk == $chunks - 1) {
+			// Strip the temp .part suffix off
+			rename("{$filePath}.part", $filePath);
+		}
+
+
+// Return JSON-RPC response
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
+
 	}
 
 

@@ -29,6 +29,7 @@ class bookings {
 				ab_bookings_types.type AS type,
 				ab_marketers.marketer AS marketer,
 				global_publications.publication AS publication,
+				global_publications.cID AS cID,
 				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') as dateStatus,
 				ab_categories.category AS category,
 				global_users.fullName AS byFullName,
@@ -70,6 +71,21 @@ class bookings {
 						if (isset($return[$key . "_C"])) unset($return[$key . "_C"]);
 					}
 				}
+			}
+			$cfg = F3::get("cfg");
+			$cfg = $cfg['upload'];
+
+			$return['material_file_filesize_display'] = 0;
+			if ($cfg['material']) {
+				if ($return['material_file_store']){
+					$file = $cfg['folder'] . "ab/" . $return['cID'] . "/" . $return['pID'] . "/" . $return['dID'] . "/material/" . $return['material_file_store'];
+					if (!file_exists($file)) {
+						$return['material_status'] = '0';
+					} else {
+						$return['material_file_filesize_display'] = file_size($return['material_file_filesize']);
+					}
+				}
+
 			}
 
 
@@ -527,6 +543,66 @@ class bookings {
 		$a->load("ID='$ID'");
 
 
+		$cfg = F3::get("cfg");
+		$cfg = $cfg['upload'];
+		//test_array($cfg);
+
+		$user = F3::get("user");
+		$cID = $user['publication']['cID'];
+
+
+
+
+
+		if ($cfg['material'] && !$a->dry()) {
+			if ($a->material_file_store){
+				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
+
+
+				if ((isset($values['material_status']) && $values['material_status'] == "0" && $a->material_file_store) || (isset($values['material_file_store']) && $a->material_file_store != $values['material_file_store'])) {
+
+					if (file_exists($oldFolder . $a->material_file_store)) {
+						@unlink($oldFolder . $a->material_file_store);
+					}
+				} else {
+
+
+
+
+
+
+				if (isset($values['dID'])) {
+
+					//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
+					if (file_exists($oldFolder. $a->material_file_store)){
+
+
+
+						$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
+
+
+						//echo "new: ". $newFolder . $a->material_file_store ."<br>";
+
+						if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
+
+						@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
+					}
+
+
+				}
+				}
+
+
+
+			}
+
+
+		}
+
+
+
+
+
 		$changes = array();
 		$material = false;
 		foreach ($values as $key=>$value){
@@ -539,6 +615,10 @@ class bookings {
 					$lookupColumns[$key]['was']= $cur;
 					$lookup[] = $lookupColumns[$key];
 				} else {
+					if ($key=="material_file_filesize") {
+						$value = file_size($value);
+						$cur = file_size($cur);
+					}
 					$changes[] = array(
 						"k"=> $key,
 						"v"=> $value,
@@ -636,6 +716,9 @@ class bookings {
 
 
 		if (count($changes)) bookings::logging($ID,$changes, $label);
+
+
+
 
 
 		$n = new bookings();

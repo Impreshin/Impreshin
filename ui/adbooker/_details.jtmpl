@@ -290,7 +290,7 @@
 			<% if (this.material_status!='1') { %>
 			<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"> Material</a>
 			<% } else { %>
-			<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material</a>
+			<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material <% if (this.material_file_filesize && this.material_status) { %>(<%= this.material_file_filesize_display %>)<% } %></a>
 				<% if (this.material_approved=='1') { %>
 					<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Material approved"><i class="icon-ok icon-white"></i></a>
 				<% } else { %>
@@ -376,11 +376,35 @@
 				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
 					{% if _cfg['upload']['material'] %}
 
-					<input type="file" id="fileInput" class="input-file">
+					<table>
+						<tr>
+							<td>
+								<div id="material-file-area" rel="tooltip" title="Click here to upload a file and mark this record as material ready">
 
-					<% if (this.material_file) { %>
-					<button class="btn span1 btn-mini" style="float:right;" type="button"><i class="icon-trash icon-d-grey"></i></button>
-					<% } %>
+
+									<div class="progress progress-striped active" id="material-upload-progress">
+										<div class="bar" style="width: 0%"></div>
+									</div>
+									<div id="material-file-area-filename">
+										<% if (this.material_file_filename) { %> <%= this.material_file_filename %> <% } else { %>
+										<em>No File - click here to upload</em> <% } %>
+									</div>
+								</div>
+							</td>
+							<td>
+								<% if (this.material_status) { %>
+								<button class="btn span1 btn-mini" style="float:right;" type="button" rel="tooltip" title="Click here to mark this booking as Not Ready" id="btn-material-not-ready" >
+									<i class="icon-trash icon-d-grey"></i></button>
+								<% } %>
+							</td>
+						</tr>
+					</table>
+
+
+					<input type="hidden" name="material_file_filename" id="material_file_filename" value="<% if (this.material_file_filename) { %><%= this.material_file_filename %><% } %>">
+					<input type="hidden" name="material_file_filesize" id="material_file_filesize" value="<% if (this.material_file_filesize) { %><%= this.material_file_filesize %><% } %>">
+					<input type="hidden" name="material_file_store" id="material_file_store" value="<% if (this.material_file_store) { %><%= this.material_file_store %><% } %>">
+
 
 
 
@@ -401,7 +425,7 @@
 				<div style="float:right;">
 
 
-					<button class="btn btn-primary span3">Save</button>
+					<button class="btn btn-primary span3" type="submit">Save</button>
 				</div>
 
 			</div>
@@ -454,6 +478,7 @@
 ]]>
 </script>
 <script type="text/javascript">
+
 	$(document).on("shown",'#details-modal', function () {
 		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
 		if (!tab) tab = "details-pane-details";
@@ -511,8 +536,12 @@
 
 	});
 
-
-
+	$(document).on('click', '#btn-material-not-ready', function () {
+		var data = "material_status=0";
+		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+	});
 	$(document).on('submit', '#form-material', function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -527,18 +556,13 @@
 
 		data = data + "&material_status=" + $("#material_status button.active").attr("data-val");
 
+		{% endif %}
 		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 			if ($("#record-list").length) {
 				//getList();
 			}
 		});
-
-
-
-
-		{% endif %}
-
 
 
 
@@ -577,7 +601,9 @@
 
 
 	});
+	var uploader;
 	$(document).on('popup-show', '#popup-material', function () {
+		set_upload();
 		material_person();
 	});
 	$(document).on('change', '#popup-material input[name="source"]', function () {
@@ -660,7 +686,7 @@
 			data = data['data'];
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-			$('#details-modal').jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+			$('#details-modal').data("data",data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
 
 			if ($("#record-list").length){
 
@@ -682,6 +708,90 @@
 		}));
 
 	}
+function set_upload(){
+	if (!$("#material-file-area-filename").length){
+		return false;
+	}
+
+	var data = $("#details-modal").data("data");
+	var folder = data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/material/";
+
+	var $form = $("#form-material");
+	var uploader = new plupload.Uploader({
+		runtimes     :'gears,html5,flash,silverlight',
+		browse_button:'material-file-area-filename',
+		//container          :'container',
+		max_file_size:'200mb',
+		max_file_count:1,
+		chunk_size   :"5MB",
+		url          :'/ab/upload/?folder=' + folder,
+
+		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
+		silverlight_xap_url:'/ui/plupload/js/plupload.silverlight.xap',
+		filters            :[
+			//{title:"Image files", extensions:"jpg,gif,png"},
+			//{title:"Zip files", extensions:"zip"}
+		],
+		unique_names:true
+	});
+
+
+	if ($("#material-file-area-filename").data("uploader")){
+		uploader.refresh();
+	} else {
+		$("#material-file-area-filename").data("uploader",true);
+
+
+
+
+
+	uploader.bind('Init', function (up, params) {
+
+	});
+
+	uploader.bind('FilesAdded', function (up, files) {
+		$form.find("button[type='submit']").attr("disabled","disabled");
+
+		var fileCount = up.files.length, i = 0, ids = $.map(up.files, function (item) {
+			return item.id;
+		});
+
+		for (i = 0; i < fileCount; i++) {
+			uploader.removeFile(uploader.getFile(ids[i]));
+		}
+
+		i = 0;
+		$('#material-file-area-filename').html('<div id="' + files[i].id + '">' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ')</div>');
+
+		setTimeout(function () {
+			$("#material-file-area .progress").fadeIn();
+			uploader.start();
+		}, 100);
+
+	});
+
+	uploader.bind('UploadProgress', function (up, file) {
+		$("#material-file-area .progress .bar").css("width", file.percent + "%");
+	});
+
+	uploader.bind('UploadComplete', function (up, files) {
+		var file = files[0];
+		$form.find("button[type='submit']").removeAttr("disabled");
+
+		$("#material_file_filename").val(file.name);
+		$("#material_file_filesize").val(file.size);
+		$("#material_file_store").val(file.target_name);
+
+		$("#material-file-area .progress").fadeOut(500, function () {
+			$("#material-file-area .progress .bar").css("width", "0%");
+		});
+	});
+
+
+
+	uploader.init();
+	}
+}
 </script>
 <div class="modal hide fade" id="details-modal" data-show="false">
 </div>

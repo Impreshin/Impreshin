@@ -457,8 +457,8 @@
 
 	<% if (this.checked) { %>
 		<span>
-			Checked -
-			<span>&nbsp; <%= this.checked.done %> of <%= this.checked.total %> &nbsp;
+			<span>Checked -
+			&nbsp; <%= this.checked.done %> of <%= this.checked.total %> &nbsp;
 			</span>
 			<% if (this.checked.percent) { %>
 				<div style=" width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%; "></div>
@@ -467,8 +467,8 @@
 	<% } %>
 	<% if (this.placed) { %>
 		<span>
-			Placed -
-			<span>&nbsp; <%= this.placed.done %> of <%= this.placed.total %> &nbsp;
+			<span>Placed -
+			&nbsp; <%= this.placed.done %> of <%= this.placed.total %> &nbsp;
 			</span>
 			<% if (this.placed.percent) { %>
 				<div style=" width: <% if (this.placed.percent>100) { %>100<% } else { %><%= this.placed.percent %><% } %>%; "></div>
