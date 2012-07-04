@@ -59,7 +59,12 @@ class data {
 				$allow['material'] = '1';
 				$allow['edit'] = '1';
 			}
-			if ($cfg['upload']['material']) $allow['material_pane'] = '1';
+			if ($cfg['upload']['material']) {
+				if ($return['material_file_filename']){
+					$allow['material_pane'] = '1';
+				}
+
+			}
 		}
 
 		$permissions = $user['permissions'];
@@ -68,6 +73,7 @@ class data {
 		if ($permissions['details']['actions']['repeat']=='0') $allow['repeat'] = 0;
 		if ($permissions['details']['actions']['edit']=='0') $allow['edit'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
+
 
 
 		$return['a'] = $allow;

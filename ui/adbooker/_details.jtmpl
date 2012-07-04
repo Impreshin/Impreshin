@@ -259,8 +259,16 @@
 			<div id="details-pane-material" class="tab-pane">
 				<div class="scroll-pane">
 
-					<a href="/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>"><%= this.material_file_filename %> (<%= this.material_file_filesize_display %>)</a>
-					<p>the material goes here</p>
+					<a href="/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>">
+						<div id="material-pane-header" >
+							<h4><%= this.material_file_filename %>&nbsp;
+								<small>&nbsp;(<%= this.material_file_filesize_display %>)</small>
+							</h4>
+
+						</div>
+
+					<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=400&h=400" alt="" class="glow">
+					</a>
 
 
 				</div>
@@ -276,7 +284,9 @@
 		<% } %>
 
 		<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
-
+			<% if (this.material_file_filename) { %>
+			<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>">
+			<% } %>
 		</div>
 
 		<% if (this.material_status!='1') { %>

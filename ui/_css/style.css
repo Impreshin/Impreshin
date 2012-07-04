@@ -1245,6 +1245,33 @@ table.records .record-tick {
   display: block;
   width: 100%;
 }
+#details-modal #details-pane-material a {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: red;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+#details-modal #details-pane-material #material-pane-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #444444;
+}
+#details-modal #details-pane-material .glow {
+  -webkit-box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
+  -moz-box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
+  box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
+  margin-left: auto;
+  margin-left: auto;
+  margin-top: 20px;
+}
 #details-advert-size {
   -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
   -moz-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);
