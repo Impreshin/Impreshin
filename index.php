@@ -307,7 +307,9 @@ $app->route('GET|POST /ab/download/@folder/@ID/*', function() use($app) {
 	}
 );
 $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
-		$app->call("controllers\\ab\\controller_thumb->" . $app->get('PARAMS.folder'));
+	F3::mutex(function() {
+		F3::call("controllers\\ab\\controller_thumb->" . F3::get('PARAMS.folder'));
+	});
 	}
 );
 //$app->route('GET|POST /ab/data/@data', 'abdata->{{@PARAMS.data}}');
