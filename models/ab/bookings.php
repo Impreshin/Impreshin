@@ -86,6 +86,10 @@ class bookings {
 					}
 				}
 
+			} else {
+				$return['material_file_store'] = "";
+				$return['material_file_filename'] = "";
+				$return['material_file_filesize'] = "";
 			}
 
 

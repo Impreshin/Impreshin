@@ -305,6 +305,13 @@ class settings {
 			}
 		}
 
+		$cfg = F3::get("cfg");
+
+		if (!$cfg['upload']['material']){
+			if (isset($return['columns']['material_file_filename'])) unset($return['columns']['material_file_filename']);
+			if (isset($return['columns']['material_file_filesize'])) unset($return['columns']['material_file_filesize']);
+		}
+
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());

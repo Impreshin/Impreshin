@@ -262,13 +262,14 @@
 					<a href="/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>">
 						<div id="material-pane-header" >
 							<h4><%= this.material_file_filename %>&nbsp;
-								<small>&nbsp;(<%= this.material_file_filesize_display %>)</small>
+								<small>&nbsp;(<%= this.material_file_filesize_display %> - <%= this.material_production %>)</small>
 							</h4>
 
 						</div>
 
 					<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=400&h=400&s=<%= this.material_file_store %>" alt="" class="glow">
 					</a>
+
 
 
 				</div>
