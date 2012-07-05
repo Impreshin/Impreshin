@@ -15,7 +15,7 @@ class controller_thumb {
 
 		$data = new models\bookings();
 		$data = $data->get(F3::get("PARAMS.ID"));
-
+/*
 		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
 		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
 		header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
@@ -23,7 +23,7 @@ class controller_thumb {
 			header('HTTP/1.1 304 Not Modified');
 			die();
 		}
-
+*/
 		$folder = $cfg['upload']['folder'] . "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/" ;
 		$filename = $data['material_file_store'];
 

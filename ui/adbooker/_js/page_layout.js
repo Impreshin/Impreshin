@@ -326,12 +326,20 @@ function tr_draggable($parent){
 				var $target = $(e.target).closest("tr.record");
 				var cm = $target.attr("data-cm");
 				var col = $target.attr("data-col");
+				var img = $target.attr("data-image");
 
 				var width = colSize * col, offsetX = width / 2;
 				var height = cmSize * cm, offsetY = height / 2;
 				;
 
-				return '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;"></div>'
+				var str;
+				str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;">';
+				if (img){
+					str += '<img src="' + img + '&w=' + width + '&h=' + height + '" />';
+				}
+				str += '</div>';
+
+				return str;
 			},
 			cursorAt   :{left:0, top:0},
 			containment:false,

@@ -4,7 +4,7 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
+	<tr data-id="<%= this.ID %>" class="record dragable" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
@@ -34,7 +34,7 @@
 				<table class="s">
 					<% for(var g in this.records) { %>
 
-					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material) { %><% if(this.records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
+					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material) { %><% if(this.records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
 						</td>
@@ -94,7 +94,7 @@
 				<table class="s">
 					<% for(var g in this.pages[i].records) { %>
 
-					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(!this.pages[i].locked) { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material) { %><% if(this.pages[i].records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>">
+					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(!this.pages[i].locked) { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material) { %><% if(this.pages[i].records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 
