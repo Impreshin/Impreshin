@@ -92,6 +92,11 @@ class settings {
 					"h"=> "Account"
 				),
 
+				"invoiceNum"               => array(
+					"c"=> "invoiceNum",
+					"o"=> "invoiceNum",
+					"h"=> "Invoice&nbsp;Num"
+				),
 				"orderNum"               => array(
 					"c"=> "orderNum",
 					"o"=> "orderNum",
@@ -266,6 +271,10 @@ class settings {
 				"n"=> "Production",
 				"g"=> "material_production"
 			),
+			"invoiced"=> array(
+				"n"=> "Invoiced Status",
+				"g"=> "invoicedStatus"
+			),
 			"none"=> array(
 				"n"=> "No Ordering",
 				"g"=> "none"
@@ -276,10 +285,10 @@ class settings {
 
 
 		$sections = array(
-			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
-			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","none"),
+			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced","none"),
+			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","invoiced","none"),
 			"production"=>array("placing","type","colours","columns","pages","material_production","none"),
-			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","none"),
+			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced","none"),
 		);
 
 		$groupby = array();

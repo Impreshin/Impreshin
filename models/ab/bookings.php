@@ -400,6 +400,11 @@ class bookings {
 				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_bookings.material_production $ordering,  " . $orderby;
 				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_bookings.material_production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
 				break;
+			case "invoicedStatus":
+				$orderby = "if (invoiceNum,1,0) $ordering, " . $orderby;
+				$arrange = "if (invoiceNum,'Invoiced','Not Invoiced') as heading";
+				break;
+
 
 			case "none":
 				$orderby = "" . $orderby;
