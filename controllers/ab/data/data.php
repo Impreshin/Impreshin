@@ -54,6 +54,7 @@ class data {
 
 			if ($return['state']=='Current'){
 				$allow['checked'] = '1';
+				$allow['invoice'] = '1';
 			}
 			if ($return['state'] == 'Current' || $return['state'] == 'Future'){
 				$allow['material'] = '1';
@@ -72,6 +73,7 @@ class data {
 		if ($permissions['details']['actions']['material']=='0') $allow['material'] = 0;
 		if ($permissions['details']['actions']['repeat']=='0') $allow['repeat'] = 0;
 		if ($permissions['details']['actions']['edit']=='0') $allow['edit'] = 0;
+		if ($permissions['details']['actions']['invoice']=='0') $allow['invoice'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
 

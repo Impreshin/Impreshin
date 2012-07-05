@@ -344,7 +344,7 @@
 				<% } %>
 			<% } %>
 
-			<% if (this.a.checked) { %>
+			<% if (this.a.invoice) { %>
 				<% if (this.invoiceNum) { %>
 					<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
 				<% } else { %>

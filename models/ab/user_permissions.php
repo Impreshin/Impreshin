@@ -23,6 +23,7 @@ class user_permissions {
 					"repeat"  => 0,
 					"edit"    => 0,
 					"delete"  => 0,
+					"invoice"  => 0,
 				),
 				"fields"=> array(
 					"rate"         => 0,
