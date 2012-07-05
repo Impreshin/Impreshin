@@ -218,8 +218,6 @@ class Graphics extends Base {
 			imagecolortransparent($tmp,$bg);
 			if (PHP_SAPI!='cli' && !headers_sent()) {
 				header(self::HTTP_Content.': image/'.$ext[1]);
-				header(self::HTTP_Powered.': '.self::TEXT_AppName.' '.
-					'('.self::TEXT_AppURL.')');
 			}
 			// Send output in same graphics format as original
 			eval('image'.$ext[1].'($tmp);');

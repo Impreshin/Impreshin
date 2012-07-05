@@ -267,7 +267,7 @@
 
 						</div>
 
-					<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=400&h=400" alt="" class="glow">
+					<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=400&h=400&s=<%= this.material_file_store %>" alt="" class="glow">
 					</a>
 
 
@@ -285,7 +285,7 @@
 
 		<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
 			<% if (this.material_file_filename) { %>
-			<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>">
+			<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
 			<% } %>
 		</div>
 
