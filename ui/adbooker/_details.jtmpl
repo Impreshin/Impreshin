@@ -282,7 +282,7 @@
 	</div>
 	<% if (this.typeID =='1') { %>
 
-		<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %>>
+		<a <% if (this.material_file_filename) { %><% if (this.a.material_pane) { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" >
 			<% if (this.page){ %>
 			<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 			<% } %>
@@ -528,10 +528,14 @@
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
 	});
-	$(document).on('show', '#details-modal .nav-tabs', function (e) {
+	$(document).on('show', '#details-modal .nav-tabs, #details-advert-size', function (e) {
 		var target = e.target; // activated tab
 		var previous = e.relatedTarget; // previous tab
+		$("#details-modal .nav-tabs li.active").removeClass("active");
 		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+
+		$("#details-modal .nav-tabs li a[href='"+href+"']").parent().addClass("active");
+
 		$.bbq.pushState({"details-tab":pane});
 		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
