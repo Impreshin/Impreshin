@@ -66,6 +66,57 @@ class user_permissions {
 				)
 			),
 			"reports"=>array(
+				"account"=>array(
+					"breakdown"=> array(
+						"page"=> 0
+					),
+					"summary"=> array(
+						"page"=> 0
+					)
+				),
+				"marketer"=>array(
+					"breakdown"=> array(
+						"page"=> 0
+					),
+					"discounts"=> array(
+						"page"=> 0
+					),
+					"summary"=> array(
+						"page"=> 0
+					)
+				),
+				"production"=>array(
+					"breakdown"=> array(
+						"page"=> 0
+					),
+					"summary"=> array(
+						"page"=> 0
+					)
+				),
+
+
+				"category"=>array(
+
+					"summary"=> array(
+						"page"=> 0
+					)
+				),
+
+
+
+				"publication"=>array(
+					"summary"=> array(
+						"page"=> 0
+					),
+					"placing"=> array(
+						"page"=> 0
+					),
+					"section"=> array(
+						"page"=> 0
+					),
+
+				)
+
 
 			),
 			"administration"=>array(

@@ -162,7 +162,8 @@ class settings {
 				"material_file_filesize"               => array(
 					"c"=> "material_file_filesize",
 					"o"=> "material_file_filesize",
-					"h"=> "File&nbsp;Size"
+					"h"=> "File&nbsp;Size",
+					"m"=> "60"
 				),
 				"material_source"               => array(
 					"c"=> "material_source",

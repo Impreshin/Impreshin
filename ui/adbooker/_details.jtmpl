@@ -9,6 +9,9 @@
 		<% if (this.deleted) { %> <span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span><% } %>
 		<% if (this.repeat_from) { %> <span class="label label-info" style="margin-right: 10px; margin-top:-8px;"> Repeat </span><% } %>
 		<%= this.client %>
+		<% if (this.invoiceNum) { %>
+		<small> - (<%= this.invoiceNum %>)</small>
+		<% } %>
 	</h3>
 
 	<div id="modal-header-btns">
@@ -279,41 +282,53 @@
 	</div>
 	<% if (this.typeID =='1') { %>
 
-	<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %>>
-		<% if (this.page){ %>
-		<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
-		<% } %>
-
-		<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
-			<% if (this.material_file_filename) { %>
-			<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
+		<a id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %>>
+			<% if (this.page){ %>
+			<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 			<% } %>
-		</div>
 
-		<% if (this.material_status!='1') { %>
-			<img src="/ui/_images/question.png" alt="" class="material-state">
-		<% } else { %>
-			<img src="/ui/_images/success.png" alt="" class="material-state">
-		<% } %>
-
-	</a>
-	<% if (this.a.material) { %>
-	<div id="details-bottom-right-btns">
-		<div class="btn-group">
-			<% if (this.material_status!='1') { %>
-			<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"> Material</a>
-			<% } else { %>
-			<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material <% if (this.material_file_filesize && this.material_status) { %>(<%= this.material_file_filesize_display %>)<% } %></a>
-				<% if (this.material_approved=='1') { %>
-					<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Material approved"><i class="icon-ok icon-white"></i></a>
-				<% } else { %>
-					<a class="btn btn-mini btn-danger span1" style="width: 13%;" id="material-approval" data-material-approved="1" rel="tooltip" title="Material NOT approved"><i class="icon-remove icon-white"></i></a>
+			<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
+				<% if (this.material_file_filename) { %>
+				<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
 				<% } %>
+			</div>
+
+			<% if (this.material_status!='1') { %>
+				<img src="/ui/_images/question.png" alt="" class="material-state">
+			<% } else { %>
+				<img src="/ui/_images/success.png" alt="" class="material-state">
+			<% } %>
+
+		</a>
+		<% if (this.a.material) { %>
+
+		<div id="details-bottom-right-btns">
+			<div class="btn-group">
+				<% if (this.material_status!='1') { %>
+				<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"> Material</a>
+				<% } else { %>
+				<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material <% if (this.material_file_filesize && this.material_status) { %>(<%= this.material_file_filesize_display %>)<% } %></a>
+					<% if (this.material_approved=='1') { %>
+						<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Material approved"><i class="icon-ok icon-white"></i></a>
+					<% } else { %>
+						<a class="btn btn-mini btn-danger span1" style="width: 13%;" id="material-approval" data-material-approved="1" rel="tooltip" title="Material NOT approved"><i class="icon-remove icon-white"></i></a>
+					<% } %>
+				<% } %>
+			</div>
+		</div>
+
+		<% } %>
+	<% } else if (this.typeID=='2') { %>
+
+		<% if (this.a.material) { %>
+		<div id="details-bottom-right-btns">
+			<% if (this.material_status=='1') { %>
+			<a class="btn btn-mini btn-success" style="width: 98%;" id="insert-material-status"  data-status="0" > Material</a>
+			<% } else { %>
+			<a class="btn btn-mini " style="width: 98%;" id="insert-material-status" data-status="1"> Material</a>
 			<% } %>
 		</div>
-	</div>
-
-	<% } %>
+		<% } %>
 	<% } %>
 
 </div>
@@ -328,6 +343,16 @@
 					<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
 				<% } %>
 			<% } %>
+
+			<% if (this.a.checked) { %>
+				<% if (this.invoiceNum) { %>
+					<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
+				<% } else { %>
+					<button class="btn  span2" type="button" id="booking-invoiced" data-invoice="">Invoiced</button>
+				<% } %>
+			<% } %>
+
+
 		</div>
 
 		<div style="padding-left: 15px; margin-right: -20px;" class="offset9" id="list-next-prev-btns">
@@ -494,6 +519,7 @@
 </script>
 <script type="text/javascript">
 
+
 	$(document).on("shown",'#details-modal', function () {
 		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
 		if (!tab) tab = "details-pane-details";
@@ -584,6 +610,7 @@
 
 
 	});
+
 	$(document).on('click', '#material-approval', function (e) {
 		var $this = $(this);
 
@@ -616,6 +643,55 @@
 
 
 	});
+	$(document).on('click', '#insert-material-status', function (e) {
+		var $this = $(this);
+		var status = $this.attr("data-status");
+		var data = {
+			"material_status":status
+		};
+
+
+
+		$.post("/ab/save/material_status/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+
+
+
+		});
+
+
+	});
+
+	$(document).on("click", '#booking-invoiced', function () {
+		var $this = $(this);
+		var invoice = $this.attr("data-invoice");
+		var data;
+		var new_invoice = prompt("Invoice Number", invoice);
+
+		if (new_invoice){
+			data = {
+				"invoiceNum":new_invoice
+			};
+		} else {
+			if (invoice){
+				if (confirm("Are you sure you want to clear this invoice number?")){
+					data = {
+						"invoiceNum":""
+					};
+				}
+			}
+		}
+
+
+		if (data){
+			$.post("/ab/save/invoice/?ID=" + $.bbq.getState("ID"), data, function (response) {
+				getDetails();
+			});
+		}
+
+
+	});
+
 	var uploader;
 	$(document).on('popup-show', '#popup-material', function () {
 		set_upload();

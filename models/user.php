@@ -108,6 +108,26 @@ class user {
 			foreach ($permissions['administration']['system'] as $p){
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
+			$permissions['reports']['_nav'] = '0';
+
+			foreach ($permissions['reports'] as $k=>$p) {
+
+				if ( isset($p['page']) && $p['page'] ) $permissions['reports']['_nav'] = '1';
+
+
+				if (is_array($p)){
+					foreach ($p as $s=>$ps) {
+						if (isset($ps['page']) && $ps['page']) {
+							$permissions['reports'][$k]['_nav'] = '1';
+							$permissions['reports']['_nav'] = '1';
+						}
+					}
+				}
+
+			}
+
+			// test_array($permissions);
+
 
 			$result['permissions'] = $permissions;
 

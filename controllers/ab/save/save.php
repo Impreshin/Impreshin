@@ -77,7 +77,7 @@ class save {
 
 	function material_status(){
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
-$section = "";
+		$section = "";
 		$cfg = F3::get("cfg");
 		$cfg = $cfg['upload'];
 
@@ -96,21 +96,26 @@ $section = "";
 
 			$section = "material";
 
-
-
-			if ($values['material_status'] && $values['material_file_filename']) {
+			if (isset($values['material_file_filename'])){
+				if ($values['material_status'] && $values['material_file_filename']) {
 					$values['material_status'] = '1';
 					$values['material_date'] = date("Y-m-d H:i:s");
 
-			} else {
-				$values['material_status'] = '0';
-				$values['material_file_filename'] = "";
-				$values['material_file_filesize'] = "";
-				$values['material_file_store'] = "";
+				} else {
+					$values['material_status'] = '0';
+					$values['material_file_filename'] = "";
+					$values['material_file_filesize'] = "";
+					$values['material_file_store'] = "";
 
+
+				}
+				$values['material_approved'] = '0';
+			} else {
 
 			}
-			$values['material_approved'] = '0';
+
+
+
 
 
 		} else {
@@ -166,5 +171,26 @@ $section = "";
 
 		if ($section) bookings::save($ID, $values,array("section"=> $section,"dry"=>false));
 		test_array($values);
+	}
+	function invoice(){
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$section = "";
+
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$values = array();
+		if (isset($_POST['invoiceNum'])) $values['invoiceNum'] = $_POST['invoiceNum'];
+
+
+		$section = "invoice";
+
+
+
+		if ($section) bookings::save($ID, $values, array("section"=> $section,"dry" => false));
+		test_array($values);
+
+
 	}
 }

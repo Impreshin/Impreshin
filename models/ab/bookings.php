@@ -725,6 +725,13 @@ class bookings {
 						$label = "Booking Not Checked";
 					}
 					break;
+				case "invoice":
+					if ($a->invoiceNum) {
+						$label = "Booking Invoiced";
+					} else {
+						$label = "Booking Not Invoiced";
+					}
+					break;
 				case "layout":
 					if ($a->pageID) {
 						$label = "Booking added to a page";
