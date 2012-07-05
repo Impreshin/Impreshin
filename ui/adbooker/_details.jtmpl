@@ -527,16 +527,16 @@
 
 		if (dID){
 			$.post("/ab/save/bookings/repeat/?ID=" + $.bbq.getState("ID"), data, function (response) {
-				console.log(response);
+				//console.log(response);
 				var ID;
 				if (confirm("Click ok to view the new record \n or \n cancel to stay with the old")) {
 
 					ID = response.ID;
-					console.log("New: " + ID);
+					//console.log("New: " + ID);
 					$.bbq.pushState({"ID":ID});
 					getDetails();
 				} else {
-					console.log("OLD: " + $.bbq.getState("ID"));
+					//console.log("OLD: " + $.bbq.getState("ID"));
 					ID = $.bbq.getState("ID");
 					getDetails();
 				}

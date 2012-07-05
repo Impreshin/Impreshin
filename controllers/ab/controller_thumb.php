@@ -44,7 +44,7 @@ class controller_thumb {
 						$res = "96";
 						$pdf = $folder . $filename;
 
-						$str = "gs -dCOLORSCREEN -dNOPAUSE -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
+						$str = "gs -dCOLORSCREEN -dNOPAUSE -box -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
 						exec($str);
 
 						self::remove_white($thumb);

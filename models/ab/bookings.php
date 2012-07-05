@@ -518,6 +518,23 @@ class bookings {
 			)
 		);
 
+
+		$cfg = F3::get("cfg");
+		$cfg = $cfg['upload'];
+
+		$cID = $data['cID'];
+
+
+
+		$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
+		$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $values['dID'] . "/material/";
+		if (file_exists($oldFolder . $data['material_file_store'])) {
+
+			if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
+			@copy($oldFolder . $data['material_file_store'], $newFolder . $data['material_file_store']);
+		}
+
+	//	test_array(array("o"=>$oldFolder,"n"=>$newFolder));
 		bookings::logging($data['ID'], $log, "Booking was repeated");
 		bookings::logging($ID, $log, "Repeat Booking");
 
