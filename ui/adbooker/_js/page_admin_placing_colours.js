@@ -32,11 +32,14 @@ $(document).ready(function(){
 
 
 	$(document).on("change", "#searchform select", function () {
+
 		$("#searchform").trigger("submit")
 	});
 	$(document).on("submit", "#searchform", function (e) {
 		e.preventDefault();
+		$.bbq.removeState("ID");
 		getList();
+		getDetails();
 		return false;
 	});
 

@@ -247,7 +247,10 @@ function load_form_diff() {
 
 
 	});
-	if (type=='1') $("#placingID").select2({});
+	if (type=='1') {
+		$("#placingID").select2({});
+		load_colours();
+	}
 	$("#marketerID").select2({});
 	$("#categoryID").select2({});
 
