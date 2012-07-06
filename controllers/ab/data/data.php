@@ -68,6 +68,9 @@ class data {
 			}
 		}
 
+		if ($return['pageID']) $allow['edit'] = 0;
+		if ($return['pageID']) $allow['checked'] = 0;
+
 		$permissions = $user['permissions'];
 		if ($permissions['details']['actions']['check']=='0') $allow['checked'] = 0;
 		if ($permissions['details']['actions']['material']=='0') $allow['material'] = 0;
