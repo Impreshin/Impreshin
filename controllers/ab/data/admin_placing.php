@@ -65,7 +65,7 @@ class admin_placing extends data {
 		$return['details'] = $details;
 
 		if ($details['ID']) {
-			$where = "placingID='" . $details['ID'] . "'";
+			$where = "ab_bookings.placingID='" . $details['ID'] . "'";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

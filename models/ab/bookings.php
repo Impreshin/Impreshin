@@ -486,6 +486,7 @@ class bookings {
 		unset($values['publishDate']);
 		unset($values['dID']);
 		unset($values['userName']);
+		unset($values['pageID']);
 
 		$values['userID'] = $user['ID'];
 		$values['checked'] = "0";

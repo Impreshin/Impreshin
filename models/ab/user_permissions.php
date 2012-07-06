@@ -14,8 +14,6 @@ class user_permissions {
 		$timer = new timer();
 		$return = array();
 		$return['p'] = array(
-
-
 			"details"=> array(
 				"actions"=> array(
 					"check"   => 0,
