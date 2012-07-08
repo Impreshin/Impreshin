@@ -30,7 +30,7 @@
 
 
 			<fieldset style="margin-top: 20px;">
-				<legend>Target</legend>
+				<legend><% if (this.details.ID) { %>Edit<% } else { %>New<% } %></legend>
 
 				<div id="errorArea"></div>
 

@@ -7,7 +7,7 @@
 
 		</td>
 
-		<th style="width: 90px;" title="<%= this.ab_last_activity.display %>">
+		<th style="width: 90px;" <% if (this.ab_last_activity.time) { %>title="<%= this.ab_last_activity.time %>"<% } %>>
 			<% if (this.ab){ %>
 			<span class="s g " style="text-shadow:none;">
 			<%= this.ab_last_activity.display %>

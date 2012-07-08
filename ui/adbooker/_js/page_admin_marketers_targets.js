@@ -40,7 +40,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		getList();
 		$.bbq.removeState("ID");
-		getList();
+		getDetails();
 		return false;
 	});
 
