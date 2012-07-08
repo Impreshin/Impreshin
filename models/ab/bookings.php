@@ -157,6 +157,7 @@ class bookings {
 
 		$result = F3::get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
+			global_dates.publish_date as publishDate,
 				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status as material,
@@ -486,7 +487,7 @@ class bookings {
 		unset($values['publishDate']);
 		unset($values['dID']);
 		unset($values['userName']);
-		unset($values['pageID']);
+
 
 		$values['userID'] = $user['ID'];
 		$values['checked'] = "0";
@@ -495,6 +496,7 @@ class bookings {
 		$values['checked_user'] = null;
 		$values['userName'] = $user['fullName'];
 		$values['repeat_from'] = $data['ID'];
+		$values['pageID'] =null;
 
 
 		$values['dID'] = $dID;

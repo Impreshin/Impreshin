@@ -92,6 +92,19 @@ class user {
 				F3::reroute("/noaccess/?app=$app");
 			}
 
+			$result['ab_marketerID'] = $extra['ab_marketerID'];
+			$result['ab_productionID'] = $extra['ab_productionID'];
+
+			unset($result['password']);
+			//unset($result[$app . '_permissions']);
+
+			if ($app == "ab") {
+				$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'], $result['publication']['ID']);
+				if (count($marketer)) {
+					$result['marketer'] = $marketer;
+				}
+			}
+
 
 			$appClass = "\\models\\" . $app . "\\user_permissions";
 			$permissions = $appClass::_read($extra[$app . '_permissions']);
@@ -109,6 +122,8 @@ class user {
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
 			$permissions['reports']['_nav'] = '0';
+
+
 
 			foreach ($permissions['reports'] as $k=>$p) {
 
@@ -128,23 +143,22 @@ class user {
 
 			// test_array($permissions);
 
+			if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
+				$permissions['reports']['_nav'] = '1';
+				$permissions['reports']['marketer']['_nav'] = '1';
+
+			}
+			foreach ($permissions['reports']['marketer'] as $k=> $p) {
+				$permissions['reports']['marketer'][$k]['page'] = '1';
+
+			}
+
+
 
 			$result['permissions'] = $permissions;
 
 
-			$result['ab_marketerID'] = $extra['ab_marketerID'];
-			$result['ab_productionID'] = $extra['ab_productionID'];
-
-			unset($result['password']);
-			//unset($result[$app . '_permissions']);
-
-			if ($app=="ab"){
-				$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'],$result['publication']['ID']);
-				if (count($marketer)){
-					$result['marketer'] = $marketer;
-				}
-			}
-
+			//test_array($permissions['reports']);
 
 
 			} else {

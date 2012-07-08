@@ -119,7 +119,8 @@ function curl_get_contents($url) {
 	return $file_contents;
 }
 function currency($number){
-	$number = 'R ' . number_format($number, 2, '.', ' ');
+
+	$number = $GLOBALS['cfg']['currency']['sign'] . number_format($number, 2, '.', $GLOBALS['cfg']['currency']['separator']);
 	return str_replace(" ", "&nbsp;", $number);
 
 }

@@ -455,10 +455,7 @@ class settings {
 					)
 				),
 				"admin_marketers_targets"=>array(
-					"order"=>array(
-						"c"=>"marketer",
-						"o"=>"ASC"
-					)
+					"marketerID"=>""
 				),
 				"admin_production"=>array(
 					"order"=>array(

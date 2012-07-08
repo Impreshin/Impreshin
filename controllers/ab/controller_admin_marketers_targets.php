@@ -18,10 +18,14 @@ class controller_admin_marketers_targets {
 		$cID = $user['publication']['cID'];
 
 
-		$users = \models\user::getAll("cID='$cID'", "fullName ASC");
+		$where = "cID='$cID'";
+		$records = models\marketers::getAll($where, " marketer ASC");
+
+		$section = "admin_marketers_targets";
+
+		$settings = models\settings::_read($section);
 
 
-//test_array($pages);
 
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
@@ -35,7 +39,8 @@ class controller_admin_marketers_targets {
 		);
 
 
-		$tmpl->users = $users;
+		$tmpl->marketers = $records;
+		$tmpl->settings = $settings;
 		$tmpl->output();
 
 	}

@@ -20,6 +20,7 @@ class user_permissions {
 					"material"=> 0,
 					"repeat"  => 0,
 					"edit"    => 0,
+					"edit_master"    => 0,
 					"delete"  => 0,
 					"invoice"  => 0,
 				),
@@ -66,29 +67,24 @@ class user_permissions {
 			),
 			"reports"=>array(
 				"account"=>array(
-					"breakdown"=> array(
+					"figures"=> array(
 						"page"=> 0
 					),
-					"summary"=> array(
-						"page"=> 0
-					)
+
 				),
 				"marketer"=>array(
-					"breakdown"=> array(
+					"figures"=> array(
 						"page"=> 0
 					),
 					"discounts"=> array(
 						"page"=> 0
 					),
-					"summary"=> array(
+					"targets"=> array(
 						"page"=> 0
 					)
 				),
 				"production"=>array(
-					"breakdown"=> array(
-						"page"=> 0
-					),
-					"summary"=> array(
+					"figures"=> array(
 						"page"=> 0
 					)
 				),
@@ -96,7 +92,7 @@ class user_permissions {
 
 				"category"=>array(
 
-					"summary"=> array(
+					"figures"=> array(
 						"page"=> 0
 					)
 				),
@@ -104,7 +100,7 @@ class user_permissions {
 
 
 				"publication"=>array(
-					"summary"=> array(
+					"figures"=> array(
 						"page"=> 0
 					),
 					"placing"=> array(
@@ -170,6 +166,11 @@ class user_permissions {
 
 		$return['d'] = array(
 
+			"details"=>array(
+				"actions"=>array(
+					"edit_master"=>"this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
+				)
+			),
 			"layout"=> array(
 				"pagecount"=> "Allows this user to set how many pages the edition will be"
 			),

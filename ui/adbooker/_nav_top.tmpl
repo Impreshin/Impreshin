@@ -67,24 +67,21 @@
 								{% if _user['permissions']['reports']['account']['_nav'] %}
 								<li class="nav-header">Accounts</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['account']['breakdown']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_breakdown" %} active {% endif %}">
-									<a href="/ab/reports/account/breakdown">Breakdown</a>
+								{% if _user['permissions']['reports']['account']['figures']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_figures" %} active {% endif %}">
+									<a href="/ab/reports/account/figures">Figures</a>
 								</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['account']['summary']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_summary" %} active {% endif %}">
-									<a href="/ab/reports/account/summary">Summary</a>
-								</li>
-								{% endif %}
+
 
 
 								{% if _user['permissions']['reports']['marketer']['_nav'] %}
 								<li class="nav-header">Marketers</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['marketer']['breakdown']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_breakdown" %} active {% endif %}">
-									<a href="/ab/reports/marketer/breakdown">Breakdown</a>
+
+								{% if _user['permissions']['reports']['marketer']['figures']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_figures" %} active {% endif %}">
+									<a href="/ab/reports/marketer/figures">Figures</a>
 								</li>
 								{% endif %}
 								{% if _user['permissions']['reports']['marketer']['discounts']['page'] %}
@@ -92,9 +89,9 @@
 									<a href="/ab/reports/marketer/discounts">Discounts</a>
 								</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['marketer']['summary']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_summary" %} active {% endif %}">
-									<a href="/ab/reports/marketer/summary">Summary</a>
+								{% if _user['permissions']['reports']['marketer']['targets']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_targets" %} active {% endif %}">
+									<a href="/ab/reports/marketer/targets">Targets</a>
 								</li>
 								{% endif %}
 
@@ -102,14 +99,9 @@
 								{% if _user['permissions']['reports']['production']['_nav'] %}
 								<li class="nav-header">Production</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['production']['breakdown']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "production_breakdown" %} active {% endif %}">
-									<a href="/ab/reports/production/breakdown">Breakdown</a>
-								</li>
-								{% endif %}
-								{% if _user['permissions']['reports']['production']['summary']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "production_summary" %} active {% endif %}">
-									<a href="/ab/reports/production/summary">Summary</a>
+								{% if _user['permissions']['reports']['production']['figures']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "production_figures" %} active {% endif %}">
+									<a href="/ab/reports/production/figures">Figures</a>
 								</li>
 								{% endif %}
 
@@ -118,14 +110,9 @@
 								{% if _user['permissions']['reports']['category']['_nav'] %}
 								<li class="nav-header">Categories</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['category']['breakdown']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "category_breakdown" %} active {% endif %}">
-									<a href="/ab/reports/category/breakdown">Breakdown</a>
-								</li>
-								{% endif %}
-								{% if _user['permissions']['reports']['category']['summary']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "category_summary" %} active {% endif %}">
-									<a href="/ab/reports/category/summary">Summary</a>
+								{% if _user['permissions']['reports']['category']['figures']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "category_figures" %} active {% endif %}">
+									<a href="/ab/reports/category/figures">Figures</a>
 								</li>
 								{% endif %}
 
@@ -135,9 +122,9 @@
 								{% if _user['permissions']['reports']['publication']['_nav'] %}
 								<li class="nav-header">Publication</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['publication']['summary']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_summary" %} active {% endif %}">
-									<a href="/ab/reports/publication/summary">Summary</a>
+								{% if _user['permissions']['reports']['publication']['figures']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_figures" %} active {% endif %}">
+									<a href="/ab/reports/publication/figures">Figures</a>
 								</li>
 								{% endif %}
 								{% if _user['permissions']['reports']['publication']['section']['page'] %}

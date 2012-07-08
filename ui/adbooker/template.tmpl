@@ -476,13 +476,13 @@
 		</span>
 	<% } %>
 	<% if (this.marketer) { %>
-		<span>
+		<span title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>">
 			Marketer -
-			<span>&nbsp;Total: <%= this.marketer.targets.done %> [<%= this.marketer.targets.records %>]
-				<% if (this.marketer.targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.targets.target %><% } %>
+			<span>&nbsp;Total: <%= this.marketer.next_targets.done %> [<%= this.marketer.next_targets.records %>]
+				<% if (this.marketer.next_targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.next_targets.target %><% } %>
 			</span>
-			<% if (this.marketer.targets.target) { %>
-				<div style="width: <% if (this.marketer.targets.percent>100) { %>100<% } else { %><%= this.marketer.targets.percent %><% } %>%;"></div>
+			<% if (this.marketer.next_targets.target) { %>
+				<div style="width: <% if (this.marketer.next_targets.percent>100) { %>100<% } else { %><%= this.marketer.next_targets.percent %><% } %>%;"></div>
 			<% } %>
 		</span>
 	<% } %>

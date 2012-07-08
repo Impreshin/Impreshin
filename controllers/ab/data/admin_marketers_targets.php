@@ -26,33 +26,15 @@ class admin_marketers_targets extends data {
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
+		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : "";
+
 
 		$section = "admin_marketers_targets";
-
-		$settings = models\settings::_read($section);
-
-		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
-		$ordering_d = $settings['order']['o'];
-
-		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
-			if ($settings['order']['c'] == $_REQUEST['order']) {
-				if ($ordering_d == "ASC") {
-					$ordering_d = "DESC";
-				} else {
-					$ordering_d = "ASC";
-				}
-
-			}
-
-		}
 
 
 		$values = array();
 		$values[$section] = array(
-			"order"      => array(
-				"c"=> $ordering_c,
-				"o"=> $ordering_d
-			),
+			"marketerID"      => $mID
 
 		);
 
@@ -61,15 +43,29 @@ class admin_marketers_targets extends data {
 
 
 
-		$where = "pID='$pID'";
+
+		$where = "mID = '$mID' AND DATEDIFF(date_to,current_date()) > -30";
 
 
 
-		$records = models\marketers::getAll($where, $ordering_c . " " . $ordering_d . ", marketer ASC");
+		$records = models\marketers_targets::getAll($where, " DATEDIFF(date_to,current_date()) ASC");
+		$a = array();
+		foreach ($records as $target){
+			$target['target'] = currency($target['target']);
+			$target['active'] = 0;
+
+			$date_from = date("Y-m-d", strtotime($target['date_from']));
+			$date_to = date("Y-m-d", strtotime($target['date_to']));
+			$today = date("Y-m-d");
+
+			if ($date_to >= $today && $date_from <= $today) $target['active'] = 1;
+
+			$a[] = $target;
+		}
 
 		$return = array();
 
-		$return['records'] = $records;
+		$return['records'] = $a;
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
@@ -82,49 +78,42 @@ class admin_marketers_targets extends data {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
+		$o = new models\marketers_targets();
+		$details = $o->get($ID);
+
+		$ID = $details['ID'];
 
 
-		$data = models\marketers_targets::getAll("mID='$ID' AND pID = '$pID' ", "STR_TO_DATE(concat('01,',monthin,',',yearin),'%d,%m,%Y') DESC");
 
-
-		$a = array();
-		foreach ($data as $target){
-			$month = date("mY", strtotime($target['m']));
-			$a[$month] = $target['target'];
-
-		}
-
-
-		$dates = models\dates::getAll("pID='$pID' AND publish_date > DATE_ADD(now(), INTERVAL -5 MONTH)","publish_date DESC");
-
-
-		//test_array($dates);
-		$t = array();
-		foreach($dates as $date){
-
-			$month = date("mY",strtotime($date['publish_date']));
-			$t[$month] = array(
-				"month"=> date("m-Y", strtotime($date['publish_date'])),
-				"label"=> date("F Y", strtotime($date['publish_date'])),
-				"target"=>(isset($a[$month]))?$a[$month]:"",
-				"current"=>(date("m-Y")== date("m-Y", strtotime($date['publish_date'])))?1:0
-			);
-		}
-		$c = array();
-		foreach ($t as $b){
-			$c[] = $b;
-		}
 
 
 		$return = array();
-		if ($ID){
-			$return['details'] = $c;
+		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+
+		if (!$details['ID']) {
+			$userPublications = array();
 		} else {
-			$return['details'] = "";
+			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
 		}
 
 
+		$pstr = array();
+		foreach ($userPublications as $u) $pstr[] = $u['pID'];
 
+		$pubarray = array();
+		$pIDarray = array();
+		foreach ($publications as $pub) {
+			$pub['selected'] = 0;
+			if (in_array($pub['ID'], $pstr)) {
+				$pub['selected'] = 1;
+			}
+			$pIDarray[] = $pub['ID'];
+			$pubarray[] = $pub;
+		}
+
+		$publications = $pubarray;
+		$return['details'] = $details;
+		$return['publications'] = $publications;
 
 
 

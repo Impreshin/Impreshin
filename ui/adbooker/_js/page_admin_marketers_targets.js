@@ -29,6 +29,10 @@ $(document).ready(function(){
 
 	});
 
+	$(document).on("click", ".focustrigger", function () {
+		$(this).parent().find("input").trigger("focus")
+	});
+
 	$(document).on("change", "#searchform select", function () {
 		$("#searchform").trigger("submit")
 	});
@@ -51,7 +55,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to delete this marketer?")){
+		if (confirm("Are you sure you want to delete this record?")){
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_marketers_targets/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
@@ -67,10 +71,11 @@ $(document).ready(function(){
 		var data = $this.serialize();
 
 		var $errorArea = $("#errorArea").html("");
+		var mID = $("#marketerID").val();
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/ab/save/admin_marketers_targets/_save/?ID=" + ID, data, function (r) {
+		$.post("/ab/save/admin_marketers_targets/_save/?ID=" + ID+"&mID="+mID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length){
 				var str="";
@@ -116,14 +121,13 @@ function getList(){
 	var ID = $.bbq.getState("ID");
 
 
-	var order = $.bbq.getState("order");
-	order = (order) ? order : "";
+	var mID = $("#marketerID").val();
 
 
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_marketers_targets/_list/",{"order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_marketers_targets/_list/",{"mID":mID}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -161,7 +165,20 @@ function getDetails(){
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
-		$("#uID").select2({});
+
+
+		$("#date_from").datepicker({
+			changeMonth:true,
+			changeYear :true,
+			dateFormat:"yy-mm-dd",
+			defaultDate: data['details']['date_from']
+		});
+		$("#date_to").datepicker({
+			changeMonth:true,
+			changeYear :true,
+			dateFormat :"yy-mm-dd",
+			defaultDate:data['details']['date_to']
+		});
 
 
 

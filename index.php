@@ -14,12 +14,18 @@ if (!$SID) {
 	session_start();
 	$SID = session_id();
 }
+$cfg = array();
+require_once('config.inc.php');
+$GLOBALS['cfg'] = $cfg;
+
 
 require_once('inc/class.timer.php');
 $pageExecute = new timer(true);
 
 
 require_once('inc/functions.php');
+
+
 require_once('inc/class.pagination.php');
 
 
@@ -58,24 +64,8 @@ $folder = strtolower($folder);
 
 
 
-$cfg = array(
-	"debug"=>array(
-		"highlightfrom"=>0.5 // the debug timers thing
-	),
-	"DB"    => array(
-		"host"    => "localhost",
-		"username"=> "",
-		"password"=> "",
-		"database"=> "adbooker_v5"
-	),
-	"upload"=> array(
-		"material"=> false,
-		"pages"   => false,
-		"folder"  => $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "uploads" . DIRECTORY_SEPARATOR . $folder
-	),
-	"apps"=>array("ab")
-);
-require_once('config.inc.php');
+
+
 
 $allowed = $cfg['apps'];
 $folder = (in_array($folder, $allowed)) ? $folder : "";

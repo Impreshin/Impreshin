@@ -68,8 +68,13 @@ class data {
 			}
 		}
 
-		if ($return['pageID']) $allow['edit'] = 0;
-		if ($return['pageID']) $allow['checked'] = 0;
+		if ($return['pageID']) {
+			$allow['edit'] = 0;
+			$allow['checked'] = 0;
+		}
+
+
+
 
 		$permissions = $user['permissions'];
 		if ($permissions['details']['actions']['check']=='0') $allow['checked'] = 0;
@@ -79,7 +84,9 @@ class data {
 		if ($permissions['details']['actions']['invoice']=='0') $allow['invoice'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
-
+		if ($permissions['details']['actions']['edit_master']) {
+			$allow['edit'] = 1;
+		}
 
 		$return['a'] = $allow;
 

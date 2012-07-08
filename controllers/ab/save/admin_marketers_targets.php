@@ -27,6 +27,13 @@ class admin_marketers_targets extends save {
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$mID = isset($_REQUEST['mID']) ? $_REQUEST['mID'] : "";
+
+		$target = isset($_POST['target']) ? $_POST['target'] : "";
+		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
+		$date_from = isset($_POST['date_from']) ? $_POST['date_from'] : "";
+		$date_to = isset($_POST['date_to']) ? $_POST['date_to'] : "";
+
 
 
 
@@ -41,53 +48,63 @@ class admin_marketers_targets extends save {
 		//test_array($p);
 		$submit = true;
 
-		$post = $_POST;
+		if ($target == "") {
+			$submit = false;
+			$return['error'][] = "Need to specify a Target";
+		} else {
+			if (!is_numeric($target)) {
+				$submit = false;
+				$return['error'][] = "Target must be a number";
+			}
+		}
 
-		$a = array();
-		foreach ($post as $key => $value){
-			$d = str_replace("target","01", $key);
+		if ($date_from == "") {
+			$submit = false;
+			$return['error'][] = "Need to specify a Date From";
+		}
+		if ($date_to == "") {
+			$submit = false;
+			$return['error'][] = "Need to specify a Date To";
+		}
 
-			$m = date("m",strtotime($d));
-			$y = date("Y",strtotime($d));
+		if ($mID == "") {
+			$submit = false;
+			$return['error'][] = "No marketer selected";
+		}
 
-			$s = array(
-				"pID"=>$pID,
-				"mID"=>$ID,
-				"monthin"=>$m,
-				"yearin"=>$y,
-				"target"=>$value
+		$values = array(
+			"mID"=>$mID,
+			"target"         => $target,
+			"publications"     => $publications,
+			"date_from"              => $date_from,
+			"date_to"              => $date_to
+		);
+
+
+//$values = $values['p']['p'];
+
+
+		if ($submit) {
+
+			$dates = array(
+				date("Y-m-d",strtotime($date_from)),
+				date("Y-m-d",strtotime($date_to)),
 			);
 
 
-			$a[] = $s;
+			sort($dates);
+
+			$values['date_from'] = $dates[0];
+			$values['date_to'] = $dates[1];
+
+			$passed_ID = $ID;
+			$ID = models\marketers_targets::save($ID, $values);
+
+			$return['ID'] = $ID;
 		}
 
 
-
-		$axon = new Axon("ab_marketers_targets");
-		foreach ($a as $record){
-			$axon->load("mID='".$record['mID']."' AND pID ='".$record['pID']."' AND monthin ='" . $record['monthin'] ."' AND yearin = '" . $record['yearin'] ."'");
-			foreach ($record as $key => $value){
-				$axon->$key = $value;
-			}
-			if ($record['target']){
-				$axon->save();
-				$axon->reset();
-			} else {
-				if (!$axon->dry()){
-					$axon->erase();
-				}
-			}
-
-		}
-
-
-
-
-
-
-
-
+		//	test_array(array("ID"=>$ID,"values"=>$values,"result"=>$return));
 
 
 		return $GLOBALS["output"]['data'] = $return;
@@ -95,11 +112,10 @@ class admin_marketers_targets extends save {
 	}
 
 
-
-	function _delete(){
+	function _delete() {
 		$user = F3::get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\marketers::_delete($ID);
+		models\marketers_targets::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
@@ -111,10 +127,10 @@ class admin_marketers_targets extends save {
 		$pID = $user['publication']['ID'];
 
 
-		$p = new Axon("ab_marketers_pub");
-		$p->load("mID='$ID' and pID='$pID'");
+		$p = new Axon("ab_marketers_targets_pub");
+		$p->load("mtID='$ID' and pID='$pID'");
 		if (!$p->ID) {
-			$p->mID = $ID;
+			$p->mtID = $ID;
 			$p->pID = $pID;
 			$p->save();
 		} else {
