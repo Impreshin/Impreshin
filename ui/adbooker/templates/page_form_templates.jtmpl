@@ -209,14 +209,15 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
-		<% if (this.ID) { %>
+		<% if (this.ID) { %> {% if _user['permissions']['details']['actions']['delete'] %}
 		<div style="float:left; margin-left:10px; padding-top: 3px;">
-			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>{% endif %}
 
 		</div>
 		<% } %>
 		<div style="float:right; margin-right: 10px;">
 			<% if (this.ID) { %>
+
 			<button class="btn btn-mini  span1 " style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this booking" data-position="above">
 				<i class="icon-fullscreen icon-d-grey"></i></button>
 			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above" >
