@@ -39,6 +39,8 @@ $(document).ready(function(){
 	$(document).on("submit", "#searchform", function (e) {
 		e.preventDefault();
 		getList();
+		$.bbq.removeState("ID");
+		getList();
 		return false;
 	});
 
