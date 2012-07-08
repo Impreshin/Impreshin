@@ -476,7 +476,7 @@
 		</span>
 	<% } %>
 	<% if (this.marketer) { %>
-		<span title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>">
+		<span <% if (this.marketer.next_targets.target) { %>title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>" <% } %>>
 			Marketer -
 			<span>&nbsp;Total: <%= this.marketer.next_targets.done %> [<%= this.marketer.next_targets.records %>]
 				<% if (this.marketer.next_targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.next_targets.target %><% } %>
