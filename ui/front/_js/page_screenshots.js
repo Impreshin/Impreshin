@@ -5,6 +5,27 @@ var whole_pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions).d
 
 $(document).ready(function () {
 
+	$("a.screenshot").attr('rel', 'gallery').fancybox({
+			padding:0,
+		openEffect: 'fade',
+			beforeLoad:function () {
+				this.title = $(this.element).find("div.hidden").html();
+
+
+			},
+		helpers:{
+			overlay:{
+				speedIn   :500,
+				speedOut  :500,
+				opacity   :0.4
+
+			},
+			title  :{
+				type:'over'
+			}
+
+		}
+		});
 
 
 });
