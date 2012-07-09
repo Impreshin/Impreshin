@@ -41,12 +41,9 @@ class user_permissions {
 			"form"=>array(
 
 				"new"=>0,
-				"edit"=>array(
-					"page"=>0,
-					"edit_master"    => 0,
-					"delete"         => 0
-				),
-
+				"edit"=>0,
+				"delete"         => 0,
+				"edit_master"    => 0
 			),
 
 			"production"=>array(
@@ -170,7 +167,7 @@ class user_permissions {
 		$return['d'] = array(
 
 			"form"=>array(
-				"edit_master"=>"this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
+				"edit_master"=> "this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
 			),
 			"layout"=> array(
 				"pagecount"=> "Allows this user to set how many pages the edition will be"

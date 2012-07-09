@@ -82,7 +82,10 @@
 					<label for="pagewidth" class="control-label">Page Width</label>
 
 					<div class="controls">
+						<div class="input-append">
 						<input type="text" id="pagewidth" name="pagewidth" class="span1" value="<% if (this.details.pagewidth) { %><%= this.details.pagewidth %><% } %>">
+							<span class="add-on focustrigger">mm</span>
+						</div>
 					</div>
 				</div>
 

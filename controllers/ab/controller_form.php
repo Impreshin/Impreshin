@@ -15,7 +15,7 @@ class controller_form {
 	function page() {
 		$ID = F3::get('PARAMS["ID"]');
 		$user = F3::get("user");
-		if (!$user['permissions']['form']['new']&& !$user['permissions']['form']['edit']['page']&&!$user['permissions']['form']['edit']['edit_master']&& !$user['permissions']['form']['edit']['delete']) F3::error(404);
+		if (!$user['permissions']['form']['new']&& !$user['permissions']['form']['edit']&&!$user['permissions']['form']['edit_master']&& !$user['permissions']['form']['delete']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -103,10 +103,10 @@ class controller_form {
 
 		$title = "New Booking";
 		if ($details['ID']){
-			if (!$user['permissions']['form']['edit']['page'] && !$user['permissions']['form']['edit']['edit_master'] && !$user['permissions']['form']['edit']['delete']) F3::error(404);
+			if (!$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) F3::error(404);
 			if ($details['state'] == 'Current' || $details['state'] == 'Future') {
 			} else {
-				if (!$user['permissions']['form']['edit']['edit_master']){
+				if (!$user['permissions']['form']['edit_master']){
 					F3::error(404);
 				}
 

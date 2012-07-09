@@ -9,7 +9,7 @@
 </div>
 <section class="form-body" style="padding-top: 10px;">
 
-	{% if (details['ID'] and (_user['permissions']['form']['edit']['page'] or _user['permissions']['form']['edit']['edit_master'])) or (details['ID']=='' and _user['permissions']['form']['new'])  %}
+	{% if (details['ID'] and (_user['permissions']['form']['edit'] or _user['permissions']['form']['edit_master'])) or (details['ID']=='' and _user['permissions']['form']['new'])  %}
 <table>
 <tr>
 <td class="span9">
@@ -230,7 +230,7 @@
 			{% endif %}
 			<% } %>
 			<button class="btn btn-primary span4 " style="" type="submit"
-			<% if (this.ID) { %>{% if _user['permissions']['form']['edit']['page'] or _user['permissions']['form']['edit_master']   %}{% else %}disabled="disabled"{% endif %}<% } %>>Save Record</button>
+			<% if (this.ID) { %>{% if _user['permissions']['form']['edit'] or _user['permissions']['form']['edit_master']   %}{% else %}disabled="disabled"{% endif %}<% } %>>Save Record</button>
 
 		</div>
 	</div>
