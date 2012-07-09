@@ -14,6 +14,7 @@ class controller_production {
 	}
 	function page() {
 		$user = F3::get("user");
+		if (!$user['permissions']['production']['page']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -75,6 +76,7 @@ class controller_production {
 	function _print() {
 		$timer = new timer();
 		$user = F3::get("user");
+		if (!$user['permissions']['production']['page']) F3::error(404);
 
 		$settings = models\settings::_read("production", $user['permissions']);
 

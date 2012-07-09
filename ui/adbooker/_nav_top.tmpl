@@ -9,7 +9,7 @@
 				<div id="app-nav-bar">
 					<ul class="nav" id="app-nav">
 
-						{% if _user['permissions']['form']['page'] %}
+						{% if _user['permissions']['form']['new']  %}
 						<li class="divider-vertical"></li>
 						<li class="{% if page['section'] == "form" %} active {% endif %}">
 							<a href="/ab/form/" class="nav-icon-btn">
@@ -22,12 +22,11 @@
 						</li>
 						{% endif %}
 						<li class="divider-vertical"></li>
-						{% if _user['permissions']['provisional']['page'] %}
+
 						<li class="{% if page['section'] == "bookings" %} active {% endif %}">
 							<a  href="/ab/">Bookings</a>
 
 						</li>
-						{% endif %}
 						{% if _user['permissions']['production']['page'] %}
 						<li class="{% if page['section'] == "production" %} active {% endif %}">
 							<a href="/ab/production/">Production</a>

@@ -80,11 +80,11 @@ class data {
 		if ($permissions['details']['actions']['check']=='0') $allow['checked'] = 0;
 		if ($permissions['details']['actions']['material']=='0') $allow['material'] = 0;
 		if ($permissions['details']['actions']['repeat']=='0') $allow['repeat'] = 0;
-		if ($permissions['details']['actions']['edit']=='0') $allow['edit'] = 0;
+		if ($permissions['form']['edit']['page']=='0') $allow['edit'] = 0;
 		if ($permissions['details']['actions']['invoice']=='0') $allow['invoice'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
-		if ($permissions['details']['actions']['edit_master']) {
+		if ($permissions['form']['edit']['edit_master']) {
 			$allow['edit'] = 1;
 		}
 

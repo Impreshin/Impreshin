@@ -19,9 +19,7 @@ class user_permissions {
 					"check"   => 0,
 					"material"=> 0,
 					"repeat"  => 0,
-					"edit"    => 0,
-					"edit_master"    => 0,
-					"delete"  => 0,
+
 					"invoice"  => 0,
 				),
 				"fields"=> array(
@@ -41,11 +39,16 @@ class user_permissions {
 				)
 			),
 			"form"=>array(
-				"page"=>0,
+
+				"new"=>0,
+				"edit"=>array(
+					"page"=>0,
+					"edit_master"    => 0,
+					"delete"         => 0
+				),
+
 			),
-			"provisional"=>array(
-				"page"=>0
-			),
+
 			"production"=>array(
 				"page"=>0
 			),
@@ -166,10 +169,8 @@ class user_permissions {
 
 		$return['d'] = array(
 
-			"details"=>array(
-				"actions"=>array(
-					"edit_master"=>"this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
-				)
+			"form"=>array(
+				"edit_master"=>"this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
 			),
 			"layout"=> array(
 				"pagecount"=> "Allows this user to set how many pages the edition will be"

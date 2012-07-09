@@ -12,6 +12,7 @@ class controller_layout {
 	}
 	function page() {
 		$user = F3::get("user");
+		if (!$user['permissions']['layout']['page']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 

@@ -13,6 +13,7 @@ class controller_overview {
 	}
 	function page() {
 		$user = F3::get("user");
+		if (!$user['permissions']['overview']['page']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 

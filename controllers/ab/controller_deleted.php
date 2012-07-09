@@ -15,6 +15,7 @@ class controller_deleted {
 	}
 	function page() {
 		$user = F3::get("user");
+		if (!$user['permissions']['records']['deleted']['page']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -87,7 +88,7 @@ class controller_deleted {
 	function _print() {
 		$timer = new timer();
 		$user = F3::get("user");
-
+		if (!$user['permissions']['records']['deleted']['page']) F3::error(404);
 		$settings = models\settings::_read("deleted", $user['permissions']);
 
 

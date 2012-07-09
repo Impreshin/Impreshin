@@ -15,6 +15,7 @@ class controller_search {
 	}
 	function page() {
 		$user = F3::get("user");
+		if (!$user['permissions']['records']['search']['page']) F3::error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -95,7 +96,7 @@ class controller_search {
 	function _print() {
 		$timer = new timer();
 		$user = F3::get("user");
-
+		if (!$user['permissions']['records']['search']['page']) F3::error(404);
 		$settings = models\settings::_read("search", $user['permissions']);
 
 

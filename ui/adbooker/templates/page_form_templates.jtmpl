@@ -8,6 +8,8 @@
 
 </div>
 <section class="form-body" style="padding-top: 10px;">
+
+	{% if (details['ID'] and (_user['permissions']['form']['edit']['page'] or _user['permissions']['form']['edit']['edit_master'])) or (details['ID']=='' and _user['permissions']['form']['new'])  %}
 <table>
 <tr>
 <td class="span9">
@@ -198,7 +200,7 @@
 </tr>
 
 </table>
-
+{% endif %}
 
 </section>
 
@@ -209,7 +211,7 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
-		<% if (this.ID) { %> {% if _user['permissions']['details']['actions']['delete'] %}
+		<% if (this.ID) { %> {% if _user['permissions']['form']['edit']['delete'] %}
 		<div style="float:left; margin-left:10px; padding-top: 3px;">
 			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>{% endif %}
 
@@ -222,10 +224,13 @@
 				<i class="icon-fullscreen icon-d-grey"></i></button>
 			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above" >
 				<i class="icon-list-alt icon-d-grey"></i></a>
+			{% if _user['permissions']['form']['new'] %}
 			<a href="/ab/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above" >
 				<i class="icon-plus"></i></a>
+			{% endif %}
 			<% } %>
-			<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
+			<button class="btn btn-primary span4 " style="" type="submit"
+			<% if (this.ID) { %>{% if _user['permissions']['form']['edit']['page'] or _user['permissions']['form']['edit_master']   %}{% else %}disabled="disabled"{% endif %}<% } %>>Save Record</button>
 
 		</div>
 	</div>
