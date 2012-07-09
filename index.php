@@ -349,8 +349,10 @@ $GLOBALS["output"]['page'] = array(
 	"size"=> ($pageSize)
 );
 
+if ($folder){
+	$GLOBALS["output"]['notifications'] = \models\ab\user_notifications::show();
+}
 
-$GLOBALS["output"]['notifications'] = \models\ab\user_notifications::show();
 
 
 
