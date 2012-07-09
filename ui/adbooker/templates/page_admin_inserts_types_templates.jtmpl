@@ -3,7 +3,7 @@
 
 	<tr data-id="<%= this.ID %>" class="record">
 		<td class="">
-			<%= this.placing %>
+			<%= this.insertsLabel %>
 		</td>
 		<td style="width:40px;" class="c">
 			<%= this.rate %>
@@ -27,21 +27,23 @@
 				<div id="errorArea"></div>
 
 				<div class="control-group">
-					<label for="placing" class="control-label">Placing</label>
+					<label for="insertsLabel" class="control-label">Label</label>
 
 					<div class="controls">
-						<input type="text" id="placing" name="placing" class="span5" value="<% if (this.details.placing) { %><%= this.details.placing %><% } %>">
+						<input type="text" id="insertsLabel" name="insertsLabel" class="span5" value="<% if (this.details.insertsLabel) { %><%= this.details.insertsLabel %><% } %>">
 					</div>
 				</div>
 				<div class="control-group">
 					<label for="rate" class="control-label">Rate</label>
 
 					<div class="controls">
-						<div class="input-prepend">
+						<div class="input-prepend input-append">
 							<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
 							<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
+							<span class="add-on">per 1000</span>
 
 						</div>
+
 					</div>
 				</div>
 
@@ -56,11 +58,7 @@
 
 			</fieldset>
 			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
-			{% if _user['permissions']['administration']['application']['placing']['colours']['page']  %}
-			<% if (this.details.ID) { %>
-			<div class="alert alert-success">Some info on the colours admin aswell <a href="/ab/admin/placing/colours#p=<%= this.details.ID %>">Colours</a> </div>
-			<% } %>
-			{% endif %}
+
 
 		</div>
 
@@ -73,7 +71,7 @@
 				<% if (this.details.ID) { %>
 
 
-				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this status" data-position="above" id="btn-delete">
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this record" data-position="above" id="btn-delete">
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
 				<% } %>

@@ -238,6 +238,12 @@
 								</li>
 								{% endif %}
 
+								{% if _user['permissions']['administration']['application']['inserts_types']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "inserts_type" %} active {% endif %}">
+									<a href="/ab/admin/inserts_types">Inserts Type</a>
+								</li>
+								{% endif %}
+
 
 								<li class="nav-header">System</li>
 								{% if _user['permissions']['administration']['system']['dates']['page'] %}

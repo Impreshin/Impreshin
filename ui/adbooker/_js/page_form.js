@@ -74,6 +74,10 @@ $(document).ready(function(){
 		display_notes();
 
 	});
+	$(document).on("change", "#insertTypeID", function () {
+		display_notes();
+
+	});
 
 
 
@@ -250,6 +254,8 @@ function load_form_diff() {
 	if (type=='1') {
 		$("#placingID").select2({});
 		load_colours();
+	} else if (type=='2'){
+		$("#insertTypeID").select2({});
 	}
 	$("#marketerID").select2({});
 	$("#categoryID").select2({});
@@ -346,7 +352,7 @@ function display_notes(){
 			rate = $("#placingID option:selected").attr("data-rate");
 			break;
 		case "2":
-			rate = $form.data("publication")['InsertRate'];
+			rate = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
 			break;
 	}
 	$(".alert",$form).remove();
@@ -376,7 +382,7 @@ function display_notes_rate(){
 			shouldbe = (colour_rate) ? colour_rate : $("#placingID option:selected").attr("data-rate");
 			break;
 		case "2":
-			shouldbe = $form.data("publication")['InsertRate'];
+			shouldbe = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
 			break;
 	}
 
@@ -433,7 +439,7 @@ function display_notes_cost(){
 	var col_cm = cm * col;
 
 	var type = $("#booking-type button.active").attr("data-type");
-	var shouldbe, shouldbe_e;
+	var shouldbe, shouldbe_e, exact_rate;
 	switch (type) {
 		case "1":
 			rate = ($("#rate").val());
@@ -449,13 +455,20 @@ function display_notes_cost(){
 
 			break;
 		case "2":
-			rate = $("#rate").val() || $form.data("publication")['InsertRate'];
-			rate = Number(rate).toFixed(2);
 
-			var shouldbe_rate = $form.data("publication")['InsertRate'];
-			shouldbe_rate = Number(rate).toFixed(2);
-			shouldbe = (InsertPO) * (shouldbe_rate/1000);
-			shouldbe_e = shouldbe;
+			rate = $("#rate").val() ;
+			exact_rate = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
+			if (!rate) {
+				rate = exact_rate
+			}
+
+			exact_rate = Number(exact_rate).toFixed(2);
+			shouldbe = (InsertPO) * (rate/1000);
+			shouldbe_e = (InsertPO) * (exact_rate / 1000);
+
+
+
+
 			break;
 	}
 	$("#rate_fld").val(rate);
@@ -494,6 +507,11 @@ function display_notes_cost(){
 		string = '<span class="badge" data-fld="totalCost" data-val="' + shouldbe + '">' + shouldbe + '</span>' + string;
 
 	}
+	if (shouldbe_e){
+		shouldbe_e = shouldbe_e.toFixed(2);
+
+
+	}
 
 
 
@@ -504,6 +522,8 @@ function display_notes_cost(){
 
 
 		dif = shouldbe_e - totalcost;
+
+
 		if (dif > 0) {
 			msgtext = "Under: " + (shouldbe_e - totalcost).toFixed(2);
 			string += '<span class="label label-warning">' + msgtext + '</span>';
@@ -515,6 +535,7 @@ function display_notes_cost(){
 	} else {
 
 		dif = shouldbe_e - shouldbe;
+
 		if (dif > 0) {
 			msgtext = "Under: " + (shouldbe_e - shouldbe).toFixed(2);
 			string += '<span class="label label-warning">' + msgtext + '</span>';

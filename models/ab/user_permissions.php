@@ -146,6 +146,9 @@ class user_permissions {
 					"loading"=> array(
 						"page"=> 0
 					),
+					"inserts_types"=> array(
+						"page"=> 0
+					),
 				),
 				"system"=>array(
 					"dates"=>array(

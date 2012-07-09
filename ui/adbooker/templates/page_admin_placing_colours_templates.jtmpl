@@ -51,7 +51,12 @@
 					<label for="rate" class="control-label">Rate</label>
 
 					<div class="controls">
-						<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
+						<div class="input-prepend">
+							<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+							<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
+
+
+						</div>
 					</div>
 				</div>
 
@@ -65,7 +70,7 @@
 
 
 			</fieldset>
-			<div class="alert">Drag the options in the list on the right up and down to reorder them</div>
+			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
 
 
 		</div>

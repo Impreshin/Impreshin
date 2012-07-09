@@ -333,6 +333,22 @@
 
 		</div>
 	</div>
+	<div class="control-group">
+		<label for="insertTypeID" class="control-label">Type*</label>
+
+		<div class="controls">
+			<select id="insertTypeID" name="insertTypeID" tabindex="8" class="" style="width: 342px;">
+
+
+				{% for row in inserts_types %}
+				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}" <% if (this.insertTypeID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['insertsLabel'] }}</option>
+				{% endfor %}
+
+			</select>
+
+
+		</div>
+	</div>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-suggestions">
