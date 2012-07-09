@@ -77,6 +77,22 @@ body {
   right: 15px;
   top: 10px;
 }
+#pageheader .nav #nav-pub-list {
+  width: 147px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #999999;
+  float: none;
+  line-height: 19px;
+  text-decoration: none;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+#pageheader .nav #nav-pub-list .caret {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
 #pageheader .divider-vertical {
   margin: 0;
 }
@@ -648,6 +664,9 @@ button[disabled] i {
 }
 #pageheader .pull-right .menu-icon {
   margin-left: -3px;
+}
+#app-nav {
+  margin-right: 0;
 }
 #app-nav  > li.active > a {
   color: #444444;

@@ -148,11 +148,17 @@
 
 
 					</ul>
-					<ul class="nav pull-right" style="margin-left: 0;">
+					<ul class="nav pull-right" style="margin-left: 0;margin-right: 0;">
 
-						<li class="dropdown">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">{{  _user['publication']['publication'] }}
-								<b class="caret"></b></a>
+						<li class="dropdown" style="padding-left: 0; padding-right: 0; " >
+							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)" style="padding-left: 8px; padding-right: 0; ">
+								<div id="nav-pub-list">
+									{{  _user['publication']['publication'] }}<b class="caret"></b>
+								</div>
+							</a>
+
+
+
 							<ul class="dropdown-menu">
 								{% for row in _user['publications'] %}
 								<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
