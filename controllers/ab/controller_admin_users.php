@@ -15,6 +15,7 @@ class controller_admin_users {
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
+		$cID = $user['publication']['cID'];
 
 
 
@@ -36,8 +37,8 @@ class controller_admin_users {
 
 		$tmpl->permissions = $permissions['p'];
 		$tmpl->permissions_desc = $permissions['d'];
-		$tmpl->marketers = models\marketers::getAll("pID='$pID'", "marketer ASC");;
-		$tmpl->production = models\production::getAll("pID='$pID'", "production ASC");;
+		$tmpl->marketers = models\marketers::getAll("pID='$pID' AND cID='$cID'", "marketer ASC");;
+		$tmpl->production = models\production::getAll("pID='$pID' AND cID='$cID'", "production ASC");;
 		$tmpl->output();
 
 	}
