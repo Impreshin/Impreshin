@@ -1,0 +1,250 @@
+
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>{{ page['meta']['title']|default("") }}</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/ui/_css/custom-theme/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="/min/css.{{_v}}.css"/>
+
+
+	<script src="/ui/_js/libs/modernizr.{{_v}}.js"></script>
+
+
+	{% if page['template_css'] %}
+	<link rel="stylesheet" href="{{ page['template_css'] }}">
+	{% endif %}
+
+	{% if page['print'] %}
+	<link rel="alternate" media="print" href="{{ page['print'] }}">
+	<link rel="alternate" type="text/html" media="print" href="{{ page['print'] }}">
+	{% endif %}
+	<link rel="shortcut icon" type="image/x-icon" href="/ui/_images/favicon.ico">
+	<link rel="apple-touch-icon" href="/ui/_images/apple-touch.png">
+
+
+
+</head>
+<body>
+{% include "_nav_top.tmpl" %}
+{% if page['template'] %} {% include page['template'] %} {% endif %}
+
+
+<footer id="pagefooter">
+	<div class="container">
+		<div style="position: absolute; left:10px;">
+
+		</div>
+		<div class="clearfix">
+			<div class="row">
+
+			</div>
+		</div>
+	</div>
+
+</footer>
+
+
+<script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
+
+
+<script src="/min/js.{{_v}}.js"></script>
+<script src="/ui/_js/plugins/bootstrap-typehead-array.{{_v}}.js"></script>
+
+
+
+<script type="text/javascript">
+	var detailsRequest = [];
+	var listRequest = [];
+	var activityRequest = [];
+	var transSpeed = '{{ transSpeed |default('400') }}';
+	$(function () {
+		$('body').tooltip({
+			selector:'[rel=tooltip]'
+		});
+		$('body').popover({
+			selector:'[rel=popover]'
+		});
+
+
+		$("*[rel=tooltip]").tooltip({
+			live:true
+		});
+
+		$("[rel=popover]").popover({
+			offset:5,
+			live:true
+		});
+
+
+
+	});
+	$(document).ready(function () {
+
+		$(document).on("click", ".modal .close-btn", function (e) {
+			e.preventDefault();
+			var $this = $(this), $modal = $this.closest(".modal");
+			$modal.modal("hide");
+		//	$("#settings-modal").modal('hide');
+		});
+		$(document).on("click", "*[data-dismiss='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.closest(".popup");
+			$popup.fadeOut(transSpeed);
+		});
+		$(document).on("click", "*[data-target='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.attr("href");
+			$($popup).fadeIn(transSpeed).trigger("popup-show");
+		});
+
+
+		$(document).on("show", ".modal", function () {
+			var $this = $(this);
+			var h = $(window).height();
+			var th = $(this).height();
+
+			mt = (th) / 2;
+			if (h < th) {
+				$this.css({
+					"margin-top":-(h / 2)
+				});
+
+			} else {
+				$this.css("margin-top", -mt);
+			}
+
+		});
+
+
+	});
+
+	var jScrollPaneOptions = {
+		showArrows:false,
+		maintainPosition: false
+	};
+	var jScrollPaneOptionsMP = {
+		showArrows:false,
+		maintainPosition: true
+	};
+
+	function scrolling(api){
+
+		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
+			if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length || $(event.target).closest(".select2-container").length ){
+			} else {
+				if (deltaY < 0) {
+					deltaY = -deltaY;
+				} else {
+					deltaY = -deltaY;
+				}
+
+				deltaY = deltaY * 30;
+
+				api.scrollByY(deltaY, false);
+			}
+
+
+		}).on('keydown',function(e){
+//				console.log(api.getContentHeight);
+
+				if ($(e.target).closest(".select2-container").length) {
+				} else {
+
+
+				var keyboardSpeed= 28, scrollPagePercent=.8;
+
+				switch (e.keyCode) {
+					case 40: // down
+						api.scrollByY(keyboardSpeed, false);
+						break;
+					case 38: // up
+						api.scrollByY(-keyboardSpeed, false);
+						break;
+					case 34: // page down
+					case 32: // space
+
+						api.scrollByY(300, false);
+						break;
+					case 33: // page up
+						api.scrollByY(-300, false);
+						break;
+
+				}
+				}
+			});
+
+
+	}
+	function file_size(size) {
+		if (!size){
+			return 0;
+		}
+		var origSize = size;
+		var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		var i = 0;
+		while (size >= 1024) {
+			size /= 1024;
+			++i;
+		}
+
+		if (origSize>1024){
+			size = size.toFixed(1)
+		}
+		return size + ' ' + units[i];
+	}
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function (elt /*, from*/) {
+			var len = this.length >>> 0;
+
+			var from = Number(arguments[1]) || 0;
+			from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+			if (from < 0)
+				from += len;
+
+			for (; from < len; from++) {
+				if (from in this && this[from] === elt)
+					return from;
+			}
+			return -1;
+		};
+	}
+	if (!Array.prototype.forEach) {
+		Array.prototype.forEach = function (fun /*, thisp*/) {
+			var len = this.length;
+			if (typeof fun != "function")
+				throw new TypeError();
+
+			var thisp = arguments[1];
+			for (var i = 0; i < len; i++) {
+				if (i in this)
+					fun.call(thisp, this[i], i, this);
+			}
+		};
+	}
+</script>
+{% if page['template_js'] %}
+<script src='{{ page['template_js'] }}'></script>
+{% endif %}
+
+{% if page['template_tmpl'] %}
+{% include page['template_tmpl'] %}
+{% endif %}
+
+
+</body>
+</html>

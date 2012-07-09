@@ -49,7 +49,7 @@ class marketers_targets {
 
 
 
-		$mID = '2';
+
 
 		$marketer = new marketers();
 		$return = $marketer->get($mID);

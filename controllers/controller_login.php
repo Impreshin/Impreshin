@@ -11,7 +11,7 @@ class controller_login {
 	}
 	function page(){
 		$user = F3::get("user");
-		$tmpl = new \template("template.tmpl", "ui/");
+		$tmpl = new \template("template.tmpl", "ui/front/");
 		$tmpl->page = array(
 			"section"    => "login",
 			"sub_section"=> "form",

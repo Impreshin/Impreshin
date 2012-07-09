@@ -333,8 +333,10 @@
 
 		</div>
 	</div>
+	{% if inserts_types %}
 	<div class="control-group">
 		<label for="insertTypeID" class="control-label">Type*</label>
+
 
 		<div class="controls">
 			<select id="insertTypeID" name="insertTypeID" tabindex="8" class="" style="width: 342px;">
@@ -349,6 +351,7 @@
 
 		</div>
 	</div>
+	{% endif %}
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-suggestions">

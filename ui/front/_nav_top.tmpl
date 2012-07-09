@@ -1,0 +1,31 @@
+<div class="navbar navbar-fixed-top" id="pageheader">
+	<div class="navbar-inner" style="">
+		<div class="container">
+			<div class="clearfix">
+				<a class="brand" href="/">Welcome</a>
+				<ul class="nav" id="app-nav">
+					<li class="divider-vertical"></li>
+					<li class="{% if page['section'] == "login" %} active {% endif %}">
+						<a href="/login/"> Login </a>
+					</li>
+					<li class="{% if page['section'] == "screenshots" %} active {% endif %}">
+						<a href="/screenshots/"> Screenshots </a>
+					</li>
+				</ul>
+				<ul class="nav pull-right">
+
+
+					<li class="divider-vertical"></li>
+					{% if _user['ID'] %}
+					<li style="margin-right: -10px;">
+						<a href="/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
+					</li>
+					{% else %}
+
+
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

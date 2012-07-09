@@ -185,7 +185,7 @@ $app->route('GET|POST /noaccess', function(){
 		exit();
 	});
 $app->route('GET|POST /login', 'controllers\controller_login->page');
-$app->route('GET|POST /register', 'controllers\controller_register->page');
+$app->route('GET|POST /screenshots', 'controllers\controller_screenshots->page');
 $app->route('GET /data/keepalive', function() use ($user){
 
 

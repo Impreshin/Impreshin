@@ -4,18 +4,18 @@
  * Time: 11:16 AM
  */
 namespace controllers;
-class controller_register {
+class controller_screenshots {
 	function __construct(){
 
 	}
 	function page(){
-		$tmpl = new \template("template.tmpl", "ui/");
+		$tmpl = new \template("template.tmpl", "ui/front/");
 		$tmpl->page = array(
-			"section"    => "register",
+			"section"    => "screenshots",
 			"sub_section"=> "form",
-			"template"   => "page_register",
+			"template"   => "page_screenshots",
 			"meta"       => array(
-				"title"=> "Register",
+				"title"=> "ScreenShots",
 			)
 		);
 		$tmpl->output();
