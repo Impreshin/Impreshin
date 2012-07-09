@@ -102,6 +102,12 @@
 							<th>Print Order</th>
 							<td colspan="3">:&nbsp;<%= this.InsertPO %></td>
 						</tr>
+						<% if (this.insertLabel) { %>
+						<tr>
+							<th>Insert Type</th>
+							<td colspan="3">:&nbsp;<%= this.insertLabel %></td>
+						</tr>
+						<% } %>
 						<tr>
 							<th>Tariff</th>
 							<td colspan="3">:&nbsp;<%= this.rate_C %></td>

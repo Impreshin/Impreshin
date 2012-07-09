@@ -107,6 +107,11 @@ class settings {
 					"o"=> "keyNum",
 					"h"=> "Key&nbsp;Num"
 				),
+				"insertsLabel"=>array(
+					"c"=> "insertLabel",
+					"o"=> "ab_inserts_types.insertsLabel",
+					"h"=> "Inserts&nbsp;Type"
+				),
 				"userName"               => array(
 					"c"=> "userName",
 					"o"=> "userName",
@@ -224,6 +229,7 @@ class settings {
 					"o"=> "deleted_reason",
 					"h"=> "Deleted&nbsp;Reason",
 				),
+
 
 
 			);
