@@ -53,8 +53,8 @@ class controller_form {
 		}
 		$spotlist = json_encode($a);
 
-		$accounts = models\accounts::getAll("pID='$pID' AND cID='$cID'", "account ASC");
-		$marketers = models\marketers::getAll("pID='$pID' AND cID='$cID'", "marketer ASC");
+		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "account ASC");
+		$marketers = models\marketers::getAll("pID='$pID' AND ab_marketers.cID='$cID'", "marketer ASC");
 		$dates = models\dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
 		$placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
 		$colours = models\colours::getAll("pID='$pID'", "orderby ASC", "");
@@ -153,8 +153,8 @@ class controller_form {
 		$tmpl->details = $details;
 		$tmpl->placing = $placing;
 		$tmpl->accounts = $accounts;
-		$tmpl->production = models\production::getAll("pID='$pID' AND cID='$cID'", "production ASC");
-		$tmpl->categories = models\categories::getAll("pID='$pID' AND cID='$cID'", "orderby ASC");
+		$tmpl->production = models\production::getAll("pID='$pID' AND ab_production.cID='$cID'", "production ASC");
+		$tmpl->categories = models\categories::getAll("pID='$pID' AND ab_categories.cID='$cID'", "orderby ASC");
 		$tmpl->dates = array(
 			"selected"=>$selectedDate,
 			"current"=> $currentDate,

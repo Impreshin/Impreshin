@@ -449,13 +449,17 @@ function display_notes_cost(){
 
 			break;
 		case "2":
-			rate = $form.data("publication")['InsertRate'];
+			rate = $("#rate").val() || $form.data("publication")['InsertRate'];
 			rate = Number(rate).toFixed(2);
-			shouldbe = (InsertPO) * (rate/1000);
+
+			var shouldbe_rate = $form.data("publication")['InsertRate'];
+			shouldbe_rate = Number(rate).toFixed(2);
+			shouldbe = (InsertPO) * (shouldbe_rate/1000);
 			shouldbe_e = shouldbe;
 			break;
 	}
 	$("#rate_fld").val(rate);
+
 
 
 
