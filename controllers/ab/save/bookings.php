@@ -102,6 +102,7 @@ class bookings extends save {
 		if (isset($_POST['remarkTypeID'])) $values['remarkTypeID'] = $_POST['remarkTypeID'];
 
 		if (isset($_POST['marketerID'])) $values['marketerID'] = $_POST['marketerID'];
+		if (isset($_POST['insertTypeID'])) $values['insertTypeID'] = $_POST['insertTypeID'];
 
 
 		//if (isset($_POST['accNum'])) $values['accNum'] = $_POST['accNum'];
