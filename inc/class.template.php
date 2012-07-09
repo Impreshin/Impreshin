@@ -50,7 +50,7 @@ class template {
 		$this->vars['_cfg'] = $cfg;
 		$this->vars['isLocal'] = isLocal();
 
-		$this->vars['_gaq'] = F3::get("GOOGLE_ANALYTICS");
+
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
 		$this->vars['_settings'] = array(
