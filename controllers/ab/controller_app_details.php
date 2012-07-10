@@ -8,7 +8,7 @@ use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
-class controller_details {
+class controller_app_details {
 	function __construct() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -30,7 +30,7 @@ class controller_details {
 		$tmpl->page = array(
 			"section"=> "bookings",
 			"sub_section"=> "provisional",
-			"template"=> "page_details",
+			"template"=> "page_app_details",
 			"meta"    => array(
 				"title"=> "AdBooker - Print - ".$data['client'],
 			)

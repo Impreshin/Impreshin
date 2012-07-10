@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_layout {
+class controller_app_layout {
 	function __construct() {
 	}
 	function page() {
@@ -26,7 +26,7 @@ class controller_layout {
 		$tmpl->page = array(
 			"section"=> "layout",
 			"sub_section"=> "planning",
-			"template"=> "page_layout",
+			"template"=> "page_app_layout",
 			"meta"    => array(
 				"title"=> "AdBooker - Layout",
 			)

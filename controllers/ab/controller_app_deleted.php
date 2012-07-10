@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use models\ab as models;
-class controller_deleted {
+class controller_app_deleted {
 	function __construct() {
 
 
@@ -59,7 +59,7 @@ class controller_deleted {
 		$tmpl->page = array(
 			"section"=> "records",
 			"sub_section"=> "deleted",
-			"template"=> "page_deleted",
+			"template"=> "page_app_deleted",
 			"print"=> "/ab/print/deleted",
 			"meta"    => array(
 				"title"=> "AdBooker - Deleted Bookings",
@@ -100,7 +100,7 @@ class controller_deleted {
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "deleted",
-			"template"   => "page_deleted",
+			"template"   => "page_app_deleted",
 			"meta"       => array(
 				"title"=> "AdBooker - Print - Deleted",
 			)

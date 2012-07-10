@@ -72,7 +72,7 @@
 					<div class="controls highlighthovered">
 						<% for(var i in this.publications) { %>
 						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
-							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %>><%= this.publications[i].publication %>
+							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %>><%= this.publications[i].ID %> | <%= this.publications[i].publication %>
 						</label> <% } %>
 
 

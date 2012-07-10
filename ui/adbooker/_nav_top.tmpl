@@ -60,7 +60,7 @@
 						</li>
 						{% endif %}
 						{% if _user['permissions']['reports']['_nav'] %}
-						<li class="dropdown">
+						<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">Reports <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								{% if _user['permissions']['reports']['account']['_nav'] %}

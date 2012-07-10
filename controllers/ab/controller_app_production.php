@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_production {
+class controller_app_production {
 	function __construct() {
 
 
@@ -52,7 +52,7 @@ class controller_production {
 		$tmpl->page = array(
 			"section"=> "production",
 			"sub_section"=> "list",
-			"template"=> "page_production",
+			"template"=> "page_app_production",
 			"print"=> "/ab/print/production",
 			"meta"    => array(
 				"title"=> "AdBooker - Production",
@@ -90,7 +90,7 @@ class controller_production {
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "production",
-			"template"   => "page_production",
+			"template"   => "page_app_production",
 			"meta"       => array(
 				"title"=> "AdBooker - Print - Production",
 			)

@@ -8,7 +8,7 @@ use \F3 as F3;
 use \timer as timer;
 use models\ab as models;
 
-class controller_form {
+class controller_app_form {
 	function __construct() {
 	}
 
@@ -123,7 +123,7 @@ class controller_form {
 		$tmpl->page = array(
 			"section"    => "form",
 			"sub_section"=> "form",
-			"template"   => "page_form",
+			"template"   => "page_app_form",
 			"meta"       => array(
 				"title"=> "AdBooker - Form - $title",
 			)

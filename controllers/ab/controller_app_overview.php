@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_overview {
+class controller_app_overview {
 	function __construct() {
 
 	}
@@ -27,7 +27,7 @@ class controller_overview {
 		$tmpl->page = array(
 			"section"=> "overview",
 			"sub_section"=> "view",
-			"template"=> "page_overview",
+			"template"=> "page_app_overview",
 			"meta"    => array(
 				"title"=> "AdBooker - Overview",
 			)

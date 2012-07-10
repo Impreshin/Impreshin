@@ -225,30 +225,30 @@ function access(){
 	if (!$user['ID']) F3::reroute("/login");
 }
 
-$app->route('GET /ab', 'access; last_page; controllers\ab\controller_provisional->page');
+$app->route('GET /ab', 'access; last_page; controllers\ab\controller_app_provisional->page');
 
-$app->route('GET /ab/print/details', 'access; controllers\ab\controller_details->_print');
+$app->route('GET /ab/print/details', 'access; controllers\ab\controller_app_details->_print');
 
-$app->route('GET /ab/provisional', 'access; last_page; controllers\ab\controller_provisional->page');
-$app->route('GET /ab/print/provisional', 'access; controllers\ab\controller_provisional->_print');
+$app->route('GET /ab/provisional', 'access; last_page; controllers\ab\controller_app_provisional->page');
+$app->route('GET /ab/print/provisional', 'access; controllers\ab\controller_app_provisional->_print');
 
-$app->route('GET /ab/production', 'access; last_page; controllers\ab\controller_production->page');
-$app->route('GET /ab/print/production', 'access; controllers\ab\controller_production->_print');
-
-
-$app->route('GET /ab/layout', 'access; last_page; controllers\ab\controller_layout->page');
-$app->route('GET /ab/overview', 'access; last_page; controllers\ab\controller_overview->page');
+$app->route('GET /ab/production', 'access; last_page; controllers\ab\controller_app_production->page');
+$app->route('GET /ab/print/production', 'access; controllers\ab\controller_app_production->_print');
 
 
-$app->route('GET /ab/records/search', 'access; last_page; controllers\ab\controller_search->page');
-$app->route('GET /ab/print/search', 'access; controllers\ab\controller_search->_print');
-
-$app->route('GET /ab/records/deleted', 'access; last_page; controllers\ab\controller_deleted->page');
-$app->route('GET /ab/print/deleted', 'access; controllers\ab\controller_deleted->_print');
+$app->route('GET /ab/layout', 'access; last_page; controllers\ab\controller_app_layout->page');
+$app->route('GET /ab/overview', 'access; last_page; controllers\ab\controller_app_overview->page');
 
 
-$app->route('GET /ab/form', 'access; last_page; controllers\ab\controller_form->page');
-$app->route('GET /ab/form/@ID', 'access; last_page; controllers\ab\controller_form->page');
+$app->route('GET /ab/records/search', 'access; last_page; controllers\ab\controller_app_search->page');
+$app->route('GET /ab/print/search', 'access; controllers\ab\controller_app_search->_print');
+
+$app->route('GET /ab/records/deleted', 'access; last_page; controllers\ab\controller_app_deleted->page');
+$app->route('GET /ab/print/deleted', 'access; controllers\ab\controller_app_deleted->_print');
+
+
+$app->route('GET /ab/form', 'access; last_page; controllers\ab\controller_app_form->page');
+$app->route('GET /ab/form/@ID', 'access; last_page; controllers\ab\controller_app_form->page');
 
 // --------------------------------------------------------------------------------
 
@@ -267,6 +267,13 @@ $app->route('GET /ab/admin/loading', 'access; last_page; controllers\ab\controll
 $app->route('GET /ab/admin/inserts_types', 'access; last_page; controllers\ab\controller_admin_inserts_types->page');
 
 $app->route('GET /ab/admin/publications', 'access; last_page; controllers\ab\controller_admin_publications->page');
+
+
+// --------------------------------------------------------------------------------
+
+$app->route('GET /ab/reports/publication/figures', 'access; last_page; controllers\ab\controller_reports_publication_figures->page');
+
+
 
 
 // --------------------------------------------------------------------------------

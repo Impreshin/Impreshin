@@ -9,7 +9,7 @@ use \timer as timer;
 use models\ab as models;
 
 
-class controller_download {
+class controller_general_download {
 	public static function material(){
 		$cfg = F3::get("cfg");
 

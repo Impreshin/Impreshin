@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use models\ab as models;
-class controller_search {
+class controller_app_search {
 	function __construct() {
 
 
@@ -33,7 +33,7 @@ class controller_search {
 		$tmpl->page = array(
 			"section"=> "records",
 			"sub_section"=> "search",
-			"template"=> "page_search",
+			"template"=> "page_app_search",
 			"print"=> "/ab/print/search",
 			"meta"    => array(
 				"title"=> "AdBooker - Search",
@@ -109,7 +109,7 @@ class controller_search {
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "search",
-			"template"   => "page_search",
+			"template"   => "page_app_search",
 			"meta"       => array(
 				"title"=> "AdBooker - Print - Search",
 			)
