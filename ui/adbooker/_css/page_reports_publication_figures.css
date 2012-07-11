@@ -6,7 +6,7 @@
 	cursor : pointer;
 }
 
-h1 small {
+h1 small.small-hide {
 	filter             : alpha(opacity = 0);
 	-moz-opacity       : 0;
 	-khtml-opacity     : 0;
@@ -17,7 +17,7 @@ h1 small {
 	-ms-transition     : all 0.5s ease-in-out;
 	transition         : all 0.5s ease-in-out;
 }
-h1:hover small {
+h1:hover small.small-hide {
 	filter         : alpha(opacity = 100);
 	-moz-opacity   : 1;
 	-khtml-opacity : 1;
@@ -30,11 +30,21 @@ h1:hover small {
 .figure-dir-u {
 	color: green;
 	font-weight: bold;
-background-color: #D3FFB7;
+background-color: #D3FFB7!important;
 
 }
 .figure-dir-d {
 	color: red;
 	font-weight : bold;
-	background-color : #ffd1cc;
+	background-color : #ffd1cc !important;
+}
+#figures-table tbody td {
+	text-align: right;
+}
+
+#figures-table thead th {
+	text-align: center;
+}
+#pub-select > div > a > .caret {
+	float: right;
 }

@@ -45,7 +45,7 @@ class controller_reports_publication_figures {
 		}
 		$publications = $p;
 
-		$publicationselected = implode(", ", $publicationselected);
+		$publicationselected = (count($publicationselected)>1)?count($publicationselected)." Publications": $publicationselected[0];
 
 
 

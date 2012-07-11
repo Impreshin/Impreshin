@@ -3,16 +3,18 @@
 <script type="text/x-jqote-template" id="template-report-figures">
 	<![CDATA[
 
+
+
 	<h1 class="trigger_getdata" style="margin-top: 20px;" >
 		Figures
-		<small class="" style="margin-left: 20px;" id="report-years" >
+		<small class="small-hide" style="margin-left: 20px;" id="report-years" >
 			<% for(var i in this.comp.years) { %>
 			<label for="year-<%= this.comp.years[i].y %>" class="checkbox inline"><input type="checkbox" name="year[]" id="year-<%= this.comp.years[i].y %>" value="<%= this.comp.years[i].y %>" <% if (this.comp.years[i].s == '1') { %>checked="checked"<% } %>><%= this.comp.years[i].y %></label>
 			<% } %>
 
 		</small>
 	</h1>
-	<table class="table table-condensed table-bordered s records">
+	<table class="table table-condensed table-bordered s records" id="figures-table" >
 		<thead>
 		<tr>
 			<td></td>
@@ -57,12 +59,21 @@
 		<% } %>
 		</tbody>
 	</table>
-
-
-	<h1>
+	<hr>
+	<h1 style="margin-top: 20px;">
 		Line Charts
-		<small></small>
+		<div style="margin-left: 20px; float:right; ">
+			<input id="date-picker" name="date-picker" type="button" placeholder="Date Filter" class="span4 btn btn-mini" value="<%= this.daterange %>">
+		</div>
 	</h1>
+	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
+	<h3>Income</h3>
+	<div id="chart-income" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+	<h3>Cm</h3>
+	<div id="chart-cm" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+	<h3>Records</h3>
+	<div id="chart-records" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+
 
 	]]>
 </script>

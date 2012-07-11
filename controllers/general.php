@@ -27,7 +27,8 @@ class general {
 				"/ui/_css/ui.daterangepicker.css",
 				"/ui/_css/select2.css",
 				"/ui/_css/jquery.miniColors.css",
-				"/ui/_css/style.css"
+				"/ui/_css/style.css",
+				"/ui/jqPlot/jquery.jqplot.min.css"
 			);
 
 
@@ -92,6 +93,19 @@ class general {
 				"plupload/js/plupload.browserplus.js" ,
 				"plupload/js/plupload.html4.js" ,
 				"plupload/js/plupload.html5.js" ,
+
+
+
+				"jqplot/jquery.jqplot.min.js",
+				"jqplot/plugins/jqplot.highlighter.min.js",
+				"jqplot/plugins/jqplot.cursor.min.js",
+				"jqplot/plugins/jqplot.canvasTextRenderer.min.js",
+				"jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js",
+				"jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js",
+				"jqplot/plugins/jqplot.categoryAxisRenderer.min.js",
+				"jqplot/plugins/jqplot.pointLabels.min.js",
+				"jqplot/plugins/jqplot.trendline.min.js",
+
 
 
 			);
