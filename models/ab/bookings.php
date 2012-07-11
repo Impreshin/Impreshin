@@ -148,8 +148,7 @@ class bookings {
 		);
 
 
-		$timer->stop(array(
-			             "Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args() );
+		$timer->stop(array("Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args() );
 		return $return;
 	}
 	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"),$options=array("limit"=>"")) {

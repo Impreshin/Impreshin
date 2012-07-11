@@ -20,6 +20,7 @@ class reports_publication_figures extends data {
 	}
 
 	function _data() {
+		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
@@ -211,6 +212,7 @@ $return['comp']['data'] = $ret;
 		$return['pubs'] = $publications;
 
 
+		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
