@@ -34,9 +34,22 @@
 		<tr>
 			<td><%= this.comp.data[d].month %></td>
 			<% for(var i in this.comp.data[d].data) { %>
-			<td style="border-left: 1px solid #999;"><%= this.comp.data[d].data[i].totals %></td>
-			<td><%= this.comp.data[d].data[i].cm %></td>
-			<td><%= this.comp.data[d].data[i].records %></td>
+			<td style="border-left: 1px solid #999;">
+
+				<span class="figure-dir-<%= this.comp.data[d].data[i].d.totals %>">
+					<%= this.comp.data[d].data[i].totals %>
+				</span>
+			</td>
+			<td>
+				<span class="figure-dir-<%= this.comp.data[d].data[i].d.cm %>">
+					<%= this.comp.data[d].data[i].cm %>
+				</span>
+			</td>
+			<td>
+
+			<span class="figure-dir-<%= this.comp.data[d].data[i].d.records %>">
+					<%= this.comp.data[d].data[i].records %>
+				</span></td>
 
 
 			<% } %>

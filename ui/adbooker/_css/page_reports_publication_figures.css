@@ -26,3 +26,10 @@ h1:hover small {
 .c {
 	text-align: center!important;
 }
+
+.figure-dir-u {
+	color: green;
+}
+.figure-dir-d {
+	color: red;
+}
