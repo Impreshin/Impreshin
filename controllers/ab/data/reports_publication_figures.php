@@ -190,7 +190,7 @@ class reports_publication_figures extends data {
 			);
 			foreach ($years as $year){
 				if ($year['s']){
-					$r['data'][$year['y']] = array(
+					$r['data'][] = array(
 						"year"=>$year['y'],
 						"totals"=>isset($data[$year['y']][$month['k']]['totals'])?currency($data[$year['y']][$month['k']]['totals']):"",
 						"cm"=>isset($data[$year['y']][$month['k']]['cm'])?$data[$year['y']][$month['k']]['cm']:"",
@@ -208,7 +208,8 @@ class reports_publication_figures extends data {
 
 
 
-$return['comp']['data'] = $ret;
+
+		$return['comp']['data'] = $ret;
 		$return['pubs'] = $publications;
 
 

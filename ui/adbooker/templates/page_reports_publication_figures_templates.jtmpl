@@ -34,7 +34,7 @@
 		<tr>
 			<td><%= this.comp.data[d].month %></td>
 			<% for(var i in this.comp.data[d].data) { %>
-			<td><%= this.comp.data[d].data[i].totals %></td>
+			<td style="border-left: 1px solid #999;"><%= this.comp.data[d].data[i].totals %></td>
 			<td><%= this.comp.data[d].data[i].cm %></td>
 			<td><%= this.comp.data[d].data[i].records %></td>
 
