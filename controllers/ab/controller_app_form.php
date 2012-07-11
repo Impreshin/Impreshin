@@ -98,6 +98,7 @@ class controller_app_form {
 
 		$detailsO = new models\bookings();
 		$details = $detailsO->get($ID);
+		//test_array($details);
 		if ($details['ID'] && ($details['pID']!= $pID || $details['deleted']=='1')){
 			$details =$detailsO->dbStructure();
 		}

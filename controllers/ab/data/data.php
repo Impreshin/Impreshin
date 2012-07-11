@@ -34,6 +34,7 @@ class data {
 
 
 
+
 		$allow = array(
 			"repeat"=>0,
 			"edit"=>0,
@@ -46,17 +47,17 @@ class data {
 
 		if (!$return['deleted']){
 
-			if (!$return['accountBlocked']){
+			if (isset($return['accountBlocked']) && !$return['accountBlocked']){
 				$allow['repeat'] = '1';
 			}
 
 
 
-			if ($return['state']=='Current'){
+			if (isset($return['state']) && $return['state']=='Current'){
 				$allow['checked'] = '1';
 				$allow['invoice'] = '1';
 			}
-			if ($return['state'] == 'Current' || $return['state'] == 'Future'){
+			if (isset($return['state']) && ($return['state'] == 'Current' || $return['state'] == 'Future')){
 				$allow['material'] = '1';
 				$allow['edit'] = '1';
 			}
