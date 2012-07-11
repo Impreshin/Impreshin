@@ -13,14 +13,11 @@ class controller_admin_publications {
 	}
 	function page() {
 		$user = F3::get("user");
-		$userID = $user['ID'];
+		$uID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
 
-
-
-//test_array($pages);
 
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
@@ -32,6 +29,7 @@ class controller_admin_publications {
 				"title"=> "AdBooker - Admin - Publications",
 			)
 		);
+
 
 
 		$tmpl->output();

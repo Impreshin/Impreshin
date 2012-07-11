@@ -135,9 +135,13 @@ class admin_accounts extends data {
 			if (in_array($pub['ID'], $pstr)) {
 				$pub['selected'] = 1;
 			}
+
 			$pIDarray[] = $pub['ID'];
 			$pubarray[] = $pub;
 		}
+
+
+
 
 		$publications = $pubarray;
 		$return['details'] = $details;

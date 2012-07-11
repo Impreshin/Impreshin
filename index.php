@@ -301,12 +301,12 @@ $app->route('GET|POST /ab/save/@class/@function', function() use($app) {
 );
 
 $app->route('GET|POST /ab/download/@folder/@ID/*', function() use($app) {
-		$app->call("controllers\\ab\\controller_download->" . $app->get('PARAMS.folder'));
+		$app->call("controllers\\ab\\controller_general_download->" . $app->get('PARAMS.folder'));
 	}
 );
 $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 	F3::mutex(function() {
-		F3::call("controllers\\ab\\controller_thumb->" . F3::get('PARAMS.folder'));
+		F3::call("controllers\\ab\\controller_general_thumb->" . F3::get('PARAMS.folder'));
 	});
 	}
 );

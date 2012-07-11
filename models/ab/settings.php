@@ -27,7 +27,8 @@ class settings {
 				"size"                   => array(
 					"c"=> "size",
 					"o"=> "totalspace",
-					"h"=> "Size"
+					"h"=> "Size",
+					"m"=>60
 				),
 
 				"colour"                 => array(
@@ -474,6 +475,10 @@ class settings {
 						"c"=>"publish_date",
 						"o"=>"DESC"
 					)
+				),
+				"reports_publication_figures"=>array(
+					"years"=>"",
+					"timeframe"=>""
 				)
 
 			);

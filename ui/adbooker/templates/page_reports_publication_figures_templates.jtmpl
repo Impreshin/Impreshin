@@ -1,0 +1,55 @@
+
+
+<script type="text/x-jqote-template" id="template-report-figures">
+	<![CDATA[
+
+	<h1 class="trigger_getdata" style="margin-top: 20px;" >
+		Comparative
+		<small class="" style="margin-left: 20px;" id="report-years" >
+			<% for(var i in this.comp.years) { %>
+			<label for="year-<%= this.comp.years[i].y %>" class="checkbox inline"><input type="checkbox" name="year[]" id="year-<%= this.comp.years[i].y %>" value="<%= this.comp.years[i].y %>" <% if (this.comp.years[i].s == '1') { %>checked="checked"<% } %>><%= this.comp.years[i].y %></label>
+			<% } %>
+
+		</small>
+	</h1>
+	<table class="table table-condensed table-bordered s records">
+		<thead>
+		<tr>
+			<td></td>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<td colspan="3" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
+			<% } %> <% } %>
+		</tr>
+		<tr class="colheading">
+			<th></th>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<th style="width: 50px;border-left: 1px solid #999;">Total</th>
+			<th style="width: 50px;">Cm</th>
+			<th style="width: 50px;">Records</th>
+			<% } %> <% } %>
+		</tr>
+		</thead>
+		<tbody>
+		<% for(var d in this.comp.data) { %>
+		<tr>
+			<td><%= this.comp.data[d].month %></td>
+			<% for(var i in this.comp.data[d].data) { %>
+			<td><%= this.comp.data[d].data[i].totals %></td>
+			<td><%= this.comp.data[d].data[i].cm %></td>
+			<td><%= this.comp.data[d].data[i].records %></td>
+
+
+			<% } %>
+		</tr>
+		<% } %>
+		</tbody>
+	</table>
+
+
+	<h1>
+		Line Charts
+		<small></small>
+	</h1>
+
+	]]>
+</script>

@@ -16,6 +16,27 @@
 			<div class="pull-right">
 
 				<ul class="nav nav-pills pull-right ">
+					<li id="pub-select" >
+
+						<div class="btn-group" style="max-width:500px;">
+							<a class="btn dropdown-toggle btn-mini" data-toggle="dropdown" href="#" style="padding-left: 20px;padding-right: 10px;"> <span id="pub-select-label">{{publicationselected}}</span>
+								<span class="caret"></span> </a>
+							<ul class="dropdown-menu pull-right highlighthovered trigger_getdata">
+								{% for row in publications %}
+								<li>
+									<label for="pub-{{ row['ID']}}"  {% if row['disabled']=='1' %} class="g"{% endif %}>
+										<input type="checkbox" name="pubID[]" id="pub-{{ row['ID'] }}" value="{{ row['ID'] }}" data-pub="{{ row['publication'] }}" data-id="{{ row['ID'] }}" {% if row['selected']=='1' %}checked="checked"{% endif %} {% if row['disabled']=='1' %}disabled="disabled"{% endif %}> {{ row['publication'] }}
+									</label>
+								</li>
+
+								{% endfor %}
+							</ul>
+						</div>
+
+
+
+
+					</li>
 
 
 					<li class="divider-vertical" style="margin-right: 0;"></li>
@@ -31,69 +52,25 @@
 	</div>
 
 </section>
-
 <section role="main" id="pagecontent">
-	<div class="container admin_pages">
+	<div class="container">
 
 
-		<div class="row">
-			<article id="left-area" class="span11">
-				<form class="form-horizontal" id="capture-form">
-				<div class="content" id="form-area">
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane" >
 
-				</div>
-				<div class="loadingmask wide"></div>
-			</form>
-			</article>
-			<article id="right-area" class="span5 offset11">
-				<div>
-
-					<table class="table table-condensed  s records">
-						<thead>
-						<tr>
-							<th>Category</th>
-							<th style="width: 20px;"  class="c">Pub</th>
-
-
-						</tr>
-						</thead>
-					</table>
-				</div>
-				<div class="content">
-					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px; bottom: 42px;">
-
-						<div data-heading="top" class="">
-							<table style="margin:0;" id="record-list" class="table table-condensed  s records" >
-								<tbody style="border-left:none;">
-
-
-								</tbody>
-							</table>
-
-
-						</div>
+					<div data-heading="top" id="scroll-container">
 
 
 					</div>
 
 
 				</div>
-				<div id="record-details-bottom">
-					<div id="pagination" class="pagination"></div>
-				</div>
-				<section id="rightsideOver">
-
-				</section>
-				<div class="loadingmask round"></div>
-
-
-			</article>
-		</div>
-
-
-
+			</div>
+			<div class="loadingmask wide"></div>
+		</article>
 	</div>
-
 </section>
 
 
