@@ -163,7 +163,7 @@ class reports_publication_figures extends data {
 			"cm"     => 0,
 			"records"=> 0,
 		);
-		$margin = 10; // %
+		$margin = 15; // %
 
 
 		$data = array();
