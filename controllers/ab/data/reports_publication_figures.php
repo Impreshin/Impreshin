@@ -152,7 +152,13 @@ class reports_publication_figures extends data {
 
 
 		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($y) AND checked = '1'";
-		$d = models\bookings::getAll($where, array("g"=>"none","o"=>"ASC") ,array("c"=>"global_dates.publish_date","o"=>"ASC"));
+		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+
+		$d = models\bookings::getAll_select($select,$where, "global_dates.publish_date ASC");
+
+
+
+
 		$data = array();
 		foreach ($d as $record){
 			$year = date("Y", strtotime($record['publishDate']));
