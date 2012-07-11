@@ -29,10 +29,12 @@ h1:hover small {
 
 .figure-dir-u {
 	color: green;
-	font-weight: bold
+	font-weight: bold;
+background-color: #D3FFB7;
 
 }
 .figure-dir-d {
 	color: red;
-	font-weight : bold
+	font-weight : bold;
+	background-color : #ffd1cc;
 }

@@ -250,7 +250,7 @@ class reports_publication_figures extends data {
 				);
 				if ($rec[$col]> $figs_c_totals[0]){
 					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] ){
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]){
 					$rec['d'][$col] = "d";
 				}
 				$col = "cm";
@@ -260,7 +260,7 @@ class reports_publication_figures extends data {
 				);
 				if ($rec[$col]> $figs_c_totals[0]){
 					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] ){
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]){
 					$rec['d'][$col] = "d";
 				}
 				$col = "records";
@@ -270,7 +270,7 @@ class reports_publication_figures extends data {
 				);
 				if ($rec[$col]> $figs_c_totals[0]){
 					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] ){
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col] ){
 					$rec['d'][$col] = "d";
 				}
 

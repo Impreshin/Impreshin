@@ -47,7 +47,7 @@ class data {
 
 		if (!$return['deleted']){
 
-			if (isset($return['accountBlocked']) && !$return['accountBlocked']){
+			if (isset($return['accountBlocked']) && (!$return['accountBlocked'] && $return['accNum'])){
 				$allow['repeat'] = '1';
 			}
 
