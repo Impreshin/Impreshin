@@ -23,6 +23,9 @@ $(document).ready(function () {
 	$(document).on("change",".trigger_getdata input:checkbox",function(){
 		getData();
 	});
+	$(document).on("click","#combine-btn",function(){
+		getData();
+	});
 	getData();
 
 
@@ -34,7 +37,7 @@ $(document).ready(function () {
 
 
 });
-function drawChart(element,title,label,data){
+function drawChart(element,label,data, pub_column){
 	//console.log(label.length)
 
 	var tangle = 0;
@@ -45,10 +48,49 @@ function drawChart(element,title,label,data){
 		tangle = -90;
 	}
 
-	var plot1 = $.jqplot(element, [data], {
-		series:[
-			{showMarker:true}
-		],
+	/*
+	var line1 = [
+		[date1, val1],
+		[date2, val2]
+	];
+	var line2 = [
+		[date1, val11],
+		[date2, val12]
+	];
+	var plot = $.jqplot('chart1', [line1, line2]);
+	*/
+	//console.log(data);
+
+
+
+
+
+	if (pub_column){
+		var d = [];
+		var legends = [];
+		for (var i in data) {
+			d.push(data[i][pub_column]);
+			legends.push(data[i]['pub']);
+		}
+		data = d;
+	} else {
+		legends = "";
+		data = [data];
+	}
+	//console.log(legends);
+
+
+	var plot1 = $.jqplot(element, data, {
+		legend:{
+			show    :(legends)?true:false,
+			labels:legends,
+			location:"sw",
+			xoffset: 0,
+			yoffset: 0
+		},
+		series:{
+
+		},
 		axesDefaults:{
 			tickRenderer:$.jqplot.CanvasAxisTickRenderer,
 			tickOptions :{
@@ -94,15 +136,14 @@ function drawChart(element,title,label,data){
 			rendererOptions:{}         // options to pass to the renderer.  Note, the default
 			// CanvasGridRenderer takes no additional options.
 		},
-		legend:{location:"w"},
+
 		seriesDefaults:{
+
 			trendline:{
 				show        :true, // show the trend line
-				color       :"#999999", // CSS color spec for the trend line.
-				label       :"", // label for the trend line.
 				type        :"linear", // "linear", "exponential" or "exp"
 				shadow      :true, // show the trend line shadow.
-				lineWidth   :1, // width of the trend line.
+				lineWidth   :0.5, // width of the trend line.
 				shadowAngle :45, // angle of the shadow.  Clockwise from x axis.
 				shadowOffset:1.5, // offset from the line of the shadow.
 				shadowDepth :3, // Number of strokes to make when drawing shadow.
@@ -136,22 +177,32 @@ function getData() {
 	years = years.join(",");
 
 
-
+var $combined = $("#combine-btn");
 	var daterange = $("#date-picker").val();
+	var combined = ($combined.length)?($combined.hasClass("active"))?1:0:'none';
+
 
 
 	$("#whole-area .loadingmask").show();
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports_publication_figures/_data/", {"pubs":pubs,"years":years,"daterange":daterange}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports_publication_figures/_data/", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
-		drawChart('chart-income', 'Income', data['lines']['labels'], data['lines']['totals']);
-		drawChart('chart-cm', 'Cm', data['lines']['labels'], data['lines']['cm']);
-		drawChart('chart-records', 'Records', data['lines']['labels'], data['lines']['records']);
+		//console.log(data['combined']);
+		if (data['combined']=='1' || data['pubs']=='1'){
+			drawChart('chart-income', data['lines']['labels'], data['lines']['totals']);
+			drawChart('chart-cm', data['lines']['labels'], data['lines']['cm']);
+			drawChart('chart-records', data['lines']['labels'], data['lines']['records']);
+		} else {
+			drawChart('chart-income', data['lines']['labels'], data['lines']['pubs'],'totals');
+			drawChart('chart-cm', data['lines']['labels'], data['lines']['pubs'],'cm');
+			drawChart('chart-records', data['lines']['labels'], data['lines']['pubs'],'records');
+		}
+
 
 		var $scrollpane = $("#whole-area .scroll-pane");
 			$scrollpane.jScrollPane(jScrollPaneOptionsMP);

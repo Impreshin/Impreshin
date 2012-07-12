@@ -478,7 +478,8 @@ class settings {
 				),
 				"reports_publication_figures"=>array(
 					"years"=>"",
-					"timeframe"=>""
+					"timeframe"=>"",
+					"combined"=>"0",
 				)
 
 			);

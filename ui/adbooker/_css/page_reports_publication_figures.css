@@ -48,3 +48,6 @@ background-color: #D3FFB7!important;
 #pub-select > div > a > .caret {
 	float: right;
 }
+.line-chart table {
+	width: auto;
+}

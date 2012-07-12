@@ -36,6 +36,11 @@ class reports_publication_figures extends data {
 		$publications = isset($_REQUEST['pubs']) ? $_REQUEST['pubs'] : "";
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
+		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
+
+		if ($combined=='none'){
+			$combined = $settings['combined'];
+		}
 
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
@@ -43,6 +48,7 @@ class reports_publication_figures extends data {
 				$daterange = date("Y-m-01", strtotime('-12 month'))." to ".date("Y-m-t", strtotime('-1 month'));
 			}
 		}
+
 
 		$daterange_s = explode(" to ", $daterange);
 
@@ -66,11 +72,11 @@ class reports_publication_figures extends data {
 
 
 
-
 		$values = array();
 		$values[$section] = array(
 			"years"=> $years,
-			"timeframe"=> $daterange
+			"timeframe"=> $daterange,
+			"combined"=> $combined
 		);
 		$values[$section]["pub_$pID"] = array(
 			"pubs"=>	$publications
@@ -101,8 +107,8 @@ class reports_publication_figures extends data {
 
 
 		$years = ($y);;
-		$where = "ab_bookings.pID in ($publications)  AND checked = '1' ";
-		$return['lines'] = models\reportFigures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))));
+		$where = "checked = '1' ";
+		$return['lines'] = models\reportFigures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
 		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' ";
@@ -113,8 +119,9 @@ class reports_publication_figures extends data {
 
 
 
-		$return['pubs'] = $publications;
+		$return['pubs'] = count(explode(",",$publications));
 		$return['daterange'] = $daterange;
+		$return['combined'] = $combined;
 
 
 		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );

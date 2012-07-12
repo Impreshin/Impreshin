@@ -63,16 +63,23 @@
 	<h1 style="margin-top: 20px;">
 		Line Charts
 		<div style="margin-left: 20px; float:right; ">
-			<input id="date-picker" name="date-picker" type="button" placeholder="Date Filter" class="span4 btn btn-mini" value="<%= this.daterange %>">
+			<div class="btn-group">
+				<input id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>">
+				<% if (this.pubs>1) { %>
+				<button data-toggle="button" class="btn btn-mini span1 <% if (this.combined=='1') { %> active <% } %>" id="combine-btn" style="height: 27px;"><i class="icon-resize-small"></i></button>
+				<% } %>
+			</div>
+
+
 		</div>
 	</h1>
 	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
 	<h3>Income</h3>
-	<div id="chart-income" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+	<div id="chart-income" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 	<h3>Cm</h3>
-	<div id="chart-cm" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 	<h3>Records</h3>
-	<div id="chart-records" style="height:300px; width:100%; margin-bottom: 20px;"></div>
+	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 
 
 	]]>

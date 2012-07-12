@@ -199,13 +199,18 @@ class reportFigures {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function lines($where,$dates = array("from"=>"","to"=>"")){
+	public static function lines($where,$dates = array("from"=>"","to"=>""),$publications){
 		$timer = new timer();
 		$return = array();
+		if (is_array($publications)) {
+			$publications_where = implode(",", $publications);
+
+		} else {
+			$publications_where = $publications;
+			$publications = explode(",",$publications);
+		}
 
 
-		$i = 0;
-		$data = array();
 
 		$date1 = strtotime($dates['from']);
 		$date2 = strtotime($dates['to']);
@@ -213,15 +218,53 @@ class reportFigures {
 		$from = date("Y-m-d",$date1);
 		$to = date("Y-m-d",$date2);
 
+		if ($where) {
+			$where = $where . " AND ";
+		}
+		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
+		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
+
+		$publications = publications::getAll("ID in ($publications_where)");
+
+
+		$data = self::line_build_data($d, $date1, $date2, $publications);
+
+
+
+
+
+
+		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		return $data;
+	}
+
+	private static function line_build_data($records, $date1, $date2, $publications){
+		$timer = new timer();
+		$return = array();
+
+		$blank = array(
+			"label"  => "",
+			"totals" => 0,
+			"cm"     => 0,
+			"records"=> 0
+		);
+
+		$i = 0;
+		$data = array();
+
 		while ($date1 <= $date2) {
 			$k = date('mY', $date1);
 			$h = date('M y', $date1);
-			$data[$k] = array(
-				"label"  => $h,
-				"totals" => 0,
-				"cm"     => 0,
-				"records"=> 0
-			);
+			$data[$k] = $blank;
+			$data[$k]['label'] = $h;
+
+			foreach ($publications as $pub){
+				$data[$k]['pubs'][$pub['ID']]= $blank;
+				$data[$k]['pubs'][$pub['ID']]['label']= $pub['publication'];
+
+			}
 
 
 			$date1 = strtotime('+1 month', $date1);
@@ -231,43 +274,50 @@ class reportFigures {
 
 
 
-		$where = $where . " AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to')";
-
-
-
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
-
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
-
 		$labels = array();
 
-		foreach ($d as $record){
+		foreach ($records as $record) {
 
 			$k = date("mY", strtotime($record['publishDate']));
 
 
+			$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
+			$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
+			$data[$k]['records'] = $data[$k]['records'] + 1;
 
-			$data[$k]['totals']= $data[$k]['totals'] + $record['totalCost'];
-			$data[$k]['cm']= $data[$k]['cm'] + $record['totalspace'];
-			$data[$k]['records']= $data[$k]['records'] + 1;
+			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
+			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
+			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
 		}
 
 		$p = array();
-		$data_ret=array(
-			"labels"=>array(),
-			"totals"=>array(),
-			"cm"=>array(),
-			"records"=>array()
+		$data_ret = array(
+			"labels" => array(),
+			"totals" => array(),
+			"cm"     => array(),
+			"records"=> array(),
+			"pubs"=>array()
 		);
-		foreach ($data as $d){
+		foreach ($data as $d) {
 			$data_ret['labels'][] = $d['label'];
-			$data_ret['totals'][] = ($d['totals'])?$d['totals']:null;
+			$data_ret['totals'][] = ($d['totals']) ? $d['totals'] : null;
 			$data_ret['cm'][] = $d['cm'];
 			$data_ret['records'][] = $d['records'];
+			foreach ($publications as $pub) {
+
+				$data_ret['pubs'][$pub['ID']]['pub'] = $pub['publication'];
+				$data_ret['pubs'][$pub['ID']]['totals'][] = ($d['pubs'][$pub['ID']]['totals']) ? $d['pubs'][$pub['ID']]['totals'] : null;
+				$data_ret['pubs'][$pub['ID']]['cm'][] = ($d['pubs'][$pub['ID']]['cm']) ? $d['pubs'][$pub['ID']]['cm'] : null;
+				$data_ret['pubs'][$pub['ID']]['records'][] = ($d['pubs'][$pub['ID']]['records']) ? $d['pubs'][$pub['ID']]['records'] : null;
+
+
+			}
 		}
-
-
-
+		$p = array();
+		foreach ($data_ret['pubs'] as $record){
+			$p[] = $record;
+		}
+		$data_ret['pubs'] = $p;
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
