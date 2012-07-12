@@ -94,7 +94,8 @@ function drawChart(element,label,data, pub_column){
 		axesDefaults:{
 			tickRenderer:$.jqplot.CanvasAxisTickRenderer,
 			tickOptions :{
-				fontSize:"10pt"
+				fontSize:"10pt",
+				formatString:"%s"
 
 			}
 		},
@@ -156,12 +157,21 @@ function drawChart(element,label,data, pub_column){
 			sizeAdjust:7.5,
 			tooltipFormatString : '%s',
 			useAxesFormatters: true,
-			tooltipAxes:'both'
+			tooltipAxes:'y',
+			tooltipLocation:'n',
+			bringSeriesToFront:true,
+			useXTickMarks:true,
+			formatString:(element=='chart-income')?cur('%d'):'%s'
 		}
 
 	});
 }
-
+function cur(str){
+	console.log(str)
+//	str = Number(str);
+	//str = str.toFixed(2);
+	return currency_sign + str ;
+}
 function getData() {
 
 	var pubs = $("#pub-select input:checkbox:checked").map(function () {

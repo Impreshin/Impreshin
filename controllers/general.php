@@ -97,7 +97,7 @@ class general {
 
 
 				"jqplot/jquery.jqplot.min.js",
-				"jqplot/plugins/jqplot.highlighter.min.js",
+				"jqplot/plugins/jqplot.highlighter.js",
 				"jqplot/plugins/jqplot.cursor.min.js",
 				"jqplot/plugins/jqplot.canvasTextRenderer.min.js",
 				"jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js",

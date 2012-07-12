@@ -5,8 +5,12 @@
 .checkbox.inline {
 	cursor : pointer;
 }
-
-h1 small.small-hide {
+h1 {
+	border-bottom: 1px dotted #ccc;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+h1 .small-hide {
 	filter             : alpha(opacity = 0);
 	-moz-opacity       : 0;
 	-khtml-opacity     : 0;
@@ -17,7 +21,7 @@ h1 small.small-hide {
 	-ms-transition     : all 0.5s ease-in-out;
 	transition         : all 0.5s ease-in-out;
 }
-h1:hover small.small-hide {
+h1:hover .small-hide {
 	filter         : alpha(opacity = 100);
 	-moz-opacity   : 1;
 	-khtml-opacity : 1;
