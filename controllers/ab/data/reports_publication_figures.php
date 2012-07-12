@@ -115,13 +115,18 @@ class reports_publication_figures extends data {
 		$return['comp']['data'] = models\reportFigures::figures($where, $yearsSend);
 
 
-
+		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");
+		if (count($date_range)) {
+			$date_range = $date_range[0];
+		}
 
 
 
 		$return['pubs'] = count(explode(",",$publications));
 		$return['daterange'] = $daterange;
 		$return['combined'] = $combined;
+		$return['date_min'] = $date_range['earliestDate'];
+		$return['date_max'] = $date_range['latestDate'];
 
 
 		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );

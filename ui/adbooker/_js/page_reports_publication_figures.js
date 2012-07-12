@@ -257,9 +257,9 @@ var $combined = $("#combine-btn");
 			rangeSplitter    :'to',
 			datepickerOptions:{
 				changeMonth:true,
-				changeYear :true
-				//minDate    :earliestDate,
-				//maxDate    :latestDate
+				changeYear :true,
+				minDate    :Date.parse(data['date_min']),
+				maxDate    :Date.parse(data['date_max'])
 			},
 			onOpen           :function () {
 
