@@ -149,7 +149,7 @@ class user {
 
 			}
 			foreach ($permissions['reports']['marketer'] as $k=> $p) {
-				$permissions['reports']['marketer'][$k]['page'] = '1';
+				$permissions['reports']['marketer'][$k]['spage'] = '1';
 
 			}
 

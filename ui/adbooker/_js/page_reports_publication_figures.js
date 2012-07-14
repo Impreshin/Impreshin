@@ -159,17 +159,36 @@ function drawChart(element,label,data, pub_column){
 			useAxesFormatters: true,
 			tooltipAxes:'y',
 			tooltipLocation:'n',
+			tooltipOffset: '-10',
 			bringSeriesToFront:true,
 			useXTickMarks:true,
-			formatString:(element=='chart-income')?cur('%d'):'%s'
+			tooltipContentEditor:function(str, seriesIndex, pointIndex, plot){
+
+				var ret = str;
+				switch (pub_column) {
+					case 'totals':
+						ret = cur(Number(ret));
+						break;
+					case 'cm':
+						ret = ret + ' cm';
+						break;
+					case 'records':
+						ret = ret + '';
+						break;
+				}
+
+				//console.log(pub_column);
+				return "<span class='s dg'>"+label[pointIndex] + "</span>:<br> <strong>"+ ret+"</strong>";
+			}
 		}
 
 	});
 }
 function cur(str){
-	console.log(str)
+
 //	str = Number(str);
 	//str = str.toFixed(2);
+	str = Number(str).formatMoney(2, '.', ' ');
 	return currency_sign + str ;
 }
 function getData() {

@@ -1,0 +1,102 @@
+<script type="text/x-jqote-template" id="template-report-figures">
+	<![CDATA[
+
+
+	<div class="hide-fade" style="padding-top: 10px;padding-bottom: 10px;">
+		<div class="btn-group" data-toggle="buttons-checkbox" style=" float:right;" id="year-select">
+			<% for(var i in this.comp.years) { %>
+			<button type="button" class="btn <% if (this.comp.years[i].s == '1') { %>active<% } %> btn-mini" style="width: <%=  (Math.floor(900 /this.comp.years.length)<80)? Math.floor(900 /this.comp.years.length):80  %>px;" data-val="<%= this.comp.years[i].y %>"><%= this.comp.years[i].y %></button>
+			<% } %>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="clearfix"></div>
+
+
+	<table class="table table-condensed table-bordered s records" id="figures-table">
+		<thead>
+		<tr>
+			<td></td>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<td colspan="3" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
+			<% } %> <% } %>
+		</tr>
+		<tr class="colheading">
+			<th></th>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<th style="width: 70px;border-left: 1px solid #999;">Total</th>
+			<th style="width: 40px;">Cm</th>
+			<th style="width: 30px;">#</th>
+			<% } %> <% } %>
+		</tr>
+		</thead>
+		<tbody>
+		<% for(var d in this.comp.data) { %>
+		<tr>
+			<td><%= this.comp.data[d].month %></td>
+			<% for(var i in this.comp.data[d].data) { %>
+			<td style="border-left: 1px solid #999;" class="figure-dir-<%= this.comp.data[d].data[i].d.totals %>">
+
+				<span>
+					<%= this.comp.data[d].data[i].totals %>
+				</span>
+			</td>
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.cm %>">
+				<span>
+					<%= this.comp.data[d].data[i].cm %>
+				</span>
+			</td>
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.records %>">
+
+			<span>
+					<%= this.comp.data[d].data[i].records %>
+				</span></td>
+
+
+			<% } %>
+		</tr>
+		<% } %>
+		</tbody>
+	</table>
+	<div class="sectionbreak"></div>
+
+		<div style="margin-left: 20px; float:right; ">
+			<div class="btn-toolbar">
+
+
+
+				<div class="btn-group">
+					<input id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>">
+					<% if (this.pubs>1) { %>
+						<button data-toggle="button" class="btn btn-mini span1 <% if (this.combined=='1') { %> active <% } %>" id="combine-btn" style="height: 27px;">
+							<% if (this.combined=='1') { %>
+								<i class="icon-resize-full"></i>
+							<% } else { %>
+								<i class="icon-resize-small"></i>
+							<% } %>
+
+						</button>
+					<% } %>
+				</div>
+
+			</div>
+
+
+		</div>
+
+	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
+	<div class="clearfix"></div>
+	<h3>Income</h3>
+
+	<div id="chart-income" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	<h3>Cm</h3>
+
+	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	<h3>Records</h3>
+
+	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+
+
+	]]>
+</script>

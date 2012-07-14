@@ -24,7 +24,7 @@
 		<label for="placingID" class="control-label">Account Number*</label>
 
 		<div class="controls">
-			<select id="accountID" name="accountID" tabindex="8" class="" style="width: 342px;"  placeholder="Select an Account">
+			<select id="accountID" name="accountID" tabindex="8" class="btn-mini" style="width: 342px;"  placeholder="Select an Account">
 
 				<option></option>
 				{% for row in accounts %}

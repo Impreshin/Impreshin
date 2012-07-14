@@ -78,7 +78,7 @@
 								<li class="nav-header">Marketers</li>
 								{% endif %}
 
-								{% if _user['permissions']['reports']['marketer']['figures']['page'] %}
+								{% if _user['permissions']['reports']['marketer']['figures']['page'] or _user['permissions']['reports']['marketer']['figures']['spage'] %}
 								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_figures" %} active {% endif %}">
 									<a href="/ab/reports/marketer/figures">Figures</a>
 								</li>
