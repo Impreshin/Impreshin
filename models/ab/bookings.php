@@ -530,6 +530,7 @@ class bookings {
 		$values['userName'] = $user['fullName'];
 		$values['repeat_from'] = $data['ID'];
 		$values['pageID'] =null;
+		$values['invoiceNum'] =null;
 
 
 		$values['dID'] = $dID;
