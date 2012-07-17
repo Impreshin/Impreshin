@@ -211,7 +211,7 @@
 
 <div class="form-actions form-footer">
 	<div class="row r">
-		<% if (this.ID) { %> {% if _user['permissions']['form']['edit']['delete'] %}
+		<% if (this.ID) { %> {% if _user['permissions']['form']['delete'] %}
 		<div style="float:left; margin-left:10px; padding-top: 3px;">
 			<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>{% endif %}
 

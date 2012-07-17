@@ -728,8 +728,8 @@ class bookings {
 		foreach ($lookup as $col) {
 			$changes[] = array(
 				"k"=> $col['col'],
-				"v"=> $v[$col['col']],
-				"w"=> $v[$col['col'] . "_was"]
+				"v"=> str_replace("'","\\'",$v[$col['col']]),
+				"w"=> str_replace("'", "\\'", $v[$col['col'] . "_was"])
 			);
 		}
 
@@ -824,6 +824,7 @@ class bookings {
 
 
 		$log = json_encode($log);
+		$log = str_replace("'", "\\'", $log);
 
 
 		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
