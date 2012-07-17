@@ -286,9 +286,9 @@ function getList(){
 
 				padding = ' (' + record['recordCount'] + ')';
 			}
-			padding = PadDigits(padding,10);
+			padding = PadDigits(padding,9);
 
-			return '<option value="'+record['ID']+'" '+selected+'>' + padding  + record['placing'] + '</option>';
+			return '<option value="'+record['ID']+'" '+selected+'>' + padding  + " " + record['placing'] + '</option>';
 		});
 		placings = placings.join("");
 
