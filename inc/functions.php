@@ -1,6 +1,6 @@
 <?php
 function isLocal() {
-	if (file_exists("D:/web/local.txt")) {
+	if (file_exists("D:/web/local.txt")||file_exists("C:/web/local.txt")) {
 		return true;
 	} else return false;
 }
