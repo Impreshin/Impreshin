@@ -214,14 +214,15 @@
 
   , keyup: function (e) {
       e.stopPropagation()
-      e.preventDefault()
+		  if (e.keyCode!=9)e.preventDefault();
+
 
       switch(e.keyCode) {
         case 40: // down arrow
         case 38: // up arrow
           break
 
-        case 9: // tab
+        //case 9: // tab
         case 13: // enter
           if (!this.shown) return
           this.select()
@@ -242,7 +243,7 @@
       if (!this.shown) return
 
       switch(e.keyCode) {
-        case 9: // tab
+       // case 9: // tab
         case 13: // enter
         case 27: // escape
           e.preventDefault()
