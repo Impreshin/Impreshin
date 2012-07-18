@@ -33,6 +33,7 @@ class admin_marketers extends save {
 		$email = isset($_POST['email']) ? $_POST['email'] : "";
 		$uID = isset($_POST['uID']) ? $_POST['uID'] : "";
 		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
+		$code = isset($_POST['code']) ? $_POST['code'] : array();
 
 
 		$return = array(
@@ -66,6 +67,7 @@ class admin_marketers extends save {
 			"email"         => $email,
 			"uID"         => $uID,
 			"publications"     => $publications,
+			"code"     => $code,
 			"cID"=> $cID
 		);
 

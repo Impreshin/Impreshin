@@ -41,12 +41,13 @@ class data {
 			"print"=>1,
 			"material_pane"=>0,
 			"checked"=>0,
-			"material"=>0
+			"material"=>0,
+			"invoice"=>0
 
 		);
 
 		if (!$return['deleted']){
-
+			$allow['invoice'] = '1';
 			if (isset($return['accountBlocked']) && (!$return['accountBlocked'] && $return['accNum'])){
 				$allow['repeat'] = '1';
 			}
@@ -55,7 +56,7 @@ class data {
 
 			if (isset($return['state']) && $return['state']=='Current'){
 				$allow['checked'] = '1';
-				$allow['invoice'] = '1';
+
 			}
 			if (isset($return['state']) && ($return['state'] == 'Current' || $return['state'] == 'Future')){
 				$allow['material'] = '1';

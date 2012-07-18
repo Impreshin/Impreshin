@@ -48,6 +48,13 @@
 						<input type="email" id="email" name="email" class="span4" value="<% if (this.details.email) { %><%= this.details.email %><% } %>">
 					</div>
 				</div>
+				<div class="control-group">
+					<label for="code" class="control-label">Marketer Code</label>
+
+					<div class="controls">
+						<input type="text" id="code" name="code" class="span2" value="<% if (this.details.code) { %><%= this.details.code %><% } %>">
+					</div>
+				</div>
 
 
 

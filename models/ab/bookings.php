@@ -27,7 +27,7 @@ class bookings {
 			SELECT ab_bookings.*,
 				ab_placing.placing AS placing,
 				ab_bookings_types.type AS type,
-				ab_marketers.marketer AS marketer,
+				ab_marketers.marketer AS marketer, ab_marketers.code AS marketerCode,
 				global_publications.publication AS publication,
 				global_publications.cID AS cID,
 				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') as dateStatus,
