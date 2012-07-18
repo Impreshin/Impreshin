@@ -500,7 +500,7 @@ class bookings {
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return "deleted";
 	}
-	public static function repeat($ID="",$dID){
+	public static function repeat($ID="",$dID, $exact_repeat = '1'){
 		$timer = new timer();
 		$user = F3::get("user");
 
@@ -535,6 +535,24 @@ class bookings {
 
 		$values['dID'] = $dID;
 
+		if ($exact_repeat) {
+			$label1 = "Booking was repeated";
+			$label2 = "Repeat Booking";
+		} else {
+			$label1 = "Booking was repeated*";
+			$label2 = "Repeat Booking*";
+
+			unset($values['material_file_filename']);
+			unset($values['material_file_filesize']);
+			unset($values['material_file_store']);
+			unset($values['material_status']);
+			unset($values['material_date']);
+			unset($values['material_approved']);
+			unset($values['orderNum']);
+			unset($values['keyNum']);
+
+		}
+
 
 		$a = new Axon("ab_bookings");
 		foreach ($values as $key=> $value) {
@@ -561,24 +579,33 @@ class bookings {
 		);
 
 
+
+
 		$cfg = F3::get("cfg");
 		$cfg = $cfg['upload'];
 
 		$cID = $data['cID'];
 
+		if ($exact_repeat){
+			$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
+			$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $values['dID'] . "/material/";
+			if (file_exists($oldFolder . $data['material_file_store'])) {
 
+				if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
+				@copy($oldFolder . $data['material_file_store'], $newFolder . $data['material_file_store']);
+			}
 
-		$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
-		$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $values['dID'] . "/material/";
-		if (file_exists($oldFolder . $data['material_file_store'])) {
+		} else {
 
-			if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
-			@copy($oldFolder . $data['material_file_store'], $newFolder . $data['material_file_store']);
 		}
 
+
+
+
+
 	//	test_array(array("o"=>$oldFolder,"n"=>$newFolder));
-		bookings::logging($data['ID'], $log, "Booking was repeated");
-		bookings::logging($ID, $log, "Repeat Booking");
+		bookings::logging($data['ID'], $log, $label1);
+		bookings::logging($ID, $log, $label2);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__)), func_get_args());
 		return $n;

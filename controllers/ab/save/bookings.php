@@ -44,8 +44,11 @@ class bookings extends save {
 		$publication = $publication->get($user['pID']);
 
 
-		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$ID = (isset($_GET['ID'])&&$_GET['ID']&&$_GET['ID'] != "undefined") ? $_GET['ID'] : "";
 		$type = (isset($_GET['type'])) ? $_GET['type'] : "";
+
+
+
 
 		$details = new models\bookings();
 		$details = $details->get($ID);
@@ -118,8 +121,7 @@ class bookings extends save {
 		models\user_settings::save_setting($ss);
 
 
-
-
+		//test_array($ID);
 
 		$a = array();
 		$b = array();
@@ -147,10 +149,11 @@ class bookings extends save {
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 
 		$dID = (isset($_POST['dID']))? $_POST['dID']:"";
+		$exact_repeat = (isset($_POST['exact_repeat']))? $_POST['exact_repeat']:"0";
 
 
 		if ($dID) {
-			$response = models\bookings::repeat($ID, $dID);
+			$response = models\bookings::repeat($ID, $dID, $exact_repeat);
 		} else {
 			$response = array();
 		}

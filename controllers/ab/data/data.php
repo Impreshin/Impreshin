@@ -74,6 +74,10 @@ class data {
 			$allow['checked'] = 0;
 		}
 
+		if ($return['checked']){
+			$allow['edit'] = 0;
+		}
+
 
 
 

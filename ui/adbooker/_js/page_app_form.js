@@ -55,10 +55,13 @@ $(document).ready(function(){
 		$(this).closest(".modal").modal("hide");
 		$.bbq.pushState({"ID":$(this).attr("data-id")});
 		getDetails();
+		//$("#booking-form").trigger("reset");
+
 
 	});
 	$(document).on("click", "#view-record-btn", function () {
 		$.bbq.pushState({"ID":$(this).attr("data-id")});
+
 		getDetails();
 
 	});
@@ -106,6 +109,13 @@ $(document).ready(function(){
 	$(document).on("submit", "#booking-form", function (e) {
 		e.preventDefault();
 		form_submit();
+		return false;
+
+	});
+	$(document).on("reset", "#booking-form", function (e) {
+		e.preventDefault();
+		$form.data("details","");
+		load_form();
 		return false;
 
 	});

@@ -62,7 +62,7 @@
 						<tbody>
 						<tr>
 							<th width="150" style="width: 150px; ">Account:</th>
-							<td colspan="3">:&nbsp;<% if (this.labelClass){ %><span class="label <%= this.labelClass %>" style="margin-right: 10px;"> <%= this.accountStatus %> </span> <% } %><%= this.account %> - <%= this.accNum %>
+							<td colspan="3">:&nbsp;<% if (this.labelClass){ %><span class="label <%= this.labelClass || "" %>" style="margin-right: 10px;"> <%= this.accountStatus || "" %> </span> <% } %><%= this.account || "" %> - <%= this.accNum || "" %>
 
 							</td>
 						</tr>
@@ -70,55 +70,55 @@
 						<% if (this.typeID =='1') { %>
 						<tr>
 							<th>Placing</th>
-							<td colspan="3">:&nbsp;<%= this.placing %></td>
+							<td colspan="3">:&nbsp;<%= this.placing || "" %></td>
 
 						</tr>
 
 						<tr>
 							<th>Colour</th>
 							<td <% if (this.colour!="Spot" && this.colour !="Full") { %> <% } %>>
-							: <%= this.colour %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot %>)<% } %>
+							: <%= this.colour || "" %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot || "" %>)<% } %>
 							</td>
 							<% if (this.colour=="Spot" || this.colour =="Full") { %>
 								<th>Colour Rate</th>
-								<td>: <%= this.colourLabel %></td>
+								<td>: <%= this.colourLabel || "" %></td>
 							<% } %>
 						</tr>
 						<tr>
 							<th>Size</th>
 							<td	<% if (!this.rate_C) { %> <% } %>>
-								<div style="margin-right: -50px;">: <%= this.cm %>
-									<span class="g"> x </span> <%= this.col %>
-									<span class="g"> = </span> <%= this.totalspace %> <span class="g"> col/cm's</span>
+								<div style="margin-right: -50px;">: <%= this.cm || "" %>
+									<span class="g"> x </span> <%= this.col || "" %>
+									<span class="g"> = </span> <%= this.totalspace || "" %> <span class="g"> col/cm's</span>
 								</div>
 							</td>
 							<% if (this.rate_C) { %>
 							<th>Tariff</th>
-							<td>: <%= this.rate_C %></td>
+							<td>: <%= this.rate_C || "" %></td>
 							<% } %>
 						</tr>
 						<% } else if (this.typeID =='2') { %>
 						<tr>
 							<th>Print Order</th>
-							<td colspan="3">:&nbsp;<%= this.InsertPO %></td>
+							<td colspan="3">:&nbsp;<%= this.InsertPO || "" %></td>
 						</tr>
 						<% if (this.insertLabel) { %>
 						<tr>
 							<th>Insert Type</th>
-							<td colspan="3">:&nbsp;<%= this.insertLabel %></td>
+							<td colspan="3">:&nbsp;<%= this.insertLabel || "" %></td>
 						</tr>
 						<% } %>
 						<tr>
 							<th>Tariff</th>
-							<td colspan="3">:&nbsp;<%= this.rate_C %></td>
+							<td colspan="3">:&nbsp;<%= this.rate_C || "" %></td>
 						</tr>
 
 						<% } %>
 						<% if (this.totalCost_C) { %>
 						<tr>
 							<th>Totalcost</th>
-							<td colspan="3">: <%= this.totalCost_C %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C %> -
-								<span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff %>% </span>) <% } %>
+							<td colspan="3">: <%= this.totalCost_C || "" %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C || "" %> -
+								<span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff || "" %>% </span>) <% } %>
 
 							</td>
 						</tr>
@@ -126,26 +126,26 @@
 
 						<tr>
 							<th>Key Number</th>
-							<td colspan="3">: <%= this.keyNum %></td>
+							<td colspan="3">: <%= this.keyNum || "" %></td>
 						</tr>
 
 						<tr>
 							<th>Order Number</th>
-							<td colspan="3">:&nbsp;<%= this.orderNum %></td>
+							<td colspan="3">:&nbsp;<%= this.orderNum || "" %></td>
 						</tr>
 						<tr>
 							<th>Marketer</th>
-							<td colspan="3">: <%= this.marketer %></td>
+							<td colspan="3">: <%= this.marketer || "" %></td>
 						</tr>
 						<tr>
 							<th width="80">Discount</th>
-							<td width="140">: <% if (this.discount && this.discount != '0.00') { %><%= this.discount %>%<% } %></td>
+							<td width="140">: <% if (this.discount && this.discount != '0.00') { %><%= this.discount || "" %>%<% } %></td>
 							<th width="130">Agency Discount</th>
-							<td width="170">: <% if (this.agencyDiscount && this.agencyDiscount != '0.00') { %><%= this.agencyDiscount %>%<% } %></td>
+							<td width="170">: <% if (this.agencyDiscount && this.agencyDiscount != '0.00') { %><%= this.agencyDiscount || "" %>%<% } %></td>
 						</tr>
 						<tr>
 							<th>Category</th>
-							<td colspan="3">: <%= this.category %></td>
+							<td colspan="3">: <%= this.category || "" %></td>
 						</tr>
 
 
@@ -155,12 +155,12 @@
 
 									<% if (this.remark) { %>
 										<% if (this.remarkTypeLabelClass){ %>
-											<span class="label <%= this.remarkTypeLabelClass %>" title="<%= this.remarkType %>"><%= this.remarkType %>: </span>
+											<span class="label <%= this.remarkTypeLabelClass %>" title="<%= this.remarkType %>"><%= this.remarkType || "" %>: </span>
 										<% } else { %>
 											<span style="padding:0 5px;"></span>
 										<% } %>
 									<% } %>
-									</span> <%= this.remark %>
+									</span> <%= this.remark || "" %>
 
 							</td>
 						</tr>
@@ -179,27 +179,27 @@
 							<tr>
 								<th width="120" style="width: 120px;">Deleted By</th>
 								<td><%= this.deleted_user %></td>
-								<td width="120" style="width: 120px;"><%= this.deleted_date %></td>
+								<td width="120" style="width: 120px;"><%= this.deleted_date || "" %></td>
 							</tr>
 						</table>
 						<div style="padding-left:15px;">
-							<div class="alert alert-block"><strong>Reason:</strong> <%= this.deleted_reason %></div>
+							<div class="alert alert-block"><strong>Reason:</strong> <%= this.deleted_reason || "" %></div>
 						</div>
 
 						<% } %>
 						<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
 							<tr>
 								<th width="120" style="width: 120px;">Booked By</th>
-								<td><%= this.byFullName %></td>
-								<td width="120" style="width: 120px;"><%= this.datein %></td>
+								<td><%= this.byFullName || "" %></td>
+								<td width="120" style="width: 120px;"><%= this.datein || "" %></td>
 							</tr>
 							<tr>
 								<th>Checked</th>
 								<% if (this.checked=='1') { %>
 								<td>
-									<%= this.checked_user %>
+									<%= this.checked_user || "" %>
 								</td>
-								<td><%= this.checked_date %></td>
+								<td><%= this.checked_date || "" %></td>
 								<% } else { %>
 								<td colspan="2"> </td>
 								<% } %>
@@ -209,12 +209,12 @@
 								<% if (this.material_status=='1') { %>
 								<td>
 									<% if (this.material_source=='1') { %>
-										<%= this.material_production %>
+										<%= this.material_production || "" %>
 									<% } else { %>
 										Material Supplied
 									<% } %>
 								</td>
-								<td><%= this.material_date %></td>
+								<td><%= this.material_date || "" %></td>
 								<% } else { %>
 								<td colspan="2"> </td>
 								<% } %>
@@ -226,7 +226,7 @@
 							<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
 								<th class="s"><%= this.logs[i].datein %></th>
 								<td><%= this.logs[i].label %></td>
-								<td class="s g"><%= this.logs[i].fullName %></td>
+								<td class="s g"><%= this.logs[i].fullName || "" %></td>
 							</tr>
 							<tr>
 								<td colspan="3" class="log-record-details " data-log-id="<%= this.logs[i].ID %>" style="padding:0;">
@@ -511,9 +511,23 @@
 				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
 
 				<div style="float:right;">
+					<table>
+						<tr>
+							<td style="vertical-align: middle;">
+								<% if (this.material_file_filename && this.a.material_pane) { %>
+								<label for="exact_repeat" class="checkbox" style="padding-left: 20px; padding-right:20px; cursor:pointer;"><input type="checkbox" name="exact_repeat" id="exact_repeat" checked="checked" value="1" style="margin-right: 10px; margin-top: 2px;">Material is the same</label>
+								<% } else { %>
+								<input type="hidden" name="exact_repeat" id="exact_repeat" value="1">
+								<% } %>
+							</td>
+							<td>
+								<button class="btn btn-primary span3">Repeat</button>
+							</td>
+						</tr>
+					</table>
 
 
-					<button class="btn btn-primary span3">Repeat</button>
+
 				</div>
 
 			</div>
