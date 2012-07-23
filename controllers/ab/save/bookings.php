@@ -63,9 +63,12 @@ class bookings extends save {
 		$values['dID'] = "";
 		$values['typeID'] = $type;
 		if ($ID) { // changes when editing
-			if ($details['dateStatus'] != "0") { // not archived
-				$values['checked'] = "0";
-				$values['pageID'] = null;
+			if ($details['dateStatus'] != "0"  ) { // not archived
+				if (!$user['permissions']['form']['edit_master']){
+					$values['checked'] = "0";
+					$values['pageID'] = null;
+				}
+
 			}
 		} else { // when adding
 			$values['userID'] = $userID;

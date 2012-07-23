@@ -85,6 +85,7 @@ class bookings {
 					$file = $cfg['folder'] . "ab/" . $return['cID'] . "/" . $return['pID'] . "/" . $return['dID'] . "/material/" . $return['material_file_store'];
 					if (!file_exists($file)) {
 						$return['material_status'] = '0';
+						$return['material_file_filename'] = '';
 					} else {
 						$return['material_file_filesize_display'] = file_size($return['material_file_filesize']);
 					}

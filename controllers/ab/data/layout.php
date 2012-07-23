@@ -290,6 +290,7 @@ class layout extends data {
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
+				$a['material_status'] = $booking['material_status'];
 
 				$bookings[] = $a;
 			}
@@ -362,6 +363,31 @@ class layout extends data {
 		}
 
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;
+
+
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
+		$bookings = array();
+		foreach ($bookingsRaw as $booking) {
+			if ($booking['pageID'] == $page['ID']) {
+				$a = array();
+				$a['ID'] = $booking['ID'];
+				$a['client'] = $booking['client'];
+				$a['colour'] = $booking['colour'];
+				$a['colourSpot'] = $booking['colourSpot'];
+				$a['col'] = $booking['col'];
+				$a['cm'] = $booking['cm'];
+				$a['totalspace'] = $booking['totalspace'];
+				$a['pageID'] = $booking['pageID'];
+				$a['page'] = $booking['page'];
+				$a['material'] = $booking['material'];
+				$a['material_approved'] = $booking['material_approved'];
+				$a['material_status'] = $booking['material_status'];
+
+				$bookings[] = $a;
+			}
+		}
+
+		$page['records']= $bookings;
 
 
 		$GLOBALS["output"]['data'] = $page;

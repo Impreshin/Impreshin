@@ -32,6 +32,7 @@ $(document).ready(function () {
 	$(document).on("click","#reload-btn",function(){
 		getList();
 		load_pages();
+		getDetails_right();
 	});
 
 
@@ -82,11 +83,11 @@ $(document).ready(function () {
 	});
 
 
-	$(document).on("click","#record-list .record, .pages .record",function(){
+	$(document).on("click",".pages .record, .details_record",function(){
 		var $this = $(this);
 		getDetails_small($this.attr("data-id"));
 	});
-	$(document).on("dblclick","#record-list .record, .pages .record",function(e){
+	$(document).on("dblclick",".pages .record, .details_record",function(e){
 		e.stopPropagation();
 		var $this = $(this);
 		$.bbq.pushState({"ID":$this.attr("data-id")});
@@ -588,6 +589,23 @@ function getDetails_right(){
 		switch(section){
 			case "page":
 				$rightsideOver.jqotesub($("#template-right-page"), data);
+
+				var $recordsList = $("#page-booking-list tbody");
+				if (data['records'][0]) {
+					$recordsList.jqotesub($("#template-records-list"), data['records']);
+
+					if (data['locked']!='1'){
+						tr_draggable($recordsList);
+					}
+
+
+				} else {
+					$recordsList.html('<tr><td class="c no-records" colspan="4">No Records Found</td></tr>')
+				}
+
+
+
+
 				break;
 			case "section":
 				$rightsideOver.jqotesub($("#template-right-section"), data);
@@ -610,6 +628,7 @@ function showList(){
 
 function drop(ID,page,$dragged){
 	var oldPage = $($dragged).attr("data-page");
+	oldPage = oldPage!="undefined"? oldPage:"";
 
 	listRequest.push($.post("/ab/save/layout/_drop/?ID="+ID, {"page":page}, function (data) {
 		data = data['data'];

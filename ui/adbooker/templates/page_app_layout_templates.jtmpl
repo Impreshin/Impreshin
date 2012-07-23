@@ -4,13 +4,13 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>">
+	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>" data-page="<%= this.page %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
 		<td><% if (this.remark) { %><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span class="label"></span><% } %><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
 		</td>
-		<td style="width: 20px;">
+		<td style="width: 20px;" class="c">
 			<% if (this.material_status){ %>
 			<i class="icon-ok <% if(!this.material_approved) { %>icon-grey<% } %>"></i> <% } else { %>
 			<i class="icon-remove icon-l-grey"></i>
@@ -235,7 +235,19 @@
 
 	</header>
 	<article class="body">
+		<table class="table table-condensed  s records <% if (this.locked) { %>g<% } %>" id="page-booking-list" >
+			<thead>
+			<tr>
+				<th class="span1">Size</th>
+				<th class="span1">Colour</th>
+				<th>Client</th>
+				<th style="width: 40px;">Material</th>
+			</tr>
+			</thead>
+			<tbody>
 
+			</tbody>
+		</table>
 
 
 
