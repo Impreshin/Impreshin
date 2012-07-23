@@ -572,8 +572,11 @@ function getDetails_small(ID){
 function getDetails_right(){
 	var section = $.bbq.getState("details");
 	var ID = section;
-		ID = ID.replace(/page-/,"");
-		ID = ID.replace(/section-/,"");
+	if (ID){
+		ID = ID.replace(/page-/, "");
+		ID = ID.replace(/section-/, "");
+
+
 	var str = "-"+ID;
 		section = section.replace(str,"");
 	var $rightsideOver = $('#rightsideOver');
@@ -616,6 +619,7 @@ function getDetails_right(){
 
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 	});
+}
 
 }
 

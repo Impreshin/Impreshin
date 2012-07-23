@@ -740,7 +740,7 @@
 
 		$("#details-pane-logs .log-record-details").hide();
 		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
-		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 
 	});
 	$(document).on('click', '#details-record-prev', function () {
