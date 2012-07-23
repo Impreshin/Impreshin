@@ -31,58 +31,79 @@ class form extends data {
 
 		if ($accNum){
 
-			$where = "AND accountID = '$accNum' AND pID = '$pID' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
+			$where = "WHERE accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
 
 
-			$placing = F3::get("DB")->exec("
-				SELECT *,
-					(SELECT count(placingID) FROM ab_bookings WHERE ab_bookings.placingID = ab_placing.ID $where) AS count
-				FROM `ab_placing`
-				WHERE pID='$pID'
-				ORDER BY count DESC
-				$limit
+			$data = F3::get("DB")->exec("
+				SELECT
+					ab_categories.ID as categoryID, ab_categories.category,
+					ab_marketers.ID as marketerID, ab_marketers.marketer,
+					ab_placing.ID as placingID, ab_placing.placing,
+					discount,agencyDiscount
 
-			");
-			$marketers = F3::get("DB")->exec("
-				SELECT ab_marketers.*, ab_marketers_pub.pID,
-					(SELECT count(marketerID) FROM ab_bookings WHERE ab_bookings.marketerID = ab_marketers.ID $where) AS count
-				FROM ab_marketers INNER JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
-				WHERE ab_marketers_pub.pID='$pID'
-				ORDER BY count DESC
-				$limit
-			");
-			$categories = F3::get("DB")->exec("
-				SELECT ab_categories.*, ab_category_pub.pID,
-					(SELECT count(categoryID) FROM ab_bookings WHERE ab_bookings.categoryID = ab_categories.ID $where) AS count
-				FROM ab_categories INNER JOIN ab_category_pub ON ab_categories.ID = ab_category_pub.catID
-				WHERE ab_category_pub.pID='$pID'
-				ORDER BY count DESC
-				$limit
-			");
+					FROM ((ab_bookings LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID
 
-			$a = array();
-			foreach ($placing as $record){
-				if ($record['count']>0)$a[] = $record;
+
+
+				$where
+
+			"
+			);
+
+
+			$d = array();
+
+			$columns = array(
+				"marketer"=>"marketerID",
+				"category"=>"categoryID",
+				"discount"=>"discount",
+				"agencyDiscount"=>"agencyDiscount",
+			);
+
+			if ($type=='1'){
+				$columns['placing'] = "placingID";
 			}
-			$placing = $a;
-			$a = array();
-			foreach ($marketers as $record){
-				if ($record['count']>0)$a[] = $record;
+
+
+
+
+			foreach ($data as $record){
+				foreach ($columns as $col=>$colv){
+					if (!isset($d[$col])) $d[$col]=array();
+					if (!isset($d[$col][$record[$colv]])) {
+						$d[$col][$record[$colv]] = array(
+							"h"=> "",
+							"v"=> "",
+							"c"=> 0
+						);
+					}
+					$d[$col][$record[$colv]]['v'] = $record[$colv];
+					$d[$col][$record[$colv]]['h'] = $record[$col];
+					$d[$col][$record[$colv]]['c'] = $d[$col][$record[$colv]]['c'] + 1;
+
+				}
+
+
+
+
 			}
-			$marketers = $a;
-			$a = array();
-			foreach ($categories as $record){
-				if ($record['count']>0)$a[] = $record;
+
+
+			$data = array();
+			foreach ($d as $key=>$value){
+				$data[$key]=array();
+				foreach ($value as $r){
+					$data[$key][] = $r;
+				}
+
+
+				//usort($data[$key], sortBy('c'));
+				$data[$key] = array_slice(array_reverse(($data[$key])),0,4);
+
+
 			}
-			$categories = $a;
 
-
-
-			$return = array();
-
-			if ($type=='1')	$return["placing"]= $placing;
-				$return["marketers"]= $marketers;
-				$return["category"]= $categories;
+			$return = $data;
 		} else {
 			$accounts = F3::get("DB")->exec("
 				SELECT ab_accounts.*

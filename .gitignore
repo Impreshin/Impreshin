@@ -5,6 +5,7 @@ cache/*
 media/*
 tmp/*
 .idea/*
+uploads/*
 
 # Compiled source #
 ###################
@@ -31,7 +32,6 @@ tmp/*
 # Logs and databases #
 ######################
 *.log
-*.sql
 *.sqlite
 
 # OS generated files #

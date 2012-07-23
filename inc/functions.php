@@ -153,3 +153,11 @@ function bt_loop($trace) {
 
 	return $trace;
 }
+
+function sortBy($key="order") {
+	return function ($a, $b) use ($key) {
+		return strnatcmp($a[$key], $b[$key]);
+	};
+
+
+}
