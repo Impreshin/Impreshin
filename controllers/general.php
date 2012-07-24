@@ -9,6 +9,10 @@ class general {
 		ob_start("ob_gzhandler");
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		header("Content-Type: text/css");
+		$expires = 60 * 60 * 24 * 14;
+		header("Pragma: public");
+		header("Cache-Control: maxage=" . $expires);
+		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
 		if ($file) {
 
 			$fileDetails = pathinfo(($file));
@@ -52,6 +56,11 @@ class general {
 
 	function js_min() {
 		ob_start("ob_gzhandler");
+
+		$expires = 60 * 60 * 24 * 14;
+		header("Pragma: public");
+		header("Cache-Control: maxage=" . $expires);
+		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
 
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		//$file = F3::get('PARAMS.filename');
