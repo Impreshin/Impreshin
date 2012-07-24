@@ -419,8 +419,8 @@ class bookings {
 				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
 				break;
 			case "colours":
-				$orderby = "if(typeID='1',COALESCE(ab_bookings.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',ab_bookings.colour,ab_bookings_types.type) as heading";
+				$orderby = "if(typeID='1',COALESCE(ab_colour_rates.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(typeID='1',ab_colour_rates.colour,ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
 				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,1,2),0) $ordering, " . $orderby;

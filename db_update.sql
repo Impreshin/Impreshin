@@ -531,3 +531,10 @@ CREATE TABLE IF NOT EXISTS `ab_inserts_types` (
 ALTER TABLE `ab_bookings` ADD `insertLabel` VARCHAR( 50 ) NULL DEFAULT NULL AFTER `InsertPO` ,
 ADD `insertTypeID` INT( 6 ) NULL DEFAULT NULL AFTER `insertLabel` ,
 ADD INDEX ( `insertTypeID` );
+
+CREATE TABLE IF NOT EXISTS `system` (
+	`ID` int(6) NOT NULL AUTO_INCREMENT,
+	`key` varchar(100) DEFAULT NULL,
+	`value` varchar(100) DEFAULT NULL,
+	PRIMARY KEY (`ID`)
+);

@@ -75,8 +75,17 @@ $folder = (in_array($folder, $allowed)) ? $folder : "";
 $app->set('app', $folder);
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '',  $cfg['DB']['username'] , $cfg['DB']['password'] ));
 
-unset($cfg['DB']);
+update::db($cfg);
+
+
 $app->set('cfg', $cfg);
+
+
+
+
+
+
+
 
 
 

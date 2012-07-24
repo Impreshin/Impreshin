@@ -38,6 +38,7 @@ class template {
 		$user = F3::get('user');
 
 		$cfg = F3::get('cfg');
+		unset($cfg['DB']);
 
 
 
