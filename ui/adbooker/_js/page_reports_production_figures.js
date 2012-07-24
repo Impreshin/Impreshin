@@ -34,7 +34,7 @@ $(document).ready(function () {
 	});
 	getData();
 
-	$("select#productionID").select2().on("change",function(){
+	$("select#selectID").select2().on("change",function(){
 			getData();
 		});
 
@@ -59,7 +59,7 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
-	var ID = $("#productionID").val();
+	var ID = $("#selectID").val();
 
 
 var $combined = $("#combine-btn");
@@ -78,15 +78,13 @@ var $combined = $("#combine-btn");
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
 		//console.log(data['combined']);
-		if (data['combined']=='1' || data['pubs']=='1'){
-			drawChart('chart-income', data['lines']['labels'], data['lines']['totals']);
-			drawChart('chart-cm', data['lines']['labels'], data['lines']['cm']);
-			drawChart('chart-records', data['lines']['labels'], data['lines']['records']);
-		} else {
-			drawChart('chart-income', data['lines']['labels'], data['lines']['pubs'],'totals');
-			drawChart('chart-cm', data['lines']['labels'], data['lines']['pubs'],'cm');
-			drawChart('chart-records', data['lines']['labels'], data['lines']['pubs'],'records');
-		}
+
+
+
+
+			drawChart('chart-income', data);
+			drawChart('chart-cm', data);
+			drawChart('chart-records',data);
 
 
 		var $scrollpane = $("#whole-area .scroll-pane");
@@ -172,9 +170,38 @@ var $combined = $("#combine-btn");
 	}));
 
 }
-function drawChart(element, label, data, pub_column) {
+function drawChart(element, data) {
 	//console.log(label.length)
 
+	var col = "";
+	switch (element) {
+		case 'chart-income':
+			col = "totals";
+			break;
+		case 'chart-cm':
+			col = "cm";
+			break;
+		case 'chart-records':
+			col = "records";
+			break;
+	}
+	var label = data['lines']['labels'];
+	var label_d = data['lines']['labels_d'];
+
+	if (data['combined'] == '1' || data['pubs'] == '1') {
+		data = data['lines'][col];
+		legends = "";
+		data = [data];
+	} else {
+		data = data['lines']['pubs'];
+		var d = [];
+		var legends = [];
+		for (var i in data) {
+			d.push(data[i][col]);
+			legends.push(data[i]['pub']);
+		}
+		data = d;
+	}
 	var tangle = 0;
 	if (label.length >= 20) {
 		tangle = -30;
@@ -183,32 +210,6 @@ function drawChart(element, label, data, pub_column) {
 		tangle = -90;
 	}
 
-	/*
-	 var line1 = [
-	 [date1, val1],
-	 [date2, val2]
-	 ];
-	 var line2 = [
-	 [date1, val11],
-	 [date2, val12]
-	 ];
-	 var plot = $.jqplot('chart1', [line1, line2]);
-	 */
-	//console.log(data);
-
-	if (pub_column) {
-		var d = [];
-		var legends = [];
-		for (var i in data) {
-			d.push(data[i][pub_column]);
-			legends.push(data[i]['pub']);
-		}
-		data = d;
-	} else {
-		legends = "";
-		data = [data];
-	}
-	//console.log(legends);
 
 	var plot1 = $.jqplot(element, data, {
 		legend      :{
@@ -306,7 +307,7 @@ function drawChart(element, label, data, pub_column) {
 				}
 
 				//console.log(pub_column);
-				return "<span class='s dg'>" + label[pointIndex] + "</span>:<br> <strong>" + ret + "</strong>";
+				return "<span class='s dg'>" + label_d[pointIndex] + "</span><br> <strong>" + ret + "</strong>";
 			}
 		}
 

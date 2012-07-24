@@ -63,6 +63,7 @@ class controller_reports_production_figures {
 			)
 		);
 		$tmpl->list = models\production::getAll("cID = $cID", "production ASC");
+		$tmpl->selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
 
 
 

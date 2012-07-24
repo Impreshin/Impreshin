@@ -357,18 +357,18 @@ class layout extends data {
 
 		if (count($page)) {
 			$page = $page[0];
+
 		} else {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
 		}
-
+		$pageID = $page['ID'];
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;
 
 
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1' AND pageID='$pageID'", "client ASC");
 		$bookings = array();
 		foreach ($bookingsRaw as $booking) {
-			if ($booking['pageID'] == $page['ID']) {
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
@@ -384,7 +384,6 @@ class layout extends data {
 				$a['material_status'] = $booking['material_status'];
 
 				$bookings[] = $a;
-			}
 		}
 
 		$page['records']= $bookings;

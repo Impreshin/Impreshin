@@ -63,7 +63,7 @@ class controller_reports_category_figures {
 			)
 		);
 		$tmpl->list = models\categories::getAll("cID = $cID", "category ASC");
-		$tmpl->selected = (isset($settings['marketerID']["cID_$cID"])) ? $settings['marketerID']["cID_$cID"] : "";;
+		$tmpl->selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";;
 
 
 		$tmpl->publications = $publications;

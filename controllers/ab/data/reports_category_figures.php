@@ -48,6 +48,7 @@ class reports_category_figures extends data {
 
 
 
+
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {

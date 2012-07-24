@@ -246,6 +246,7 @@ class reportFigures {
 
 		$blank = array(
 			"label"  => "",
+			"label_d"  => "",
 			"totals" => 0,
 			"cm"     => 0,
 			"records"=> 0
@@ -256,9 +257,14 @@ class reportFigures {
 
 		while ($date1 <= $date2) {
 			$k = date('mY', $date1);
-			$h = date('M y', $date1);
+			$h = date('M', $date1);
+			$tooltip_label = date('F Y', $date1);
+			if (in_array($h,array("Jan"))){
+				$h = date('M \'y', $date1);
+			}
 			$data[$k] = $blank;
 			$data[$k]['label'] = $h;
+			$data[$k]['label_d'] = $tooltip_label;
 
 			foreach ($publications as $pub){
 				$data[$k]['pubs'][$pub['ID']]= $blank;
@@ -269,6 +275,7 @@ class reportFigures {
 
 			$date1 = strtotime('+1 month', $date1);
 		}
+
 
 
 
@@ -293,6 +300,7 @@ class reportFigures {
 		$p = array();
 		$data_ret = array(
 			"labels" => array(),
+			"labels_d"=>array(),
 			"totals" => array(),
 			"cm"     => array(),
 			"records"=> array(),
@@ -300,6 +308,7 @@ class reportFigures {
 		);
 		foreach ($data as $d) {
 			$data_ret['labels'][] = $d['label'];
+			$data_ret['labels_d'][] = $d['label_d'];
 			$data_ret['totals'][] = ($d['totals']) ? $d['totals'] : null;
 			$data_ret['cm'][] = $d['cm'];
 			$data_ret['records'][] = $d['records'];

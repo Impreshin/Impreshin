@@ -42,6 +42,8 @@ class reports_publication_figures extends data {
 			$combined = $settings['combined'];
 		}
 
+
+
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
@@ -76,8 +78,10 @@ class reports_publication_figures extends data {
 		$values[$section] = array(
 			"years"=> $years,
 			"timeframe"=> $daterange,
-			"combined"=> $combined
+			"combined"=> $combined,
 		);
+
+
 		$values[$section]["pub_$pID"] = array(
 			"pubs"=>	$publications
 		);
@@ -111,7 +115,7 @@ class reports_publication_figures extends data {
 		$return['lines'] = models\reportFigures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' ";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1'   ";
 		$return['comp']['data'] = models\reportFigures::figures($where, $yearsSend);
 
 
