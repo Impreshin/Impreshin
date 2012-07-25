@@ -149,8 +149,9 @@ if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
 	$ttl = 0;
 }
 $ttl = 0;
-$app->route('GET /update', function(){
-		update::code();
+$app->route('GET /update', function() use ($cfg) {
+		new update($cfg);
+		exit();
 	});
 
 

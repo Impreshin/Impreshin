@@ -5,7 +5,13 @@
  */
 
 class update {
-	function __construct(){
+	function __construct($cfg){
+		echo "Updating...<hr>";
+		echo "<h3>Files</h3>";
+		echo "<pre>". self::code() . "</pre>";
+		echo "<h3>Database</h3>";
+		self::db($cfg);
+		echo "done";
 
 	}
 	public static function code(){
@@ -14,11 +20,10 @@ class update {
 
 		//exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
 
-		echo "Updating...<hr>";
+
 		$output = shell_exec('git reset --hard HEAD');
 		$output = shell_exec('git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master 2>&1');
-		echo "<pre>$output</pre>";
-		exit();
+		return $output;
 	}
 
 	public static function db($cfg){
@@ -27,10 +32,6 @@ class update {
 		$db_update->load("`system`='db_version'");
 
 		include_once("db_update.php");
-
-
-
-
 
 		$v = $db_update->value;
 		$uv = key(array_slice($sql, -1, 1, TRUE));
