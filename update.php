@@ -12,7 +12,11 @@ class update {
 
 
 
-		exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
+		//exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
+
+		$output = shell_exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
+		echo "<pre>$output</pre>";
+		exit();
 	}
 
 	public static function db($cfg){

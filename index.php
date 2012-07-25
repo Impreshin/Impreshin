@@ -73,7 +73,7 @@ $app->set('app', $folder);
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '',  $cfg['DB']['username'] , $cfg['DB']['password'] ));
 
 update::db($cfg);
-update::code($cfg);
+
 
 
 $app->set('cfg', $cfg);
@@ -149,6 +149,11 @@ if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
 	$ttl = 0;
 }
 $ttl = 0;
+$app->route('GET /update', function(){
+		update::code();
+	});
+
+
 $app->route('GET /min/css/@filename', 'general->css_min', $ttl);
 $app->route('GET /min/css*', 'general->css_min', $ttl);
 $app->route('GET /min/js/@filename', 'general->js_min', $ttl);
