@@ -84,7 +84,7 @@ $(document).ready(function(){
 				$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 			} else {
 
-				$.bbq.pushState({"ID":r['ID']});
+				$.bbq.removeState("ID");
 				getList();
 				getDetails();
 			}

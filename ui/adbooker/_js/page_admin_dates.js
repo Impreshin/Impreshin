@@ -69,7 +69,7 @@ $(document).ready(function(){
 				$errorArea.html(str);
 			} else {
 
-				$.bbq.pushState({"ID":r['ID']});
+				$.bbq.removeState("ID");
 				getList();
 				getDetails();
 			}

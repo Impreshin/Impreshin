@@ -199,6 +199,11 @@ class reportFigures {
 
 					}
 
+					$hmm = array();
+					foreach ($n['data'] as $tt) {
+						$hmm[] = $tt;
+					}
+					$n['data']=$hmm;
 
 					$editions[] = $n;
 				}
