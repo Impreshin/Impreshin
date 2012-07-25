@@ -15,7 +15,7 @@ class update {
 		//exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
 
 		echo "Updating...<hr>";
-		//$output = shell_exec('git help 2>&1');
+		$output = shell_exec('git reset --hard HEAD');
 		$output = shell_exec('git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master 2>&1');
 		echo "<pre>$output</pre>";
 		exit();
