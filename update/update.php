@@ -89,7 +89,7 @@ class update {
 		if ($updates){
 			$return .= "Updates: " . $updates."<br>";
 		} else {
-			$return .= "No Updates needed<br>";
+			$return .= "Already up-to-date.<br>";
 		}
 
 		return $return;
