@@ -1,2 +1,2 @@
 @ECHO OFF
-php.exe -f "C:\code\cust.php"
+php.exe -f "%~dp0index.php"
