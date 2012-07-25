@@ -18,6 +18,7 @@ class update {
 
 		$output = shell_exec('git checkout master -f');
 		$output = shell_exec('git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master 2>&1');
+		$output = str_replace("From https://github.com/WilliamStam/Press-Apps","", $output);
 		return $output;
 	}
 
