@@ -5,10 +5,7 @@
  */
 
 $sql = array(
-	"1"=>array(
-		"SELECT * FROM global_users",
-		"Insert into system (`system`,`value`) VALUES ('t',now())"
-	)
+
 
 );
 
