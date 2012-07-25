@@ -126,13 +126,19 @@
 	$(document).on("click", '#figures-table tbody tr td.col',function () {
 			var $this = $(this);
 			var s = $this.attr("data-record");
-			$("#figures-table tbody tr td.active").removeClass("active");
-			$("#figures-table tbody tr td[data-record='" + s + "']").addClass("active");
-
-			var $row = $this.closest("tr");
-			var columns = $row.find('td').length;
 		$(".figure-month-details").hide();
-		$(".figure-month-details[data-key='"+s+"']").show();
+
+			if ($this.hasClass("active")){
+				$("#figures-table tbody tr td.active").removeClass("active");
+			} else {
+				$("#figures-table tbody tr td.active").removeClass("active");
+				$("#figures-table tbody tr td[data-record='" + s + "']").addClass("active");
+				$(".figure-month-details[data-key='" + s + "']").show();
+			}
+		var $scrollpane = $("#whole-area .scroll-pane");
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+
+
 
 		//console.log(s)
 
