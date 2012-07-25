@@ -73,6 +73,7 @@ $app->set('app', $folder);
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '',  $cfg['DB']['username'] , $cfg['DB']['password'] ));
 
 update::db($cfg);
+update::code($cfg);
 
 
 $app->set('cfg', $cfg);

@@ -8,6 +8,12 @@ class update {
 	function __construct(){
 
 	}
+	public static function code(){
+
+
+
+		exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
+	}
 
 	public static function db($cfg){
 
