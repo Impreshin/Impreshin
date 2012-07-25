@@ -77,7 +77,30 @@
 		}
 	}
 
+	td.col {
+		&.hover {
+			background-color : #DEEBFF !important;
+			cursor           : pointer;
+		}
+		&.active {
+			background-color : #DEEBFF !important;
+			text-shadow : 0 1px 1px rgba(250, 250, 250, 0.25);
 
+		}
+	}
+	.figure-month-details {
+		display: none;
+
+		td {
+			border-color: #f1f1f1;
+		}
+		&:last-child {
+			td {
+				border-top-color : #999!important;
+			}
+
+		}
+	}
 
 
 }

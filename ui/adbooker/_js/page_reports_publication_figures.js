@@ -71,7 +71,7 @@ var $combined = $("#combine-btn");
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
-
+		editionsetup();
 		//console.log(data['combined']);
 
 
@@ -163,6 +163,14 @@ var $combined = $("#combine-btn");
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
+
+}
+function editionsetup(){
+
+
+
+
+
 
 }
 function drawChart(element, data) {

@@ -65,7 +65,7 @@ class reportFigures {
 
 
 
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
@@ -79,6 +79,7 @@ class reportFigures {
 
 
 		$data = array();
+		$editions = array();
 		foreach ($d as $record) {
 			$year = date("Y", strtotime($record['publishDate']));
 			$month = date("m", strtotime($record['publishDate']));
@@ -87,19 +88,47 @@ class reportFigures {
 			}
 			if (!isset($data[$year][$month])) {
 				$data[$year][$month] = $blank;
+				$data[$year][$month]['e'] = array();
 			}
+
 
 			$data[$year][$month]['totals'] = $data[$year][$month]['totals'] + $record['totalCost'];
 			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
 			$data[$year][$month]['records'] = $data[$year][$month]['records'] + 1;
 
+
+
+			$edition = $record['dID'];
+			if (!isset($data[$year][$month]['e'][$edition])) {
+				$data[$year][$month]['e'][$edition] = $blank;
+			}
+
+			if (!isset($data[$year][$month]['e'][$edition]['date'])){
+				$data[$year][$month]['e'][$edition]['date'] = date("Y-m-d", strtotime($record['publishDate']));
+				$data[$year][$month]['e'][$edition]['pub'] = $record['publication'];
+			}
+
+			$data[$year][$month]['e'][$edition]['totals'] = $data[$year][$month]['e'][$edition]['totals'] + $record['totalCost'];
+			$data[$year][$month]['e'][$edition]['cm'] = $data[$year][$month]['e'][$edition]['cm'] + $record['totalspace'];
+			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + 1;
+
+
+
+
+
+
 		}
+
+
+
+
 
 
 		$ret = array();
 		foreach ($months as $month) {
 			$r = array(
 				"month"   => $month['h'],
+				"m"   => $month['k'],
 				"data"    => array(),
 				"averages"=> $blank
 			);
@@ -107,12 +136,16 @@ class reportFigures {
 			$i_c = 0;
 			$i_r = 0;
 			$totals = $blank;
+			$editions = array();
 			foreach ($years as $year) {
 
 
 					$total = isset($data[$year][$month['k']]['totals']) ? ($data[$year][$month['k']]['totals']) : 0;
 					$cm = isset($data[$year][$month['k']]['cm']) ? ($data[$year][$month['k']]['cm']) : 0;
 					$records = isset($data[$year][$month['k']]['records']) ? ($data[$year][$month['k']]['records']) : 0;
+
+
+
 
 
 					$totals['totals'] = $totals['totals'] + $total;
@@ -130,6 +163,7 @@ class reportFigures {
 					}
 
 
+
 					$r['data'][] = array(
 						"year"   => $year,
 						"totals" => ($total) ? ($total) : "",
@@ -139,14 +173,44 @@ class reportFigures {
 							"totals" => "",
 							"cm"     => "",
 							"records"=> ""
-						)
+						),
+
 					);
+
+				$editions_d = isset($data[$year][$month['k']]['e']) ? ($data[$year][$month['k']]['e']) : array();
+
+				//$editions[]['data'] = array();
+				foreach ($editions_d as $e) {
+					$n = array(
+						"date"=>$e['date'],
+						"key"=> date("Y|m", strtotime($e['date'])),
+						"pub"=> $e['pub'],
+
+					);
+
+					unset($e['pub']);
+					foreach ($years as $year) {
+						if ($year== date("Y", strtotime($e['date']))){
+							$e['totals']= currency($e['totals']);
+							$n['data'][$year] = $e;
+						} else {
+							$n['data'][$year] = array();
+						}
+
+					}
+
+
+					$editions[] = $n;
+				}
+
+
 
 
 
 
 			}
 
+			$r['editions'] = $editions;
 			$r['averages']['totals'] = ($i_t) ? $totals['totals'] / $i_t : $totals['totals'];
 			$r['averages']['cm'] = ($i_c) ? $totals['cm'] / $i_c : $totals['cm'];
 			$r['averages']['records'] = ($i_r) ? $totals['records'] / $i_r : $totals['records'];
