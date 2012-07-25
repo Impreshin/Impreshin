@@ -136,10 +136,7 @@ if ($folder) {
 
 }
 
-
-
 ob_start();
-
 
 $ttl = 0;
 if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
@@ -329,9 +326,7 @@ $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 	});
 	}
 );
-//$app->route('GET|POST /ab/data/@data', 'abdata->{{@PARAMS.data}}');
-//$app->route('GET|POST /ab/save/@section', 'ab_controllers_save->{{@PARAMS.section}}');
-//$app->route('GET|POST /ab/data/bookings', 'ab_data->bookings');
+
 
 
 $app->route('GET /php', function() {
@@ -413,7 +408,7 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 	exit();
 
 }
-//ob_end_flush();
+
 
 
 
