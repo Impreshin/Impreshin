@@ -72,7 +72,7 @@ $folder = (in_array($folder, $allowed)) ? $folder : "";
 $app->set('app', $folder);
 $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '',  $cfg['DB']['username'] , $cfg['DB']['password'] ));
 
-update::db($cfg);
+
 
 
 
@@ -150,7 +150,12 @@ if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
 }
 $ttl = 0;
 $app->route('GET /update', function() use ($cfg) {
-		new update($cfg);
+		echo "Updating...<hr>";
+		echo "<h3>Files</h3>";
+		echo "<pre>" . update::code() . "</pre>";
+		echo "<h3>Database</h3>";
+		update::db($cfg);
+		echo "done";
 		exit();
 	});
 

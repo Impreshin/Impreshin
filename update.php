@@ -6,12 +6,7 @@
 
 class update {
 	function __construct($cfg){
-		echo "Updating...<hr>";
-		echo "<h3>Files</h3>";
-		echo "<pre>". self::code() . "</pre>";
-		echo "<h3>Database</h3>";
-		self::db($cfg);
-		echo "done";
+
 
 	}
 	public static function code(){
