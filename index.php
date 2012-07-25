@@ -143,15 +143,7 @@ if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
 	$ttl = 0;
 }
 $ttl = 0;
-$app->route('GET /update', function() use ($cfg) {
-		echo "Updating...<hr>";
-		echo "<h3>Files</h3>";
-		echo "<pre>" . update::code() . "</pre>";
-		echo "<h3>Database</h3>";
-		echo "<pre>" . update::db($cfg) . "</pre>";
-		echo "<hr>Done!!";
-		exit();
-	});
+
 
 
 $app->route('GET /min/css/@filename', 'general->css_min', $ttl);

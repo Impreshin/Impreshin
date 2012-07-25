@@ -23,12 +23,27 @@ class update {
 
 	public static function db($cfg){
 
-		$db_update = new \Axon("system");
-		$db_update->load("`system`='db_version'");
+
+
+		$link = mysql_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password']);
+		mysql_select_db($cfg['DB']['database'], $link);
+		$sql = 'SELECT `value` FROM system WHERE `system`="db_version" LIMIT 1';
+		$result = mysql_query($sql, $link) or die(mysql_error());
+		$row = mysql_fetch_assoc($result);
+
+		$v = $row['value'];
+
+
+
+
+
+
+
+
 
 		include_once("db_update.php");
 
-		$v = $db_update->value;
+
 		$uv = key(array_slice($sql, -1, 1, TRUE));
 		$updates = 0;
 		$result = "";
@@ -53,13 +68,17 @@ class update {
 				//echo $e . "<br>";
 				if ($e) {
 					$updates = $updates + 1;
-					F3::get("DB")->exec($e);
+					mysql_query($e, $link) or die(mysql_error());
 				}
 			}
-			$db_update->system = "db_version";
-			$db_update->value = $uv;
 
-			$db_update->save();
+
+			if ($v){
+				mysql_query("UPDATE system SET `version`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
+			} else {
+				mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
+			}
+
 
 		}
 
