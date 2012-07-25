@@ -9,7 +9,7 @@ require_once('update.php');
 
 
 
-echo "Updating...<hr>";
+echo "Updates...<hr>";
 echo "<h3>Files</h3>";
 echo "<pre>" . update::code() . "</pre>";
 echo "<h3>Database</h3>";
