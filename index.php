@@ -151,8 +151,8 @@ $app->route('GET /update', function() use ($cfg) {
 		echo "<h3>Files</h3>";
 		echo "<pre>" . update::code() . "</pre>";
 		echo "<h3>Database</h3>";
-		update::db($cfg);
-		echo "done";
+		echo update::db($cfg);
+		echo "<hr>Done!!";
 		exit();
 	});
 

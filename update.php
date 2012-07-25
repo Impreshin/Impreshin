@@ -30,9 +30,13 @@ class update {
 
 		$v = $db_update->value;
 		$uv = key(array_slice($sql, -1, 1, TRUE));
+		$updates = 0;
+		$result = "";
+		$return = "";
 		if ($uv != $v) {
 			$result = self::db_backup($cfg,"update_cv".$v);
 			$nsql = array();
+
 			foreach ($sql as $version=> $exec) {
 
 				if ($version > $v) {
@@ -48,6 +52,7 @@ class update {
 			foreach ($sql as $e) {
 				//echo $e . "<br>";
 				if ($e) {
+					$updates = $updates + 1;
 					F3::get("DB")->exec($e);
 				}
 			}
@@ -58,6 +63,14 @@ class update {
 
 		}
 
+		if ($result){
+			$return .= "Backup name: " . $result."<br>";
+		}
+		if ($updates){
+			$return .= "Updates: " . $updates."<br>";
+		}
+
+		return $return;
 	}
 	static function db_backup($cfg,$append_file_name){
 
@@ -73,7 +86,7 @@ class update {
 		passthru("mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname > $filename");
 
 
-		return "$filename ";// passthru("tail -1 $filename");
+		return "$filename";// passthru("tail -1 $filename");
 
 
 	}
