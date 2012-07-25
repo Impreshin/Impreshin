@@ -112,8 +112,6 @@ if ($username && $password){
 }
 
 
-
-
 $user = $userO->user($uID);
 if (!$user['ID']&&$folder) {
 	F3::reroute("/login?to=". $_SERVER['REQUEST_URI']);
@@ -137,7 +135,6 @@ if ($folder) {
 
 
 }
-
 
 
 
