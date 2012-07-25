@@ -1,3 +1,8 @@
+SET @companyName:="Kathorus";
+SET @usernamePrefix:="@zoutnet.co.za";
+
+
+
 ALTER DATABASE adbooker_v5 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 ALTER TABLE `adbooker_ab_access` DROP `addbooking` ,DROP `priv_1` ,DROP `priv_2` ,DROP `priv_3` ,DROP `priv_4` ,DROP `priv_5` ,DROP `priv_6` ,DROP `priv_7` ,DROP `priv_8` ,DROP `priv_9` ,DROP `priv_10` ,DROP `priv_11` ,DROP `priv_12` ,DROP `priv_13` ,DROP `priv_14` ,DROP `priv_15` ,DROP `priv_16` ,DROP `priv_17` ,DROP `priv_18` ,DROP `priv_19` ,DROP `priv_20` ,DROP `priv_21` ,DROP `priv_22` ,DROP `priv_23` ,DROP `priv_24` ,DROP `priv_25` ,DROP `priv_26` ,DROP `priv_27` ,DROP `priv_28` ,DROP `priv_29` ,DROP `priv_30` ,DROP `priv_31` ,DROP `priv_32` ,DROP `priv_33` ,DROP `priv_34` ,DROP `priv_35` ,DROP `priv_36` ,DROP `priv_37` ,DROP `priv_38` ,DROP `priv_39` ,DROP `priv_40` ,DROP `priv_41` ,DROP `priv_42` ,DROP `priv_43` ,DROP `priv_44` ,DROP `priv_45` ,DROP `priv_46` ,DROP `priv_47` ,DROP `priv_48` ,DROP `priv_49` ;
@@ -245,12 +250,15 @@ DROP TABLE `adbooker_ab_colours`, `adbooker_ab_deleted`, `adbooker_ab_bookings_d
 
 # ------------------------------------------------------- #
 
-INSERT INTO `global_companies` (`company`) VALUES ('Zoutnet');
-UPDATE ab_accounts SET cID = '1';
-UPDATE ab_categories SET cID = '1';
-UPDATE ab_marketers SET cID = '1';
-UPDATE ab_material_source SET cID = '1';
-UPDATE global_publications SET cID = '1';
+INSERT INTO `global_companies` (`company`) VALUES (@companyName);
+
+SET @cID = LAST_INSERT_ID();
+
+UPDATE ab_accounts SET cID = @cID;
+UPDATE ab_categories SET cID = @cID;
+UPDATE ab_marketers SET cID =@cID;
+UPDATE ab_material_source SET cID = @cID;
+UPDATE global_publications SET cID =@cID;
 
 INSERT INTO `ab_bookings_types` (`ID`,`type`) VALUES ('1', 'Adverts'),('2', 'Inserts');
 
@@ -274,10 +282,9 @@ CREATE TABLE IF NOT EXISTS `ab_accounts_status` (
 );
 INSERT INTO
 	`ab_accounts_status` (`ID`, `cID`, `status`, `blocked`, `labelClass`, `orderby`)
-	VALUES (1, 1, 'Ok', 0, NULL, 0),
-		(2, 1, 'Blocked', 1, 'label-important', 2),
-		(3, 1, 'Payment must clear first', 0, 'label-important', 3),
-		(4, 1, 'Cash only client', 0, 'label-warning', 1);
+	VALUES (1, @cID, 'Ok', 0, NULL, 0),
+		(2,@cID, 'Blocked', 1, 'label-important', 2),
+		(3, @cID, 'Cash only', 0, 'label-warning', 1);
 
 
 
@@ -439,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `global_users_company` (
 	KEY `cID` (`cID`,`uID`)
 );
 ALTER TABLE `global_users_company` ADD `ab` TINYINT( 1 ) NULL DEFAULT NULL;
-INSERT INTO	global_users_company (cID, uID, ab) SELECT '1' as cID, ID as uID, '1' as ab FROM global_users;
+INSERT INTO	global_users_company (cID, uID, ab) SELECT @cID as cID, ID as uID, '1' as ab FROM global_users;
 
 ALTER TABLE `ab_users_pub` CHANGE `pID` `pID` INT( 6 ) NULL DEFAULT NULL;
 ALTER TABLE `ab_users_pub` CHANGE `uID` `uID` INT( 6 ) NULL DEFAULT NULL;
@@ -452,25 +459,11 @@ ALTER TABLE `global_users_company` ADD `ab_permissions` TEXT NULL DEFAULT NULL A
 
 # ----------------- #
 
-INSERT INTO
-	`global_pages_sections` (`ID`, `pID`, `section`, `section_colour`) VALUES (7, 3, 'Sport', 'yellow'),
-	(9, 3, 'Classifieds/Legals', '#DBD4D4'),
-	(10, 3, 'Motoring', 'blue'),
-	(11, 3, 'Makoya', '#FFF70F'),
-	(12, 3, 'Main News', '#8390F2'),
-	(13, 1, 'Sport', '#EFF700'),
-	(14, 1, 'Classifieds/Legals', '#ccc'),
-	(15, 1, 'Motoring', '#0000FF'),
-	(16, 1, 'Main News', '#52D452'),
-	(17, 3, 'Entertainment', '#1AED33');
 
+update global_users SET email = concat(email,@usernamePrefix);
 
 # ----------------- #
-
-update global_users SET email = concat(email,'@zoutnet.co.za');
-
-# ----------------- #
-UPDATE global_users_company SET ab_permissions = 'a:9:{s:7:"details";a:2:{s:7:"actions";a:5:{s:5:"check";s:1:"1";s:8:"material";s:1:"1";s:6:"repeat";s:1:"1";s:4:"edit";s:1:"1";s:6:"delete";s:1:"1";}s:6:"fields";a:3:{s:4:"rate";s:1:"1";s:9:"totalCost";s:1:"1";s:13:"totalShouldbe";s:1:"1";}}s:5:"lists";a:2:{s:6:"fields";a:3:{s:4:"rate";s:1:"1";s:9:"totalCost";s:1:"1";s:13:"totalShouldbe";s:1:"1";}s:6:"totals";a:1:{s:9:"totalCost";s:1:"1";}}s:4:"form";a:1:{s:4:"page";s:1:"1";}s:11:"provisional";a:1:{s:4:"page";s:1:"1";}s:10:"production";a:1:{s:4:"page";s:1:"1";}s:6:"layout";a:3:{s:4:"page";s:1:"1";s:9:"pagecount";s:1:"1";s:8:"editpage";s:1:"1";}s:8:"overview";a:1:{s:4:"page";s:1:"1";}s:7:"records";a:2:{s:7:"deleted";a:1:{s:4:"page";s:1:"1";}s:6:"search";a:1:{s:4:"page";s:1:"1";}}s:14:"administration";a:2:{s:11:"application";a:7:{s:8:"accounts";a:2:{s:4:"page";s:1:"1";s:6:"status";a:1:{s:4:"page";s:1:"1";}}s:10:"categories";a:1:{s:4:"page";s:1:"1";}s:9:"marketers";a:2:{s:4:"page";s:1:"1";s:7:"targets";a:1:{s:4:"page";s:1:"1";}}s:10:"production";a:1:{s:4:"page";s:1:"1";}s:8:"sections";a:1:{s:4:"page";s:1:"1";}s:7:"placing";a:2:{s:4:"page";s:1:"1";s:7:"colours";a:1:{s:4:"page";s:1:"1";}}s:7:"loading";a:1:{s:4:"page";s:1:"1";}}s:6:"system";a:3:{s:5:"dates";a:1:{s:4:"page";s:1:"1";}s:5:"users";a:1:{s:4:"page";s:1:"1";}s:12:"publications";a:1:{s:4:"page";s:1:"1";}}}}' WHERE uID = '2' OR uID = '3';
+UPDATE global_users_company SET ab_permissions = 'a:9:{s:7:"details";a:2:{s:7:"actions";a:5:{s:5:"check";s:1:"1";s:8:"material";s:1:"1";s:6:"repeat";s:1:"1";s:4:"edit";s:1:"1";s:6:"delete";s:1:"1";}s:6:"fields";a:3:{s:4:"rate";s:1:"1";s:9:"totalCost";s:1:"1";s:13:"totalShouldbe";s:1:"1";}}s:5:"lists";a:2:{s:6:"fields";a:3:{s:4:"rate";s:1:"1";s:9:"totalCost";s:1:"1";s:13:"totalShouldbe";s:1:"1";}s:6:"totals";a:1:{s:9:"totalCost";s:1:"1";}}s:4:"form";a:1:{s:4:"page";s:1:"1";}s:11:"provisional";a:1:{s:4:"page";s:1:"1";}s:10:"production";a:1:{s:4:"page";s:1:"1";}s:6:"layout";a:3:{s:4:"page";s:1:"1";s:9:"pagecount";s:1:"1";s:8:"editpage";s:1:"1";}s:8:"overview";a:1:{s:4:"page";s:1:"1";}s:7:"records";a:2:{s:7:"deleted";a:1:{s:4:"page";s:1:"1";}s:6:"search";a:1:{s:4:"page";s:1:"1";}}s:14:"administration";a:2:{s:11:"application";a:7:{s:8:"accounts";a:2:{s:4:"page";s:1:"1";s:6:"status";a:1:{s:4:"page";s:1:"1";}}s:10:"categories";a:1:{s:4:"page";s:1:"1";}s:9:"marketers";a:2:{s:4:"page";s:1:"1";s:7:"targets";a:1:{s:4:"page";s:1:"1";}}s:10:"production";a:1:{s:4:"page";s:1:"1";}s:8:"sections";a:1:{s:4:"page";s:1:"1";}s:7:"placing";a:2:{s:4:"page";s:1:"1";s:7:"colours";a:1:{s:4:"page";s:1:"1";}}s:7:"loading";a:1:{s:4:"page";s:1:"1";}}s:6:"system";a:3:{s:5:"dates";a:1:{s:4:"page";s:1:"1";}s:5:"users";a:1:{s:4:"page";s:1:"1";}s:12:"publications";a:1:{s:4:"page";s:1:"1";}}}}' WHERE  uID = (SELECT ID FROM global_users WHERE email = concat('administrator',@usernamePrefix) LIMIT 0,1);
 
 ALTER TABLE `ab_bookings` ADD `accountID` INT( 6 ) NULL DEFAULT NULL AFTER `accNum`;
 
@@ -534,7 +527,13 @@ ADD INDEX ( `insertTypeID` );
 
 CREATE TABLE IF NOT EXISTS `system` (
 	`ID` int(6) NOT NULL AUTO_INCREMENT,
-	`key` varchar(100) DEFAULT NULL,
+	`system` varchar(100) DEFAULT NULL,
 	`value` varchar(100) DEFAULT NULL,
 	PRIMARY KEY (`ID`)
 );
+# ----------------- #
+
+ALTER TABLE `ab_marketers` ADD `code` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `email`;
+
+# ----------------- #
+
