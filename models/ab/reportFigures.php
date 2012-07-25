@@ -74,6 +74,7 @@ class reportFigures {
 			"totals" => 0,
 			"cm"     => 0,
 			"records"=> 0,
+			"yield"=> 0,
 		);
 
 
@@ -95,6 +96,7 @@ class reportFigures {
 			$data[$year][$month]['totals'] = $data[$year][$month]['totals'] + $record['totalCost'];
 			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
 			$data[$year][$month]['records'] = $data[$year][$month]['records'] + 1;
+
 
 
 
@@ -135,6 +137,7 @@ class reportFigures {
 			$i_t = 0;
 			$i_c = 0;
 			$i_r = 0;
+			$i_y = 0;
 			$totals = $blank;
 			$editions = array();
 			foreach ($years as $year) {
@@ -161,7 +164,9 @@ class reportFigures {
 					if (isset($data[$year][$month['k']]['records'])) {
 						$i_r++;
 					}
-
+					if (isset($data[$year][$month['k']]['totals'])&& isset($data[$year][$month['k']]['cm'])) {
+						$i_y++;
+					}
 
 
 					$r['data'][] = array(
@@ -172,6 +177,7 @@ class reportFigures {
 						"d"      => array(
 							"totals" => "",
 							"cm"     => "",
+							"yield"=> "",
 							"records"=> ""
 						),
 
@@ -191,6 +197,7 @@ class reportFigures {
 					unset($e['pub']);
 					foreach ($years as $year) {
 						if ($year== date("Y", strtotime($e['date']))){
+							$e['yield']= ($e['totals']&&$e['cm'])?currency($e['totals']/$e['cm']):"";
 							$e['totals']= currency($e['totals']);
 							$n['data'][$year] = $e;
 						} else {
@@ -219,10 +226,12 @@ class reportFigures {
 			$r['averages']['totals'] = ($i_t) ? $totals['totals'] / $i_t : $totals['totals'];
 			$r['averages']['cm'] = ($i_c) ? $totals['cm'] / $i_c : $totals['cm'];
 			$r['averages']['records'] = ($i_r) ? $totals['records'] / $i_r : $totals['records'];
+			$r['averages']['yield'] = $r['averages']['totals'] / $r['averages']['cm'];
 
 
 			$ndata = array();
 			foreach ($r['data'] as $rec) {
+				$rec['yield'] = ($rec['totals'] && $rec['cm']) ? ($rec['totals'] / $rec['cm']) : "";
 				$col = "totals";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
@@ -255,7 +264,21 @@ class reportFigures {
 				}
 
 
+				$col = "yield";
+				$figs_c_totals = array(
+					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
+					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
+				);
+				if ($rec[$col] > $figs_c_totals[0]) {
+					$rec['d'][$col] = "u";
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
+					$rec['d'][$col] = "d";
+				}
+
+
 				$rec['totals'] = ($rec['totals']) ? currency($rec['totals']) : "";
+				$rec['yield'] = ($rec['yield']) ? currency($rec['yield']) : "";
+
 				$ndata[] = $rec;
 			}
 			$r['data'] = $ndata;

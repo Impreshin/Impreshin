@@ -19,7 +19,7 @@
 		<tr>
 			<td></td>
 			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
-			<td colspan="3" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
+			<td colspan="4" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
 			<% } %> <% } %>
 		</tr>
 		<tr class="colheading">
@@ -28,6 +28,7 @@
 			<th style="width: 70px;border-left: 1px solid #999;">Total</th>
 			<th style="width: 40px;">Cm</th>
 			<th style="width: 30px;">#</th>
+			<th style="width: 30px;">Yield</th>
 			<% } %> <% } %>
 		</tr>
 		</thead>
@@ -52,8 +53,14 @@
 			</td>
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.records %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
-			<span>
+				<span>
 					<%= this.comp.data[d].data[i].records %>
+				</span>
+			</td>
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.yield %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+
+				<span>
+					<%= this.comp.data[d].data[i].yield %>
 				</span>
 			</td>
 
@@ -68,6 +75,7 @@
 				<td><%= this.comp.data[d].editions[e].data[i].totals||"" %></td>
 				<td><%= this.comp.data[d].editions[e].data[i].cm||"" %></td>
 				<td><%= this.comp.data[d].editions[e].data[i].records||"" %></td>
+				<td><%= this.comp.data[d].editions[e].data[i].yield||"" %></td>
 			<% } %>
 		</tr>
 		<% } %>

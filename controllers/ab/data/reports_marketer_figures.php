@@ -78,7 +78,7 @@ class reports_marketer_figures extends data {
 				$years = array();
 				$i = 0;
 				foreach ($years_d as $d) {
-					if ($i++ < 4) $years[] = $d['record_year'];
+					if ($i++ < 3) $years[] = $d['record_year'];
 				}
 				$years = implode(",", $years);
 			}
