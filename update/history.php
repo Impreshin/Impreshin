@@ -1,6 +1,6 @@
 <?php
-
-require_once dirname(__FILE__) . '/../lib/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+include_once ("../inc/functions.php");
+require_once 'lib/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 /**
  * Configure the autoloader
@@ -14,8 +14,8 @@ require_once dirname(__FILE__) . '/../lib/vendor/Symfony/Component/ClassLoader/U
 $loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 // Register the location of the GitHub namespace
 $loader->registerNamespaces(array(
-	                            'Buzz'              => __DIR__ . '/../lib/vendor/Buzz/lib',
-	                            'GitHub'            => __DIR__ . '/../lib'
+	                            'Buzz'              => 'lib/vendor',
+	                            'GitHub'            => 'lib'
                             )
 );
 $loader->register();
@@ -28,35 +28,26 @@ use GitHub\API\AuthenticationException;
 // Lets access the User API
 $user = new User();
 
-/**
- * Perform operations that require no authentication
- */
 
-// Get details for user 'dsyph3r'
-var_dump($user->get('dsyph3r'));
 
-// Get users 'dsyph3r' is following
-var_dump($user->following('dsyph3r'));
-
-/**
- * Perform operations that require authentication
- */
 // Set user credentials and login
-$user->setCredentials(new Authentication\Basic('username', 'password'));
+$user->setCredentials(new Authentication\Basic('WilliamStam', 'awssmudge1'));
 $user->login();
 
+
 try {
+	//test_array($user->repos());
 	// Check if your following user
-	var_dump($user->isFollowing("octocat"));
+	//var_dump($user->isFollowing("octocat"));
 
 	// Update some user details
-	var_dump($user->update(array('location' => 'Wales, United Kingdom')));
+	//var_dump($user->update(array('location' => 'Wales, United Kingdom')));
 
 	// Get all emails for user
 	var_dump($user->emails()->all());
 
 	// Add key for user
-	var_dump($user->keys()->create("New Key", "ssh-rsa CCC"));
+	//var_dump($user->keys()->create("New Key", "ssh-rsa CCC"));
 } catch (AuthenticationException $exception) {
 	echo $exception->getMessage();
 }
