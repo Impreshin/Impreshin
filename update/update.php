@@ -16,7 +16,8 @@ class update {
 		//exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
 
 
-		$output = shell_exec('git checkout master -f');
+		//$output = shell_exec('git checkout master -f');
+		$output = shell_exec('git reset --hard HEAD');
 		$output = shell_exec('git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master 2>&1');
 		$output = str_replace("From https://github.com/WilliamStam/Press-Apps","", $output);
 		$output = str_replace("* branch            master     -> FETCH_HEAD","", $output);
