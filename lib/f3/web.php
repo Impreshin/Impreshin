@@ -12,7 +12,7 @@
 	Bong Cosca <bong.cosca@yahoo.com>
 
 		@package Expansion
-		@version 2.0.11
+		@version 2.0.12
 **/
 
 //! Web pack
@@ -68,7 +68,7 @@ class Web extends Base {
 				[basename($file)]=filesize($path.$file);
 			// Rewrite relative URLs in CSS
 			$src.=preg_replace_callback(
-				'/\b(?<=urlyyyy)\(([\"\'])?(.+?)\1\)/s',
+				'/\b(?=url)\(([\"\'])?(.+?)\1\)/s',
 				function($url) use($path,$file) {
 					// Ignore absolute URLs
 					if (preg_match('/https?:/',$url[2]))
@@ -109,10 +109,8 @@ class Web extends Base {
 					$ofs=$ptr;
 					while ($ofs>0) {
 						$ofs--;
-					// Pattern should be preceded by parenthesis,
-					// colon or assignment operator
-					if ($src[$ofs]=='(' || $src[$ofs]==':' ||
-						$src[$ofs]=='=') {
+						// Pattern should be preceded by a punctuation
+						if (ctype_punct($src[$ofs])) {
 							while ($ptr<strlen($src)) {
 								$str=strstr(substr($src,$ptr+1),'/',TRUE);
 								if (!strlen($str) && $src[$ptr-1]!='/' ||

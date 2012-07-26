@@ -134,7 +134,7 @@ function getList(){
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list/",{"order":order,"placingID":placingID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list",{"order":order,"placingID":placingID}, function (data) {
 		data = data['data'];
 
 		var placings = $.map(data['placing'], function (record) {
@@ -211,7 +211,7 @@ function getDetails(){
 
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/ab/data/admin_placing_colours/_details/", {"ID":ID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/admin_placing_colours/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);

@@ -266,7 +266,7 @@ function getList(){
 	var placingID = $("#placingID").val();
 
 	$("#right-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/layout/_list/", {"placingID":placingID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/layout/_list", {"placingID":placingID}, function (data) {
 		data = data['data'];
 
 
@@ -508,7 +508,7 @@ function load_pages(settings){
 	var placingID = $("#placingID").val();
 
 	$("#left-area .loadingmask").show();
-	listRequest.push($.getJSON("/ab/data/layout/_pages/", {"placingID":placingID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/layout/_pages", {"placingID":placingID}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#pages-area");
@@ -560,7 +560,7 @@ function isScrolledIntoView(elem) {
 }
 function getDetails_small(ID){
 	$('#record-details-bottom').stop(true,true).fadeTo(transSpeed,0.5);
-	detailsRequest.push($.getJSON("/ab/data/details/?r=" + Math.random(), {"ID":ID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#record-list .record.active").removeClass("active");
 		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
@@ -585,7 +585,7 @@ function getDetails_right(){
 
 
 
-	$.getJSON("/ab/data/layout/_details_"+section+"/?r=" + Math.random(), {"val":ID}, function (data) {
+	$.getJSON("/ab/data/layout/_details_"+section+"?r=" + Math.random(), {"val":ID}, function (data) {
 		data = data['data'];
 
 
@@ -634,7 +634,7 @@ function drop(ID,page,$dragged){
 	var oldPage = $($dragged).attr("data-page");
 	oldPage = oldPage!="undefined"? oldPage:"";
 
-	listRequest.push($.post("/ab/save/layout/_drop/?ID="+ID, {"page":page}, function (data) {
+	listRequest.push($.post("/ab/save/layout/_drop?ID="+ID, {"page":page}, function (data) {
 		data = data['data'];
 		$dragged.remove();
 		$("#page-" + page).jqotesub($("#template-spreads-page"), data);
@@ -644,7 +644,7 @@ function drop(ID,page,$dragged){
 		tr_draggable($("#page-" + page));
 
 		if (oldPage) {
-			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
+			$.getJSON("/ab/data/layout/_page?r=" + Math.random(), {"page":oldPage}, function (data) {
 				data = data['data'];
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
 				page_droppable($("#page-" + oldPage));
@@ -660,14 +660,14 @@ function drop(ID,page,$dragged){
 function remove(ID, $dragged){
 	var oldPage = $($dragged).attr("data-page");
 
-	listRequest.push($.post("/ab/save/layout/_drop/?ID=" + ID, {"page":"remove"}, function (data) {
+	listRequest.push($.post("/ab/save/layout/_drop?ID=" + ID, {"page":"remove"}, function (data) {
 		data = data['data'];
 		$dragged.remove();
 
 		getList();
 
 		if (oldPage) {
-			$.getJSON("/ab/data/layout/_page/?r=" + Math.random(), {"page":oldPage}, function (data) {
+			$.getJSON("/ab/data/layout/_page?r=" + Math.random(), {"page":oldPage}, function (data) {
 				data = data['data'];
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
 				$("#dummy-bottom div[data-page_nr='" + oldPage + "']").jqotesub($("#template-spreads-bottom-page"), data);

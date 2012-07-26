@@ -91,7 +91,7 @@ class general {
 				"_js/plugins/jquery.miniColors.js",
 				//"_js/plugins/bootstrap-datepicker.js",
 
-
+				"_js/plugins/github.commits.widget.js",
 
 
 				"plupload/js/browserplus-min.js" ,
@@ -114,6 +114,9 @@ class general {
 				"jqplot/plugins/jqplot.categoryAxisRenderer.min.js",
 				"jqplot/plugins/jqplot.pointLabels.min.js",
 				"jqplot/plugins/jqplot.trendline.min.js",
+
+
+
 
 
 

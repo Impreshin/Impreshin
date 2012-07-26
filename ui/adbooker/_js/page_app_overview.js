@@ -71,7 +71,7 @@ function load_pages(settings){
 
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/overview/_pages/", {"highlight":highlight}, function (data) {
+	listRequest.push($.getJSON("/ab/data/overview/_pages", {"highlight":highlight}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#pages-area");

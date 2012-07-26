@@ -12,7 +12,7 @@
 	Bong Cosca <bong.cosca@yahoo.com>
 
 		@package Base
-		@version 2.0.11
+		@version 2.0.12
 **/
 
 //! Base structure
@@ -21,7 +21,7 @@ class Base {
 	//@{ Framework details
 	const
 		TEXT_AppName='Fat-Free Framework',
-		TEXT_Version='2.0.11',
+		TEXT_Version='2.0.12',
 		TEXT_AppURL='http://fatfree.sourceforge.net';
 	//@}
 
@@ -606,9 +606,9 @@ class Base {
 						$expr[1]
 					)
 				);
-				return (!preg_match('/@|\bnew\s+/i',$out) &&
-					($eval=eval('return (string)'.$out.';'))!==FALSE?
-						$eval:$out);
+				return preg_match('/(?=\w)@/i',$out) ||
+					($eval=eval('return (string)'.$out.';'))===FALSE?
+						$out:$eval;
 			},
 			$val
 		);
@@ -667,9 +667,10 @@ class Base {
 		permission to create folder in the specified path
 			@param $name string
 			@param $perm int
+			@param $recursive bool
 			@public
 	**/
-	static function mkdir($name,$perm=0775) {
+	static function mkdir($name,$perm=0775,$recursive=TRUE) {
 		$parent=dirname($name);
 		if (!@is_writable($parent) && !chmod($parent,$perm)) {
 			$uid=posix_getpwuid(posix_geteuid());
@@ -678,7 +679,7 @@ class Base {
 			return FALSE;
 		}
 		// Create the folder
-		mkdir($name,$perm);
+		mkdir($name,$perm,$recursive);
 	}
 
 	/**
@@ -888,13 +889,7 @@ class F3 extends Base {
 			$key=self::resolve($key);
 		if (!self::valid($key))
 			return FALSE;
-		$id=session_id();
 		$var=&self::ref($key,FALSE);
-		if (!$id && session_id()) {
-			// End the session
-			session_unset();
-			session_destroy();
-		}
 		return isset($var);
 	}
 
@@ -902,16 +897,17 @@ class F3 extends Base {
 		Multi-variable assignment using associative array
 			@param $arg array
 			@param $pfx string
+			@param $resolve bool
 			@public
 	**/
-	static function mset($arg,$pfx='') {
+	static function mset($arg,$pfx='',$resolve=TRUE) {
 		if (!is_array($arg))
 			// Invalid argument
 			trigger_error(self::TEXT_MSet);
 		else
 			// Bind key-value pairs
 			foreach ($arg as $key=>$val)
-				self::set($pfx.$key,$val);
+				self::set($pfx.$key,$val,FALSE,$resolve);
 	}
 
 	/**
@@ -1173,6 +1169,7 @@ class F3 extends Base {
 	static function call($funcs,$listen=FALSE) {
 		$classes=array();
 		$funcs=is_string($funcs)?self::split($funcs):array($funcs);
+		$out=NULL;
 		foreach ($funcs as $func) {
 			if (is_string($func)) {
 				$func=self::resolve($func);
@@ -1187,15 +1184,19 @@ class F3 extends Base {
 						new $match[1]:$match[1],$match[3]);
 				}
 				elseif (!function_exists($func)) {
+					$found=FALSE;
 					if (preg_match('/\.php$/i',$func)) {
+						$found=FALSE;
 						foreach (self::split(self::$vars['IMPORTS'])
 							as $path)
 							if (is_file($file=$path.$func)) {
 								$instance=new F3instance;
 								if ($instance->sandbox($file)===FALSE)
 									return FALSE;
+								$found=TRUE;
 							}
-						return TRUE;
+						if ($found)
+							continue;
 					}
 					self::error(404);
 					return FALSE;
@@ -1262,14 +1263,14 @@ class F3 extends Base {
 		krsort(self::$vars['ROUTES']);
 		$time=time();
 		$req=preg_replace('/^'.preg_quote(self::$vars['BASE'],'/').
-			'\b(.+)/'.(self::$vars['CASELESS']?'':'i'),'\1',
+			'\b(.+)/'.(self::$vars['CASELESS']?'i':''),'\1',
 			rawurldecode($_SERVER['REQUEST_URI']));
 		foreach (self::$vars['ROUTES'] as $uri=>$route) {
 			if (!preg_match('/^'.
 				preg_replace(
-					'/(?:\{\{)?@(\w+\b)(?:\}\})?/',
+					'/(?:\\\{\\\{)?@(\w+\b)(?:\\\}\\\})?/',
 					// Delimiter-based matching
-					'(?P<\1>[^\/&]+)',
+					'(?P<\1>[^\/&\?]+)',
 					// Wildcard character in URI
 					str_replace('\*','(.*)',preg_quote($uri,'/'))
 				).'\/?(?:\?.*)?$/'.(self::$vars['CASELESS']?'':'i').'um',
@@ -1281,6 +1282,13 @@ class F3 extends Base {
 				if (!preg_match('/HEAD|'.$method.'/',
 					$_SERVER['REQUEST_METHOD']))
 					continue;
+				if ($method=='GET' &&
+					strlen($path=parse_url($req,PHP_URL_PATH))>1 &&
+					substr($path,-1)=='/') {
+					$query=parse_url($req,PHP_URL_QUERY);
+					self::reroute(substr($path,0,-1).
+						($query?('?'.$query):''));
+				}
 				$found=TRUE;
 				list($funcs,$ttl,$throttle,$hotlink)=$proc;
 				if (!$hotlink && isset(self::$vars['HOTLINK']) &&
@@ -1472,7 +1480,7 @@ class F3 extends Base {
 						foreach ($funcs as $func)
 							if ($func) {
 								if (is_string($func) &&
-									preg_match('/([\w\\]+)\s*->\s*(\w+)/',
+									preg_match('/(.+)\s*(?:->|::)\s*(.+)/',
 										$func,$match))
 									// Convert class->method syntax
 									$func=array(new $match[1],$match[2]);
@@ -2256,8 +2264,10 @@ class Cache extends Base {
 //! F3 object mode
 class F3instance {
 
+	//@{ Locale-specific error/exception messages
 	const
 		TEXT_Conflict='%s conflicts with framework method name';
+	//@}
 
 	/**
 		Get framework variable reference; Workaround for PHP's
@@ -2271,12 +2281,14 @@ class F3instance {
 		return F3::ref($key,$set);
 	}
 
-	/*
+	/**
 		Run PHP code in sandbox
 			@param $file string
+			@param $vars array
 			@public
-	*/
-	function sandbox($file) {
+	**/
+	function sandbox($file,$vars=array()) {
+		extract($vars);
 		return require $file;
 	}
 

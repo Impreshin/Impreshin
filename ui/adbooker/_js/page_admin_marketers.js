@@ -123,7 +123,7 @@ function getList(){
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_marketers/_list/",{"order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_marketers/_list",{"order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -157,7 +157,7 @@ function getDetails(){
 
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/ab/data/admin_marketers/_details/", {"ID":ID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/admin_marketers/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);

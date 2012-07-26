@@ -98,7 +98,7 @@ var $combined = $("#combine-btn");
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports_account_figures/_data/", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"accountID":accountID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports_account_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"accountID":accountID}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
