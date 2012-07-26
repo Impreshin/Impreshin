@@ -190,6 +190,7 @@ $app->route('GET|POST /noaccess', function(){
 	});
 $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /screenshots', 'controllers\controller_screenshots->page');
+$app->route('GET|POST /history', 'controllers\controller_history->page');
 $app->route('GET /data/keepalive', function() use ($user){
 
 
