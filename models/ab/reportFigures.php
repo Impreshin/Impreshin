@@ -226,12 +226,12 @@ class reportFigures {
 			$r['averages']['totals'] = ($i_t) ? $totals['totals'] / $i_t : $totals['totals'];
 			$r['averages']['cm'] = ($i_c) ? $totals['cm'] / $i_c : $totals['cm'];
 			$r['averages']['records'] = ($i_r) ? $totals['records'] / $i_r : $totals['records'];
-			$r['averages']['yield'] = $r['averages']['totals'] / $r['averages']['cm'];
+			$r['averages']['yield'] = ($r['averages']['totals'] && $r['averages']['cm'])?$r['averages']['totals'] / $r['averages']['cm']:0;
 
 
 			$ndata = array();
 			foreach ($r['data'] as $rec) {
-				$rec['yield'] = ($rec['totals'] && $rec['cm']) ? ($rec['totals'] / $rec['cm']) : "";
+				$rec['yield'] = 0;($rec['totals'] && $rec['cm']) ? ($rec['totals'] / $rec['cm']) : "";
 				$col = "totals";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
