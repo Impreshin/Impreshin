@@ -40,4 +40,4 @@ backups/*
 .DS_Store*
 Thumbs.db
 
-config.inc*
+config.inc.php
