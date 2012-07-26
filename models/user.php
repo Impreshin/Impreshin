@@ -43,11 +43,7 @@ class user {
 			$user = $this->get($user);
 		}
 
-
-
 		$result = $user;
-
-
 
 		if ($app && $user['ID']){
 
