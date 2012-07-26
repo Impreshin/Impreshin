@@ -44,7 +44,10 @@ class user {
 		}
 
 
+
 		$result = $user;
+
+
 
 		if ($app && $user['ID']){
 
@@ -52,7 +55,11 @@ class user {
 
 			$appO = new $appClass();
 			$appSettings = $appO->_read($result['ID']);
+
+
+
 			if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $appSettings['pID']) {
+
 				$appClass::save_config(array("pID"=> $_GET['apID']), $result['ID']);
 				$appSettings = $appO->_read($result['ID']);
 			}

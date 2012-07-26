@@ -18,12 +18,19 @@ $cfg = array();
 require_once('config.inc.php');
 $GLOBALS['cfg'] = $cfg;
 
-
 require_once('inc/class.timer.php');
 $pageExecute = new timer(true);
 
 require_once('inc/functions.php');
 require_once('inc/class.pagination.php');
+//test_array(array("HTTP_HOST"  => $_SERVER['HTTP_HOST'], "REQUEST_URI"=> $_SERVER['REQUEST_URI']));
+
+
+
+
+
+
+
 
 
 $app = require('lib/f3/base.php');
@@ -54,6 +61,13 @@ $folder = "";
 if ($uri) {
 	$uri = explode("/", $uri);
 	$folder = isset($uri[1]) ? $uri[1] : "";
+
+	if (strpos($folder,"?")){
+		$folder = explode("?", $folder);
+		$folder = isset($folder[0]) ? $folder[0] : "";
+	}
+
+
 
 }
 $folder = strtolower($folder);
@@ -104,6 +118,9 @@ $user = "";
 $uID = isset($_SESSION['uID'])?$_SESSION['uID']:"";
 $username = isset($_POST['login_email'])?$_POST['login_email']:"";
 $password = isset($_POST['login_password'])?$_POST['login_password']:"";
+
+
+
 $userO = new \models\user();
 
 if ($username && $password){
@@ -223,10 +240,12 @@ $app->route('GET /data/keepalive', function() use ($user){
 // --------------------------------------------------------------------------------
 
 function last_page(){
+
 	$user = F3::get("user");
 	F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 }
 function access(){
+
 	$user = F3::get("user");
 	if (!$user['ID']) F3::reroute("/login");
 }

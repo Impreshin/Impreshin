@@ -15,9 +15,13 @@ class controller_app_provisional {
 		if (!$userID) F3::reroute("/login");
 	}
 	function page() {
+
 		$timer = new timer();
 		$user = F3::get("user");
 		//F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+
+
+
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 		$currentDate = $user['publication']['current_date'];
@@ -29,14 +33,12 @@ class controller_app_provisional {
 
 
 
-
 		$settings = models\settings::_read("provisional",$user['permissions']);
 
 
 
 
-
-			//test_array($settings);
+		//test_array($settings);
 
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(

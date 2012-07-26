@@ -31,14 +31,15 @@ $user = new User();
 
 
 // Set user credentials and login
-$user->setCredentials(new Authentication\Basic('WilliamStam', 'awssmudge1'));
+//$user->setCredentials(new Authentication\Basic('username', 'password'));
+$user->setCredentials(new Authentication\Basic('awstam@gmail.com', 'awssmudge1'));
 $user->login();
-
+$response = "";
 
 try {
 	//test_array($user->repos());
 	// Check if your following user
-	//var_dump($user->isFollowing("octocat"));
+	var_dump($user->isFollowing("octocat"));
 
 	// Update some user details
 	//var_dump($user->update(array('location' => 'Wales, United Kingdom')));
@@ -46,11 +47,17 @@ try {
 	// Get all emails for user
 	var_dump($user->emails()->all());
 
+	$response = $user->keys()->all();
+
+
+
 	// Add key for user
 	//var_dump($user->keys()->create("New Key", "ssh-rsa CCC"));
 } catch (AuthenticationException $exception) {
 	echo $exception->getMessage();
 }
+
+test_array($response);
 
 // Finally lets logout
 $user->logout();

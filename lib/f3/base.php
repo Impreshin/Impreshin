@@ -1282,13 +1282,14 @@ class F3 extends Base {
 				if (!preg_match('/HEAD|'.$method.'/',
 					$_SERVER['REQUEST_METHOD']))
 					continue;
+				/*
 				if ($method=='GET' &&
 					strlen($path=parse_url($req,PHP_URL_PATH))>1 &&
 					substr($path,-1)=='/') {
 					$query=parse_url($req,PHP_URL_QUERY);
 					self::reroute(substr($path,0,-1).
 						($query?('?'.$query):''));
-				}
+				}*/
 				$found=TRUE;
 				list($funcs,$ttl,$throttle,$hotlink)=$proc;
 				if (!$hotlink && isset(self::$vars['HOTLINK']) &&
