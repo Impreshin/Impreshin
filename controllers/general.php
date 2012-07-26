@@ -97,7 +97,6 @@ class general {
 
 
 
-
 				"plupload/js/browserplus-min.js" ,
 				"plupload/js/plupload.js" ,
 				"plupload/js/plupload.gears.js" ,
