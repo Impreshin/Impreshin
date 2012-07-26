@@ -64,7 +64,7 @@ class controller_reports_marketer_figures {
 		);
 		$pubstr = implode(",", $pubstr);
 
-		$tmpl->marketers = models\marketers::getAll("pID in ($pubstr)", "marketer ASC");
+		$tmpl->marketers = models\marketers::getAll("pID in ($pubstr) AND cID = '$cID'", "marketer ASC");
 
 		$tmpl->publications = $publications;
 		$tmpl->publicationselected = $publicationselected;
