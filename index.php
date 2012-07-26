@@ -41,10 +41,7 @@ require_once('inc/class.template.php');
 require_once('inc/class.email.php');
 require_once('inc/class.store.php');
 
-$version = '0.1.20';
 
-$app->set('version', $version);
-$app->set('v', preg_replace("/[^0-9]/", "", $version));
 
 
 $app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/');
@@ -106,7 +103,7 @@ $app->set('system', new msg());
 
 
 $version = '0.0.1';
-$version = date("YmdH");
+//$version = date("YmdH");
 $minVersion = preg_replace("/[^0-9]/", "", $version);
 
 
