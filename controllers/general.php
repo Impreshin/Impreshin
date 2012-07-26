@@ -64,7 +64,7 @@ class general {
 
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		//$file = F3::get('PARAMS.filename');
-		header("Content-Type: application/x-javascript");
+		header("Content-Type: application/javascript");
 		$t = "";
 		if ($file) {
 			$fileDetails = pathinfo(($file));
@@ -91,7 +91,7 @@ class general {
 				"_js/plugins/jquery.miniColors.js",
 				//"_js/plugins/bootstrap-datepicker.js",
 
-				"_js/plugins/github.commits.widget.js",
+
 
 
 				"plupload/js/browserplus-min.js" ,
