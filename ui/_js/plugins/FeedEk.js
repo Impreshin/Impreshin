@@ -15,16 +15,19 @@
 			return
 		}
 		var pubdt;
-		$('#' + idd).empty().append('<div style="text-align:left; padding:3px;"><img src="/ui/_images/loading-wide.gif" /></div>');
+		$('#' + idd).empty();
 		$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=' + def.MaxCount + '&output=json&q=' + encodeURIComponent(def.FeedUrl) + '&callback=?', dataType:'json', success:function (data) {
 			$('#' + idd).empty();
 			$.each(data.responseData.feed.entries, function (i, entry) {
+
+				var data = $(entry.content).last("<pre>").html();
+				data = "<pre>" + data +"</pre>";
 
 				if (def.ShowPubDate) {
 					pubdt = new Date(entry.publishedDate);
 					$('#' + idd).append('<h3 class="ItemDate">' + pubdt.toLocaleDateString() + '</h3>')
 				}
-				if (def.ShowDesc)$('#' + idd).append('<div class="ItemContent">' + entry.content + '</div>')
+				if (def.ShowDesc)$('#' + idd).append('<div class="ItemContent">' + data + '</div>')
 			});
 			def.callBack();
 		}})
