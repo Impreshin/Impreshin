@@ -50,12 +50,12 @@ class settings {
 				"totalCost_C"            => array(
 					"c"=> "totalCost_C",
 					"o"=> "totalCost",
-					"h"=> "Charged"
+					"h"=> "Net&nbsp;Cost"
 				),
 				"totalShouldbe_C"        => array(
 					"c"=> "totalShouldbe_C",
 					"o"=> "totalShouldbe",
-					"h"=> "Cost"
+					"h"=> "Gross&nbsp;Cost"
 				),
 				"discount"               => array(
 					"c"=> "discount",
