@@ -52,7 +52,8 @@ class general {
 
 		}
 
-		exit($this->minify($t,"css"));
+		//exit($this->minify($t,"css"));
+		exit($t);
 
 
 

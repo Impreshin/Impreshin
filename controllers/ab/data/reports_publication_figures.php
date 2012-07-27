@@ -111,11 +111,11 @@ class reports_publication_figures extends data {
 
 
 		$years = ($y);;
-		$where = "checked = '1' ";
+		$where = "checked = '1' AND deleted is null";
 		$return['lines'] = models\reportFigures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1'   ";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1'  AND deleted is null ";
 		$return['comp']['data'] = models\reportFigures::figures($where, $yearsSend);
 
 

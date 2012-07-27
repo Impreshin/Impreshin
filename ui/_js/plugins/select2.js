@@ -1,5 +1,10 @@
-﻿
- (function ($) {
+﻿// 1
+
+// 2
+
+// 3
+
+(function ($) {
  	if(typeof $.fn.each2 == "undefined"){
  		$.fn.extend({
  			/*

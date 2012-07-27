@@ -231,7 +231,7 @@ class reportFigures {
 
 			$ndata = array();
 			foreach ($r['data'] as $rec) {
-				$rec['yield'] = ($rec['totals'] && $rec['cm']) ? ($rec['totals'] / $rec['cm']) : "";
+				$rec['yield'] =($rec['totals'] && $rec['cm']) ? ($rec['totals'] / $rec['cm']) : "";
 				$col = "totals";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),

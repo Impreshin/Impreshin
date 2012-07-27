@@ -22,7 +22,8 @@ class settings {
 				"publishDate"            => array(
 					"c"=> "publishDate",
 					"o"=> "publishDate",
-					"h"=> "Date"
+					"h"=> "Publish&nbsp;Date",
+					"m"=>60
 				),
 				"size"                   => array(
 					"c"=> "size",

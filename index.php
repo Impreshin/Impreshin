@@ -15,6 +15,7 @@ if (!$SID) {
 	$SID = session_id();
 }
 $cfg = array();
+require_once('config.default.inc.php');
 require_once('config.inc.php');
 $GLOBALS['cfg'] = $cfg;
 
