@@ -6,10 +6,13 @@
 				<ul class="nav" id="app-nav">
 					<li class="divider-vertical"></li>
 					<li class="{% if page['section'] == "login" %} active {% endif %}">
-						<a href="/login/"> Login </a>
+						<a href="/login"> Login </a>
 					</li>
 					<li class="{% if page['section'] == "screenshots" %} active {% endif %}">
-						<a href="/screenshots/"> Screenshots </a>
+						<a href="/screenshots"> Screenshots </a>
+					</li>
+					<li class="{% if page['section'] == "history" %} active {% endif %}">
+						<a href="/history"> Changelog </a>
 					</li>
 				</ul>
 				<ul class="nav pull-right">
