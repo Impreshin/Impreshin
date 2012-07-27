@@ -32,6 +32,7 @@ class general {
 				"/ui/_css/select2.css",
 				"/ui/_css/jquery.miniColors.css",
 				"/ui/_css/style.css",
+				"/ui/_css/FeedEk.css",
 				"/ui/jqPlot/jquery.jqplot.min.css"
 			);
 
@@ -94,7 +95,7 @@ class general {
 				"_js/plugins/jquery.autologout.js",
 				"_js/plugins/select2.js",
 				"_js/plugins/jquery.miniColors.js",
-				//"_js/plugins/bootstrap-datepicker.js",
+				"_js/plugins/FeedEk.js",
 
 
 

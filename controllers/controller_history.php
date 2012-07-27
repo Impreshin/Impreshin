@@ -26,29 +26,7 @@ class controller_history {
 		$tmpl->output();
 
 	}
-	function getCommits(){
 
-
-		require_once './lib/GitHub/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-
-		$loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
-// Register the location of the GitHub namespace
-		$loader->registerNamespaces(array(
-			                            'Buzz'              => __DIR__ . '/../lib/vendor/Buzz/lib',
-			                            'GitHub'            => __DIR__ . '/../lib'
-		                            )
-		);
-		$loader->register();
-
-
-		use GitHub\API\Authentication;
-		use GitHub\API\User\User;
-		use GitHub\API\AuthenticationException;
-
-// Lets access the User API
-		$user = new User();
-
-	}
 
 
 }
