@@ -43,7 +43,7 @@
 			<td style="border-left: 1px solid #999;" class="figure-dir-<%= this.comp.data[d].data[i].d.totals %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
-					<%= this.comp.data[d].data[i].totals %>
+					<%= this.comp.data[d].data[i].totals.total %>
 				</span>
 			</td>
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.cm %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
