@@ -253,7 +253,7 @@
 
 
 
-			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 7) || idle >= LogoutTime-3) {
+			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime-3) {
 				for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
 				autologoutRequest.push($.getJSON("/data/keepalive", function (result) {
 					var real_idle = result.idle;
@@ -267,14 +267,14 @@
 
 
 
-			if (idle >= (parts * 4)+2){
+			if (idle >= (parts * 8)+2){
 				remaining = LogoutTime - idle;
 				$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in "+ (remaining) +" seconds").fadeIn(1000)
 			} else {
 				$noticeareaIdle.stop(true, true).fadeOut(1000)
 			}
 
-			if (idle >= (parts * 7)+2){
+			if (idle >= (parts * 9)+2){
 				remaining = LogoutTime - idle;
 				$this.stop(true,true).fadeIn(1000).find(".timer").html("You will be automaticaly logged out in " + (remaining) + " seconds");
 			} else {
