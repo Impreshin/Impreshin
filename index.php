@@ -297,6 +297,7 @@ $app->route('GET /ab/admin/publications', 'access; last_page; controllers\ab\con
 $app->route('GET /ab/reports/publication/figures', 'access; last_page; controllers\ab\controller_reports_publication_figures->page');
 $app->route('GET /ab/reports/account/figures', 'access; last_page; controllers\ab\controller_reports_account_figures->page');
 $app->route('GET /ab/reports/marketer/figures', 'access; last_page; controllers\ab\controller_reports_marketer_figures->page');
+$app->route('GET /ab/reports/marketer/discounts', 'access; last_page; controllers\ab\controller_reports_marketer_discounts->page');
 $app->route('GET /ab/reports/production/figures', 'access; last_page; controllers\ab\controller_reports_production_figures->page');
 $app->route('GET /ab/reports/category/figures', 'access; last_page; controllers\ab\controller_reports_category_figures->page');
 
@@ -315,6 +316,11 @@ $app->route('GET|POST /ab/data/@function', function() use($app) {
 );
 $app->route('GET|POST /ab/data/@class/@function', function() use($app) {
 		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+	}
+);
+
+$app->route('GET|POST /ab/data/@folder/@class/@function', function() use($app) {
+		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 	}
 );
 

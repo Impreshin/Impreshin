@@ -3,14 +3,14 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace controllers\ab\data;
+namespace controllers\ab\data\reports;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
 
 
-class reports_marketer_figures extends data {
+class publication_figures extends \data {
 	function __construct() {
 
 		$user = F3::get("user");
@@ -26,7 +26,7 @@ class reports_marketer_figures extends data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_marketer_figures";
+		$section = "reports_publication_figures";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -37,22 +37,9 @@ class reports_marketer_figures extends data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$marketerID = isset($_REQUEST['marketerID']) ? $_REQUEST['marketerID'] : "";
 
 		if ($combined=='none'){
 			$combined = $settings['combined'];
-		}
-		if ($marketerID==''){
-			$marketerID = (isset($settings['marketerID']["cID_$cID"])) ? $settings['marketerID']["cID_$cID"] : "";
-		}
-
-		if ($user['permissions']['reports']['marketer']['figures']['page'] != '1') {
-			//test_array($user);
-			if (isset($user['marketer']['ID']) && $user['marketer']['ID']) {
-				$marketerID = $user['marketer']['ID'];
-			} else {
-				F3::error("404");
-			}
 		}
 
 
@@ -93,13 +80,12 @@ class reports_marketer_figures extends data {
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
 		);
-		$values[$section]['marketerID']["cID_$cID"] = $marketerID;
+
 
 		$values[$section]["pub_$pID"] = array(
 			"pubs"=>	$publications
 		);
 
-//		test_array(array("old"=> $settings,"new"=>$values));
 
 
 		models\user_settings::save_setting($values);
@@ -125,11 +111,11 @@ class reports_marketer_figures extends data {
 
 
 		$years = ($y);;
-		$where = "checked = '1' AND marketerID = '$marketerID' AND deleted is null ";
+		$where = "checked = '1' AND deleted is null";
 		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND marketerID = '$marketerID' AND deleted is null";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1'  AND deleted is null ";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
 
 

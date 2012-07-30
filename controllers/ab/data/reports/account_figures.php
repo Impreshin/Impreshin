@@ -3,14 +3,14 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace controllers\ab\data;
+namespace controllers\ab\data\reports;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
 
 
-class reports_category_figures extends data {
+class account_figures extends \data {
 	function __construct() {
 
 		$user = F3::get("user");
@@ -26,7 +26,7 @@ class reports_category_figures extends data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_category_figures";
+		$section = "reports_account_figures";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -37,15 +37,14 @@ class reports_category_figures extends data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$accountID = isset($_REQUEST['accountID']) ? $_REQUEST['accountID'] : "";
 
 		if ($combined=='none'){
 			$combined = $settings['combined'];
 		}
-		if ($ID==''){
-			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
+		if ($accountID==''){
+			$accountID = (isset($settings['accountID']["cID_$cID"])) ? $settings['accountID']["cID_$cID"] : "";
 		}
-
 
 
 
@@ -85,7 +84,7 @@ class reports_category_figures extends data {
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
 		);
-		$values[$section]['ID']["cID_$cID"] = $ID;
+		$values[$section]['accountID']["cID_$cID"] = $accountID;
 
 		$values[$section]["pub_$pID"] = array(
 			"pubs"=>	$publications
@@ -116,11 +115,11 @@ class reports_category_figures extends data {
 
 
 		$years = ($y);;
-		$where = "checked = '1' AND categoryID = '$ID' AND deleted is null";
+		$where = "checked = '1' AND accountID = '$accountID' AND deleted is null ";
 		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND categoryID = '$ID' AND deleted is null";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND accountID = '$accountID' AND deleted is null";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
 
 

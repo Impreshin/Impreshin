@@ -73,7 +73,7 @@ var $combined = $("#combine-btn");
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports_marketer_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"marketerID":marketerID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"marketerID":marketerID}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
