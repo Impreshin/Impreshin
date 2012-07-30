@@ -26,7 +26,7 @@ class marketer_figures extends \data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_marketer_figures";
+		$section = "reports_marketer";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -37,13 +37,13 @@ class marketer_figures extends \data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$marketerID = isset($_REQUEST['marketerID']) ? $_REQUEST['marketerID'] : "";
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		if ($combined=='none'){
 			$combined = $settings['combined'];
 		}
-		if ($marketerID==''){
-			$marketerID = (isset($settings['marketerID']["cID_$cID"])) ? $settings['marketerID']["cID_$cID"] : "";
+		if ($ID==''){
+			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
 		}
 
 		if ($user['permissions']['reports']['marketer']['figures']['page'] != '1') {
@@ -93,7 +93,7 @@ class marketer_figures extends \data {
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
 		);
-		$values[$section]['marketerID']["cID_$cID"] = $marketerID;
+		$values[$section]['ID']["cID_$cID"] = $ID;
 
 		$values[$section]["pub_$pID"] = array(
 			"pubs"=>	$publications
@@ -125,11 +125,11 @@ class marketer_figures extends \data {
 
 
 		$years = ($y);;
-		$where = "checked = '1' AND marketerID = '$marketerID' AND deleted is null ";
+		$where = "checked = '1' AND marketerID = '$ID' AND deleted is null ";
 		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND marketerID = '$marketerID' AND deleted is null";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND marketerID = '$ID' AND deleted is null";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
 
 

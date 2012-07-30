@@ -1,0 +1,96 @@
+{% include "_nav_top.tmpl" %}
+<section id="maintoolbar" class="section_reports">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Reports
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;"><small>Marketer Discounts</small></h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+
+				<ul class="nav nav-pills pull-right ">
+					<li>
+						{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
+						<select id="marketerID" name="marketerID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Marketer">
+
+
+							{% for row in marketers %}
+							<option value="{{ row['ID'] }}" {% if row['ID'] == selected %} selected="selected"{% endif %}>
+								{{ row['marketer'] }}
+							</option>
+							{% endfor %}
+
+						</select>
+						{% else %}
+						<input id="marketerID" type="hidden" name="marketerID" value="{{ selected }}">
+
+						{% endif %}
+					</li>
+					<li class="divider-vertical"></li>
+					<li id="pub-select" >
+
+						<div class="btn-group" style="max-width:500px;">
+							<a class="btn dropdown-toggle btn-mini span3" data-toggle="dropdown" href="#" > <span id="pub-select-label">{{publicationselected}}</span>
+								<span class="caret"></span> </a>
+							<ul class="dropdown-menu pull-right highlighthovered trigger_getdata">
+								{% for row in publications %}
+								<li>
+									<label for="pub-{{ row['ID']}}"  {% if row['disabled']=='1' %} class="g"{% endif %}>
+										<input type="checkbox" name="pubID[]" id="pub-{{ row['ID'] }}" value="{{ row['ID'] }}" data-pub="{{ row['publication'] }}" data-id="{{ row['ID'] }}" {% if row['selected']=='1' %}checked="checked"{% endif %} {% if row['disabled']=='1' %}disabled="disabled"{% endif %}> {{ row['publication'] }}
+									</label>
+								</li>
+
+								{% endfor %}
+							</ul>
+						</div>
+
+
+
+
+					</li>
+
+
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a href="javascript:" style="width:15px;"><i class="icon-print icon-d-grey"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<section role="main" id="pagecontent" class="section_reports">
+	<div class="container">
+
+
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane" >
+
+					<div data-heading="top" id="scroll-container">
+
+
+					</div>
+
+
+				</div>
+			</div>
+			<div class="loadingmask wide"></div>
+		</article>
+	</div>
+</section>
+
+<script type="text/javascript">
+	var currency_sign = '{{ _cfg['currency']['sign'] }}';
+</script>

@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_reports_marketer_figures {
+class controller_reports_marketer_discounts {
 	function __construct() {
 
 	}
@@ -56,10 +56,10 @@ class controller_reports_marketer_figures {
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "reports",
-			"sub_section"=> "marketer_figures",
-			"template"=> "page_reports_marketer_figures",
+			"sub_section"=> "marketer_discounts",
+			"template"=> "page_reports_marketer_discounts",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Marketer Figures",
+				"title"=> "AdBooker - Reports - Marketer Discounts",
 			)
 		);
 		$pubstr = implode(",", $pubstr);

@@ -1,0 +1,1 @@
+{% include 'templates/_reports_discounts_templates.jtmpl' %}

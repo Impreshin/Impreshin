@@ -486,14 +486,15 @@ class settings {
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"accountID"=>array()
+					"ID"=>array()
 				),
-				"reports_marketer_figures"=>array(
+				"reports_marketer"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"marketerID"=>array()
+					"ID"=>array()
 				),
+
 				"reports_production_figures"=>array(
 					"years"=>"",
 					"timeframe"=>"",

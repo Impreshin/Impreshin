@@ -34,33 +34,8 @@ $(document).ready(function () {
 	});
 	getData();
 
-	$("#accountID").select2({
-		formatResult   :function (result, query, markup) {
-			var $el = $(result.element);
-			var $return = "";
-			if ($el.attr("data-accNum")) {
 
-				if ($el.attr("data-labelClass")) {
-					$return = "<div class='accnum_in_list'><span class='label " + $el.attr("data-labelClass") + "'>" + $el.attr("data-accNum") + "<span></div>";
-				} else {
-					$return = "<div class='accnum_in_list'>" + $el.attr("data-accNum") + "</div>";
-				}
-				if ($el.attr("data-blocked") == '1') {
-					$return += "<span class='label label-important blocked'>Blocked</span><span class='g'>" + $el.attr("data-account") + "</span>";
-				} else {
-					$return += $el.attr("data-account");
-				}
-			}
-
-			return $return;
-		},
-		formatSelection:function (result) {
-
-			return result.text;
-		}
-
-
-	}).on("change",function(){
+	$("select#marketerID").select2().on("change",function(){
 			getData();
 		});
 
@@ -85,7 +60,7 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
-	var accountID = $("#accountID").val();
+	var marketerID = $("#marketerID").val();
 
 
 var $combined = $("#combine-btn");
@@ -98,7 +73,7 @@ var $combined = $("#combine-btn");
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/account_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":accountID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_discounts/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":marketerID}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);

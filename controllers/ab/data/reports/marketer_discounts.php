@@ -10,7 +10,7 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class account_figures extends \data {
+class marketer_discounts extends \data {
 	function __construct() {
 
 		$user = F3::get("user");
@@ -26,7 +26,7 @@ class account_figures extends \data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_account_figures";
+		$section = "reports_marketer";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -37,13 +37,22 @@ class account_figures extends \data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$ID = isset($_REQUEST['accountID']) ? $_REQUEST['ID'] : "";
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		if ($combined=='none'){
 			$combined = $settings['combined'];
 		}
 		if ($ID==''){
 			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
+		}
+
+		if ($user['permissions']['reports']['marketer']['figures']['page'] != '1') {
+			//test_array($user);
+			if (isset($user['marketer']['ID']) && $user['marketer']['ID']) {
+				$marketerID = $user['marketer']['ID'];
+			} else {
+				F3::error("404");
+			}
 		}
 
 
@@ -90,6 +99,7 @@ class account_figures extends \data {
 			"pubs"=>	$publications
 		);
 
+		//test_array(array("old"=> $settings,"new"=>$values));
 
 
 		models\user_settings::save_setting($values);
@@ -115,11 +125,11 @@ class account_figures extends \data {
 
 
 		$years = ($y);;
-		$where = "checked = '1' AND accountID = '$ID' AND deleted is null ";
+		$where = "checked = '1' AND marketerID = '$ID' AND deleted is null ";
 		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND accountID = '$ID' AND deleted is null";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND marketerID = '$ID' AND deleted is null";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
 
 
