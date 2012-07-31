@@ -7,6 +7,28 @@ $(document).ready(function () {
 
 	scrolling(api);
 
+	$(document).on("click", ".order-btn", function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			$("#record-list .order-btn").removeClass("asc desc");
+			//$this.addClass("active");
+			$.bbq.pushState({"order":$this.attr("data-col")});
+		getData();
+			$.bbq.removeState("order");
+		});
+	$(document).on("click","tr.figure-month-details.record",function(){
+		var $this = $(this);
+		var ID = $this.attr("data-id");
+		if ($this.hasClass("active")){
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$.bbq.removeState("dID");
+		} else {
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$this.addClass("active");
+			$.bbq.pushState({"dID":ID});
+		}
+		getData();
+	});
 
 	$("#pub-select input:checkbox").change(function(){
 		var str = $("#pub-select input:checkbox:checked").map(function(){
@@ -32,8 +54,13 @@ $(document).ready(function () {
 	$(document).on("click","#combine-btn",function(){
 		getData();
 	});
+	$(document).on("click", ".report-bottom-tabs button.back", function () {
+		$.bbq.removeState("dID");
+		});
+	$(document).on("click", ".report-bottom-tabs button", function () {
+		getData();
+	});
 	getData();
-
 	$("#accountID").select2({
 		formatResult   :function (result, query, markup) {
 			var $el = $(result.element);
@@ -85,27 +112,30 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
-	var accountID = $("#accountID").val();
+	var ID = $("#accountID").val();
 
 
 var $combined = $("#combine-btn");
 	var daterange = $("#date-picker").val();
 	var combined = ($combined.length)?($combined.hasClass("active"))?1:0:'none';
 
+	var dID = $.bbq.getState("dID");
 
+	var order = $.bbq.getState("order");
+		order = (order)? order:"";
 
 	$("#whole-area .loadingmask").show();
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/account_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":accountID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/account_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":ID, "dID":dID, "order":order}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
 		//console.log(data['combined']);
 
-
+		if (data['tab'] == 'charts') {
 
 
 			drawChart('chart-income', data);
@@ -113,8 +143,7 @@ var $combined = $("#combine-btn");
 			drawChart('chart-records',data);
 
 
-		var $scrollpane = $("#whole-area .scroll-pane");
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+	
 
 		$('#date-picker').daterangepicker({
 			presetRanges     :[
@@ -189,9 +218,19 @@ var $combined = $("#combine-btn");
 			}
 
 		}).data("cur",data['daterange']);
+		} else if (data['tab']=='records'){
+
+			var $recordsList = $("#record-list");
+			if (data['records'][0]){
+				$recordsList.jqotesub($("#template-records"), data['records']);
+			} else {
+				$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
+			}
 
 
-
+		}
+		var $scrollpane = $("#whole-area .scroll-pane");
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
 

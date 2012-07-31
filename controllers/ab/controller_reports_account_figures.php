@@ -17,7 +17,7 @@ class controller_reports_account_figures {
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
-		$section = "reports_account_figures";
+		$section = "reports_account";
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 

@@ -123,6 +123,7 @@ class report_figures {
 			if (!isset($data[$year][$month]['e'][$edition]['date'])){
 				$data[$year][$month]['e'][$edition]['date'] = date("Y-m-d", strtotime($record['publishDate']));
 				$data[$year][$month]['e'][$edition]['pub'] = $record['publication'];
+				$data[$year][$month]['e'][$edition]['dID'] = $record['dID'];
 			}
 
 			if (!isset($data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']])) $data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] = 0;
@@ -239,6 +240,7 @@ class report_figures {
 				//$editions[]['data'] = array();
 				foreach ($editions_d as $e) {
 					$n = array(
+						"dID"=>$e['dID'],
 						"date"=>$e['date'],
 						"key"=> date("Y|m", strtotime($e['date'])),
 						"pub"=> $e['pub'],

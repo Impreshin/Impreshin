@@ -17,7 +17,7 @@ class controller_reports_publication_figures {
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
-		$section = "reports_publication_figures";
+		$section = "reports_publication";
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
@@ -62,6 +62,7 @@ class controller_reports_publication_figures {
 			)
 		);
 
+		$tmpl->settings = $settings;
 		$tmpl->publications = $publications;
 		$tmpl->publicationselected = $publicationselected;
 		$tmpl->output();

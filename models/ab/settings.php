@@ -477,35 +477,116 @@ class settings {
 						"o"=>"DESC"
 					)
 				),
-				"reports_publication_figures"=>array(
+				"reports_publication"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
 				),
-				"reports_account_figures"=>array(
+				"reports_account"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"ID"=>array()
+					"ID"=>array(),
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
 				),
 				"reports_marketer"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"ID"=>array()
+					"dir"=>"d", // under = d, over = u charged
+					"ID"=>array(),
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
 				),
 
-				"reports_production_figures"=>array(
+				"reports_production"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"ID"=>array()
+					"ID"=>array(),
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
 				),
-				"reports_category_figures"=>array(
+				"reports_category"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
-					"ID"=>array()
+					"ID"=>array(),
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
 				)
 
 			);

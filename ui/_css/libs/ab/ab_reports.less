@@ -88,17 +88,18 @@
 
 		}
 	}
-	.figure-month-details {
-		display: none;
 
-		td {
-			border-color: #f1f1f1;
+	tr.figure-month-details {
+		&:not(.active) {
+			display: none;
 		}
 		&:last-child {
 			td {
 				border-top-color : #999!important;
 			}
-
+			td {
+						border-color: #f1f1f1;
+					}
 		}
 	}
 

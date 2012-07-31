@@ -33,11 +33,6 @@ class provisional extends data {
 		$section = 'provisional';
 		$settings = models\settings::_read($section);
 
-
-
-
-
-
 		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
 		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
 

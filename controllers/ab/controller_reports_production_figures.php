@@ -17,7 +17,7 @@ class controller_reports_production_figures {
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
-		$section = "reports_production_figures";
+		$section = "reports_production";
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 

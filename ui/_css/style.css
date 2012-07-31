@@ -1422,14 +1422,14 @@ table.records .record-tick {
   background-color: #deebff !important;
   text-shadow: 0 1px 1px rgba(250, 250, 250, 0.25);
 }
-.section_reports .figure-month-details {
+.section_reports tr.figure-month-details:not(.active) {
   display: none;
 }
-.section_reports .figure-month-details td {
-  border-color: #f1f1f1;
-}
-.section_reports .figure-month-details:last-child td {
+.section_reports tr.figure-month-details:last-child td {
   border-top-color: #999999 !important;
+}
+.section_reports tr.figure-month-details:last-child td {
+  border-color: #f1f1f1;
 }
 .c {
   text-align: center !important;

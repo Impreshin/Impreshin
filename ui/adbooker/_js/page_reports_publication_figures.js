@@ -6,39 +6,62 @@ var api = pane.data("jsp");
 $(document).ready(function () {
 	scrolling(api);
 
+	$(document).on("click", ".order-btn", function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			$("#record-list .order-btn").removeClass("asc desc");
+			//$this.addClass("active");
+			$.bbq.pushState({"order":$this.attr("data-col")});
 
-	$("#pub-select input:checkbox").change(function(){
-		var str = $("#pub-select input:checkbox:checked").map(function(){
-				return $(this).attr("data-pub");
+		getData();
+			$.bbq.removeState("order");
+
+		});
+
+	$(document).on("click","tr.figure-month-details.record",function(){
+		var $this = $(this);
+		var ID = $this.attr("data-id");
+		if ($this.hasClass("active")){
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$.bbq.removeState("dID");
+		} else {
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$this.addClass("active");
+			$.bbq.pushState({"dID":ID});
+		}
+		getData();
+
+	});
+
+	$("#pub-select input:checkbox").change(function () {
+		var str = $("#pub-select input:checkbox:checked").map(function () {
+			return $(this).attr("data-pub");
 		});
 		str = $.makeArray(str);
-		if (str.length>1){
+		if (str.length > 1) {
 			str = str.length + " Publications"
 		} else {
 			str = str[0];
 		}
 		$("#pub-select-label").html(str);
 
-
 	});
-	$(document).on("click","#year-select button",function(){
+	$(document).on("click", "#year-select button", function () {
 		getData();
 	});
-	$(document).on("change",".trigger_getdata input:checkbox",function(){
+	$(document).on("change", ".trigger_getdata input:checkbox", function () {
 		getData();
 	});
-	$(document).on("click","#combine-btn",function(){
+	$(document).on("click", "#combine-btn", function () {
+		getData();
+	});
+	$(document).on("click", ".report-bottom-tabs button.back", function () {
+		$.bbq.removeState("dID");
+		});
+	$(document).on("click", ".report-bottom-tabs button", function () {
 		getData();
 	});
 	getData();
-
-
-
-
-
-
-
-
 
 });
 
@@ -56,121 +79,118 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
-
-var $combined = $("#combine-btn");
+	var $combined = $("#combine-btn");
 	var daterange = $("#date-picker").val();
-	var combined = ($combined.length)?($combined.hasClass("active"))?1:0:'none';
+	var combined = ($combined.length) ? ($combined.hasClass("active")) ? 1 : 0 : 'none';
 
+	var dID = $.bbq.getState("dID");
 
+	var order = $.bbq.getState("order");
+		order = (order)? order:"";
 
 	$("#whole-area .loadingmask").show();
 
-
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "dID":dID, "order":order}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 		editionsetup();
 		//console.log(data['combined']);
 
-
-
-
+		if (data['tab'] == 'charts') {
 			drawChart('chart-income', data);
 			drawChart('chart-cm', data);
-			drawChart('chart-records',data);
-
-
-		var $scrollpane = $("#whole-area .scroll-pane");
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-
-		$('#date-picker').daterangepicker({
-			presetRanges     :[
-				{heading:'Preset Ranges'},
-				{text     :'6 Months',
-					dateStart:function () {
-					//console.log("prev From: " + prevMonth.startDate)
-						return Date.parse('t - 6 m').moveToFirstDayOfMonth();
+			drawChart('chart-records', data);
+			$('#date-picker').daterangepicker({
+				presetRanges     :[
+					{heading:'Preset Ranges'},
+					{text        :'6 Months',
+						dateStart:function () {
+							//console.log("prev From: " + prevMonth.startDate)
+							return Date.parse('t - 6 m').moveToFirstDayOfMonth();
+						},
+						dateEnd  :function () {
+							//console.log("prev To: " + prevMonth.endDate)
+							return Date.parse('t -1 m').moveToLastDayOfMonth();
+						}
 					},
-					dateEnd:function () {
-					//console.log("prev To: " + prevMonth.endDate)
-						return Date.parse('t -1 m').moveToLastDayOfMonth();
-					}
-				},
-				{text     :'12 Months',
-					dateStart:function () {
-					//console.log("prev From: " + prevMonth.startDate)
-						return Date.parse('t - 12 m').moveToFirstDayOfMonth();
+					{text        :'12 Months',
+						dateStart:function () {
+							//console.log("prev From: " + prevMonth.startDate)
+							return Date.parse('t - 12 m').moveToFirstDayOfMonth();
+						},
+						dateEnd  :function () {
+							//console.log("prev To: " + prevMonth.endDate)
+							return Date.parse('t -1 m').moveToLastDayOfMonth();
+						}
 					},
-					dateEnd:function () {
-					//console.log("prev To: " + prevMonth.endDate)
-						return Date.parse('t -1 m').moveToLastDayOfMonth();
-					}
-				},
-				{text     :'24 Months',
-					dateStart:function () {
-					//console.log("prev From: " + prevMonth.startDate)
-						return Date.parse('t - 24 m').moveToFirstDayOfMonth();
+					{text        :'24 Months',
+						dateStart:function () {
+							//console.log("prev From: " + prevMonth.startDate)
+							return Date.parse('t - 24 m').moveToFirstDayOfMonth();
+						},
+						dateEnd  :function () {
+							//console.log("prev To: " + prevMonth.endDate)
+							return Date.parse('t -1 m').moveToLastDayOfMonth();
+						}
 					},
-					dateEnd:function () {
-					//console.log("prev To: " + prevMonth.endDate)
-						return Date.parse('t -1 m').moveToLastDayOfMonth();
-					}
+
+					{heading:'Selectable Ranges'}
+				],
+				//presetDates      :editions,
+				presets          :{
+					//specificDate:'Specific Date',
+					//allDatesAfter:'All Dates After',
+					dateRange:'Date Range'
 				},
+				posX             :null,
+				posY             :null,
+				arrows           :false,
+				dateFormat       :'yy-mm-dd',
+				rangeSplitter    :'to',
+				datepickerOptions:{
+					changeMonth:true,
+					changeYear :true,
+					minDate    :Date.parse(data['date_min']),
+					maxDate    :Date.parse(data['date_max'])
+				},
+				onOpen           :function () {
 
+				},
+				onClose          :function () {
 
-				{heading:'Selectable Ranges'}
-			],
-			//presetDates      :editions,
-			presets          :{
-				//specificDate:'Specific Date',
-				//allDatesAfter:'All Dates After',
-				dateRange    :'Date Range'
-			},
-			posX             :null,
-			posY             :null,
-			arrows           :false,
-			dateFormat       :'yy-mm-dd',
-			rangeSplitter    :'to',
-			datepickerOptions:{
-				changeMonth:true,
-				changeYear :true,
-				minDate    :Date.parse(data['date_min']),
-				maxDate    :Date.parse(data['date_max'])
-			},
-			onOpen           :function () {
+					setTimeout(function () {
+						if ($('#date-picker').data('cur') != $('#date-picker').val()) {
+							getData();
+						}
 
-			},
-			onClose          :function () {
+					}, 400);
 
-				setTimeout(function () {
-					if ($('#date-picker').data('cur')!= $('#date-picker').val()){
-						getData();
-					}
+				}
 
+			}).data("cur", data['daterange']);
+		} else if (data['tab']=='records'){
 
-
-
-
-				}, 400);
-
+			var $recordsList = $("#record-list");
+			if (data['records'][0]){
+				$recordsList.jqotesub($("#template-records"), data['records']);
+			} else {
+				$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 			}
 
-		}).data("cur",data['daterange']);
 
 
+		}
+
+		var $scrollpane = $("#whole-area .scroll-pane");
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
 
 }
-function editionsetup(){
-
-
-
-
-
+function editionsetup() {
 
 }
 function drawChart(element, data) {
@@ -206,9 +226,6 @@ function drawChart(element, data) {
 		data = d;
 	}
 
-
-
-
 	var tangle = 0;
 	if (label.length >= 20) {
 		tangle = -30;
@@ -216,8 +233,6 @@ function drawChart(element, data) {
 	if (label.length >= 30) {
 		tangle = -90;
 	}
-
-
 
 	var plot1 = $.jqplot(element, data, {
 		legend      :{

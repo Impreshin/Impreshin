@@ -26,7 +26,7 @@ class publication_figures extends \data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_publication_figures";
+		$section = "reports_publication";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -37,13 +37,50 @@ class publication_figures extends \data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
+		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
+
+
+
+		$grouping_g =  $settings['group']['g'];
+		$grouping_d =  $settings['group']['o'];
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+
+
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
+			if ($settings['order']['c'] == $_REQUEST['order']){
+				if ($ordering_d=="ASC"){
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+
+			}
+
+		}
+
+		$grouping = array(
+			"g"=> $grouping_g,
+			"o"=> $grouping_d
+		);
+		$ordering = array(
+			"c"=> $ordering_c,
+			"o"=> $ordering_d
+		);
 
 		if ($combined=='none'){
 			$combined = $settings['combined'];
 		}
+		$tab = "charts";
+		if ($dID){
+			$tab = "records";
+		}
 
 
-
+		$return['tab']=$tab;
+		$return['dID']=$dID;
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
@@ -74,21 +111,23 @@ class publication_figures extends \data {
 
 
 
+
 		$values = array();
-		$values[$section] = array(
-			"years"=> $years,
-			"timeframe"=> $daterange,
-			"combined"=> $combined,
-		);
+				$values[$section] = array(
+					"years"=> $years,
+					"timeframe"=> $daterange,
+					"combined"=> $combined,
+					"order"=> $ordering,
+				);
 
 
-		$values[$section]["pub_$pID"] = array(
-			"pubs"=>	$publications
-		);
+				$values[$section]["pub_$pID"] = array(
+					"pubs"=>	$publications
+				);
 
 
 
-		models\user_settings::save_setting($values);
+				models\user_settings::save_setting($values);
 
 
 
@@ -107,15 +146,30 @@ class publication_figures extends \data {
 			}
 		}
 		$yearsSend_str = implode(",", $yearsSend);
-
-
-
 		$years = ($y);;
-		$where = "checked = '1' AND deleted is null";
-		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+
+
+		$where_general = "checked = '1' AND deleted is null";
+
+		if ($tab=="charts"){
+			$where = $where_general;
+					$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+		}
+		if ($tab=="records"){
+					$orderby = " client ASC";
+					$arrange = "";
+					$where = "(ab_bookings.dID='$dID') AND $where_general";
+					$records = models\bookings::getAll($where, $grouping, $ordering);
+			$return['records'] = models\bookings::display($records);
+
+		}
+
+
+
+
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1'  AND deleted is null ";
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
 
 
@@ -131,6 +185,10 @@ class publication_figures extends \data {
 		$return['combined'] = $combined;
 		$return['date_min'] = $date_range['earliestDate'];
 		$return['date_max'] = $date_range['latestDate'];
+
+
+
+
 
 
 		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );
