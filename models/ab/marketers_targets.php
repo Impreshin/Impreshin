@@ -63,7 +63,7 @@ class marketers_targets {
 				SELECT ab_marketers_targets.*, DATEDIFF(current_date(),date_to)
 				FROM ab_marketers_targets INNER JOIN ab_marketers_targets_pub ON ab_marketers_targets.ID = ab_marketers_targets_pub.mtID
 
-				WHERE ab_marketers_targets.mID = '". $return['ID']."' AND ab_marketers_targets_pub.pID ='$pID' AND DATEDIFF(date_to,current_date()) > 0 AND date_from <= current_date()
+				WHERE ab_marketers_targets.mID = '". $return['ID']."' AND ab_marketers_targets_pub.pID ='$pID' AND DATEDIFF(date_to,current_date()) >= 0 AND date_from <= current_date()
 				ORDER BY DATEDIFF(date_to,current_date()) ASC
 			");
 
