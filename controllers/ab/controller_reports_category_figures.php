@@ -56,7 +56,7 @@ class controller_reports_category_figures {
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "reports",
-			"sub_section"=> "account_category",
+			"sub_section"=> "category_figures",
 			"template"=> "page_reports_category_figures",
 			"meta"    => array(
 				"title"=> "AdBooker - Reports - Category Figures",
