@@ -7,7 +7,7 @@ namespace models\ab;
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
-class report_figures {
+class report_discounts {
 	public static function figures($where,$years,$margin="25"){
 		$timer = new timer();
 		$return = array();
@@ -65,19 +65,17 @@ class report_figures {
 
 
 
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
 
 		$blank = array(
-			"totals" => array(
-				"total"=>0,
-				"type"=>array()
-			),
-			"cm"     => 0,
+
+			"net"     => 0,
+			"gross"     => 0,
 			"records"=> 0,
-			"yield"=> 0,
+			"percent"=> 0,
 		);
 
 
@@ -98,13 +96,9 @@ class report_figures {
 			}
 
 
-			if (!isset($data[$year][$month]['totals']['type']["t_".$record['typeID']])) $data[$year][$month]['totals']['type']["t_".$record['typeID']] = 0;
 
-			$data[$year][$month]['totals']['total'] = $data[$year][$month]['totals']['total'] + $record['totalCost'];
-		 $data[$year][$month]['totals']['type']["t_".$record['typeID']] = $data[$year][$month]['totals']['type']["t_".$record['typeID']] + $record['totalCost'];
-
-
-			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
+			$data[$year][$month]['net'] = $data[$year][$month]['net'] + $record['totalCost'];
+			$data[$year][$month]['gross'] = $data[$year][$month]['gross'] + $record['totalShouldbe'];
 			$data[$year][$month]['records'] = $data[$year][$month]['records'] + 1;
 
 
@@ -126,14 +120,14 @@ class report_figures {
 				$data[$year][$month]['e'][$edition]['dID'] = $record['dID'];
 			}
 
-			if (!isset($data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']])) $data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] = 0;
 
 
 
-			$data[$year][$month]['e'][$edition]['totals']['total'] = $data[$year][$month]['e'][$edition]['totals']['total'] + $record['totalCost'];
-			$data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] = $data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] + $record['totalCost'];
 
-			$data[$year][$month]['e'][$edition]['cm'] = $data[$year][$month]['e'][$edition]['cm'] + $record['totalspace'];
+
+
+			$data[$year][$month]['e'][$edition]['net'] = $data[$year][$month]['e'][$edition]['net'] + $record['totalCost'];
+			$data[$year][$month]['e'][$edition]['gross'] = $data[$year][$month]['e'][$edition]['gross'] + $record['totalShouldbe'];
 			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + 1;
 
 
@@ -149,7 +143,7 @@ class report_figures {
 
 
 
-		
+
 
 
 		$ret = array();
@@ -160,10 +154,10 @@ class report_figures {
 				"data"    => array(),
 				"averages"=> $blank
 			);
-			$i_t = 0;
-			$i_c = 0;
+			$i_n = 0;
+			$i_g = 0;
 			$i_r = 0;
-			$i_y = 0;
+			$i_p = 0;
 			$totals = $blank;
 			$editions = array();
 
@@ -171,49 +165,43 @@ class report_figures {
 
 
 
-				$total = isset($data[$year][$month['k']]['totals']) ? ($data[$year][$month['k']]['totals']) : array("total"=>0);
 
-				$cm = isset($data[$year][$month['k']]['cm']) ? ($data[$year][$month['k']]['cm']) : 0;
+
+				$net = isset($data[$year][$month['k']]['net']) ? ($data[$year][$month['k']]['net']) : 0;
+				$gross = isset($data[$year][$month['k']]['gross']) ? ($data[$year][$month['k']]['gross']) : 0;
 				$records = isset($data[$year][$month['k']]['records']) ? ($data[$year][$month['k']]['records']) : 0;
+				$percent =  ($net&&$gross)?(($net-$gross)/$gross)*100:"";
 
 
 
-				$totals['totals']['total'] = $totals['totals']['total'] + $total['total'];
 
 
 
 
-				if (isset($total['type'])){
-					foreach ($total['type'] as $type_k => $type_v){
-						if (!isset($totals['totals']['type'][$type_k])){
-							$totals['totals']['type'][$type_k] = 0;
-						}
-						if (!isset($total['type'][$type_k])){
-							$total['type'][$type_k] = 0;
-						}
-						$totals['totals']['type'][$type_k] = $totals['totals']['type'][$type_k] + $total['type'][$type_k];
-					}
-				}
 
-
-					$totals['cm'] = $totals['cm'] + $cm;
+					$totals['net'] = $totals['net'] + $net;
+					$totals['gross'] = $totals['gross'] + $gross;
 					$totals['records'] = $totals['records'] + $records;
+					$totals['percent'] = $totals['percent'] + $percent;
 
-					if (isset($data[$year][$month['k']]['totals']['total'])) {
-						$i_t++;
+
+					if (isset($data[$year][$month['k']]['net'])) {
+						$i_n++;
 					}
-					if (isset($data[$year][$month['k']]['cm'])) {
-						$i_c++;
+					if (isset($data[$year][$month['k']]['gross'])) {
+						$i_g++;
 					}
 					if (isset($data[$year][$month['k']]['records'])) {
 						$i_r++;
 					}
-					if (isset($data[$year][$month['k']]['totals']['type']['t_1'])&& isset($data[$year][$month['k']]['cm'])) {
-						$i_y++;
+					if (isset($data[$year][$month['k']]['net']) && isset($data[$year][$month['k']]['gross'])) {
+						$i_p++;
 					}
 
 
-			//	test_array($totals);
+				//	test_array($totals);
+
+
 
 
 
@@ -221,15 +209,15 @@ class report_figures {
 
 					$r['data'][] = array(
 						"year"   => $year,
-						"totals" => ($total) ? ($total) : array("total"=>""),
-						"cm"     => ($cm) ? $cm : "",
-						"yield"     => ($cm && $total['type']['t_1']) ? $total['type']['t_1']/ $cm : "",
+						"net" => ($net) ? ($net) : "",
+						"gross"     => ($gross) ? $gross : "",
 						"records"=> ($records) ? $records : "",
+						"percent"=> ($net&&$gross)?(($net-$gross)/$gross)*100:"",
 						"d"      => array(
-							"totals" => "",
-							"cm"     => "",
-							"yield"=> "",
-							"records"=> ""
+							"net" => "",
+							"gross"     => "",
+							"records"=> "",
+							"percent"=> ""
 						),
 
 					);
@@ -240,6 +228,7 @@ class report_figures {
 				//$editions[]['data'] = array();
 				foreach ($editions_d as $e) {
 					$n = array(
+						"dID"=>$e['dID'],
 						"date"=>$e['date'],
 						"key"=> date("Y|m", strtotime($e['date'])),
 						"pub"=> $e['pub'],
@@ -249,8 +238,10 @@ class report_figures {
 					unset($e['pub']);
 					foreach ($years as $year) {
 						if ($year== date("Y", strtotime($e['date']))){
-							$e['yield']= (isset($e['totals']['type']['t_1']) && $e['totals']['type']['t_1'] &&$e['cm'])?currency($e['totals']['type']['t_1']/$e['cm']):"";
-							$e['totals']= currency($e['totals']['total']);
+							$e['percent']= ($e['net']&&$e['gross'])?abs(number_format((($e['net']-$e['gross'])/$e['gross'])*100,2)):"";
+							$e['net']= currency($e['net']);
+							$e['gross']= currency($e['gross']);
+
 							$n['data'][$year] = $e;
 						} else {
 							$n['data'][$year] = array();
@@ -278,54 +269,35 @@ class report_figures {
 			//test_array($r);
 
 
-			//test_array($totals);
-
-			$averages = array();
-			$averages['total']=  ($i_t) ? $totals['totals']['total'] / $i_t :$totals['totals']['total'];
-
-			if (!isset($totals['totals']['type'])){
-				$averages['type'] = array();
-			} else {
-				foreach ($totals['totals']['type'] as $type_k => $type_v){
-					$averages['type'][$type_k] =  ($i_t) ? $totals['totals']['type'][$type_k] / $i_t :$totals['totals']['type'][$type_k];
-				}
-			}
 
 
 
 
 			$r['editions'] = $editions;
-			$r['averages']['totals'] = $averages;
-			$r['averages']['cm'] = ($i_c) ? $totals['cm'] / $i_c : $totals['cm'];
+			$r['averages']['net'] = ($i_n) ? $totals['net'] / $i_n : $totals['net'];
+			$r['averages']['gross'] = ($i_g) ? $totals['gross'] / $i_g : $totals['gross'];
 			$r['averages']['records'] = ($i_r) ? $totals['records'] / $i_r : $totals['records'];
+			$r['averages']['percent'] = ($i_r) ? $totals['percent'] / $i_r : $totals['percent'];
 
 
 
 
-			$r['averages']['yield'] = (isset($averages['type']['t_1']) && $averages['type']['t_1'] && $r['averages']['cm'])? $averages['type']['t_1'] / $r['averages']['cm']:0;
 
-
-
-			//test_array($r);
 
 			$ndata = array();
 			foreach ($r['data'] as $rec) {
 
-				//$rec['yield'] =($rec['yield_totals'] && $rec['cm']) ? ($rec['yield_totals'] / $rec['cm']) : "";
-				$col = "totals";
-
+				$col = "net";
 				$figs_c_totals = array(
-					$r['averages'][$col]['total'] + ($r['averages'][$col]['total'] * ($margin / 100)),
-					$r['averages'][$col]['total'] - ($r['averages'][$col]['total'] * ($margin / 100)),
+					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
+					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
 				);
-				if ($rec[$col]['total'] > $figs_c_totals[0]) {
+				if ($rec[$col] > $figs_c_totals[0]) {
 					$rec['d'][$col] = "u";
-				} else if ($rec[$col]['total'] < $figs_c_totals[1] && $rec[$col]['total']) {
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
 					$rec['d'][$col] = "d";
 				}
-
-
-				$col = "cm";
+				$col = "gross";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
 					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
@@ -346,8 +318,7 @@ class report_figures {
 					$rec['d'][$col] = "d";
 				}
 
-
-				$col = "yield";
+				$col = "percent";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
 					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
@@ -361,8 +332,10 @@ class report_figures {
 
 
 
-				$rec['totals']['total'] = ($rec['totals']['total']) ? currency($rec['totals']['total']) : "";
-				$rec['yield'] = ($rec['yield']) ? currency($rec['yield']) : "";
+
+				$rec['net'] = ($rec['net']) ? currency($rec['net']) : "";
+				$rec['gross'] = ($rec['gross']) ? currency($rec['gross']) : "";
+				$rec['percent'] = ($rec['percent']) ? abs(number_format(($rec['percent']),2)) : "";
 
 				$ndata[] = $rec;
 
@@ -401,7 +374,7 @@ class report_figures {
 			$where = $where . " AND ";
 		}
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+		$select = "publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
@@ -427,7 +400,9 @@ class report_figures {
 			"label"  => "",
 			"label_d"  => "",
 			"totals" => 0,
-			"cm"     => 0,
+			"net" => 0,
+			"gross" => 0,
+			"percent"     => 0,
 			"records"=> 0
 		);
 
@@ -460,6 +435,7 @@ class report_figures {
 
 
 
+
 		$labels = array();
 
 		foreach ($records as $record) {
@@ -467,12 +443,17 @@ class report_figures {
 			$k = date("mY", strtotime($record['publishDate']));
 
 
-			$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
-			$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
+
+			$data[$k]['totals'] = $data[$k]['totals'] + abs($record['totalShouldbe']-$record['totalCost']);
+			$data[$k]['net'] = $data[$k]['net'] + ($record['totalCost']);
+			$data[$k]['gross'] = $data[$k]['gross'] + ($record['totalShouldbe']);
+			$data[$k]['percent'] = ($data[$k]['net']&&$data[$k]['gross'])?abs(number_format((($data[$k]['net']-$data[$k]['gross'])/$data[$k]['gross'])*100,2)):"";
 			$data[$k]['records'] = $data[$k]['records'] + 1;
 
-			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
-			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
+			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] +  abs($record['totalShouldbe']-$record['totalCost']);
+			$data[$k]['pubs'][$record['pID']]['net'] = $data[$k]['pubs'][$record['pID']]['net'] +  ($record['totalCost']);
+			$data[$k]['pubs'][$record['pID']]['gross'] = $data[$k]['pubs'][$record['pID']]['gross'] +  ($record['totalShouldbe']);
+			$data[$k]['pubs'][$record['pID']]['percent'] = ($data[$k]['pubs'][$record['pID']]['net']&&$data[$k]['pubs'][$record['pID']]['gross'])?abs(number_format((($data[$k]['pubs'][$record['pID']]['net']-$data[$k]['pubs'][$record['pID']]['gross'])/$data[$k]['pubs'][$record['pID']]['gross'])*100,2)):"";
 			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
 		}
 
@@ -481,7 +462,7 @@ class report_figures {
 			"labels" => array(),
 			"labels_d"=>array(),
 			"totals" => array(),
-			"cm"     => array(),
+			"percent"     => array(),
 			"records"=> array(),
 			"pubs"=>array()
 		);
@@ -489,13 +470,13 @@ class report_figures {
 			$data_ret['labels'][] = $d['label'];
 			$data_ret['labels_d'][] = $d['label_d'];
 			$data_ret['totals'][] = ($d['totals']) ? $d['totals'] : 0;
-			$data_ret['cm'][] = $d['cm'];
+			$data_ret['percent'][] = $d['percent'];
 			$data_ret['records'][] = $d['records'];
 			foreach ($publications as $pub) {
 
 				$data_ret['pubs'][$pub['ID']]['pub'] = $pub['publication'];
 				$data_ret['pubs'][$pub['ID']]['totals'][] = ($d['pubs'][$pub['ID']]['totals']) ? $d['pubs'][$pub['ID']]['totals'] : null;
-				$data_ret['pubs'][$pub['ID']]['cm'][] = ($d['pubs'][$pub['ID']]['cm']) ? $d['pubs'][$pub['ID']]['cm'] : null;
+				$data_ret['pubs'][$pub['ID']]['percent'][] = ($d['pubs'][$pub['ID']]['percent']) ? $d['pubs'][$pub['ID']]['percent'] : null;
 				$data_ret['pubs'][$pub['ID']]['records'][] = ($d['pubs'][$pub['ID']]['records']) ? $d['pubs'][$pub['ID']]['records'] : null;
 
 
@@ -506,6 +487,9 @@ class report_figures {
 			$p[] = $record;
 		}
 		$data_ret['pubs'] = $p;
+
+
+		//test_array($data_ret);
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());

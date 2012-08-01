@@ -29,7 +29,7 @@ class settings {
 					"c"=> "size",
 					"o"=> "totalspace",
 					"h"=> "Size",
-					"m"=>60
+					"w"=>60
 				),
 
 				"colour"                 => array(

@@ -37,13 +37,39 @@ class marketer_discounts extends \data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
+		$dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $settings['dir'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
+		$grouping_g =  $settings['group']['g'];
+		$grouping_d =  $settings['group']['o'];
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
+			if ($settings['order']['c'] == $_REQUEST['order']){
+				if ($ordering_d=="ASC"){
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+			}
+		}
+		$grouping = array(
+			"g"=> $grouping_g,
+			"o"=> $grouping_d
+		);
+		$ordering = array(
+			"c"=> $ordering_c,
+			"o"=> $ordering_d
+		);
 		if ($combined=='none'){
 			$combined = $settings['combined'];
 		}
 		if ($ID==''){
 			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
+		}
+		if ($dir=='none'){
+			$dir = $settings['dir']||"d";
 		}
 
 		if ($user['permissions']['reports']['marketer']['figures']['page'] != '1') {
@@ -54,9 +80,15 @@ class marketer_discounts extends \data {
 				F3::error("404");
 			}
 		}
+	$tab = "charts";
+		if ($dID){
+			$tab = "records";
+	}
 
 
-
+		$return['tab']=$tab;
+		$return['dID']=$dID;
+		$return['dir']=$dir;
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
@@ -92,6 +124,9 @@ class marketer_discounts extends \data {
 			"years"=> $years,
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
+			"dir"=> $dir,
+			"order"=> $ordering,
+			
 		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 
@@ -124,13 +159,31 @@ class marketer_discounts extends \data {
 
 
 
-		$years = ($y);;
-		$where = "checked = '1' AND marketerID = '$ID' AND deleted is null ";
-		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+		if ($dir=="u"){
+			$dir_sql = " AND totalCost > totalShouldbe";
+		} else {
+			$dir_sql = " AND totalCost < totalShouldbe";
+		}
 
+
+
+		$years = ($y);;
+		$where_general = "checked = '1' AND marketerID = '$ID' AND deleted is null $dir_sql";
+		if ($tab=="charts"){
+			$where = $where_general;
+		$return['lines'] = models\report_discounts::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+		}
+		if ($tab=="records"){
+					$orderby = " client ASC";
+					$arrange = "";
+					$where = "(ab_bookings.dID='$dID') AND $where_general";
+					$records = models\bookings::getAll($where, $grouping, $ordering);
+			$return['records'] = models\bookings::display($records);
+
+		}
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND checked = '1' AND marketerID = '$ID' AND deleted is null";
-		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
+		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general $dir_sql";
+		$return['comp']['data'] = models\report_discounts::figures($where, $yearsSend);
 
 
 		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");

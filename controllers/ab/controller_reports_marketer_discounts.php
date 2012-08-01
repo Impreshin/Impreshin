@@ -21,7 +21,11 @@ class controller_reports_marketer_discounts {
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
-	//	test_array($settings);
+		$s = models\settings::getSettings();
+		$s = $s['columns']['percent_diff'];
+		$settings['col'][] = $s;
+		$settings['count'] = count($settings['col']);
+		//test_array($settings);
 
 
 		$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");

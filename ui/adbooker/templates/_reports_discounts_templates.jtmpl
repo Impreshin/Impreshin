@@ -119,14 +119,13 @@
 	<% if (this.tab=="charts") { %>
 	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
 	<div class="clearfix"></div>
-	<h3>Income</h3>
+	<h3>Percentages</h3>
+	<div id="chart-percent" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 
-	<div id="chart-income" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
-	<h3>Cm</h3>
+	<h3><% if (this.dir=="u") { %>Over<% } else { %>Under<% } %> Charged by</h3>
+	<div id="chart-o_u_charged" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 
-	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 	<h3>Records</h3>
-
 	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 
 	<% } else if (this.tab=="records") { %>

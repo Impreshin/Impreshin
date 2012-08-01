@@ -16,9 +16,14 @@
 			<div class="pull-right">
 
 				<ul class="nav nav-pills pull-right ">
+					<li >
+						<button class="btn btn-mini span1" id="dir" data-dir="{{ settings['dir'] }}"><i class="icon-d-grey"></i></button>
+
+					</li>
+					<li class="divider-vertical"></li>
 					<li>
 						{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
-						<select id="marketerID" name="marketerID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Marketer">
+						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Marketer">
 
 
 							{% for row in marketers %}

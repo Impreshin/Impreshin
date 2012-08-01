@@ -7,6 +7,43 @@ $(document).ready(function () {
 
 	scrolling(api);
 
+	$(document).on("click", ".order-btn", function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			$("#record-list .order-btn").removeClass("asc desc");
+			//$this.addClass("active");
+			$.bbq.pushState({"order":$this.attr("data-col")});
+		getData();
+			$.bbq.removeState("order");
+		});
+	$(document).on("click","tr.figure-month-details.record",function(){
+		var $this = $(this);
+		var ID = $this.attr("data-id");
+		if ($this.hasClass("active")){
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$.bbq.removeState("dID");
+		} else {
+			$("tr.figure-month-details.record.active").removeClass("active");
+			$this.addClass("active");
+			$.bbq.pushState({"dID":ID});
+		}
+		getData();
+	});
+	
+	$("#dir").click(function(){
+		var $this = $(this);
+		if ($this.attr("data-dir")=='u'){
+			$this.attr("data-dir","d");
+		} else {
+			$this.attr("data-dir","u");
+		}
+
+		dir();
+		getData();
+	});
+	dir();
+
+
 
 	$("#pub-select input:checkbox").change(function(){
 		var str = $("#pub-select input:checkbox:checked").map(function(){
@@ -32,10 +69,15 @@ $(document).ready(function () {
 	$(document).on("click","#combine-btn",function(){
 		getData();
 	});
+	$(document).on("click", ".report-bottom-tabs button.back", function () {
+		$.bbq.removeState("dID");
+		});
+	$(document).on("click", ".report-bottom-tabs button", function () {
 	getData();
-
-
-	$("select#marketerID").select2().on("change",function(){
+	});
+	getData();
+	
+	$("select#selectID").select2().on("change",function(){
 			getData();
 		});
 
@@ -45,7 +87,18 @@ $(document).ready(function () {
 
 
 });
-
+function dir(){
+		var $this = $("#dir");
+		var $icon = $this.find("i");
+		$icon.removeClass("icon-thumbs-up icon-thumbs-down");
+		if ($this.attr("data-dir")=='u'){
+			$icon.addClass("icon-thumbs-up");
+			$this.attr("title","Over-Charged");
+		} else {
+			$icon.addClass("icon-thumbs-down");
+			$this.attr("title","Under-Charged");
+		}
+	}
 function getData() {
 
 	var pubs = $("#pub-select input:checkbox:checked").map(function () {
@@ -60,36 +113,39 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
-	var marketerID = $("#marketerID").val();
+	var selectID = $("#selectID").val();
+	var dir = $("#dir").attr("data-dir");
 
 
 var $combined = $("#combine-btn");
 	var daterange = $("#date-picker").val();
 	var combined = ($combined.length)?($combined.hasClass("active"))?1:0:'none';
 
+	var dID = $.bbq.getState("dID");
 
+	var order = $.bbq.getState("order");
+		order = (order)? order:"";
 
 	$("#whole-area .loadingmask").show();
 
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/marketer_discounts/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":marketerID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_discounts/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":selectID,"dir":dir,"dID":dID, "order":order}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
 		//console.log(data['combined']);
 
+		if (data['tab'] == 'charts') {
 
 
-
-			drawChart('chart-income', data);
-			drawChart('chart-cm', data);
+			drawChart('chart-percent', data);
+			drawChart('chart-o_u_charged', data);
 			drawChart('chart-records',data);
 
 
-		var $scrollpane = $("#whole-area .scroll-pane");
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+	
 
 		$('#date-picker').daterangepicker({
 			presetRanges     :[
@@ -164,9 +220,19 @@ var $combined = $("#combine-btn");
 			}
 
 		}).data("cur",data['daterange']);
+		} else if (data['tab']=='records'){
+
+			var $recordsList = $("#record-list");
+			if (data['records'][0]){
+				$recordsList.jqotesub($("#template-records"), data['records']);
+			} else {
+				$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
+			}
 
 
-
+		}
+		var $scrollpane = $("#whole-area .scroll-pane");
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
 
@@ -175,6 +241,7 @@ function drawChart(element, data) {
 	//console.log(label.length)
 
 	var col = "";
+	// percent, o_u_charged
 	switch (element) {
 		case 'chart-income':
 			col = "totals";
@@ -184,6 +251,12 @@ function drawChart(element, data) {
 			break;
 		case 'chart-records':
 			col = "records";
+			break;
+		case 'chart-percent':
+			col = "percent";
+			break;
+		case 'chart-o_u_charged':
+			col = "totals";
 			break;
 	}
 	var label = data['lines']['labels'];
@@ -304,6 +377,12 @@ function drawChart(element, data) {
 						break;
 					case 'chart-records':
 						ret = ret + '';
+						break;
+					case 'chart-percent':
+						ret = ret + ' %';
+						break;
+					case 'chart-o_u_charged':
+						ret = cur(Number(ret));
 						break;
 				}
 
