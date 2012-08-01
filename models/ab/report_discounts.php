@@ -238,7 +238,7 @@ class report_discounts {
 					unset($e['pub']);
 					foreach ($years as $year) {
 						if ($year== date("Y", strtotime($e['date']))){
-							$e['percent']= ($e['net']&&$e['gross'])?abs(number_format((($e['net']-$e['gross'])/$e['gross'])*100,2)):"";
+							$e['percent']= ($e['net']&&$e['gross'])?abs(number_format((($e['net']-$e['gross'])/$e['gross'])*100,1)):"";
 							$e['net']= currency($e['net']);
 							$e['gross']= currency($e['gross']);
 
@@ -335,7 +335,7 @@ class report_discounts {
 
 				$rec['net'] = ($rec['net']) ? currency($rec['net']) : "";
 				$rec['gross'] = ($rec['gross']) ? currency($rec['gross']) : "";
-				$rec['percent'] = ($rec['percent']) ? abs(number_format(($rec['percent']),2)) : "";
+				$rec['percent'] = ($rec['percent']) ? abs(number_format(($rec['percent']),1)) : "";
 
 				$ndata[] = $rec;
 

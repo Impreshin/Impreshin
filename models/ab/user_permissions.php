@@ -70,6 +70,9 @@ class user_permissions {
 					"figures"=> array(
 						"page"=> 0
 					),
+					"discounts"=> array(
+						"page"=> 0
+					),
 
 				),
 				"marketer"=>array(
@@ -94,13 +97,19 @@ class user_permissions {
 
 					"figures"=> array(
 						"page"=> 0
-					)
+					),
+					"discounts"=> array(
+						"page"=> 0
+					),
 				),
 
 
 
 				"publication"=>array(
 					"figures"=> array(
+						"page"=> 0
+					),
+					"discounts"=> array(
 						"page"=> 0
 					),
 					"placing"=> array(

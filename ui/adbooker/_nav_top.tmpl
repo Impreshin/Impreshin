@@ -71,6 +71,11 @@
 									<a href="/ab/reports/account/figures">Figures</a>
 								</li>
 								{% endif %}
+								{% if _user['permissions']['reports']['account']['discounts']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_discounts" %} active {% endif %}">
+									<a href="/ab/reports/account/discounts">Discounts</a>
+								</li>
+								{% endif %}
 
 
 
@@ -114,6 +119,11 @@
 									<a href="/ab/reports/category/figures">Figures</a>
 								</li>
 								{% endif %}
+								{% if _user['permissions']['reports']['category']['discounts']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "category_discounts" %} active {% endif %}">
+									<a href="/ab/reports/category/discounts">Discounts</a>
+								</li>
+								{% endif %}
 
 
 
@@ -126,6 +136,15 @@
 									<a href="/ab/reports/publication/figures">Figures</a>
 								</li>
 								{% endif %}
+								{% if _user['permissions']['reports']['publication']['discounts']['page'] %}
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_discounts" %} active {% endif %}">
+									<a href="/ab/reports/publication/discounts">Discounts</a>
+								</li>
+								{% endif %}
+
+
+
+
 								{% if _user['permissions']['reports']['publication']['section']['page'] %}
 								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_section" %} active {% endif %}">
 									<a href="/ab/reports/publication/section">Sections</a>

@@ -1,0 +1,7 @@
+.accnum_in_list {
+	display      : inline-block;
+	width        : 60px;
+	margin-right : 5px;
+	border-right : 1px solid #ccc;
+	color        : #999;
+}

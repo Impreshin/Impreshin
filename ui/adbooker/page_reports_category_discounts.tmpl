@@ -10,20 +10,33 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<h2 style=" margin-bottom: -5px;"><small>Account Figures</small></h2>
+					<h2 style=" margin-bottom: -5px;"><small>Category Discounts</small></h2>
 				</li>
 			</ul>
 			<div class="pull-right">
 
 				<ul class="nav nav-pills pull-right ">
+					<li >
+						<button class="btn btn-mini span1" id="dir" data-dir="{{ settings['dir'] }}"><i class="icon-d-grey"></i></button>
+
+					</li>
+					<li class="divider-vertical"></li>
 					<li>
-						<select id="accountID" name="accountID" tabindex="8" class="" style="width: 300px;" placeholder="Select an Account">
+
+						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Category">
 
 
-							{% for row in accounts %}
-								<option value="{{ row['ID'] }}" data-accNum="{{ row['accNum'] }}" data-account="{{ row['account'] }}" data-blocked="{{ row['blocked'] }}" data-labelClass="{{ row['labelClass'] }}" data-remark="{{ row['remark'] }}" {% if row['ID'] == selected %} selected="selected"{% endif %}>{{ row['accNum'] }} | {{ row['account'] }}</option>                            {% endfor %}
+							{% for row in list %}
+							<option value="{{ row['ID'] }}" {% if row['ID'] == selected %} selected="selected"{% endif %}>
+								{{ row['category'] }}
+							</option>
+							{% endfor %}
 
 						</select>
+
+						<input id="marketerID" type="hidden" name="marketerID" value="{{ selected }}">
+
+
 					</li>
 					<li class="divider-vertical"></li>
 					<li id="pub-select" >
