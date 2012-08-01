@@ -243,10 +243,12 @@ class report_figures {
 						"date"=>$e['date'],
 						"key"=> date("Y|m", strtotime($e['date'])),
 						"pub"=> $e['pub'],
+						"dID"=> $e['dID'],
 
 					);
 
 					unset($e['pub']);
+					unset($e['dID']);
 					foreach ($years as $year) {
 						if ($year== date("Y", strtotime($e['date']))){
 							$e['yield']= (isset($e['totals']['type']['t_1']) && $e['totals']['type']['t_1'] &&$e['cm'])?currency($e['totals']['type']['t_1']/$e['cm']):"";

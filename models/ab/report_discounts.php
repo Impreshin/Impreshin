@@ -236,6 +236,7 @@ class report_discounts {
 					);
 
 					unset($e['pub']);
+					unset($e['dID']);
 					foreach ($years as $year) {
 						if ($year== date("Y", strtotime($e['date']))){
 							$e['percent']= ($e['net']&&$e['gross'])?abs(number_format((($e['net']-$e['gross'])/$e['gross'])*100,1)):"";
