@@ -118,7 +118,7 @@
 						<tr>
 							<th>Totalcost</th>
 							<td colspan="3">: <%= this.totalCost_C || "" %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C || "" %> -
-								<span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.percent_diff || "" %>% </span>) <% } %>
+								<span class="label <% if (this.percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= Math.abs(this.percent_diff) || "" %>% </span>) <% } %>
 
 							</td>
 						</tr>

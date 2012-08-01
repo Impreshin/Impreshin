@@ -80,7 +80,7 @@
 
 					{% if col['c'] == "percent_diff" %}
 						<% if (this.records[i].percent_diff!="0.00"){ %>
-							<span class="label <% if (this.records[i].percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= this.records[i].percent_diff %>% </span>
+							<span class="label <% if (this.records[i].percent_diff<0){ %>label-success<% } else { %>label-important<% } %> "> <%= Math.abs(this.records[i].percent_diff) %>% </span>
 						<% } %>
 					{% endif %}
 					{% if col['c'] in ',account,accNum' %}
