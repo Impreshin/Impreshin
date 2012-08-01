@@ -82,9 +82,10 @@ class user_permissions {
 					"discounts"=> array(
 						"page"=> 0
 					),
+					/*
 					"targets"=> array(
 						"page"=> 0
-					)
+					)*/
 				),
 				"production"=>array(
 					"figures"=> array(
@@ -112,12 +113,12 @@ class user_permissions {
 					"discounts"=> array(
 						"page"=> 0
 					),
-					"placing"=> array(
+					/*"placing"=> array(
 						"page"=> 0
 					),
 					"section"=> array(
 						"page"=> 0
-					),
+					),*/
 
 				)
 
