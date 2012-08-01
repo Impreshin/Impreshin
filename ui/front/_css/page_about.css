@@ -1,0 +1,15 @@
+#pagecontent h2 {
+	border-bottom: 1px dotted #ccc;
+	margin: 10px -10px 10px -10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#pagecontent h3 {
+	margin-top: 20px;
+	color: #999;
+	border-bottom: 1px dotted #e1e1e1;
+}
+#pagecontent h3 small {
+	margin-left:10px;
+
+}
