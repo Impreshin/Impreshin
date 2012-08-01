@@ -39,6 +39,11 @@ class marketer_discounts extends \data {
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
 		$dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $settings['dir'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+		if ($user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
+
+
+
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
 		$grouping_g =  $settings['group']['g'];

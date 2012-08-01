@@ -144,19 +144,20 @@ class user {
 
 			}
 
-			// test_array($permissions);
+
 
 			if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
 				$permissions['reports']['_nav'] = '1';
 				$permissions['reports']['marketer']['_nav'] = '1';
+				foreach ($permissions['reports']['marketer'] as $k=> $p) {
+								$permissions['reports']['marketer'][$k]['spage'] = '1';
+
+							}
 
 			}
-			foreach ($permissions['reports']['marketer'] as $k=> $p) {
-				$permissions['reports']['marketer'][$k]['spage'] = '1';
-
-			}
 
 
+			//test_array($result);
 
 			$result['permissions'] = $permissions;
 

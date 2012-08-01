@@ -38,6 +38,10 @@ class marketer_figures extends \data {
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+
+
+		if ($user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
+
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
 		$grouping_g =  $settings['group']['g'];
