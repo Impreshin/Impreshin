@@ -164,7 +164,8 @@ class settings {
 				"percent_diff"           => array(
 					"c"=> "percent_diff",
 					//"o"=> "percent_diff",
-					"h"=> "Disc %"
+					"h"=> "Disc %",
+					"w"=>40
 				),
 				"material_file_filename"               => array(
 					"c"=> "material_file_filename",

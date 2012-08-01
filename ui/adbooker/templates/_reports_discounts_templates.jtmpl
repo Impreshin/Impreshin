@@ -40,27 +40,27 @@
 			<td><strong><%= this.comp.data[d].month %></strong>
 			</td>
 			<% for(var i in this.comp.data[d].data) { %>
-			<td style="border-left: 1px solid #999;" class="figure-dir-<%= this.comp.data[d].data[i].d.totals %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+			<td style="border-left: 1px solid #999;" class=" col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
-					<%= this.comp.data[d].data[i].totals.total %>
+					<%= this.comp.data[d].data[i].net||"" %>
 				</span>
 			</td>
-			<td class="figure-dir-<%= this.comp.data[d].data[i].d.cm %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+			<td class=" col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 				<span>
-					<%= this.comp.data[d].data[i].totals.total %>
+					<%= this.comp.data[d].data[i].gross||"" %>
 				</span>
 			</td>
-			<td class="figure-dir-<%= this.comp.data[d].data[i].d.records %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+			<td class=" col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
-					<%= this.comp.data[d].data[i].records %>
+					<%= this.comp.data[d].data[i].records||"" %>
 				</span>
 			</td>
-			<td class="figure-dir-<%= this.comp.data[d].data[i].d.records %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+			<td class=" col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
-					<%= this.comp.data[d].data[i].records %>
+					<%= this.comp.data[d].data[i].percent||"" %>
 				</span>
 			</td>
 
@@ -69,14 +69,14 @@
 			<% } %>
 		</tr>
 		<% for(var e in this.comp.data[d].editions) { %>
-		<tr class="figure-month-details dg s" data-month="<%= this.comp.data[d].m %>" data-key="<%= this.comp.data[d].editions[e].key %>">
+		<tr class="figure-month-details dg s record <% if (this.dID==this.comp.data[d].editions[e].dID) { %>active<% } %>" data-ID="<%= this.comp.data[d].editions[e].dID %>" data-key="<%= this.comp.data[d].editions[e].key %>">
 			<td><strong><%= this.comp.data[d].editions[e].pub %></strong><em> <%= this.comp.data[d].editions[e].date %></em>
 			</td>
 			<% for(var i in this.comp.data[d].editions[e].data) { %>
-				<td><%= this.comp.data[d].editions[e].data[i].totals||"" %></td>
-				<td><%= this.comp.data[d].editions[e].data[i].cm||"" %></td>
+				<td><%= this.comp.data[d].editions[e].data[i].net||"" %></td>
+				<td><%= this.comp.data[d].editions[e].data[i].gross||"" %></td>
 				<td><%= this.comp.data[d].editions[e].data[i].records||"" %></td>
-				<td><%= this.comp.data[d].editions[e].data[i].records||"" %></td>
+				<td><%= this.comp.data[d].editions[e].data[i].percent||"" %></td>
 			<% } %>
 		</tr>
 		<% } %>
@@ -88,13 +88,10 @@
 		<div style="margin-left: 20px; float:right; ">
 
 			<div class="btn-toolbar">
-				<div class="btn-group" data-toggle="buttons-radio">
-					<button class="btn btn-mini span1 active"><i class="icon-signal icon-d-grey"></i></button>
-					<button class="btn btn-mini span1"><i class="icon-list icon-d-grey"></i></button>
-					<button class="btn btn-mini span1"><i class="icon-globe icon-d-grey"></i></button>
-				</div>
+			
 
 
+				<% if (this.tab=="charts") { %>
 				<div class="btn-group">
 					<input id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>">
 					<% if (this.pubs>1) { %>
@@ -107,14 +104,19 @@
 
 						</button>
 					<% } %>
-
 				</div>
+				<% } else if (this.tab=="records") { %>
+				<div class="btn-group report-bottom-tabs" data-toggle="buttons-radio" >
+									<button class="btn btn-mini span2 back" data-tab="charts"><i class="icon-arrow-left icon-d-grey" style="margin-top:-2px;"></i> Back to charts</button>
+				</div>
+				<% } %>
 
 			</div>
 
 
 		</div>
 
+	<% if (this.tab=="charts") { %>
 	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
 	<div class="clearfix"></div>
 	<h3>Income</h3>
@@ -127,7 +129,12 @@
 
 	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 
+	<% } else if (this.tab=="records") { %>
+	<div class="clearfix"></div>
+	<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
 
+	</table>
+	<% } %>
 
 
 
