@@ -19,10 +19,10 @@
 					<li >
 						<button class="btn btn-mini span1" id="dir" data-dir="{{ settings['dir'] }}"><i class="icon-d-grey"></i></button>
 
-					</li>
+					</li>{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
 					<li class="divider-vertical"></li>
 					<li>
-						{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
+
 						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Marketer">
 
 
@@ -36,8 +36,8 @@
 						{% else %}
 						<input id="marketerID" type="hidden" name="marketerID" value="{{ selected }}">
 
-						{% endif %}
-					</li>
+
+					</li>	{% endif %}
 					<li class="divider-vertical"></li>
 					<li id="pub-select" >
 
