@@ -1376,11 +1376,15 @@ table.records .record-tick {
 .section_reports .figure-dir-u {
   color: green;
   font-weight: bold;
-  background-color: #d3ffb7 !important;
 }
 .section_reports .figure-dir-d {
   color: red;
   font-weight: bold;
+}
+.section_reports tr:not(.figure-month-details) .figure-dir-u {
+  background-color: #d3ffb7 !important;
+}
+.section_reports tr:not(.figure-month-details) .figure-dir-d {
   background-color: #ffd1cc !important;
 }
 .section_reports #figures-table thead th {
