@@ -180,5 +180,12 @@
 	$(document).on("mouseleave", '#figures-table tbody tr td.col',function () {
 			$("#figures-table tbody tr td.hover").removeClass("hover");
 		}
-	)
+	);
+	$(document).on('click', '.scrolllinks a', function (e) {
+			e.preventDefault();
+			var $this = $(this), scrollto = $this.attr("rel");
+
+			api.scrollToElement("[data-heading='" + scrollto + "']", true, true);
+
+		});
 </script>
