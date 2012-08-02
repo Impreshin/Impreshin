@@ -537,3 +537,6 @@ ALTER TABLE `ab_marketers` ADD `code` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `ema
 
 # ----------------- #
 
+update `global_users` SET password = md5(concat('aws_',password,'_',md5('zoutnet')));
+
+# ----------------- #

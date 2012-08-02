@@ -198,10 +198,13 @@ class user {
 			setcookie("username", $username, time() + 31536000, "/");
 		}
 
+		$password_hash = $password;
+
+		$password_hash = md5("aws_".$password."_".md5("zoutnet"));
 
 
 		$result = F3::get("DB")->exec("
-			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password'
+			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password_hash'
 		");
 
 
@@ -269,6 +272,11 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 	public static function save($ID,$values){
 		$timer = new timer();
 		$user = F3::get("user");
+
+		if (isset($values['password'])&&$values['password']){
+			$values['password'] = md5("aws_".$values['password']."_".md5("zoutnet"));
+		}
+
 
 		$cID = $values['cID'];
 		if (!$cID){
