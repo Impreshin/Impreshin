@@ -88,6 +88,10 @@ class account_discounts extends \data {
 			$tab = "records";
 	}
 
+		if ($dir==''){
+				$dir = "d";
+			}
+
 
 		$return['tab']=$tab;
 		$return['dID']=$dID;
