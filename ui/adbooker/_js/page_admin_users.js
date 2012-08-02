@@ -34,7 +34,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to remove this users access to Adverts?")){
+		if (confirm("Are you sure you want to remove this user from the company?")){
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_users/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
