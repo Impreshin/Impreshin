@@ -482,6 +482,7 @@ class settings {
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
 					"col" => array(
 						"client",
 						"size",
@@ -504,6 +505,7 @@ class settings {
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
 					"ID"=>array(),
 					"col" => array(
 						"client",
@@ -552,6 +554,7 @@ class settings {
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
 					"ID"=>array(),
 					"col" => array(
 						"client",
@@ -575,6 +578,7 @@ class settings {
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
 					"ID"=>array(),
 					"col" => array(
 						"client",
