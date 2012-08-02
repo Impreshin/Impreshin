@@ -83,18 +83,18 @@ class account_discounts extends \data {
 				F3::error("404");
 			}
 		}
-	$tab = "charts";
-		if ($dID){
+		$tab = "charts";
+		if ($dID) {
 			$tab = "records";
-	}
+		}
 
-		if ($dir==''){
-				$dir = "d";
-			}
+		if ($dir == '') {
+			$dir = "d";
+		}
 
 
-		$return['tab']=$tab;
-		$return['dID']=$dID;
+		$return['tab'] = $tab;
+		$return['dID'] = $dID;
 		$return['dir']=$dir;
 		$return['tolerance']=$tolerance;
 		if (!$daterange){
