@@ -40,7 +40,8 @@ class marketer_figures extends \data {
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 
-		if ($user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
+
+		if (isset($user['marketer']['ID'])&&$user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
 
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
@@ -150,6 +151,8 @@ class marketer_figures extends \data {
 
 		$years = ($y);;
 		$where_general = "checked = '1' AND marketerID = '$ID' AND deleted is null ";
+
+
 
 		if ($tab=="charts"){
 			$where = $where_general;

@@ -40,7 +40,7 @@ class marketer_discounts extends \data {
 		$dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $settings['dir'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		if ($user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
+		if (isset($user['marketer']['ID'])&&$user['marketer']['ID']&&$user['permissions']['reports']['marketer']['figures']['page']!='1') $ID = $user['marketer']['ID'];
 
 
 
