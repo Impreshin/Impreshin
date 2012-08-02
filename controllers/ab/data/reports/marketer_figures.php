@@ -37,6 +37,7 @@ class marketer_figures extends \data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
+		$tolerance = isset($_REQUEST['tolerance']) ? $_REQUEST['tolerance'] : $settings['tolerance'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 
@@ -81,6 +82,7 @@ class marketer_figures extends \data {
 
 		$return['tab']=$tab;
 		$return['dID']=$dID;
+		$return['tolerance']=$tolerance;
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
@@ -117,6 +119,7 @@ class marketer_figures extends \data {
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
 					"order"=> $ordering,
+					"tolerance"=> $tolerance,
 		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 
@@ -169,7 +172,7 @@ class marketer_figures extends \data {
 
 		$return['comp']['years']=$years;
 		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general";
-		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend);
+		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend, $tolerance);
 
 
 		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");

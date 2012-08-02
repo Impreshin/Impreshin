@@ -288,49 +288,11 @@ class report_discounts {
 			$ndata = array();
 			foreach ($r['data'] as $rec) {
 
-				$col = "net";
-				$figs_c_totals = array(
-					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
-					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
-				);
-				if ($rec[$col] > $figs_c_totals[0]) {
-					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
-					$rec['d'][$col] = "d";
-				}
-				$col = "gross";
-				$figs_c_totals = array(
-					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
-					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
-				);
-				if ($rec[$col] > $figs_c_totals[0]) {
-					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
-					$rec['d'][$col] = "d";
-				}
-				$col = "records";
-				$figs_c_totals = array(
-					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
-					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
-				);
-				if ($rec[$col] > $figs_c_totals[0]) {
-					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
-					$rec['d'][$col] = "d";
-				}
-
 				$col = "percent";
-				$figs_c_totals = array(
-					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
-					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
-				);
-				if ($rec[$col] > $figs_c_totals[0]) {
-					$rec['d'][$col] = "u";
-				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
+				if(abs($rec[$col]) > $margin) {
 					$rec['d'][$col] = "d";
-				}
-
-
+				} 
+			//	test_array($rec);
 
 
 

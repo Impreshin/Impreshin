@@ -498,6 +498,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"tolerance"=>25
 				),
 				"reports_account"=>array(
 					"years"=>"",
@@ -520,6 +521,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"tolerance"=>25
 				),
 				"reports_marketer"=>array(
 					"years"=>"",
@@ -543,6 +545,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"tolerance"=>25
 				),
 
 				"reports_production"=>array(
@@ -566,6 +569,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"tolerance"=>25
 				),
 				"reports_category"=>array(
 					"years"=>"",
@@ -588,6 +592,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"tolerance"=>25
 				)
 
 			);

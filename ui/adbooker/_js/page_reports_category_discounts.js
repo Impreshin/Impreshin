@@ -63,7 +63,7 @@ $(document).ready(function () {
 		getData();
 	});
 
-	$(document).on("change", ".trigger_getdata input:checkbox", function () {
+	$(document).on("change", ".trigger_getdata input:checkbox, select.trigger_getdata", function () {
 		getData();
 	});
 	$(document).on("click","#combine-btn",function(){
@@ -127,10 +127,10 @@ var $combined = $("#combine-btn");
 		order = (order)? order:"";
 
 	$("#whole-area .loadingmask").show();
-
+	var tolerance = $("#tolerance").val();
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/category_discounts/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":selectID,"dir":dir,"dID":dID, "order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/category_discounts/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":selectID,"dir":dir,"dID":dID, "order":order,"tolerance":tolerance}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);

@@ -82,6 +82,21 @@
 		<% } %>
 		</tbody>
 	</table>
+	<div class="clearfix"></div>
+	<div class="s dg" style="float:right;" >
+		<em>Tolerance:</em>
+
+		<select name="tolerance" id="tolerance" class="s trigger_getdata" style="width: 50px; padding: 2px; height: 20px; border: none; margin-bottom: 0px;">
+			<option value="5" <% if (this.tolerance == "5") { %>selected="selected"<% } %>>5%</option>
+			<option value="10" <% if (this.tolerance == "10") { %>selected="selected"<% } %>>10%</option>
+			<option value="15" <% if (this.tolerance == "15") { %>selected="selected"<% } %>>15%</option>
+			<option value="20" <% if (this.tolerance == "20") { %>selected="selected"<% } %>>20%</option>
+			<option value="25" <% if (this.tolerance == "25") { %>selected="selected"<% } %>>25%</option>
+			<option value="30" <% if (this.tolerance == "30") { %>selected="selected"<% } %>>30%</option>
+			<option value="40" <% if (this.tolerance == "40") { %>selected="selected"<% } %>>40%</option>
+			<option value="50" <% if (this.tolerance == "50") { %>selected="selected"<% } %>>50%</option>
+		</select>
+	</div>
 	<div class="sectionbreak"></div>
 
 		<div style="margin-left: 20px; float:right; ">

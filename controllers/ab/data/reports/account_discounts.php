@@ -39,6 +39,7 @@ class account_discounts extends \data {
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
 		$dir = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $settings['dir'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$tolerance = isset($_REQUEST['tolerance']) ? $_REQUEST['tolerance'] : $settings['tolerance'];
 
 
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
@@ -91,6 +92,7 @@ class account_discounts extends \data {
 		$return['tab']=$tab;
 		$return['dID']=$dID;
 		$return['dir']=$dir;
+		$return['tolerance']=$tolerance;
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
@@ -128,7 +130,8 @@ class account_discounts extends \data {
 			"combined"=> $combined,
 			"dir"=> $dir,
 			"order"=> $ordering,
-			
+			"tolerance"=> $tolerance,
+
 		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 
@@ -185,7 +188,7 @@ class account_discounts extends \data {
 		}
 		$return['comp']['years']=$years;
 		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general $dir_sql";
-		$return['comp']['data'] = models\report_discounts::figures($where, $yearsSend);
+		$return['comp']['data'] = models\report_discounts::figures($where, $yearsSend, $tolerance);
 
 
 		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");

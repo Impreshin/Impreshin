@@ -49,7 +49,7 @@ $(document).ready(function () {
 	$(document).on("click", "#year-select button", function () {
 		getData();
 	});
-	$(document).on("change", ".trigger_getdata input:checkbox", function () {
+	$(document).on("change", ".trigger_getdata input:checkbox, select.trigger_getdata", function () {
 		getData();
 	});
 	$(document).on("click", "#combine-btn", function () {
@@ -90,8 +90,10 @@ function getData() {
 
 	$("#whole-area .loadingmask").show();
 
+	var tolerance = $("#tolerance").val();
+
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "dID":dID, "order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "dID":dID, "order":order,"tolerance":tolerance}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
