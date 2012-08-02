@@ -158,6 +158,26 @@ class accounts {
 	}
 
 
+	public static function _delete($ID) {
+		$user = F3::get("user");
+		$timer = new timer();
+
+		$a = new Axon("ab_accounts");
+		$a->load("ID='$ID'");
+
+		$a->erase();
+
+		$a->save();
+
+
+
+
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		return "done";
+
+	}
+
+
 	private static function dbStructure() {
 		$table = F3::get("DB")->exec("EXPLAIN ab_accounts;");
 		$result = array();

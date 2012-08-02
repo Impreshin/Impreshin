@@ -135,6 +135,9 @@ class admin_accounts extends save {
 		$user = F3::get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
+		models\accounts::_delete($ID);
+				return $GLOBALS["output"]['data'] = "done";
+
 
 
 	}

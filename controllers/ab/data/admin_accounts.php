@@ -148,7 +148,7 @@ class admin_accounts extends data {
 		$return['publications'] = $publications;
 
 		if ($details['ID']){
-			$where = "ab_accounts.ID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
+			$where = "ab_accounts.ID='" . $details['ID'] . "'";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;
