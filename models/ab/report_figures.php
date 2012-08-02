@@ -65,7 +65,7 @@ class report_figures {
 
 
 
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, totalCost, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
@@ -403,7 +403,7 @@ class report_figures {
 			$where = $where . " AND ";
 		}
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
-		$select = "publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+		$select = "global_dates.publish_date as publishDate, totalCost, totalspace, ab_bookings.pID as pID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
@@ -462,20 +462,22 @@ class report_figures {
 
 
 
+
 		$labels = array();
 
 		foreach ($records as $record) {
 
-			$k = date("mY", strtotime($record['publishDate']));
+				$k = date("mY", strtotime($record['publishDate']));
 
 
-			$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
-			$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
-			$data[$k]['records'] = $data[$k]['records'] + 1;
+							$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
+							$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
+							$data[$k]['records'] = $data[$k]['records'] + 1;
 
-			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
-			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
-			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
+							$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
+							$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
+							$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
+
 		}
 
 		$p = array();

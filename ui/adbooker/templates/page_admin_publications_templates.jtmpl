@@ -88,7 +88,13 @@
 						</div>
 					</div>
 				</div>
-
+				<% if (this.details.ID) { %>
+											<% if (this.records!=0) { %>
+											<div class="alert">
+												 This publication has records associated with it. Therfore it is not permissible to delete it
+											</div>
+											<% } %>
+											<% } %>
 			</fieldset>
 		</div>
 
@@ -99,11 +105,12 @@
 		<div class="form-actions">
 			<div style="float:left; margin-left:0; padding-top: 3px;">
 				<% if (this.details.ID) { %>
+							<% if (this.records==0) { %>
 
-
-				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this status" data-position="above" id="btn-delete">
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this record" data-position="above" id="btn-delete">
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
+				<% } %>
 				<% } %>
 			</div>
 			<div style="float:right; margin-right: 10px;">

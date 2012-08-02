@@ -65,7 +65,7 @@ class report_discounts {
 
 
 
-		$select = "publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 
@@ -375,7 +375,7 @@ class report_discounts {
 			$where = $where . " AND ";
 		}
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
-		$select = "publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID";
+		$select = "global_dates.publish_date as publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
 

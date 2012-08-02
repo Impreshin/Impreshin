@@ -145,9 +145,10 @@ class account_figures extends \data {
 
 		$years = ($y);;
 		$where_general = "checked = '1' AND accountID = '$ID' AND deleted is null ";
+		//test_array(array("where"=>$where_general,"range"=>array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), "pubs"=>$publications));
 		if ($tab=="charts"){
 			$where = $where_general;
-		$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+			$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 		}
 		if ($tab=="records"){
 					$orderby = " client ASC";
