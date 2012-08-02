@@ -91,7 +91,7 @@
 				<% if (this.details.ID) { %>
 
 
-				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this status" data-position="above" id="btn-delete">
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this record" data-position="above" id="btn-delete">
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
 				<% } %>
