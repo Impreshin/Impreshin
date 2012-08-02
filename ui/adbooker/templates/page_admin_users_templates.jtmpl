@@ -239,7 +239,7 @@
 				</button>
 				<% } %>
 
-				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Remove this user from the Company" data-position="above" id="btn-delete" disabled="disabled">
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Remove this user from the Company" data-position="above" id="btn-delete" >
 					<i class="icon-trash icon-d-grey"></i>
 				</button>
 				<% } %>

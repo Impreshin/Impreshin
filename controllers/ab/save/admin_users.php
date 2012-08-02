@@ -158,8 +158,15 @@ class admin_users extends save {
 	}
 	function _delete(){
 		$user = F3::get("user");
+		$cID = $user['publication']['cID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
+		$a = new \Axon("global_users_company");
+		$a->load("uID='$ID' AND cID = '$cID'");
+
+		$a->erase();
+
+		return "done";
 
 
 	}
