@@ -19,7 +19,7 @@
 		<a href="#popup-repeat" data-target="popup"  rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.edit) { %>
-		<a href="/ab/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+		<a href="/ab/form/<%= this.ID %>?apID=<%= this.pID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.print) { %>
 		<a href="/ab/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this booking"><i class="icon-print icon-d-grey"></i></a>
