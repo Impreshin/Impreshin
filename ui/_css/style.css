@@ -1059,6 +1059,17 @@ table.records .size {
 table.records .record-tick {
   text-align: center;
 }
+html.ie9 table.records thead tr.colheading,
+html.ie9 table.records tbody.thead tr.colheading {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+html.ie9 table.records tbody:not(.thead) {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
 .record.highlight {
   background-color: #ccffff;
 }

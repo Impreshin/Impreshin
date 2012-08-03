@@ -80,7 +80,21 @@ table.records {
 
 
 
+html.ie9 {
+	table.records {
+		thead, tbody.thead {
+			tr {
 
+				&.colheading {
+					.box-shadow(none);
+				}
+			}
+		}
+		tbody:not(.thead) {
+			.box-shadow(none);
+		}
+	}
+}
 
 
 
