@@ -434,7 +434,7 @@
 			</div>
 			<% } %>
 		</section>
-		<section id="lastplacedbooking" class="tab-pane " style="margin-top: 0px;">
+		<section id="lastplacedbooking" class="tab-pane " style="margin-top: 0px; border-left: 1px solid #CCCCCC;">
 
 			<table class="table table-condensed  s records" id="record-list" >
 				<thead>
