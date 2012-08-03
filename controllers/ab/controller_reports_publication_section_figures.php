@@ -63,7 +63,7 @@ class controller_reports_publication_section_figures {
 			)
 		);
 		$tmpl->list = models\sections::getAll("pID = $pID", "section ASC");
-		$tmpl->selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";;
+		$tmpl->selected = (isset($settings['ID']["pID_$pID"])) ? $settings['ID']["pID_$cID"] : "";;
 
 
 		$tmpl->publications = $publications;

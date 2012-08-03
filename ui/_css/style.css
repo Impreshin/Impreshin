@@ -23,7 +23,6 @@ body {
   background-image: -webkit-linear-gradient(top, #e1e1e1 100%, white 100%);
   background-image: -ms-linear-gradient(top, #e1e1e1 100%, white 100%);
   background-image: -o-linear-gradient(top, #e1e1e1 100%, white 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#e1e1e1, endColorstr=white, GradientType=0);
   background-image: linear-gradient(top, #e1e1e1 100%, white 100%);
 }
 #pagecontent .container {
@@ -116,7 +115,6 @@ body {
   background-image: -webkit-linear-gradient(top, #333333 100%, #222222 100%);
   background-image: -ms-linear-gradient(top, #333333 100%, #222222 100%);
   background-image: -o-linear-gradient(top, #333333 100%, #222222 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#333333, endColorstr=#222222, GradientType=0);
   background-image: linear-gradient(top, #333333 100%, #222222 100%);
   z-index: 100;
 }
@@ -303,7 +301,6 @@ table tr.headingrow th {
   background-image: -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 }
 form.form-fill {
@@ -429,7 +426,6 @@ textarea[readonly] {
   background-image: -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   -webkit-box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
   -moz-box-shadow: 0 0 3px rgba(100, 100, 100, 0.2);
@@ -678,7 +674,6 @@ button[disabled] i {
   background-image: -webkit-linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
   background-image: -ms-linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=whitesmoke, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
   -webkit-box-shadow: 0 -4px 3px black;
   -moz-box-shadow: 0 -4px 3px black;
@@ -896,7 +891,6 @@ form #form-bottom .form-actions {
   background-image: -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #cccccc;
@@ -1019,7 +1013,6 @@ table.records tbody.thead tr.colheading th {
   background-image: -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=whitesmoke, endColorstr=#eeeeee, GradientType=0);
   background-image: linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 }
 table.records thead tr.colheading th.order-btn,

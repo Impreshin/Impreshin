@@ -119,7 +119,7 @@ class publication_section_figures extends \data {
 					"order"=> $ordering,
 					"tolerance"=> $tolerance,
 		);
-		$values[$section]['ID']["cID_$cID"] = $ID;
+		$values[$section]['ID']["pID_$pID"] = $ID;
 
 
 
