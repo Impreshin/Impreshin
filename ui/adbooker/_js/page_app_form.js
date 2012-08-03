@@ -51,18 +51,15 @@ $(document).ready(function(){
 
 	});
 
-	$(document).on("click", "#viewrecord-btn", function () {
-		$(this).closest(".modal").modal("hide");
-		$.bbq.pushState({"ID":$(this).attr("data-id")});
-		getDetails();
-		//$("#booking-form").trigger("reset");
+	$(document).on("click", ".view-record-btn", function () {
+		var id = $(this).attr("data-id");
+		if (id){
+			$(this).closest(".modal").modal("hide");
+			$.bbq.pushState({"ID":id});
 
+			getDetails();
+		}
 
-	});
-	$(document).on("click", "#view-record-btn", function () {
-		$.bbq.pushState({"ID":$(this).attr("data-id")});
-
-		getDetails();
 
 	});
 

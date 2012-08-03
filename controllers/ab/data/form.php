@@ -103,6 +103,23 @@ class form extends data {
 
 			}
 
+			$d = models\bookings::getAll_select("ab_bookings.ID, client, global_dates.publish_date as publishDate, totalCost, totalspace, cm, col, InsertPO, typeID, account as heading","accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND deleted is null","global_dates.publish_date DESC LIMIT 0,5");
+
+			$d = models\bookings::display($d);
+
+			if (isset($d[0])){
+				$d = $d[0];
+			}
+			if (isset($d['records'])){
+				$d = $d['records'];
+			} else {
+				$d =array();
+			}
+
+			$data['history']= $d;
+
+
+
 			$return = $data;
 		} else {
 			$accounts = F3::get("DB")->exec("
