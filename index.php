@@ -297,6 +297,8 @@ $app->route('GET /ab/admin/publications', 'access; last_page; controllers\ab\con
 
 $app->route('GET /ab/reports/publication/figures', 'access; last_page; controllers\ab\controller_reports_publication_figures->page');
 $app->route('GET /ab/reports/publication/discounts', 'access; last_page; controllers\ab\controller_reports_publication_discounts->page');
+$app->route('GET /ab/reports/publication/section', 'access; last_page; controllers\ab\controller_reports_publication_section_figures->page');
+$app->route('GET /ab/reports/publication/placing', 'access; last_page; controllers\ab\controller_reports_publication_placing_figures->page');
 
 $app->route('GET /ab/reports/account/figures', 'access; last_page; controllers\ab\controller_reports_account_figures->page');
 $app->route('GET /ab/reports/account/discounts', 'access; last_page; controllers\ab\controller_reports_account_discounts->page');

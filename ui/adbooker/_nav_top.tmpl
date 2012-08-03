@@ -146,12 +146,12 @@
 
 
 								{% if _user['permissions']['reports']['publication']['section']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_section" %} active {% endif %}">
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_section_figures" %} active {% endif %}">
 									<a href="/ab/reports/publication/section">Sections</a>
 								</li>
 								{% endif %}
 								{% if _user['permissions']['reports']['publication']['placing']['page'] %}
-								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_placing" %} active {% endif %}">
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_placing_figures" %} active {% endif %}">
 									<a href="/ab/reports/publication/placing">Placing</a>
 								</li>
 								{% endif %}

@@ -113,12 +113,12 @@ class user_permissions {
 					"discounts"=> array(
 						"page"=> 0
 					),
-					/*"placing"=> array(
+					"placing"=> array(
 						"page"=> 0
 					),
 					"section"=> array(
 						"page"=> 0
-					),*/
+					),
 
 				)
 

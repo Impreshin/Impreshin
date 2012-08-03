@@ -501,6 +501,52 @@ class settings {
 					"count"      => "5",
 					"tolerance"=>25
 				),
+				"reports_publication_section"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
+					"tolerance"=>25
+				),
+				"reports_publication_placing"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"dir"=>"d", // under = d, over = u charged
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
+					"tolerance"=>25
+				),
 				"reports_account"=>array(
 					"years"=>"",
 					"timeframe"=>"",

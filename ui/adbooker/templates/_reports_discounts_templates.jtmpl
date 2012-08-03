@@ -87,7 +87,7 @@
 		<div class="s dg" style="float:right;" >
 			<em>Tolerance:</em>
 
-			<select name="tolerance" id="tolerance" class="s trigger_getdata" style="width: 50px; padding: 2px; height: 20px; border: none; margin-bottom: 0px;">
+			<select name="tolerance" id="tolerance" class="s trigger_getdata" style="width: 55px; padding: 2px; height: 20px; border: none; margin-bottom: 0px;">
 				<option value="5" <% if (this.tolerance == "5") { %>selected="selected"<% } %>>5%</option>
 				<option value="10" <% if (this.tolerance == "10") { %>selected="selected"<% } %>>10%</option>
 				<option value="15" <% if (this.tolerance == "15") { %>selected="selected"<% } %>>15%</option>
@@ -159,18 +159,26 @@
 
 <script type="text/javascript">
 
+	var ym = $.bbq.getState("ym");
+	if (ym) {
+		$(".figure-month-details[data-key='" + ym + "']").show();
+		$("#figures-table tbody tr td[data-record='" + ym + "']").addClass("active");
+	}
+
 	$(document).on("click", '#figures-table tbody tr td.col',function () {
-			var $this = $(this);
-			var s = $this.attr("data-record");
+		var $this = $(this);
+		var s = $this.attr("data-record");
 		$(".figure-month-details").hide();
 
-			if ($this.hasClass("active")){
-				$("#figures-table tbody tr td.active").removeClass("active");
-			} else {
-				$("#figures-table tbody tr td.active").removeClass("active");
-				$("#figures-table tbody tr td[data-record='" + s + "']").addClass("active");
-				$(".figure-month-details[data-key='" + s + "']").show();
-			}
+		$.bbq.removeState("ym");
+		if ($this.hasClass("active")){
+			$("#figures-table tbody tr td.active").removeClass("active");
+		} else {
+			$("#figures-table tbody tr td.active").removeClass("active");
+			$("#figures-table tbody tr td[data-record='" + s + "']").addClass("active");
+			$(".figure-month-details[data-key='" + s + "']").show();
+			$.bbq.pushState({"ym":s});
+		}
 		var $scrollpane = $("#whole-area .scroll-pane");
 		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 

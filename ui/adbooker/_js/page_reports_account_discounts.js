@@ -257,6 +257,12 @@ var $combined = $("#combine-btn");
 
 
 		}
+
+		var ym = $.bbq.getState("ym");
+		if (ym) {
+			$(".figure-month-details[data-key='" + ym + "']").show();
+			$("#figures-table tbody tr td[data-record='" + ym + "']").addClass("active");
+		}
 		var $scrollpane = $("#whole-area .scroll-pane");
 		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);

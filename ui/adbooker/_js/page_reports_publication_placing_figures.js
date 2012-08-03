@@ -103,11 +103,11 @@ var $combined = $("#combine-btn");
 	var tolerance = $("#tolerance").val();
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/production_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":ID, "dID":dID, "order":order,"tolerance":tolerance}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/publication_placing_figures/_data", {"pubs":pubs,"years":years,"daterange":daterange,"combined":combined,"ID":ID, "dID":dID, "order":order,"tolerance":tolerance}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
-	
+
 		//console.log(data['combined']);
 
 		if (data['tab'] == 'charts') {
@@ -204,6 +204,7 @@ var $combined = $("#combine-btn");
 
 
 		}
+
 		var ym = $.bbq.getState("ym");
 		if (ym) {
 			$(".figure-month-details[data-key='" + ym + "']").show();
@@ -214,6 +215,7 @@ var $combined = $("#combine-btn");
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
 }
+
 function drawChart(element, data) {
 	//console.log(label.length)
 
