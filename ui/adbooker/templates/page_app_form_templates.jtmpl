@@ -346,7 +346,7 @@
 	<![CDATA[
 	<ul class="nav nav-tabs" style="margin-bottom:0;">
 		<li class="active"><a href="#suggestions" data-toggle="tab">Suggestions</a></li>
-		<li><a href="#lastplacedbooking" data-toggle="tab">Last 5 bookings</a></li>
+		<li><a href="#lastplacedbooking" data-toggle="tab">Last 6 bookings</a></li>
 
 	</ul>
 	<div class="tab-content">
