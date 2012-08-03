@@ -103,7 +103,7 @@ $app->set('cfg', $cfg);
 $app->set('system', new msg());
 
 
-$version = '0.0.2';
+$version = '0.0.3';
 $version = date("YmdH");
 $minVersion = preg_replace("/[^0-9]/", "", $version);
 
