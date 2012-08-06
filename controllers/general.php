@@ -255,7 +255,11 @@ exit($t);
 
 		$folder = $cfg['upload']['folder'] . $app . "/". $folder;
 
+		ini_set('upload_tmp_dir', $cfg['upload']['folder'].'tmp');
 
+
+
+		if (!file_exists($cfg['upload']['folder'] . 'tmp')) @mkdir($cfg['upload']['folder'] . 'tmp', 0777, true);
 		if (!file_exists($folder)) @mkdir($folder, 0777, true);
 
 		//$targetDir = $cfg['upload']['folder'] . $app . "/temp/";
