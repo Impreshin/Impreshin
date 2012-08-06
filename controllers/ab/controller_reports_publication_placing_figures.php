@@ -63,7 +63,7 @@ class controller_reports_publication_placing_figures {
 			)
 		);
 		$tmpl->list = models\placing::getAll("pID = $pID", "orderby ASC, placing ASC");
-		$tmpl->selected = (isset($settings['ID']["pID_$pID"])) ? $settings['ID']["pID_$cID"] : "";;
+		$tmpl->selected = (isset($settings['ID']["pID_$pID"])) ? $settings['ID']["pID_$pID"] : "";;
 
 
 		$tmpl->publications = $publications;

@@ -10,197 +10,189 @@
 <section class="form-body" style="padding-top: 10px;">
 
 	{% if (details['ID'] and (_user['permissions']['form']['edit'] or _user['permissions']['form']['edit_master'])) or (details['ID']=='' and _user['permissions']['form']['new'])  %}
-<table>
-<tr>
-<td class="span9">
-	<div class="control-group" style="margin-top: 10px;">
-		<label class="control-label" for="client">Client*</label>
-
-		<div class="controls">
-			<input type="text" placeholder="Client" class="span6" id="client" name="client" autocomplete="off"  style="" value="<% if (this.client) { %><%= this.client %><% } %>">
-		</div>
-	</div>
-	<div class="control-group">
-		<label for="placingID" class="control-label">Account Number*</label>
-
-		<div class="controls">
-			<select id="accountID" name="accountID" tabindex="8" class="btn-mini" style="width: 342px;"  placeholder="Select an Account">
-
-				<option></option>
-				{% for row in accounts %}
-				<option value="{{ row['ID'] }}"  data-accNum="{{ row['accNum'] }}" data-account="{{ row['account'] }}" data-blocked="{{ row['blocked'] }}" data-labelClass="{{ row['labelClass'] }}" data-remark="{{ row['remark'] }}" <% if (this.accountID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['accNum'] }} | {{ row['account'] }}</option>
-				{% endfor %}
-
-			</select>
-
-			<div style="margin: 0;" class="help-block" id="account_remark">	</div>
-
-		</div>
-	</div>
-
-	<div id="form-diff">
-
-	</div>
-	<div class="control-group">
-		<label for="rate" class="control-label">Tariff</label>
-
-		<div class="controls">
-			<input type="text" id="rate" name="rate" class="span2 display_notes" placeholder="" value="<% if (this.rate) { %><%= this.rate %><% } %>"><span id="rate-msg" class="msgbox"></span>
-
-		</div>
-	</div>
-	<div class="control-group">
-		<label for="totalCost" class="control-label">Total Charged</label>
-
-		<div class="controls">
-			<input type="text" id="totalCost" name="totalCost" class="span2 display_notes" value="<% if (this.totalCost) { %><%= this.totalCost %><% } %>"><span id="totalCost-msg" class="msgbox"></span>
-
-
-		</div>
-	</div>
 	<table>
 		<tr>
-			<td>
-				<div class="control-group">
-					<label for="discount" class="control-label">Discount</label>
+			<td class="span9">
+				<div class="control-group" style="margin-top: 10px;">
+					<label class="control-label" for="client">Client*</label>
 
 					<div class="controls">
-						<div class="input-append">
-							<input type="text" size="16" id="discount" name="discount" class="span1 display_notes" value="<% if (this.discount) { %><%= this.discount %><% } %>"><span class="add-on s">%</span>
-						</div>
+						<input type="text" placeholder="Client" class="span6" id="client" name="client" autocomplete="off" style="" value="<% if (this.client) { %><%= this.client %><% } %>">
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="placingID" class="control-label">Account Number*</label>
+
+					<div class="controls">
+						<select id="accountID" name="accountID" tabindex="8" class="btn-mini" style="width: 342px;" placeholder="Select an Account">
+
+							<option></option>
+							{% for row in accounts %}
+							<option value="{{ row['ID'] }}" data-accNum="{{ row['accNum'] }}" data-account="{{ row['account'] }}" data-blocked="{{ row['blocked'] }}" data-labelClass="{{ row['labelClass'] }}" data-remark="{{ row['remark'] }}"
+							<% if (this.accountID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['accNum'] }} | {{ row['account'] }}</option>				{% endfor %}
+
+						</select>
+
+						<div style="margin: 0;" class="help-block" id="account_remark"></div>
+
+					</div>
+				</div>
+
+				<div id="form-diff">
+
+				</div>
+				<div class="control-group">
+					<label for="rate" class="control-label">Tariff</label>
+
+					<div class="controls">
+						<input type="text" id="rate" name="rate" class="span2 display_notes" placeholder="" value="<% if (this.rate) { %><%= this.rate %><% } %>"><span id="rate-msg" class="msgbox"></span>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="totalCost" class="control-label">Total Charged</label>
+
+					<div class="controls">
+						<input type="text" id="totalCost" name="totalCost" class="span2 display_notes" value="<% if (this.totalCost) { %><%= this.totalCost %><% } %>"><span id="totalCost-msg" class="msgbox"></span>
+
+
+					</div>
+				</div>
+				<table>
+					<tr>
+						<td>
+							<div class="control-group">
+								<label for="discount" class="control-label">Discount</label>
+
+								<div class="controls">
+									<div class="input-append">
+										<input type="text" size="16" id="discount" name="discount" class="span1 display_notes" value="<% if (this.discount) { %><%= this.discount %><% } %>"><span class="add-on s">%</span>
+									</div>
+
+								</div>
+							</div>
+						</td>
+						<td style="float:right; padding-right: 34px;">
+							<div class="control-group">
+								<label for="agencyDiscount" class="control-label">Agency Discount</label>
+
+								<div class="controls">
+									<div class="input-append">
+										<input type="text" size="16" id="agencyDiscount" name="agencyDiscount" class="span1 display_notes" value="<% if (this.agencyDiscount) { %><%= this.agencyDiscount %><% } %>"><span class="add-on s">%</span>
+									</div>
+
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+				<div class="control-group">
+					<label for="marketerID" class="control-label">Marketer</label>
+
+					<div class="controls">
+						<select id="marketerID" name="marketerID" tabindex="8" style="width: 342px;">
+
+
+							{% for row in marketers %}
+							<option value="{{ row['ID'] }}"
+							<% if (this.ID) { %><% if (this.marketerID == {{ row['ID'] }}) { %>selected="selected"<% } %><% } else { %><% if ('{{ row['ID'] }}' == '{{ settings['last_marketer'] }}') { %>selected="selected"<% } %><% } %>>{{ row['marketer'] }}</option>				{% endfor %}
+
+						</select>
+
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="keyNum" class="control-label">Key Num</label>
+
+					<div class="controls">
+						<input type="text" id="keyNum" name="keyNum" class="span2" value="<% if (this.keyNum) { %><%= this.keyNum %><% } %>">
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="orderNum" class="control-label">Order Num</label>
+
+					<div class="controls">
+						<input type="text" id="orderNum" name="orderNum" class="span2" value="<% if (this.orderNum) { %><%= this.orderNum %><% } %>">
+
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label for="orderNum" class="control-label">Category</label>
+
+					<div class="controls">
+						<select name="categoryID" id="categoryID" style="width: 342px;">
+							{% for row in categories %}
+							<option value="{{ row['ID'] }}"
+							<% if (this.categoryID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['category'] }}</option>				{% endfor %}
+						</select>
 
 					</div>
 				</div>
 			</td>
-			<td style="float:right; padding-right: 34px;">
-				<div class="control-group">
-					<label for="agencyDiscount" class="control-label">Agency Discount</label>
+			<td class="span7 form-super-narrow">
+				<div class="control-group" id="dates_list_area" style="padding-top: 10px;">
+					<label for="dID" class="control-label">Dates</label>
 
-					<div class="controls">
-						<div class="input-append">
-							<input type="text" size="16" id="agencyDiscount" name="agencyDiscount" class="span1 display_notes" value="<% if (this.agencyDiscount) { %><%= this.agencyDiscount %><% } %>"><span class="add-on s">%</span>
+					<div class="controls " id="dates_list">
+						{% if dates['selected']['ID'] %}
+						<div class="">
+							<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> dates_list_current" id="">
+								<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['selected']['ID'] }}" name="dID[]" <% if (this.dID == "{{ dates['selected']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['selected']['publish_date_display'] }}
+								<span class="s g"> (Selected Date)</span> </label>
 						</div>
+						{% endif %}
+						<div>
+							<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>{% if dates['selected']['ID']=="" %} <% if (!this.dID || this.dID=="{{ dates['current']['ID'] }}") { %>dates_list_current<% } %>{% endif %}" id="">
+							<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['current']['ID'] }}" name="dID[]" <% if (this.dID == "{{ dates['current']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['current']['publish_date_display'] }}
+							<span class="s g"> (Active Date)</span> </label>
+						</div>
+
+						{% for row in dates['future'] %}
+
+						{% if loop.index == 4 and loop.length > 3 %}
+						<a href="#" class="dates-btn otherdates donthighlighthovered">More</a> {% endif %}
+						<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> {% if loop.index > 3 %} otherdates {% endif %}<% if (this.dID == "{{ row['ID'] }}") { %>dates_list_current<% } %>" >
+						<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ row['ID'] }}" name="dID[]" <% if (this.dID == "{{ row['ID'] }}") { %>checked="checked"<% } %>> {{ row['publish_date_display'] }}				</label>
+
+						{% if loop.last and loop.length > 3 %}
+						<a href="#" class="dates-btn donthighlighthovered">More</a> {% endif %} {% endfor %}
 
 					</div>
 				</div>
+				<div id="suggestion-area"></div>
+
+
 			</td>
 		</tr>
-	</table>
-	<div class="control-group">
-		<label for="marketerID" class="control-label">Marketer</label>
+		<tr>
+			<td colspan="2">
+				<div class="control-group">
+					<label for="orderNum" class="control-label">Remark</label>
 
-		<div class="controls">
-			<select id="marketerID" name="marketerID" tabindex="8" style="width: 342px;">
-
-
-				{% for row in marketers %}
-				<option value="{{ row['ID'] }}" <% if (this.ID) { %><% if (this.marketerID == {{ row['ID'] }}) { %>selected="selected"<% } %><% } else { %><% if ('{{ row['ID'] }}' == '{{ settings['last_marketer'] }}') { %>selected="selected"<% } %><% } %>>{{ row['marketer'] }}</option>
-				{% endfor %}
-
-			</select>
-
-
-		</div>
-	</div>
-	<div class="control-group">
-		<label for="keyNum" class="control-label">Key Num</label>
-
-		<div class="controls">
-			<input type="text" id="keyNum" name="keyNum" class="span2" value="<% if (this.keyNum) { %><%= this.keyNum %><% } %>">
-
-		</div>
-	</div>
-	<div class="control-group">
-		<label for="orderNum" class="control-label">Order Num</label>
-
-		<div class="controls">
-			<input type="text" id="orderNum" name="orderNum" class="span2" value="<% if (this.orderNum) { %><%= this.orderNum %><% } %>">
-
-		</div>
-	</div>
-
-	<div class="control-group">
-		<label for="orderNum" class="control-label">Category</label>
-
-		<div class="controls">
-			<select name="categoryID" id="categoryID" style="width: 342px;">
-				{% for row in categories %}
-				<option value="{{ row['ID'] }}"  <% if (this.categoryID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
-				{% endfor %}
-			</select>
-
-		</div>
-	</div>
-</td>
-<td class="span7 form-super-narrow">
-	<div class="control-group" id="dates_list_area" style="padding-top: 10px;">
-		<label for="dID" class="control-label">Dates</label>
-
-		<div class="controls " id="dates_list">
-			{% if dates['selected']['ID'] %}
-			<div class="">
-				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> dates_list_current" id="">
-					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['selected']['ID'] }}" name="dID[]"  <% if (this.dID == "{{ dates['selected']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['selected']['publish_date_display'] }}
-					 <span class="s g"> (Selected Date)</span> </label>
-			</div>
-			{% endif %}
-			<div>
-				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>{% if dates['selected']['ID']=="" %} <% if (!this.dID || this.dID=="{{ dates['current']['ID'] }}") { %>dates_list_current<% } %>{% endif %}" id="">
-					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ dates['current']['ID'] }}" name="dID[]"  <% if (this.dID == "{{ dates['current']['ID'] }}") { %>checked="checked"<% } %>> {{ dates['current']['publish_date_display'] }}
-					 <span class="s g"> (Active Date)</span> </label>
-			</div>
-
-			{% for row in dates['future'] %}
-
-				{% if loop.index == 4 and loop.length > 3 %}
-					<a href="#" class="dates-btn otherdates donthighlighthovered">More</a>
-				{% endif %}
-				<label class="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %> {% if loop.index > 3 %} otherdates {% endif %}<% if (this.dID == "{{ row['ID'] }}") { %>dates_list_current<% } %>" >
-					<input type="<% if (this.ID) { %>radio<% } else { %>checkbox<% } %>" value="{{ row['ID'] }}" name="dID[]" <% if (this.dID == "{{ row['ID'] }}") { %>checked="checked"<% } %>> {{ row['publish_date_display'] }}
-				</label>
-
-				{% if loop.last and loop.length > 3 %}
-					<a href="#" class="dates-btn donthighlighthovered" >More</a>
-				{% endif %}
-			{% endfor %}
-
-		</div>
-	</div>
-	<div id="suggestion-area"></div>
+					<div class="controls">
+						<div class="highlighthovered" id="remarktypearea">
+							{% for row in remarkTypes %}
+							<label class="radio inline clickable" style="padding: 5px 10px;">
+								<input type="radio" value="{{ row['ID'] }}" id="remarkTypeID-{{ row['ID'] }}" name="remarkTypeID" <% if (this.remarkTypeID == "{{ row['ID'] }}") { %>checked="checked"<% } %>> {% if row['labelClass'] %}
+								<span class="label {{ row['labelClass'] }}"> {{ row['remarkType'] }} </span> {% else %} {{ row['remarkType']}} {% endif %}
+							</label> {% endfor %}
+						</div>
 
 
-</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<div class="control-group">
-			<label for="orderNum" class="control-label">Remark</label>
-			<div class="controls">
-				<div class="highlighthovered" id="remarktypearea">
-					{% for row in remarkTypes %}
-					<label class="radio inline clickable" style="padding: 5px 10px;">
-						<input type="radio" value="{{ row['ID'] }}" id="remarkTypeID-{{ row['ID'] }}" name="remarkTypeID" <% if (this.remarkTypeID == "{{ row['ID'] }}") { %>checked="checked"<% } %>>
-							{% if row['labelClass'] %}
-								<span class="label {{ row['labelClass'] }}"> {{ row['remarkType'] }} </span>
-							{% else %}
-								{{ row['remarkType']}}
-							{% endif %}
-						</label>
-					{% endfor %}
+						<textarea class="span12" name="remark" id="remark" cols="30" rows="5"><% if (this.remark) { %><%= this.remark %><% } %></textarea>
+
+
+					</div>
 				</div>
 
+			</td>
+		</tr>
 
-				<textarea class="span12" name="remark" id="remark" cols="30" rows="5"><% if (this.remark) { %><%= this.remark %><% } %></textarea>
-
-
-			</div>
-		</div>
-
-	</td>
-</tr>
-
-</table>
-{% endif %}
+	</table>
+	{% endif %}
 
 </section>
 
@@ -220,15 +212,12 @@
 		<div style="float:right; margin-right: 10px;">
 			<% if (this.ID) { %>
 
-			<button class="btn btn-mini  span1 " style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this booking" data-position="above">
+			<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this booking" data-position="above">
 				<i class="icon-fullscreen icon-d-grey"></i></button>
-			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above" >
-				<i class="icon-list-alt icon-d-grey"></i></a>
-			{% if _user['permissions']['form']['new'] %}
-			<a href="/ab/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above" >
-				<i class="icon-plus"></i></a>
-			{% endif %}
-			<% } %>
+			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above">
+				<i class="icon-list-alt icon-d-grey"></i></a> {% if _user['permissions']['form']['new'] %}
+			<a href="/ab/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
+				<i class="icon-plus"></i></a> {% endif %} <% } %>
 			<button class="btn btn-primary span4 " style="" type="submit"
 			<% if (this.ID) { %>{% if _user['permissions']['form']['edit'] or _user['permissions']['form']['edit_master']   %}{% else %}disabled="disabled"{% endif %}<% } %>>Save Record</button>
 
@@ -252,8 +241,8 @@
 
 
 				{% for row in placing %}
-				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"  <% if (this.placingID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['placing'] }}</option>
-				{% endfor %}
+				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"
+				<% if (this.placingID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['placing'] }}</option>				{% endfor %}
 
 			</select>
 
@@ -290,34 +279,34 @@
 	<div id="sizearea" class="fieldgroup">
 
 
-	<table>
-		<tr>
-			<td class="span3">
-				<div class="control-group">
-					<label for="cm" class="control-label">Cm*</label>
+		<table>
+			<tr>
+				<td class="span3">
+					<div class="control-group">
+						<label for="cm" class="control-label">Cm*</label>
 
-					<div class="controls">
-						<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.cm) { %><%= this.cm %><% } %>">
+						<div class="controls">
+							<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.cm) { %><%= this.cm %><% } %>">
 
+						</div>
 					</div>
-				</div>
-			</td>
-			<td class="form-narrow span3">
-				<div class="control-group">
-					<label for="col" class="control-label">Columns*</label>
+				</td>
+				<td class="form-narrow span3">
+					<div class="control-group">
+						<label for="col" class="control-label">Columns*</label>
 
-					<div class="controls">
-						<input type="text" id="col" name="col" class="span1 display_notes" value="<% if (this.col) { %><%= this.col %><% } %>">
+						<div class="controls">
+							<input type="text" id="col" name="col" class="span1 display_notes" value="<% if (this.col) { %><%= this.col %><% } %>">
 
+						</div>
 					</div>
-				</div>
 
-			</td>
-			<td style="padding-right: 34px;">
-				<span class="uneditable-input span1" id="size-msg" style="float: right; cursor:default;"><strong></strong></span>
-			</td>
-		</tr>
-	</table>
+				</td>
+				<td style="padding-right: 34px;">
+					<span class="uneditable-input span1" id="size-msg" style="float: right; cursor:default;"><strong></strong></span>
+				</td>
+			</tr>
+		</table>
 	</div>
 	]]>
 </script>
@@ -343,106 +332,132 @@
 
 
 				{% for row in inserts_types %}
-				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}" <% if (this.insertTypeID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['insertsLabel'] }}</option>
-				{% endfor %}
+				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"
+				<% if (this.insertTypeID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['insertsLabel'] }}</option>				{% endfor %}
 
 			</select>
 
 
 		</div>
 	</div>
-	{% endif %}
-	]]>
+	{% endif %} ]]>
 </script>
 <script type="text/x-jqote-template" id="template-suggestions">
 	<![CDATA[
-	<section id="suggestions">
-		<h4>Suggestions
-			<small style="margin-left: 10px;">Based on account history for the past 60 Days</small>
-		</h4>
+	<ul class="nav nav-tabs" style="margin-bottom:0;">
+		<li class="active"><a href="#suggestions" data-toggle="tab">Suggestions</a></li>
+		<li><a href="#lastplacedbooking" data-toggle="tab">Last 6 bookings</a></li>
 
-		<% if (this.placing) { %>
-		<div class="control-group">
-			<label for="" class="control-label">Placing</label>
+	</ul>
+	<div class="tab-content">
 
-			<div class="controls">
-				<div class="btn-group square">
-					<% for(var i in this.placing) { %>
-					<button type="button" class="btn  btn-mini l" data-fld="placingID" data-val="<%= this.placing[i].v %>" style="width: 147px; padding-left: 5px;"><%= this.placing[i].h %></button>
-					<% } %> <% if (!this.placing.length){ %>
-					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
-					<% } %>
+		<section id="suggestions" class="tab-pane active">
+			<h4>
+				<small style="margin-top:-5px;">Based on account history for the past 60 Days</small>
+			</h4>
+
+			<% if (this.placing) { %>
+			<div class="control-group">
+				<label for="" class="control-label">Placing</label>
+
+				<div class="controls">
+					<div class="btn-group square">
+						<% for(var i in this.placing) { %>
+						<button type="button" class="btn  btn-mini l" data-fld="placingID" data-val="<%= this.placing[i].v %>" style="width: 147px; padding-left: 5px;"><%= this.placing[i].h %></button>
+						<% } %> <% if (!this.placing.length){ %>
+						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+						<% } %>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
-		<% } %>
-		<% if (this.marketer) { %>
-		<div class="control-group">
-			<label for="" class="control-label">Marketer</label>
+			<% } %> <% if (this.marketer) { %>
+			<div class="control-group">
+				<label for="" class="control-label">Marketer</label>
 
-			<div class="controls">
-				<div class="btn-group square">
-					<% for(var i in this.marketer) { %>
-					<button type="button" class="btn  btn-mini  l " data-fld="marketerID" data-val="<%= this.marketer[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.marketer[i].h %></button>
-					<% } %> <% if (!this.marketer.length){ %>
-					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
-					<% } %>
+				<div class="controls">
+					<div class="btn-group square">
+						<% for(var i in this.marketer) { %>
+						<button type="button" class="btn  btn-mini  l " data-fld="marketerID" data-val="<%= this.marketer[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.marketer[i].h %></button>
+						<% } %> <% if (!this.marketer.length){ %>
+						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+						<% } %>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
-		<% } %>
-		<% if (this.category) { %>
-		<div class="control-group">
-			<label for="" class="control-label">Category</label>
+			<% } %> <% if (this.category) { %>
+			<div class="control-group">
+				<label for="" class="control-label">Category</label>
 
-			<div class="controls">
-				<div class="btn-group square">
-					<% for(var i in this.category) { %>
-					<button type="button" class="btn  btn-mini  l " data-fld="categoryID" data-val="<%= this.category[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.category[i].h %></button>
-					<% } %> <% if (!this.category.length){ %>
-					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
-					<% } %>
+				<div class="controls">
+					<div class="btn-group square">
+						<% for(var i in this.category) { %>
+						<button type="button" class="btn  btn-mini  l " data-fld="categoryID" data-val="<%= this.category[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.category[i].h %></button>
+						<% } %> <% if (!this.category.length){ %>
+						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+						<% } %>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
-		<% } %>
-		<% if (this.discount) { %>
-		<div class="control-group">
-			<label for="" class="control-label">Disc.</label>
+			<% } %> <% if (this.discount) { %>
+			<div class="control-group">
+				<label for="" class="control-label">Disc.</label>
 
-			<div class="controls">
-				<div class="btn-group square">
-					<% for(var i in this.discount) { %>
-					<button type="button" class="btn  btn-mini  l " data-fld="discount" data-val="<%= this.discount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.discount[i].h %></button>
-					<% } %> <% if (!this.discount.length){ %>
-					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
-					<% } %>
+				<div class="controls">
+					<div class="btn-group square">
+						<% for(var i in this.discount) { %>
+						<button type="button" class="btn  btn-mini  l " data-fld="discount" data-val="<%= this.discount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.discount[i].h %></button>
+						<% } %> <% if (!this.discount.length){ %>
+						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+						<% } %>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
-		<% } %>
-		<% if (this.discount) { %>
-		<div class="control-group">
-			<label for="" class="control-label">A.Disc.</label>
+			<% } %>
+			<% if (this.discount) { %>
+			<div class="control-group">
+				<label for="" class="control-label">A.Disc.</label>
 
-			<div class="controls">
-				<div class="btn-group square">
-					<% for(var i in this.agencyDiscount) { %>
-					<button type="button" class="btn  btn-mini  l " data-fld="agencyDiscount" data-val="<%= this.agencyDiscount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.agencyDiscount[i].h %></button>
-					<% } %> <% if (!this.agencyDiscount.length){ %>
-					<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
-					<% } %>
+				<div class="controls">
+					<div class="btn-group square">
+						<% for(var i in this.agencyDiscount) { %>
+						<button type="button" class="btn  btn-mini  l " data-fld="agencyDiscount" data-val="<%= this.agencyDiscount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.agencyDiscount[i].h %></button>
+						<% } %> <% if (!this.agencyDiscount.length){ %>
+						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
+						<% } %>
+					</div>
+
 				</div>
-
 			</div>
-		</div>
-		<% } %>
-	</section>
+			<% } %>
+		</section>
+		<section id="lastplacedbooking" class="tab-pane " style="margin-top: 0px; border-left: 1px solid #CCCCCC;">
 
+			<table class="table table-condensed  s records" id="record-list" >
+				<thead>
+				<tr>
+					<th>Client</th>
+					<th>Date</th>
+					<th style="width: 60px;">Size</th>
+					<th>Net</th>
+				</tr>
+				</thead>
+				<tbody>
+				<% for(var i in this.history) { %>
+				<tr class="record view-record-btn" data-id="<%= this.history[i].ID %>" data-ID="<%= this.history[i].ID %>">
+					<td><%= this.history[i].client %></td>
+					<td><%= this.history[i].publishDate %></td>
+					<td><%= this.history[i].size %></td>
+					<td><%= this.history[i].totalCost_C %></td>
+				</tr>
+				<% } %>
+				</tbody>
+			</table>
+				</section>
+	</div>
 	]]>
 </script>
 
@@ -483,7 +498,7 @@
 	<div class='modal-footer'>
 		<div class="btn-group c" style="margin-left: 7px;">
 			<a href="/ab/form/" class="btn span3" id="modal-btn-new">New Record</a>
-			<a data-id="<%= this.ID %>" class="btn span3" id="viewrecord-btn">View Record</a>
+			<a data-id="<%= this.ID %>" class="btn span3 view-record-btn">View Record</a>
 			<a href="/ab/#scrollTo=<%= this.ID %>" class="btn span3">Go to list</a>
 
 		</div>

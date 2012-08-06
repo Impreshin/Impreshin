@@ -257,7 +257,7 @@ class bookings {
 			foreach ($data as $item){
 
 
-				$lastdID = $item['dID'];
+
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
@@ -269,10 +269,10 @@ class bookings {
 
 				}
 
-				if ($item['pageID'] && $item["page"]) {
+				if (isset($item['pageID']) && $item['pageID'] && $item["page"]) {
 					$item["page"] = number_format($item['page'], 0);
 				}
-				if ($item['material_file_filesize']) {
+				if (isset($item['material_file_filesize'])&&$item['material_file_filesize']) {
 					$item["material_file_filesize"] = file_size($item['material_file_filesize']);
 				}
 
@@ -305,21 +305,24 @@ class bookings {
 			}
 
 			$showrecord = true;
-			if ($options["highlight"]) {
+			if (isset($options["highlight"]) && $options["highlight"]) {
 				$record['highlight'] = $record[$options["highlight"]];
 			}
 
 
-			if ($options["filter"]=="*"){
-				$showrecord = true;
-			} else {
-				if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter'] ){
+			if (isset($options["filter"])){
+				if ($options["filter"]=="*"){
 					$showrecord = true;
 				} else {
-					$showrecord = false;
-				}
+					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter'] ){
+						$showrecord = true;
+					} else {
+						$showrecord = false;
+					}
 
+				}
 			}
+
 
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
