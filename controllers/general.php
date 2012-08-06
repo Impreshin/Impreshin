@@ -256,6 +256,8 @@ exit($t);
 		$folder = $cfg['upload']['folder'] . $app . "/". $folder;
 
 		ini_set('upload_tmp_dir', $cfg['upload']['folder'].'tmp');
+		ini_set('upload_max_filesize', '20M');
+		ini_set('post_max_size', '20M');
 
 
 

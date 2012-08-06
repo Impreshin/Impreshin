@@ -4,15 +4,15 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material) { %><% if(this.material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>" data-page="<%= this.page %>">
+	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material=='1') { %><% if(this.material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>" data-page="<%= this.page %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
 		<td><% if (this.remark) { %><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span class="label"></span><% } %><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
 		</td>
 		<td style="width: 20px;" class="c">
-			<% if (this.material_status){ %>
-			<i class="icon-ok <% if(!this.material_approved) { %>icon-grey<% } %>"></i> <% } else { %>
+			<% if (this.material_status=='1'){ %>
+			<i class="icon-ok <% if(this.material_approved!='1') { %>icon-grey<% } %>"></i> <% } else { %>
 			<i class="icon-remove icon-l-grey"></i>
 			<% } %>
 		</td>
@@ -26,7 +26,7 @@
 			<% if(this.section.c) { %>
 			<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
 			<% } %>
-			<div class="pagenr" data-page="<%= this.page %>" <% if(this.locked) { %>style="color:#ccc;"<% } %>><%= this.page %></div>
+			<div class="pagenr" data-page="<%= this.page %>" <% if(this.locked=='1') { %>style="color:#ccc;"<% } %>><%= this.page %></div>
 			<header>
 
 			</header>
@@ -34,7 +34,7 @@
 				<table class="s">
 					<% for(var g in this.records) { %>
 
-					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material) { %><% if(this.records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
+					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material=='1') { %><% if(this.records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
 						</td>
@@ -63,7 +63,7 @@
 
 			</div>
 			<% } %>
-			<% if(this.locked) { %>
+			<% if(this.locked=='1') { %>
 			<div class="page_locked">
 				<i class="icon-lock icon-white"></i>
 
@@ -80,7 +80,7 @@
 
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
-		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked) { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
+		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked=='1') { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
 		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
 
 			<% if(this.pages[i].section.c) { %>
@@ -94,7 +94,7 @@
 				<table class="s">
 					<% for(var g in this.pages[i].records) { %>
 
-					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(!this.pages[i].locked) { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material) { %><% if(this.pages[i].records[g].material_approved) { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
+					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material=='1') { %><% if(this.pages[i].records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 
@@ -123,7 +123,7 @@
 
 			</div>
 			<% } %>
-			<% if(this.pages[i].locked) { %>
+			<% if(this.pages[i].locked=='1') { %>
 			<div class="page_locked">
 				<i class="icon-lock icon-d-grey"></i>
 
@@ -235,7 +235,7 @@
 
 	</header>
 	<article class="body">
-		<table class="table table-condensed  s records <% if (this.locked) { %>g<% } %>" id="page-booking-list" >
+		<table class="table table-condensed  s records <% if (this.locked=='1') { %>g<% } %>" id="page-booking-list" >
 			<thead>
 			<tr>
 				<th class="span1">Size</th>
@@ -258,7 +258,7 @@
 			<table>
 				<tr>
 					<td>
-						<select class="" id="sectionID" name="sectionID" style="margin: 5px 0; width: 250px;" <% if (this.locked) { %>disabled="disabled"<% } %>>
+						<select class="" id="sectionID" name="sectionID" style="margin: 5px 0; width: 250px;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
 							<option value="0">No Section</option>
 							<optgroup label="Sections">
 								{% for row in sections %}
@@ -269,7 +269,7 @@
 						</select>
 
 					</td>
-					<td><% if (this.locked) { %>
+					<td><% if (this.locked=='1') { %>
 						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-right: 3px" data-value="0" type="button" id="lock-btn" rel="tooltip" title="Click to un-lock this page" >
 
 								<i class="icon-lock icon-white"></i>
@@ -290,11 +290,11 @@
 				<tr>
 					<td colspan="2">
 						<div class="btn-group" style="margin-bottom: 5px;" data-toggle="buttons-radio" id="colours">
-							<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;" <% if (this.locked) { %>disabled="disabled"<% } %>>Black & White</button>
-							<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" <% if (this.locked) { %>disabled="disabled"<% } %>>Spot Colour</button>
-							<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" 	<% if (this.locked) { %>disabled="disabled"<% } %>>Full Colour</button>
+							<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>Black & White</button>
+							<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>Spot Colour</button>
+							<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" 	<% if (this.locked=='1') { %>disabled="disabled"<% } %>>Full Colour</button>
 							<% if (this.colour) { %>
-							<button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="0" type="button" style="width:9%;" <% if (this.locked) { %>disabled="disabled"<% } %>>
+							<button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="0" type="button" style="width:9%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
 								<i class="icon-remove-sign"></i></button>
 							<% } %>
 						</div>
