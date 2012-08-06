@@ -54,7 +54,7 @@
 	</thead>
 	<tbody>
 	<% for(var i in this.records) { %>
-	<tr class="record <% if (this.records[i].highlight) { %>highlight highlight-<%= this.records[i].highlight %><% } %>" data-ID="<%= this.records[i].ID %>">
+	<tr class="record <% if (this.records[i].highlight=='1') { %>highlight highlight-<%= this.records[i].highlight %><% } %>" data-ID="<%= this.records[i].ID %>">
 		{% for col in settings['col'] %}
 		<td {% if col['b'] %} class=" record-tick"{% endif %}>
 			{% if col['b'] %}
