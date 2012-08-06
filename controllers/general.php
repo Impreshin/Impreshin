@@ -110,15 +110,15 @@ class general {
 
 
 
-				"/ui/jqplot/jquery.jqplot.min.js",
-				"/ui/jqplot/plugins/jqplot.highlighter.js",
-				"/ui/jqplot/plugins/jqplot.cursor.min.js",
-				"/ui/jqplot/plugins/jqplot.canvasTextRenderer.min.js",
-				"/ui/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js",
-				"/ui/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js",
-				"/ui/jqplot/plugins/jqplot.categoryAxisRenderer.min.js",
-				"/ui/jqplot/plugins/jqplot.pointLabels.min.js",
-				"/ui/jqplot/plugins/jqplot.trendline.min.js",
+				"/ui/jqPlot/jquery.jqplot.min.js",
+				"/ui/jqPlot/plugins/jqplot.highlighter.js",
+				"/ui/jqPlot/plugins/jqplot.cursor.min.js",
+				"/ui/jqPlot/plugins/jqplot.canvasTextRenderer.min.js",
+				"/ui/jqPlot/plugins/jqplot.canvasAxisLabelRenderer.min.js",
+				"/ui/jqPlot/plugins/jqplot.canvasAxisTickRenderer.min.js",
+				"/ui/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js",
+				"/ui/jqPlot/plugins/jqplot.pointLabels.min.js",
+				"/ui/jqPlot/plugins/jqplot.trendline.min.js",
 
 
 
