@@ -79,46 +79,46 @@ class general {
 			$t = file_get_contents($base . $file);
 		} else {
 			$files = array(
-				"_js/libs/jquery-ui.js",
-				"_js/libs/bootstrap.min.js",
+				"/ui/_js/libs/jquery-ui.js",
+				"/ui/_js/libs/bootstrap.min.js",
 
 				// ------ //
-				"_js/plugins/date.js",
+				"/ui/_js/plugins/date.js",
 
-				"_js/plugins/jquery.daterangepicker.js",
-				"_js/plugins/jquery.mousewheel.js",
-				"_js/plugins/mwheelIntent.js",
-				"_js/plugins/jquery.jscrollpane.js",
-				"_js/plugins/jquery.jqote2.js",
-				"_js/plugins/jquery.ba-bbq.js",
-				"_js/plugins/jquery.cookie.js",
-				"_js/plugins/jquery.autologout.js",
-				"_js/plugins/select2.js",
-				"_js/plugins/jquery.miniColors.js",
-				"_js/plugins/FeedEk.js",
-
-
-
-				"plupload/js/browserplus-min.js" ,
-				"plupload/js/plupload.js" ,
-				"plupload/js/plupload.gears.js" ,
-				"plupload/js/plupload.silverlight.js" ,
-				"plupload/js/plupload.flash.js" ,
-				"plupload/js/plupload.browserplus.js" ,
-				"plupload/js/plupload.html4.js" ,
-				"plupload/js/plupload.html5.js" ,
+				"/ui/_js/plugins/jquery.daterangepicker.js",
+				"/ui/_js/plugins/jquery.mousewheel.js",
+				"/ui/_js/plugins/mwheelIntent.js",
+				"/ui/_js/plugins/jquery.jscrollpane.js",
+				"/ui/_js/plugins/jquery.jqote2.js",
+				"/ui/_js/plugins/jquery.ba-bbq.js",
+				"/ui/_js/plugins/jquery.cookie.js",
+				"/ui/_js/plugins/jquery.autologout.js",
+				"/ui/_js/plugins/select2.js",
+				"/ui/_js/plugins/jquery.miniColors.js",
+				"/ui/_js/plugins/FeedEk.js",
 
 
 
-				"jqplot/jquery.jqplot.min.js",
-				"jqplot/plugins/jqplot.highlighter.js",
-				"jqplot/plugins/jqplot.cursor.min.js",
-				"jqplot/plugins/jqplot.canvasTextRenderer.min.js",
-				"jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js",
-				"jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js",
-				"jqplot/plugins/jqplot.categoryAxisRenderer.min.js",
-				"jqplot/plugins/jqplot.pointLabels.min.js",
-				"jqplot/plugins/jqplot.trendline.min.js",
+				"/ui/plupload/js/browserplus-min.js" ,
+				"/ui/plupload/js/plupload.js" ,
+				"/ui/plupload/js/plupload.gears.js" ,
+				"/ui/plupload/js/plupload.silverlight.js" ,
+				"/ui/plupload/js/plupload.flash.js" ,
+				"/ui/plupload/js/plupload.browserplus.js" ,
+				"/ui/plupload/js/plupload.html4.js" ,
+				"/ui/plupload/js/plupload.html5.js" ,
+
+
+
+				"/ui/jqplot/jquery.jqplot.min.js",
+				"/ui/jqplot/plugins/jqplot.highlighter.js",
+				"/ui/jqplot/plugins/jqplot.cursor.min.js",
+				"/ui/jqplot/plugins/jqplot.canvasTextRenderer.min.js",
+				"/ui/jqplot/plugins/jqplot.canvasAxisLabelRenderer.min.js",
+				"/ui/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js",
+				"/ui/jqplot/plugins/jqplot.categoryAxisRenderer.min.js",
+				"/ui/jqplot/plugins/jqplot.pointLabels.min.js",
+				"/ui/jqplot/plugins/jqplot.trendline.min.js",
 
 
 
@@ -130,7 +130,10 @@ class general {
 
 			$t = "";
 			foreach ($files as $file) {
-				$base = F3::get("UI");
+				$fileDetails = pathinfo(($file));
+				$base = "." . $fileDetails['dirname'] . "/";
+				$file = $fileDetails['basename'];
+
 				$t .= file_get_contents($base . $file);
 
 			}
