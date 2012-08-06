@@ -385,6 +385,12 @@ FileETag None
    RewriteRule ^(.+)\.(\d+)\.(js|css|png|jpg|gif)$ $1.$3 [L]
  </IfModule>
 
+ <IfModule mod_rewrite.c>
+
+              RewriteCond %{REQUEST_FILENAME} [A-Z]
+              RewriteRule ^/(.*)$ /${lowercase:%{REQUEST_FILENAME}} [R=303,L]
+             </IfModule>
+
 
 
 # ----------------------------------------------------------------------
