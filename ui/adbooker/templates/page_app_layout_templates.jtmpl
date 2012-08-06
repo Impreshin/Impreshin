@@ -117,7 +117,7 @@
 			</footer>
 			<% } %>
 			<div class="msgs">Not enough space</div>
-			<% if(this.pages[i].colour) { %>
+			<% if(this.pages[i].colour!='') { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.pages[i].colour %>.png" alt="" width="20">
 
@@ -198,7 +198,7 @@
 			<table>
 				<tr>
 
-					<td>aa</td>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>
