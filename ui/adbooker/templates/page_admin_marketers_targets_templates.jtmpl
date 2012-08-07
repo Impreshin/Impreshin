@@ -11,8 +11,11 @@
 		<td style="width:80px;">
 			<% if (this.target){ %><%= this.target %> <% } %>
 		</td>
+		<td style="width:480px;" class="c">
+			<% if (this.locked=='1'){ %> <i class="icon-lock icon-d-grey"></i> <% } %>
+		</td>
 		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
-			<% if (this.currentPub){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
+			<% if (this.currentPub=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 
 
@@ -72,12 +75,23 @@
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label">Locked</label>
+
+					<div class="controls">
+						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="1" name="locked" <% if (this.details.locked=='1'){ %>checked="checked"<% } %> style="margin-top: 0; margin-right: 10px;">Admin set target, marketers cant edit this target
+						</label>
+
+
+					</div>
+				</div>
+				<div class="control-group">
 					<label for="optionsCheckboxList" class="control-label">Publications</label>
 
 					<div class="controls highlighthovered">
 						<% for(var i in this.publications) { %>
 						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
-							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %>><%= this.publications[i].publication %>
+							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %> style="margin-top: 0; margin-right: 10px;"><%= this.publications[i].publication %>
 						</label> <% } %>
 
 

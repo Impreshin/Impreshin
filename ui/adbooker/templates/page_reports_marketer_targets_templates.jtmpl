@@ -1,0 +1,71 @@
+<script type="text/x-jqote-template" id="template-report-figures">
+	<![CDATA[
+	<div style="padding-top: 10px;padding-bottom: 10px;">
+
+		<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+
+
+
+
+			<% for(var i in this.targets) { %>
+			<thead>
+				<tr class="heading" data-heading="<%= this.heading %>">
+					<th colspan="7">
+
+						<h3><%= this.targets[i].heading %>
+
+						</h3>
+
+
+					</th>
+
+				</tr>
+				<tr class="colheading">
+					<th style="width: 20px;" class="c"></th>
+					<th style="width: 120px;" class="c">From</th>
+					<th style="width: 120px;" class="c">To</th>
+					<th style="width: 80px;" class="c">Target</th>
+					<th style="width: 80px;" class="c">Total</th>
+					<th style="width: 50px;" class="c">%</th>
+
+					<th>Progress</th>
+
+				</tr>
+			</thead>
+				<tbody>
+				<% for(var d in this.targets[i].targets) { %>
+					<tr class="<% if (this.targets[i].targets[d].percent>100){ %>attained<% } %> <% if (this.targets[i].targets[d].locked!='1'){ %>record<% } else { %>locked<% } %>">
+						<td>
+							<% if (this.targets[i].targets[d].locked=='1'){ %> <i class="icon-lock icon-grey"></i> <% } %>
+						</td>
+						<td>
+							<%= this.targets[i].targets[d].date_from_D||"" %>
+						</td>
+						<td>
+							<%= this.targets[i].targets[d].date_to_D||"" %>
+						</td>
+						<td>
+							<%= this.targets[i].targets[d].target_C||"" %>
+						</td>
+						<td>
+							<%= this.targets[i].targets[d].total.totalcost_C||"" %>
+						</td>
+						<td>
+							<%= this.targets[i].targets[d].percent||"" %>
+						</td>
+						<td>
+							<div class="progress progress-striped <% if (this.targets[i].targets[d].percent < 100){ %><% if (this.targets[i].targets[d].percent < 50){ %>progress-danger<% } else { %>progress-warning<% } %><% } %>" style="margin: 0;">
+								<div class="bar" style="width: <% if (this.targets[i].targets[d].percent > 100){ %>100<% } else { %><%= this.targets[i].targets[d].percent||"" %><% } %>%;"></div>
+							</div>
+
+						</td>
+					</tr>
+				<% } %>
+				</tbody>
+			<% } %>
+
+		</table>
+
+	</div>
+	]]>
+</script>

@@ -7,7 +7,7 @@ namespace controllers\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
-class controller_reports_marketer_discounts {
+class controller_reports_marketer_targets {
 	function __construct() {
 
 	}
@@ -21,11 +21,7 @@ class controller_reports_marketer_discounts {
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
-		$s = models\settings::getSettings();
-		$s = $s['columns']['percent_diff'];
-		$settings['col'][] = $s;
-		$settings['count'] = count($settings['col']);
-		//test_array($settings);
+	//	test_array($settings);
 
 
 		$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
@@ -60,10 +56,10 @@ class controller_reports_marketer_discounts {
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "reports",
-			"sub_section"=> "marketer_discounts",
-			"template"=> "page_reports_marketer_discounts",
+			"sub_section"=> "marketer_targets",
+			"template"=> "page_reports_marketer_targets",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Marketer Discounts",
+				"title"=> "AdBooker - Reports - Marketer Targets",
 			)
 		);
 		$pubstr = implode(",", $pubstr);
@@ -78,7 +74,7 @@ class controller_reports_marketer_discounts {
 
 
 
-		if ($user['permissions']['reports']['marketer']['discounts']['page']!='1'){
+		if ($user['permissions']['reports']['marketer']['targets']['page']!='1'){
 			//test_array($user);
 			if (isset($user['marketer']['ID']) && $user['marketer']['ID']){
 				$selected = $user['marketer']['ID'];

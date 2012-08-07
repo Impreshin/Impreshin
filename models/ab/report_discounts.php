@@ -65,9 +65,11 @@ class report_discounts {
 
 
 
-		$select = "global_dates.publish_date as publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID, typeID");
+
+
 
 
 		$blank = array(
@@ -99,7 +101,7 @@ class report_discounts {
 
 			$data[$year][$month]['net'] = $data[$year][$month]['net'] + $record['totalCost'];
 			$data[$year][$month]['gross'] = $data[$year][$month]['gross'] + $record['totalShouldbe'];
-			$data[$year][$month]['records'] = $data[$year][$month]['records'] + 1;
+			$data[$year][$month]['records'] = $data[$year][$month]['records'] + $record['records'];
 
 
 
@@ -128,7 +130,7 @@ class report_discounts {
 
 			$data[$year][$month]['e'][$edition]['net'] = $data[$year][$month]['e'][$edition]['net'] + $record['totalCost'];
 			$data[$year][$month]['e'][$edition]['gross'] = $data[$year][$month]['e'][$edition]['gross'] + $record['totalShouldbe'];
-			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + 1;
+			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + $record['records'];
 
 
 
@@ -337,9 +339,15 @@ class report_discounts {
 			$where = $where . " AND ";
 		}
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
-		$select = "global_dates.publish_date as publishDate, totalCost, totalShouldbe, totalspace, ab_bookings.pID as pID";
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
+
+
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
+
+
+
 
 		$publications = publications::getAll("ID in ($publications_where)");
 
@@ -411,13 +419,13 @@ class report_discounts {
 			$data[$k]['net'] = $data[$k]['net'] + ($record['totalCost']);
 			$data[$k]['gross'] = $data[$k]['gross'] + ($record['totalShouldbe']);
 			$data[$k]['percent'] = ($data[$k]['net']&&$data[$k]['gross'])?abs(number_format((($data[$k]['net']-$data[$k]['gross'])/$data[$k]['gross'])*100,2)):"";
-			$data[$k]['records'] = $data[$k]['records'] + 1;
+			$data[$k]['records'] = $data[$k]['records'] + $record['records'];
 
 			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] +  abs($record['totalShouldbe']-$record['totalCost']);
 			$data[$k]['pubs'][$record['pID']]['net'] = $data[$k]['pubs'][$record['pID']]['net'] +  ($record['totalCost']);
 			$data[$k]['pubs'][$record['pID']]['gross'] = $data[$k]['pubs'][$record['pID']]['gross'] +  ($record['totalShouldbe']);
 			$data[$k]['pubs'][$record['pID']]['percent'] = ($data[$k]['pubs'][$record['pID']]['net']&&$data[$k]['pubs'][$record['pID']]['gross'])?abs(number_format((($data[$k]['pubs'][$record['pID']]['net']-$data[$k]['pubs'][$record['pID']]['gross'])/$data[$k]['pubs'][$record['pID']]['gross'])*100,2)):"";
-			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
+			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + $record['records'];
 		}
 
 		$p = array();

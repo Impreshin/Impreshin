@@ -305,6 +305,7 @@ $app->route('GET /ab/reports/account/discounts', 'access; last_page; controllers
 
 $app->route('GET /ab/reports/marketer/figures', 'access; last_page; controllers\ab\controller_reports_marketer_figures->page');
 $app->route('GET /ab/reports/marketer/discounts', 'access; last_page; controllers\ab\controller_reports_marketer_discounts->page');
+$app->route('GET /ab/reports/marketer/targets', 'access; last_page; controllers\ab\controller_reports_marketer_targets->page');
 
 $app->route('GET /ab/reports/production/figures', 'access; last_page; controllers\ab\controller_reports_production_figures->page');
 

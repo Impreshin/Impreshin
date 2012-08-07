@@ -65,9 +65,9 @@ class report_figures {
 
 
 
-		$select = "global_dates.publish_date as publishDate, totalCost, totalspace, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID, typeID");
 
 
 		$blank = array(
@@ -101,11 +101,11 @@ class report_figures {
 			if (!isset($data[$year][$month]['totals']['type']["t_".$record['typeID']])) $data[$year][$month]['totals']['type']["t_".$record['typeID']] = 0;
 
 			$data[$year][$month]['totals']['total'] = $data[$year][$month]['totals']['total'] + $record['totalCost'];
-		 $data[$year][$month]['totals']['type']["t_".$record['typeID']] = $data[$year][$month]['totals']['type']["t_".$record['typeID']] + $record['totalCost'];
+		    $data[$year][$month]['totals']['type']["t_".$record['typeID']] = $data[$year][$month]['totals']['type']["t_".$record['typeID']] + $record['totalCost'];
 
 
 			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
-			$data[$year][$month]['records'] = $data[$year][$month]['records'] + 1;
+			$data[$year][$month]['records'] = $data[$year][$month]['records'] + $record['records'];
 
 
 
@@ -134,7 +134,7 @@ class report_figures {
 			$data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] = $data[$year][$month]['e'][$edition]['totals']['type']["t_".$record['typeID']] + $record['totalCost'];
 
 			$data[$year][$month]['e'][$edition]['cm'] = $data[$year][$month]['e'][$edition]['cm'] + $record['totalspace'];
-			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + 1;
+			$data[$year][$month]['e'][$edition]['records'] = $data[$year][$month]['e'][$edition]['records'] + $record['records'];
 
 
 
@@ -403,9 +403,19 @@ class report_figures {
 			$where = $where . " AND ";
 		}
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
+
+
 		$select = "global_dates.publish_date as publishDate, totalCost, totalspace, ab_bookings.pID as pID";
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC");
+
+
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
+
+
+
+
 
 		$publications = publications::getAll("ID in ($publications_where)");
 
@@ -472,11 +482,11 @@ class report_figures {
 
 							$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
 							$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
-							$data[$k]['records'] = $data[$k]['records'] + 1;
+							$data[$k]['records'] = $data[$k]['records'] + $record['records'];
 
 							$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
 							$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
-							$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + 1;
+							$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + $record['records'];
 
 		}
 

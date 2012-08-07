@@ -82,10 +82,9 @@ class user_permissions {
 					"discounts"=> array(
 						"page"=> 0
 					),
-					/*
 					"targets"=> array(
 						"page"=> 0
-					)*/
+					)
 				),
 				"production"=>array(
 					"figures"=> array(

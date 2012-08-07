@@ -205,6 +205,16 @@ class marketers_targets {
 			$where
 			$orderby
 		");
+		$t = array();
+		foreach ($result as $r){
+			$pubs = (F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '" . $r['ID'] . "'"));
+			$ps = array();
+			foreach ($pubs as $pub) $ps[] = $pub['pID'];
+
+			$r['pubs']=implode(",",$ps);
+			$t[] = $r;
+		}
+		$result = $t;
 
 
 

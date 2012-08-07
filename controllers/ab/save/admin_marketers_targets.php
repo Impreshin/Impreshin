@@ -33,6 +33,7 @@ class admin_marketers_targets extends save {
 		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
 		$date_from = isset($_POST['date_from']) ? $_POST['date_from'] : "";
 		$date_to = isset($_POST['date_to']) ? $_POST['date_to'] : "";
+		$locked = isset($_POST['locked']) ? $_POST['locked'] : "0";
 
 
 
@@ -77,7 +78,8 @@ class admin_marketers_targets extends save {
 			"target"         => $target,
 			"publications"     => $publications,
 			"date_from"              => $date_from,
-			"date_to"              => $date_to
+			"date_to"              => $date_to,
+			"locked"              => $locked
 		);
 
 

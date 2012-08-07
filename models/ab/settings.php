@@ -672,7 +672,6 @@ class settings {
 
 
 
-
 		if ($user_settings['settings']){
 			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
 		} else {

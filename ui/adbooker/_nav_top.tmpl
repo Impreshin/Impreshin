@@ -93,11 +93,12 @@
 									<a href="/ab/reports/marketer/discounts">Discounts</a>
 								</li>
 								{% endif %}
-								{% if _user['permissions']['reports']['marketer']['targets']['page'] %}
+								{% if _user['permissions']['reports']['marketer']['targets']['page'] or _user['permissions']['reports']['marketer']['targets']['spage'] %}
 								<li class="{% if page['section']=="reports" and page['sub_section'] == "marketer_targets" %} active {% endif %}">
 									<a href="/ab/reports/marketer/targets">Targets</a>
 								</li>
 								{% endif %}
+
 
 
 								{% if _user['permissions']['reports']['production']['_nav'] %}
