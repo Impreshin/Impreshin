@@ -51,6 +51,7 @@ class marketer_targets extends \data {
 		models\user_settings::save_setting($values);
 
 
+
 		$targets = models\marketers_targets::getAll("mID = '$ID' AND date_to AND date_from","date_to DESC");
 
 

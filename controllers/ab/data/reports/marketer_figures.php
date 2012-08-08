@@ -118,8 +118,8 @@ class marketer_figures extends \data {
 			"years"=> $years,
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
-					"order"=> $ordering,
-					"tolerance"=> $tolerance,
+			"order"=> $ordering,
+			"tolerance"=> $tolerance,
 		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 

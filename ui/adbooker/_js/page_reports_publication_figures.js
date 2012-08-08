@@ -89,7 +89,6 @@ function getData() {
 		order = (order)? order:"";
 
 	$("#whole-area .loadingmask").show();
-
 	var tolerance = $("#tolerance").val();
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
@@ -97,7 +96,7 @@ function getData() {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
-		editionsetup();
+	
 		//console.log(data['combined']);
 
 		if (data['tab'] == 'charts') {
@@ -195,9 +194,6 @@ function getData() {
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
-
-}
-function editionsetup() {
 
 }
 function drawChart(element, data) {

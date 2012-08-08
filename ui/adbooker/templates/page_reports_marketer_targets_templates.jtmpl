@@ -12,7 +12,7 @@
 				<tr class="heading" data-heading="<%= this.heading %>">
 					<th colspan="7">
 
-						<h3><%= this.targets[i].heading %>
+						<h3 style="padding-top: 20px;"><%= this.targets[i].heading %>
 
 						</h3>
 
