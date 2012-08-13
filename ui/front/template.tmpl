@@ -247,12 +247,11 @@
 {% include page['template_tmpl'] %}
 {% endif %}
 
-{% if _cfg['online'] %}
+{% if _cfg['online'] and _cfg['ga'] %}
 <script type="text/javascript">
 
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-33608043-1']);
-	_gaq.push(['_setDomainName', 'awstam.com']);
+	_gaq.push(['_setAccount', '{{ _cfg['ga'] }}']);
 	_gaq.push(['_trackPageview']);
 
 	(function () {
