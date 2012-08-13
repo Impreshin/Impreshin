@@ -29,9 +29,9 @@
 		<th colspan="{{ settings['count'] }}">
 			<div class="scrolllinks">
 				<% for(var g in this.groups) { %>
-				<a href="javascript:" rel='<%= this.groups[g] %>' ><%= this.groups[g] %></a>
+				<a href="#" rel='<%= this.groups[g] %>' ><%= this.groups[g] %></a>
 				<% } %>
-				<a href="javascript:" rel='top'> <i class="icon-arrow-up icon-l-grey"></i> </a>
+				<a href="#" rel='top'> <i class="icon-arrow-up icon-l-grey"></i> </a>
 			</div>
 			<h3><%= this.heading %>
 				<small><%= this.count %> Records | <%= this.cm %> cm <% if (this.totalCost) { %>| <%= this.totalCost %><% } %></small>

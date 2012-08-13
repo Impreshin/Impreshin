@@ -93,7 +93,7 @@
 					<div class="controls highlighthovered">
 						<% for(var i in this.publications) { %>
 						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
-							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %>><%= this.publications[i].publication %>
+							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected=='1'){ %>checked="checked"<% } %>><%= this.publications[i].publication %>
 						</label>
 						<% } %>
 
@@ -163,10 +163,10 @@
 								{% endif %}
 									<label class="checkbox {% if (v == 1 or v == 0) or v['page'] == '1' or v['page'] =='0' %}hoverable{% endif %}" style="padding-top: 5px;padding-bottom: 5px;">
 										{% if v == 1 or v == 0 %}
-											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}) { %>checked="checked"<% } %>>
+											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}=='1') { %>checked="checked"<% } %>>
 										{% endif %}
 										{% if v['page'] == '1' or v['page'] =='0' %}
-										<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.page) { %>checked="checked"<% } %>>
+										<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.page=='1') { %>checked="checked"<% } %>>
 										{% endif %}
 										{{ k|capitalize }}
 										{% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
@@ -178,10 +178,10 @@
 										{% if sk != 'page' %}
 										<label class="checkbox {% if sv == 1 or sv == 0  or sv['page'] == '1' or sv['page'] =='0' %}hoverable{% endif %}" style="padding-left: 80px; padding-top: 5px;padding-bottom: 5px;">
 											{% if sv == 1 or sv == 0 %}
-												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}) { %>checked="checked"<% } %>>
+												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}=='1') { %>checked="checked"<% } %>>
 											{% endif %}
 											{% if sv['page'] == '1' or sv['page'] =='0' %}
-											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.page) { %>checked="checked"<% } %>>
+											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.page=='1') { %>checked="checked"<% } %>>
 											{% endif %}
 											{{ sk|capitalize }}
 											{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
@@ -193,10 +193,10 @@
 											{% if ssk != 'page' %}
 											<label class="checkbox {% if ssv == 1 or ssv == 0  or ssv['page'] == '1' or ssv['page'] =='0' %}hoverable{% endif %}" style="padding-left: 120px; padding-top: 5px;padding-bottom: 5px;">
 												{% if ssv == 1 or ssv == 0 %}
-													<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}) { %>checked="checked"<% } %>>
+													<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}=='1') { %>checked="checked"<% } %>>
 												{% endif %}
 												{% if ssv['page'] == '1' or ssv['page'] =='0' %}
-												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}.page) { %>checked="checked"<% } %>>
+												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}.page=='1') { %>checked="checked"<% } %>>
 												{% endif %}
 												{{ ssk|capitalize }}
 												{% if permissions_desc[key][k][sk][ssk] and permissions_desc[key][k][sk][ssk] is not iterable %}

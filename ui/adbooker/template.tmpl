@@ -59,7 +59,7 @@
 					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
 				</div>
 				<div class="s" style="float: right;">
-					<a href="javascript:" style="padding-right: 30px; color: #999;"><i class="icon-user icon-d-grey" style="margin-right: 10px;"></i>{{ _user['fullName']}}</a>
+					<span style="padding-right: 30px; color: #999;"><i class="icon-user icon-d-grey" style="margin-right: 10px;"></i>{{ _user['fullName']}}</span>
 				</div>
 			</div>
 		</div>
@@ -100,12 +100,13 @@
 
 
 <script src="/min/js.{{_v}}.js"></script>
-<script src="/ui/_js/plugins/bootstrap-typehead-array.{{_v}}.js"></script>
 
 
 
 
 <script type="text/javascript">
+
+
 	var detailsRequest = [];
 	var listRequest = [];
 	var activityRequest = [];
@@ -127,6 +128,8 @@
 			offset:5,
 			live:true
 		});
+
+
 
 		$(document).ajaxError(function (e, xhr, settings, exception) {
 			if (xhr.responseText) alert('error in: ' + settings.url + ' \n \n \n' + '\n' + xhr.responseText);
@@ -461,6 +464,7 @@
 	function capitaliseFirstLetter(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
+
 </script>
 {% if page['template_js'] %}
 <script src='{{ page['template_js'] }}'></script>

@@ -56,7 +56,7 @@ class controller_reports_production_figures {
 		$tmpl = new \template("template.tmpl","ui/adbooker/");
 		$tmpl->page = array(
 			"section"=> "reports",
-			"sub_section"=> "account_production",
+			"sub_section"=> "production_figures",
 			"template"=> "page_reports_production_figures",
 			"meta"    => array(
 				"title"=> "AdBooker - Reports - Production Figures",

@@ -44,7 +44,7 @@
 						{% endif %}
 						{% if _user['permissions']['records']['_nav'] %}
 						<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0);">Records <b class="caret"></b></a>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								{% if _user['permissions']['records']['deleted']['page'] %}
 								<li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
@@ -61,7 +61,7 @@
 						{% endif %}
 						{% if _user['permissions']['reports']['_nav'] %}
 						<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)">Reports <b class="caret"></b></a>
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								{% if _user['permissions']['reports']['account']['_nav'] %}
 								<li class="nav-header">Accounts</li>
@@ -171,7 +171,7 @@
 					<ul class="nav pull-right" style="margin-left: 0;margin-right: 0;">
 
 						<li class="dropdown" style="padding-left: 0; padding-right: 0; " >
-							<a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)" style="padding-left: 8px; padding-right: 0; ">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
 								<div id="nav-pub-list">
 									{{  _user['publication']['publication'] }}<b class="caret"></b>
 								</div>
@@ -188,7 +188,7 @@
 						<li class="divider-vertical"></li>
 						{% if _user['permissions']['administration']['_nav'] %}
 						<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
-							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="javascript:void(0)" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
+							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="nav-header">Application</li>

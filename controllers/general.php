@@ -79,7 +79,12 @@ class general {
 			$t = file_get_contents($base . $file);
 		} else {
 			$files = array(
+				"/ui/_js/plugins/jquery.jscrollpane.js",
 				"/ui/_js/libs/jquery-ui.js",
+
+
+
+
 				"/ui/_js/libs/bootstrap.min.js",
 
 				// ------ //
@@ -88,7 +93,6 @@ class general {
 				"/ui/_js/plugins/jquery.daterangepicker.js",
 				"/ui/_js/plugins/jquery.mousewheel.js",
 				"/ui/_js/plugins/mwheelIntent.js",
-				"/ui/_js/plugins/jquery.jscrollpane.js",
 				"/ui/_js/plugins/jquery.jqote2.js",
 				"/ui/_js/plugins/jquery.ba-bbq.js",
 				"/ui/_js/plugins/jquery.cookie.js",

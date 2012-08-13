@@ -19,7 +19,8 @@
 					<li >
 						<button class="btn btn-mini span1" id="dir" data-dir="{{ settings['dir'] }}"><i class="icon-d-grey"></i></button>
 
-					</li>{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
+					</li>
+					{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
 					<li class="divider-vertical"></li>
 					<li>
 
@@ -33,11 +34,11 @@
 							{% endfor %}
 
 						</select>
-						{% else %}
-						<input id="marketerID" type="hidden" name="marketerID" value="{{ selected }}">
 
 
-					</li>	{% endif %}
+
+					</li>
+					{% endif %}
 					<li class="divider-vertical"></li>
 					<li id="pub-select" >
 
@@ -64,7 +65,7 @@
 
 					<li class="divider-vertical" style="margin-right: 0;"></li>
 					<li class="dropdown pull-right">
-						<a href="javascript:" style="width:15px;"><i class="icon-print icon-grey"></i></a>
+						<a href="#" style="width:15px;"><i class="icon-print icon-grey"></i></a>
 
 					</li>
 				</ul>

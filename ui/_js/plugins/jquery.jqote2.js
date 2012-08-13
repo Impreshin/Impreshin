@@ -6,8 +6,8 @@
  * Dual licensed under the WTFPL v2 or MIT (X11) licenses
  * WTFPL v2 Copyright (C) 2004, Sam Hocevar
  *
- * Date: Thu, Oct 21st, 2010
- * Version: 0.9.7
+ * Date: Fri, May 4th, 2012
+ * Version: 0.9.8
  */
 (function($) {
     var JQOTE2_TMPL_UNDEF_ERROR = 'UndefinedTemplateError',
@@ -94,7 +94,7 @@
     $.extend({
         jqote: function(elem, data, t) {
             var str = '', t = t || tag,
-                fn = lambda(elem);
+                fn = lambda(elem, t);
 
             if ( fn === false )
                 raise(new Error('Empty or undefined template passed to $.jqote'), {type: JQOTE2_TMPL_UNDEF_ERROR});
@@ -138,6 +138,7 @@
                     "out+='" + arr[m].replace(/(\\|["'])/g, '\\$1') + "'" : (arr[m].charAt(1) === '=' ?
                         ';out+=(' + arr[m].substr(2) + ');' : (arr[m].charAt(1) === '!' ?
                             ';out+=$.jqotenc((' + arr[m].substr(2) + '));' : ';' + arr[m].substr(1)));
+
 
             str = 'try{' +
                 ('var out="";'+str+';return out;')

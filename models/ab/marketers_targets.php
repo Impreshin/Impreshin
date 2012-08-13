@@ -192,6 +192,7 @@ class marketers_targets {
 			$orderby = " ORDER BY " . $orderby;
 		}
 		if ($limit) {
+			$limit = str_replace("LIMIT","", $limit);
 			$limit = " LIMIT " . $limit;
 		}
 
@@ -204,6 +205,7 @@ class marketers_targets {
 			FROM ab_marketers_targets
 			$where
 			$orderby
+			$limit
 		");
 		$t = array();
 		foreach ($result as $r){

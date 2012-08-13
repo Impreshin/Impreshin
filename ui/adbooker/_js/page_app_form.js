@@ -2,7 +2,6 @@
  * Date: 2012/05/05 - 1:00 PM
  */
 var $form = $("#booking-form").data({
-	accounts   :var_accounts,
 	clients    :var_clients,
 	spots      :var_spots,
 	colours    :var_colours,

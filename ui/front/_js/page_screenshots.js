@@ -5,6 +5,8 @@ var whole_pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions).d
 
 $(document).ready(function () {
 
+
+
 	$("a.screenshot").attr('rel', 'gallery').fancybox({
 			padding:0,
 		openEffect: 'fade',
@@ -26,6 +28,5 @@ $(document).ready(function () {
 
 		}
 		});
-
 
 });

@@ -33,21 +33,21 @@
 				</li>
 
 				<li class="dropdown pull-right">
-					<a data-toggle="dropdown" class="dropdown-toggle c" href="javascript:" style="width:15px;"><i class="icon-wrench"></i></a>
+					<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
 					<ul class="dropdown-menu" id="record-settings">
 						<li class="nav-header">Group By</li>
 						{% for row in settings['groupby'] %}
 						<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
-							<a href="javascript:;">{{ row['n'] }}</a>
+							<a href="#">{{ row['n'] }}</a>
 						</li>
 						{% endfor %}
 						<li class="nav-header clearfix">Direction</li>
-						<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="javascript:;"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
-						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="javascript:;"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+						<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
 						<li class="clearfix"></li>
 						<li class="divider"></li>
 
-						<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
+						<li><a href="#" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
 					</ul>
 				</li>
 

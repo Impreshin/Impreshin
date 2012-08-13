@@ -21,9 +21,11 @@
 					<li>
 						<button class="btn  btn-mini span1"><i class="icon-plus"></i></button>
 					</li>
+
+					{% if _user['permissions']['reports']['marketer']['targets']['page'] =='1' %}
 					<li class="divider-vertical"></li>
 					<li>
-						{% if _user['permissions']['reports']['marketer']['figures']['page'] =='1' %}
+
 						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select a Marketer">
 
 
@@ -34,16 +36,18 @@
 							{% endfor %}
 
 						</select>
-						{% else %}
-						<input id="marketerID" type="hidden" name="marketerID" value="{{ selected }}">
 
-						{% endif %}
+
 					</li>
+					{% endif %}
+
+
+
 
 
 					<li class="divider-vertical" style="margin-right: 0;"></li>
 					<li class="dropdown pull-right">
-						<a href="javascript:" style="width:15px;"><i class="icon-print icon-grey"></i></a>
+						<a href="#" style="width:15px;"><i class="icon-print icon-grey"></i></a>
 
 					</li>
 				</ul>
@@ -70,10 +74,17 @@
 
 				</div>
 			</div>
+			<div class="pagination pagination-centered" id="pagination">
+
+
+			</div>
 			<div class="loadingmask wide"></div>
 		</article>
 	</div>
 </section>
+<div class="modal hide fade" id="targets-modal" data-show="false">
+
+</div>
 
 <script type="text/javascript">
 	var currency_sign = '{{ _cfg['currency']['sign'] }}';

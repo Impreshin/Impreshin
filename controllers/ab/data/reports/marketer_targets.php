@@ -51,8 +51,24 @@ class marketer_targets extends \data {
 		models\user_settings::save_setting($values);
 
 
+		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : "";
+		$rows = (isset($_REQUEST['rows'])) ? $_REQUEST['rows'] : "";
+		if (!$selectedpage) $selectedpage = 1;
 
-		$targets = models\marketers_targets::getAll("mID = '$ID' AND date_to AND date_from","date_to DESC");
+
+		$where = "mID = '$ID' AND date_to AND date_from";
+
+		$recordsFound = count(models\marketers_targets::getAll($where));
+
+		$limit = $rows;
+		$pagination = new \pagination();
+		$pagination = $pagination->calculate_pages($recordsFound, $limit, $selectedpage, 19);
+
+		//test_array($pagination);
+
+		$limits = $pagination['limit'];
+
+		$targets = models\marketers_targets::getAll($where, "date_to DESC", $limits);
 
 
 		$select = "sum(totalcost) as totalcost, count(ab_bookings.ID) as records";
@@ -105,7 +121,7 @@ class marketer_targets extends \data {
 			}
 
 		}
-
+		$return['pagination'] = $pagination;
 		$return['targets'] = array_values($data);
 
 		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );
