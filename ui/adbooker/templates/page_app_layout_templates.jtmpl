@@ -57,7 +57,7 @@
 
 			<% } %>
 			<div class="msgs"></div>
-			<% if(this.colour) { %>
+			<% if(this.colour && this.colour != "null") { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.colour %>.png" alt="" width="20">
 

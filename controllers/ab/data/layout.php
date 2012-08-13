@@ -140,15 +140,16 @@ class layout extends data {
 
 		$r = array();
 		foreach ($pagesReal as $page){
+
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
 				"locked"   => $page['locked'],
 				"section"=> array(
-					"i"=>$page['sectionID'],
-					"n"=>$page['section'],
-					"c"=>$page['section_colour']
+					"i"=> ($page['sectionID']) ? $page['sectionID'] : "",
+					"n"=> ($page['section']) ? $page['section'] : "",
+					"c"=> ($page['section_colour']) ? $page['section_colour'] : ""
 				),
-				"colour" => $page['colour'],
+				"colour" => ($page['colour'])? $page['colour']:"",
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm'],
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
