@@ -13,8 +13,8 @@ padding-left: 30px;
 	background-color : #DEEBFF;
 }
 #dates_list_area {
-border-bottom: 1px solid #ccc;
-border-left: 1px solid #ccc;
+border-bottom: 1px solid #dddddd;
+border-left: 1px solid #dddddd;
 	padding-bottom: 30px;
 	margin-right: 30px;
 }
@@ -36,7 +36,7 @@ display: block;
 }
 #suggestions {
 margin-right: 30px;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid #DDDDDD;
 	padding-bottom: 10px;
 }
 #suggestions h4 {

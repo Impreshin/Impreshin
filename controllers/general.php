@@ -85,7 +85,7 @@ class general {
 
 
 
-				"/ui/_js/libs/bootstrap.min.js",
+				"/ui/_js/libs/bootstrap.js",
 
 				// ------ //
 				"/ui/_js/plugins/date.js",

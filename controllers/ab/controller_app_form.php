@@ -34,7 +34,7 @@ class controller_app_form {
 		);
 		$a = array();
 		foreach ($clientlist AS $client) {
-			$a[] = $client['client'];
+			if ($client['client']) $a[] = $client['client'];
 		}
 
 		$clientlist = json_encode($a);
@@ -45,7 +45,7 @@ class controller_app_form {
 		);
 		$a = array();
 		foreach ($spotlist AS $record) {
-			$a[] = $record['colourSpot'];
+			if ($record['colourSpot']) $a[] = $record['colourSpot'];
 		}
 		$spotlist = json_encode($a);
 
