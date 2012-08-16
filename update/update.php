@@ -52,8 +52,9 @@ class update {
 		$updates = 0;
 		$result = "";
 		$return = "";
+		$result = self::db_backup($cfg, "update_cv" . $v);
 		if ($uv != $v) {
-			$result = self::db_backup($cfg,"update_cv".$v);
+
 			$nsql = array();
 
 			foreach ($sql as $version=> $exec) {
