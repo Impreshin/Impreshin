@@ -114,9 +114,10 @@ class update {
 		$dbuser = $cfg['DB']['username'];
 		$dbpwd = $cfg['DB']['password'];
 		$dbname = $cfg['DB']['database'];
-		$gzip = $cfg['DB']['gzip'];
+		$gzip = $cfg['gzip'];
 
 		if (!file_exists($cfg['backup'])) @mkdir($cfg['backup'], 0777, true);
+
 		if ($gzip){
 			$filename = $filename . ".gz";
 			$gzip = "| gzip ";
