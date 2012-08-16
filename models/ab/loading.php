@@ -114,6 +114,8 @@ class loading {
 				SELECT * FROM 	ab_page_load WHERE pID = '$pID' ORDER BY pages ASC
 			");
 
+		//test_array($loadingData);
+
 			$loading = array();
 			$use = "";
 			$i = 0;
@@ -146,10 +148,17 @@ class loading {
 			//$loading[$use]['current'] = $i;
 
 		if (!$use){
-			$use = $loadingData[count($loadingData)-1]['ID'];
+			if (isset($loadingData[count($loadingData) - 1]['ID'])){
+				$use = $loadingData[count($loadingData) - 1]['ID'];
+			} else {
+				$use = "";
+
+			}
+
 			$return['error']="Please check your loading settings, the current loading trumps your highest page number";
 		}
 
+		if ($use){
 			$return['pages'] = $loading[$use]['pages'];
 			$return['loading'] = $loading[$use]['loading'];
 
@@ -168,6 +177,8 @@ class loading {
 			if (isset($loading[$cur])) $return['other'][] = $loading[$cur];
 			if (isset($loading[$cur + 1])) $return['other'][] = $loading[$cur + 1];
 			if (isset($loading[$cur + 2])) $return['other'][] = $loading[$cur + 2];
+		}
+
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());

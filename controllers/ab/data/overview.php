@@ -192,30 +192,34 @@ class overview extends data {
 			"count"  => $pagesCount,
 			"spreads"=> $spreads
 		);
-		//test_array($t);
+
 
 		$spread = array();
 
 		$h = 0;
 		for ($i = 0; $i < $spreads; $i++) {
-			$page = $pages[$h++];
-			$page['side'] = "left";
-			$spread[$i]['pages'][] = $page;
-			if ($i > 0) {
-				if (isset($pages[$h])) {
-					$page = $pages[$h++];
-					$page['side'] = "right";
-
+			if (isset($pages[$h++])) {
+				$page = $pages[$h];
+				$page['side'] = "left";
+				if (isset($spread[$i])) {
 					$spread[$i]['pages'][] = $page;
+					if ($i > 0) {
+						if (isset($pages[$h])) {
+							$page = $pages[$h++];
+							$page['side'] = "right";
+
+							$spread[$i]['pages'][] = $page;
+						}
+					}
+					$spread[$i]['side'] = (strpos($i / 2, ".")) ? "right" : "left";
+					$spread[$i]['index'] = $i;
 				}
 			}
-			$spread[$i]['side'] = (strpos($i / 2, ".")) ? "right" : "left";
-			$spread[$i]['index'] = $i;
 
 
 		}
 
-		$spread[count($spread) - 1]['pages'][0]['side'] = "right";
+		if (count(($spread))) $spread[count($spread) - 1]['pages'][0]['side'] = "right";
 		$a = array();
 		foreach ($spread as $b) $a[] = $b;
 		$spread = $a;
