@@ -52,7 +52,9 @@ class update {
 		$updates = 0;
 		$result = "";
 		$return = "";
-		$result = self::db_backup($cfg, "update_cv" . $v);
+		$filename = "backup_cv" . $v;
+
+
 		if ($uv != $v) {
 
 			$nsql = array();
@@ -67,6 +69,9 @@ class update {
 				}
 			}
 			$sql = array_values($nsql);
+
+			if (count($sql) > 0) $filename = "update_cv" . $v;
+			$result = self::db_backup($cfg, $filename);
 
 
 			foreach ($sql as $e) {
@@ -85,6 +90,9 @@ class update {
 			}
 
 
+		} else {
+
+			$result = self::db_backup($cfg, $filename);
 		}
 
 		if ($result){
