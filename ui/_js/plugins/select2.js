@@ -727,7 +727,7 @@
         positionDropdown: function() {
             var offset = this.container.offset();
             var height = this.container.outerHeight();
-            var width  = this.container.outerWidth();
+            var width  = this.opts.element.attr("data-width")||this.container.outerWidth();
             var css    = {
                 top: offset.top + height,
                 left: offset.left,

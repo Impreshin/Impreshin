@@ -114,7 +114,7 @@ class loading {
 				SELECT * FROM 	ab_page_load WHERE pID = '$pID' ORDER BY pages ASC
 			");
 
-		//test_array($loadingData);
+
 
 			$loading = array();
 			$use = "";
@@ -145,7 +145,9 @@ class loading {
 				$i++;
 
 			}
-			//$loading[$use]['current'] = $i;
+
+
+		//$loading[$use]['current'] = $i;
 
 		if (!$use){
 			if (isset($loadingData[count($loadingData) - 1]['ID'])){

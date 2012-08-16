@@ -198,8 +198,9 @@ class overview extends data {
 
 		$h = 0;
 		for ($i = 0; $i < $spreads; $i++) {
-			if (isset($pages[$h++])) {
-				$page = $pages[$h];
+			$lh = $h++;
+			if (isset($pages[$lh])) {
+				$page = $pages[$lh];
 				$page['side'] = "left";
 				if (isset($spread[$i])) {
 					$spread[$i]['pages'][] = $page;

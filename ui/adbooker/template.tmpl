@@ -153,7 +153,22 @@
 		});
 
 	});
+
 	$(document).ready(function () {
+        var $pubSelectID = $("#pubSelectID");
+        console.log($pubSelectID);
+        if ($pubSelectID.length) {
+            $pubSelectID.select2().change(function () {
+                window.location = "?apID=" + $(this).val();
+            });
+        };
+        $("#pubSelectID").select2();
+        $(document).on("change","#pubSelectID",function(){
+            window.location = "?apID=" + $(this).val();
+        });
+
+
+
 
 		$(document).on("click", ".modal .close-btn", function (e) {
 			e.preventDefault();

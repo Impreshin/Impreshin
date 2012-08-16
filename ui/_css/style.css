@@ -697,6 +697,22 @@ button[disabled] i {
   color: white;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
+#pubSelectID-container .select2-container .select2-choice {
+  background-color: transparent;
+  border: none;
+  color: #999999;
+  padding-top: 6px;
+  padding-bottom: 3px;
+}
+#pubSelectID-container .select2-container .select2-choice div {
+  display: none;
+}
+#pubSelectID-container .select2-container-active {
+  background-color: #404040;
+}
+#pubSelectID-container .select2-dropdown-open .select2-choice {
+  box-shadow: none;
+}
 #maintoolbar .dropdown-menu li:hover a {
   background-color: #e3e3e3;
   text-decoration: none;

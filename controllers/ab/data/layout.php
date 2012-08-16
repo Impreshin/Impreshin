@@ -193,11 +193,14 @@ class layout extends data {
 
 		$h = 0;
 
+
 		for ($i = 0; $i < $spreads; $i++) {
-			if (isset($pages[$h++])){
-				$page = $pages[$h];
+			$lh = $h++;
+			if (isset($pages[$lh])){
+
+				$page = $pages[$lh];
 				$page['side'] = "left";
-				if (isset($spread[$i])) {
+				//if (isset($spread[$i])) {
 					$spread[$i]['pages'][] = $page;
 					if ($i > 0) {
 						if (isset($pages[$h])) {
@@ -209,7 +212,7 @@ class layout extends data {
 					}
 					$spread[$i]['side'] = (strpos($i / 2, ".")) ? "right" : "left";
 					$spread[$i]['index'] = $i;
-				}
+				//}
 			}
 
 
