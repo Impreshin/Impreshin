@@ -15,6 +15,7 @@ class user_notifications {
 
 		if ($user['ID']){
 
+
 			if (isset($user['marketer'])) {
 				$return['marketer'] = $user['marketer'];
 			}
@@ -102,6 +103,7 @@ class user_notifications {
 
 			}
 		}
+
 
 
 

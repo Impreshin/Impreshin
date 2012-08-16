@@ -7,6 +7,7 @@ namespace models;
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class user {
 	public $ID;
 	private $dbStructure;
@@ -23,14 +24,19 @@ class user {
 				SELECT global_users.*
 				FROM global_users
 				WHERE global_users.ID = '$ID'
-			");
+			"
+		);
 		if (count($result)) {
 			$result = $result[0];
 		} else {
 			$result = $this->dbStructure();
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $result;
 	}
 
@@ -38,20 +44,21 @@ class user {
 		$timer = new timer();
 		$app = F3::get("app");
 		$result = array();
-		if (!is_array($user)){
+
+
+		if (!is_array($user)) {
 
 			$user = $this->get($user);
 		}
 
 		$result = $user;
 
-		if ($app && $user['ID']){
+		if ($app && $user['ID']) {
 
 			$appClass = "\\models\\" . $app . "\\user_settings";
 
 			$appO = new $appClass();
 			$appSettings = $appO->_read($result['ID']);
-
 
 
 			if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $appSettings['pID']) {
@@ -61,7 +68,12 @@ class user {
 			}
 
 			$appPublications = "\\models\\" . $app . "\\publications";
-			$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "'", "publication ASC");
+			if ($result['su'] == '1') {
+				$publications = $appPublications::getAll("", "publication ASC");
+			} else {
+				$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "'", "publication ASC");
+			}
+
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
 
 
@@ -75,7 +87,6 @@ class user {
 			}
 
 
-
 			$publication = new $appPublications();
 			$publication = $publication->get($pID);
 
@@ -84,25 +95,29 @@ class user {
 			$result['publication'] = $publication;
 
 
+			$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $user['ID'] . "' AND cID='" . $result['publication']['cID'] . "'");
 
-			$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='".$user['ID']."' AND cID='". $result['publication']['cID']."'");
-
-			if (count($extra)){
+			if (count($extra)) {
 				$extra = $extra[0];
 			}
 
-			if (!$extra[$app]) {
+			if ((isset($extra[$app]) && !$extra[$app]) && $result['su']!='1') {
 				F3::reroute("/noaccess/?app=$app");
 			}
-
-			$result['ab_marketerID'] = $extra['ab_marketerID'];
-			$result['ab_productionID'] = $extra['ab_productionID'];
+			//test_array($result);
+			if (isset($extra['ab_marketerID']) && $extra['ab_marketerID']) $result['ab_marketerID'] = $extra['ab_marketerID'];
+			if (isset($extra['ab_productionID']) && $extra['ab_productionID']) $result['ab_productionID'] = $extra['ab_productionID'];
 
 			unset($result['password']);
 			//unset($result[$app . '_permissions']);
 
 			if ($app == "ab") {
-				$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'], $result['publication']['ID']);
+				if (isset($extra['ab_marketerID'])&& $extra['ab_marketerID']){
+					$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'], $result['publication']['ID']);
+				} else {
+					$marketer = array();
+				}
+
 				if (count($marketer)) {
 					$result['marketer'] = $marketer;
 				}
@@ -110,31 +125,41 @@ class user {
 
 
 			$appClass = "\\models\\" . $app . "\\user_permissions";
-			$permissions = $appClass::_read($extra[$app . '_permissions']);
+			if ($result['su'] == '1') {
 
+				$permissions = $appClass::permissions();
+				$permissions = $permissions['p'];
+				array_walk_recursive($permissions, function (& $item, $key) {
+						$item = "1";
+					}
+				);
+			} else {
+				$permissions = $appClass::_read($extra[$app . '_permissions']);
+
+
+			}
 			$permissions['records']['_nav'] = '0';
-			foreach ($permissions['records'] as $p){
+			foreach ($permissions['records'] as $p) {
 				if ($p['page']) $permissions['records']['_nav'] = '1';
 			}
 
 			$permissions['administration']['_nav'] = '0';
-			foreach ($permissions['administration']['application'] as $p){
+			foreach ($permissions['administration']['application'] as $p) {
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
-			foreach ($permissions['administration']['system'] as $p){
+			foreach ($permissions['administration']['system'] as $p) {
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
 			$permissions['reports']['_nav'] = '0';
 
 
+			foreach ($permissions['reports'] as $k=> $p) {
 
-			foreach ($permissions['reports'] as $k=>$p) {
-
-				if ( isset($p['page']) && $p['page'] ) $permissions['reports']['_nav'] = '1';
+				if (isset($p['page']) && $p['page']) $permissions['reports']['_nav'] = '1';
 
 
-				if (is_array($p)){
-					foreach ($p as $s=>$ps) {
+				if (is_array($p)) {
+					foreach ($p as $s=> $ps) {
 						if (isset($ps['page']) && $ps['page']) {
 							$permissions['reports'][$k]['_nav'] = '1';
 							$permissions['reports']['_nav'] = '1';
@@ -145,54 +170,51 @@ class user {
 			}
 
 
-
 			if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
 				$permissions['reports']['_nav'] = '1';
 				$permissions['reports']['marketer']['_nav'] = '1';
 				foreach ($permissions['reports']['marketer'] as $k=> $p) {
-								$permissions['reports']['marketer'][$k]['spage'] = '1';
+					$permissions['reports']['marketer'][$k]['spage'] = '1';
 
-							}
+				}
 
 			}
 
 
-			//test_array($result);
+
 
 			$result['permissions'] = $permissions;
 
 
-			//test_array($permissions['reports']);
 
 
-			} else {
-				$result['settings'] = array();
-				$result['pID'] = "";
-				$result['publications'] = array();
-				$result['publication'] = array();
-				$result['permissions'] = array();
+		} else {
+			$result['settings'] = array();
+			$result['pID'] = "";
+			$result['publications'] = array();
+			$result['publication'] = array();
+			$result['permissions'] = array();
 
-			}
-
-
+		}
 
 
-
-
-
-//test_array($result);
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $return;
 	}
-	function login($username,$password){
+
+	function login($username, $password) {
 		$timer = new timer();
 
 		$ID = "";
 
-		if (isset($_COOKIE['username'])){
+		if (isset($_COOKIE['username'])) {
 			$_COOKIE['username'] = $username;
 		} else {
 			setcookie("username", $username, time() + 31536000, "/");
@@ -200,18 +222,19 @@ class user {
 
 		$password_hash = $password;
 
-		$password_hash = md5("aws_".$password."_".md5("zoutnet"));
+		$password_hash = md5("aws_" . $password . "_" . md5("zoutnet"));
 
 
 		$result = F3::get("DB")->exec("
 			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password_hash'
-		");
+		"
+		);
 
 
-		if (count($result)){
+		if (count($result)) {
 			$result = $result[0];
 			$ID = $result['ID'];
-			$_SESSION['uID']=$ID;
+			$_SESSION['uID'] = $ID;
 			if (isset($_COOKIE['username'])) {
 				$_COOKIE['username'] = $result['email'];
 			} else {
@@ -220,10 +243,15 @@ class user {
 		}
 
 		$return = $ID;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $return;
 	}
-	static function getAll($where="",$orderby="fullName ASC",$limit=""){
+
+	static function getAll($where = "", $orderby = "fullName ASC", $limit = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		$pID = $user['publication']['ID'];
@@ -246,8 +274,8 @@ class user {
 		$apps = $apps['apps'];
 
 		$apps_str = "";
-		foreach ($apps as $app){
-			$apps_str .= "global_users_company.". $app.", (SELECT last_activity FROM ".$app."_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
+		foreach ($apps as $app) {
+			$apps_str .= "global_users_company." . $app . ", (SELECT last_activity FROM " . $app . "_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
 		}
 
 
@@ -261,29 +289,35 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 			$where
 			 $orderby
 			 $limit
-		");
+		"
+		);
 
 
 		$return = $result;
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $return;
 	}
-	public static function save($ID,$values){
+
+	public static function save($ID, $values) {
 		$timer = new timer();
 		$user = F3::get("user");
 
-		if (isset($values['password'])&&$values['password']){
-			$values['password'] = md5("aws_".$values['password']."_".md5("zoutnet"));
+		if (isset($values['password']) && $values['password']) {
+			$values['password'] = md5("aws_" . $values['password'] . "_" . md5("zoutnet"));
 		}
 
 
 		$cID = $values['cID'];
-		if (!$cID){
+		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
 
-			$a = new Axon("global_users");
+		$a = new Axon("global_users");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
@@ -303,17 +337,17 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$appClass = "\\models\\" . $app . "\\publications";
 
 
-		$p = new Axon($app."_users_pub");
+		$p = new Axon($app . "_users_pub");
 		$publications = $appClass::getAll("cID='$cID'", "publication ASC");
 
-		foreach($publications as $publication){
-			$p->load("pID='".$publication['ID']."' AND uID='".$ID."'");
-			if (in_array($publication['ID'], $values['publications'])){
+		foreach ($publications as $publication) {
+			$p->load("pID='" . $publication['ID'] . "' AND uID='" . $ID . "'");
+			if (in_array($publication['ID'], $values['publications'])) {
 				$p->pID = $publication['ID'];
 				$p->uID = $ID;
 				$p->save();
 			} else {
-				if (!$p->dry()){
+				if (!$p->dry()) {
 					$p->erase();
 				}
 			}
@@ -321,11 +355,11 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		}
 
 
-
-
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $ID;
 	}
 
@@ -343,7 +377,8 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		return $results;
 
 	}
-	public static function _add_company($ID, $cID="") {
+
+	public static function _add_company($ID, $cID = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		if (!$cID) {
@@ -353,16 +388,21 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$p = new Axon("global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
-		$p->uID=$ID;
-		$p->cID=$cID;
+		$p->uID = $ID;
+		$p->cID = $cID;
 		//$p->$app = '1';
 
 		$p->save();
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return "done";
 	}
-	public static function _add_app($ID, $cID="",$app="") {
+
+	public static function _add_app($ID, $cID = "", $app = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		if (!$cID) {
@@ -372,39 +412,48 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$p = new Axon("global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
-		$p->uID=$ID;
-		$p->cID=$cID;
+		$p->uID = $ID;
+		$p->cID = $cID;
 		$p->$app = '1';
 
 		$p->save();
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return "done";
 	}
-	public static function _remove_app($ID, $cID="",$app="") {
+
+	public static function _remove_app($ID, $cID = "", $app = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
-		if (!$app){
+		if (!$app) {
 			$app = F3::get("app");
 		}
 
 		$p = new Axon("global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
-		$p->uID=$ID;
-		$p->cID=$cID;
+		$p->uID = $ID;
+		$p->cID = $cID;
 		$p->$app = '0';
 
 		$p->save();
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return "done";
 	}
 
-	public static function _remove_company($ID, $cID="") {
+	public static function _remove_company($ID, $cID = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		if (!$cID) {
@@ -414,12 +463,16 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$p = new Axon("global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
-		$p->uID=$ID;
-		$p->cID=$cID;
+		$p->uID = $ID;
+		$p->cID = $cID;
 		$p->$app = '0';
 		$p->save();
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,
+		                                    "Method"=> __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return "done";
 	}
 
