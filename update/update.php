@@ -90,7 +90,7 @@ class update {
 		if ($result){
 			$return .= "Backup name: " . $result."<br>";
 		}
-		if ($updates){
+		if ($updates!=0){
 			$return .= "Updates: " . $updates."<br>";
 		} else {
 			$return .= "Already up-to-date.<br>";
