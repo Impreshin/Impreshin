@@ -519,6 +519,11 @@ AddCharset utf-8 .html .css .js .xml .json .rss .atom
 # Don't prepend to error (doesn't accept empty string, use whitespace if you need)
 # php_value error_append_string " "
 
+php_value upload_max_filesize 20M
+ php_value post_max_size 20M
+ php_value max_execution_time 200
+ php_value max_input_time 200
+
 # Increase cookie security
 <IfModule php5_module>
 	php_value session.cookie_httponly true
