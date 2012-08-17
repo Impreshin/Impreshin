@@ -116,32 +116,38 @@ class loading {
 
 
 
+
 			$loading = array();
 			$use = "";
 			$i = 0;
 			foreach ($loadingData as $item) {
 				$pages = $item['pages'];
 				$percent = $item['percent'];
-				$avspace = $pages * $pageSize;
 
-				$keepin = $avspace * ($percent / 100);
+				if ($pages>0 && $percent>0){
+					$avspace = $pages * $pageSize;
 
-				$loading[$item['ID']] = array(
-					"pages"  => $pages,
-					"loading"=> number_format(($cm / $avspace) * 100, 2),
-					"nr"     => $i
-				);
+					$keepin = $avspace * ($percent / 100);
 
-				if ($forcepages){
-					if ($item['pages'] == $forcepages) {
-						$use = $item['ID'];
+					$loading[$item['ID']] = array(
+						"pages"  => $pages,
+						"loading"=> number_format(($cm / $avspace) * 100, 2),
+						"nr"     => $i
+					);
 
-					}
-				} else {
-					if ($cm <= $keepin && $use == "") {
-						$use = $item['ID'];
+					if ($forcepages) {
+						if ($item['pages'] == $forcepages) {
+							$use = $item['ID'];
+
+						}
+					} else {
+						if ($cm <= $keepin && $use == "") {
+							$use = $item['ID'];
+						}
 					}
 				}
+
+
 				$i++;
 
 			}

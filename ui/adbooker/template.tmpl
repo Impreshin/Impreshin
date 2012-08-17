@@ -166,6 +166,10 @@
             window.location = "?apID=" + $(this).val();
         });
 
+        if (navigator.appName == "Opera") {
+            $('.modal').removeClass('fade');
+        }
+
 
 
 
