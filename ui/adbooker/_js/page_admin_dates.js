@@ -154,7 +154,7 @@ function getDetails(){
 		if (data['ID']){
 			default_date = data['publish_date'];
 		} else {
-			if (data['suggestions'][0]['date']){
+			if (typeof data['suggestions'][0]['date'] != 'undefined'){
 				default_date = data['suggestions'][0]['date'];
 			}
 
