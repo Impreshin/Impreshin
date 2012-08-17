@@ -28,8 +28,11 @@ class controller_reports_marketer_discounts {
 		//test_array($settings);
 
 
-		$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
-
+		if ($user['su'] == '1') {
+			$publications = models\publications::getAll("cID = '$cID'", "publication ASC");
+		} else {
+			$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
+		}
 		$p = array();
 		$publicationselected = array();
 		$settings_pubs = (isset($settings_pub['pubs']))?explode(",", $settings_pub['pubs']):array();

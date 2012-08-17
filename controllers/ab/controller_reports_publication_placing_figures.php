@@ -24,8 +24,11 @@ class controller_reports_publication_placing_figures {
 	//	test_array($settings);
 
 
-		$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
-
+		if ($user['su'] == '1') {
+			$publications = models\publications::getAll("cID = '$cID'", "publication ASC");
+		} else {
+			$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
+		}
 		$p = array();
 		$publicationselected = array();
 		$pubstr = array();
