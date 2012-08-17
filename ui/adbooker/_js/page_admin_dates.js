@@ -154,15 +154,20 @@ function getDetails(){
 		if (data['ID']){
 			default_date = data['publish_date'];
 		} else {
-			default_date = data['suggestions'][0]['date'];
+			if (data['suggestions'][0]['date']){
+				default_date = data['suggestions'][0]['date'];
+			}
+
 		}
 		//console.log(default_date)
 		$("#suggested_dates tr.active").removeClass("active");
-		$("#suggested_dates tr[data-date='"+ default_date+"']").addClass("active");
+		if (default_date){
+			$("#suggested_dates tr[data-date='" + default_date + "']").addClass("active");
 
+		}
 		if (!default_date)default_date = 'today';
-
 		default_date = Date.parse(default_date);
+
 		$("#datepicker").datepicker({
 			format     :"yy-mm-dd",
 			altField   :"#publish_date",
