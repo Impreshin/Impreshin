@@ -98,6 +98,17 @@ function getData() {
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 	
 		//console.log(data['combined']);
+		var minDate_ = Date.parse(data['date_min']);
+		var maxDate_ = Date.parse(data['date_max']);
+
+		var minDate24 = Date.parse('t - 24 m').moveToFirstDayOfMonth();
+		var maxDate24 = Date.parse('t - 1 m').moveToLastDayOfMonth();
+
+		minDate_ = (minDate_ < minDate24)? minDate_: minDate24;
+		maxDate_ = (maxDate_ < maxDate24)? maxDate_: maxDate24;
+
+
+
 
 		if (data['tab'] == 'charts') {
 			drawChart('chart-income', data);
@@ -118,11 +129,11 @@ function getData() {
 					},
 					{text        :'12 Months',
 						dateStart:function () {
-							//console.log("prev From: " + prevMonth.startDate)
+
 							return Date.parse('t - 12 m').moveToFirstDayOfMonth();
 						},
 						dateEnd  :function () {
-							//console.log("prev To: " + prevMonth.endDate)
+
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
@@ -153,8 +164,8 @@ function getData() {
 				datepickerOptions:{
 					changeMonth:true,
 					changeYear :true,
-					minDate    :Date.parse(data['date_min']),
-					maxDate    :Date.parse(data['date_max'])
+					minDate    :minDate_,
+					maxDate    :maxDate_
 				},
 				onOpen           :function () {
 

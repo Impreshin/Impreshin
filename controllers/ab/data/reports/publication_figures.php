@@ -41,7 +41,6 @@ class publication_figures extends \data {
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
 
-
 		$grouping_g =  $settings['group']['g'];
 		$grouping_d =  $settings['group']['o'];
 
@@ -97,6 +96,7 @@ class publication_figures extends \data {
 		$years_d = F3::get("DB")->exec("SELECT distinct year(publish_date) AS record_year FROM global_dates WHERE pID in ($publications) ORDER BY year(publish_date) DESC");
 
 
+
 		//($settings['years'])? $settings['years']:$years_d[0]['record_year'];
 		if (!$years) {
 			$years = $settings['years'];
@@ -135,7 +135,6 @@ class publication_figures extends \data {
 
 
 
-
 		$y = array();
 		$years = explode(",", $years);
 		$yearsSend = array();
@@ -154,10 +153,26 @@ class publication_figures extends \data {
 
 		$where_general = "checked = '1' AND deleted is null";
 
+
+
 		if ($tab=="charts"){
 			$where = $where_general;
-					$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
+
+
+
+			if (!isset($daterange_s[0])){
+				$daterange_s[0] = date("Y-m-01", strtotime('-12 month'));
+			}
+			if (!isset($daterange_s[1])){
+				$daterange_s[1] = date($daterange_s[0], strtotime('-1 month'));
+			}
+			sort($daterange_s);
+
+			//test_array($daterange_s);
+			//test_array(array("w"=> $where,"d"=> array("from"=> date("Y-m-d", strtotime($daterange_s[0])),"to"  => date("Y-m-d", strtotime($daterange_s[1]))),"p"=> $publications));
+			$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 		}
+
 		if ($tab=="records"){
 					$orderby = " client ASC";
 					$arrange = "";

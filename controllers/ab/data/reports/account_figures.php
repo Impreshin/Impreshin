@@ -151,6 +151,13 @@ class account_figures extends \data {
 		//test_array(array("where"=>$where_general,"range"=>array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), "pubs"=>$publications));
 		if ($tab=="charts"){
 			$where = $where_general;
+			if (!isset($daterange_s[0])) {
+				$daterange_s[0] = date("Y-m-01", strtotime('-12 month'));
+			}
+			if (!isset($daterange_s[1])) {
+				$daterange_s[1] = date($daterange_s[0], strtotime('-1 month'));
+			}
+			sort($daterange_s);
 			$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), $publications);
 		}
 		if ($tab=="records"){

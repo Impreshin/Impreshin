@@ -116,7 +116,14 @@ var $combined = $("#combine-btn");
 			drawChart('chart-income', data);
 			drawChart('chart-cm', data);
 			drawChart('chart-records',data);
+			var minDate_ = Date.parse(data['date_min']);
+			var maxDate_ = Date.parse(data['date_max']);
 
+			var minDate24 = Date.parse('t - 24 m').moveToFirstDayOfMonth();
+			var maxDate24 = Date.parse('t - 1 m').moveToLastDayOfMonth();
+
+			minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
+			maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
 
 	
 
@@ -171,8 +178,8 @@ var $combined = $("#combine-btn");
 			datepickerOptions:{
 				changeMonth:true,
 				changeYear :true,
-				minDate    :Date.parse(data['date_min']),
-				maxDate    :Date.parse(data['date_max'])
+				minDate:minDate_,
+				maxDate:maxDate_
 			},
 			onOpen           :function () {
 
