@@ -70,7 +70,7 @@ class update {
 			}
 			$sql = array_values($nsql);
 
-			if (count($sql) > 0) $filename = "update_cv" . $v;
+			if (count($nsql) > 0) $filename = "update_cv" . $v;
 			$result = self::db_backup($cfg, $filename);
 
 
