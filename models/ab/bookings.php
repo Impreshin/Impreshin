@@ -728,8 +728,8 @@ $groupby
 					$w = $cur;
 					$v = $value;
 					if ($key=="material_file_filesize") {
-						$v = file_size($v);
-						$w = file_size($w);
+						$v = $v?file_size($v):"";
+						$w = $w?file_size($w):"";
 					}
 					$changes[] = array(
 						"k"=> $key,
