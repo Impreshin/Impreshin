@@ -1284,6 +1284,9 @@ html.ie9 table.records tbody:not(.thead) {
   display: block;
   width: 100%;
 }
+#details-modal #material-file-area #material-file-area-filename img {
+  margin-right: 10px;
+}
 #details-modal #details-pane-material a {
   display: block;
   position: absolute;

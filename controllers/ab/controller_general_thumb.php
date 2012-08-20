@@ -27,6 +27,10 @@ class controller_general_thumb {
 		$folder = $cfg['upload']['folder'] . "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/" ;
 		$filename = $data['material_file_store'];
 
+		if (isset($_GET['instantrender'])){
+			$filename = $_GET['s'];
+		}
+
 		if (file_exists($folder. $filename)){
 
 			$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
