@@ -471,7 +471,7 @@
 				<div style="float:right;">
 
 
-					<button class="btn btn-primary span3" type="submit">Save</button>
+					<button class="btn btn-primary span3" type="submit" autocomplete="off" data-loading-text="Please Wait">Save</button>
 				</div>
 
 			</div>
@@ -866,7 +866,7 @@ function set_upload(){
 	});
 
 	uploader.bind('FilesAdded', function (up, files) {
-		$form.find("button[type='submit']").attr("disabled","disabled");
+		$form.find("button[type='submit']").button('loading');
 
 		var fileCount = up.files.length, i = 0, ids = $.map(up.files, function (item) {
 			return item.id;
@@ -900,7 +900,7 @@ function set_upload(){
 
         $('#material-file-area-filename img').load(function(){
             $material_file_area_filename.html($img + file.name);
-            $form.find("button[type='submit']").removeAttr("disabled");
+            $form.find("button[type='submit']").button('reset');
         });
 
 
