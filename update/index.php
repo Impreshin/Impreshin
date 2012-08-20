@@ -3,6 +3,7 @@
  * Date: 2012/07/25
  * Time: 1:49 PM
  */
+require_once('../config.default.inc.php');
 require_once('../config.inc.php');
 require_once('../inc/functions.php');
 require_once('update.php');
