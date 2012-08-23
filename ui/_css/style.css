@@ -664,7 +664,7 @@ button[disabled] i {
 #app-nav {
   margin-right: 0;
 }
-#app-nav  > li.active > a {
+#app-nav > li.active > a {
   color: #444444;
   text-shadow: 0 0 0 #444444;
   background-color: whitesmoke;
@@ -675,16 +675,41 @@ button[disabled] i {
   background-image: -ms-linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
   background-image: -o-linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
   background-image: linear-gradient(top, whitesmoke 30%, whitesmoke 30%);
-  -webkit-box-shadow: 0 -4px 3px black;
-  -moz-box-shadow: 0 -4px 3px black;
-  box-shadow: 0 -4px 3px black;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   margin-top: 3px;
   margin-bottom: -3px;
+  height: 19px;
 }
 #app-nav .dropdown-menu li a {
   padding-left: 30px;
+}
+#app-nav-bar .dropdown-menu li > a:hover,
+#app-nav-bar .dropdown-menu li > a:focus,
+#app-nav-bar .dropdown-submenu:hover > a {
+  background: transparent;
+}
+#app-nav-bar .dropdown-menu li > a:hover,
+#app-nav-bar .dropdown-menu li > a:focus,
+#app-nav-bar .dropdown-submenu:hover > a {
+  color: #444444;
+  background-color: #e3e3e3;
+}
+#app-nav-bar .icon-btn {
+  width: 38px;
+}
+#app-nav-bar .icon-btn.active i {
+  background-image: url("/ui/_images/glyphicons-halflings-d-grey.png");
+}
+#app-nav-bar .icon-btn .nav-icon-btn {
+  padding-top: 13px;
+  height: 19px;
+}
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
+  color: #444444;
+  text-decoration: none;
 }
 #app-nav-bar > ul > li .dropdown-menu li:hover a {
   background-color: #e3e3e3;
@@ -811,9 +836,6 @@ button[disabled] i {
   margin-left: 5px;
   margin-bottom: 0;
 }
-.popup .popup-footer .btn-group .btn + .btn {
-  margin-left: -1px;
-}
 .popup .popup-footer:before,
 .popup .popup-footer:after {
   display: table;
@@ -877,7 +899,7 @@ form #form-bottom .form-actions {
 #notice-area > span:hover {
   color: white;
 }
-#notice-area > span:hover  > span {
+#notice-area > span:hover > span {
   color: white;
 }
 #maintoolbar {
@@ -917,12 +939,12 @@ form #form-bottom .form-actions {
 .toolbar .nav {
   margin-bottom: 0;
 }
-.toolbar .nav  > li > a {
+.toolbar .nav > li > a {
   margin: 0;
   padding-top: 9px;
   padding-bottom: 10px;
 }
-.toolbar .nav  > .active > a,
+.toolbar .nav > .active > a,
 .toolbar .nav > .active > a:hover {
   padding-left: 13px;
   color: #777777;
@@ -948,6 +970,11 @@ form #form-bottom .form-actions {
 }
 .toolbar input {
   margin-bottom: 0;
+}
+.toolbar .dropdown-menu li > a:hover,
+.toolbar .dropdown-menu li > a:focus,
+.toolbar .dropdown-submenu:hover > a {
+  background: transparent;
 }
 #toolbar-stats-link {
   cursor: pointer;
@@ -1310,7 +1337,6 @@ html.ie9 table.records tbody:not(.thead) {
   -webkit-box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
   -moz-box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
   box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
-  margin-left: auto;
   margin-left: auto;
   margin-top: 20px;
 }

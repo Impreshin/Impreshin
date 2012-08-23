@@ -128,7 +128,7 @@
 			offset:5,
 			live:true
 		});
-
+        $('.dropdown-toggle').dropdown();
 
 
 		$(document).ajaxError(function (e, xhr, settings, exception) {
@@ -194,7 +194,7 @@
 			var h = $(window).height();
 			var th = $(this).height();
 
-			mt = (th) / 2;
+			var mt = (th) / 2;
 			if (h < th) {
 				$this.css({
 					"margin-top":-(h / 2)
@@ -203,6 +203,7 @@
 			} else {
 				$this.css("margin-top", -mt);
 			}
+
 
 		});
 		$(document).on('click', '.btn-row-details', function (e) {

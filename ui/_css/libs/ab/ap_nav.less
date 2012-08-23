@@ -57,18 +57,52 @@
 		text-shadow             : 0 0 0 #444;
 
 		.linear-gradient(#f5f5f5, #f5f5f5, 30%, 30%);
-		.box-shadow(0 -4px 3px #000);
+
 
 		border-top-left-radius  : 5px;
 		border-top-right-radius : 5px;
 
 		margin-top              : 3px;
 		margin-bottom           : -3px;
+		height: 19px;
 
 	}
 	.dropdown-menu li a {
 		padding-left : 30px;
 	}
+
+}
+
+#app-nav-bar {
+
+	.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+		background : transparent;
+	}
+	.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+		color            : #444444;
+		background-color : #E3E3E3;
+	}
+	.icon-btn {
+		&.active i {
+			background-image : url("/ui/_images/glyphicons-halflings-d-grey.png");
+		}
+		width  : 38px;
+
+
+
+
+
+		.nav-icon-btn{
+			padding-top :13px;
+			height: 19px;
+		}
+	}
+}
+
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+	color           : #444444;
+	text-decoration : none;
 }
 #app-nav-bar > ul > li .dropdown-menu li {
 	.nav-dropdown-li;

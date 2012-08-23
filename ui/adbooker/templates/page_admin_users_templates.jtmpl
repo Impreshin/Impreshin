@@ -108,7 +108,7 @@
 						<label for="ab_marketerID" class="control-label">Marketer</label>
 
 						<div class="controls">
-							<select name="ab_marketerID" id="ab_marketerID" placeholder="Select Marketer">
+							<select name="ab_marketerID" id="ab_marketerID" placeholder="Select Marketer" class="span4">
 
 								<option value="" <% if (this.details.ab_marketerID=="") { %>selected="selected"<% } %>>Not a Marketer</option>
 								<optgroup label="Marketers">
@@ -125,7 +125,7 @@
 						<label for="ab_productionID" class="control-label">Production</label>
 
 						<div class="controls">
-							<select name="ab_productionID" id="ab_productionID" placeholder="Select Production">
+							<select name="ab_productionID" id="ab_productionID" placeholder="Select Production" class="span4">
 								<option value="" <% if (this.details.ab_productionID=="") { %>selected="selected"<% } %>>Not Production</option>
 								<optgroup label="Production">
 									{% for row in production %}

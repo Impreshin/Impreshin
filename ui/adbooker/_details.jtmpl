@@ -313,7 +313,7 @@
 				<% if (this.material_status!='1') { %>
 				<a class="btn btn-mini " style="width: 98%;" href="#popup-material" data-target="popup"> Material</a>
 				<% } else { %>
-				<a class="btn btn-mini " style="width: 85%;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material <% if (this.material_file_filesize && this.material_status) { %>(<%= this.material_file_filesize_display %>)<% } %></a>
+				<a class="btn btn-mini " style="width: 85%; float:left;" href="#popup-material" data-target="popup"><i class="icon-file"></i> Material <% if (this.material_file_filesize && this.material_status) { %>(<%= this.material_file_filesize_display %>)<% } %></a>
 					<% if (this.material_approved=='1') { %>
 						<a class="btn btn-mini btn-success span1" style="width: 13%;" id="material-approval" data-material-approved="0" rel="tooltip" title="Material approved"><i class="icon-ok icon-white"></i></a>
 					<% } else { %>
@@ -803,7 +803,7 @@
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
 			$('#details-modal').data("data",data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
 
-			if ($("#record-list").length){
+			if ($("#record-list:visible").length){
 
 				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
 

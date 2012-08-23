@@ -202,7 +202,7 @@ class overview extends data {
 			if (isset($pages[$lh])) {
 				$page = $pages[$lh];
 				$page['side'] = "left";
-				if (isset($spread[$i])) {
+				//if (isset($spread[$i])) {
 					$spread[$i]['pages'][] = $page;
 					if ($i > 0) {
 						if (isset($pages[$h])) {
@@ -214,7 +214,7 @@ class overview extends data {
 					}
 					$spread[$i]['side'] = (strpos($i / 2, ".")) ? "right" : "left";
 					$spread[$i]['index'] = $i;
-				}
+				//}
 			}
 
 

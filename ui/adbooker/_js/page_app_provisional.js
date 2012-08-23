@@ -51,8 +51,16 @@ $(document).ready(function () {
 		getList(s);
 	});
 
+	$("#log").append("starting<br>");
+	$(document).on("click", "#record-settings li", function () {
+		$("#log").append("clicked " + $(this).attr("data-group-records-by") + "<br>");
+	});
+
+
+
 
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
+
 		e.preventDefault();
 		var $this = $(this);
 		$("#record-settings li[data-group-records-by].active").removeClass("active");
@@ -82,9 +90,11 @@ $(document).ready(function () {
 
 	});
 	$(document).on("click", "#list-settings", function (e) {
+		console.log($("#list-settings").length);
 		e.preventDefault();
 		var $this = $(this);
 
+		console.log("settings clicked");
 		$this.addClass("active");
 		$.bbq.pushState({"modal":"settings"});
 		$("#settings-modal").modal('show');

@@ -50,14 +50,7 @@
 	border-bottom-left-radius         : 0px;
 }
 
-.btn-group > .btn.large:last-child {
-	-webkit-border-top-right-radius    : 0px;
-	-moz-border-radius-topright        : 0px;
-	border-top-right-radius            : 0px;
-	-webkit-border-bottom-right-radius : 0px;
-	-moz-border-radius-bottomright     : 0px;
-	border-bottom-right-radius         : 0px;
-}
+
 
 .dropdown-menu table {
 	margin: 0;
@@ -80,8 +73,48 @@
 	}
 }
 
-.input-prepend .add-on, .input-append .add-on {
-	&.btn {
-		text-shadow: none;
+
+.navbar .brand {
+	padding : 0 20px;
+	color : @navbarText;
+}
+
+.btn-mini {
+	line-height : 13px;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	margin-top: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin : 0;
+}
+h1 { font-size: 30px; line-height: @baseLineHeight * 2; }
+h2 { font-size: 24px; line-height: @baseLineHeight * 2; }
+h3 { font-size: 18px; line-height: @baseLineHeight * 1.5; }
+h4 { font-size: 14px;}
+h5 { font-size: 12px;}
+h6 { font-size: 11px;}
+
+h4, h5, h6 {
+	line-height : @baseLineHeight;
+}
+
+h1 small { font-size: 18px; }
+h2 small { font-size: 16px; }
+h3 small { font-size: 14px; }
+h4 small { font-size: 12px; }
+
+.navbar-fixed-top {
+	.navbar-inner {
+		.box-shadow(~"0 1px 2px rgba(0,0,0,.25), inset 0 -1px 0 rgba(0,0,0,.1)");
 	}
+}
+
+.navbar .nav > .active > a,
+.navbar .nav > .active > a:hover,
+.navbar .nav > .active > a:focus {
+
+	.box-shadow(none);
 }
