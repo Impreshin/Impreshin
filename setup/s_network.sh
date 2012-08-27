@@ -2,11 +2,8 @@
 
 WIZARD=$1
 
-#OLDINTERFACES=oldinterfaces
-#NEWINTERFACES=newinterfaces
-
- OLDINTERFACES=/etc/network/interfaces
- NEWINTERFACES=/etc/network/interfaces
+OLDINTERFACES=/etc/network/interfaces
+NEWINTERFACES=/etc/network/interfaces
 
 INTERFACE=`/sbin/ifconfig  | grep ^eth | sed "s/ .*//" | head -n 1`
 
@@ -15,8 +12,11 @@ function network {
 echo ""
 	CURRENT_HOST=$(hostname)
 	read -e -p "HOST NAME: " -i "$CURRENT_HOST" CHANGE_HOST
-	echo $CHANGE_HOST >/etc/hostname
+
 	if [ "$CURRENT_HOST" != "$CHANGE_HOST" ]; then
+		echo $CHANGE_HOST >/etc/hostname
+		cat /etc/hosts | sed "s/^127\.0\.1\.1[	].*$/127.0.1.1	$CHANGE_HOST/" >/etc/hosts.new; sync; mv /etc/hosts.new /etc/hosts
+
 		echo "host saved"
 	fi
 
@@ -70,7 +70,7 @@ auto $INTERFACE
 iface $INTERFACE inet dhcp
 EOF
 
-	finish
+	proxyfn
 }
 function readNetworkIP {
 
@@ -165,7 +165,7 @@ function readNetworkIP {
 		if [ "$changeNetowrk" = "y" ]; then
         	changeNetworkIP
         else
-        	finish
+        	proxyfn
         fi
 
 	fi
@@ -217,16 +217,39 @@ EOF
         echo "saved"
 
         echo " IP: $CHANGE_IP,  SUBNET: $CHANGE_SUB, GATEWAY: $CHANGE_GATEWAY, DNS1: $CHANGE_DNS1, DNS2: $CHANGE_DNS2"
-        finish
+        proxyfn
+
+
+}
+function proxyfn {
+
+	CURRENT_PROXY=$http_proxy
+	echo ""
+	echo "--- Proxy Server ---"
+	echo "Current: $CURRENT_PROXY"
+	read -e -p "Do you want to change the proxy?: " -i "n" changeProxy
+
+	if [ "$changeProxy" = "y" ]; then
+		echo ""
+		echo "must be in format http://DOMAIN\USERNAME:PASSWORD@SERVER:PORT/ leave blank to disable the proxy"
+		read -e -p "Proxy: " -i "$CURRENT_PROXY" CHANGE_PROXY
+
+		if [ "$CHANGE_PROXY" != "$CURRENT_PROXY" ]; then
+			export $CHANGE_PROXY
+		fi
+	fi
+	finish
 
 
 }
 function finish {
+	echo ""
 	echo "Activating the configuration"
 	sleep 1
 	ifdown $INTERFACE
 	ifup $INTERFACE
 	hostname --file /etc/hostname
+	sudo service hostname restart
 
 	echo "--- Done ---"
 	endfn
@@ -249,5 +272,5 @@ read -e -p "Continue?: " -i "y" goon
 if [ $goon = "y" ]; then
 	network
 else
-	end
+	endfn
 fi

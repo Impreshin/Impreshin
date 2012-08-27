@@ -2,26 +2,50 @@
 export LANG=""
 
 function runscript {
+
+	INTERFACE=`/sbin/ifconfig  | grep ^eth | sed "s/ .*//" | head -n 1`
+	CUR_IFCONFIG=`/sbin/ifconfig $INTERFACE`
+	CURRENT_HOST=$(hostname)
+	CURRENT_IP=`echo $CUR_IFCONFIG | sed "s/.*inet addr:\([0-9\.]*\).*/\1/"`
+
 	clear
-	echo "Setup"
+	echo "Welcome to ImpreshiN"
 	echo "-----------------------------------------------"
+	echo "To access Impreshin open your web browser and go to:"
 	echo ""
-	ARRAY=( 'Wizard' 'Partitioning' 'Networking' 'Folders & Files' 'ImpreshiN Setup')
+	echo "   http://$CURRENT_HOST/"
+	echo "        - or -"
+	echo "   http://$CURRENT_IP/"
+	echo ""
+	echo "-----------------------------------------------"
+	echo "Setup"
+	echo ""
+	ARRAY=( 'Wizard' 'Partitioning' 'Networking' 'Folders & Files' 'Impreshin Setup')
+	ARRAYDESC=( 'This will erase everything to default settings' '' '' '' 'Setup Company etc')
 	ELEMENTS=${#ARRAY[@]}
 
 	# echo each element in array
 	# for loop
 	for (( i=0;i<$ELEMENTS;i++)); do
 	    echo "$i) ${ARRAY[${i}]}"
+	   if [ -n "${ARRAYDESC[${i}]}" ]; then
+	        echo "   - ${ARRAYDESC[${i}]}"
+	   fi
 	done
-	read -p "Choose Script: " -i "0" SCRIPT
 
+	echo ""
+	read -p "Choose Script: " -i "$SCRIPT" SCRIPT
+
+	if [ -z "$SCRIPT" ]; then
+		exit 0
+	fi
+
+	echo ""
 	if [ -z "${ARRAY[SCRIPT]}" ]; then
-		echo ""
 		echo "Sorry, $SCRIPT is not a valid answer"
 		runscript
 	else
-	echo "Running ${ARRAY[SCRIPT]}"
+		echo "Running ${ARRAY[SCRIPT]}"
 	sleep 1
 
 
