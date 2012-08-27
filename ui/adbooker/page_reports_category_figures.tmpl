@@ -31,20 +31,21 @@
 					<li class="divider-vertical"></li>
 					<li id="pub-select" >
 
-						<div class="btn-group" style="max-width:500px;">
-							<a class="btn dropdown-toggle btn-mini span3" data-toggle="dropdown" href="#" > <span id="pub-select-label">{{publicationselected}}</span>
-								<span class="caret"></span> </a>
-							<ul class="dropdown-menu pull-right highlighthovered trigger_getdata">
-								{% for row in publications %}
-								<li>
-									<label for="pub-{{ row['ID']}}"  {% if row['disabled']=='1' %} class="g"{% endif %}>
-										<input type="checkbox" name="pubID[]" id="pub-{{ row['ID'] }}" value="{{ row['ID'] }}" data-pub="{{ row['publication'] }}" data-id="{{ row['ID'] }}" {% if row['selected']=='1' %}checked="checked"{% endif %} {% if row['disabled']=='1' %}disabled="disabled"{% endif %}> {{ row['publication'] }}
-									</label>
-								</li>
+                        <div class="btn-group">
+                            <a class="btn dropdown-toggle span3 btn-mini" data-toggle="dropdown" href="#"><span class="caret " style="float: right; margin-right:5px;"></span><span id="pub-select-label">{{ publicationselected }}</span>
 
-								{% endfor %}
-							</ul>
-						</div>
+                            </a>
+                            <ul class="dropdown-menu pull-right highlighthovered trigger_getdata " style="margin-top: 25px;">
+                                {% for row in publications %}
+                                    <li>
+                                        <label for="pub-{{ row['ID']}}"  {% if row['disabled']=='1' %} class="g"{% endif %}>
+                                            <input type="checkbox" name="pubID[]" id="pub-{{ row['ID'] }}" value="{{ row['ID'] }}" data-pub="{{ row['publication'] }}" data-id="{{ row['ID'] }}" {% if row['selected']=='1' %}checked="checked"{% endif %} {% if row['disabled']=='1' %}disabled="disabled"{% endif %}> {{ row['publication'] }}
+                                        </label>
+                                    </li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
 
 
 

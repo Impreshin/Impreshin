@@ -15,6 +15,10 @@ function startfn {
 
 	echo ""
 	echo "Extracting Folders & Files"
+
+
+
+	# tar czf ./data_drive.tar.gz /media/data --exclude=/media/data/lost+found
 	sudo tar -xzf ./data_drive.tar.gz -C /
 	echo "--- done ---"
 	echo ""
@@ -30,7 +34,7 @@ function startfn {
 	echo "Uploads - done"
 	echo ""
 	sudo chown -R www-data:www-data /media/data/web
-	echo "ImpreshiN - done"
+	echo "Impreshin - done"
 	echo ""
 	echo "----------"
 	echo "Starting MySQL"

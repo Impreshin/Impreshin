@@ -105,17 +105,14 @@
 
 				<% if (this.tab=="charts") { %>
 				<div class="btn-group">
-					<input id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>">
-					<% if (this.pubs>1) { %>
-						<button data-toggle="button" class="btn btn-mini span1 <% if (this.combined=='1') { %> active <% } %>" id="combine-btn" style="height: 27px;">
-							<% if (this.combined=='1') { %>
-								<i class="icon-resize-full"></i>
-							<% } else { %>
-								<i class="icon-resize-small"></i>
-							<% } %>
+					<input id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>" style="float:left;">
+                    <% if (this.pubs>1) { %>
+                    <button data-toggle="button" class="btn btn-mini span1 <% if (this.combined=='1') { %> active <% } %>" id="combine-btn" style="height: 27px; float:right;">
+                        <% if (this.combined=='1') { %> <i class="icon-resize-full"></i> <% } else { %>
+                        <i class="icon-resize-small"></i> <% } %>
 
-						</button>
-					<% } %>
+                    </button>
+                    <% } %>
 				</div>
 				<% } else if (this.tab=="records") { %>
 				<div class="btn-group report-bottom-tabs" data-toggle="buttons-radio" >
