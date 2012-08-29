@@ -81,7 +81,7 @@ class marketer_targets extends \data {
 			$target['target_C'] = currency($target['target']);
 
 
-			$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '".$target['date_from']."' AND global_dates.publish_date <= '".$target['date_to']."') AND ab_bookings.pID in (" . $target['pubs'] . ")", "global_dates.publish_date ASC", "ab_bookings.marketerID");
+			$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '".$target['date_from']."' AND global_dates.publish_date <= '".$target['date_to']."') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null AND checked ='1'", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
 			$records = $records[0];
 			$records['totalcost_C']=currency($records['totalcost']);
 

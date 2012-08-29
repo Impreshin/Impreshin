@@ -40,6 +40,7 @@ function formatDrive {
 	echo "Formatting and parttitioning disk $DISK | $PART"
 	echo ""
 
+
 	sudo dd if=/dev/zero of=$DISK bs=512 count=1024 >/dev/null 2>&1
 	echo -e -n "n\np\n1\n\n\nw\n" | sudo fdisk $DISK >/dev/null 2>&1
 
@@ -73,9 +74,12 @@ function formatDrive {
 function mountDrive {
 	echo ""
 	echo "Mounting the drive to /media/data"
-	sudo mkdir /media/data
+	# sudo mkdir /media/data
 	sudo mount $1 /media/data
 
+
+	LINE='LABEL=DATA    /media/data   ext4    defaults  0   2'
+	grep -q "^LABEL=DATA" /etc/fstab || sudo sh -c 'echo "$LINE" >>/etc/fstab'
 
 	finish
 }

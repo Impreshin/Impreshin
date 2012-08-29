@@ -3,8 +3,11 @@ export LANG=""
 WIZARD=$1
 function startfn {
 	echo ""
-	echo "stopping MySQL"
+	echo "Stopping MySQL"
 	sudo stop mysql
+	echo "Stopping Samba"
+	sudo service smbd stop
+
 	echo "----------"
 	echo ""
 	echo "Setting up Drive Permissions"
@@ -18,8 +21,8 @@ function startfn {
 
 
 
-	# tar czf ./data_drive.tar.gz /media/data --exclude=/media/data/lost+found
-	sudo tar -xzf ./data_drive.tar.gz -C /
+	# tar pczf ./data_drive.tar.gz /media/data --exclude=/media/data/lost+found
+	sudo tar -pxzf ./data_drive.tar.gz -C /
 	echo "--- done ---"
 	echo ""
 	echo "Applying Folder Permissions"
@@ -37,9 +40,12 @@ function startfn {
 	echo "Impreshin - done"
 	echo ""
 	echo "----------"
-	echo "Starting MySQL"
 
+	echo "Starting MySQL"
 	sudo start mysql
+
+	echo "Starting Samba"
+	sudo service smbd start
 
 	finish
 }

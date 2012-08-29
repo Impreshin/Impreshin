@@ -28,9 +28,9 @@ UPDATE global_users_company SET ab_permissions = 'a:9:{s:7:"details";a:2:{s:7:"a
 
 
 
+# clear the db #
 
-
-	TRUNCATE TABLE ab_accounts;
+TRUNCATE TABLE ab_accounts;
 TRUNCATE TABLE ab_accounts_pub;
 TRUNCATE TABLE ab_accounts_status;
 TRUNCATE TABLE ab_advert_sizes;

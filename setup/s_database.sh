@@ -3,7 +3,7 @@
 WIZARD=$1
 function startfn {
 
-	echo "woof"
+	echo "Zoutnet doesnt need the database stuff as we will be loading the db from the online version"
 
 
 
