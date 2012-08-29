@@ -103,7 +103,7 @@ class provisional extends data {
 
 		$return = array();
 
-		$return['date'] = $currentDate['publish_date_display'];
+		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
 		$return['dID'] = $currentDate['ID'];
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
 		$return['stats'] = $stats;
