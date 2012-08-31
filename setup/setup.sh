@@ -1,6 +1,6 @@
 #!/bin/bash
 export LANG=""
-
+cd ~/
 function runscript {
 
 	INTERFACE=`/sbin/ifconfig  | grep ^eth | sed "s/ .*//" | head -n 1`
@@ -20,8 +20,8 @@ function runscript {
 	echo "-----------------------------------------------"
 	echo "Setup"
 	echo ""
-	ARRAY=( 'Wizard' 'Partitioning' 'Networking' 'Folders & Files' 'Impreshin Setup')
-	ARRAYDESC=( 'This will erase everything to default settings' '' '' '' 'Setup Company etc')
+	ARRAY=( 'Wizard' 'Partitioning' 'Networking' 'Folders & Files' 'Impreshin Setup' 'Update Impreshin' )
+	ARRAYDESC=( 'This will erase everything to default settings' '' '' '' 'Setup new Company etc')
 	ELEMENTS=${#ARRAY[@]}
 
 	# echo each element in array
@@ -64,6 +64,7 @@ function runscript {
         2) bash ./s_network.sh ;;
         3) bash ./s_folder.sh ;;
         4) bash ./s_database.sh ;;
+        5) bash ./s_update.sh ;;
     esac
 
 

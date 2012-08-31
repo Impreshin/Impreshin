@@ -64,7 +64,11 @@
     Header set Access-Control-Allow-Origin "*"
   </IfModule>
 </FilesMatch>
-
+<Files ~ "^setup">
+  Order allow,deny
+  Deny from all
+  Satisfy All
+ </Files>
 
 
 # ----------------------------------------------------------------------

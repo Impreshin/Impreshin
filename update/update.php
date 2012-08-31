@@ -9,25 +9,19 @@ class update {
 
 
 	}
-	public static function code(){
+	public static function code($cfg){
 
 
-
-		//exec("git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master");
-
-
-		//$output = shell_exec('git checkout master -f');
 		$output = shell_exec('git reset --hard HEAD');
-		$output = shell_exec('git pull https://WilliamStam:awssmudge1@github.com/WilliamStam/Press-Apps.git master 2>&1');
-		$output = str_replace("From https://github.com/WilliamStam/Press-Apps","", $output);
-		$output = str_replace("* branch            master     -> FETCH_HEAD","", $output);
+		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
+		$str = str_replace(".git","",$cfg['git']['path']);
+		$output = str_replace("From $str","", $output);
+		$output = str_replace("* branch            ". $cfg['git']['branch'] ."     -> FETCH_HEAD","", $output);
 		$output = trim($output);
 		return $output;
 	}
 
 	public static function db($cfg){
-
-
 
 		$link = mysql_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password']);
 		mysql_select_db($cfg['DB']['database'], $link);
@@ -37,16 +31,7 @@ class update {
 
 		$v = $row['value'];
 
-
-
-
-
-
-
-
-
 		include_once("db_update.php");
-
 
 		$uv = key(array_slice($sql, -1, 1, TRUE));
 		$updates = 0;

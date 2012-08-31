@@ -154,13 +154,12 @@ if ($folder) {
 ob_start();
 
 $ttl = 0;
-if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
-	$ttl = 0;
-}
-$ttl = 0;
 
 
 
+$app->route('GET /setup/*', function() use ($app){
+		$app->error("404");
+	});
 $app->route('GET /min/css/@filename', 'general->css_min', $ttl);
 $app->route('GET /min/css*', 'general->css_min', $ttl);
 $app->route('GET /min/js/@filename', 'general->js_min', $ttl);
