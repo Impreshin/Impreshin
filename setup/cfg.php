@@ -10,6 +10,7 @@ if (php_sapi_name() == 'cli'){
 	foreach ($cfg['git'] as $key=> $val) {
 		echo "git_$key:$val\n";
 	}
+
 }
 
 
