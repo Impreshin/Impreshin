@@ -59,7 +59,7 @@
 			<div class="msgs"></div>
 			<% if(this.colour && this.colour != "null") { %>
 			<div class="page_colour">
-				<img src="/ui/_images/ab/<%= this.colour %>.png" alt="" width="20">
+				<img src="/ui/_images/ab/<%= this.colour_l %>.png" alt="" width="20">
 
 			</div>
 			<% } %>
@@ -119,7 +119,7 @@
 			<div class="msgs">Not enough space</div>
 			<% if(this.pages[i].colour!='') { %>
 			<div class="page_colour">
-				<img src="/ui/_images/ab/<%= this.pages[i].colour %>.png" alt="" width="20">
+				<img src="/ui/_images/ab/<%= this.pages[i].colour_l %>.png" alt="" width="20">
 
 			</div>
 			<% } %>
