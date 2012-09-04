@@ -52,7 +52,7 @@ $app->set('DEBUG', 2);
 
 $app->set('EXTEND', TRUE);
 $app->set('UI', 'ui/');
-$app->set('TEMP', 'tmp/');
+$app->set('TEMP', 'temp/');
 
 $uri = $_SERVER['REQUEST_URI'];
 $folder = "";
