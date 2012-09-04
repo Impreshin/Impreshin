@@ -12,7 +12,7 @@ class update {
 	public static function code($cfg){
 
 
-		$output = shell_exec('git reset --hard HEAD');
+		$output = shell_exec('git stash');
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 		$str = str_replace(".git","",$cfg['git']['path']);
 		$output = str_replace("From $str","", $output);
