@@ -4867,14 +4867,6 @@ a.badge:hover {
   -moz-border-radius-bottomleft: 0px;
   border-bottom-left-radius: 0px;
 }
-.btn-group > .btn.large:last-child {
-  -webkit-border-top-right-radius: 0px;
-  -moz-border-radius-topright: 0px;
-  border-top-right-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -moz-border-radius-bottomright: 0px;
-  border-bottom-right-radius: 0px;
-}
 .dropdown-menu table {
   margin: 0;
 }
