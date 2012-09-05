@@ -52,7 +52,7 @@ $app->set('DEBUG', 2);
 
 $app->set('EXTEND', TRUE);
 $app->set('UI', 'ui/');
-$app->set('TEMP', 'tmp/');
+$app->set('TEMP', 'temp/');
 
 $uri = $_SERVER['REQUEST_URI'];
 $folder = "";
@@ -103,7 +103,7 @@ $app->set('cfg', $cfg);
 $app->set('system', new msg());
 
 
-$version = '0.0.5';
+$version = '0.0.6';
 $version = date("YmdH");
 $minVersion = preg_replace("/[^0-9]/", "", $version);
 
@@ -154,12 +154,13 @@ if ($folder) {
 ob_start();
 
 $ttl = 0;
+if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
+	$ttl = 0;
+}
+$ttl = 0;
 
 
 
-$app->route('GET /setup/*', function() use ($app){
-		$app->error("404");
-	});
 $app->route('GET /min/css/@filename', 'general->css_min', $ttl);
 $app->route('GET /min/css*', 'general->css_min', $ttl);
 $app->route('GET /min/js/@filename', 'general->js_min', $ttl);

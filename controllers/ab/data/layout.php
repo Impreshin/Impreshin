@@ -110,7 +110,8 @@ class layout extends data {
 				"c"=> "",
 
 			),
-			"colour" => ""
+			"colour" => "",
+			"colour_l" => ""
 		);
 
 
@@ -123,6 +124,7 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
+				$a['colour_l'] = strtolower($booking['colour']);
 				$a['colourSpot'] = $booking['colourSpot'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
@@ -152,6 +154,7 @@ class layout extends data {
 					"c"=> ($page['section_colour']) ? $page['section_colour'] : ""
 				),
 				"colour" => ($page['colour'])? $page['colour']:"",
+				"colour_l" => strtolower(($page['colour'])? $page['colour']:""),
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm'],
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
@@ -259,6 +262,7 @@ class layout extends data {
 
 			),
 			"colour" => "",
+			"colour_l" => "",
 			"percent"=>0,
 			"cm"=>0
 
@@ -281,6 +285,7 @@ class layout extends data {
 					"c"=> $page['section_colour']
 				),
 				"colour" => $page['colour'],
+				"colour_l" => strtolower($page['colour']),
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm']
 			);
@@ -295,6 +300,7 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
+				$a['colour_l'] = strtolower($booking['colour']);
 				$a['colourSpot'] = $booking['colourSpot'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
