@@ -9,7 +9,7 @@
 		</td>
 
 		<td style="width: 20px;">
-			<% if (this.current){ %>
+			<% if (this.current=='1'){ %>
 			<i class="icon-ok"></i>
 			<% } %>
 		</td>
