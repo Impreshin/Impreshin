@@ -93,7 +93,7 @@ class update {
 	}
 	static function db_backup($cfg,$append_file_name){
 
-		$filename = $cfg['backup'] . date("Y_m_d_H_i_s") . "_". $append_file_name. ".sql";
+		$filename = $cfg['backup'] . date("Y_m_d_H_i_s") . "_". $append_file_name. "_" . $cfg['git']['branch'] . ".sql";
 
 		$dbhost = $cfg['DB']['host'];
 		$dbuser = $cfg['DB']['username'];
