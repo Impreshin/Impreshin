@@ -41,6 +41,7 @@
 
 </head>
 <body>
+
 {% include "_nav_top.tmpl" %}
 {% if page['template'] %} {% include page['template'] %} {% endif %}
 
@@ -90,6 +91,30 @@
 		<div class="timer"></div>
 		<button class='btn primary ' style='margin-top: 20px; width: 190px;' id='keepalivebtn'>Keep me logged in</button>
 		<a class='btn  ' style='margin-top: 20px; margin-left: 10px; width: 92px;' href='/logout'>logout</a>
+	</div>
+</div>
+
+<div id="select-app" class='modal hide fade'>
+    <div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+        <h3>Switch Application</h3></div>
+    <div class='modal-body'>
+
+        <div id="apps-select">
+            <ul>
+                <li {% if _folder =='ui/ab/' %}class='active'{% endif %} ><a href="/ab/">AdBooker</a>
+                </li>
+                <li {% if _folder =='ui/nf/' %}class='active'{% endif %} ><a href="/nf/">NewsFiler</a>
+                </li>
+                <li {% if _folder =='ui/db/' %}class='active'{% endif %} ><a href="/db/">DistriBooker</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class='modal-footer'>
+
+    </div>
+
 	</div>
 </div>
 

@@ -44,7 +44,7 @@ $(document).ready(function () {
 		$(this).closest("li").addClass("active");
 	});
 
-	$(document).on('hide', '#details-modal', function () {
+	$(document).on('hide', '#ab-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
@@ -267,7 +267,7 @@ function getList(settings) {
 			}
 
 
-			if (!$("#details-modal").is(":visible")) {
+			if (!$("#ab-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

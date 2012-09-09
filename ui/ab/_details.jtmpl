@@ -291,7 +291,11 @@
 		<a <% if (this.material_file_filename) { %><% if (this.a.material_pane) { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" >
 			<% if (this.page){ %>
 			<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
+
 			<% } %>
+            <% if (this.material_production) { %>
+            <div class="g s " style="position: absolute; top: -18px; left: 0;"><% if (this.material_source=='1') { %><%= this.material_production %><% } else { %>Supplied<% } %></div>
+            <% } %>
 
 			<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
 				<% if (this.material_file_filename && this.a.material_pane) { %>
@@ -540,28 +544,28 @@
 <script type="text/javascript">
 
 
-	$(document).on("shown",'#details-modal', function () {
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
+	$(document).on("shown",'#ab-details-modal', function () {
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
 		if (!tab) tab = "details-pane-details";
 		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 		$('#' + tab + '', $details_modal).addClass("active");
-		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
 	});
-	$(document).on('show', '#details-modal .nav-tabs, #details-advert-size', function (e) {
+	$(document).on('show', '#ab-details-modal .nav-tabs, #details-advert-size', function (e) {
 		var target = e.target; // activated tab
 		var previous = e.relatedTarget; // previous tab
-		$("#details-modal .nav-tabs li.active").removeClass("active");
+		$("#ab-details-modal .nav-tabs li.active").removeClass("active");
 		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 
-		$("#details-modal .nav-tabs li a[href='"+href+"']").parent().addClass("active");
+		$("#ab-details-modal .nav-tabs li a[href='"+href+"']").parent().addClass("active");
 
 		$.bbq.pushState({"details-tab":pane});
-		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
 
 	});
-	$(document).on('hide', '#details-modal', function () {
+	$(document).on('hide', '#ab-details-modal', function () {
 		$.bbq.removeState("ID");
 		$("#record-list .record.active").removeClass("active");
 	});
@@ -740,7 +744,7 @@
 
 		$("#details-pane-logs .log-record-details").hide();
 		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
-		$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+		$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 
 	});
 	$(document).on('click', '#details-record-prev', function () {
@@ -777,7 +781,7 @@
 		} else {
 			$("#details-record-next").removeAttr("disabled");
 		}
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#details-modal');
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
 		if (!tab) tab = "details-pane-details";
 		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 		$('#' + tab + '', $details_modal).addClass("active");
@@ -795,13 +799,13 @@
 	}
 	function getDetails() {
 		var ID = $.bbq.getState("ID");
-		$("#details-modal").addClass("loading");
+		$("#ab-details-modal").addClass("loading");
 		for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
 		detailsRequest.push($.getJSON("/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
 			data = data['data'];
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-			$('#details-modal').data("data",data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+			$('#ab-details-modal').data("data",data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
 
 			if ($("#record-list:visible").length){
 
@@ -819,7 +823,7 @@
 
 
 
-			$("#details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+			$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 		}));
 
 	}
@@ -828,7 +832,7 @@ function set_upload(){
 		return false;
 	}
 
-	var data = $("#details-modal").data("data");
+	var data = $("#ab-details-modal").data("data");
 	var folder = data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/material/";
 
 
@@ -922,5 +926,5 @@ function set_upload(){
 	}
 }
 </script>
-<div class="modal hide fade" id="details-modal" data-show="false">
+<div class="modal hide fade" id="ab-details-modal" data-show="false">
 </div>

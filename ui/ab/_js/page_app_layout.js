@@ -96,7 +96,7 @@ $(document).ready(function () {
 
 
 
-	$(document).on('hide', '#details-modal', function () {
+	$(document).on('hide', '#ab-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
