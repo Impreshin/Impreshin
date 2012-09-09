@@ -125,6 +125,8 @@ class user {
 
 
 			$appClass = "\\models\\" . $app . "\\user_permissions";
+			
+
 			if ($result['su'] == '1') {
 
 				$permissions = $appClass::permissions();
@@ -138,6 +140,9 @@ class user {
 
 
 			}
+			
+			
+			
 			$permissions['records']['_nav'] = '0';
 			foreach ($permissions['records'] as $p) {
 				if ($p['page']) $permissions['records']['_nav'] = '1';
@@ -198,7 +203,7 @@ class user {
 		}
 
 
-
+test_array($result);
 
 		$return = $result;
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,

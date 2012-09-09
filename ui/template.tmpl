@@ -102,11 +102,11 @@
 
         <div id="apps-select">
             <ul>
-                <li {% if _folder =='ui/ab/' %}class='active'{% endif %} ><a href="/ab/">AdBooker</a>
+                <li class='{% if _folder =='ui/ab/' %}active{% endif %}' ><a href="/ab/">AdBooker</a>
                 </li>
-                <li {% if _folder =='ui/nf/' %}class='active'{% endif %} ><a href="/nf/">NewsFiler</a>
+                <li class='{% if _folder =='ui/nf/' %}active{% endif %}' ><a href="/nf/">NewsFiler</a>
                 </li>
-                <li {% if _folder =='ui/db/' %}class='active'{% endif %} ><a href="/db/">DistriBooker</a>
+               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a>-->
                 </li>
             </ul>
         </div>
