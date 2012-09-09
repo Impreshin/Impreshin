@@ -1,0 +1,140 @@
+<script type="text/x-jqote-template" id="template-list">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>" class="record <% if (!this.active){ %>g<% } %>">
+		<td class="">
+			<%= this.date_from %>
+		</td>
+		<td class="">
+			<%= this.date_to %>
+		</td>
+		<td style="width:80px;">
+			<% if (this.target){ %><%= this.target %> <% } %>
+		</td>
+		<td style="width:480px;" class="c">
+			<% if (this.locked=='1'){ %> <i class="icon-lock icon-d-grey"></i> <% } %>
+		</td>
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
+			<% if (this.currentPub=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
+		</td>
+
+
+	</tr>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+	<div class="scroll-pane scrolly" style="bottom: 85px;">
+
+		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+
+
+
+
+			<fieldset style="margin-top: 20px;">
+				<legend><% if (this.details.ID) { %>Edit<% } else { %>New<% } %></legend>
+
+				<div id="errorArea"></div>
+
+				<div class="control-group">
+					<label for="target" class="control-label">Target</label>
+
+					<div class="controls">
+						<div class="input-prepend">
+							<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+						<input type="text" id="target" name="target" class="span2" value="<% if (this.details.target) { %><%= this.details.target %><% } %>">
+
+						</div>
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<label for="date_from" class="control-label">Date From</label>
+
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" id="date_from" name="date_from" class="span2" value="<% if (this.details.date_from) { %><%= this.details.date_from %><% } %>">
+							<span class="add-on focustrigger"><i class="icon-calendar icon-d-grey"></i></span>
+						</div>
+
+
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="date_to" class="control-label">Date To</label>
+
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" id="date_to" name="date_to" class="span2" value="<% if (this.details.date_to) { %><%= this.details.date_to %><% } %>">
+							<span class="add-on focustrigger"><i class="icon-calendar icon-d-grey"></i></span>
+						</div>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Locked</label>
+
+					<div class="controls">
+						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="1" name="locked" <% if (this.details.locked=='1'){ %>checked="checked"<% } %> style="margin-top: 0; margin-right: 10px;">Admin set target, marketers cant edit this target
+						</label>
+
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="optionsCheckboxList" class="control-label">Publications</label>
+
+					<div class="controls highlighthovered">
+						<% for(var i in this.publications) { %>
+						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected=='1'){ %>checked="checked"<% } %> style="margin-top: 0; margin-right: 10px;"><%= this.publications[i].publication %>
+						</label> <% } %>
+
+
+					</div>
+				</div>
+
+
+
+			</fieldset>
+
+
+
+
+		</div>
+
+	</div>
+
+
+	<div id="form-bottom">
+		<div class="form-actions">
+			<div style="float:left; margin-left:0; padding-top: 3px;">
+				<% if (this.details.ID) { %>
+
+
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this record" data-position="above" id="btn-delete">
+					<i class="icon-trash icon-d-grey"></i>
+				</button>
+				<% } %>
+			</div>
+			<div style="float:right; margin-right: 10px;">
+
+				<% if (this.details.ID) { %>
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="New Record" data-position="above" id="btn-new">
+					<i class="icon-plus icon-d-grey"></i>
+				</button>
+				<% } %>
+				<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
+
+
+			</div>
+		</div>
+	</div>
+
+	]]>
+</script>
+

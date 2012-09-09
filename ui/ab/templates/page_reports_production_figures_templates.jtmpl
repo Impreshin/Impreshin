@@ -1,0 +1,3 @@
+{% include 'templates/_reports_figures_templates.jtmpl' %}
+{% include '_records.jtmpl' %}
+{% include '_details.jtmpl' %}

@@ -1,0 +1,17 @@
+
+
+#suggested_dates {
+	margin:0;
+	padding: 0;
+	list-style: none;
+}
+#suggested_dates td {
+	padding: 5px;
+
+}
+
+.ui-widget-content {
+	border-color: #e1e1e1;
+
+}
+

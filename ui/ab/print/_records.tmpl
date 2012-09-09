@@ -1,0 +1,86 @@
+<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+	{% for group in data['list'] %}
+	<tbody class="thead">
+	<tr class="heading" data-heading="<%= this.heading %>">
+		<th colspan="{{ settings['count']+1 }}">
+
+			<h3>{{ group['heading'] }}
+				<small>{{ group['count'] }} Records | {{ group['cm'] }} cm {% if group['totalCost'] %}| {{ group['totalCost']|raw }}{% endif %}</small>
+			</h3>
+
+
+		</th>
+
+	</tr>
+	<tr class="colheading">
+		<th></th>
+		{% for col in settings['col'] %}
+		<th {% if col['o'] %}data-col="{{ col['o'] }}" class="order-btn"{% endif %} {% if col['m'] %} style="min-width: {{ col['m'] }}px"{% endif %}>
+			{{ col['h']|raw }} {% if col['o'] %} <span class="indicator">&nbsp;*</span> {% endif %}
+		</th>
+		{% endfor %}
+	</tr>
+	</tbody>
+	<tbody>
+{% for row in group['records'] %}
+	<tr class="record ">
+		<th>{% if row['highlight'] %}&gt;{% endif %}</th>
+		{% for col in settings['col'] %}
+		<td {% if col['b'] %} class=" record-tick"{% endif %}>
+			{% if col['b'] %}
+				{% if row[col['c']] %}
+					 {% if col['c'] == "material_status" %}
+						{% if row['material_approved']=='1' %}
+							<img src="/ui/_images/icons/dark-tick.gif" alt="1">
+						{% else %}
+							<img src="/ui/_images/icons/grey-tick.gif" alt="1">
+						{% endif %}
+					{% else %}
+						<img src="/ui/_images/icons/dark-tick.gif" alt="1">
+					{% endif %}
+
+
+				{% endif %}
+			{% else %}
+
+				{% if col['c'] == "remark" %}
+					{% if row['remark'] %}
+						{% if row['remarkTypeLabelClass'] %}
+							<span class="label {{ row['remarkTypeLabelClass'] }}" title="{{ row['remarkType'] }}"></span>
+						{% else %}
+							<span style="padding:0 5px;"></span>
+						{% endif %}
+					{% endif %}
+				{% endif %}
+
+				{% if col['c'] in  ',account,percent_diff,accNum' %}
+
+				{% if col['c'] == "percent_diff" %}
+					{% if row['percent_diff'] != "0.00" %}
+						<span class="label {% if row['percent_diff']<0 %}label-success{% else %}label-important{% endif %}  "> {{ row['percent_diff'] }}% </span>
+					{% endif %}
+				{% endif %}
+				{% if col['c'] in ',account,accNum' %}
+					{% if row['labelClass'] %}
+						<span class="label {{ row['labelClass'] }}"> {{ row['accountStatus'] }}</span>
+					{% endif %}
+					{{ row[col['c']]|raw }}
+
+				{% endif %}
+				{% else %}
+					{% if row[col['c']] %}
+						{{ row[col['c']]|raw }}
+					{% endif %}
+
+
+				{% endif %}
+			{% endif %}
+
+		</td>
+		{% endfor %}
+
+	</tr>
+{% endfor %}
+	</tbody>
+	{% endfor %}
+</table>

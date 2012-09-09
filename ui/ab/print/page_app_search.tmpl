@@ -1,0 +1,20 @@
+<h1>Search List
+	<small> - {{_user['publication']['publication'] }} </small>
+</h1>
+<div style="height: 10px;"></div>
+<em>Printed By:</em>
+{{ _user['fullName'] }} | <em>Printed Date: </em>
+{{ "now"|date("d M Y H:i:s") }}
+
+<div style="height: 10px;"></div>
+<div>
+	Records: <strong>{{ data['stats']['records']|raw }} </strong> |
+	 Search: <strong>{{ settings['search']['search']|raw }} </strong>
+	| Dates: <strong>{{ settings['search']['dates']|raw }}</strong>
+</div>
+<div style="height: 10px;"></div>
+
+
+
+
+{% include '_records.tmpl' %}
