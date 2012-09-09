@@ -291,7 +291,9 @@
 		<a <% if (this.material_file_filename) { %><% if (this.a.material_pane) { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" >
 			<% if (this.page){ %>
 			<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
-			<% } %>
+			<% } %> <% if (this.material_production) { %>
+    <div class="g s " style="position: absolute; top: -18px; left: 0;"><% if (this.material_source=='1') { %><%= this.material_production %><% } else { %>Supplied<% } %></div>
+    <% } %>
 
 			<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
 				<% if (this.material_file_filename && this.a.material_pane) { %>
