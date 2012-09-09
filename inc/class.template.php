@@ -10,10 +10,7 @@ class template {
 	function __construct($template, $folder = "") {
 		$this->config['cache_dir'] = F3::get('TEMP');
 
-		$ui = ($folder) ? $folder : F3::get('UI');
-
-		$this->config['template_dir'] = $ui;
-		$this->vars['folder'] = $ui;
+		$this->vars['folder'] = $folder;
 
 		$this->template = $template;
 
@@ -41,7 +38,7 @@ class template {
 		unset($cfg['DB']);
 
 
-
+		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
 
 		$publications = $user['publications'];
 		$publication = $user['publication'];
@@ -105,11 +102,13 @@ class template {
 	}
 
 	public function render_template() {
-		$loader = new Twig_Loader_Filesystem($this->config['template_dir']);
+		$loader = new Twig_Loader_Filesystem(array("ui/",$this->vars['folder']));
 		$twig = new Twig_Environment($loader, array(
 			//'cache' => $this->config['cache_dir'],
 		));
 
+
+		//test_array($this->vars);
 
 		return $twig->render($this->template, $this->vars);
 

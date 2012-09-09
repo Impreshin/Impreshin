@@ -29,7 +29,7 @@ class controller_app_search {
 
 			//test_array($settings);
 
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "records",
 			"sub_section"=> "search",
@@ -105,7 +105,7 @@ class controller_app_search {
 
 
 
-		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl = new \template("template.tmpl", "ui/ab/print/");
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "search",

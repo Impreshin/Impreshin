@@ -23,7 +23,7 @@ class controller_app_overview {
 //test_array($pages);
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "overview",
 			"sub_section"=> "view",

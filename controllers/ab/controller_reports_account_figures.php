@@ -55,7 +55,7 @@ class controller_reports_account_figures {
 //test_array($settings);
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "reports",
 			"sub_section"=> "account_figures",
