@@ -258,6 +258,13 @@ function last_page(){
 	$st = implode(",", $st);
 	$st = F3::get("DB")->exec("SELECT $st ");
 	if (count($st))$st = $st[0];
+
+	foreach ($cfg['apps'] as $a) {
+		if (substr($st[$a],0,3)!="/$a"){
+			$st[$a] = "/$a";
+		}
+	}
+
 	F3::set("last_pages", $st);
 
 	//test_array(F3::get("last_pages"));
