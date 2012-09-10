@@ -78,11 +78,7 @@ class user_settings extends \models\user {
 		$t->save();
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__ ) ), func_get_args());
 		return $uID;
 	}
 

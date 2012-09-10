@@ -145,8 +145,8 @@ $app->set('user', $user);
 if ($folder) {
 
 	$settingsmodel = "\\models\\$folder\\settings";
-	$app->set('settings', $settingsmodel::getSettings($user['permissions']));
-	$app->set('defaults', $settingsmodel::getDefaults());
+	$app->set('settings', $settingsmodel::settings($user['permissions']));
+	$app->set('defaults', $settingsmodel::defaults());
 
 
 }
