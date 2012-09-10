@@ -29,7 +29,7 @@ class update {
 		$result = mysql_query($sql, $link) or die(mysql_error());
 		$row = mysql_fetch_assoc($result);
 
-		$v = $row['value'];
+		$v = $row['value']*1;
 
 		include_once("db_update.php");
 
@@ -45,7 +45,7 @@ class update {
 			$nsql = array();
 
 			foreach ($sql as $version=> $exec) {
-
+				$version = $version * 1;
 				if ($version > $v) {
 					foreach ($exec as $t) {
 						$nsql[] = $t;
