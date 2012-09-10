@@ -9,7 +9,7 @@ class controller_screenshots {
 
 	}
 	function page(){
-		$tmpl = new \template("template.tmpl", "ui/front/");
+		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
 			"section"    => "screenshots",
 			"sub_section"=> "form",

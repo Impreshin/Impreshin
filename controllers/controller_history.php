@@ -14,7 +14,7 @@ class controller_history {
 
 
 
-		$tmpl = new \template("template.tmpl", "ui/front/");
+		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
 			"section"    => "history",
 			"sub_section"=> "form",

@@ -7,10 +7,11 @@
 class template {
 	private $config = array(), $vars = array();
 
-	function __construct($template, $folder = "") {
+	function __construct($template, $folder = "", $strictfolder = false) {
 		$this->config['cache_dir'] = F3::get('TEMP');
 
 		$this->vars['folder'] = $folder;
+		$this->config['strictfolder'] = $strictfolder;
 
 		$this->template = $template;
 
@@ -104,7 +105,16 @@ class template {
 	}
 
 	public function render_template() {
-		$loader = new Twig_Loader_Filesystem(array("ui/",$this->vars['folder']));
+
+		$folder = array(
+			"ui/",
+			$this->vars['folder']
+		);
+		if ($this->config['strictfolder']){
+			$folder = $this->vars['folder'];
+		}
+
+		$loader = new Twig_Loader_Filesystem($folder);
 		$twig = new Twig_Environment($loader, array(
 			//'cache' => $this->config['cache_dir'],
 		));

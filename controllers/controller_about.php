@@ -9,7 +9,7 @@ class controller_about {
 
 	}
 	function page(){
-		$tmpl = new \template("template.tmpl", "ui/front/");
+		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
 			"section"    => "about",
 			"template"   => "page_about",
