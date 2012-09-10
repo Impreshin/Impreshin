@@ -102,11 +102,11 @@
 
         <div id="apps-select">
             <ul>
-                {% if 'ab' in _cfg['apps']|keys %}
+                {% if 'ab' in _cfg['apps'] %}
                 <li class='{% if _folder =='ui/ab/' %}active{% endif %}' ><a href="{{ _last_pages['ab'] }}">AdBooker</a>
                 </li>
                 {% endif %}
-                {% if 'nf' in _cfg['apps']|keys %}
+                {% if 'nf' in _cfg['apps'] %}
                 <li class='{% if _folder =='ui/nf/' %}active{% endif %}' ><a href="{{ _last_pages['nf'] }}">NewsFiler</a>
                 </li>
                 {% endif %}
