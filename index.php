@@ -45,7 +45,7 @@ require_once('inc/class.store.php');
 
 
 
-$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/');
+$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 $app->set('CACHE', TRUE);
 $app->set('DEBUG', 2);
@@ -211,40 +211,58 @@ $app->route('GET|POST /about', 'controllers\controller_about->page');
 $app->route('GET /data/keepalive', function() use ($user){
 
 
-		$last_activity =  new DateTime($user['last_activity']);
-		$now = new DateTime('now');
+	$last_activity =  new DateTime($user['last_activity']);
+	$now = new DateTime('now');
 
-		$interval = $last_activity->diff($now);
-		$diff = (($interval->h*60)*60)+ ($interval->i * 60)+ ($interval->s);
+	$interval = $last_activity->diff($now);
+	$diff = (($interval->h*60)*60)+ ($interval->i * 60)+ ($interval->s);
 
-		//$interval['diff']=$diff;
+	//$interval['diff']=$diff;
 
 
 
-		if (isset($_GET['keepalive'])&& $_GET['keepalive']){
-			F3::get("DB")->exec("UPDATE global_users SET last_activity = now() WHERE ID = '" . $user['ID'] . "'");
-			$diff = 0;
-			// upadate the last_activity
-		}
-		$t = array(
-			"ID"=>$user['ID'],
-			"idle"=>$diff
-		);
+	if (isset($_GET['keepalive'])&& $_GET['keepalive']){
+		F3::get("DB")->exec("UPDATE global_users SET last_activity = now() WHERE ID = '" . $user['ID'] . "'");
+		$diff = 0;
+		// upadate the last_activity
+	}
+	$t = array(
+		"ID"=>$user['ID'],
+		"idle"=>$diff
+	);
 
-		test_array($t);
+	test_array($t);
 
-	});
+});
 
 //include_once("/controllers/ab/_data.php");
 // --------------------------------------------------------------------------------
 
-function last_page(){
 
+
+function last_page(){
 	$user = F3::get("user");
 	F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+
+	$app = F3::get("app");
+	$table = $app."_users_settings";
+	F3::get("DB")->exec("UPDATE $table SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE uID = '" . $user['ID'] . "'");
+
+
+	$st = array();
+	$uID = $user['ID'];
+	$cfg = F3::get("cfg");
+	foreach ($cfg['apps'] as $a) {
+		$st[] = "COALESCE((SELECT last_page FROM " . $a . "_users_settings WHERE uID = '$uID'),'/$a') as $a";
+	}
+	$st = implode(",", $st);
+	$st = F3::get("DB")->exec("SELECT $st ");
+	if (count($st))$st = $st[0];
+	F3::set("last_pages", $st);
+
+	//test_array(F3::get("last_pages"));
 }
 function access(){
-
 	$user = F3::get("user");
 	if (!$user['ID']) F3::reroute("/login");
 }
@@ -356,6 +374,11 @@ $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 );
 
 
+$app->route('GET /nf', 'access; last_page; controllers\nf\controller_app_provisional->page');
+
+
+
+
 
 $app->route('GET /php', function() {
 		phpinfo();
@@ -399,7 +422,8 @@ $GLOBALS["output"]['page'] = array(
 );
 
 if ($folder){
-	$GLOBALS["output"]['notifications'] = \models\ab\user_notifications::show();
+	$notificationmodel = "\\models\\$folder\\user_notifications";
+	$GLOBALS["output"]['notifications'] = $notificationmodel::show();
 }
 
 
