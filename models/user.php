@@ -45,8 +45,13 @@ class user {
 		$defaults = $settingsClass::defaults();
 		if (count($data)) {
 			$data = $data[0];
-			$user_settings = unserialize($data['settings']);
-			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
+			$user_settings = @unserialize($data['settings']);
+			if ($user_settings){
+				$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
+			} else {
+				$user_settings = $defaults;
+			}
+
 			$data['settings'] = $user_settings;
 
 		} else {

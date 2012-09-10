@@ -381,7 +381,20 @@ $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 );
 
 
+// --------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 $app->route('GET /nf', 'access; last_page; controllers\nf\controller_app_provisional->page');
+$app->route('GET /nf/provisional', 'access; last_page; controllers\nf\controller_app_provisional->page');
+$app->route('GET /nf/production', 'access; last_page; controllers\nf\controller_app_production->page');
 
 
 
