@@ -39,7 +39,7 @@ class user {
 	private static function appSettings($uID,$app, $pID){
 
 		$table = $app . "_users_settings";
-		$data = F3::get("DB")->exec("SELECT *, (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') as cID FROM $table WHERE uID = '$uID'");
+		$data = F3::get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
 		$settingsClass = "\\models\\" . $app . "\\settings";
 		$permissionsClass = "\\models\\" . $app . "\\user_permissions";
 		$defaults = $settingsClass::defaults();
@@ -58,27 +58,30 @@ class user {
 			$data = array(
 				"settings"     => $defaults,
 				"pID"          => "",
-				"cID"          => "",
 				"last_activity"=> ""
 			);
 		}
 		$return = array(
 			"settings"     => $data['settings'],
-			"pID"          => $data['pID'],
-			"cID"          => $data['cID'],
 			"last_activity"=> $data['last_activity'],
-			"access"=>0,
+			"access"=>false,
 			"permissions"=> array(),
 			"extra"=>array()
 		);
 
-		$cID = $data['cID'];
 
 
-		$appstuff = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = '$cID' ORDER BY ID DESC LIMIT 0,1");
+
+		$appstuff = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') ORDER BY ID DESC LIMIT 0,1");
+
+
+
+
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
-			$return['access'] = $appstuff[$app];
+
+		//	test_array($appstuff);
+			$return['access'] = ($appstuff[$app]=='1')?true:false;
 			$return['permissions']= $appstuff[$app.'_permissions'];
 
 
@@ -152,7 +155,7 @@ class user {
 			if ($result['su'] == '1') {
 				$publications = $appPublications::getAll("", "publication ASC");
 			} else {
-				$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "'", "publication ASC");
+				$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "' AND COALESCE((SELECT nf FROM global_users_company WHERE global_users_company.cID = global_publications.cID AND global_users_company.uID = nf_users_pub.uID ),0) = '1'", "publication ASC");
 			}
 
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
@@ -160,7 +163,9 @@ class user {
 
 			$pubstr = array();
 			$publication = "";
-			foreach ($publications AS $pub) $pubstr[] = $pub["ID"];
+			foreach ($publications AS $pub) {
+				$pubstr[] = $pub["ID"];
+			}
 
 			if (in_array($lastpID, $pubstr)) {
 				$pID = $lastpID;
@@ -179,13 +184,14 @@ class user {
 			$appSettings = self::appSettings($uID, $app, $pID);
 
 
+			test_array($publications); 
 
 			$result['access'] = $appSettings['access'];
 			$result['settings'] = $appSettings['settings'];
 
-			//test_array($result);
-			if ((isset($appSettings['access']) && !$appSettings['access']) && $result['su']!='1') {
-				F3::reroute("/noaccess/?app=$app&cID=". $appSettings['cID']);
+
+			if (!$appSettings['access'] && $result['su']!='1') {
+				F3::reroute("/noaccess/?app=$app&cID=". $publication['cID']);
 			}
 
 			if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) $result['ab_marketerID'] = $appSettings['extra']['ab_marketerID'];

@@ -51,7 +51,7 @@ class publications {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT DISTINCT global_publications.*, ab_users_pub.uID
+			SELECT DISTINCT global_publications.*, ab_users_pub.uID, COALESCE((SELECT ab FROM global_users_company WHERE global_users_company.cID = global_publications.cID AND global_users_company.uID = ab_users_pub.uID ),0) as access
 			FROM global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID
 			$where
 			$orderby
