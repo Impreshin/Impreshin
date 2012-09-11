@@ -155,7 +155,7 @@ class user {
 			if ($result['su'] == '1') {
 				$publications = $appPublications::getAll("", "publication ASC");
 			} else {
-				$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "' AND COALESCE((SELECT nf FROM global_users_company WHERE global_users_company.cID = global_publications.cID AND global_users_company.uID = nf_users_pub.uID ),0) = '1'", "publication ASC");
+				$publications = $appPublications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "publication ASC");
 			}
 
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
@@ -184,7 +184,7 @@ class user {
 			$appSettings = self::appSettings($uID, $app, $pID);
 
 
-			test_array($publications); 
+			//test_array($publications);
 
 			$result['access'] = $appSettings['access'];
 			$result['settings'] = $appSettings['settings'];
