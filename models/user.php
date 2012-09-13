@@ -296,7 +296,7 @@ class user {
 		}
 
 
-		// test_array($result);
+		//test_array($result);
 
 		$return = $result;
 		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args());

@@ -117,7 +117,7 @@ class admin_users extends data {
 		if (!$details['ID']){
 			$userPublications = array();
 		} else {
-			$userPublications = models\publications::getAll_user("uID='" . $details['ID'] . "'", "publication ASC");
+			$userPublications = models\publications::getAll_user("ab_users_pub.uID='" . $details['ID'] . "'", "publication ASC");
 		}
 
 

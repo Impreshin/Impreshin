@@ -31,8 +31,11 @@
                         <li class=" {% if page['section'] == "production" %} active {% endif %}">
                             <a  href="/nf/production">Production</a>
                         </li>
-                        <li class="dropdown {% if page['section'] == "newsbook" %} active {% endif %}">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">NewsBook <b class="caret"></b></a>
+                        <li class=" {% if page['section'] == "production" %} active {% endif %}">
+                            <a  href="/nf/layout">Layout</a>
+                        </li>
+                        <li class="{% if page['section'] == "newsbook" %} active {% endif %}">
+                            <a href="#">NewsBook</a>
                         </li>
 
 
@@ -91,27 +94,24 @@
 
 						<li class="dropdown" style="padding-left: 0; padding-right: 0; " id="pubSelectID-container"  >
                            {% if _user['publications']|length < 8 %}
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
-								<div id="nav-pub-list">
-									{{  _user['publication']['publication'] }}<b class="caret"></b>
-								</div>
-							</a>
-
-
-
-							<ul class="dropdown-menu">
-								{% for row in _user['publications'] %}
-								<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
-								{% endfor %}
-							</ul>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+                                    <div id="nav-pub-list">
+                                        {{  _user['publication']['publication'] }}<b class="caret"></b>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for row in _user['publications'] %}
+                                    <li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+                                    {% endfor %}
+                                </ul>
                            {% else %}
-                            <select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
-                                {% for row in _user['publications'] %}
-                                <option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
-                                {% endfor %}
+                                <select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+                                    {% for row in _user['publications'] %}
+                                    <option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
+                                    {% endfor %}
 
-                            </select>
-{% endif %}
+                                </select>
+                            {% endif %}
 
 
 						</li>
