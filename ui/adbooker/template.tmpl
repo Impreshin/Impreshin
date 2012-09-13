@@ -503,7 +503,7 @@
 			<% } %>
 		</span>
 	<% } %>
-	<% if (this.marketer && this.marketer.next_targets) { %>
+	<% if (this.marketer && this.marketer.next_targets && this.marketer.next_targets.target) { %>
 		<span <% if (this.marketer.next_targets) { %>title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>" <% } %>>
 			Marketer -
 			<span>&nbsp;Total: <%= this.marketer.next_targets.done %> [<%= this.marketer.next_targets.records %>]
