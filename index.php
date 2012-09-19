@@ -473,7 +473,8 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 
 		echo '<style>';
-		echo 'body { font-size: 13px; }';
+		echo 'body { font-size: 12px; }';
+		echo 'h1, h2, h3, h4, h5 { background-color:  rgba(0, 0, 0, 0.2); }';
 		echo 'del { background-color:  rgba(255, 0, 0, 0.2);}';
 		echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
 		echo 'li { border-bottom: 1px dotted #ccc; margin-bottom: 5px;  padding-bottom: 10px; }';
