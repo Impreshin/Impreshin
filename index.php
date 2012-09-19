@@ -408,6 +408,7 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 		$stage = (isset($_REQUEST['stage']))? $_REQUEST['stage']:"";
 		$heading = (isset($_REQUEST['heading']))? $_REQUEST['heading']:"";
 $postedCopy = "";
+		$percent_t = "";
 		$a = new Axon("test_articles");
 		$a->load("ID='$ID'");
 
@@ -484,6 +485,11 @@ $postedCopy = "";
 			$postedCopy = getOriginal($ID);
 		}
 
+		if ($percent_t==""){
+			$percent_o = F3::scrub($postedCopy['article']);
+			$percent_a = F3::scrub($old);
+			$percent_t = s_text::diff($percent_o, $percent_a, " ");
+		}
 
 
 
@@ -525,7 +531,7 @@ $postedCopy = "";
 			echo '</fieldset>';
 			echo '<small>by '.$latest['authorName'].'</small><br>';
 			echo '<small>Last change by '.$latest['fullName'].'</small><br>';
-			echo '<small>Total Percent Change '. $a->percent.'</small>';
+			echo '<small>Total Percent Change '. $percent_t['stats']['percent'].'</small>';
 
 			$edits = getChain($ID);
 
