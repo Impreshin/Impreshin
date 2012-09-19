@@ -407,12 +407,13 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 		$uID = (isset($_REQUEST['uID']))? $_REQUEST['uID']:"";
 		$stage = (isset($_REQUEST['stage']))? $_REQUEST['stage']:"";
 		$heading = (isset($_REQUEST['heading']))? $_REQUEST['heading']:"";
-
+$postedCopy = "";
 		$a = new Axon("test_articles");
 		$a->load("ID='$ID'");
 
 		$latest = getLatest($ID);
 		$old = $latest['article'];
+
 
 
 		if ($new!="" && $uID!="" && $stage!=""){
@@ -444,6 +445,10 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 
 
+
+
+
+
 				$patch ="";
 
 
@@ -451,6 +456,17 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 					$diff = s_text::diff($new, $old, "");
 					$patch = $diff['patch'];
 					F3::get("DB")->exec("INSERT INTO test_revisions_edits (aID,uID,patch) VALUES (:aID,:uID,:patch);", array(":aID"  => $ID,":uID"  => $uID, ":patch"=> $patch ));
+
+
+					$postedCopy = getOriginal($ID);
+					$percent_o = F3::scrub($postedCopy['article']);
+					$percent_a = F3::scrub($new);
+					$percent_t = s_text::diff($percent_o, $percent_a, " ");
+
+					$a->percent = $percent_t['stats']['percent'];
+					$a->save();
+
+
 				}
 
 			//
@@ -463,6 +479,11 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 
 		}
+
+		if ($postedCopy==""){
+			$postedCopy = getOriginal($ID);
+		}
+
 
 
 
@@ -508,7 +529,7 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 			$edits = getChain($ID);
 
 			echo '<h3>Origional</h3><fieldset><legend>The sbmitted copy (latest under drafts)</legend>';
-			echo $edits['origional'];
+			echo $postedCopy['article'];
 
 
 
@@ -516,7 +537,8 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 			$stages = F3::get("DB")->exec("SELECT * FROM test_revisions WHERE aID = '$ID' ORDER BY stage ASC");
 			echo '<table style="width: 100%;"><tr><th width=20%>Stage</th><th width=80%>changes</th></tr>';
 
-			$laststage = $edits['origional'];
+
+			$laststage = $postedCopy['article'];
 			foreach ($stages as $stage) {
 
 				$diff = percentDiff($laststage, $stage['article'], true);
@@ -615,6 +637,19 @@ echo "<p>&nbsp; </p><hr><p>&nbsp; </p>";
 
 		exit();
 });
+function getOriginal($ID){
+	$latest = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =test_revisions.uID ) as fullName, (SELECT fullName FROM global_users WHERE global_users.ID =(SELECT uID FROM test_articles WHERE test_articles.ID = '$ID') ) as authorName FROM test_revisions WHERE aID = '$ID' AND stage = '1' ORDER BY datein DESC");
+	$return = array("ID"      => "",
+	                "article" => "",
+	                'uID'     => "",
+	                'fullName'=> "",
+	                'stage'   => "1"
+	);
+	if (count($latest)) {
+		$return = $latest[0];
+	}
+	return $return;
+}
 function getLatest($ID){
 	$latest = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =test_revisions.uID ) as fullName, (SELECT fullName FROM global_users WHERE global_users.ID =(SELECT uID FROM test_articles WHERE test_articles.ID = '$ID') ) as authorName FROM test_revisions WHERE aID = '$ID' ORDER BY datein DESC");
 	$return = array("ID"=>"","article"=>"",'uID'=>"",'fullName'=>"",'stage'=>"1");
@@ -661,7 +696,6 @@ function getChain($ID){
 
 	}
 
-	$return['origional'] = $was;
 
 	return $return;
 
