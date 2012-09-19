@@ -3,6 +3,8 @@
 
 date_default_timezone_set('Africa/Johannesburg');
 setlocale(LC_MONETARY, 'en_ZA');
+ini_set('memory_limit', '256M');
+
 
 $GLOBALS["models"] = array();
 $GLOBALS["output"] = array();
@@ -24,6 +26,7 @@ $pageExecute = new timer(true);
 
 require_once('inc/functions.php');
 require_once('inc/class.pagination.php');
+require_once('inc/simple_html_dom.php');
 //test_array(array("HTTP_HOST"  => $_SERVER['HTTP_HOST'], "REQUEST_URI"=> $_SERVER['REQUEST_URI']));
 
 
@@ -48,7 +51,7 @@ require_once('inc/class.store.php');
 $app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 $app->set('CACHE', TRUE);
-$app->set('DEBUG', 2);
+$app->set('DEBUG', 3);
 
 $app->set('EXTEND', TRUE);
 $app->set('UI', 'ui/');
@@ -235,7 +238,6 @@ $app->route('GET /data/keepalive', function() use ($user){
 
 });
 
-//include_once("/controllers/ab/_data.php");
 // --------------------------------------------------------------------------------
 
 
@@ -381,13 +383,11 @@ $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 );
 
 
+
+
+
+
 // --------------------------------------------------------------------------------
-
-
-
-
-
-
 
 
 
@@ -395,6 +395,388 @@ $app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
 $app->route('GET /nf', 'access; last_page; controllers\nf\controller_app_provisional->page');
 $app->route('GET /nf/provisional', 'access; last_page; controllers\nf\controller_app_provisional->page');
 $app->route('GET /nf/production', 'access; last_page; controllers\nf\controller_app_production->page');
+
+$app->route('GET|POST /nf/test', function () use ($app) {
+	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
+	$users = F3::get("DB")->sql("SELECT * FROM global_users");
+
+		$ID = (isset($_GET['ID']))?$_GET['ID']:"";
+		$new = (isset($_REQUEST['article']))? $_REQUEST['article']:"";
+		$uID = (isset($_REQUEST['uID']))? $_REQUEST['uID']:"";
+		$stage = (isset($_REQUEST['stage']))? $_REQUEST['stage']:"";
+		$heading = (isset($_REQUEST['heading']))? $_REQUEST['heading']:"";
+
+		$a = new Axon("test_articles");
+		$a->load("ID='$ID'");
+
+		$latest = getLatest($ID);
+		$old = $latest['article'];
+
+
+		if ($new!="" && $uID!="" && $stage!=""){
+
+			if ($a->dry()) {
+				$a->uID = $uID;
+				$a->percent = 0.00;
+				$a->heading = $heading;
+				$a->stage = $stage;
+				$a->save();
+				$ID = $a->_id;
+			}
+
+
+			$b = new Axon("test_revisions");
+			$b = new Axon("test_revisions");
+			$b->load("aID='$ID' and stage='$stage'");
+
+			$b->aID = $ID;
+			$b->uID = $uID;
+			$b->stage = $stage;
+			$b->article = $new;
+			$b->datein = date("Y-m-d H:i:s");
+			$b->save();
+
+
+
+
+
+
+
+
+				$patch ="";
+
+
+				if ($old && ($old != $new)){
+					$diff = s_text::diff($new, $old, "");
+					$patch = $diff['patch'];
+					F3::get("DB")->exec("INSERT INTO test_revisions_edits (aID,uID,patch) VALUES (:aID,:uID,:patch);", array(":aID"  => $ID,":uID"  => $uID, ":patch"=> $patch ));
+				}
+
+			//
+
+
+				$app->reroute("/nf/test/?ID=$ID");
+
+
+
+
+
+		}
+
+
+
+
+
+
+
+
+
+		echo '<style>';
+		echo 'body { font-size: 13px; }';
+		echo 'del { background-color:  rgba(255, 0, 0, 0.2);}';
+		echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
+		echo 'li { border-bottom: 1px dotted #ccc; margin-bottom: 5px;  padding-bottom: 10px; }';
+		echo 'th { text-align: left; border-bottom: 1px dotted #ccc;}';
+		echo 'th, td { border-right: 1px dotted #ccc; }';
+		echo '#article { width: 100%; height: 200px; }';
+		echo '</style>';
+
+		$records = F3::get("DB")->sql("SELECT * FROM test_articles");
+
+		if ($a->dry()){
+			echo '<table width="100%"><tr><th>Heading</th></tr>';
+			foreach ($records as $record) {
+				echo '<tr>';
+				echo '<td><a href="?ID=' . $record['ID'] . '">';
+				echo $record['heading'];
+				echo '</a></td>';
+				echo '</tr>';
+			}
+			echo '</table>';
+		} else {
+			echo '<a href="?ID=">Back</a>';
+
+			echo '<h1>' . $a->heading . '</h1><fieldset>';
+			echo $old;
+			echo '</fieldset>';
+			echo '<small>by '.$latest['authorName'].'</small><br>';
+			echo '<small>Last change by '.$latest['fullName'].'</small>';
+
+			$edits = getChain($ID);
+
+			echo '<h3>Origional</h3><fieldset>';
+			echo $edits['origional'];
+
+
+
+
+			echo '</fieldset><h3>Stages</h3>';
+			$stages = F3::get("DB")->exec("SELECT * FROM test_revisions WHERE aID = '$ID' ORDER BY stage ASC");
+			echo '<table style="width: 100%;"><tr><th width=20%>Stage</th><th width=20%>changes</th><th>stats</th></tr>';
+
+			$laststage = $edits['origional'];
+			foreach ($stages as $stage) {
+
+				$diff = percentDiff($laststage, $stage['article'], true);
+				$laststage = $stage['article'];
+				echo '<tr><td>';
+				echo $stage['stage'];
+				echo '</td><td>';
+				echo $diff['html'];
+				echo '</td><td>';
+				echo '[ +' . $diff['stats']['added'] . "  -" . $diff['stats']['removed'] . " ] &nbsp; &nbsp;" . $diff['stats']['percent'] . '% ';
+				echo '</td></tr>';
+
+			}
+			echo '</table>';
+			echo '<h3>Edits</h3>';
+
+			echo '<table style="width: 100%;"><tr><th width=20%>Details</th><th width=20%>Was</th><th width=20%>became</th><th width=20%>changes</th><th>stats</th></tr>';
+
+
+
+			foreach ($edits['edits'] as $edit) {
+				
+
+				echo '<tr><td>';
+				echo $edit['datein']. " - ". $edit['fullName'];
+				echo '</td><td>';
+
+				echo $edit['was'];
+				echo '</td><td>';
+				echo $edit['became'];
+				echo '</td><td>';
+				echo $edit['html'];
+				echo '</td><td>';
+				echo '[ +' . $edit['stats']['added'] . "  -" . $edit['stats']['removed']. " ] &nbsp; &nbsp;" . $edit['stats']['percent'] . '% ' ;
+				echo '</td></tr>';
+
+
+			}
+
+
+
+			echo '</table>';
+
+
+		}
+
+echo "<p>&nbsp; </p><hr><p>&nbsp; </p>";
+
+
+		echo "<form action='/nf/test?ID=$ID' method='post'>";
+
+		echo '<input type="text" name="heading" id="heading" style="width: 100%;" placeholder="Heading" value="'.$a->heading.'" /> ';
+
+		echo "<textarea id='article' name='article' placeholder='Article'>$old</textarea>";
+
+		$selected = "";
+		if ($latest['stage']=='1'){
+			$selected = "checked='checked'";
+		}
+		echo '<label> Draft<input type="radio" name="stage" id="stage_1" ' . $selected . ' value="1"></label>| ';
+		if (!$a->dry()){
+			$selected = "";
+			if ($latest['stage'] == '2') {
+				$selected = "checked='checked'";
+			}
+			echo '<label> sub<input type="radio" name="stage" ' . $selected . ' id="stage_2" value="2"></label>| ';
+			$selected = "";
+			if ($latest['stage'] == '3') {
+				$selected = "checked='checked'";
+			}
+			echo '<label> proof<input type="radio" name="stage" ' . $selected . ' id="stage_3" value="3"></label>| ';
+			$selected = "";
+			if ($latest['stage']== '4') {
+				$selected = "checked='checked'";
+			}
+			echo '<label> ready<input type="radio" name="stage" '.$selected.' id="stage_4" value="4"></label>| ';
+		}
+
+
+		echo '<select id="uID" name="uID"> ';
+		foreach ($users as $user){
+
+			$selected = "";
+			if ($user['ID']== $latest['uID']){
+				$selected = "selected='selected'";
+			}
+
+			echo '<option value="'.$user['ID'].'" '.$selected.'>' . $user['fullName'] . '</option>';
+		}
+		echo '</select>';
+		echo "<button type='submit'>save</button> ";
+		echo "</form>";
+
+		exit();
+});
+function getLatest($ID){
+	$latest = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =test_revisions.uID ) as fullName, (SELECT fullName FROM global_users WHERE global_users.ID =(SELECT uID FROM test_articles WHERE test_articles.ID = '$ID') ) as authorName FROM test_revisions WHERE aID = '$ID' ORDER BY datein DESC");
+	$return = array("ID"=>"","article"=>"",'uID'=>"",'fullName'=>"",'stage'=>"1");
+	if (count($latest)){
+		$return = $latest[0];
+	}
+	return $return;
+}
+function getChain($ID){
+	$latest = getLatest($ID);
+	$article = $latest['article'];
+
+	$edits = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =test_revisions_edits.uID ) as fullName FROM test_revisions_edits WHERE aID = '$ID' ORDER BY datein DESC");
+
+	$return = array(
+		"latest"=> $latest,
+		"origional"=>"",
+		"edits"=> array()
+	);
+	$was = $article;
+
+
+	foreach ($edits as $revision) {
+		$became = $was;
+		$was = s_text::patch($became, $revision['patch'], false);
+
+		$dif = percentDiff($was, $became, true);
+
+		$return['edits'][] = array(
+			"datein"   => $revision['datein'],
+			"fullName"   => $revision['fullName'],
+			"was"   => $was,
+			"became"=> $became,
+			"patch" => htmlentities($revision['patch']),
+			"html"  => $dif['html'],
+			"stats" => array(
+				"percent"=> $dif['stats']['percent'],
+				"added"  => $dif['stats']['added'],
+				"removed"=> $dif['stats']['removed']
+			)
+		);
+
+
+
+	}
+
+	$return['origional'] = $was;
+
+	return $return;
+
+
+
+}
+
+
+
+$app->route('GET|POST /nf/import12345', function () use ($app) {
+
+		if (isLocal()){
+
+
+			/*
+		 of: 0
+		 show
+		 */
+
+			$records_show = 30;
+			$offset = isset($_REQUEST['offset'])? $_REQUEST['offset']:0;
+			$newoffset = $offset + 1;
+
+			$start_offset = $offset * $records_show;
+
+
+
+
+
+			$DB = new DB('mysql:host=localhost;dbname=apps', 'william', 'stars');
+			//$DB->sql("TRUNCATE TABLE apps.nf_articles_revisions");
+
+			echo '<style>';
+			echo 'body { font-size: 13px; }';
+			echo 'del { background-color:  rgba(255, 0, 0, 0.2);}';
+			echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
+			echo '</style>';
+
+			$records = $DB->sql("SELECT * FROM apps.nf_articles ORDER BY ID ASC LIMIT $start_offset,$records_show");
+			echo "showing: (".count($records).") | $start_offset,$records_show<hr> ";
+			if (!count($records)) {
+				echo "DONE";
+				exit();
+			};
+
+			foreach ($records as $record){
+
+
+
+				$ID = $record['ID'];
+				$o = $record['article_orig'];
+				$a = $record['article'];
+				$s = $record['synopsis'];
+				$uID = $record['authorID'];
+				$lb = $record['lockedBy'];
+				$d = $record['datein'];
+				echo "<article>" . $record['ID'] . " | " . $record['heading'] . "<p>";
+
+
+				$filesID = "";
+				$files = $DB->sql("SELECT * FROM apps.nf_files WHERE aID = '$ID' ORDER BY ID ASC");
+				if (count($files)) {
+					$pf = array();
+					foreach ($files as $file) $pf[] = $file['ID'];
+
+					$filesID = implode(",", $pf);
+				}
+
+
+				$percent = 0.00;
+				$patch = "";
+
+
+
+				if ($o && $a){
+					$timer = new timer();
+					$diff = percentDiff($o, $a, true);
+					$t = $timer->stop($record['ID']);
+
+					echo "added: " . ($diff['stats']['added']) . " | removed: " . ($diff['stats']['removed']) . " | old: " . $diff['stats']['old'] . " | new: " . $diff['stats']['new'] . " | percent: " . $diff['stats']['percent']." | time: ".$t. "<br>";
+
+
+					$percent = $diff['stats']['percent'];
+
+					$patch = $diff['patch'];
+
+
+
+					$DB->exec("UPDATE apps.nf_articles SET percent = '". $percent ."' WHERE ID = '".$ID."'");
+				}
+				echo $filesID;
+				echo "</article><hr>";
+
+				if ($o){
+
+					$DB->exec("INSERT INTO nf_articles_revisions (aID,uID,remark,synopsis,article, patch, filesID, datein) VALUES (:aID,:uID,'New Article - import',:synopsis,:article, :patch, :filesID, :datein);",array( ":aID"=>$ID,":uID"=>$uID,":synopsis"=>$s,":article"=>$o,":patch"=>"",":filesID"=>$filesID, ":datein"=> $d));
+				}
+				if ($a){
+					$DB->exec("INSERT INTO nf_articles_revisions (aID,uID,remark,synopsis,article, patch, filesID, percent,  datein) VALUES (:aID,:uID,'Edit Article - import',:synopsis,:article, :patch, :filesID, :percent, :datein);",array( ":aID"=>$ID,":uID"=> $lb,":synopsis"=>$s,":article"=>$a,":patch"=>$patch,":filesID"=>$filesID,":percent"=>$percent, ":datein"=> $d));
+				}
+
+
+			}
+
+			if (count($records)){
+				//echo "redirect to " . $newoffset;
+
+				echo "<meta http-equiv='refresh' content='1;URL=?offset=" . $newoffset."&r=".date("YmdHis")."'>";
+				/*exit();
+			 sleep(5);
+			 $app->reroute("?offset=".$newoffset);*/
+			}
+
+			exit();
+		}
+
+});
+
 
 
 
