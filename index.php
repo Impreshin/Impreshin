@@ -427,7 +427,6 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 
 			$b = new Axon("test_revisions");
-			$b = new Axon("test_revisions");
 			$b->load("aID='$ID' and stage='$stage'");
 
 			$b->aID = $ID;
@@ -478,9 +477,10 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 		echo 'del { background-color:  rgba(255, 0, 0, 0.2);}';
 		echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
 		echo 'li { border-bottom: 1px dotted #ccc; margin-bottom: 5px;  padding-bottom: 10px; }';
-		echo 'th { text-align: left; border-bottom: 1px dotted #ccc;}';
-		echo 'th, td { border-right: 1px dotted #ccc; }';
+		echo 'th { text-align: left; }';
+		echo 'th, td { border-right: 1px dotted #ccc; vertical-align: top; border-bottom: 1px dotted #ccc;}';
 		echo '#article { width: 100%; height: 200px; }';
+		echo '.s { font-size: 10px; }';
 		echo '</style>';
 
 		$records = F3::get("DB")->sql("SELECT * FROM test_articles");
@@ -514,26 +514,27 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 			echo '</fieldset><h3>Stages</h3>';
 			$stages = F3::get("DB")->exec("SELECT * FROM test_revisions WHERE aID = '$ID' ORDER BY stage ASC");
-			echo '<table style="width: 100%;"><tr><th width=20%>Stage</th><th width=20%>changes</th><th>stats</th></tr>';
+			echo '<table style="width: 100%;"><tr><th width=20%>Stage</th><th width=80%>changes</th></tr>';
 
 			$laststage = $edits['origional'];
 			foreach ($stages as $stage) {
 
 				$diff = percentDiff($laststage, $stage['article'], true);
 				$laststage = $stage['article'];
-				echo '<tr><td>';
+				echo '<tr><td>Stage - ';
 				echo $stage['stage'];
-				echo '</td><td>';
+				echo ' - [ +' . $diff['stats']['added'] . "  -" . $diff['stats']['removed'] . " ] &nbsp; &nbsp;" . $diff['stats']['percent'] . '% ';
+				echo '</td><td class="s">';
 				echo $diff['html'];
 				echo '</td><td>';
-				echo '[ +' . $diff['stats']['added'] . "  -" . $diff['stats']['removed'] . " ] &nbsp; &nbsp;" . $diff['stats']['percent'] . '% ';
+
 				echo '</td></tr>';
 
 			}
 			echo '</table>';
 			echo '<h3>Edits</h3>';
 
-			echo '<table style="width: 100%;"><tr><th width=20%>Details</th><th width=20%>Was</th><th width=20%>became</th><th width=20%>changes</th><th>stats</th></tr>';
+			echo '<table style="width: 100%;"><tr><th width=15%>Details</th><th width=28%>Was</th><th width=28%>became</th><th width=28%>changes</th></tr>';
 
 
 
@@ -541,16 +542,14 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 				
 
 				echo '<tr><td>';
-				echo $edit['datein']. " - ". $edit['fullName'];
-				echo '</td><td>';
+				echo '[ +' . $edit['stats']['added'] . "  -" . $edit['stats']['removed'] . " ] &nbsp; &nbsp;" . $edit['stats']['percent'] . '% <hr>'. $edit['datein'] . "<br>" . $edit['fullName'];
+				echo '</td><td class="s">';
 
 				echo $edit['was'];
-				echo '</td><td>';
+				echo '</td><td class="s">';
 				echo $edit['became'];
-				echo '</td><td>';
+				echo '</td><td class="s">';
 				echo $edit['html'];
-				echo '</td><td>';
-				echo '[ +' . $edit['stats']['added'] . "  -" . $edit['stats']['removed']. " ] &nbsp; &nbsp;" . $edit['stats']['percent'] . '% ' ;
 				echo '</td></tr>';
 
 
