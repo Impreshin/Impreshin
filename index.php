@@ -511,15 +511,17 @@ $postedCopy = "";
 		echo '.s { font-size: 10px; }';
 		echo '</style>';
 
-		$records = F3::get("DB")->sql("SELECT * FROM test_articles");
+		$records = F3::get("DB")->sql("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID = test_articles.uID ) as fullName FROM test_articles");
 
 		if ($a->dry()){
-			echo '<table width="100%"><tr><th>Heading</th></tr>';
+			echo '<table width="100%"><tr><th>Heading</th><th>Author</th><th>Percent</th></tr>';
 			foreach ($records as $record) {
 				echo '<tr>';
 				echo '<td><a href="?ID=' . $record['ID'] . '">';
 				echo $record['heading'];
 				echo '</a></td>';
+				echo '<td>'.$record['fullName'].'</td>';
+				echo '<td>'.$record['percent'].'%</td>';
 				echo '</tr>';
 			}
 			echo '</table>';
