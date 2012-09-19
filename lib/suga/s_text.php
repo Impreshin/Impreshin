@@ -16,7 +16,7 @@
 **/
 
 //! Text utilities
-class Text extends Base {
+class s_Text extends Base {
 
 	/**
 		Compare arrays and output the difference between them; Based on
