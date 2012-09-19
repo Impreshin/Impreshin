@@ -551,7 +551,22 @@ $postedCopy = "";
 				$diff = percentDiff($laststage, $stage['article'], true);
 				$laststage = $stage['article'];
 				echo '<tr><td>Stage - ';
-				echo $stage['stage'];
+
+				switch ($stage['stage']){
+					case '1':
+						echo "Draft";
+						break;
+					case '2':
+						echo "sub-edit";
+						break;
+					case '3':
+						echo "proof";
+						break;
+					case '4':
+						echo "ready";
+						break;
+				}
+				//echo $stage['stage'];
 				echo ' - [ +' . $diff['stats']['added'] . "  -" . $diff['stats']['removed'] . " ] &nbsp; &nbsp;" . $diff['stats']['percent'] . '% ';
 				echo '</td><td class="s">';
 				echo $diff['html'];
