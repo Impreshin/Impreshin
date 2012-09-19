@@ -26,7 +26,6 @@ $pageExecute = new timer(true);
 
 require_once('inc/functions.php');
 require_once('inc/class.pagination.php');
-require_once('inc/simple_html_dom.php');
 //test_array(array("HTTP_HOST"  => $_SERVER['HTTP_HOST'], "REQUEST_URI"=> $_SERVER['REQUEST_URI']));
 
 
