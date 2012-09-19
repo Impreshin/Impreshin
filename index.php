@@ -396,6 +396,7 @@ $app->route('GET /nf/provisional', 'access; last_page; controllers\nf\controller
 $app->route('GET /nf/production', 'access; last_page; controllers\nf\controller_app_production->page');
 
 $app->route('GET|POST /nf/test', function () use ($app) {
+		$timer = new timer();
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
@@ -498,7 +499,7 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 		} else {
 			echo '<a href="?ID=">Back</a>';
 
-			echo '<h1>' . $a->heading . '</h1><fieldset>';
+			echo '<h1>' . $a->heading . '</h1><fieldset><legend>Latest version fo the article</legend>';
 			echo $old;
 			echo '</fieldset>';
 			echo '<small>by '.$latest['authorName'].'</small><br>';
@@ -506,13 +507,12 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 			$edits = getChain($ID);
 
-			echo '<h3>Origional</h3><fieldset>';
+			echo '<h3>Origional</h3><fieldset><legend>The sbmitted copy (latest under drafts)</legend>';
 			echo $edits['origional'];
 
 
 
-
-			echo '</fieldset><h3>Stages</h3>';
+			echo '</fieldset><p>&nbsp;</p><h3>Stages <small>- The 4 stages an article goes through showing changes to the posted copy</small> </h3>';
 			$stages = F3::get("DB")->exec("SELECT * FROM test_revisions WHERE aID = '$ID' ORDER BY stage ASC");
 			echo '<table style="width: 100%;"><tr><th width=20%>Stage</th><th width=80%>changes</th></tr>';
 
@@ -532,7 +532,7 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 			}
 			echo '</table>';
-			echo '<h3>Edits</h3>';
+			echo '<h3>Edits <small>- every time the article was changed. this shows those changes</small></h3>';
 
 			echo '<table style="width: 100%;"><tr><th width=15%>Details</th><th width=28%>Was</th><th width=28%>became</th><th width=28%>changes</th></tr>';
 
@@ -542,7 +542,7 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 				
 
 				echo '<tr><td>';
-				echo '[ +' . $edit['stats']['added'] . "  -" . $edit['stats']['removed'] . " ] &nbsp; &nbsp;" . $edit['stats']['percent'] . '% <hr>'. $edit['datein'] . "<br>" . $edit['fullName'];
+				echo '[ +' . $edit['stats']['added'] . "  -" . $edit['stats']['removed'] . " ] &nbsp; &nbsp;" . $edit['stats']['percent'] . '% <br>'. $edit['fullName'] . "<br><span class='s'>" . $edit['datein']."</span>";
 				echo '</td><td class="s">';
 
 				echo $edit['was'];
@@ -562,6 +562,9 @@ $app->route('GET|POST /nf/test', function () use ($app) {
 
 		}
 
+		echo '<p>&nbsp; </p>';
+		echo 'timer: '. $timer->stop();;
+
 echo "<p>&nbsp; </p><hr><p>&nbsp; </p>";
 
 
@@ -571,31 +574,32 @@ echo "<p>&nbsp; </p><hr><p>&nbsp; </p>";
 
 		echo "<textarea id='article' name='article' placeholder='Article'>$old</textarea>";
 
+		echo "Stages: | ";
 		$selected = "";
 		if ($latest['stage']=='1'){
 			$selected = "checked='checked'";
 		}
-		echo '<label> Draft<input type="radio" name="stage" id="stage_1" ' . $selected . ' value="1"></label>| ';
+		echo '<label> <input type="radio" name="stage" id="stage_1" ' . $selected . ' value="1"> Draft </label>| ';
 		if (!$a->dry()){
 			$selected = "";
 			if ($latest['stage'] == '2') {
 				$selected = "checked='checked'";
 			}
-			echo '<label> sub<input type="radio" name="stage" ' . $selected . ' id="stage_2" value="2"></label>| ';
+			echo '<label> <input type="radio" name="stage" ' . $selected . ' id="stage_2" value="2"> sub </label>| ';
 			$selected = "";
 			if ($latest['stage'] == '3') {
 				$selected = "checked='checked'";
 			}
-			echo '<label> proof<input type="radio" name="stage" ' . $selected . ' id="stage_3" value="3"></label>| ';
+			echo '<label> <input type="radio" name="stage" ' . $selected . ' id="stage_3" value="3"> proof </label>| ';
 			$selected = "";
 			if ($latest['stage']== '4') {
 				$selected = "checked='checked'";
 			}
-			echo '<label> ready<input type="radio" name="stage" '.$selected.' id="stage_4" value="4"></label>| ';
+			echo '<label> <input type="radio" name="stage" '.$selected.' id="stage_4" value="4"> ready </label>| ';
 		}
 
 
-		echo '<select id="uID" name="uID"> ';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;<select id="uID" name="uID"> ';
 		foreach ($users as $user){
 
 			$selected = "";
@@ -606,7 +610,7 @@ echo "<p>&nbsp; </p><hr><p>&nbsp; </p>";
 			echo '<option value="'.$user['ID'].'" '.$selected.'>' . $user['fullName'] . '</option>';
 		}
 		echo '</select>';
-		echo "<button type='submit'>save</button> ";
+		echo "&nbsp;&nbsp;&nbsp;&nbsp;<button type='submit'>save</button> ";
 		echo "</form>";
 
 		exit();
