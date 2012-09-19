@@ -524,7 +524,8 @@ $postedCopy = "";
 			echo $old;
 			echo '</fieldset>';
 			echo '<small>by '.$latest['authorName'].'</small><br>';
-			echo '<small>Last change by '.$latest['fullName'].'</small>';
+			echo '<small>Last change by '.$latest['fullName'].'</small><br>';
+			echo '<small>Total Percent Change '. $a->percent.'</small>';
 
 			$edits = getChain($ID);
 
