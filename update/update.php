@@ -25,23 +25,27 @@ class update {
 			$return .= "<p></p><h5>Documentation</h5>";
 
 
-			$docs_folder = $_SERVER['DOCUMENT_ROOT'] . '\\docs';
+			$root_folder = $_SERVER['DOCUMENT_ROOT'];
+			$docs_folder = $root_folder . '\\docs';
 
 			//echo $docs_folder;
+			chdir($docs_folder);
 
 			if (!file_exists($docs_folder)){
 				mkdir($docs_folder, 0777, true);
-				shell_exec('cd '. $docs_folder.' && git init');
+				shell_exec('git init');
 
 			} else {
-				shell_exec('cd ' . $docs_folder . '\\ && git stash');
+				shell_exec('git stash');
 			}
 
-			$output = shell_exec('cd ' . $docs_folder . '\\ && git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
+			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
 			$str = str_replace(".git", "", $cfg['git']['docs']['path']);
 			$output = str_replace("From $str", "", $output);
 			$output = str_replace("* branch            " . $cfg['git']['docs']['branch'] . "     -> FETCH_HEAD", "", $output);
 			$return .= trim($output);
+
+			chdir($root_folder);
 
 		}
 
