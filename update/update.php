@@ -12,7 +12,7 @@ class update {
 	public static function code($cfg){
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
-		shell_exec('git reset --hard');
+		shell_exec('git stash');
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 
 		$str = str_replace(".git","",$cfg['git']['path']);
@@ -36,7 +36,7 @@ class update {
 				shell_exec('git init');
 
 			} else {
-				shell_exec('git reset --hard');
+				shell_exec('git stash');
 			}
 
 			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
