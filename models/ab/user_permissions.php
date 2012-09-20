@@ -182,7 +182,7 @@ class user_permissions {
 					"check"    => "Gives the user permission to be able to 'check' records",
 					"material" => "Gives the user permission to be able to change the material status",
 					"repeat"   => "Allows the user to repeat this booking",
-					"invoice"  => "if ticked the invoice button apears allowing the user to capture an invoice number",
+					"invoice"  => "If ticked the invoice button apears allowing the user to capture an invoice number",
 				),
 				"fields" => array(
 					"rate"         => "if checked the user can view this field on the details pane",
