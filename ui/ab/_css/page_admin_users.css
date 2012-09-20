@@ -24,8 +24,11 @@
 	text-shadow : 0 1px 1px rgba(250, 250, 250, 0.25);
 	color            : #444;
 }
-#permissions .help-inline {
+#permissions .help-block {
 	color: #ccc;
+	font-size: 11px;
+	margin-top: 2px;
+	margin-left:-20px;
 }
 
 .order-btn {

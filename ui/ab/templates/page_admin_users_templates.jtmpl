@@ -170,7 +170,7 @@
 										{% endif %}
 										{{ k|capitalize }}
 										{% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
-											<span class="help-inline">{{ permissions_desc[key][k] }}</span>
+											<span class="help-block">{{ permissions_desc[key][k]|raw }}</span>
 										{% endif %}
 									</label>
 									{% for sk,sv in v %}
@@ -185,7 +185,7 @@
 											{% endif %}
 											{{ sk|capitalize }}
 											{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
-												<span class="help-inline">{{ permissions_desc[key][k][sk] }}</span>
+												<span class="help-block">{{ permissions_desc[key][k][sk]|raw }}</span>
 											{% endif %}
 										</label>
 										{% endif %}
@@ -200,7 +200,7 @@
 												{% endif %}
 												{{ ssk|capitalize }}
 												{% if permissions_desc[key][k][sk][ssk] and permissions_desc[key][k][sk][ssk] is not iterable %}
-													<span class="help-inline">{{ permissions_desc[key][k][sk][ssk] }}</span>
+													<span class="help-block">{{ permissions_desc[key][k][sk][ssk]|raw }}</span>
 												{% endif %}
 											</label>
 											{% endif %}
