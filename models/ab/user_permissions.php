@@ -185,7 +185,7 @@ class user_permissions {
 					"invoice"  => "If ticked the invoice button apears allowing the user to capture an invoice number",
 				),
 				"fields" => array(
-					"rate"         => "if checked the user can view this field on the details pane",
+					"rate"         => "If checked the user can view this field on the details pane",
 					"totalCost"    => "Net Cost on the details pane",
 					"totalShouldbe"=> "Gross Cost on the details pane"
 				),
@@ -205,7 +205,7 @@ class user_permissions {
 				"new"            => "Gives the user permission to be able to capture a booking",
 				"edit"           => "Gives the user permission to be able to edit bookings",
 				"delete"         => "Gives the user permission to be able to delete bookings",
-				"edit_master"    => "this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed.<br> Usualy only the big chief gets this permission"
+				"edit_master"    => "This will override any edit locks there may be, like not being able to edit a record in archives / once it is placed.<br> Usualy only the big chief gets this permission"
 			),
 
 			"production"    => array(
