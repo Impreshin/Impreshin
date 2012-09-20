@@ -106,10 +106,15 @@ class template {
 
 	public function render_template() {
 
-		$folder = array(
-			"ui/",
-			$this->vars['folder']
-		);
+		if (is_array($this->vars['folder'])){
+			$folder = $this->vars['folder'];
+		} else {
+			$folder = array(
+				"ui/",
+				$this->vars['folder']
+			);
+		}
+
 		if ($this->config['strictfolder']){
 			$folder = $this->vars['folder'];
 		}
