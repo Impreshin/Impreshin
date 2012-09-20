@@ -35,13 +35,15 @@ class update {
 
 
 			//echo $docs_folder;
-			chdir("docs");
+
 
 			if (!file_exists($docs_folder)){
-				mkdir($docs_folder, 0777, true);
+				mkdir($docs_folder, 2777, true);
+				chdir("docs");
 				shell_exec('git init');
 
 			} else {
+				chdir("docs");
 				shell_exec('git stash');
 			}
 
