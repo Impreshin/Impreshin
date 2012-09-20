@@ -29,8 +29,8 @@ class update {
 
 
 			if (!file_exists($docs_folder)){
-				@mkdir($docs_folder, 0777, true);
-				shell_exec('cd '. $docs_folder.'; git init');
+				mkdir($docs_folder, 0777, true);
+				shell_exec('cd docs; git init');
 
 			}
 			shell_exec('git stash');
