@@ -25,7 +25,7 @@ class update {
 			$return .= "<p></p><h5>Documentation</h5>";
 
 
-			$root_folder = $_SERVER['DOCUMENT_ROOT'];
+			$root_folder = dirname($_SERVER['DOCUMENT_ROOT']);
 			$docs_folder = $root_folder . '\\docs';
 
 			//echo $docs_folder;
