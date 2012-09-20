@@ -10,8 +10,10 @@ class update {
 
 	}
 	public static function code($cfg){
-		$root_folder = dirname($_SERVER['DOCUMENT_ROOT']);
+		$root_folder = dirname(dirname(__FILE__));
 		$docs_folder = $root_folder . '\\docs';
+
+
 		chdir($root_folder);
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
