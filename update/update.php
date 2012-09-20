@@ -10,9 +10,10 @@ class update {
 
 	}
 	public static function code($cfg){
-		$root_folder = getcwd();
+		$root_folder = dirname(dirname(__FILE__));
 		$docs_folder = $root_folder . '\\docs';
 
+		chdir($root_folder);
 
 
 
