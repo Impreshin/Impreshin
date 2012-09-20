@@ -10,11 +10,12 @@ class update {
 
 	}
 	public static function code($cfg){
-		$root_folder = dirname(dirname(__FILE__));
+		$root_folder = getcwd();
 		$docs_folder = $root_folder . '\\docs';
 
 
-		chdir($root_folder);
+
+
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
 		shell_exec('git stash');
@@ -33,7 +34,7 @@ class update {
 
 
 			//echo $docs_folder;
-			chdir($docs_folder);
+			chdir("docs");
 
 			if (!file_exists($docs_folder)){
 				mkdir($docs_folder, 0777, true);
