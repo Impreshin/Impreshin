@@ -69,31 +69,49 @@ class template {
 		if (isset($this->vars['page'])) {
 			$page = $this->vars['page'];
 			$tfile = $page['template'];
-			if (file_exists('' . $this->vars['folder'] . '' . $tfile . '.tmpl')) {
-				$page['template'] = $tfile . '.tmpl';
-			} else {
-				$page['template'] = "none";
-			}
-			if (file_exists('' . $this->vars['folder'] . '_js/' . $tfile . '.js')) {
-				$page['template_js'] = '/min/js_' . $_v . '?file=/' . $this->vars['folder'] . '_js/' . $tfile . '.js';
-			} else {
-				$page['template_js'] = "";
-			}
-			if (file_exists('' . $this->vars['folder'] . '_css/' . $tfile . '.css')) {
-				$page['template_css'] = '/min/css_'.$_v.'?file=/' . $this->vars['folder'] . '_css/' . $tfile . '.css';
-			} else {
-				$page['template_css'] = "";
-			}
-			if (file_exists('' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl')) {
-				//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
 
-				$file = '/' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl';
+			$folders = (array) $this->vars['folder'];
 
-				$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
-			} else {
-				$page['template_tmpl'] = "";
+
+
+			$usethisfolder = false;
+			foreach ($folders as $folder){
+				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
+					$page['template'] = $tfile . '.tmpl';
+				} else {
+					$page['template'] = 'none';
+				}
+
+				if (file_exists('' . $folder . '_js/' . $tfile . '.js')) {
+					$page['template_js'] = '/min/js_' . $_v . '?file=/' . $folder . '_js/' . $tfile . '.js';
+				} else {
+					$page['template_js'] = "";
+				}
+				if (file_exists('' . $folder . '_css/' . $tfile . '.css')) {
+					$page['template_css'] = '/min/css_' . $_v . '?file=/' . $folder . '_css/' . $tfile . '.css';
+				} else {
+					$page['template_css'] = "";
+				}
+				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl')) {
+					//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
+
+					$file = '/' . $folder . 'templates/' . $tfile . '_templates.jtmpl';
+
+					$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
+				} else {
+					$page['template_tmpl'] = "";
+				}
+
+				if ($usethisfolder){
+					break;
+				}
 			}
+
+
+
 			$this->vars['page'] = $page;
+			
+		//	test_array($page);
 			return $this->render_template();
 		} else {
 			return $this->render_string();

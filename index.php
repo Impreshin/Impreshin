@@ -206,10 +206,10 @@ $app->route('GET|POST /noaccess', function(){
 		exit();
 	});
 $app->route('GET|POST /login', 'controllers\controller_login->page');
-$app->route('GET|POST /screenshots', 'controllers\controller_screenshots->page');
-$app->route('GET|POST /history', 'controllers\controller_history->page');
-$app->route('GET|POST /history/commits', 'controllers\controller_history->getCommits');
-$app->route('GET|POST /about', 'controllers\controller_about->page');
+$app->route('GET /screenshots', 'controllers\controller_screenshots->page');
+$app->route('GET /history', 'controllers\controller_history->page');
+$app->route('GET /history/commits', 'controllers\controller_history->getCommits');
+$app->route('GET /about', 'controllers\controller_about->page');
 $app->route('GET|POST /help', 'controllers\controller_docs->page');
 $app->route('GET /data/keepalive', function() use ($user){
 

@@ -10,15 +10,29 @@ class update {
 
 	}
 	public static function code($cfg){
+		$return = "";
 
-
-		$output = shell_exec('git stash');
+		shell_exec('git stash');
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 		$str = str_replace(".git","",$cfg['git']['path']);
 		$output = str_replace("From $str","", $output);
 		$output = str_replace("* branch            ". $cfg['git']['branch'] ."     -> FETCH_HEAD","", $output);
-		$output = trim($output);
-		return $output;
+		$return .= trim($output);
+
+
+		if (isset($cfg['git']['docs'])){
+			$return .= "<p></p><h5>Documentation</h5><br>";
+			shell_exec('cd docs');
+			shell_exec('git stash');
+			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
+			$str = str_replace(".git", "", $cfg['git']['docs']['path']);
+			$output = str_replace("From $str", "", $output);
+			$output = str_replace("* branch            " . $cfg['git']['docs']['branch'] . "     -> FETCH_HEAD", "", $output);
+			$return .= trim($output);
+		}
+
+
+		return $return;
 	}
 
 	public static function db($cfg){

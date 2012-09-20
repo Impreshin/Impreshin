@@ -14,15 +14,18 @@ class controller_docs {
 
 
 
-		$tmpl = new \template("template.tmpl", array("ui/front","docs/templates"), true);
+
+		$tmpl = new \template("template.tmpl", array("ui/front/","docs/templates/"), true);
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
-			"template"   => "page_home",
+			"template"   => "page_docs_home",
 			"meta"       => array(
 				"title"=> "Documentation",
 			)
 		);
+
+
 		$tmpl->output();
 
 	}
