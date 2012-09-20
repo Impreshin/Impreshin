@@ -28,6 +28,7 @@ class update {
 			shell_exec('cd docs');
 			if (!file_exists($docs_folder)){
 				@mkdir($docs_folder, 0777, true);
+				shell_exec('git init');
 			}
 			shell_exec('git stash');
 			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
