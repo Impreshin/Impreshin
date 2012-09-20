@@ -31,16 +31,18 @@ class update {
 
 			if (!file_exists($docs_folder)){
 				mkdir($docs_folder, 0777, true);
-				shell_exec('cd '. $docs_folder.'; git init');
+				shell_exec('cd '. $docs_folder.'\\; git init');
 
 			}
 
-			shell_exec('cd ' . $docs_folder . '; git stash');
-			$output = shell_exec('cd ' . $docs_folder . '; git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
+			/*
+			shell_exec('cd ' . $docs_folder . '\\; git stash');
+			$output = shell_exec('cd ' . $docs_folder . '\\; git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
 			$str = str_replace(".git", "", $cfg['git']['docs']['path']);
 			$output = str_replace("From $str", "", $output);
 			$output = str_replace("* branch            " . $cfg['git']['docs']['branch'] . "     -> FETCH_HEAD", "", $output);
 			$return .= trim($output);
+			*/
 		}
 
 
