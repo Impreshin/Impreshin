@@ -11,7 +11,7 @@ class update {
 	}
 	public static function code($cfg){
 		$return = "";
-		$return .= "<h5>Impreshin</h5><br>";
+		$return .= "<h5>Impreshin</h5>";
 		shell_exec('git stash');
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 		$str = str_replace(".git","",$cfg['git']['path']);
@@ -21,7 +21,7 @@ class update {
 
 
 		if (isset($cfg['git']['docs'])){
-			$return .= "<p></p><h5>Documentation</h5><br>";
+			$return .= "<p></p><h5>Documentation</h5>";
 
 
 			$docs_folder = "/docs";
