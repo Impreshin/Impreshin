@@ -27,6 +27,7 @@ class update {
 
 			$docs_folder = $_SERVER['DOCUMENT_ROOT'] . '\\docs';
 
+			echo $docs_folder;
 
 			if (!file_exists($docs_folder)){
 				mkdir($docs_folder, 0777, true);
