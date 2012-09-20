@@ -10,6 +10,9 @@ class update {
 
 	}
 	public static function code($cfg){
+		$root_folder = dirname($_SERVER['DOCUMENT_ROOT']);
+		$docs_folder = $root_folder . '\\docs';
+		chdir($root_folder);
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
 		shell_exec('git stash');
@@ -25,8 +28,7 @@ class update {
 			$return .= "<p></p><h5>Documentation</h5>";
 
 
-			$root_folder = dirname($_SERVER['DOCUMENT_ROOT']);
-			$docs_folder = $root_folder . '\\docs';
+
 
 			//echo $docs_folder;
 			chdir($docs_folder);
