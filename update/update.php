@@ -14,7 +14,7 @@ class update {
 		$return .= "<h5>Impreshin</h5>";
 		shell_exec('git stash');
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
-		$output = "";
+
 		$str = str_replace(".git","",$cfg['git']['path']);
 		$output = str_replace("From $str","", $output);
 		$output = str_replace("* branch            ". $cfg['git']['branch'] ."     -> FETCH_HEAD","", $output);
