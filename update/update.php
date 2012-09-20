@@ -27,6 +27,9 @@ class update {
 			$docs_folder = "/docs";
 
 			if (!file_exists($docs_folder)){
+
+				echo "make folder";
+				exit();
 				@mkdir($docs_folder, 0777, true);
 				shell_exec('cd docs');
 				shell_exec('git init');
