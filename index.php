@@ -19,6 +19,11 @@ if (!$SID) {
 $cfg = array();
 require_once('config.default.inc.php');
 require_once('config.inc.php');
+$docs = array();
+if (file_exists('docs/docs.php')){
+	require_once('docs/docs.php');
+}
+
 $GLOBALS['cfg'] = $cfg;
 
 require_once('inc/class.timer.php');
@@ -91,6 +96,7 @@ $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['D
 
 
 $app->set('cfg', $cfg);
+$app->set('docs', $docs);
 
 
 

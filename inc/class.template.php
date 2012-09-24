@@ -48,6 +48,7 @@ class template {
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;
 		$this->vars['_cfg'] = $cfg;
+		$this->vars['_docs'] = F3::get('docs');
 		$this->vars['_last_pages'] = F3::get('last_pages');
 		$this->vars['isLocal'] = isLocal();
 
