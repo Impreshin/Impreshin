@@ -19,10 +19,7 @@ if (!$SID) {
 $cfg = array();
 require_once('config.default.inc.php');
 require_once('config.inc.php');
-$docs = array();
-if (file_exists('docs/docs.php')){
-	require_once('docs/docs.php');
-}
+
 
 $GLOBALS['cfg'] = $cfg;
 
@@ -96,7 +93,7 @@ $app->set('DB', new DB('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['D
 
 
 $app->set('cfg', $cfg);
-$app->set('docs', $docs);
+
 
 
 
@@ -148,6 +145,11 @@ if ($folder && $user['ID']){
 }
 
 $app->set('user', $user);
+$docs = array();
+if (file_exists('docs/docs.php')) {
+	require_once('docs/docs.php');
+}
+$app->set('docs', $docs);
 
 
 if ($folder) {
@@ -216,7 +218,13 @@ $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
 $app->route('GET /history', 'controllers\controller_history->page');
 $app->route('GET /history/commits', 'controllers\controller_history->getCommits');
 $app->route('GET /about', 'controllers\controller_about->page');
-$app->route('GET|POST /help', 'controllers\controller_docs->page');
+
+$app->route('GET|POST /@app/help', 'controllers\controller_docs->help_page');
+$app->route('GET|POST /@app/help/@section', 'controllers\controller_docs->section_page');
+$app->route('GET|POST /@app/help/@section/@sub_section', 'controllers\controller_docs->sub_section_page');
+$app->route('GET|POST /@app/help/@section/@sub_section/@item', 'controllers\controller_docs->sub_section_item_page');
+
+
 $app->route('GET /data/keepalive', function() use ($user){
 
 
