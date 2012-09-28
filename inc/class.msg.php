@@ -18,6 +18,7 @@ class msg {
 				"resolution" => "",
 				"action"     => ""
 			),
+
 			// -- User errors
 			"U01"=> array(
 				"description"=> "User not logged in",
