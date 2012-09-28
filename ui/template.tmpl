@@ -5,7 +5,8 @@
 <!--[if IE 9]>
 <html class="no-js ie ie9" lang="en"> <![endif]-->
 <!--[if gt IE 9]>
-<html class="no-js ie" lang="en"><![endif]-->
+<html class="no-js ie" lang="en">
+<![endif]-->
 <!-->
 <html class="no-js" lang="en">
 <!--<![endif]-->
@@ -62,8 +63,14 @@
 					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
 				</div>
 				<div class="s" style="float: right;">
-					<span style="padding-right: 30px; color: #999;"><i class="icon-user icon-d-grey" style="margin-right: 10px;"></i>{{ _user['fullName']}}</span>
+					<span style="padding-right: 30px; color: #999;">{{ _user['fullName']}}</span>
+
+                    <div class="s" style="float: right;">
+                        <a href="{{ page['help'] }}" class="help_link"><i class=" icon-question-sign icon-grey"></i></a>
+                    </div>
 				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -129,7 +136,6 @@
 <![endif]-->
 <script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
 
-
 <script src="/min/js.{{_v}}.js"></script>
 
 
@@ -185,6 +191,21 @@
 
 	});
 
+    $(document).ready(function () {
+
+
+
+        $("a.help_link").fancybox({
+            type: 'iframe',
+            iframe:{
+                scrolling:'no',
+                preload:true
+            },
+            padding: 0,
+            width: 950
+        });
+
+    });
 	$(document).ready(function () {
         var $pubSelectID = $("#pubSelectID");
         if ($pubSelectID.length) {

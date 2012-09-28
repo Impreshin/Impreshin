@@ -79,6 +79,7 @@ class template {
 			foreach ($folders as $folder){
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
 					$page['template'] = $tfile . '.tmpl';
+					$usethisfolder = true;
 				} else {
 					$page['template'] = 'none';
 				}
@@ -108,11 +109,14 @@ class template {
 				}
 			}
 
-
+			if (!isset($page['help']) || !$page['help']){
+				$app = F3::get("app");
+				$page['help'] = "/$app/help/";
+			}
 
 			$this->vars['page'] = $page;
 			
-		//	test_array($page);
+
 			return $this->render_template();
 		} else {
 			return $this->render_string();

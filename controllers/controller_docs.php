@@ -53,6 +53,28 @@ class controller_docs {
 									if (isset($iiii['p']) && $iiii['p'] == '0') {
 										unset($data[$k][$kk][$kkk][$kkkk]);
 										if (!count($data[$k][$kk][$kkk])) unset($data[$k][$kk][$kkk]);
+
+									}
+
+									if (isset($iiii) && $iiii && is_array($iiii)) {
+										foreach ($iiii as $kkkkk => $iiiii) {
+											if (isset($iiiii['p']) && $iiiii['p'] == '0') {
+												unset($data[$k][$kk][$kkk][$kkkk][$kkkkk]);
+												if (!count($data[$k][$kk][$kkk][$kkkk])) unset($data[$k][$kk][$kkk][$kkkk]);
+
+											}
+											if (isset($iiiii) && $iiiii && is_array($iiiii)) {
+												foreach ($iiiii as $kkkkkk => $iiiiii) {
+													if (isset($iiiiii['p']) && $iiiiii['p'] == '0') {
+														unset($data[$k][$kk][$kkk][$kkkk][$kkkkk][$kkkkkk]);
+														if (!count($data[$k][$kk][$kkk][$kkkk][$kkkkk])) unset($data[$k][$kk][$kkk][$kkkk][$kkkkk]);
+
+													}
+
+												}
+											}
+
+										}
 									}
 
 								}
@@ -70,19 +92,23 @@ class controller_docs {
 	function get($app="", $section="", $sub_section="", $sub_section_item=""){
 		$data = F3::get('docs');
 		$data = $this->filter($data);
-		if ($sub_section_item == "" && $sub_section != "" && isset($data[$app][$section]['help'][0])) {
-			$sub_section_item = $sub_section;
-			$sub_section = 0;
-		}
+
 
 		$t = array(
 			"app"             => $app,
 			"section"         => $section,
 			"sub_section"     => $sub_section,
-			"sub_section_item"=> $sub_section_item
+			"sub_section_item"=> $sub_section_item,
+			"details"=>($sub_section_item)?true:false
 		);
+		if ($sub_section){
+			if (!isset($data[$app][$section]['help'][$sub_section]['help'])) {
+				$t['details'] = true;
+			}
+		}
 
-		//test_array($t + $data[$app][$section]['help'][$sub_section][$sub_section_item]);
+
+		//test_array($t + $data[$app][$section]['help'][$sub_section]);
 
 
 
@@ -99,14 +125,19 @@ class controller_docs {
 		}
 
 		$title = "";
+		$sub_title = "";
+		$file = "";
 		if ($section){
 			if (isset($data[$section])) {
 				$data = $data[$section];
 				$title = $data['title'];
+				$file = $data['file'];
 				unset($data['title']);
 				if ($sub_section || $sub_section=='0') {
 					if (isset($data['help'][$sub_section])) {
 						$data = $data['help'][$sub_section];
+						$sub_title = (isset($data['title']))? $data['title']: $data['heading'];
+						$file = $data['file'];
 						if ($sub_section_item) {
 							if (isset($data['help'][$sub_section_item])) {
 								$data = $data['help'][$sub_section_item];
@@ -125,16 +156,18 @@ class controller_docs {
 		if (isset($data['help'])) $data = $data['help'];
 		$return['help']= $data;
 		$return['title']= $title;
+		$return['sub_title']= $sub_title;
+		$return['file']= $file;
 
 		$return = $t + $return;
 
-		//test_array($return);
+		if (isset($_GET['t'])) test_array($return);
 
 		return $return;
 	}
 	function help_page(){
-
-		$tmpl = new \template("template.tmpl", array("ui/front/","docs/templates/"), true);
+		$data = $this->data;
+		$tmpl = new \template("template.tmpl", array("docs/templates/"));
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
@@ -153,7 +186,7 @@ class controller_docs {
 		$data = $this->data;
 
 
-		$tmpl = new \template("template.tmpl", array("ui/front/","docs/templates/"), true);
+		$tmpl = new \template("template.tmpl", array("docs/templates/","ui/","ui/".$data['app']."/"));
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
@@ -170,38 +203,45 @@ class controller_docs {
 	}
 	function sub_section_page(){
 		$data = $this->data;
-		if ($data['sub_section_item']){
-			F3::call($this->sub_section_item_page());
+		if ($data['details']){
+			$this->sub_section_item_page();
+		} else {
+			$tmpl = new \template("template.tmpl", array("docs/templates/",	"ui/","ui/" . $data['app'] . "/"
+			));
+			$tmpl->page = array(
+				"section"    => "docs",
+				"sub_section"=> "home",
+				"template"   => "page_docs_sub_section",
+				"meta"       => array(
+					"title"=> "Documentation - " . $data['title'] . " - ". $data['sub_title'],
+				)
+			);
+
+			$tmpl->data = $data;
+
+			$tmpl->output();
 		}
 
 
-		$tmpl = new \template("template.tmpl", array("ui/front/","docs/templates/"), true);
-		$tmpl->page = array(
-			"section"    => "docs",
-			"sub_section"=> "home",
-			"template"   => "page_docs_sub_section",
-			"meta"       => array(
-				"title"=> "Documentation - ". $data['title'] . " - ",
-			)
-		);
 
-		$tmpl->data = $data;
-
-		$tmpl->output();
 
 	}
 	function sub_section_item_page(){
 		$data = $this->data;
 
 
+		$title = "Documentation - " . $data['title'] . " - " . $data['sub_title'] . " - " . $data['help']['heading'];
+		if ($data['details'] && $data['sub_section_item']==''){
+			$title = "Documentation - " . $data['title'] . " - " . $data['sub_title'];
+		}
 
-		$tmpl = new \template("template.tmpl", array("ui/front/","docs/templates/"), true);
+		$tmpl = new \template("template.tmpl", array("docs/templates/"));
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
 			"template"   => "page_docs_sub_section_item",
 			"meta"       => array(
-				"title"=> "Documentation - ". $data['title'] . " - " . $data['help']['heading'],
+				"title"=> $title,
 			)
 		);
 

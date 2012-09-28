@@ -33,7 +33,8 @@ class general {
 				"/ui/_css/jquery.miniColors.css",
 				"/ui/_css/style.css",
 				"/ui/_css/FeedEk.css",
-				"/ui/jqPlot/jquery.jqplot.min.css"
+				"/ui/jqPlot/jquery.jqplot.min.css",
+				"/ui/fancybox/jquery.fancybox.css"
 			);
 
 
@@ -100,6 +101,7 @@ class general {
 				"/ui/_js/plugins/select2.js",
 				"/ui/_js/plugins/jquery.miniColors.js",
 				"/ui/_js/plugins/FeedEk.js",
+				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
 
