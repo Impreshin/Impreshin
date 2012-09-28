@@ -139,6 +139,7 @@ class dates {
 
 		if (!isset($values["pID"])|| $values["pID"]=="") $values["pID"] = $user['publication']['ID'];
 
+		//test_array($values);
 		$a = new Axon("global_dates");
 		$a->load("ID='$ID'");
 

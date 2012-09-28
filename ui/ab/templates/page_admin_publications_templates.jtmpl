@@ -34,7 +34,17 @@
 						<input type="text" id="publication" name="publication" class="span4" value="<% if (this.details.publication) { %><%= this.details.publication %><% } %>">
 					</div>
 				</div>
+                <% if (this.details.ID) { %> <% } else { %>
+                <div class="control-group">
+                    <label for="publication" class="control-label">Initial Date</label>
 
+                    <div class="controls">
+                        <div id="datepicker"></div>
+                        <input type="hidden" name="publish_date" id="publish_date" value="<% if (this.publish_date) { %><%= this.publish_date %><% } %>">
+                    </div>
+                </div>
+
+                <% } %>
 				<div class="control-group">
 					<label for="InsertRate" class="control-label">Insert Rate</label>
 

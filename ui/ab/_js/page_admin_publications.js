@@ -160,9 +160,19 @@ function getDetails(){
 	detailsRequest.push($.getJSON("/ab/data/admin_publications/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
+
+
+		if (!data['ID']){
+			$("#datepicker").datepicker({
+				format     :"yy-mm-dd",
+				altField   :"#publish_date",
+				altFormat  :"yy-mm-dd",
+				changeMonth:true,
+				changeYear :true
+			});
+		}
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#uID").select2({});
-
 
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);
