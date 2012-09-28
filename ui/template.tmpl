@@ -193,17 +193,37 @@
 
     $(document).ready(function () {
 
-
-
-        $("a.help_link").fancybox({
-            type: 'iframe',
-            iframe:{
+        var fancyHelpOptions = {
+            type       :'iframe',
+            iframe     :{
                 scrolling:'no',
                 preload:true
             },
-            padding: 0,
-            width: 950
-        });
+            padding    :0,
+            width      :950,
+            beforeClose:function () {
+                $(this.element).attr("href", $.bbq.getState("help"));
+
+            },
+            afterClose :function () {
+                $.bbq.removeState("help");
+            }
+        };
+
+
+
+
+        var help = $.bbq.getState("help");
+        if (help){
+
+
+            $.fancybox.open([{
+                href :help
+            }], fancyHelpOptions );
+        }
+
+
+        $("a.help_link").fancybox(fancyHelpOptions);
 
     });
 	$(document).ready(function () {

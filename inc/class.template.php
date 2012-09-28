@@ -44,6 +44,7 @@ class template {
 		$publications = $user['publications'];
 		$publication = $user['publication'];
 
+		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;
