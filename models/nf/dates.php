@@ -63,7 +63,7 @@ class dates {
 			$return['publish_date_display'] = date("d F Y", strtotime($return['publish_date']));
 
 		} else {
-			$return = F3::get("system")->error("D02");
+			$return = F3::get("system")->error("D01");
 		}
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
