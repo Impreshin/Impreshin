@@ -48,7 +48,8 @@ class controller_app_provisional {
 			"print"=> "/ab/print/provisional",
 			"meta"    => array(
 				"title"=> "AdBooker - Provisional",
-			)
+			),
+			"help"=> "/ab/help/bookings"
 		);
 
 

@@ -30,7 +30,8 @@ class controller_admin_users {
 			"template"=> "page_admin_users",
 			"meta"    => array(
 				"title"=> "AdBooker - Admin - Users",
-			)
+			),
+			"help"=> "/ab/help/admin/users"
 		);
 
 		$permissions = models\user_permissions::permissions();
