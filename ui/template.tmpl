@@ -63,11 +63,11 @@
 					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
 				</div>
 				<div class="s" style="float: right;">
-					<span style="padding-right: 30px; color: #999;">{{ _user['fullName']}}</span>
-
                     <div class="s" style="float: right;">
                         <a href="{{ page['help'] }}" class="help_link"><i class=" icon-question-sign icon-grey"></i></a>
-                    </div>
+                    </div><span style="padding-right: 30px; color: #999;">{{ _user['fullName']}}</span>
+
+
 				</div>
 
 
@@ -200,7 +200,8 @@
                 preload:true
             },
             padding    :0,
-            width      :950,
+            width      :935,
+            scrollOutside:false,
             beforeClose:function () {
                 $(this.element).attr("href", $.bbq.getState("help"));
 

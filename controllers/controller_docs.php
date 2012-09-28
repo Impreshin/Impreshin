@@ -94,6 +94,7 @@ class controller_docs {
 		$data = $this->filter($data);
 
 
+
 		$t = array(
 			"app"             => $app,
 			"section"         => $section,
@@ -141,13 +142,18 @@ class controller_docs {
 						if ($sub_section_item) {
 							if (isset($data['help'][$sub_section_item])) {
 								$data = $data['help'][$sub_section_item];
+							} else {
+								F3::reroute("/$app/help/$section/$sub_section");
 							}
 						}
+					} else {
+						F3::reroute("/$app/help/$section");
 					}
 				}
 
 			} else {
-				$data = $data[$app];
+				//$data = $data[$app];
+				F3::reroute("/$app/help");
 			}
 		}
 		if (!count($data))F3::error(404);
