@@ -82,13 +82,22 @@ class marketer_targets extends \data {
 
 
 			$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '".$target['date_from']."' AND global_dates.publish_date <= '".$target['date_to']."') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null AND checked ='1'", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
-			$records = $records[0];
-			$records['totalcost_C']=currency($records['totalcost']);
+			//test_array(array("targets"=>$target,"records"=>$records));
+			if (count($records)){
+				$records = $records[0];
+				$records['totalcost_C'] = currency($records['totalcost']);
+				$target['total'] = $records;
+				$target['percent'] = number_format(($records['totalcost'] / $target['target']) * 100, 2);
+			} else {
+				$records['totalcost_C'] = currency(0);
+				$target['total'] = array("totalcost"=>0,"records"=>0);
+				$target['percent'] = number_format(0, 2);
+			}
 
 
 
-			$target['total'] = $records;
-			$target['percent'] = number_format(($records['totalcost'] / $target['target'])*100,2);
+
+
 
 			$t[] = $target;
 		}
@@ -106,10 +115,11 @@ class marketer_targets extends \data {
 			if ($target['date_to'] < date("Y-m-d")) {
 				$d = "p";
 			}
-			if ($target['date_from'] < date("Y-m-d") && $target['date_to'] > date("Y-m-d")){
+			if ($target['date_from'] <= date("Y-m-d") && $target['date_to'] >= date("Y-m-d")){
 				$d = "a";
 			}
 
+			//test_array(array("from"=> $target['date_from'],"to"=> $target['date_to'],"now"=> date("Y-m-d")));
 
 
 			if ($d){
