@@ -10,6 +10,47 @@
 				margin-top : 10px;
 			}
 		}
+		.nav {
+			li {
+
+
+
+
+				a {
+					padding : 5px;
+					border-bottom : 1px dotted #ccc;
+				}
+				&.active > a {
+					background-color : #eee;
+				}
+
+			}
+			ul {
+				list-style : none;
+				margin:0;
+				padding:0;
+				li {
+
+					a {
+						display : block;
+						padding : 3px;
+					}
+
+				}
+			}
+			& > li > ul > li {
+				text-indent : 20px;
+			}
+			& > li > ul > li > ul > li {
+				text-indent : 40px;
+			}
+
+			a:hover {
+				background-color : #DEEBFF;
+				text-decoration  : none;
+			}
+		}
+
 	}
 	#maintoolbar, #pagecontent {
 		width : 950px;

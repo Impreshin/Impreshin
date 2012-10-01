@@ -9,6 +9,7 @@ use \F3 as F3;
 use \Jig as Jig;
 use \FileDB as FileDB;
 class controller_docs {
+	private $raw;
 	function __construct(){
 		$app = F3::get('PARAMS.app');
 		$section = F3::get('PARAMS.section');
@@ -16,6 +17,7 @@ class controller_docs {
 		$sub_section_item = F3::get('PARAMS.item');
 
 		$this->data = $this->get($app, $section, $sub_section, $sub_section_item);
+
 
 		$this->setup = array(
 			"app"=>$app,
@@ -70,13 +72,10 @@ class controller_docs {
 														if (!count($data[$k][$kk][$kkk][$kkkk][$kkkkk])) unset($data[$k][$kk][$kkk][$kkkk][$kkkkk]);
 
 													}
-
 												}
 											}
-
 										}
 									}
-
 								}
 							}
 						}
@@ -108,7 +107,7 @@ class controller_docs {
 			}
 		}
 
-
+		$this->raw = $t + array("data"=>$data);
 		//test_array($t + $data[$app][$section]['help'][$sub_section]);
 
 
@@ -190,7 +189,8 @@ class controller_docs {
 	}
 	function section_page(){
 		$data = $this->data;
-
+		$raw = $this->raw;
+		//test_array($raw);
 
 		$tmpl = new \template("template.tmpl", array("docs/templates/","ui/","ui/".$data['app']."/"));
 		$tmpl->page = array(
@@ -203,12 +203,15 @@ class controller_docs {
 		);
 
 		$tmpl->data = $data;
-
+		$tmpl->raw = $raw;
 		$tmpl->output();
 
 	}
 	function sub_section_page(){
 		$data = $this->data;
+		$raw = $this->raw;
+
+		//test_array($raw);
 		if ($data['details']){
 			$this->sub_section_item_page();
 		} else {
@@ -224,6 +227,7 @@ class controller_docs {
 			);
 
 			$tmpl->data = $data;
+			$tmpl->raw = $raw;
 
 			$tmpl->output();
 		}
@@ -234,6 +238,7 @@ class controller_docs {
 	}
 	function sub_section_item_page(){
 		$data = $this->data;
+		$raw = $this->raw;
 
 
 		$title = "Documentation - " . $data['title'] . " - " . $data['sub_title'] . " - " . $data['help']['heading'];
@@ -252,6 +257,7 @@ class controller_docs {
 		);
 
 		$tmpl->data = $data;
+		$tmpl->raw = $raw;
 
 		$tmpl->output();
 
