@@ -177,17 +177,158 @@ class user_permissions {
 
 
 		$return['d'] = array(
+			"details"       => array(
+				"actions"=> array(
+					"check"    => "Gives the user permission to be able to 'check' records",
+					"material" => "Gives the user permission to be able to change the material status",
+					"repeat"   => "Allows the user to repeat this booking",
+					"invoice"  => "If ticked the invoice button apears allowing the user to capture an invoice number",
+				),
+				"fields" => array(
+					"rate"         => "If checked the user can view this field on the details pane",
+					"totalCost"    => "Net Cost on the details pane",
+					"totalShouldbe"=> "Gross Cost on the details pane"
+				),
+			),
+			"lists"         => array(
+				"fields"=> array(
+					"rate"         => "If checked the user can add this field on the list pages they have access to",
+					"totalCost"    => "Net Cost in the lists",
+					"totalShouldbe"=> "Gross Cost in the lists"
+				),
+				"totals"=> array(
+					"totalCost"=> "",
+				)
+			),
+			"form"          => array(
 
-			"form"=>array(
-				"edit_master"=> "this will override any edit locks there may be, like not being able to edit a record in archives / once it is placed"
+				"new"            => "Gives the user permission to be able to capture a booking",
+				"edit"           => "Gives the user permission to be able to edit bookings",
+				"delete"         => "Gives the user permission to be able to delete bookings",
+				"edit_master"    => "This will override any edit locks there may be, like not being able to edit a record in archives / once it is placed.<br> Usualy only the big chief gets this permission"
 			),
-			"layout"=> array(
-				"pagecount"=> "Allows this user to set how many pages the edition will be"
+
+			"production"    => array(
+				"page"=> "The user will have access to the production pages"
 			),
-			"administration"=>array(
-				"application"=>array(
-					"accounts"=>array(
-						"status"=>"Edit / Add the account status types"
+			"layout"        => array(
+				"page"     => "the user will have access to the layout page. this includes the user being able to 'plan' adverts onto pages",
+				"pagecount"=> "Allows this user to set how many pages the edition will be",
+				"editpage" => "When ticked the user can change the page settings like colour / section etc"
+			),
+			"overview"      => array(
+				"page"=> "The user will have access to view the overview page"
+			),
+			"records"       => array(
+				"deleted"=> array(
+					"page"=> "The user will have access to view the deleted records page. all deleted records are stored and accessible from this page",
+				),
+				"search" => array(
+					"page"=> "The user will have access to view the search page. "
+				)
+			),
+			"reports"       => array(
+				"account"    => array(
+					"figures"  => array(
+						"page"=> ""
+					),
+					"discounts"=> array(
+						"page"=> ""
+					),
+
+				),
+				"marketer"   => array(
+					"figures"  => array(
+						"page"=> ""
+					),
+					"discounts"=> array(
+						"page"=> ""
+					),
+					"targets"  => array(
+						"page"=> ""
+					)
+				),
+				"production" => array(
+					"figures"=> array(
+						"page"=> ""
+					)
+				),
+
+
+				"category"   => array(
+
+					"figures"  => array(
+						"page"=> ""
+					),
+					"discounts"=> array(
+						"page"=> ""
+					),
+				),
+
+
+				"publication"=> array(
+					"figures"  => array(
+						"page"=> ""
+					),
+					"discounts"=> array(
+						"page"=> ""
+					),
+					"placing"  => array(
+						"page"=> ""
+					),
+					"section"  => array(
+						"page"=> ""
+					),
+
+				)
+
+
+			),
+			"administration"=> array(
+				"application"=> array(
+					"accounts"     => array(
+						"page"  => "",
+						"status"=> array(
+							"page"=> ""
+						)
+					),
+					"categories"   => array(
+						"page"=> ""
+					),
+					"marketers"    => array(
+						"page"   => "",
+						"targets"=> array(
+							"page"=> ""
+						)
+					),
+					"production"   => array(
+						"page"=> ""
+					),
+					"sections"     => array(
+						"page"=> ""
+					),
+					"placing"      => array(
+						"page"   => "",
+						"colours"=> array(
+							"page"=> ""
+						)
+					),
+					"loading"      => array(
+						"page"=> ""
+					),
+					"inserts_types"=> array(
+						"page"=> ""
+					),
+				),
+				"system"     => array(
+					"dates"       => array(
+						"page"=> ""
+					),
+					"users"       => array(
+						"page"=> ""
+					),
+					"publications"=> array(
+						"page"=> ""
 					)
 				)
 			)

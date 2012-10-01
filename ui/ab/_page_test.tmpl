@@ -1,0 +1,107 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<form class="" style="margin: 0;">
+				<ul class="nav nav-pills pull-left">
+
+				</ul>
+				<div class="pull-right">
+
+
+
+				</div>
+			</form>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<style>
+
+	#file-area {
+
+		width: 400px;
+		position: relative;
+		background-color      : whitesmoke;
+		border                : 1px solid #eeeeee;
+		border                : 1px solid rgba(0, 0, 0, 0.05);
+		-webkit-border-radius : 4px;
+		-moz-border-radius    : 4px;
+		border-radius         : 4px;
+		-webkit-box-shadow    : inset 0 1px 1px rgba(0, 0, 0, 0.05);
+		-moz-box-shadow       : inset 0 1px 1px rgba(0, 0, 0, 0.05);
+		box-shadow            : inset 0 1px 1px rgba(0, 0, 0, 0.05);
+
+		height      : 18px;
+		line-height : 18px;
+		padding     : 4px;
+
+	}
+
+	#file-area .progress {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		border-radius: 0;
+display: none;
+		height : 26px;
+	}
+
+	#file-area .progress .bar {
+
+		height : 26px;
+		opacity : 0.5;
+		filter  : alpha(opacity =50);
+	}
+	#file-area-filename {
+		position : relative;
+		z-index : 2;
+		cursor: pointer;
+		color: #444;
+		display: block;
+		width: 100%;
+
+
+
+
+
+	}
+
+	#file-area-filename:hover {
+
+	}
+
+
+
+</style>
+
+<section role="main" id="pagecontent">
+
+	<div class="container">
+
+
+
+		<article id="whole-area" class="span16">
+
+			<div id="file-area" >
+
+
+				<div class="progress progress-striped active" id="upload-progress">
+					<div class="bar" style="width: 0%"></div>
+				</div>
+				<div id="file-area-filename" ><em>No File - click here to upload</em></div>
+			</div>
+
+
+
+
+
+
+		</article>
+	</div>
+
+
+</section>
+

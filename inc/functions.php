@@ -5,6 +5,32 @@ function isLocal() {
 	} else return false;
 }
 
+function percentDiff($old, $new, $outputRendered=true) {
+	$old = trim(preg_replace('#^<p>\s*.nbsp;<\/p>#', '', $old));
+	$new = trim(preg_replace('#^<p>\s*.nbsp;<\/p>#', '', $new));
+
+
+
+	$o = F3::scrub($old);
+	$a = F3::scrub($new);
+	$t = s_text::diff($o, $a, " ");
+
+
+
+	$return = array(
+		"old"  => $old,
+		"new"  => $new,
+		"stats"=> $t['stats']
+	);
+
+	if ($outputRendered){
+		$disp = s_text::diff($old, $new, " ");
+		$return['html']= $disp['html'];
+		$return['patch']= $disp['patch'];
+	}
+	return $return;
+}
+
 function is_bot() {
 	$botlist = array(
 		"Teoma",

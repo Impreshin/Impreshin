@@ -1,0 +1,233 @@
+<div class="navbar navbar-fixed-top" id="pageheader">
+	<div class="navbar-inner" style="">
+		<div class="container">
+			<div class="clearfix">
+
+				<a class="brand" href="#select-app" data-toggle="modal">NewsFiler</a>
+                {% if _cfg['git']['branch'] != 'master' %}
+                <div style="position:absolute;bottom: 0; text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3); margin-left: -30px;  font-size: 10px; color:red;">{{ _cfg['git']['branch'] }}</div>
+                {% endif %}
+
+				<div id="app-nav-bar">
+					<ul class="nav" id="app-nav">
+
+
+						<li class="divider-vertical"></li>
+						<li class="icon-btn {% if page['section'] == "form" %} active {% endif %}">
+							<a href="/nf/form/" class="nav-icon-btn">
+								{% if  page['section'] == "form" and details['ID']!="" %}
+									<i class="icon-pencil icon-d-grey"></i>
+								{% else %}
+									<i class="icon-plus icon-d-grey"></i>
+								{% endif %}
+							</a>
+						</li>
+						<li class="divider-vertical"></li>
+
+						<li class="{% if page['section'] == "bookings" %} active {% endif %}">
+							<a  href="/nf/">Articles</a>
+						</li>
+
+                        <li class=" {% if page['section'] == "production" %} active {% endif %}">
+                            <a  href="/nf/production">Production</a>
+                        </li>
+                        <li class=" {% if page['section'] == "production" %} active {% endif %}">
+                            <a  href="/nf/layout">Layout</a>
+                        </li>
+                        <li class="{% if page['section'] == "newsbook" %} active {% endif %}">
+                            <a href="#">NewsBook</a>
+                        </li>
+
+
+
+                        <li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+
+                                    <li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
+                                        <a href="/nf/records/deleted/"><i class="icon-trash menu-icon"></i>Deleted</a>
+                                    </li>
+
+                                <li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
+                                    <a href="/nf/records/search/"><i class="icon-search menu-icon"></i>Search</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+
+						<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+
+								<li class="nav-header">Authors</li>
+
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_figures" %} active {% endif %}">
+									<a href="/nf/reports/account/figures">Summary</a>
+								</li>
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "account_discounts" %} active {% endif %}">
+									<a href="/ab/reports/account/discounts">Figures</a>
+								</li>
+								<li class="nav-header">Publication</li>
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_figures" %} active {% endif %}">
+									<a href="/ab/reports/publication/figures">Figures</a>
+								</li>
+								<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_discounts" %} active {% endif %}">
+									<a href="/ab/reports/publication/discounts">Discounts</a>
+								</li>
+
+
+
+
+
+
+							</ul>
+						</li>
+						<li class="divider-vertical" style="margin-right: 0;"></li>
+
+
+					</ul>
+					<ul class="nav pull-right" style="margin-left: 0;margin-right: 0;">
+
+						<li class="dropdown" style="padding-left: 0; padding-right: 0; " id="pubSelectID-container"  >
+                           {% if _user['publications']|length < 8 %}
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+                                    <div id="nav-pub-list">
+                                        {{  _user['publication']['publication'] }}<b class="caret"></b>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% for row in _user['publications'] %}
+                                    <li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}"><a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                           {% else %}
+                                <select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+                                    {% for row in _user['publications'] %}
+                                    <option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
+                                    {% endfor %}
+
+                                </select>
+                            {% endif %}
+
+
+						</li>
+						<li class="divider-vertical"></li>
+						{% if _user['permissions']['administration']['_nav'] %}
+						<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
+							<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="nav-header">Application</li>
+								{% if _user['permissions']['administration']['application']['accounts']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts" %} active {% endif %}">
+									<a href="/ab/admin/accounts">Accounts</a>
+								</li>
+								{% endif %}
+								{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
+									<a href="/ab/admin/accounts/status" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Account {% endif %}Status</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['categories']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "categories" %} active {% endif %}">
+									<a href="/ab/admin/categories">Categories</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['marketers']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "marketers" %} active {% endif %}">
+									<a href="/ab/admin/marketers">Marketers</a>
+								</li>
+								{% endif %}
+								{% if _user['permissions']['administration']['application']['marketers']['targets']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "marketers_targets" %} active {% endif %}">
+									<a href="/ab/admin/marketers/targets" {% if _user['permissions']['administration']['application']['marketers']['page'] %}style="padding-left: 30px;">{% else %}>Marketers {% endif %}Targets</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['production']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "production" %} active {% endif %}">
+									<a href="/ab/admin/production">Production</a>
+								</li>
+								{% endif %}
+
+
+
+
+
+
+								{% if _user['permissions']['administration']['application']['sections']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "sections" %} active {% endif %}">
+									<a href="/ab/admin/sections">Sections</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['placing']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "placing" %} active {% endif %}">
+									<a href="/ab/admin/placing">Placing</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['placing']['colours']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "placing_colours" %} active {% endif %}">
+									<a href="/ab/admin/placing/colours" {% if _user['permissions']['administration']['application']['placing']['page'] %}style="padding-left: 30px;">{% else %}>Placing {% endif %}Colours</a>
+								</li>
+								{% endif %}
+
+
+								{% if _user['permissions']['administration']['application']['loading']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "loading" %} active {% endif %}">
+									<a href="/ab/admin/loading">Loading</a>
+								</li>
+								{% endif %}
+
+								{% if _user['permissions']['administration']['application']['inserts_types']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "inserts_types" %} active {% endif %}">
+									<a href="/ab/admin/inserts_types">Inserts Type</a>
+								</li>
+								{% endif %}
+
+
+								<li class="nav-header">System</li>
+								{% if _user['permissions']['administration']['system']['dates']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
+									<a href="/ab/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
+								</li>
+								{% endif %}{% if _user['permissions']['administration']['system']['users']['page'] %}
+								<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
+									<a href="/ab/admin/users"><i class="icon-user menu-icon"></i> Users</a>
+								</li>
+								{% endif %}
+								{% if _user['permissions']['administration']['system']['publications']['page'] %}
+									<li class="{% if page['section']=="admin" and page['sub_section'] == "publications" %} active {% endif %}">
+										<a href="/ab/admin/publications"><i class="icon-book menu-icon"></i> Publications</a>
+									</li>
+								{% endif %}
+								{% if _user['permissions']['administration']['system']['company']['page'] %}
+								<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
+								{% endif %}
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						{% endif %}
+						<li style="margin-right: -10px;">
+							<a href="/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
+						</li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="clearfix"></div>
+</div>

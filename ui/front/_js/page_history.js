@@ -2,8 +2,11 @@
  * Date: 2012/07/26 - 9:48 AM
  */
 
+
+git_path = git_path.replace(/.git/,'');
+
 $('#divRss').FeedEk({
-	FeedUrl    :'https://github.com/WilliamStam/Impreshin/commits/master.atom?login=WilliamStam&token=e0619b48df9ba55f7f131a360bdf3ee3&r='+Math.random(),
+	FeedUrl    :'https://'+git_path+'/commits/'+git_branch+'.atom?login='+git_login+'&token='+git_token+'&r='+Math.random(),
 	MaxCount   :20,
 	ShowDesc   :true,
 	ShowPubDate:true,

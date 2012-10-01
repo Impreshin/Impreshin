@@ -48,7 +48,7 @@ class controller_app_production {
 
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "production",
 			"sub_section"=> "list",
@@ -86,7 +86,7 @@ class controller_app_production {
 
 		//test_array($data);
 
-		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl = new \template("template.tmpl", "ui/ab/print/");
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "production",

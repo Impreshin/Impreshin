@@ -21,7 +21,7 @@ class controller_reports_publication_discounts {
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
-		$s = models\settings::getSettings();
+		$s = models\settings::settings();
 		$s = $s['columns']['percent_diff'];
 		$settings['col'][] = $s;
 		$settings['count'] = count($settings['col']);
@@ -31,7 +31,7 @@ class controller_reports_publication_discounts {
 		if ($user['su'] == '1') {
 			$publications = models\publications::getAll("cID = '$cID'", "publication ASC");
 		} else {
-			$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
+			$publications = models\publications::getAll_user("ab_users_pub.uID='$uID' AND global_publications.cID = '$cID'", "publication ASC");
 		}
 		$p = array();
 		$publicationselected = array();
@@ -60,7 +60,7 @@ class controller_reports_publication_discounts {
 //test_array($settings);
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "reports",
 			"sub_section"=> "publication_discounts",

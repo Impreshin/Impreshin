@@ -1,12 +1,15 @@
+
 <!doctype html>
-<!--[if lt IE 7]>
-<html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if lt IE 9]>
+<html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]>
+<html class="no-js ie" lang="en">
+<![endif]-->
+<!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -28,59 +31,47 @@
 	<link rel="stylesheet" href="{{ page['template_css'] }}">
 	{% endif %}
 
-
+	{% if page['print'] %}
+	<link rel="alternate" media="print" href="{{ page['print'] }}">
+	<link rel="alternate" type="text/html" media="print" href="{{ page['print'] }}">
+	{% endif %}
+    <!--
 	<link rel="shortcut icon" type="image/x-icon" href="/ui/_images/favicon.ico">
 	<link rel="apple-touch-icon" href="/ui/_images/apple-touch.png">
+	-->
+
 
 
 </head>
 <body>
-<div class="navbar navbar-fixed-top" id="pageheader">
-	<div class="navbar-inner" style="">
-		<div class="container">
-			<div class="clearfix">
-				<a class="brand" href="/">Welcome</a>
-				<ul class="nav" id="app-nav">
-					<li class="divider-vertical"></li>
-					<li class="{% if page['section'] == "login" %} active {% endif %}">
-						<a href="/login/">
-							Login
-						</a>
-					</li>
-					<li class="{% if page['section'] == "register" %} active {% endif %}">
-						<a href="/register/">
-							Screenshots
-						</a>
-					</li>
-				</ul>
-				<ul class="nav pull-right">
 
-
-					<li class="divider-vertical"></li>
-					{% if _user['ID'] %}
-					<li style="margin-right: -10px;">
-						<a href="/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
-					</li>
-					{% else %}
-
-
-					{% endif %}
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-
-
+{% include "_nav_top.tmpl" %}
 {% if page['template'] %} {% include page['template'] %} {% endif %}
+
 
 <footer id="pagefooter">
 	<div class="container">
 		<div style="position: absolute; left:10px;">
-			<a href="#systemTimers-container" data-toggle="modal"><i class="icon-time icon-d-grey"></i></a>
+			<a href="#systemTimers-container" data-toggle="modal" ><i class="icon-time icon-d-grey"></i></a>
 		</div>
 		<div class="clearfix">
+			<div class="row">
+				<div class="span14" style="position:relative;">
+					<div id="notice-area" class="span14">
 
+						&nbsp;</div>
+					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
+				</div>
+				<div class="s" style="float: right;">
+                    <div class="s" style="float: right;">
+                        <a href="{{ page['help'] }}" class="help_link" rel="tooltip" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
+                    </div><span style="padding-right: 30px; color: #999;">{{ _user['fullName']}}</span>
+
+
+				</div>
+
+
+			</div>
 		</div>
 	</div>
 
@@ -102,319 +93,476 @@
 	</div>
 </div>
 
+<div id="displaylogout">
+	<div class='box'>
+		<h2>Inactivity</h2>
 
-<script src="/ui/_js/libs/jquery.{{_v}}.js"></script>
+		<div class="timer"></div>
+		<button class='btn primary ' style='margin-top: 20px; width: 190px;' id='keepalivebtn'>Keep me logged in</button>
+		<a class='btn  ' style='margin-top: 20px; margin-left: 10px; width: 92px;' href='/logout'>logout</a>
+	</div>
+</div>
 
+<div id="select-app" class='modal hide fade'>
+    <div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+        <h3>Switch Application</h3></div>
+    <div class='modal-body'>
+
+        <div id="apps-select">
+            <ul>
+                {% if 'ab' in _cfg['apps'] %}
+                <li class='{% if _folder =='ui/ab/' %}active{% endif %}' ><a href="{{ _last_pages['ab'] }}">AdBooker</a>
+                </li>
+                {% endif %}
+                {% if 'nf' in _cfg['apps'] %}
+                <li class='{% if _folder =='ui/nf/' %}active{% endif %}' ><a href="{{ _last_pages['nf'] }}">NewsFiler</a>
+                </li>
+                {% endif %}
+               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class='modal-footer'>
+
+    </div>
+
+	</div>
+</div>
+
+<!--[if lt IE 9]>
+<script language="javascript" type="text/javascript" src="/ui/jqPlot/excanvas.js"></script>
+<![endif]-->
+<script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
 
 <script src="/min/js.{{_v}}.js"></script>
-<script src="/ui/_js/plugins/bootstrap-typehead-array.{{_v}}.js"></script>
+
+
 
 
 <script type="text/javascript">
-var detailsRequest = [];
-var listRequest = [];
-var activityRequest = [];
-var transSpeed = '{{ transSpeed |default('400') }}';
-$(function () {
-	$('body').tooltip({
-		selector:'[rel=tooltip]'
-	});
-	$('body').popover({
-		selector:'[rel=popover]'
+
+
+	var detailsRequest = [];
+	var listRequest = [];
+	var activityRequest = [];
+	var transSpeed = '{{ transSpeed |default('400') }}';
+	$(function () {
+		$('body').tooltip({
+			selector:'[rel=tooltip]'
+		});
+		$('body').popover({
+			selector:'[rel=popover]'
+		});
+
+
+		$("*[rel=tooltip]").tooltip({
+			live:true
+		});
+
+		$("[rel=popover]").popover({
+			offset:5,
+			live:true
+		});
+        $('.dropdown-toggle').dropdown();
+
+
+		$(document).ajaxError(function (e, xhr, settings, exception) {
+			if (xhr.responseText) alert('error in: ' + settings.url + ' \n \n \n' + '\n' + xhr.responseText);
+		});
+
+		$(document).on("show", '#loggedinusers', function () {
+			var $this = $(this);
+			$this.find("#loggedinusers-activity table tbody").html('<tr><td colspan="2">Loading...</td></tr>');
+			$.getJSON("/data/user_activity","", function (d) {
+				d = d['data'];
+				$area = $this.find("#loggedinusers-activity table tbody");
+				if (!d[0]){
+					$area.html('<tr><td colspan="2">No Users logged in for this company</td></tr>');
+				} else {
+					$area.jqotesub($("#template-logged-in-users"), d);
+				}
+
+
+
+			});
+		});
+
 	});
 
-	$("*[rel=tooltip]").tooltip({
-		live:true
-	});
+    $(document).ready(function () {
 
-	$("[rel=popover]").popover({
-		offset:5,
-		live  :true
-	});
+        var fancyHelpOptions = {
+            type       :'iframe',
+            iframe     :{
+                scrolling:'no',
+                preload:true
+            },
+            padding    :0,
+            width      :950,
+            scrollOutside:false,
+            beforeClose:function () {
+                $(this.element).attr("href", $.bbq.getState("help"));
 
-	$(document).ajaxError(function (e, xhr, settings, exception) {
-		if (xhr.responseText) alert('error in: ' + settings.url + ' \n \n \n' + '\n' + xhr.responseText);
-	});
+            },
+            afterClose :function () {
+                $.bbq.removeState("help");
+            },
 
-	$(document).on("show", '#loggedinusers', function () {
-		var $this = $(this);
-		$this.find("#loggedinusers-activity table tbody").html('<tr><td colspan="2">Loading...</td></tr>');
-		$.getJSON("/data/user_activity", "", function (d) {
-			d = d['data'];
-			$area = $this.find("#loggedinusers-activity table tbody");
-			if (!d[0]) {
-				$area.html('<tr><td colspan="2">No Users logged in for this company</td></tr>');
+            afterShow:function () {
+
+                   // var $frame = $(this.content).contents();
+                var $f = $(this.content);
+                //console.log($f);
+                $f[0].contentWindow.scrollbars();
+
+            }
+        };
+
+
+
+
+        var help = $.bbq.getState("help");
+        if (help){
+
+
+            $.fancybox.open([{
+                href :help
+            }], fancyHelpOptions );
+        }
+
+
+        $("a.help_link").fancybox(fancyHelpOptions);
+
+    });
+	$(document).ready(function () {
+        var $pubSelectID = $("#pubSelectID");
+        if ($pubSelectID.length) {
+            $pubSelectID.select2().change(function () {
+                window.location = "?apID=" + $(this).val();
+            });
+        }
+
+        $(document).on("change","#pubSelectID",function(){
+            window.location = "?apID=" + $(this).val();
+        });
+
+            $('.no-csstransforms3d .fade').removeClass('fade');
+
+
+
+
+		$(document).on("click", ".modal .close-btn", function (e) {
+			e.preventDefault();
+			var $this = $(this), $modal = $this.closest(".modal");
+			$modal.modal("hide");
+		//	$("#settings-modal").modal('hide');
+		});
+		$(document).on("click", "*[data-dismiss='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.closest(".popup");
+			$popup.fadeOut(transSpeed);
+		});
+		$(document).on("click", "*[data-target='popup']", function (e) {
+			e.preventDefault();
+			var $this = $(this), $popup = $this.attr("href");
+			$($popup).fadeIn(transSpeed).trigger("popup-show");
+		});
+
+
+		$(document).on("show", ".modal", function () {
+			var $this = $(this);
+			var h = $(window).height();
+			var th = $(this).height();
+
+			var mt = (th) / 2;
+			if (h < th) {
+				$this.css({
+					"margin-top":-(h / 2)
+				});
+
 			} else {
-				$area.jqotesub($("#template-logged-in-users"), d);
+				$this.css("margin-top", -mt);
 			}
 
+
 		});
+		$(document).on('click', '.btn-row-details', function (e) {
+			var $this = $(this), $table = $this.closest("table");
+			var $clicked = $(e.target).closest("tr.btn-row-details");
+			var active = true;
+
+			if ($this.hasClass("active") && $clicked) active = false;
+
+			$("tr.btn-row-details.active", $table).removeClass("active");
+			if (active) {
+				$this.addClass("active");
+			}
+
+			var show = $("tr.btn-row-details.active", $table).nextAll("tr.row-details");
+
+
+			$("tr.row-details", $table).hide();
+			if (show.length) {
+				show = show[0];
+				$(show).show();
+			}
+
+
+		});
+
+
+		$(document).on("click", "#keepalivebtn", function () {
+			$("#displaylogout").autoLogout('resetTimer');
+			$.getJSON("/data/keepalive?keepalive=true", function (d) {
+				$("#displaylogout").fadeOut(1000);
+			})
+		});
+		$(document).on("click", "#keepalivebtn-logout", function () {
+			$("#displaylogout").autoLogout('logout');
+
+		});
+
+	});
+	var autologoutRequest = [];
+	var $noticeareaIdle = $("#notice-area-idle");
+
+	//logout 5 minutes
+	// warning 4 minutes
+	// show idle 2 minutes
+
+	$("#displaylogout").autoLogout({
+		LogoutTime          :600,
+
+		onResetTimer        :function (e) {
+			this.css("background-color", "rgba(250, 250, 250, 0.8)");
+			$noticeareaIdle.stop(true, true).fadeOut(1000)
+
+		},
+		onLogout: function (timer){
+
+			window.location = "/logout/?msg=You+were+logged+out+due+to+inactivity";
+		},
+		keepAlive: function(){
+			$.getJSON("/data/keepalive/?keepalive=true", function (result) {});
+
+		},
+		onTimerSecond       :function (idle) {
+			var $this = this;
+			var settings = $this.data("settings");
+			var LogoutTime = settings.LogoutTime;
+			var parts = LogoutTime / 10;
+
+
+
+			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime-3) {
+				for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
+				autologoutRequest.push($.getJSON("/data/keepalive", function (result) {
+					var real_idle = result.idle;
+					$this.data("timer", real_idle);
+					idle = real_idle;
+					if (idle >= LogoutTime) {
+						window.location = "/logout/?msg=You+were+logged+out+due+to+inactivity";
+					}
+				}));
+			}
+
+
+
+			if (idle >= (parts * 8)+2){
+				remaining = LogoutTime - idle;
+				$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in "+ (remaining) +" seconds").fadeIn(1000)
+			} else {
+				$noticeareaIdle.stop(true, true).fadeOut(1000)
+			}
+
+			if (idle >= (parts * 9)+2){
+				remaining = LogoutTime - idle;
+				$this.stop(true,true).fadeIn(1000).find(".timer").html("You will be automaticaly logged out in " + (remaining) + " seconds");
+			} else {
+				$this.stop(true, true).fadeOut(1000);
+			}
+
+			var remaining = (LogoutTime - idle);
+			var remain_p = (remaining / LogoutTime) * 100
+
+			if (remain_p < 30){
+
+				var new_p = (remain_p / 30)
+				new_p = 1 - new_p;
+
+				if (new_p>0.8)	this.css("background-color", "rgba(250, 250, 250, "+ new_p+")");
+			}
+
+
+
+
+
+
+
+
+		}
 	});
 
-});
-$(document).ready(function () {
+	var uID = "{{ _user['ID'] }}";
+	var jScrollPaneOptions = {
+		showArrows:false,
+		maintainPosition: false
+	};
+	var jScrollPaneOptionsMP = {
+		showArrows:false,
+		maintainPosition: true
+	};
 
-	$(document).on("click", ".modal .close-btn", function (e) {
-		e.preventDefault();
-		var $this = $(this), $modal = $this.closest(".modal");
-		$modal.modal("hide");
-		//	$("#settings-modal").modal('hide');
-	});
-	$(document).on("click", "*[data-dismiss='popup']", function (e) {
-		e.preventDefault();
-		var $this = $(this), $popup = $this.closest(".popup");
-		$popup.fadeOut(transSpeed);
-	});
-	$(document).on("click", "*[data-target='popup']", function (e) {
-		e.preventDefault();
-		var $this = $(this), $popup = $this.attr("href");
-		$($popup).fadeIn(transSpeed).trigger("popup-show");
-	});
+	$(document).ajaxComplete(function (event, request, settings) {
+		var u = settings.url;
+		var d = $.parseJSON(request.responseText);
 
-	$(document).on("show", ".modal", function () {
-		var $this = $(this);
-		var h = $(window).height();
-		var th = $(this).height();
+		var page_size = request.getResponseHeader('Content-Length');
+		page_size = (page_size)? page_size:"";
 
-		mt = (th) / 2;
-		if (h < th) {
-			$this.css({
-				"margin-top":-(h / 2)
+		if (u == "/data/keepalive") {
+		} else {
+			updatetimerlist(d, page_size);
+		}
+
+	});
+	function updatetimerlist(d, page_size) {
+		//console.log(d);
+		if (!d){
+			return false;
+		}
+		$("#displaylogout").autoLogout('resetTimer');
+
+		var data = d['timer'];
+		var page = d['page'];
+		var models = d['models'];
+
+		if (d['notifications']){
+			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']);
+		}
+
+		var pageSize = (page && page['size'])? page['size']: page_size;
+
+		if (data) {
+			var highlight = "";
+			if (page['time'] > {{ _cfg['debug']['highlightfrom'] }}) highlight = 'style="color: red;"';
+			var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + ' : <span class="g">Size: ' + file_size(pageSize) + '</span></td><td class="s g"'+ highlight+'>' + page['time'] + '</td></tr>', thm;
+			if (models) {
+				thm = $("#template-timers-tr-models").jqote(models, "*");
+			} else {
+				thm = "";
+			}
+			$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")+ thm);
+
+		}
+
+
+
+	}
+	function scrolling(api){
+
+		$(document).off('mousewheel').on('mousewheel', function (event, delta, deltaX, deltaY) {
+			if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length || $(event.target).closest(".select2-container").length ){
+			} else {
+				if (deltaY < 0) {
+					deltaY = -deltaY;
+				} else {
+					deltaY = -deltaY;
+				}
+
+				deltaY = deltaY * 30;
+
+				api.scrollByY(deltaY, false);
+			}
+
+
+		}).on('keydown',function(e){
+//				console.log(api.getContentHeight);
+
+				if ($(e.target).closest(".select2-container").length) {
+				} else {
+
+
+				var keyboardSpeed= 28, scrollPagePercent=.8;
+
+				switch (e.keyCode) {
+					case 34: // page down
+						api.scrollByY(300, false);
+						break;
+					case 33: // page up
+						api.scrollByY(-300, false);
+						break;
+
+				}
+				}
 			});
 
-		} else {
-			$this.css("margin-top", -mt);
-		}
 
-	});
-	$(document).on('click', '.btn-row-details', function (e) {
-		var $this = $(this), $table = $this.closest("table");
-		var $clicked = $(e.target).closest("tr.btn-row-details");
-		var active = true;
-
-		if ($this.hasClass("active") && $clicked) active = false;
-
-		$("tr.btn-row-details.active", $table).removeClass("active");
-		if (active) {
-			$this.addClass("active");
-		}
-
-		var show = $("tr.btn-row-details.active", $table).nextAll("tr.row-details");
-
-		$("tr.row-details", $table).hide();
-		if (show.length) {
-			show = show[0];
-			$(show).show();
-		}
-
-	});
-
-	$(document).on("click", "#keepalivebtn", function () {
-		$("#displaylogout").autoLogout('resetTimer');
-		$.getJSON("/data/keepalive", function (d) {
-			$("#displaylogout").fadeOut(1000);
-		})
-	});
-	$(document).on("click", "#keepalivebtn-logout", function () {
-		$("#displaylogout").autoLogout('logout');
-
-	});
-
-});
-$("#displaylogout").autoLogout({
-	LogoutTime          :900,
-	logout              :function (e) {
-		window.location = "/logout?msg=You+were+logged+out+due+to+inactivity";
-	},
-	ShowLogoutCountdown :60,
-	onLogoutCountdown   :function () {
-		$("#displaylogout").fadeIn(1000);
-	},
-	keepAliveSelector   :".keepalive:visible",
-	keepAlive           :function () {
-
-		$.getJSON("/data/keepalive");
-	},
-	onResetTimer        :function (e) {
-		$("#notice-area-idle").stop(true, true).fadeOut(1000)
-
-	},
-	onTimerSecond       :function (timer) {
-		var logouttime = this.data("settings").LogoutTime, idle = logouttime - timer;
-		idle = (idle < 0) ? 0 : idle;
-
-		if (idle > 360) {
-			var c = idle, minVar = Math.floor(c / 60), secVar = c % 60;
-			var s = c - (minVar * 60);
-
-			var str = 'You have been inactive for ' + minVar + ' minutes and ' + s + ' seconds';
-			$("#notice-area-idle").stop(true, true).fadeIn(1000).html(str);
-		}
-	},
-	countingDownSelector:".timer",
-	countingDownLook    :'you will be loged out in {s} seconds',
-	countingDownLookShow:"you will be loged out in {s} seconds"
-});
-
-var uID = "{{ _user['ID'] }}";
-var jScrollPaneOptions = {
-	showArrows      :false,
-	maintainPosition:false
-};
-var jScrollPaneOptionsMP = {
-	showArrows      :false,
-	maintainPosition:true
-};
-
-$(document).ajaxComplete(function (event, request, settings) {
-	var u = settings.url;
-	var d = $.parseJSON(request.responseText);
-
-	var page_size = request.getResponseHeader('Content-Length');
-	page_size = (page_size) ? page_size : "";
-
-	if (u == "/data/keepalive") {
-	} else {
-		updatetimerlist(d, page_size);
 	}
-
-});
-function updatetimerlist(d, page_size) {
-	//console.log(d);
-	$("#displaylogout").autoLogout('resetTimer');
-
-	var data = d['timer'];
-	var page = d['page'];
-	var models = d['models'];
-
-	var pageSize = (page && page['size']) ? page['size'] : page_size;
-
-	if (data) {
-		var highlight = "";
-		if (page['time'] > {{ _cfg['debug']['highlightfrom'] }}) highlight = 'style="color: red;"';
-		var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + ' : <span class="g">Size: ' + file_size(pageSize) + '</span></td><td class="s g"' + highlight + '>' + page['time'] + '</td></tr>', thm;
-		if (models) {
-			thm = $("#template-timers-tr-models").jqote(models, "*");
-		} else {
-			thm = "";
+	function file_size(size) {
+		if (!size){
+			return 0;
 		}
-		$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*") + thm);
+		var origSize = size;
+		var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		var i = 0;
+		while (size >= 1024) {
+			size /= 1024;
+			++i;
+		}
+
+		if (origSize>1024){
+			size = size.toFixed(1)
+		}
+		return size + ' ' + units[i];
 	}
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function (elt /*, from*/) {
+			var len = this.length >>> 0;
 
-}
-function scrolling(api) {
+			var from = Number(arguments[1]) || 0;
+			from = (from < 0) ? Math.ceil(from) : Math.floor(from);
+			if (from < 0)
+				from += len;
 
-	$(document).off('mousewheel').on('mousewheel',function (event, delta, deltaX, deltaY) {
-		if ($(event.target).closest(".modal").length || $(event.target).closest(".jspScrollable").length) {
-		} else {
-			if (deltaY < 0) {
-				deltaY = -deltaY;
-			} else {
-				deltaY = -deltaY;
+			for (; from < len; from++) {
+				if (from in this && this[from] === elt)
+					return from;
 			}
+			return -1;
+		};
+	}
+	if (!Array.prototype.forEach) {
+		Array.prototype.forEach = function (fun /*, thisp*/) {
+			var len = this.length;
+			if (typeof fun != "function")
+				throw new TypeError();
 
-			deltaY = deltaY * 30;
-
-			api.scrollByY(deltaY, false);
-		}
-
-	}).on('keydown', function (e) {
-//				console.log(api.getContentHeight);
-			var keyboardSpeed = 28, scrollPagePercent = .8;
-
-			switch (e.keyCode) {
-				case 40: // down
-					api.scrollByY(keyboardSpeed, false);
-					break;
-				case 38: // up
-					api.scrollByY(-keyboardSpeed, false);
-					break;
-				case 34: // page down
-				case 32: // space
-
-					api.scrollByY(300, false);
-					break;
-				case 33: // page up
-					api.scrollByY(-300, false);
-					break;
-
+			var thisp = arguments[1];
+			for (var i = 0; i < len; i++) {
+				if (i in this)
+					fun.call(thisp, this[i], i, this);
 			}
-		});
-
-	/*
-
-	 switch (keyDown) {
-	 case 40: // down
-	 jsp.scrollByY(settings.keyboardSpeed, false);
-	 break;
-	 case 38: // up
-	 jsp.scrollByY(-settings.keyboardSpeed, false);
-	 break;
-	 case 34: // page down
-	 case 32: // space
-	 jsp.scrollByY(paneHeight * settings.scrollPagePercent, false);
-	 break;
-	 case 33: // page up
-	 jsp.scrollByY(-paneHeight * settings.scrollPagePercent, false);
-	 break;
-	 case 39: // right
-	 jsp.scrollByX(settings.keyboardSpeed, false);
-	 break;
-	 case 37: // left
-	 jsp.scrollByX(-settings.keyboardSpeed, false);
-	 break;
-	 }*/
-}
-function file_size(size) {
-	if (!size) {
-		return 0;
+		};
 	}
-	var origSize = size;
-	var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-	var i = 0;
-	while (size >= 1024) {
-		size /= 1024;
-		++i;
-	}
-
-	if (origSize > 1024) {
-		size = size.toFixed(1)
-	}
-	return size + ' ' + units[i];
-}
-if (!Array.prototype.indexOf) {
-	Array.prototype.indexOf = function (elt /*, from*/) {
-		var len = this.length >>> 0;
-
-		var from = Number(arguments[1]) || 0;
-		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-		if (from < 0)
-			from += len;
-
-		for (; from < len; from++) {
-			if (from in this && this[from] === elt)
-				return from;
-		}
-		return -1;
+	Number.prototype.formatMoney = function (c, d, t) {
+		var n = this, c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "," : d, t = t == undefined ? "." : t, s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+		return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 	};
-}
-if (!Array.prototype.forEach) {
-	Array.prototype.forEach = function (fun /*, thisp*/) {
-		var len = this.length;
-		if (typeof fun != "function")
-			throw new TypeError();
-
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
-			if (i in this)
-				fun.call(thisp, this[i], i, this);
-		}
+	String.prototype.capitalize = function () {
+		return this.charAt(0).toUpperCase() + this.slice(1);
 	};
-}
+	function capitaliseFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 </script>
 {% if page['template_js'] %}
 <script src='{{ page['template_js'] }}'></script>
 {% endif %}
+
 <script type="text/x-jqote-template" id="template-timers-tr">
 	<![CDATA[
 
@@ -422,8 +570,7 @@ if (!Array.prototype.forEach) {
 		<td><*= this.msg *>
 			<div class="s g"><*= this.arg *></div>
 		</td>
-		<td
-		<* if (this.tim>{{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>><*= this.tim *></td>
+		<td	<* if (this.tim>{{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>><*= this.tim *></td>
 	</tr>
 
 	]]>
@@ -437,10 +584,12 @@ if (!Array.prototype.forEach) {
 	</tr>
 	<* for(var i in this.m) { *>
 	<tr class="btn-row-details">
-		<td class="s g"
-		<* if (this.m[i].c > 1) { *>style="color: red;"<* } *>> <*= this.m[i].c *>&nbsp;|&nbsp;<*= this.m[i].l *>		</td>
-		<td class="s g"
-		<* if (this.m[i].t > {{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>> <*= this.m[i].t *>		</td>
+		<td class="s g"	<* if (this.m[i].c > 1) { *>style="color: red;"<* } *>>
+			<*= this.m[i].c *>&nbsp;|&nbsp;<*= this.m[i].l *>
+		</td>
+		<td class="s g" <* if (this.m[i].t > {{ _cfg['debug']['highlightfrom'] }}) { *>style="color: red;"<* } *>>
+			<*= this.m[i].t *>
+		</td>
 	</tr>
 
 	<tr class="row-details">
@@ -466,7 +615,8 @@ if (!Array.prototype.forEach) {
 						<* } *>
 
 
-					</td>
+
+						</td>
 					<td style="width: 140px; <* if ( this.m[i].m[g].tim > {{ _cfg['debug']['highlightfrom'] }} ) { *>color: red;<* } *>"><*= this.m[i].m[g].tim *></td>
 				</tr>
 				<* } *>
@@ -475,7 +625,8 @@ if (!Array.prototype.forEach) {
 
 		</td>
 	</tr>
-	<* } *> ]]>
+	<* } *>
+	]]>
 </script>
 <script type="text/x-jqote-template" id="template-logged-in-users">
 	<![CDATA[
@@ -492,8 +643,29 @@ if (!Array.prototype.forEach) {
 
 	]]>
 </script>
-{% if page['template_tmpl'] %} {% include page['template_tmpl'] %} {% endif %}
+{% if page['template_tmpl'] %}
+{% include page['template_tmpl'] %}
+{% endif %}
 
+{% include 'templates/template.jtmpl' %}
 
+{% if  _cfg['ga'] %}
+<script type="text/javascript">
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', '{{ _cfg['ga'] }}']);
+	_gaq.push(['_trackPageview']);
+
+	(function () {
+		var ga = document.createElement('script');
+		ga.type = 'text/javascript';
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+{% endif %}
 </body>
 </html>

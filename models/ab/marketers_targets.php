@@ -76,12 +76,14 @@ class marketers_targets {
 			$start_date = "";
 			$end_date = false;
 			$targets = array();
-				$pubs_array = array();
+			$pubs_array = array();
 			foreach ($result as $target){
 				$pubs = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '".$target['ID']."'");
 
 				$p = array();
 				foreach ($pubs as $pub){
+
+
 					if (!in_array($pub['pID'],$pubs_array)){
 						$pubs_array[] = $pub['pID'];
 					}

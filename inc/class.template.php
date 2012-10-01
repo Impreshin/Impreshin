@@ -7,13 +7,11 @@
 class template {
 	private $config = array(), $vars = array();
 
-	function __construct($template, $folder = "") {
+	function __construct($template, $folder = "", $strictfolder = false) {
 		$this->config['cache_dir'] = F3::get('TEMP');
 
-		$ui = ($folder) ? $folder : F3::get('UI');
-
-		$this->config['template_dir'] = $ui;
-		$this->vars['folder'] = $ui;
+		$this->vars['folder'] = $folder;
+		$this->config['strictfolder'] = $strictfolder;
 
 		$this->template = $template;
 
@@ -41,14 +39,18 @@ class template {
 		unset($cfg['DB']);
 
 
-
+		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
 
 		$publications = $user['publications'];
 		$publication = $user['publication'];
 
+		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
+		$this->vars['_folder'] = $this->vars['folder'];
 		$this->vars['_version'] = F3::get('version');
 		$this->vars['_v'] = $_v;
 		$this->vars['_cfg'] = $cfg;
+		$this->vars['_docs'] = F3::get('docs');
+		$this->vars['_last_pages'] = F3::get('last_pages');
 		$this->vars['isLocal'] = isLocal();
 
 
@@ -69,31 +71,63 @@ class template {
 		if (isset($this->vars['page'])) {
 			$page = $this->vars['page'];
 			$tfile = $page['template'];
-			if (file_exists('' . $this->vars['folder'] . '' . $tfile . '.tmpl')) {
-				$page['template'] = $tfile . '.tmpl';
-			} else {
-				$page['template'] = "none";
-			}
-			if (file_exists('' . $this->vars['folder'] . '_js/' . $tfile . '.js')) {
-				$page['template_js'] = '/min/js_' . $_v . '?file=/' . $this->vars['folder'] . '_js/' . $tfile . '.js';
-			} else {
-				$page['template_js'] = "";
-			}
-			if (file_exists('' . $this->vars['folder'] . '_css/' . $tfile . '.css')) {
-				$page['template_css'] = '/min/css_'.$_v.'?file=/' . $this->vars['folder'] . '_css/' . $tfile . '.css';
-			} else {
-				$page['template_css'] = "";
-			}
-			if (file_exists('' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl')) {
-				//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
 
-				$file = '/' . $this->vars['folder'] . 'templates/' . $tfile . '_templates.jtmpl';
+			$folders = (array) $this->vars['folder'];
 
-				$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
-			} else {
-				$page['template_tmpl'] = "";
+
+
+			$usethisfolder = false;
+			foreach ($folders as $folder){
+				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
+					$page['template'] = $tfile . '.tmpl';
+					$usethisfolder = true;
+				} else {
+					$page['template'] = 'none';
+				}
+
+				if (file_exists('' . $folder . '_js/' . $tfile . '.js')) {
+					$page['template_js'] = '/min/js_' . $_v . '?file=/' . $folder . '_js/' . $tfile . '.js';
+				} else {
+					$page['template_js'] = "";
+				}
+				if (file_exists('' . $folder . '_css/' . $tfile . '.css')) {
+					$page['template_css'] = '/min/css_' . $_v . '?file=/' . $folder . '_css/' . $tfile . '.css';
+				} else {
+					$page['template_css'] = "";
+				}
+				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl')) {
+					//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
+
+					$file = '/' . $folder . 'templates/' . $tfile . '_templates.jtmpl';
+
+					$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
+				} else {
+					$page['template_tmpl'] = "";
+				}
+
+				if ($usethisfolder){
+					break;
+				}
 			}
+
+			if (!isset($page['help']) || !$page['help']){
+				$app = F3::get("app");
+				$sub_section = $page['sub_section'];
+				if (strpos($sub_section,"_")){
+					$sub_section = explode("_", $page['sub_section']);
+					$sub_section = implode("/", $sub_section);
+					$page['help'] = "/$app/help/" . $page['section'] . "/" . $sub_section;
+				} else {
+					$page['help'] = "/$app/help/" . $page['section'] . "/" . $page['sub_section'];
+				}
+
+
+
+			}
+
 			$this->vars['page'] = $page;
+			
+
 			return $this->render_template();
 		} else {
 			return $this->render_string();
@@ -105,11 +139,27 @@ class template {
 	}
 
 	public function render_template() {
-		$loader = new Twig_Loader_Filesystem($this->config['template_dir']);
+
+		if (is_array($this->vars['folder'])){
+			$folder = $this->vars['folder'];
+		} else {
+			$folder = array(
+				"ui/",
+				$this->vars['folder']
+			);
+		}
+
+		if ($this->config['strictfolder']){
+			$folder = $this->vars['folder'];
+		}
+
+		$loader = new Twig_Loader_Filesystem($folder);
 		$twig = new Twig_Environment($loader, array(
 			//'cache' => $this->config['cache_dir'],
 		));
 
+
+		//test_array($this->vars);
 
 		return $twig->render($this->template, $this->vars);
 

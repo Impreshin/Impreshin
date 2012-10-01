@@ -103,7 +103,15 @@ class admin_publications extends save {
 			}
 		}
 
+		$passed_ID = $ID;
+		$publish_date = isset($_POST['publish_date']) ? $_POST['publish_date'] : "";
+		if ($passed_ID == "") {
 
+			if ($publish_date == "") {
+				$submit = false;
+				$return['error'][] = "An initial date is required";
+			}
+		}
 
 
 
@@ -112,6 +120,7 @@ class admin_publications extends save {
 
 
 		$values = array(
+			"cID"         => $cID,
 			"publication"         => $publication,
 			"InsertRate"     => $InsertRate,
 			"printOrder"     => $printOrder,
@@ -128,11 +137,25 @@ class admin_publications extends save {
 
 
 		if ($submit){
-			$passed_ID = $ID;
+
+
+
 			$ID = models\publications::save($ID, $values);
 
 			$return['ID'] = $ID;
+
+
+
+			if (($passed_ID == "" || $passed_ID == "undefined") && $publish_date && $ID != "") {
+				$date_values = array(
+					"pID"         => $ID,
+					"publish_date"=> $publish_date,
+					"current"     => '1',
+				);
+				$t = models\dates::save("", $date_values);
+			}
 		}
+
 
 
 	//	test_array(array("ID"=>$ID,"values"=>$values,"result"=>$return));

@@ -10,7 +10,7 @@ class settings {
 
 	}
 
-	public static function getSettings($permissions=array()) {
+	public static function settings($permissions=array()) {
 		$timer = new timer();
 		$return = array();
 			$columns = array(
@@ -337,7 +337,7 @@ class settings {
 		return $return;
 	}
 
-	public static function getDefaults($application = "ab", $ID = "") {
+	public static function defaults($application = "ab", $ID = "") {
 		$timer = new timer();
 		$return = array();
 			$settings = array(
@@ -658,8 +658,8 @@ class settings {
 	public static function _read($section, $permission=array()){
 		$user = F3::get("user");
 		$timer = new timer();
-		$settings = self::getSettings($user['permissions']);
-		$defaults = self::getDefaults();
+		$settings = self::settings($user['permissions']);
+		$defaults = self::defaults();
 		$settings_raw = $settings;
 
 		$user_settings = new user_settings();

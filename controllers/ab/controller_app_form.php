@@ -116,14 +116,15 @@ class controller_app_form {
 			if (!$user['permissions']['form']['new']) F3::error(404);
 		}
 
-		$tmpl = new \template("template.tmpl", "ui/adbooker/");
+		$tmpl = new \template("template.tmpl", "ui/ab/");
 		$tmpl->page = array(
 			"section"    => "form",
 			"sub_section"=> "form",
 			"template"   => "page_app_form",
 			"meta"       => array(
 				"title"=> "AdBooker - Form - $title",
-			)
+			),
+			"help"=>"/ab/help/form"
 		);
 
 

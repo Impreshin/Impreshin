@@ -55,7 +55,7 @@ class controller_app_deleted {
 
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "records",
 			"sub_section"=> "deleted",
@@ -96,7 +96,7 @@ class controller_app_deleted {
 		$data = $dataO->_list(true);
 
 
-		$tmpl = new \template("template.tmpl", "ui/adbooker/print/");
+		$tmpl = new \template("template.tmpl", "ui/ab/print/");
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "deleted",

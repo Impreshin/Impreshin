@@ -1,0 +1,47 @@
+<script type="text/x-jqote-template" id="template-notifications">
+    <![CDATA[
+
+    <% if (this.checked) { %>
+		<span>
+			<span>Checked -
+			&nbsp; <%= this.checked.done %> of <%= this.checked.total %> &nbsp;
+			</span>
+			<% if (this.checked.percent) { %>
+				<div style=" width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%; "></div>
+			<% } %>
+		</span> <% } %>
+    <% if (this.placed) { %>
+		<span>
+			<span>Placed -
+			&nbsp; <%= this.placed.done %> of <%= this.placed.total %> &nbsp;
+			</span>
+			<% if (this.placed.percent) { %>
+				<div style=" width: <% if (this.placed.percent>100) { %>100<% } else { %><%= this.placed.percent %><% } %>%; "></div>
+			<% } %>
+		</span>
+    <% } %>
+
+    <% if (this.marketer && this.marketer.next_targets && this.marketer.next_targets.target) { %>
+        <span <% if (this.marketer.next_targets) { %>title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>" <% } %>> Marketer -
+			<span>&nbsp;Total: <%= this.marketer.next_targets.done %> [<%= this.marketer.next_targets.records %>]
+				<% if (this.marketer.next_targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.next_targets.target %><% } %>
+			</span>
+        <% if (this.marketer.next_targets.target) { %>
+            <div style="width: <% if (this.marketer.next_targets.percent>100) { %>100<% } else { %><%= this.marketer.next_targets.percent %><% } %>%;"></div>
+        <% } %>
+        </span>
+    <% } %>
+    <% if (this.production) { %>
+		<span>
+			Production -
+			<span>&nbsp;Total Done: <%= this.production.records.done %> of <%= this.production.records.total %>&nbsp; &nbsp; Assigned Done: <%= this.production.assigned.done %> of <%= this.production.assigned.total %>
+			</span>
+			<% if (this.production.records.percent) { %>
+				<div style="width: <% if (this.production.records.percent>100) { %>100<% } else { %><%= this.production.records.percent %><% } %>%;"></div>
+			<% } %>
+		</span>
+    <% } %>
+
+
+    ]]>
+</script>

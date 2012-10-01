@@ -3,7 +3,7 @@
         <div class="toolbar clearfix  ">
             <ul class="nav nav-pills pull-left">
 
-                <li><h2 style="padding-left: 30px; margin-bottom: -5px;">Welcome <small>to <em>Impreshin</em>
+                <li><h2 style="padding-left: 30px; margin-bottom: -5px;">Welcome <small>to <em>Impreshin {% if _cfg['git']['branch'] != 'master' %}[ {{ _cfg['git']['branch'] }} ]{% endif %}</em>
                 </small> </h2></li>
 
             </ul>
@@ -39,9 +39,13 @@
 						</div>
 
 						<div class="form-actions ">
-							<button class="btn btn-primary span3" type="submit" style="float:right;">Sign in</button>
+							<button class="btn {% if _cfg['git']['branch'] != 'master' %}btn-warning {% else %}btn-primary {% endif %} span3" type="submit" style="float:right;">Sign in</button>
 						</div>
-					</fieldset>
+                        {% if _cfg['git']['branch'] != 'master' %}
+                        <div class="s g">{{ _cfg['git']['branch'] }} Branch</div>
+                        {% endif %}
+
+                    </fieldset>
 				</form>
 		</article>
 	</div>

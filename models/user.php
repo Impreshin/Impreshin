@@ -32,46 +32,130 @@ class user {
 			$result = $this->dbStructure();
 		}
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $result;
 	}
 
+	private static function appSettings($uID,$app, $pID){
+
+		$table = $app . "_users_settings";
+		$data = F3::get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
+		$settingsClass = "\\models\\" . $app . "\\settings";
+		$permissionsClass = "\\models\\" . $app . "\\user_permissions";
+		$defaults = $settingsClass::defaults();
+		if (count($data)) {
+			$data = $data[0];
+			$user_settings = @unserialize($data['settings']);
+			if ($user_settings){
+				$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
+			} else {
+				$user_settings = $defaults;
+			}
+
+			$data['settings'] = $user_settings;
+
+		} else {
+			$data = array(
+				"settings"     => $defaults,
+				"pID"          => "",
+				"last_activity"=> ""
+			);
+		}
+		$return = array(
+			"settings"     => $data['settings'],
+			"last_activity"=> $data['last_activity'],
+			"access"=>false,
+			"permissions"=> array(),
+			"extra"=>array()
+		);
+
+
+
+
+		$appstuff = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') ORDER BY ID DESC LIMIT 0,1");
+
+
+
+
+		if (count($appstuff)) {
+			$appstuff = $appstuff[0];
+
+		//	test_array($appstuff);
+			$return['access'] = ($appstuff[$app]=='1')?true:false;
+			$return['permissions']= $appstuff[$app.'_permissions'];
+
+
+			$e = array();
+			foreach (array_keys($appstuff) as $value){
+				if (substr($value,0,3)==$app."_"){
+					$e[$value] = $appstuff[$value];
+				}
+			}
+			unset($e[$app."_permissions"]);
+
+
+			$return['extra'] = $e;
+		}
+
+	  $return['permissions'] = $permissionsClass::_read($return['permissions']);
+
+		return $return;
+	}
 	public function user($user = "") {
 		$timer = new timer();
 		$app = F3::get("app");
+		$cfg = F3::get("cfg");
 		$result = array();
-
-
+		
 		if (!is_array($user)) {
-
 			$user = $this->get($user);
 		}
 
+
 		$result = $user;
+
+		$uID = $user['ID'];
+		$appSpecific = array();
+		foreach ($cfg['apps'] as $avapp){
+
+
+
+
+		}
+
+
+
 
 		if ($app && $user['ID']) {
 
-			$appClass = "\\models\\" . $app . "\\user_settings";
-
-			$appO = new $appClass();
-			$appSettings = $appO->_read($result['ID']);
 
 
-			if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $appSettings['pID']) {
 
+			$table = $app . "_users_settings";
+			$lastpID = F3::get("DB")->exec("SELECT pID FROM $table WHERE uID = '$uID'");
+			if (count($lastpID)){
+				$lastpID = $lastpID[0]['pID'];
+			} else {
+				$lastpID = "";
+			}
+
+
+
+
+
+
+			if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $lastpID) {
+				$appClass = "\\models\\" . $app . "\\user_settings";
+				$appO = new $appClass();
 				$appClass::save_config(array("pID"=> $_GET['apID']), $result['ID']);
-				$appSettings = $appO->_read($result['ID']);
+				$lastpID = $_GET['apID'];
 			}
 
 			$appPublications = "\\models\\" . $app . "\\publications";
 			if ($result['su'] == '1') {
 				$publications = $appPublications::getAll("", "publication ASC");
 			} else {
-				$publications = $appPublications::getAll_user("uID='" . $result['ID'] . "'", "publication ASC");
+				$publications = $appPublications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "publication ASC");
 			}
 
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
@@ -79,10 +163,12 @@ class user {
 
 			$pubstr = array();
 			$publication = "";
-			foreach ($publications AS $pub) $pubstr[] = $pub["ID"];
+			foreach ($publications AS $pub) {
+				$pubstr[] = $pub["ID"];
+			}
 
-			if (in_array($appSettings['pID'], $pubstr)) {
-				$pID = $appSettings['pID'];
+			if (in_array($lastpID, $pubstr)) {
+				$pID = $lastpID;
 
 			}
 
@@ -95,25 +181,28 @@ class user {
 			$result['publication'] = $publication;
 
 
-			$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $user['ID'] . "' AND cID='" . $result['publication']['cID'] . "'");
+			$appSettings = self::appSettings($uID, $app, $pID);
 
-			if (count($extra)) {
-				$extra = $extra[0];
+
+			//test_array($publications);
+
+			$result['access'] = $appSettings['access'];
+			$result['settings'] = $appSettings['settings'];
+
+
+			if (!$appSettings['access'] && $result['su']!='1') {
+				F3::reroute("/noaccess/?app=$app&cID=". $publication['cID']);
 			}
 
-			if ((isset($extra[$app]) && !$extra[$app]) && $result['su']!='1') {
-				F3::reroute("/noaccess/?app=$app");
-			}
-			//test_array($result);
-			if (isset($extra['ab_marketerID']) && $extra['ab_marketerID']) $result['ab_marketerID'] = $extra['ab_marketerID'];
-			if (isset($extra['ab_productionID']) && $extra['ab_productionID']) $result['ab_productionID'] = $extra['ab_productionID'];
+			if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) $result['ab_marketerID'] = $appSettings['extra']['ab_marketerID'];
+			if (isset($appSettings['extra']['ab_productionID']) && $appSettings['extra']['ab_productionID']) $result['ab_productionID'] = $appSettings['extra']['ab_productionID'];
 
 			unset($result['password']);
 			//unset($result[$app . '_permissions']);
 
 			if ($app == "ab") {
-				if (isset($extra['ab_marketerID'])&& $extra['ab_marketerID']){
-					$marketer = \models\ab\marketers_targets::_current($extra['ab_marketerID'], $result['publication']['ID']);
+				if (isset($appSettings['extra']['ab_marketerID'])&& $appSettings['extra']['ab_marketerID']){
+					$marketer = \models\ab\marketers_targets::_current($appSettings['extra']['ab_marketerID'], $result['publication']['ID']);
 				} else {
 					$marketer = array();
 				}
@@ -124,9 +213,11 @@ class user {
 			}
 
 
-			$appClass = "\\models\\" . $app . "\\user_permissions";
-			if ($result['su'] == '1') {
 
+			
+
+			if ($result['su'] == '1') {
+				$appClass = "\\models\\" . $app . "\\user_permissions";
 				$permissions = $appClass::permissions();
 				$permissions = $permissions['p'];
 				array_walk_recursive($permissions, function (& $item, $key) {
@@ -134,14 +225,13 @@ class user {
 					}
 				);
 			} else {
-				$permissions = $appClass::_read($extra[$app . '_permissions']);
+				$permissions = $appSettings['permissions'];
 
 
 			}
-			$permissions['records']['_nav'] = '0';
-			foreach ($permissions['records'] as $p) {
-				if ($p['page']) $permissions['records']['_nav'] = '1';
-			}
+
+
+
 
 			$permissions['administration']['_nav'] = '0';
 			foreach ($permissions['administration']['application'] as $p) {
@@ -151,8 +241,6 @@ class user {
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
 			$permissions['reports']['_nav'] = '0';
-
-
 			foreach ($permissions['reports'] as $k=> $p) {
 
 				if (isset($p['page']) && $p['page']) $permissions['reports']['_nav'] = '1';
@@ -170,15 +258,25 @@ class user {
 			}
 
 
-			if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
-				$permissions['reports']['_nav'] = '1';
-				$permissions['reports']['marketer']['_nav'] = '1';
-				foreach ($permissions['reports']['marketer'] as $k=> $p) {
-					$permissions['reports']['marketer'][$k]['spage'] = '1';
 
+			if ($app == "ab") {
+				$permissions['records']['_nav'] = '0';
+				foreach ($permissions['records'] as $p) {
+					if ($p['page']) $permissions['records']['_nav'] = '1';
 				}
 
+				if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
+					$permissions['reports']['_nav'] = '1';
+					$permissions['reports']['marketer']['_nav'] = '1';
+					foreach ($permissions['reports']['marketer'] as $k=> $p) {
+						$permissions['reports']['marketer'][$k]['spage'] = '1';
+
+					}
+
+				}
 			}
+
+
 
 
 
@@ -198,27 +296,22 @@ class user {
 		}
 
 
-
+		//test_array($result);
 
 		$return = $result;
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args());
 		return $return;
 	}
+
 
 	function login($username, $password) {
 		$timer = new timer();
 
 		$ID = "";
 
-		if (isset($_COOKIE['username'])) {
-			$_COOKIE['username'] = $username;
-		} else {
-			setcookie("username", $username, time() + 31536000, "/");
-		}
+
+		setcookie("username", $username, time() + 31536000, "/");
+
 
 		$password_hash = $password;
 
@@ -243,11 +336,7 @@ class user {
 		}
 
 		$return = $ID;
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

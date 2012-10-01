@@ -50,13 +50,17 @@ class publications {
 		}
 
 
+		$where = str_replace("[access]", "COALESCE(global_users_company.ab,0)", $where);
+
+
 		$result = F3::get("DB")->exec("
-			SELECT DISTINCT global_publications.*, ab_users_pub.uID
-			FROM global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID
+			SELECT DISTINCT global_publications.*, ab_users_pub.uID, COALESCE(global_users_company.ab,0) as access
+			FROM (global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND (ab_users_pub.uID = global_users_company.uID)
 			$where
 			$orderby
 		"
 		);
+
 
 
 		$return = $result;

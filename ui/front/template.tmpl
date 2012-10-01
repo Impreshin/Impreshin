@@ -33,14 +33,16 @@
 	<link rel="alternate" media="print" href="{{ page['print'] }}">
 	<link rel="alternate" type="text/html" media="print" href="{{ page['print'] }}">
 	{% endif %}
+    <!--
 	<link rel="shortcut icon" type="image/x-icon" href="/ui/_images/favicon.ico">
 	<link rel="apple-touch-icon" href="/ui/_images/apple-touch.png">
-
+    -->
 
 
 </head>
 <body>
 {% include "_nav_top.tmpl" %}
+
 {% if page['template'] %} {% include page['template'] %} {% endif %}
 
 
@@ -51,7 +53,7 @@
 		</div>
 		<div class="clearfix">
 			<div class="row">
-				<div class="c"> - Copyright © 2012 - Impreshin  </div>
+				<div class="c"> - Copyright © 2012 - Impreshin  {% if _cfg['git']['branch'] != 'master' %} [ {{ _cfg['git']['branch'] }} ] {% endif %}</div>
 
 			</div>
 		</div>
@@ -61,8 +63,6 @@
 
 
 <script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
-<link rel="stylesheet" href="/ui/fancybox/jquery.fancybox.css?v={{_v}}" type="text/css" media="screen"/>
-<script type="text/javascript" src="/ui/fancybox/jquery.fancybox.pack.js?v=2.0.6"></script>
 
 <script src="/min/js.{{_v}}.js"></script>
 <script src="/ui/_js/plugins/bootstrap-typehead-array.{{_v}}.js"></script>

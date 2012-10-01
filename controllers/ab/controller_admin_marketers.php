@@ -24,7 +24,7 @@ class controller_admin_marketers {
 //test_array($pages);
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","ui/adbooker/");
+		$tmpl = new \template("template.tmpl","ui/ab/");
 		$tmpl->page = array(
 			"section"=> "admin",
 			"sub_section"=> "marketers",
