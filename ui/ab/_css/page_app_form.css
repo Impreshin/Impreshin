@@ -114,3 +114,7 @@ margin-right: 30px;
 .select-error > a.select2-choice div b {
 	color : white;
 }
+
+.btn-group.square > .btn:first-child {
+	margin-left: 0;
+}

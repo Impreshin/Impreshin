@@ -364,6 +364,7 @@
 					<div class="btn-group square">
 						<% for(var i in this.placing) { %>
 						<button type="button" class="btn  btn-mini l" data-fld="placingID" data-val="<%= this.placing[i].v %>" style="width: 147px; padding-left: 5px;"><%= this.placing[i].h %></button>
+                        <% if (i%2 == 0){ %><% } else { %><br><% } %>
 						<% } %> <% if (!this.placing.length){ %>
 						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
 						<% } %>
@@ -379,6 +380,7 @@
 					<div class="btn-group square">
 						<% for(var i in this.marketer) { %>
 						<button type="button" class="btn  btn-mini  l " data-fld="marketerID" data-val="<%= this.marketer[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.marketer[i].h %></button>
+                        <% if (i%2 == 0){ %><% } else { %><br><% } %>
 						<% } %> <% if (!this.marketer.length){ %>
 						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
 						<% } %>
@@ -394,6 +396,7 @@
 					<div class="btn-group square">
 						<% for(var i in this.category) { %>
 						<button type="button" class="btn  btn-mini  l " data-fld="categoryID" data-val="<%= this.category[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.category[i].h %></button>
+                        <% if (i%2 == 0){ %><% } else { %><br><% } %>
 						<% } %> <% if (!this.category.length){ %>
 						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
 						<% } %>
@@ -409,6 +412,7 @@
 					<div class="btn-group square">
 						<% for(var i in this.discount) { %>
 						<button type="button" class="btn  btn-mini  l " data-fld="discount" data-val="<%= this.discount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.discount[i].h %></button>
+                        <% if (i%2 == 0){ %><% } else { %><br><% } %>
 						<% } %> <% if (!this.discount.length){ %>
 						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
 						<% } %>
@@ -425,6 +429,7 @@
 					<div class="btn-group square">
 						<% for(var i in this.agencyDiscount) { %>
 						<button type="button" class="btn  btn-mini  l " data-fld="agencyDiscount" data-val="<%= this.agencyDiscount[i].v %>" style="width: 147px;padding-left: 5px;"><%= this.agencyDiscount[i].h %></button>
+                        <% if (i%2 == 0){ %><% } else { %><br><% } %>
 						<% } %> <% if (!this.agencyDiscount.length){ %>
 						<button type="button" class="btn  btn-mini" disabled="disabled" style="width: 147px;">None</button>
 						<% } %>
