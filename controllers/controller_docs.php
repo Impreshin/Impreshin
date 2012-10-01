@@ -32,7 +32,7 @@ class controller_docs {
 	function filter($data=array()){
 		$return = array();
 		$data = (array)$data;
-
+		//test_array($data);
 
 		foreach ($data as $k => $i){
 			if (isset($i) && $i && is_array($i)){
@@ -42,19 +42,19 @@ class controller_docs {
 				foreach ($i as $kk => $ii) {
 					if (isset($ii['p']) && $ii['p'] == '0'){
 						unset($data[$k][$kk]);
-						if (!count($data[$k])) unset($data[$k]);
+						if (!count($data[$k])) unset($data);
 					}
 					if (isset($ii) && $ii && is_array($ii)) {
 						foreach ($ii as $kkk => $iii) {
 							if (isset($iii['p']) && $iii['p'] == '0') {
 								unset($data[$k][$kk][$kkk]);
-								if (!count($data[$k][$kk])) unset($data[$k][$kk]);
+								if (!count($data[$k][$kk])) unset($data[$k]);
 							}
 							if (isset($iii) && $iii && is_array($iii)) {
 								foreach ($iii as $kkkk => $iiii) {
 									if (isset($iiii['p']) && $iiii['p'] == '0') {
 										unset($data[$k][$kk][$kkk][$kkkk]);
-										if (!count($data[$k][$kk][$kkk])) unset($data[$k][$kk][$kkk]);
+										if (!count($data[$k][$kk][$kkk])) unset($data[$k][$kk]);
 
 									}
 
@@ -62,14 +62,14 @@ class controller_docs {
 										foreach ($iiii as $kkkkk => $iiiii) {
 											if (isset($iiiii['p']) && $iiiii['p'] == '0') {
 												unset($data[$k][$kk][$kkk][$kkkk][$kkkkk]);
-												if (!count($data[$k][$kk][$kkk][$kkkk])) unset($data[$k][$kk][$kkk][$kkkk]);
+												if (!count($data[$k][$kk][$kkk][$kkkk])) unset($data[$k][$kk][$kkk]);
 
 											}
 											if (isset($iiiii) && $iiiii && is_array($iiiii)) {
 												foreach ($iiiii as $kkkkkk => $iiiiii) {
 													if (isset($iiiiii['p']) && $iiiiii['p'] == '0') {
 														unset($data[$k][$kk][$kkk][$kkkk][$kkkkk][$kkkkkk]);
-														if (!count($data[$k][$kk][$kkk][$kkkk][$kkkkk])) unset($data[$k][$kk][$kkk][$kkkk][$kkkkk]);
+														if (!count($data[$k][$kk][$kkk][$kkkk][$kkkkk])) unset($data[$k][$kk][$kkk][$kkkk]);
 
 													}
 												}
@@ -83,6 +83,7 @@ class controller_docs {
 				}
 			}
 		}
+		//test_array($data);
 
 
 
@@ -164,6 +165,13 @@ class controller_docs {
 		$return['sub_title']= $sub_title;
 		$return['file']= $file;
 
+		$up = $_SERVER['REQUEST_URI'];
+		$up = explode("/",$up);
+		$up = array_slice($up,0,-1);
+		$up = implode("/",$up);
+
+		$t['up']= $up;
+
 		$return = $t + $return;
 
 		if (isset($_GET['t'])) test_array($return);
@@ -239,6 +247,7 @@ class controller_docs {
 	function sub_section_item_page(){
 		$data = $this->data;
 		$raw = $this->raw;
+
 
 
 		$title = "Documentation - " . $data['title'] . " - " . $data['sub_title'] . " - " . $data['help']['heading'];

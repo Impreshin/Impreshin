@@ -2,12 +2,23 @@
 	#right-area {
 		h2 {
 			border-bottom : 1px dotted #ccc;
-			margin-top    : 10px;
 			padding-left  : 10px;
 			margin-bottom : 10px;
 			margin-top : 30px;
 			&:first-child {
 				margin-top : 10px;
+			}
+		}
+		h3 {
+			border-top : 1px solid #ccc;
+			border-bottom : 1px dotted #ccc;
+			padding-left  : 10px;
+			margin-bottom : 10px;
+			margin-top : 0px;
+			padding-top : 10px;
+
+			.btn {
+				margin-top: -5px;
 			}
 		}
 		.nav {
@@ -17,7 +28,7 @@
 
 
 				a {
-					padding : 5px;
+					padding : 3px 5px;
 					border-bottom : 1px dotted #ccc;
 				}
 				&.active > a {
@@ -33,7 +44,7 @@
 
 					a {
 						display : block;
-						padding : 3px;
+						padding : 2px;
 					}
 
 				}
@@ -70,6 +81,12 @@
 		top:0;
 	}
 
+	.bottom-right {
+		position: absolute;
+		bottom: 30px;
+		left:0;
+		right : 0;
+	}
 }
 body.help_pages {
 	min-width : 950px;

@@ -223,6 +223,7 @@ $app->route('GET|POST /@app/help', 'controllers\controller_docs->help_page');
 $app->route('GET|POST /@app/help/@section', 'controllers\controller_docs->section_page');
 $app->route('GET|POST /@app/help/@section/@sub_section', 'controllers\controller_docs->sub_section_page');
 $app->route('GET|POST /@app/help/@section/@sub_section/@item', 'controllers\controller_docs->sub_section_item_page');
+$app->route('GET|POST /@app/help/@section/@sub_section/@item/*', 'controllers\controller_docs->sub_section_item_page');
 
 
 $app->route('GET /data/keepalive', function() use ($user){

@@ -27,7 +27,7 @@ class controller_reports_category_figures {
 		if ($user['su'] == '1') {
 			$publications = models\publications::getAll("cID = '$cID'", "publication ASC");
 		} else {
-			$publications = models\publications::getAll_user("uID='$uID' AND cID = '$cID'", "publication ASC");
+			$publications = models\publications::getAll_user("ab_users_pub.uID='$uID' AND global_publications.cID = '$cID'", "publication ASC");
 		}
 		$p = array();
 		$publicationselected = array();

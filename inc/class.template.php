@@ -112,7 +112,17 @@ class template {
 
 			if (!isset($page['help']) || !$page['help']){
 				$app = F3::get("app");
-				$page['help'] = "/$app/help/". $page['section']."/". $page['sub_section'];
+				$sub_section = $page['sub_section'];
+				if (strpos($sub_section,"_")){
+					$sub_section = explode("_", $page['sub_section']);
+					$sub_section = implode("/", $sub_section);
+					$page['help'] = "/$app/help/" . $page['section'] . "/" . $sub_section;
+				} else {
+					$page['help'] = "/$app/help/" . $page['section'] . "/" . $page['sub_section'];
+				}
+
+
+
 			}
 
 			$this->vars['page'] = $page;

@@ -200,7 +200,7 @@
                 preload:true
             },
             padding    :0,
-            width      :935,
+            width      :950,
             scrollOutside:false,
             beforeClose:function () {
                 $(this.element).attr("href", $.bbq.getState("help"));
@@ -208,6 +208,15 @@
             },
             afterClose :function () {
                 $.bbq.removeState("help");
+            },
+
+            afterShow:function () {
+
+                   // var $frame = $(this.content).contents();
+                var $f = $(this.content);
+                //console.log($f);
+                $f[0].contentWindow.scrollbars();
+
             }
         };
 
