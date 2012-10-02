@@ -18,6 +18,7 @@ class controller_docs {
 
 		$this->data = $this->get($app, $section, $sub_section, $sub_section_item);
 
+		$this->folders = array("docs/templates/","docs/html/");
 
 		$this->setup = array(
 			"app"=>$app,
@@ -180,7 +181,7 @@ class controller_docs {
 	}
 	function help_page(){
 		$data = $this->data;
-		$tmpl = new \template("template.tmpl", array("docs/templates/"));
+		$tmpl = new \template("template.tmpl", $this->folders,true);
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
@@ -200,7 +201,7 @@ class controller_docs {
 		$raw = $this->raw;
 		//test_array($raw);
 
-		$tmpl = new \template("template.tmpl", array("docs/templates/","ui/","ui/".$data['app']."/"));
+		$tmpl = new \template("template.tmpl", $this->folders, true);
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",
@@ -223,8 +224,7 @@ class controller_docs {
 		if ($data['details']){
 			$this->sub_section_item_page();
 		} else {
-			$tmpl = new \template("template.tmpl", array("docs/templates/",	"ui/","ui/" . $data['app'] . "/"
-			));
+			$tmpl = new \template("template.tmpl", $this->folders, true);
 			$tmpl->page = array(
 				"section"    => "docs",
 				"sub_section"=> "home",
@@ -255,7 +255,7 @@ class controller_docs {
 			$title = "Documentation - " . $data['title'] . " - " . $data['sub_title'];
 		}
 
-		$tmpl = new \template("template.tmpl", array("docs/templates/"));
+		$tmpl = new \template("template.tmpl", $this->folders, true);
 		$tmpl->page = array(
 			"section"    => "docs",
 			"sub_section"=> "home",

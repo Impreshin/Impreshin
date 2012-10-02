@@ -101,6 +101,7 @@ class general {
 				"/ui/_js/plugins/select2.js",
 				"/ui/_js/plugins/jquery.miniColors.js",
 				"/ui/_js/plugins/FeedEk.js",
+				"/ui/_js/plugins/jquery.maphilight.js",
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
