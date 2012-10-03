@@ -99,13 +99,16 @@
 		margin-right:auto;
 		a {
 			position: absolute;
-			background-color: #BFEFFF;
-			.opacity(0.3);
+			background-color: rgba(191, 239, 255, 0.3);
+
+			text-decoration: none;
+			z-index : 99;
 			display: block;
-			border: 3px solid #fff;
+			border: 1px solid #fff;
 			&:hover {
-				.opacity(0.4);
+				background-color : rgba(191, 239, 255, 0.4);
 				border : 1px solid #000;
+				z-index : 100;
 			}
 		}
 	}
