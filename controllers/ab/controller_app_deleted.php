@@ -96,7 +96,7 @@ class controller_app_deleted {
 		$data = $dataO->_list(true);
 
 
-		$tmpl = new \template("template.tmpl", "ui/ab/print/");
+		$tmpl = new \template("template.tmpl", "ui/ab/print/",true);
 		$tmpl->page = array(
 			"section"    => "bookings",
 			"sub_section"=> "deleted",
