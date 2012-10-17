@@ -1,4 +1,10 @@
-Press-Apps
-==========
+Impreshin - helping you run your publishing business
+----------------------------------------------------
 
-AdBooker
+Pre-Requisites
+
+MySQL
+PHP
+PHP-GD
+ghostscript
+git
