@@ -76,10 +76,12 @@ class save {
 
 
 	function material_status(){
+		$user = F3::get("user");
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 		$section = "";
 		$cfg = F3::get("cfg");
 		$cfg = $cfg['upload'];
+
 
 		$values = array();
 		if (isset($_POST['source'])) $values['material_source'] = $_POST['source'];
@@ -89,7 +91,7 @@ class save {
 
 		if (isset($_POST['material_status'])) $values['material_status'] = $_POST['material_status'];
 
-		if ($cfg['material'] && isset($values['material_status'])){
+		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && isset($values['material_status'])){
 			if (isset($_POST['material_file_filename'])) $values['material_file_filename'] = $_POST['material_file_filename'];
 			if (isset($_POST['material_file_filesize'])) $values['material_file_filesize'] = $_POST['material_file_filesize'];
 			if (isset($_POST['material_file_store'])) $values['material_file_store'] = $_POST['material_file_store'];
@@ -135,7 +137,7 @@ class save {
 			$section = "material_approved";
 		}
 
-
+		//test_array($values);
 
 		if ($section) bookings::save($ID, $values,array("section"=> $section,"dry"=>false));
 		test_array($values);

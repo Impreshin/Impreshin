@@ -35,6 +35,7 @@ class admin_publications extends save {
 		$columnsav = isset($_POST['columnsav']) ? $_POST['columnsav'] : "";
 		$cmav = isset($_POST['cmav']) ? $_POST['cmav'] : "";
 		$pagewidth = isset($_POST['pagewidth']) ? $_POST['pagewidth'] : "";
+		$ab_upload_material = isset($_POST['ab_upload_material']) ? $_POST['ab_upload_material'] : "0";
 
 
 
@@ -127,6 +128,7 @@ class admin_publications extends save {
 			"columnsav"     => $columnsav,
 			"cmav"     => $cmav,
 			"pagewidth"     => $pagewidth,
+			"ab_upload_material"     => $ab_upload_material,
 		);
 
 

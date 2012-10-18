@@ -422,7 +422,7 @@
 				<label class="control-label">Material:</label>
 
 				<div class="controls" style="padding-left: 30px; margin-top: -33px; margin-left:60px;">
-					{% if _cfg['upload']['material'] %}
+					{% if _cfg['upload']['material'] and _user['company']['ab_upload_material']=='1' and _user['publication']['ab_upload_material']=='1'%}
 
 					<table>
 						<tr>
@@ -618,7 +618,7 @@
 
 
 		//console.log(data);
-		{% if _cfg['upload_material'] %}
+        {% if _cfg['upload_material'] %}
 
 
 		{% else %}
