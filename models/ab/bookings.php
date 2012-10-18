@@ -80,7 +80,7 @@ class bookings {
 			$cfg = $cfg['upload'];
 
 			$return['material_file_filesize_display'] = 0;
-			if ($cfg['material']) {
+			if ($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') {
 				if ($return['material_file_store']){
 					$file = $cfg['folder'] . "ab/" . $return['cID'] . "/" . $return['pID'] . "/" . $return['dID'] . "/material/" . $return['material_file_store'];
 					if (!file_exists($file)) {
@@ -664,7 +664,7 @@ $groupby
 
 
 
-		if ($cfg['material'] && !$a->dry()) {
+		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
 			if ($a->material_file_store){
 				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
 

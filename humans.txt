@@ -5,10 +5,14 @@
 /* TEAM */
   William Stam
 
-/* THANKS */
-
 
 /* SITE */
   Standards: HTML5, CSS3
-  Components: Modernizr, jQuery
+  Components: Modernizr, jQuery, FatFree, Bootstrap
   Software: phpStorm
+
+/* Tech used */
+  FatFree - http://bcosca.github.com/fatfree/
+  Bootstrap - http://twitter.github.com/bootstrap/
+  jQuery - http://jquery.com/
+  jQuery UI - http://jqueryui.com/

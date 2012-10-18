@@ -17,6 +17,7 @@ class controller_admin_publications {
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
+		//test_array($user);
 
 
 		//test_array($ab_settings);

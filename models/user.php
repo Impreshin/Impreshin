@@ -176,9 +176,14 @@ class user {
 			$publication = new $appPublications();
 			$publication = $publication->get($pID);
 
+			$companyObject = new company();
+			$company = $companyObject->get($publication['cID']);
+
 			$result['pID'] = $pID;
 			$result['publications'] = $publications;
 			$result['publication'] = $publication;
+			$result['company'] = $company;
+
 
 
 			$appSettings = self::appSettings($uID, $app, $pID);

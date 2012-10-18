@@ -70,6 +70,20 @@
 
 
 			</fieldset>
+            {%  if _cfg['upload']['material'] and _user['company']['ab_upload_material']=='1'  %}
+            <fieldset style="margin-top: 20px;">
+                <legend>File Repository</legend>
+                <div class="control-group">
+                    <label for="upload_material" class="control-label">Upload material</label>
+
+                    <div class="controls">
+                        <input type="checkbox" id="ab_upload_material" name="ab_upload_material" class="span1" value="1" <% if (this.details.ab_upload_material=='1') { %>checked="checked"<% } %>>
+                    </div>
+                </div>
+
+
+            </fieldset>
+            {% endif %}
 			<fieldset style="margin-top: 20px;">
 				<legend>Page Size</legend>
 				<div class="control-group">
@@ -106,6 +120,8 @@
 											<% } %>
 											<% } %>
 			</fieldset>
+
+
 		</div>
 
 	</div>

@@ -4,9 +4,9 @@
 
 
 git_path = git_path.replace(/.git/,'');
-
+// https://github.com/Impreshin/Impreshin/commits/WIP.atom
 $('#divRss').FeedEk({
-	FeedUrl    :'https://'+git_path+'/commits/'+git_branch+'.atom?login='+git_login+'&token='+git_token+'&r='+Math.random(),
+	FeedUrl    :'https://'+git_path+'/commits/'+git_branch+'.atom?r='+Math.random(),
 	MaxCount   :20,
 	ShowDesc   :true,
 	ShowPubDate:true,
