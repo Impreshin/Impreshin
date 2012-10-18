@@ -17,7 +17,7 @@ $cfg['apps'] = array("ab","nf");
 $cfg['gzip'] = false;
 
 $cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/backups/";
-
+$cfg['online'] = true;
 
 
 
