@@ -125,19 +125,37 @@ function getList(){
 
 	var mID = $("#marketerID").val();
 
+	var page = $.bbq.getState("page");
+	page = (page) ? page : "";
+
+	var height = $("#record-list-middle").height();
+	var records = height / 27;
+	records = Math.floor(records) - 1;
+
+	var order = $.bbq.getState("order");
+	order = (order) ? order : "";
+
+
+
 
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_marketers_targets/_list",{"mID":mID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_marketers_targets/_list", {"page":page, "nr":records, "order":order,"mID":mID}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
-		var $pagenation = $("#pagination");
+		var $pagenation = $("#pagination").html("");
 		if (data['records'][0]) {
 			$recordsList.jqotesub($("#template-list"), data['records']);
 			$("#record-list tr.active").removeClass("active");
 			$("#record-list tr[data-id='" + ID + "']").addClass("active");
+
+			if (data['pagination']['pages'].length > 1) {
+				$pagenation.jqotesub($("#template-pagination"), data['pagination']).stop(true, true).fadeIn(transSpeed);
+			} else {
+				$pagenation.stop(true, true).fadeOut(transSpeed)
+			}
 
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')

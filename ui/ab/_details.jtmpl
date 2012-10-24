@@ -518,11 +518,10 @@
 					<table>
 						<tr>
 							<td style="vertical-align: middle;">
-								<% if (this.material_file_filename && this.a.material_pane) { %>
-								<label for="exact_repeat" class="checkbox" style="padding-left: 20px; padding-right:20px; cursor:pointer;"><input type="checkbox" name="exact_repeat" id="exact_repeat" checked="checked" value="1" style="margin-right: 10px; margin-top: 2px;">Material is the same</label>
-								<% } else { %>
-								<input type="hidden" name="exact_repeat" id="exact_repeat" value="1">
-								<% } %>
+
+								<label for="exact_repeat" class="checkbox" style="padding-left: 20px; padding-right:20px; cursor:pointer;">
+                                    <input type="checkbox" name="exact_repeat" id="exact_repeat" checked="checked" value="1" style="margin-right: 10px; margin-top: 2px;">Material is the same</label>
+
 							</td>
 							<td>
 								<button class="btn btn-primary span3">Repeat</button>

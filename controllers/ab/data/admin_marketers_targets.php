@@ -28,15 +28,42 @@ class admin_marketers_targets extends data {
 
 		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : "";
 
+		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : "";
+		$nrrecords = (isset($_REQUEST['nr'])) ? $_REQUEST['nr'] : 10;
+
 
 		$section = "admin_marketers_targets";
+
+		$settings = models\settings::_read($section);
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
+			if ($settings['order']['c'] == $_REQUEST['order']) {
+				if ($ordering_d == "ASC") {
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+
+			}
+
+		}
 
 
 		$values = array();
 		$values[$section] = array(
-			"marketerID"      => $mID
+			"marketerID" => $mID,
+			"order" => array(
+				"c" => $ordering_c,
+				"o" => $ordering_d
+			),
 
 		);
+
+
+
 
 		models\user_settings::save_setting($values);
 
@@ -44,11 +71,19 @@ class admin_marketers_targets extends data {
 
 
 
-		$where = "mID = '$mID' AND DATEDIFF(date_to,current_date()) > -30";
+		$where = "mID = '$mID' and date_to and date_from";
+
+		$recordsFound = models\marketers_targets::getAll_count($where);
+		$limit = $nrrecords;
+		$pagination = new \pagination();
+		$pagination = $pagination->calculate_pages($recordsFound, $limit, $selectedpage, 7);
 
 
 
-		$records = models\marketers_targets::getAll($where, " DATEDIFF(date_to,current_date()) ASC");
+
+
+		$records = models\marketers_targets::getAll($where, $ordering_c . " " . $ordering_d . ",date_to DESC", $pagination['limit']);
+		//$records = models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
 		$a = array();
 		foreach ($records as $target){
 			$target['target'] = currency($target['target']);
@@ -64,7 +99,7 @@ class admin_marketers_targets extends data {
 		}
 
 		$return = array();
-
+		$return['pagination'] = $pagination;
 		$return['records'] = $a;
 
 		return $GLOBALS["output"]['data'] = $return;

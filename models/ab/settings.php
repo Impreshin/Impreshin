@@ -464,7 +464,11 @@ class settings {
 					)
 				),
 				"admin_marketers_targets"=>array(
-					"marketerID"=>""
+					"marketerID"=>"",
+					"order"=>array(
+						"c" => "date_to",
+						"o" => "DESC"
+					)
 				),
 				"admin_production"=>array(
 					"order"=>array(

@@ -15,6 +15,16 @@ $(document).ready(function () {
 		getTarget();
 	});
 
+	$(document).on("click","#new-target",function(){
+		getTarget();
+	});
+
+	$(document).on('hide', '#targets-modal', function () {
+		$.bbq.removeState("ID");
+		$("#record-list .record.active").removeClass("active");
+	});
+
+
 	$(document).on("click", ".pagination a", function (e) {
 		e.preventDefault();
 		var $this = $(this).parent();
@@ -78,6 +88,53 @@ $(document).ready(function () {
 
 	$("select#selectID").select2().on("change", function () {
 		getData();
+	});
+
+	$(document).on("click", ".focustrigger", function () {
+		$(this).parent().find("input").trigger("focus")
+	});
+
+	$(document).on("submit", "#capture-form", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+
+
+		var $errorArea = $("#errorArea").html("");
+		var mID = $("#selectID").val();
+
+		var ID = $.bbq.getState("ID");
+		$("#left-area .loadingmask").show();
+		$.post("/ab/save/admin_marketers_targets/_save/?ID=" + ID + "&mID=" + mID, data, function (r) {
+			r = r['data'];
+			if (r['error'].length) {
+				var str = "";
+				for (var i in r['error']) {
+					str += '<div class="alert alert-error">' + r['error'][i] + '</div>'
+				}
+				$("#left-area .loadingmask").fadeOut(transSpeed);
+				$errorArea.html(str);
+				$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
+			} else {
+
+				$.bbq.removeState("ID");
+				getData();
+				$("#targets-modal").modal("hide");
+			}
+
+		});
+		return false;
+	});
+	$(document).on("click", "#btn-delete", function () {
+		var ID = $.bbq.getState("ID");
+		if (confirm("Are you sure you want to delete this record?")) {
+			$.post("/ab/save/admin_marketers_targets/_delete/?ID=" + ID, function (r) {
+				$.bbq.removeState("ID");
+				getData();
+				$("#targets-modal").modal("hide");
+			});
+		}
+
 	});
 
 });
@@ -160,10 +217,33 @@ function getData() {
 	}));
 
 }
-function getTarget(){
 
+function getTarget() {
 	var ID = $.bbq.getState("ID");
-	console.log(ID);
+	var mID = $("#selectID").val();
 
-	$('#targets-modal').modal('show')
+	$("#record-list tr.active").removeClass("active");
+	$("#record-list tr[data-id='" + ID + "']").addClass("active");
+
+	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
+	detailsRequest.push($.getJSON("/ab/data/reports/marketer_targets/_details", {"ID":ID,"mID":mID}, function (data) {
+		data = data['data'];
+		$("#targets-modal").jqotesub($("#template-report-figures-target-form"), data);
+
+		$("#targets-modal #date_from").datepicker({
+			changeMonth:true,
+			changeYear :true,
+			dateFormat :"yy-mm-dd",
+			defaultDate:data['details']['date_from']
+		});
+		$("#targets-modal #date_to").datepicker({
+			changeMonth:true,
+			changeYear :true,
+			dateFormat :"yy-mm-dd",
+			defaultDate:data['details']['date_to']
+		});
+
+		$('#targets-modal').modal('show')
+
+	}));
 }

@@ -222,10 +222,40 @@ class marketers_targets {
 
 
 
+
 		$return = $result;
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
+	public static function getAll_count($where = "") {
+		$timer = new timer();
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+
+		$result = F3::get("DB")->exec("
+			SELECT count(ID) as count
+			FROM ab_marketers_targets
+			$where
+		"
+		);
+
+		if (count($result)) {
+			$return = $result[0]['count'];
+
+		} else {
+			$return = 0;
+		}
+
+		$timer->stop(array("Models" => array("Class"  => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
+
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();

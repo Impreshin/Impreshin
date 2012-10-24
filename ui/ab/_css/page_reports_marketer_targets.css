@@ -13,3 +13,9 @@
 	-khtml-opacity : 0.2;
 	opacity        : 0.2;
 }
+#ui-datepicker-div {
+	z-index : 300000!important;
+}
+form {
+	margin: 0;
+}

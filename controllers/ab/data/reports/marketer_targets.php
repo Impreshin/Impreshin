@@ -80,26 +80,33 @@ class marketer_targets extends \data {
 			$target['date_to_D'] = date("d F Y",strtotime($target['date_to']));
 			$target['target_C'] = currency($target['target']);
 
+			$pubs = $target['pubs'];
+			$pubs = explode(",",$pubs);
 
-			$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '".$target['date_from']."' AND global_dates.publish_date <= '".$target['date_to']."') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null AND checked ='1'", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
-			//test_array(array("targets"=>$target,"records"=>$records));
-			if (count($records)){
-				$records = $records[0];
-				$records['totalcost_C'] = currency($records['totalcost']);
-				$target['total'] = $records;
-				$target['percent'] = number_format(($records['totalcost'] / $target['target']) * 100, 2);
-			} else {
-				$records['totalcost_C'] = currency(0);
-				$target['total'] = array("totalcost"=>0,"records"=>0);
-				$target['percent'] = number_format(0, 2);
+			if (in_array($pID,$pubs)){
+				$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '" . $target['date_from'] . "' AND global_dates.publish_date <= '" . $target['date_to'] . "') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null AND checked ='1'", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
+
+
+				//test_array(array("targets"=>$target,"records"=>$records));
+				if (count($records)) {
+					$records = $records[0];
+					$records['totalcost_C'] = currency($records['totalcost']);
+					$target['total'] = $records;
+					$target['percent'] = number_format(($records['totalcost'] / $target['target']) * 100, 2);
+				} else {
+					$records['totalcost_C'] = currency(0);
+					$target['total'] = array(
+						"totalcost" => 0,
+						"records"   => 0
+					);
+					$target['percent'] = number_format(0, 2);
+				}
+
+
+				$t[] = $target;
 			}
 
 
-
-
-
-
-			$t[] = $target;
 		}
 		$targets = $t;
 
@@ -135,6 +142,54 @@ class marketer_targets extends \data {
 		$return['targets'] = array_values($data);
 
 		$timer->stop("Report - ". __CLASS__ . "->" .  __FUNCTION__ );
+		return $GLOBALS["output"]['data'] = $return;
+	}
+
+	function _details() {
+		$user = F3::get("user");
+		$userID = $user['ID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['publication']['cID'];
+		//test_array($cID);
+
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : "";
+
+		$o = new models\marketers_targets();
+		$details = $o->get($ID);
+
+		$ID = $details['ID'];
+
+
+		$return = array();
+		$publications = models\publications::getAll_user("global_users_company.cID = '". $cID."' and global_users_company.uID='" . $mID . "' and [access] = '1'", "publication ASC");
+
+		if (!$details['ID']) {
+			$userPublications = array();
+		} else {
+			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
+		}
+
+
+		$pstr = array();
+		foreach ($userPublications as $u) $pstr[] = $u['pID'];
+
+		$pubarray = array();
+		$pIDarray = array();
+		foreach ($publications as $pub) {
+			$pub['selected'] = 0;
+			if (in_array($pub['ID'], $pstr)) {
+				$pub['selected'] = 1;
+			}
+			$pIDarray[] = $pub['ID'];
+			$pubarray[] = $pub;
+		}
+
+		$publications = $pubarray;
+		$return['details'] = $details;
+		$return['publications'] = $publications;
+
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

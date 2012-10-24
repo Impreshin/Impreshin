@@ -61,18 +61,18 @@
 					<table class="table table-condensed  s records">
 						<thead>
 						<tr>
-							<th>From</th>
-							<th>To</th>
-							<th style="width: 80px;">Target</th>
-							<th style="width: 40px;">locked</th>
+							<th data-col="date_from" class="order-btn">From</th>
+							<th data-col="date_to" class="order-btn">To</th>
+							<th style="width: 80px;" data-col="target" class="order-btn">Target</th>
+							<th style="width: 35px;" data-col="locked" class="order-btn">locked</th>
 
-							<th style="width: 20px;" class="c">Pub</th>
+							<th style="width: 20px;" class="c order-btn" data-col="currentPub">Pub</th>
 						</tr>
 						</thead>
 					</table>
 				</div>
 				<div class="content">
-					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 55px; bottom: 42px;">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 55px;">
 
 						<div data-heading="top" class="">
 							<table style="margin:0;" id="record-list" class="table table-condensed  s records" >
