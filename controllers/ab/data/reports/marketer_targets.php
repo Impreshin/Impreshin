@@ -101,6 +101,19 @@ class marketer_targets extends \data {
 					);
 					$target['percent'] = number_format(0, 2);
 				}
+				$editable = "0";
+				//test_array($user);
+				if ($user['ab_marketerID'] == $ID){
+					if ($target['locked']!='1'){
+						$editable = '1';
+					}
+				}
+				if ($user['permissions']['administration']['application']['marketers']['targets']['page']){
+					$editable = '1';
+				}
+
+				$target['editable'] = $editable;
+
 
 
 				$t[] = $target;
