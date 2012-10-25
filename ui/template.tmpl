@@ -111,16 +111,15 @@
 
         <div id="apps-select">
             <ul>
-                {% if 'ab' in _cfg['apps'] %}
+                {% if 'ab' in _cfg['apps'] and _user['company']['ab']=='1' %}
                 <li class='{% if _folder =='ui/ab/' %}active{% endif %}' ><a href="{{ _last_pages['ab'] }}">AdBooker</a>
                 </li>
                 {% endif %}
-                {% if 'nf' in _cfg['apps'] %}
+                {% if 'nf' in _cfg['apps'] and _user['company']['nf']=='1' %}
                 <li class='{% if _folder =='ui/nf/' %}active{% endif %}' ><a href="{{ _last_pages['nf'] }}">NewsFiler</a>
                 </li>
                 {% endif %}
-               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a>-->
-                </li>
+               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a></li>-->
             </ul>
         </div>
     </div>

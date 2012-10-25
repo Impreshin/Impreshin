@@ -178,6 +178,11 @@ class user {
 
 			$companyObject = new company();
 			$company = $companyObject->get($publication['cID']);
+			
+
+			if ($company[$app]!='1'){
+				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
+			}
 
 			$result['pID'] = $pID;
 			$result['publications'] = $publications;
