@@ -141,8 +141,8 @@ class settings {
 					"h"=> "Checked&nbsp;User"
 				),
 				"repeat"                 => array(
-					"c"=> "repeat",
-					"o"=> "repeat",
+					"c"=> "repeat_from",
+					"o"=> "repeat_from",
 					"h"=> "Repeat",
 					"b"=> true
 				),
