@@ -13,6 +13,12 @@ $(document).ready(function () {
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
 
+	$("select#authorID").select2().on("change", function () {
+		getList();
+	});
+
+
+
 	if ($.bbq.getState("modal")=="settings"){
 		$("#settings-modal").modal('show');
 	}
@@ -36,44 +42,6 @@ $(document).ready(function () {
 		$("#record-settings li[data-order-records-by='" + $.bbq.getState("orderBy") + "']").addClass("active");
 	}
 	getList();
-
-	$searchform = $("#search-box form");
-	$searchbox = $searchform.find(".search-query");
-	$(document).bind('keydown', 'ctrl+f', function (e) {
-		e.preventDefault();
-		$searchform.toggle("slide", { direction:"right" }, 1000, function () {
-			if ($(this).is(":visible")) {
-				$searchform.find(".search-query").focus();
-			} else {
-				$searchbox.val("");
-				getList();
-			}
-		});
-		return false;
-	});
-
-	$(document).on("submit", "#search-box form", function (e) {
-		e.preventDefault();
-		getList();
-	});
-
-	if ($searchbox.val()) {
-		$searchform.stop(true, true).show("slide", { direction:"right" }, 1000, function () {
-		});
-	}
-
-	$(document).on('click', '#search-box-toggle', function (e) {
-		$searchform.toggle("slide", { direction:"right" }, 1000, function () {
-			if ($(this).is(":visible")) {
-				$searchform.find(".search-query").focus();
-			} else {
-				$searchbox.val("");
-				getList();
-			}
-		});
-	});
-
-
 //$("#whole-area .loadingmask").show();
 	$("#pageheader li ul a").click(function () {
 		$("#pagecontent").css({"opacity":0.5});
@@ -82,8 +50,23 @@ $(document).ready(function () {
 		$(this).closest("li").addClass("active");
 	});
 
+	$(document).on('hide', '#ab-details-modal', function () {
+		var s = {
+			maintain_position:true
+		};
+		getList(s);
+	});
+
+	$("#log").append("starting<br>");
+	$(document).on("click", "#record-settings li", function () {
+		$("#log").append("clicked " + $(this).attr("data-group-records-by") + "<br>");
+	});
+
+
+
 
 	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
+
 		e.preventDefault();
 		var $this = $(this);
 		$("#record-settings li[data-group-records-by].active").removeClass("active");
@@ -98,10 +81,8 @@ $(document).ready(function () {
 		$("#record-list .order-btn").removeClass("asc desc");
 		//$this.addClass("active");
 		$.bbq.pushState({"order":$this.attr("data-col")});
-		var s = {
-			maintain_position: true
-		};
-		getList(s);
+
+		getList();
 		$.bbq.removeState("order");
 
 	});
@@ -115,9 +96,11 @@ $(document).ready(function () {
 
 	});
 	$(document).on("click", "#list-settings", function (e) {
+		console.log($("#list-settings").length);
 		e.preventDefault();
 		var $this = $(this);
 
+		console.log("settings clicked");
 		$this.addClass("active");
 		$.bbq.pushState({"modal":"settings"});
 		$("#settings-modal").modal('show');
@@ -127,14 +110,6 @@ $(document).ready(function () {
 		$.bbq.removeState("modal");
 		$("#list-settings").removeClass("active");
 	});
-
-	$(document).on('hide', '#ab-details-modal', function () {
-		var s =	{
-				maintain_position:true
-			};
-		getList(s);
-	});
-
 	$(document).on('shown', '#settings-modal', function () {
 		$("#settings-modal .modal-body .scroll-pane").jScrollPane(jScrollPaneOptions);
 
@@ -183,7 +158,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/ab/save/list_settings/?section=production&reset=columns,group,order", function () {
+			$.post("/nf/save/list_settings/?section=provisional&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -208,7 +183,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/ab/save/list_settings/?section=production",{"columns":columns,"group":group,"groupOrder":order},function(){
+		$.post("/nf/save/list_settings/?section=provisional",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");
@@ -233,7 +208,6 @@ $(document).ready(function () {
 });
 
 function getList(settings) {
-
 	var ID = $.bbq.getState("ID");
 	var group = $.bbq.getState("groupBy");
 	group = (group)? group:"";
@@ -247,14 +221,11 @@ function getList(settings) {
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter)? filter: "";
 
-	var search = $("#record-search").val();
-	search = (search) ? search : "";
-
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/production/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order, "search":search},function(data){
+	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
 		data = data['data'];
 
 
@@ -273,19 +244,18 @@ function getList(settings) {
 
 
 
+
 		var $scrollpane = $("#whole-area .scroll-pane");
-		if (orderingactive){
+		if (orderingactive) {
 			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		} else {
-			if (settings && settings.maintain_position){
+			if (settings && settings.maintain_position) {
 				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 			} else {
 				$scrollpane.jScrollPane(jScrollPaneOptions);
 			}
 
 		}
-
-
 
 
 		var order = data['order']['c'];
@@ -307,6 +277,8 @@ function getList(settings) {
 				getDetails();
 			}
 		}
+
+
 		var goto = $.bbq.getState("scrollTo");
 		if (goto) {
 			if ($("#record-list .record[data-ID='" + goto + "']").length) {
@@ -314,6 +286,8 @@ function getList(settings) {
 				if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
 					api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
 				}
+
+
 
 			}
 			$.bbq.removeState("scrollTo");

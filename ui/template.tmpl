@@ -156,21 +156,19 @@
 	var transSpeed = '{{ transSpeed |default('400') }}';
 	$(function () {
 		$('body').tooltip({
-			selector:'[rel=tooltip]'
+			selector:'[rel=tooltip]',
+            live:true
 		});
 		$('body').popover({
-			selector:'[rel=popover]'
+			selector:'[rel=popover]',
+            offset:5,
+            live:true
 		});
 
 
-		$("*[rel=tooltip]").tooltip({
-			live:true
-		});
 
-		$("[rel=popover]").popover({
-			offset:5,
-			live:true
-		});
+
+
         $('.dropdown-toggle').dropdown();
 
 
@@ -447,7 +445,7 @@
 		var models = d['models'];
 
 		if (d['notifications']){
-			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']);
+			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
 		}
 
 		var pageSize = (page && page['size'])? page['size']: page_size;

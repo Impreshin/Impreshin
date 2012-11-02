@@ -118,7 +118,6 @@ body {
 
 #left-area {
 	background-color   : #fff;
-	height             : 100%;
 	position           : absolute;
 	top                : 42px;
 	bottom             : 0;
@@ -127,7 +126,7 @@ body {
 	.box-shadow(4px 0px 5px rgba(150, 150, 150, 0.2));
 	margin-left        : 15px;
 	.scroll-pane {
-		.fillblock(0,0,42px,0);
+		.fillblock(0,0,0,0);
 		overflow : auto;
 		&.scrolly {
 			overflow-x : hidden!important;
@@ -145,12 +144,11 @@ body {
 }
 
 #right-area {
-	height   : 100%;
 	position : absolute;
 	top      : 42px;
 	bottom   : 0;
 	.scroll-pane {
-		.fillblock(0,0,42px,0);
+		.fillblock(0,0,0,0);
 		overflow : auto;
 		&.scrolly {
 			overflow-x : hidden !important;
@@ -168,13 +166,12 @@ body {
 
 
 #whole-area {
-	height      : 100%;
 	position    : absolute;
 	top         : 42px;
-	bottom      : 0;
+	bottom      : 0!important;
 	margin-left : 0;
 	.scroll-pane {
-		.fillblock(0,0,42px,0);
+		.fillblock(0,0,0,0);
 		overflow : auto;
 		&.scrolly {
 			overflow-x : hidden !important;

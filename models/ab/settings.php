@@ -13,231 +13,231 @@ class settings {
 	public static function settings($permissions=array()) {
 		$timer = new timer();
 		$return = array();
-			$columns = array(
-				"client"                 => array(
-					"c"=> "client",
-					"o"=> "client",
-					"h"=> "Client"
-				),
-				"publishDate"            => array(
-					"c"=> "publishDate",
-					"o"=> "publishDate",
-					"h"=> "Publish&nbsp;Date",
-					"m"=>60
-				),
-				"size"                   => array(
-					"c"=> "size",
-					"o"=> "totalspace",
-					"h"=> "Size",
-					"w"=>60
-				),
+		$columns = array(
+			"client"                 => array(
+				"c"=> "client",
+				"o"=> "client",
+				"h"=> "Client"
+			),
+			"publishDate"            => array(
+				"c"=> "publishDate",
+				"o"=> "publishDate",
+				"h"=> "Publish&nbsp;Date",
+				"m"=>60
+			),
+			"size"                   => array(
+				"c"=> "size",
+				"o"=> "totalspace",
+				"h"=> "Size",
+				"w"=>60
+			),
 
-				"colour"                 => array(
-					"c"=> "colour",
-					"o"=> "ab_colour_rates.colour",
-					"h"=> "Colour"
-				),
-				"colourSpot"             => array(
-					"c"=> "colourSpot",
-					"o"=> "colourSpot",
-					"h"=> "Colour&nbsp;Spot"
-				),
-				"rate_C"                 => array(
-					"c"=> "rate_C",
-					"o"=> "rate",
-					"h"=> "Rate"
-				),
-				"totalCost_C"            => array(
-					"c"=> "totalCost_C",
-					"o"=> "totalCost",
-					"h"=> "Net&nbsp;Cost"
-				),
-				"totalShouldbe_C"        => array(
-					"c"=> "totalShouldbe_C",
-					"o"=> "totalShouldbe",
-					"h"=> "Gross&nbsp;Cost"
-				),
-				"discount"               => array(
-					"c"=> "discount",
-					"o"=> "discount",
-					"h"=> "Disc"
-				),
+			"colour"                 => array(
+				"c"=> "colour",
+				"o"=> "ab_colour_rates.colour",
+				"h"=> "Colour"
+			),
+			"colourSpot"             => array(
+				"c"=> "colourSpot",
+				"o"=> "colourSpot",
+				"h"=> "Colour&nbsp;Spot"
+			),
+			"rate_C"                 => array(
+				"c"=> "rate_C",
+				"o"=> "rate",
+				"h"=> "Rate"
+			),
+			"totalCost_C"            => array(
+				"c"=> "totalCost_C",
+				"o"=> "totalCost",
+				"h"=> "Net&nbsp;Cost"
+			),
+			"totalShouldbe_C"        => array(
+				"c"=> "totalShouldbe_C",
+				"o"=> "totalShouldbe",
+				"h"=> "Gross&nbsp;Cost"
+			),
+			"discount"               => array(
+				"c"=> "discount",
+				"o"=> "discount",
+				"h"=> "Disc"
+			),
 
-				"agencyDiscount"         => array(
-					"c"=> "agencyDiscount",
-					"o"=> "agencyDiscount",
-					"h"=> "A.Disc"
-				),
-				"placing"                => array(
-					"c"=> "placing",
-					"o"=> "ab_bookings.placing",
-					"h"=> "Placing"
-				),
-				"category"               => array(
-					"c"=> "category",
-					"o"=> "category",
-					"h"=> "Category"
-				),
-				"type"                   => array(
-					"c"=> "type",
-					"o"=> "type",
-					"h"=> "Type"
-				),
-				"accNum"                 => array(
-					"c"=> "accNum",
-					"o"=> "accNum",
-					"h"=> "Acc.Num"
-				),
-				"account"                => array(
-					"c"=> "account",
-					"o"=> "account",
-					"h"=> "Account"
-				),
+			"agencyDiscount"         => array(
+				"c"=> "agencyDiscount",
+				"o"=> "agencyDiscount",
+				"h"=> "A.Disc"
+			),
+			"placing"                => array(
+				"c"=> "placing",
+				"o"=> "ab_bookings.placing",
+				"h"=> "Placing"
+			),
+			"category"               => array(
+				"c"=> "category",
+				"o"=> "category",
+				"h"=> "Category"
+			),
+			"type"                   => array(
+				"c"=> "type",
+				"o"=> "type",
+				"h"=> "Type"
+			),
+			"accNum"                 => array(
+				"c"=> "accNum",
+				"o"=> "accNum",
+				"h"=> "Acc.Num"
+			),
+			"account"                => array(
+				"c"=> "account",
+				"o"=> "account",
+				"h"=> "Account"
+			),
 
-				"invoiceNum"               => array(
-					"c"=> "invoiceNum",
-					"o"=> "invoiceNum",
-					"h"=> "Invoice&nbsp;Num"
-				),
-				"orderNum"               => array(
-					"c"=> "orderNum",
-					"o"=> "orderNum",
-					"h"=> "Order&nbsp;Num"
-				),
-				"keyNum"                 => array(
-					"c"=> "keyNum",
-					"o"=> "keyNum",
-					"h"=> "Key&nbsp;Num"
-				),
-				"insertsLabel"=>array(
-					"c"=> "insertLabel",
-					"o"=> "ab_inserts_types.insertsLabel",
-					"h"=> "Inserts&nbsp;Type"
-				),
-				"userName"               => array(
-					"c"=> "userName",
-					"o"=> "userName",
-					"h"=> "User"
-				),
-				"datein"                 => array(
-					"c"=> "datein",
-					"o"=> "datein",
-					"h"=> "Date"
-				),
-				"checked"                => array(
-					"c"=> "checked",
-					"o"=> "checked",
-					"h"=> "Checked",
-					"b"=> true
-				),
-				"checked_date"           => array(
-					"c"=> "checked_date",
-					"o"=> "checked_date",
-					"h"=> "Checked&nbsp;Date"
-				),
-				"checked_user"           => array(
-					"c"=> "checked_user",
-					"o"=> "checked_user",
-					"h"=> "Checked&nbsp;User"
-				),
-				"repeat"                 => array(
-					"c"=> "repeat_from",
-					"o"=> "repeat_from",
-					"h"=> "Repeat",
-					"b"=> true
-				),
-
-
-				"remark"                 => array(
-					"c"=> "remark",
-					"o"=> "remark",
-					"h"=> "Remark"
-				),
+			"invoiceNum"               => array(
+				"c"=> "invoiceNum",
+				"o"=> "invoiceNum",
+				"h"=> "Invoice&nbsp;Num"
+			),
+			"orderNum"               => array(
+				"c"=> "orderNum",
+				"o"=> "orderNum",
+				"h"=> "Order&nbsp;Num"
+			),
+			"keyNum"                 => array(
+				"c"=> "keyNum",
+				"o"=> "keyNum",
+				"h"=> "Key&nbsp;Num"
+			),
+			"insertsLabel"=>array(
+				"c"=> "insertLabel",
+				"o"=> "ab_inserts_types.insertsLabel",
+				"h"=> "Inserts&nbsp;Type"
+			),
+			"userName"               => array(
+				"c"=> "userName",
+				"o"=> "userName",
+				"h"=> "User"
+			),
+			"datein"                 => array(
+				"c"=> "datein",
+				"o"=> "datein",
+				"h"=> "Date"
+			),
+			"checked"                => array(
+				"c"=> "checked",
+				"o"=> "checked",
+				"h"=> "Checked",
+				"b"=> true
+			),
+			"checked_date"           => array(
+				"c"=> "checked_date",
+				"o"=> "checked_date",
+				"h"=> "Checked&nbsp;Date"
+			),
+			"checked_user"           => array(
+				"c"=> "checked_user",
+				"o"=> "checked_user",
+				"h"=> "Checked&nbsp;User"
+			),
+			"repeat"                 => array(
+				"c"=> "repeat_from",
+				"o"=> "repeat_from",
+				"h"=> "Repeat",
+				"b"=> true
+			),
 
 
-				"marketer"               => array(
-					"c"=> "marketer",
-					"o"=> "ab_bookings.marketer",
-					"h"=> "Marketer",
-					"m"=>"120" // minimum width
-				),
-				"percent_diff"           => array(
-					"c"=> "percent_diff",
-					//"o"=> "percent_diff",
-					"h"=> "Disc %",
-					"w"=>40
-				),
-				"material_file_filename"               => array(
-					"c"=> "material_file_filename",
-					"o"=> "material_file_filename",
-					"h"=> "File&nbsp;Name"
-				),
-				"material_file_filesize"               => array(
-					"c"=> "material_file_filesize",
-					"o"=> "material_file_filesize",
-					"h"=> "File&nbsp;Size",
-					"m"=> "60"
-				),
-				"material_source"               => array(
-					"c"=> "material_source",
-					"o"=> "material_source",
-					"h"=> "Material&nbsp;Source"
-				),
-				"material_production"               => array(
-					"c"=> "material_production",
-					"o"=> "material_production",
-					"h"=> "Material&nbsp;Production"
-				),
-				"material_status"               => array(
-					"c"=> "material_status",
-					"o"=> "material_status",
-					"h"=> "Material",
-					"b"=>true
-				),
-				"material_date"               => array(
-					"c"=> "material_date",
-					"o"=> "material_date",
-					"h"=> "Material&nbsp;Date"
-				),
-				"material_approved"               => array(
-					"c"=> "material_approved",
-					"o"=> "material_approved",
-					"h"=> "Material&nbsp;Approved",
-					"b"=>true
-				),
-				"page"               => array(
-					"c"=> "page",
-					"o"=> "page",
-					"h"=> "Page",
-				),
-
-				"deleted"               => array(
-					"c"=> "deleted",
-					"o"=> "deleted",
-					"h"=> "Deleted",
-					"b"=> true
-				),
-				"deleted_user"               => array(
-					"c"=> "deleted_user",
-					"o"=> "deleted_user",
-					"h"=> "Deleted&nbsp;By",
-				),
-				"deleted_date"               => array(
-					"c"=> "deleted_date",
-					"o"=> "deleted_date",
-					"h"=> "Deleted&nbsp;Date",
-				),
-				"deleted_reason"               => array(
-					"c"=> "deleted_reason",
-					"o"=> "deleted_reason",
-					"h"=> "Deleted&nbsp;Reason",
-				),
+			"remark"                 => array(
+				"c"=> "remark",
+				"o"=> "remark",
+				"h"=> "Remark"
+			),
 
 
+			"marketer"               => array(
+				"c"=> "marketer",
+				"o"=> "ab_bookings.marketer",
+				"h"=> "Marketer",
+				"m"=>"120" // minimum width
+			),
+			"percent_diff"           => array(
+				"c"=> "percent_diff",
+				//"o"=> "percent_diff",
+				"h"=> "Disc %",
+				"w"=>40
+			),
+			"material_file_filename"               => array(
+				"c"=> "material_file_filename",
+				"o"=> "material_file_filename",
+				"h"=> "File&nbsp;Name"
+			),
+			"material_file_filesize"               => array(
+				"c"=> "material_file_filesize",
+				"o"=> "material_file_filesize",
+				"h"=> "File&nbsp;Size",
+				"m"=> "60"
+			),
+			"material_source"               => array(
+				"c"=> "material_source",
+				"o"=> "material_source",
+				"h"=> "Material&nbsp;Source"
+			),
+			"material_production"               => array(
+				"c"=> "material_production",
+				"o"=> "material_production",
+				"h"=> "Material&nbsp;Production"
+			),
+			"material_status"               => array(
+				"c"=> "material_status",
+				"o"=> "material_status",
+				"h"=> "Material",
+				"b"=>true
+			),
+			"material_date"               => array(
+				"c"=> "material_date",
+				"o"=> "material_date",
+				"h"=> "Material&nbsp;Date"
+			),
+			"material_approved"               => array(
+				"c"=> "material_approved",
+				"o"=> "material_approved",
+				"h"=> "Material&nbsp;Approved",
+				"b"=>true
+			),
+			"page"               => array(
+				"c"=> "page",
+				"o"=> "page",
+				"h"=> "Page",
+			),
 
-			);
+			"deleted"               => array(
+				"c"=> "deleted",
+				"o"=> "deleted",
+				"h"=> "Deleted",
+				"b"=> true
+			),
+			"deleted_user"               => array(
+				"c"=> "deleted_user",
+				"o"=> "deleted_user",
+				"h"=> "Deleted&nbsp;By",
+			),
+			"deleted_date"               => array(
+				"c"=> "deleted_date",
+				"o"=> "deleted_date",
+				"h"=> "Deleted&nbsp;Date",
+			),
+			"deleted_reason"               => array(
+				"c"=> "deleted_reason",
+				"o"=> "deleted_reason",
+				"h"=> "Deleted&nbsp;Reason",
+			),
 
-			$return["columns"] = $columns;
+
+
+		);
+
+		$return["columns"] = $columns;
 
 		$groupByoptions = array(
 			"placing"=>array(
@@ -360,6 +360,7 @@ class settings {
 					"count"      => "5",
 					"highlight"=> "checked",
 					"filter"   => "*",
+					"search" => ""
 
 				),
 				"production"=>array(
@@ -382,6 +383,7 @@ class settings {
 					"count"      => 6,
 					"highlight"=> "material",
 					"filter"   => "*",
+					"search" => ""
 
 
 				),

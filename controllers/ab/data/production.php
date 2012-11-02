@@ -45,6 +45,9 @@ class production extends data {
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 
 
+		$search = (isset($_REQUEST['search']) && $_REQUEST['search'] != "") ? $_REQUEST['search'] : "";
+
+
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
 			if ($settings['order']['c'] == $_REQUEST['order']){
 				if ($ordering_d=="ASC"){
@@ -72,7 +75,8 @@ class production extends data {
 			"order"      => $ordering,
 
 			"highlight"=> $highlight,
-			"filter"   => $filter
+			"filter"   => $filter,
+			"search"=>$search
 
 		);
 
@@ -92,6 +96,11 @@ class production extends data {
 		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved"));
 
 
+		if ($search) {
+			$searchsql = " AND (client like '%$search%' OR ab_placing.placing like '%$search%' OR ab_marketers.marketer like '%$search%' OR ab_accounts.account like '%$search%' OR ab_accounts.accNum like '%$search%') ";
+			$where .= $searchsql;
+			$records = models\bookings::getAll($where, $grouping, $ordering);
+		}
 
 
 		$return = array();

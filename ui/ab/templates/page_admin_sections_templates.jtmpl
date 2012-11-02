@@ -19,7 +19,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-details">
 	<![CDATA[
-	<div class="scroll-pane scrolly" style="bottom: 85px;">
+	<div class="scroll-pane scrolly" style="bottom: 43px;">
 
 		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
 

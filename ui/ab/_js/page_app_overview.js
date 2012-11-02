@@ -53,7 +53,7 @@ $(document).ready(function () {
 	load_pages();
 });
 function dummy_resize(settings){
-	$("#dummy-area").css("bottom", $("#dummy-bottom").outerHeight() + 42);
+	$("#dummy-area").css("bottom", $("#dummy-bottom").outerHeight());
 	if (settings && settings.maintain_position) {
 		$("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 	} else {

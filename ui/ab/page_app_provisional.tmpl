@@ -1,92 +1,112 @@
-
 <section id="maintoolbar">
-	<div class="container">
-		<div class="toolbar clearfix  ">
-			<ul class="nav nav-pills pull-left">
+    <div class="container">
+        <div class="toolbar clearfix  ">
+            <ul class="nav nav-pills pull-left">
 
-				<li>
-					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Checked</button>
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Material</button>
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Layout</button>
-					</div>
-				</li>
-				<li class="divider-vertical"></li>
-				<li>
-					<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
-						<button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;"><i class="icon-asterisk"></i></button>
-						<button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;"><i class="icon-ok"></i></button>
-						<button data-filter="0" class="btn  btn-mini {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;"><i class="icon-remove"></i></button>
-					</div>
-				</li>
-				<li class="divider-vertical"></li>
-			</ul>
-			<div class="pull-right">
-			<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
-
-
-			</ul>
-			<ul class="nav nav-pills pull-right ">
-				<li class="divider-vertical" style="margin-right: 0;"></li>
-				<li>
-					<a  href="{{ page['print'] }}" target="_blank" class="toolbar-print"><i class="icon-print icon-d-grey"></i></a>
-				</li>
-
-				<li class="dropdown pull-right">
-					<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
-					<ul class="dropdown-menu" id="record-settings" role="menu">
-						<li class="nav-header">Group By</li>
-						{% for row in settings['groupby'] %}
-						<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
-							<a href="#t">{{ row['n'] }}</a>
-						</li>
-						{% endfor %}
-						<li class="nav-header clearfix">Direction</li>
-						<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;"><a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
-						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;"><a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
-						<li class="clearfix"></li>
-						<li class="divider"></li>
-
-						<li><a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a></li>
-					</ul>
-				</li>
-
-			</ul>
-			</div>
+                <li>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Checked</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Material</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Layout</button>
+                    </div>
+                </li>
+                <li class="divider-vertical"></li>
+                <li>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+                        <button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
+                            <i class="icon-asterisk"></i></button>
+                        <button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+                            <i class="icon-ok"></i></button>
+                        <button data-filter="0" class="btn  btn-mini {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
+                            <i class="icon-remove"></i></button>
+                    </div>
+                </li>
+                <li class="divider-vertical"></li>
+            </ul>
+            <div class="pull-right">
+                <ul class="nav nav-pills pull-left" id="provisional-stats-bar">
 
 
-		</div>
-		<div class="toolbar-end"></div>
-	</div>
+                </ul>
+                <ul class="nav nav-pills pull-right ">
+                    <li class="divider-vertical" style="margin-right: 0;"></li>
+                    <li>
+                        <a href="{{ page['print'] }}" target="_blank" class="toolbar-print"><i class="icon-print icon-d-grey"></i></a>
+                    </li>
+
+                    <li class="dropdown pull-right">
+                        <a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
+                        <ul class="dropdown-menu" id="record-settings" role="menu">
+                            <li class="nav-header">Group By</li>
+                            {% for row in settings['groupby'] %}
+                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+                                    <a href="#t">{{ row['n'] }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="nav-header clearfix">Direction</li>
+                            <li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+                                <a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+                            <li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+                                <a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+                            <li class="clearfix"></li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="toolbar-end"></div>
+    </div>
 
 </section>
 
 <section role="main" id="pagecontent">
 
-<div class="container">
+    <div class="container">
 
 
-<article id="whole-area" class="span16">
-<div class="content">
-<div class="scroll-pane">
+        <article id="whole-area" class="span16">
+            <div class="content">
+                <div class="scroll-pane">
 
-<div data-heading="top" id="scroll-container">
+                    <div data-heading="top" id="scroll-container" style="padding-bottom: 30px;">
 
-<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
-
-
-</table>
-</div>
-
-</div>
-
-</div>
-
-<div class="loadingmask wide"></div>
-</article>
-</div>
+                        <table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
 
 
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="loadingmask wide"></div>
+
+
+            <div id="search-box">
+                <button type="button" class="btn btn-mini" style="width: 30px;" id="search-box-toggle">
+                    <i class="icon-search"></i></button>
+                <form class="form-search " style="margin-right: 40px;">
+                    <div class="input-append">
+                        <input type="text" class="span3 search-query glow" placeholder="Search..." id="record-search">
+                        <button type="submit" class="btn glow">Search</button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+        </article>
+    </div>
 </section>
 
 {% include "_record_settings.tmpl" %}

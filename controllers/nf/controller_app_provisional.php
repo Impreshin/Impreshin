@@ -6,7 +6,7 @@
 namespace controllers\nf;
 use \F3 as F3;
 use \timer as timer;
-use \models\ab as models;
+use \models\nf as models;
 use \models\user as user;
 class controller_app_provisional {
 	function __construct() {
@@ -26,7 +26,7 @@ class controller_app_provisional {
 		$pID = $user['pID'];
 		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
-		$settings = F3::get("settings");
+		$settings = models\settings::_read("provisional", $user['permissions']);
 
 
 

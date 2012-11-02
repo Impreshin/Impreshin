@@ -13,17 +13,61 @@ class settings {
 	public static function settings() {
 		$timer = new timer();
 		$return = array();
+		$columns = array(
+			"heading"                 => array(
+				"c"=> "heading",
+				"o"=> "heading",
+				"h"=> "Heading"
+			),
+			"datein"            => array(
+				"c"=> "datein",
+				"o"=> "datein",
+				"h"=> "Captured&nbsp;Date",
+				"m"=> 80
+			),
+			"cm"                   => array(
+				"c"=> "cm",
+				"o"=> "cm",
+				"h"=> "Cm",
+				"w"=> 60
+			)
 
-		$return['test']=array(
-			"test1"=>"a",
-			"test2"=>"b"
 		);
+			$return["columns"] = $columns;
 
 
 
 
 		$cfg = F3::get("cfg");
+		$groupByoptions = array(
+			"none"               => array(
+				"n"=> "No Ordering",
+				"g"=> "none"
+			)
+		);
 
+
+		$sections = array(
+
+			"provisional"=> array(
+				"none",
+			),
+
+		);
+
+		$groupby = array();
+		foreach ($sections as $key=> $value) {
+			$opts = array();
+			foreach ($value as $col) {
+				$opts[] = $groupByoptions[$col];
+			}
+			$groupby[$key] = $opts;
+		}
+
+
+
+
+		$return["groupby"] = $groupby;
 
 
 
@@ -35,10 +79,28 @@ class settings {
 		$timer = new timer();
 		$return = array();
 
-		$return['test']=array(
-			"test1"=>1,
-			"v"=>2
+		$settings = array(
+			"provisional"=>array(
+				"col"        => array(
+					"heading",
+					"datein",
+					"cm",
+				),
+				"group"      => array(
+					"g"=> "none",
+					"o"=> "ASC"
+				),
+				"order"      => array(
+					"c"=> "heading",
+					"o"=> "ASC"
+				),
+				"count"      => "5",
+				"highlight"  => "checked",
+				"filter"     => "*",
+			)
 		);
+
+		$return['settings'] = $settings;
 
 
 

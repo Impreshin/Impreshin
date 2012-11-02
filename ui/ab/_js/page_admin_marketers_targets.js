@@ -164,7 +164,7 @@ function getList(){
 
 
 
-		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() + 42);
+		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight());
 		$("#record-list-middle").jScrollPane(jScrollPaneOptions);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 

@@ -3,10 +3,10 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace controllers\ab\data;
+namespace controllers\nf\data;
 use \F3 as F3;
 use \timer as timer;
-use \models\ab as models;
+use \models\nf as models;
 use \models\user as user;
 
 
@@ -31,7 +31,11 @@ class provisional extends data {
 		$dID = $currentDate['ID'];
 
 		$section = 'provisional';
+
 		$settings = models\settings::_read($section);
+
+
+
 
 		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
 		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
@@ -42,9 +46,6 @@ class provisional extends data {
 
 		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
-
-
-		$search = (isset($_REQUEST['search']) && $_REQUEST['search']!="") ? $_REQUEST['search'] : "";
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
@@ -74,11 +75,10 @@ class provisional extends data {
 			"order"=> $ordering,
 
 			"highlight"=> $highlight,
-			"filter"=>$filter,
-			"search"=>$search
+			"filter"=>$filter
 
 		);
-
+		test_array($values);
 
 		models\user_settings::save_setting($values);
 
@@ -87,8 +87,11 @@ class provisional extends data {
 		//exit();
 		$orderby = " client ASC";
 		$arrange = "";
+		$return = array();
 
 
+
+		/*
 
 		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
 
@@ -98,21 +101,14 @@ class provisional extends data {
 
 
 
-
 		$stats = models\record_stats::stats($records,array("cm","checked","material","layout","totalCost"));
 		$loading = models\loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
 		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
 
-		if ($search){
-			$searchsql = " AND (client like '%$search%' OR ab_placing.placing like '%$search%' OR ab_marketers.marketer like '%$search%' OR ab_accounts.account like '%$search%' OR ab_accounts.accNum like '%$search%') ";
-			$where .= $searchsql;
-			$records = models\bookings::getAll($where, $grouping, $ordering);
-		}
-
 //		test_array($loading);
 		$stats['loading'] = $loading;
 
-		$return = array();
+
 
 		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
 		$return['dID'] = $currentDate['ID'];
@@ -123,6 +119,7 @@ class provisional extends data {
 
 
 		$return['list'] = models\bookings::display($records, array("highlight"=>$highlight,"filter"=>$filter));
+		*/
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

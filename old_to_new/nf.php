@@ -21,8 +21,9 @@ class nf_import {
 
 			$start_offset = $offset * $records_show;
 
+			$dbname = "apps";
 
-			$DB = new DB('mysql:host=localhost;dbname=apps', 'william', 'stars');
+			$DB = new DB('mysql:host=localhost;dbname='.$dbname, 'william', 'stars');
 			//$DB->sql("TRUNCATE TABLE apps.nf_articles_revisions");
 
 			echo '<style>';
@@ -31,10 +32,23 @@ class nf_import {
 			echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
 			echo '</style>';
 
-			$records = $DB->sql("SELECT * FROM apps.nf_articles ORDER BY ID ASC LIMIT $start_offset,$records_show");
+			if ($offset==0){
+				$files = $DB->sql("SELECT * FROM " . $dbname . ".nf_files ORDER BY ID ASC");
+
+				foreach ($files as $file) {
+					$aID = $file['aID'];
+					$fID = $file['ID'];
+					$DB->sql("INSERT INTO " . $dbname . ".nf_articles_files_link (articleID, fileID) values ('$aID','$fID')");
+				}
+			}
+
+
+
+
+			$records = $DB->sql("SELECT * FROM " . $dbname . ".nf_articles ORDER BY ID ASC LIMIT $start_offset,$records_show");
 			$percent = 0;
 
-			$count = $DB->sql("SELECT count(ID) as nr FROM apps.nf_articles");
+			$count = $DB->sql("SELECT count(ID) as nr FROM " . $dbname . ".nf_articles");
 			if (count($count)){
 				$count = $count[0]['nr'];
 			} else {
@@ -65,14 +79,7 @@ class nf_import {
 				echo "<article>" . $record['ID'] . " | " . $record['heading'] . "<p>";
 
 
-				$filesID = "";
-				$files = $DB->sql("SELECT * FROM apps.nf_files WHERE aID = '$ID' ORDER BY ID ASC");
-				if (count($files)) {
-					$pf = array();
-					foreach ($files as $file) $pf[] = $file['ID'];
 
-					$filesID = implode(",", $pf);
-				}
 
 
 				$percent = 0.00;
@@ -92,10 +99,17 @@ class nf_import {
 					$patch = $diff['patch'];
 
 
-					$DB->exec("UPDATE apps.nf_articles SET percent = '" . $percent . "' WHERE ID = '" . $ID . "'");
+					$DB->exec("UPDATE ".$dbname.".nf_articles SET percent = '" . $percent . "' WHERE ID = '" . $ID . "'");
 				}
-				echo $filesID;
 				echo "</article><hr>";
+
+
+
+				/*
+
+
+
+
 
 				if ($o) {
 
@@ -121,7 +135,7 @@ class nf_import {
 					                                                                                                                                                                                                                     )
 					);
 				}
-
+*/
 
 			}
 

@@ -363,39 +363,45 @@ $app->route('GET /ab/test', 'access; controllers\ab\controller_test->page');
 
 
 
-$app->route('GET|POST /ab/data/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\data->" . $app->get('PARAMS.function'));
-	}
-);
-$app->route('GET|POST /ab/data/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
-	}
-);
 
-$app->route('GET|POST /ab/data/@folder/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
-	}
-);
+	$app->route("GET|POST /$folder/data/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\data\\data->" . $app->get('PARAMS.function'));
+		}
+	);
+	$app->route("GET|POST /$folder/data/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
 
-$app->route('GET|POST /ab/save/@function', function() use($app) {
-		$app->call("controllers\\ab\\save\\save->" . $app->get('PARAMS.function'));
-	}
-);
-$app->route('GET|POST /ab/save/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
-	}
-);
+	$app->route("GET|POST /$folder/data/@folder/@class/@function", function () use ($app, $folder) {
+			$app->call("controllers\\$folder\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
 
-$app->route('GET|POST /ab/download/@folder/@ID/*', function() use($app) {
-		$app->call("controllers\\ab\\controller_general_download->" . $app->get('PARAMS.folder'));
-	}
-);
-$app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
-	F3::mutex(function() {
-		F3::call("controllers\\ab\\controller_general_thumb->" . F3::get('PARAMS.folder'));
-	});
-	}
-);
+	$app->route("GET|POST /$folder/save/@function", function () use ($app, $folder) {
+			$app->call("controllers\\$folder\\save\\save->" . $app->get('PARAMS.function'));
+		}
+	);
+	$app->route("GET|POST /$folder/save/@class/@function", function () use ($app, $folder) {
+			$app->call("controllers\\$folder\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
+
+	$app->route("GET|POST /$folder/download/@folder/@ID/*", function () use ($app, $folder) {
+			$app->call("controllers\\$folder\\controller_general_download->" . $app->get('PARAMS.folder'));
+		}
+	);
+	$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function () use ($app, $folder) {
+			F3::mutex(function () {
+					F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
+				}
+			);
+		}
+	);
+
+
 
 
 
