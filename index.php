@@ -362,7 +362,24 @@ $app->route('GET /ab/reports/category/discounts', 'access; last_page; controller
 $app->route('GET /ab/test', 'access; controllers\ab\controller_test->page');
 
 
+$app->route("GET|POST /$folder/logs/@function", function () use ($app) {
+		$folder = $app->get("app");
+		$section =$app->get('PARAMS.function');
 
+		$return = array();
+
+
+		$where = "section='$section'";
+		if (!in_array($section,array(""))){
+			$where .= " AND app = '$folder'";
+		}
+		$return = \models\logging::getAll($where, "datein DESC");
+
+		return $GLOBALS["output"]['data'] = $return;
+
+
+	}
+);
 
 	$app->route("GET|POST /$folder/data/@function", function () use ($app) {
 			$folder = $app->get("app");

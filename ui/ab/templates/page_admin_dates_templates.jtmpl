@@ -107,7 +107,9 @@
 	<div id="form-bottom">
 		<div class="form-actions">
 			<div style="float:left; margin-left:0; padding-top: 3px;">
-
+                <button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="View the log" data-position="above" id="btn-log" data-section="{{ page['section'] }}_{{ page['sub_section'] }}">
+                    <i class="icon-list-alt icon-d-grey"></i>
+                </button>
 				<% if (this.ID) { %>
 				<% if (this.records==0) { %>
 				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this Record" data-position="above" id="btn-delete">

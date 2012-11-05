@@ -110,8 +110,9 @@ class publications {
 
 		$a = new Axon("global_publications");
 		$a->load("ID='$ID'");
-
+		$old = array();
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -122,7 +123,15 @@ class publications {
 		}
 
 
+		if ($a->ID) {
+			$label = "Record Edited ($a->publication)";
+		} else {
+			$label = "Record Added (" . $values['publication'] . ')';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("publications", $label, $values, $old);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

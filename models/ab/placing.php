@@ -66,11 +66,13 @@ class placing {
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
-
+		$old = array();
+		$lookupColumns = array();
 		$a = new Axon("ab_placing");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -80,7 +82,15 @@ class placing {
 			$ID = $a->_id;
 		}
 
+		if ($a->ID) {
+			$label = "Record Edited ($a->placing)";
+		} else {
+			$label = "Record Added (" . $values['placing'] . ')';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("placing", $label, $values, $old);
 
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());

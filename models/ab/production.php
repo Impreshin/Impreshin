@@ -68,11 +68,14 @@ class production {
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
+		$old = array();
+		$lookupColumns = array();
 
 		$a = new Axon("ab_production");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -89,15 +92,22 @@ class production {
 
 		$p = new Axon("ab_production_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
-
+		$pub = array(
+			"a"=> array(),
+			"r"=> array()
+		);
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND productionID='" . $ID . "'");
 			if (in_array($publication['ID'], $values['publications'])) {
 				$p->pID = $publication['ID'];
 				$p->productionID = $ID;
-				$p->save();
+				if (!$p->ID) {
+					$pub['a'][] = $publication['publication'];
+					$p->save();
+				}
 			} else {
-				if (!$p->dry()) {
+				if ($p->ID) {
+					$pub['r'][] = $publication['publication'];
 					$p->erase();
 				}
 			}
@@ -105,6 +115,32 @@ class production {
 		}
 
 
+		$str = array();
+		if (count($pub['a'])) $str[] = "Added: " . implode(", ", $pub['a']);
+		if (count($pub['r'])) $str[] = "Removed: " . implode(", ", $pub['r']);
+
+		$overwrite = array("publications");
+		if (count($str)) {
+			$pub = array(
+				"k"=> "publications",
+				"v"=> implode(" | ", $str),
+				"w"=> '-'
+			);
+			$overwrite['publications'] = $pub;
+		}
+
+
+		//test_array($changes);
+
+		if ($a->ID) {
+			$label = "Record Edited ($a->production)";
+		} else {
+			$label = "Record Added (" . $values['production'] . ')';
+		}
+		//test_array($new_logging);
+
+
+		\models\logging::_log("production", $label, $values, $old, $overwrite, $lookupColumns);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

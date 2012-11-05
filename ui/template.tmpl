@@ -137,6 +137,24 @@
 	</div>
 </div>
 
+<div id="view-log" class='modal hide fade'>
+    <div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+        <h3>View Log</h3></div>
+    <div class='modal-body'>
+        <table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
+
+        </table>
+
+
+    </div>
+    <div class='modal-footer'>
+
+    </div>
+
+	</div>
+</div>
+
 <!--[if lt IE 9]>
 <script language="javascript" type="text/javascript" src="/ui/jqPlot/excanvas.js"></script>
 <![endif]-->
@@ -152,6 +170,7 @@
 
 	var detailsRequest = [];
 	var listRequest = [];
+	var logsRequest = [];
 	var activityRequest = [];
 	var transSpeed = '{{ transSpeed |default('400') }}';
 	$(function () {
@@ -410,6 +429,26 @@
 		}
 	});
 
+    $(document).on('click', '#view-log .record', function (e) {
+        var $this = $(this);
+        var $clicked = $(e.target).closest("tr.record");
+        var active = true;
+
+        if ($this.hasClass("active") && $clicked) active = false;
+
+        $("#view-log .record.active").removeClass("active");
+        if (active) {
+            $this.addClass("active");
+        }
+
+        var show = $("#view-log .record.active").attr("data-log-id");
+
+        $("#view-log .log-record-details").hide();
+        $("#view-log .log-record-details[data-log-id='" + show + "']").show();
+
+    });
+
+
 	var uID = "{{ _user['ID'] }}";
 	var jScrollPaneOptions = {
 		showArrows:false,
@@ -647,6 +686,46 @@
 	</tr>
 
 	]]>
+</script>
+<script type="text/x-jqote-template" id="template-admin-logs">
+    <![CDATA[
+
+    <tr class="log-record record" data-log-id="<%= this.ID %>">
+        <th class="s"><%= this.datein %></th>
+        <td><%= this.label %></td>
+        <td class="s g"><%= this.fullName || "" %></td>
+    </tr>
+    <tr>
+        <td colspan="3" class="log-record-details " data-log-id="<%= this.ID %>" style="padding:0;">
+            <table class="table s log-changes-table">
+                <thead>
+                <tr class="headingrow" style="border-right:none;">
+                    <th class="l" style="width: 24%;text-align: right;"></th>
+                    <th class="l" style="width: 38%;">From</th>
+                    <th class="l" style="width: 38%;">To</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for(var g in this.logs) { %>
+                <tr>
+                    <td class="g r" style="text-align: right;"><%= this.logs[g].k %></td>
+
+
+                    <% if (this.logs[g].w!="-"){ %>
+                    <td><% if ( this.logs[g].w) { %><%= this.logs[g].w %><% } %></td>
+                    <% } %>
+                    <td
+                    <% if (this.logs[g].w=="-"){ %>colspan='2'<% } %>><% if ( this.logs[g].v) { %><%= this.logs[g].v %><% } %></td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+
+
+        </td>
+    </tr>
+
+    ]]>
 </script>
 {% if page['template_tmpl'] %}
 {% include page['template_tmpl'] %}

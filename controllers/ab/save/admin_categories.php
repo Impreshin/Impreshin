@@ -126,12 +126,29 @@ class admin_categories extends save {
 			$p->catID = $ID;
 			$p->pID = $pID;
 			$p->save();
+			$pub = "Added: " . $user['publication']['publication'];
 		} else {
 			$p->erase();
-
+			$pub = "Removed: " . $user['publication']['publication'];
 		}
 
 
-		return "done";
+		$changes = array(
+			array(
+				"k"=> "publication",
+				"v"=> $pub,
+				"w"=> '-'
+			)
+		);
+
+		$a = new Axon("ab_categories");
+		$a->load("ID='$ID'");
+		$label = "";
+		if ($a->ID) {
+			$label = "Record Edited ($a->category)";
+		}
+
+		\models\logging::save("categories", $changes, $label);
+		return $changes;
 	}
 }

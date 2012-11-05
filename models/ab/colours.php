@@ -67,11 +67,13 @@ class colours {
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
-
+		$old = array();
+		$lookupColumns = array();
 		$a = new Axon("ab_colour_rates");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -81,7 +83,15 @@ class colours {
 			$ID = $a->_id;
 		}
 
+		if ($a->ID) {
+			$label = "Record Edited ($a->colour)";
+		} else {
+			$label = "Record Added (" . $values['colour'] . ')';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("placing_colours", $label, $values, $old);
 
 
 

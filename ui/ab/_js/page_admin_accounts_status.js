@@ -103,8 +103,23 @@ $(document).ready(function(){
 
 	});
 
+	$(document).on("click", "#btn-log", function (e) {
+		e.preventDefault();
+		var $this = $(this);
 
+		for (var i = 0; i < logsRequest.length; i++) logsRequest[i].abort();
+		logsRequest.push($.getJSON("/ab/logs/accounts_status", {}, function (data) {
+			data = data['data'];
+			$logarea = $("#view-log table").html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>');
+			if (data[0]) {
+				$logarea.jqotesub($("#template-admin-logs"), data);
 
+			}
+			$("#view-log").modal("show");
+
+		}));
+
+	});
 
 
 });

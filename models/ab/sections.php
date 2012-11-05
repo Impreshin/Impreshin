@@ -66,10 +66,14 @@ class sections {
 		$user = F3::get("user");
 		$timer = new timer();
 
+		$old = array();
+		$lookupColumns = array();
+
 		$a = new Axon("global_pages_sections");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -79,7 +83,15 @@ class sections {
 			$ID = $a->_id;
 		}
 
+		if ($a->ID) {
+			$label = "Record Edited ($a->section)";
+		} else {
+			$label = "Record Added (" . $values['section'] . ')';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("sections", $label, $values, $old);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;
