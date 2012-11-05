@@ -368,8 +368,10 @@ $app->route("GET|POST /$folder/logs/@function", function () use ($app) {
 
 		$return = array();
 
+		$user = $app->get("user");
+		$cID = $user['company']['ID'];
 
-		$where = "section='$section'";
+		$where = "cID='$cID' AND section='$section'";
 		if (!in_array($section,array(""))){
 			$where .= " AND app = '$folder'";
 		}

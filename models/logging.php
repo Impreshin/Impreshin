@@ -49,6 +49,7 @@ class logging {
 		$userID = $user['ID'];
 		$app = F3::get("app");
 
+		$cID = $user['company']['ID'];
 		//$section = str_replace("models".$app,"",$section);
 
 
@@ -56,7 +57,7 @@ class logging {
 		if (count($changes)) {
 			$log = mysql_escape_string(json_encode($changes));
 
-			F3::get("DB")->exec("INSERT INTO global_logs (`app`,`section`, `log`, `label`, `uID`) VALUES ('$app','$section','$log','$label','$userID')");
+			F3::get("DB")->exec("INSERT INTO global_logs (`cID`, `app`,`section`, `log`, `label`, `uID`) VALUES ('$cID', '$app','$section','$log','$label','$userID')");
 		}
 
 
