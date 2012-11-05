@@ -394,26 +394,31 @@ $app->route("GET|POST /$folder/logs/@function", function () use ($app) {
 		}
 	);
 
-	$app->route("GET|POST /$folder/data/@folder/@class/@function", function () use ($app, $folder) {
+	$app->route("GET|POST /$folder/data/@folder/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
 			$app->call("controllers\\$folder\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 		}
 	);
 
-	$app->route("GET|POST /$folder/save/@function", function () use ($app, $folder) {
+	$app->route("GET|POST /$folder/save/@function", function () use ($app) {
+			$folder = $app->get("app");
 			$app->call("controllers\\$folder\\save\\save->" . $app->get('PARAMS.function'));
 		}
 	);
-	$app->route("GET|POST /$folder/save/@class/@function", function () use ($app, $folder) {
+	$app->route("GET|POST /$folder/save/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
 			$app->call("controllers\\$folder\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
 		}
 	);
 
-	$app->route("GET|POST /$folder/download/@folder/@ID/*", function () use ($app, $folder) {
+	$app->route("GET|POST /$folder/download/@folder/@ID/*", function () use ($app) {
+			$folder = $app->get("app");
 			$app->call("controllers\\$folder\\controller_general_download->" . $app->get('PARAMS.folder'));
 		}
 	);
-	$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function () use ($app, $folder) {
-			F3::mutex(function () {
+	$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function () use ($app) {
+			$folder = $app->get("app");
+			F3::mutex(function () use ($folder) {
 					F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
 				}
 			);
