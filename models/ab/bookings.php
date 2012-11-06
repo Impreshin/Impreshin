@@ -556,8 +556,8 @@ $groupby
 			$label1 = "Booking was repeated";
 			$label2 = "Repeat Booking";
 		} else {
-			$label1 = "Booking was repeated*";
-			$label2 = "Repeat Booking*";
+			$label1 = "Booking was repeated (material not kept)";
+			$label2 = "Repeat Booking (material not kept)";
 
 			unset($values['material_file_filename']);
 			unset($values['material_file_filesize']);
@@ -567,6 +567,8 @@ $groupby
 			unset($values['material_approved']);
 			unset($values['orderNum']);
 			unset($values['keyNum']);
+
+
 
 		}
 
