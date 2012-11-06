@@ -90,11 +90,11 @@ $(document).ready(function () {
 
 	});
 	$(document).on("click", "#list-settings", function (e) {
-		console.log($("#list-settings").length);
+		//console.log($("#list-settings").length);
 		e.preventDefault();
 		var $this = $(this);
 
-		console.log("settings clicked");
+		//console.log("settings clicked");
 		$this.addClass("active");
 		$.bbq.pushState({"modal":"settings"});
 		$("#settings-modal").modal('show');
@@ -232,6 +232,7 @@ $(document).ready(function () {
 	$("#selected-columns, #available-columns").sortable({
 		connectWith:".connectedSortable",
 		containment:".scroll-pane",
+		zIndex:99999,
 		update:function (event, ui) {
 			$(this).closest(".scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 

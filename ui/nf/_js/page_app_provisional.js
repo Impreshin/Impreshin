@@ -96,11 +96,11 @@ $(document).ready(function () {
 
 	});
 	$(document).on("click", "#list-settings", function (e) {
-		console.log($("#list-settings").length);
+		//console.log($("#list-settings").length);
 		e.preventDefault();
 		var $this = $(this);
 
-		console.log("settings clicked");
+		//console.log("settings clicked");
 		$this.addClass("active");
 		$.bbq.pushState({"modal":"settings"});
 		$("#settings-modal").modal('show');
