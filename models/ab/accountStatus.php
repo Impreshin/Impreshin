@@ -70,10 +70,14 @@ class accountStatus {
 		$user = F3::get("user");
 		$timer = new timer();
 
+		$old = array();
+
+
 		$a = new Axon("ab_accounts_status");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -84,6 +88,14 @@ class accountStatus {
 		}
 
 
+		if ($a->ID) {
+			$label = "Record Edited ($a->status)";
+		} else {
+			$label = "Record Added (" . $values['status'] . ')';
+		}
+
+
+		\models\logging::_log("accounts_status", $label, $values, $old);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

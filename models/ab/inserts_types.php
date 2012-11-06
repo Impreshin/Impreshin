@@ -66,11 +66,12 @@ class inserts_types {
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
-
+		$old = array();
 		$a = new Axon("ab_inserts_types");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -81,7 +82,18 @@ class inserts_types {
 		}
 
 
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+		if ($a->ID) {
+			$label = "Record Edited ($a->insertsLabel)";
+		} else {
+			$label = "Record Added (" . $values['insertsLabel'] . ')';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("inserts_types", $label, $values, $old);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

@@ -90,6 +90,7 @@ class general {
 
 				// ------ //
 				"/ui/_js/plugins/date.js",
+				"/ui/_js/plugins/jquery.hotkeys.js",
 
 				"/ui/_js/plugins/jquery.daterangepicker.js",
 				"/ui/_js/plugins/jquery.mousewheel.js",

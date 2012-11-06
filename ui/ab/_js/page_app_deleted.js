@@ -311,7 +311,7 @@ function getList(settings) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
-		var bottomChanges = 42;
+		var bottomChanges = 0;
 		if (data['list'][0]){
 			$recordsList.jqotesub($("#template-records"), data['list']);
 

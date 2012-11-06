@@ -148,19 +148,38 @@ class admin_accounts extends save {
 		$pID = $user['publication']['ID'];
 
 
+
+
+
 		$p = new Axon("ab_accounts_pub");
 		$p->load("aID='$ID' and pID='$pID'");
 		if (!$p->ID){
 			$p->aID=$ID;
 			$p->pID=$pID;
 			$p->save();
+			$pub = "Added: ".$user['publication']['publication'];
 		} else {
 			$p->erase();
-
+			$pub = "Removed: " . $user['publication']['publication'];
 		}
 
+		$changes = array(
+			array(
+				"k"=>"publication",
+				"v"=>$pub,
+				"w"=>'-'
+			)
+		);
 
-		return  "done";
+		$a = new Axon("ab_accounts");
+		$a->load("ID='$ID'");
+$label = "";
+		if ($a->ID) {
+			$label = "Record Edited ($a->account)";
+		}
+
+		\models\logging::save("accounts", $changes, $label);
+		return $changes;
 	}
 
 }

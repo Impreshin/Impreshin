@@ -135,13 +135,31 @@ class admin_marketers_targets extends save {
 			$p->mtID = $ID;
 			$p->pID = $pID;
 			$p->save();
+			$pub = "Added: " . $user['publication']['publication'];
 		} else {
 			$p->erase();
-
+			$pub = "Removed: " . $user['publication']['publication'];
 		}
 
 
-		return "done";
+		$changes = array(
+			array(
+				"k"=> "publication",
+				"v"=> $pub,
+				"w"=> '-'
+			)
+		);
+
+		$a = new Axon("ab_marketers");
+		$a->load("ID='$ID'");
+		$label = "";
+		if ($a->ID) {
+			$label = "Record Edited ($a->marketer)";
+		}
+
+		\models\logging::save("marketers_targets", $changes, $label);
+		return $changes;
+
 	}
 
 

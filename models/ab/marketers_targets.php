@@ -260,10 +260,13 @@ class marketers_targets {
 		$user = F3::get("user");
 		$timer = new timer();
 
+		$old = array();
+		$lookupColumns = array();
 		$a = new Axon("ab_marketers_targets");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -282,15 +285,23 @@ class marketers_targets {
 
 
 		$p = new Axon("ab_marketers_targets_pub");
+		$pub = array(
+			"a"=> array(),
+			"r"=> array()
+		);
 
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND mtID='" . $ID . "'");
 			if (in_array($publication['ID'], $values['publications'])) {
 				$p->pID = $publication['ID'];
 				$p->mtID = $ID;
-				$p->save();
+				if (!$p->ID) {
+					$pub['a'][] = $publication['publication'];
+					$p->save();
+				}
 			} else {
-				if (!$p->dry()) {
+				if ($p->ID) {
+					$pub['r'][] = $publication['publication'];
 					$p->erase();
 				}
 			}
@@ -298,7 +309,32 @@ class marketers_targets {
 		}
 
 
+		$str = array();
+		if (count($pub['a'])) $str[] = "Added: " . implode(", ", $pub['a']);
+		if (count($pub['r'])) $str[] = "Removed: " . implode(", ", $pub['r']);
 
+		$overwrite = array();
+		if (count($str)) {
+			$pub = array(
+				"k"=> "publications",
+				"v"=> implode(" | ", $str),
+				"w"=> '-'
+			);
+			$overwrite['publications'] = $pub;
+		}
+
+
+		//test_array($changes);
+
+		if ($a->ID) {
+			$label = "Record Edited (".currency($a->target).")";
+		} else {
+			$label = "Record Added (" . currency($values['target']) . ')';
+		}
+		//test_array($new_logging);
+
+
+		\models\logging::_log("marketers_targets", $label, $values, $old, $overwrite, $lookupColumns);
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

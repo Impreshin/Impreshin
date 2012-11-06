@@ -29,9 +29,13 @@ $sql = array(
 		"ALTER TABLE `global_companies` ADD `ab_upload_material` TINYINT( 1 ) NULL DEFAULT '0';",
 		"ALTER TABLE `global_publications` ADD `ab_upload_material` TINYINT( 1 ) NULL DEFAULT '1';"
 	),
-	"7"=>array(
+	"7" => array(
 		"ALTER TABLE `global_companies` ADD `ab` TINYINT( 1 ) NULL DEFAULT '0' AFTER `company` ,ADD `nf` TINYINT( 1 ) NULL DEFAULT '0' AFTER `ab`;"
+	),
+	"8"=>array(
+		"CREATE TABLE IF NOT EXISTS `global_logs` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `cID` int(6) DEFAULT NULL,  `app` varchar(3) DEFAULT NULL,  `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `uID` int(6) DEFAULT NULL,  `label` varchar(100) DEFAULT NULL,  `section` varchar(50) DEFAULT NULL,  `log` text,  PRIMARY KEY (`ID`),  KEY `uID` (`uID`),  KEY `section` (`section`),  KEY `cID` (`cID`));"
 	)
+
 
 );
 

@@ -96,6 +96,7 @@ class admin_accounts extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
+
 	function _details() {
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -161,5 +162,6 @@ class admin_accounts extends data {
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
+
 
 }

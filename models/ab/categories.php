@@ -69,14 +69,18 @@ class categories {
 		$user = F3::get("user");
 		$timer = new timer();
 
+		$old = array();
+
+
 		$a = new Axon("ab_categories");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
-		$a->save();
+		 $a->save();
 
 		if (!$a->ID) {
 			$ID = $a->_id;
@@ -90,20 +94,57 @@ class categories {
 		$p = new Axon("ab_category_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 
+
+		$pub = array(
+			"a"=> array(),
+			"r"=> array()
+		);
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND catID='" . $ID . "'");
 			if (in_array($publication['ID'], $values['publications'])) {
 				$p->pID = $publication['ID'];
 				$p->catID = $ID;
-				$p->save();
+				if (!$p->ID) {
+					$pub['a'][] = $publication['publication'];
+					$p->save();
+				}
 			} else {
-				if (!$p->dry()) {
+				if ($p->ID) {
+					$pub['r'][] = $publication['publication'];
 					$p->erase();
 				}
 			}
 			$p->reset();
 		}
 
+
+		$str = array();
+		if (count($pub['a'])) $str[] = "Added: " . implode(", ", $pub['a']);
+		if (count($pub['r'])) $str[] = "Removed: " . implode(", ", $pub['r']);
+		$overwrite = array("publications");
+		if (count($str)) {
+			$pub = array(
+				"k"=> "publications",
+				"v"=> implode(" | ", $str),
+				"w"=> '-'
+			);
+			$overwrite['publications'] = $pub;
+		}
+
+
+		//test_array($changes);
+
+		if ($a->ID) {
+			$label = "Record Edited ($a->category)";
+		} else {
+			$label = "Record Added (" . $values['category'] . ')';
+		}
+
+
+
+
+
+		\models\logging::_log("categories", $label, $values, $old, $overwrite);
 
 
 		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());

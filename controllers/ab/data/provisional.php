@@ -44,6 +44,9 @@ class provisional extends data {
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 
 
+		$search = (isset($_REQUEST['search']) && $_REQUEST['search']!="") ? $_REQUEST['search'] : "";
+
+
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
 			if ($settings['order']['c'] == $_REQUEST['order']){
 				if ($ordering_d=="ASC"){
@@ -71,7 +74,8 @@ class provisional extends data {
 			"order"=> $ordering,
 
 			"highlight"=> $highlight,
-			"filter"=>$filter
+			"filter"=>$filter,
+			"search"=>$search
 
 		);
 
@@ -94,9 +98,16 @@ class provisional extends data {
 
 
 
+
 		$stats = models\record_stats::stats($records,array("cm","checked","material","layout","totalCost"));
 		$loading = models\loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
 		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
+
+		if ($search){
+			$searchsql = " AND (client like '%$search%' OR ab_placing.placing like '%$search%' OR ab_marketers.marketer like '%$search%' OR ab_accounts.account like '%$search%' OR ab_accounts.accNum like '%$search%') ";
+			$where .= $searchsql;
+			$records = models\bookings::getAll($where, $grouping, $ordering);
+		}
 
 //		test_array($loading);
 		$stats['loading'] = $loading;

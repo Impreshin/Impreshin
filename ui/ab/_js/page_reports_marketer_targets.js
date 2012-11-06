@@ -187,7 +187,7 @@ function getData() {
 
 		var $recordsList = $("#scroll-container");
 		var $pagenation = $("#pagination");
-		var bottomChanges = 42;
+		var bottomChanges = 0;
 		if (data.targets[0]) {
 			$recordsList.jqotesub($("#template-report-figures"), data);
 

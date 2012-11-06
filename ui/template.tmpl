@@ -56,22 +56,28 @@
 		</div>
 		<div class="clearfix">
 			<div class="row">
-				<div class="span14" style="position:relative;">
-					<div id="notice-area" class="span14">
+                <div class="span16" style="position: relative;">
+                    <div class="span14" style="position:relative;">
+                        <div id="notice-area" class="span14">
 
-						&nbsp;</div>
-					<div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
-				</div>
-				<div class="s" style="float: right;">
-                    <div class="s" style="float: right;">
-                        <a href="{{ page['help'] }}" class="help_link" rel="tooltip" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
-                    </div><span style="padding-right: 30px; color: #999;">{{ _user['fullName']}}</span>
+                            &nbsp;</div>
+                        <div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
+                    </div>
+                    <div class="s span2" style="float: right; position: absolute; right: 0;">
+                        <div class="s" style="position: absolute; right:0;">
+                            <a href="{{ page['help'] }}" class="help_link" rel="tooltip" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
+
+                        </div>
 
 
-				</div>
+                        <span style="padding-right: 30px; color: #999;">{{ _user['fullName'] }}</span>
 
 
-			</div>
+                    </div>
+                </div>
+
+
+            </div>
 		</div>
 	</div>
 
@@ -111,17 +117,36 @@
 
         <div id="apps-select">
             <ul>
-                {% if 'ab' in _cfg['apps'] and _user['company']['ab']=='1' %}
+                {% if 'ab' in _cfg['apps'] and _user['company']['ab'] =='1' %}
                 <li class='{% if _folder =='ui/ab/' %}active{% endif %}' ><a href="{{ _last_pages['ab'] }}">AdBooker</a>
                 </li>
                 {% endif %}
-                {% if 'nf' in _cfg['apps'] and _user['company']['nf']=='1' %}
+                {% if 'nf' in _cfg['apps'] and _user['company']['nf'] == '1' %}
                 <li class='{% if _folder =='ui/nf/' %}active{% endif %}' ><a href="{{ _last_pages['nf'] }}">NewsFiler</a>
                 </li>
                 {% endif %}
-               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a></li>-->
+               <!-- <li class='{% if _folder =='ui/db/' %}active{% endif %} disabled' ><a href="/db/">DistriBooker</a>-->
+                </li>
             </ul>
         </div>
+    </div>
+    <div class='modal-footer'>
+
+    </div>
+
+	</div>
+</div>
+
+<div id="view-log" class='modal hide fade'>
+    <div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+        <h3>View Log</h3></div>
+    <div class='modal-body'>
+        <table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
+
+        </table>
+
+
     </div>
     <div class='modal-footer'>
 
@@ -145,25 +170,24 @@
 
 	var detailsRequest = [];
 	var listRequest = [];
+	var logsRequest = [];
 	var activityRequest = [];
 	var transSpeed = '{{ transSpeed |default('400') }}';
 	$(function () {
 		$('body').tooltip({
-			selector:'[rel=tooltip]'
+			selector:'[rel=tooltip]',
+            live:true
 		});
 		$('body').popover({
-			selector:'[rel=popover]'
+			selector:'[rel=popover]',
+            offset:5,
+            live:true
 		});
 
 
-		$("*[rel=tooltip]").tooltip({
-			live:true
-		});
 
-		$("[rel=popover]").popover({
-			offset:5,
-			live:true
-		});
+
+
         $('.dropdown-toggle').dropdown();
 
 
@@ -405,6 +429,26 @@
 		}
 	});
 
+    $(document).on('click', '#view-log .record', function (e) {
+        var $this = $(this);
+        var $clicked = $(e.target).closest("tr.record");
+        var active = true;
+
+        if ($this.hasClass("active") && $clicked) active = false;
+
+        $("#view-log .record.active").removeClass("active");
+        if (active) {
+            $this.addClass("active");
+        }
+
+        var show = $("#view-log .record.active").attr("data-log-id");
+
+        $("#view-log .log-record-details").hide();
+        $("#view-log .log-record-details[data-log-id='" + show + "']").show();
+
+    });
+
+
 	var uID = "{{ _user['ID'] }}";
 	var jScrollPaneOptions = {
 		showArrows:false,
@@ -440,7 +484,7 @@
 		var models = d['models'];
 
 		if (d['notifications']){
-			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']);
+			$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
 		}
 
 		var pageSize = (page && page['size'])? page['size']: page_size;
@@ -642,6 +686,46 @@
 	</tr>
 
 	]]>
+</script>
+<script type="text/x-jqote-template" id="template-admin-logs">
+    <![CDATA[
+
+    <tr class="log-record record" data-log-id="<%= this.ID %>">
+        <th class="s"><%= this.datein %></th>
+        <td><%= this.label %></td>
+        <td class="s g"><%= this.fullName || "" %></td>
+    </tr>
+    <tr>
+        <td colspan="3" class="log-record-details " data-log-id="<%= this.ID %>" style="padding:0;">
+            <table class="table s log-changes-table">
+                <thead>
+                <tr class="headingrow" style="border-right:none;">
+                    <th class="l" style="width: 24%;text-align: right;"></th>
+                    <th class="l" style="width: 38%;">From</th>
+                    <th class="l" style="width: 38%;">To</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for(var g in this.logs) { %>
+                <tr>
+                    <td class="g r" style="text-align: right;"><%= this.logs[g].k %></td>
+
+
+                    <% if (this.logs[g].w!="-"){ %>
+                    <td><% if ( this.logs[g].w) { %><%= this.logs[g].w %><% } %></td>
+                    <% } %>
+                    <td
+                    <% if (this.logs[g].w=="-"){ %>colspan='2'<% } %>><% if ( this.logs[g].v) { %><%= this.logs[g].v %><% } %></td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+
+
+        </td>
+    </tr>
+
+    ]]>
 </script>
 {% if page['template_tmpl'] %}
 {% include page['template_tmpl'] %}

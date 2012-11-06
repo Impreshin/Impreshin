@@ -9,6 +9,13 @@ use \Axon as Axon;
 use \timer as timer;
 class user_notifications {
 	public static function show(){
+		$return = array();
+		$return['footer'] = self::bar();
+
+		return $return;
+	}
+
+	public static function bar(){
 		$timer = new timer();
 		$user = F3::get("user");
 		$return = $records = array();

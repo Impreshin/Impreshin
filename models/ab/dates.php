@@ -135,7 +135,7 @@ class dates {
 	public static function save($ID,$values){
 		$user = F3::get("user");
 		$timer = new timer();
-
+		$old = array();
 
 		if (!isset($values["pID"])|| $values["pID"]=="") $values["pID"] = $user['publication']['ID'];
 
@@ -144,6 +144,7 @@ class dates {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -162,6 +163,21 @@ class dates {
 			$b->$column = $ID;
 			if (!$b->dry())	$b->save();
 		}
+
+		if (!$a->ID) {
+			$ID = $a->_id;
+		}
+		if ($a->ID) {
+			$label = "Record Edited ($a->publish_date)";
+		} else {
+			$label = "Record Added (" . $values['publish_date'] . ')';
+		}
+		//test_array($new_logging);
+
+
+		\models\logging::_log("dates", $label, $values, $old);
+
+
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $ID;

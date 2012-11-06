@@ -362,40 +362,70 @@ $app->route('GET /ab/reports/category/discounts', 'access; last_page; controller
 $app->route('GET /ab/test', 'access; controllers\ab\controller_test->page');
 
 
+$app->route("GET|POST /$folder/logs/@function", function () use ($app) {
+		$folder = $app->get("app");
+		$section =$app->get('PARAMS.function');
 
-$app->route('GET|POST /ab/data/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\data->" . $app->get('PARAMS.function'));
-	}
-);
-$app->route('GET|POST /ab/data/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
-	}
-);
+		$return = array();
 
-$app->route('GET|POST /ab/data/@folder/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
-	}
-);
+		$user = $app->get("user");
+		$cID = $user['company']['ID'];
 
-$app->route('GET|POST /ab/save/@function', function() use($app) {
-		$app->call("controllers\\ab\\save\\save->" . $app->get('PARAMS.function'));
-	}
-);
-$app->route('GET|POST /ab/save/@class/@function', function() use($app) {
-		$app->call("controllers\\ab\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		$where = "cID='$cID' AND section='$section'";
+		if (!in_array($section,array(""))){
+			$where .= " AND app = '$folder'";
+		}
+		$return = \models\logging::getAll($where, "datein DESC");
+
+		return $GLOBALS["output"]['data'] = $return;
+
+
 	}
 );
 
-$app->route('GET|POST /ab/download/@folder/@ID/*', function() use($app) {
-		$app->call("controllers\\ab\\controller_general_download->" . $app->get('PARAMS.folder'));
-	}
-);
-$app->route('GET|POST /ab/thumb/@folder/@ID/*', function() use($app) {
-	F3::mutex(function() {
-		F3::call("controllers\\ab\\controller_general_thumb->" . F3::get('PARAMS.folder'));
-	});
-	}
-);
+	$app->route("GET|POST /$folder/data/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\data\\data->" . $app->get('PARAMS.function'));
+		}
+	);
+	$app->route("GET|POST /$folder/data/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\data\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
+
+	$app->route("GET|POST /$folder/data/@folder/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\data\\" . $app->get('PARAMS.folder') . "\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
+
+	$app->route("GET|POST /$folder/save/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\save\\save->" . $app->get('PARAMS.function'));
+		}
+	);
+	$app->route("GET|POST /$folder/save/@class/@function", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\save\\" . $app->get('PARAMS.class') . "->" . $app->get('PARAMS.function'));
+		}
+	);
+
+	$app->route("GET|POST /$folder/download/@folder/@ID/*", function () use ($app) {
+			$folder = $app->get("app");
+			$app->call("controllers\\$folder\\controller_general_download->" . $app->get('PARAMS.folder'));
+		}
+	);
+	$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function () use ($app) {
+			$folder = $app->get("app");
+			F3::mutex(function () use ($folder) {
+					F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
+				}
+			);
+		}
+	);
+
+
 
 
 
@@ -746,111 +776,9 @@ function getChain($ID){
 
 
 $app->route('GET|POST /nf/import12345', function () use ($app) {
+	include_once("old_to_new/nf.php");
+		nf_import::db();
 
-		if (isLocal()){
-
-
-			/*
-		 of: 0
-		 show
-		 */
-
-			$records_show = 30;
-			$offset = isset($_REQUEST['offset'])? $_REQUEST['offset']:0;
-			$newoffset = $offset + 1;
-
-			$start_offset = $offset * $records_show;
-
-
-
-
-
-			$DB = new DB('mysql:host=localhost;dbname=apps', 'william', 'stars');
-			//$DB->sql("TRUNCATE TABLE apps.nf_articles_revisions");
-
-			echo '<style>';
-			echo 'body { font-size: 13px; }';
-			echo 'del { background-color:  rgba(255, 0, 0, 0.2);}';
-			echo 'ins { background-color: rgba(0, 128, 0, 0.3);}';
-			echo '</style>';
-
-			$records = $DB->sql("SELECT * FROM apps.nf_articles ORDER BY ID ASC LIMIT $start_offset,$records_show");
-			echo "showing: (".count($records).") | $start_offset,$records_show<hr> ";
-			if (!count($records)) {
-				echo "DONE";
-				exit();
-			};
-
-			foreach ($records as $record){
-
-
-
-				$ID = $record['ID'];
-				$o = $record['article_orig'];
-				$a = $record['article'];
-				$s = $record['synopsis'];
-				$uID = $record['authorID'];
-				$lb = $record['lockedBy'];
-				$d = $record['datein'];
-				echo "<article>" . $record['ID'] . " | " . $record['heading'] . "<p>";
-
-
-				$filesID = "";
-				$files = $DB->sql("SELECT * FROM apps.nf_files WHERE aID = '$ID' ORDER BY ID ASC");
-				if (count($files)) {
-					$pf = array();
-					foreach ($files as $file) $pf[] = $file['ID'];
-
-					$filesID = implode(",", $pf);
-				}
-
-
-				$percent = 0.00;
-				$patch = "";
-
-
-
-				if ($o && $a){
-					$timer = new timer();
-					$diff = percentDiff($o, $a, true);
-					$t = $timer->stop($record['ID']);
-
-					echo "added: " . ($diff['stats']['added']) . " | removed: " . ($diff['stats']['removed']) . " | old: " . $diff['stats']['old'] . " | new: " . $diff['stats']['new'] . " | percent: " . $diff['stats']['percent']." | time: ".$t. "<br>";
-
-
-					$percent = $diff['stats']['percent'];
-
-					$patch = $diff['patch'];
-
-
-
-					$DB->exec("UPDATE apps.nf_articles SET percent = '". $percent ."' WHERE ID = '".$ID."'");
-				}
-				echo $filesID;
-				echo "</article><hr>";
-
-				if ($o){
-
-					$DB->exec("INSERT INTO nf_articles_revisions (aID,uID,remark,synopsis,article, patch, filesID, datein) VALUES (:aID,:uID,'New Article - import',:synopsis,:article, :patch, :filesID, :datein);",array( ":aID"=>$ID,":uID"=>$uID,":synopsis"=>$s,":article"=>$o,":patch"=>"",":filesID"=>$filesID, ":datein"=> $d));
-				}
-				if ($a){
-					$DB->exec("INSERT INTO nf_articles_revisions (aID,uID,remark,synopsis,article, patch, filesID, percent,  datein) VALUES (:aID,:uID,'Edit Article - import',:synopsis,:article, :patch, :filesID, :percent, :datein);",array( ":aID"=>$ID,":uID"=> $lb,":synopsis"=>$s,":article"=>$a,":patch"=>$patch,":filesID"=>$filesID,":percent"=>$percent, ":datein"=> $d));
-				}
-
-
-			}
-
-			if (count($records)){
-				//echo "redirect to " . $newoffset;
-
-				echo "<meta http-equiv='refresh' content='1;URL=?offset=" . $newoffset."&r=".date("YmdHis")."'>";
-				/*exit();
-			 sleep(5);
-			 $app->reroute("?offset=".$newoffset);*/
-			}
-
-			exit();
-		}
 
 });
 

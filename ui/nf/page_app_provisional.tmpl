@@ -3,8 +3,32 @@
         <div class="toolbar clearfix  ">
             <ul class="nav nav-pills pull-left">
 
+                <li>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Draft
+                            <span class="g">(10)</span>
+                        </button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Posted
+                            <span class="g">(24)</span></button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Proof
+                            <span class="g">(2)</span></button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Ready
+                            <span class="g">(10)</span></button>
+                    </div>
+                </li>
 
                 <li class="divider-vertical"></li>
+                <li>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+                        <button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
+                            <i class="icon-asterisk"></i></button>
+                        <button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+                            <i class="icon-lock"></i></button>
+
+                    </div>
+                </li>
+
+
             </ul>
             <div class="pull-right">
                 <ul class="nav nav-pills pull-left" id="provisional-stats-bar">
@@ -15,6 +39,84 @@
                     <li class="divider-vertical" style="margin-right: 0;"></li>
 
 
+                    <li>
+                        <select id="authorID" name="authorID" tabindex="8" class="" style="width: 300px;" placeholder="Select an Author">
+
+                            <optgroup label="Authors">
+
+
+                                <option value="0">All Authors</option>
+
+                                <option value="52">&nbsp;&nbsp;Andani Matumba</option>
+
+                                <option value="8">&nbsp;&nbsp;Andries van Zyl</option>
+
+                                <option value="3">&nbsp;&nbsp;Anton van Zyl</option>
+
+                                <option value="45">&nbsp;&nbsp;Demo user</option>
+
+                                <option value="37">&nbsp;&nbsp;Elmon Tshikhudo</option>
+
+                                <option value="39">&nbsp;&nbsp;Frank Mavhungu</option>
+
+                                <option value="30">&nbsp;&nbsp;Frans van der Merwe</option>
+
+                                <option value="57">&nbsp;&nbsp;Gilbert Tshivhenga</option>
+
+                                <option value="31">&nbsp;&nbsp;Isabel Venter</option>
+
+                                <option value="34">&nbsp;&nbsp;Kaizer Nengovhela</option>
+
+                                <option value="64">&nbsp;&nbsp;Khathu Mulaudzi</option>
+
+                                <option value="43">&nbsp;&nbsp;Lin Nuus</option>
+
+                                <option value="33">&nbsp;&nbsp;Linda van der Westhuizen</option>
+
+                                <option value="35">&nbsp;&nbsp;Mashudu Netsianda</option>
+
+                                <option value="63">&nbsp;&nbsp;Murendeni Maduvha</option>
+
+                                <option value="44">&nbsp;&nbsp;Ndivhuwo Musetha</option>
+
+                                <option value="28">&nbsp;&nbsp;Nic Hoffmann</option>
+
+                                <option value="62">&nbsp;&nbsp;Nina Linde</option>
+
+                                <option value="56">&nbsp;&nbsp;Ntsieni Tshisevhe</option>
+
+
+
+                            </optgroup>
+                            <option value="A">My Locked Articles</option>
+
+                        </select>
+
+                    </li>
+                    <li class="divider"></li>
+
+                    <li class="dropdown pull-right">
+                        <a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
+                        <ul class="dropdown-menu" id="record-settings" role="menu">
+                            <li class="nav-header">Group By</li>
+                            {% for row in settings['groupby'] %}
+                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+                                    <a href="#t">{{ row['n'] }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="nav-header clearfix">Direction</li>
+                            <li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+                                <a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+                            <li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+                                <a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+                            <li class="clearfix"></li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
 

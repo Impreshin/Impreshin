@@ -153,7 +153,7 @@ function getList(){
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
-		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() + 42);
+		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() );
 		right_pane.reinitialise();
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 

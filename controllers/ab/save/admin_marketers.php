@@ -116,13 +116,31 @@ class admin_marketers extends save {
 			$p->mID = $ID;
 			$p->pID = $pID;
 			$p->save();
+			$pub = "Added: " . $user['publication']['publication'];
 		} else {
 			$p->erase();
+			$pub = "Removed: " . $user['publication']['publication'];
 
 		}
 
+		$changes = array(
+			array(
+				"k"=> "publication",
+				"v"=> $pub,
+				"w"=> '-'
+			)
+		);
 
-		return "done";
+		$a = new Axon("ab_marketers");
+		$a->load("ID='$ID'");
+		$label = "";
+		if ($a->ID) {
+			$label = "Record Edited ($a->marketer)";
+		}
+
+		\models\logging::save("marketers", $changes, $label);
+		return $changes;
+
 	}
 
 

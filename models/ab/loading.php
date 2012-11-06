@@ -196,11 +196,13 @@ class loading {
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
-
+		$old = array();
+		$lookupColumns = array();
 		$a = new Axon("ab_page_load");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key=> $value) {
+			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
@@ -209,7 +211,15 @@ class loading {
 		if (!$a->ID) {
 			$ID = $a->_id;
 		}
+		if ($a->ID) {
+			$label = "Record Edited ($a->pages [$a->percent%])";
+		} else {
+			$label = "Record Added (" . $values['pages'] . '[' . $values['percent'] . '%])';
+		}
+		//test_array($new_logging);
 
+
+		\models\logging::_log("loading", $label, $values, $old);
 
 		$timer->stop(array( "Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ )), func_get_args());
 		return $ID;
