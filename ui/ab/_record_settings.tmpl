@@ -11,44 +11,43 @@
         </div>
         <div class="modal-body" style="overflow: hidden;">
 
-            <section class="span8" style="position:absolute;top:0; bottom: 0; left: 0; border-right: 1px dotted #ccc;padding-right: 10px;">
+            <section class="span8" style="position:absolute;top:0; bottom: 0; left: 0; border-right: 1px dotted #ccc;">
                 <h4>
                     List Columns<br>
                     <small>Drag the items up and down to re-order the list. <br>To remove a column drag it to the "Available" column
                     </small>
                 </h4>
-                <table style="width: 100%; border-bottom:1px solid #ccc; margin-top: 8px; ">
-                    <tr class="headingrow" style="">
-                        <th style="width:50%;"><h5>Selected Columns</h5></th>
-                        <th style="width: 5px;"></th>
-                        <th style="width:50%;"><h5>Available</h5></th>
-                    </tr>
+                <div class="row" style="margin-top: 20px;" >
+                    <div class="span3"><h5>Available</h5></div>
+                    <div class="span1"></div>
+                    <div class="span3"><h5>Selected Columns</h5></div>
+                </div>
+                <div class="row">
+                    <div class="span3 side-col">
+                        <div class="scroll-pane list-col">
+                            <ul class="connectedSortable" id="available-columns" >
+                            {% for row in settings_columns['available'] %}
+                                <li data-column="{{ row['c'] }}">{{ row['h']|raw }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
 
-                </table>
-                <div class="scroll-pane" style="position:absolute; top:85px; left:0; bottom:0;right:0; overflow: auto;  ">
-                    <div>
-                        <table style="width: 100%;">
+                    </div>
 
-                            <tr>
-                                <td id="selected-columns" class="connectedSortable">
-                                    {% for row in settings_columns['selected'] %}
-                                        <div data-column="{{ row['c'] }}">{{ row['h']|raw }}</div>
-                                    {% endfor %}
+                    <div class="span3 side-col">
+                        <div class="scroll-pane list-col">
+                            <ul class="connectedSortable" id="selected-columns">
+                                {% for row in settings_columns['selected'] %}
+                                    <li data-column="{{ row['c'] }}">{{ row['h']|raw }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
 
-                                </td>
-                                <td style="width: 5px; background-color: #ccc;"></td>
-                                <td id="available-columns" class="connectedSortable">
-
-                                    {% for row in settings_columns['available'] %}
-                                        <div data-column="{{ row['c'] }}">{{ row['h']|raw }}</div>
-                                    {% endfor %}
-
-                                </td>
-                            </tr>
-
-                        </table>
                     </div>
                 </div>
+
+
+
             </section>
             <section class="" style="position:absolute;top:0; bottom: 0; right: 0; left: 505px;">
                 <h4>

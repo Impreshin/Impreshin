@@ -140,7 +140,7 @@ class settings {
 				"o"=> "checked_user",
 				"h"=> "Checked&nbsp;User"
 			),
-			"repeat"                 => array(
+			"repeat_from"                 => array(
 				"c"=> "repeat_from",
 				"o"=> "repeat_from",
 				"h"=> "Repeat",
@@ -678,6 +678,7 @@ class settings {
 
 
 
+
 		if ($user_settings['settings']){
 			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
 		} else {
@@ -715,7 +716,7 @@ class settings {
 		if (isset($settings_raw['groupby'][$section])) $return['groupby']= $settings_raw['groupby'][$section];
 
 
-
+		//test_array($return);
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;

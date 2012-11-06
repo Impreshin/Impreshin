@@ -58,9 +58,10 @@
 		{% for col in settings['col'] %}
 		<td {% if col['b'] %} class=" record-tick"{% endif %}>
 			{% if col['b'] %}
-				<% if (this.records[i].{{ col['c'] }}=='1' ) { %>
+				<% if (this.records[i].{{ col['c'] }}==0 || this.records[i].{{ col['c'] }}==false || this.records[i].{{ col['c'] }}==null ) { %>
+                <% } else { %>
 					<i class="icon-ok {% if col['c'] == "material_status" %}<% if(this.records[i].material_approved != '1' && this.records[i].typeID=='1') { %>icon-grey<% } %>{% endif %}"></i>
-				<% } else { %>
+
 
 				<% } %>
 
