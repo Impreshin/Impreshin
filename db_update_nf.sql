@@ -1,4 +1,4 @@
-
+SET @companyID:="1";
 
 ALTER DATABASE apps DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -114,10 +114,28 @@ CREATE TABLE IF NOT EXISTS `nf_articles_files_link` (
 );
 
 
+/* ----------------------------------------------------------------------------------------------------------------*/
+/* User ID updating */
+ALTER TABLE `_global_access` ADD `newID` INT( 6 ) NULL DEFAULT NULL AFTER `ID`;
+ALTER TABLE `nf_articles` ADD `new_authorID` INT( 6 ) NULL DEFAULT NULL AFTER `authorID`;
+ALTER TABLE `nf_articles` ADD `new_rejecteduID` INT( 6 ) NULL DEFAULT NULL AFTER `rejecteduID`;
+ALTER TABLE `nf_articles` ADD `new_lockedBy` INT( 6 ) NULL DEFAULT NULL AFTER `lockedBy`;
+
+ALTER TABLE `nf_article_newsbook` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
+ALTER TABLE `nf_article_newsbook` ADD `new_placedBy` INT( 6 ) NULL DEFAULT NULL AFTER `placedBy`;
+
+ALTER TABLE `nf_comments` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
+
+ALTER TABLE `nf_files` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
+ALTER TABLE `nf_read_comment` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
+
+/* publication ID */
+ALTER TABLE `_global_publications` ADD `newID` INT( 6 ) NULL AFTER `ID`;
+ALTER TABLE `nf_article_newsbook` ADD `new_pID` INT( 6 ) NULL DEFAULT NULL AFTER `pID`;
+ALTER TABLE `_global_datelist` ADD `new_pID` INT( 6 ) NULL AFTER `pID`;
 
 
-
-
+/* ----------------------------------------------------------------------------------------------------------------*/
 /* RENAME TABLE nf_article_newsbook TO nf_articles_newsbooks;
 
 ALTER TABLE `nf_newsbooks` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -126,6 +144,16 @@ ALTER TABLE `nf_newsbooks` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 /* ------------------------------------------------------------ */
 /*          Run the revision script /nf/import12345 now         */
 /* ------------------------------------------------------------ */
+/* ------------------------------------------------------------ */
+/*          Run the revision script /nf/data12345 now         */
+/* ------------------------------------------------------------ */
+
+UPDATE nf_articles SET authorID = new_authorID, lockedBy = new_lockedBy, rejecteduID = new_rejecteduID;
+UPDATE nf_article_newsbook SET uID = new_uID, placedBy = new_placedBy, pID = new_pID;
+UPDATE _global_datelist SET pID = new_pID;
+
+
+
 
 ALTER TABLE `nf_articles` ADD `deleted` TINYINT( 1 ) NULL DEFAULT NULL ,
 ADD `deleted_userID` INT( 6 ) NULL DEFAULT NULL ,
@@ -133,8 +161,25 @@ ADD `deleted_date` DATETIME NULL DEFAULT NULL ,
 ADD `deleted_reason` TEXT NULL DEFAULT NULL ,
 ADD INDEX ( `deleted` , `deleted_userID` );
 
+ALTER TABLE `nf_articles` CHANGE `cID` `categoryID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE nf_articles DROP INDEX cID;
+ALTER TABLE `nf_articles` ADD INDEX ( `categoryID` );
+ALTER TABLE `nf_articles` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `ID` ,
+ADD INDEX ( `cID` );
+
+UPDATE `nf_articles` SET `cID` =@companyID;
+ALTER TABLE `nf_articles` CHANGE `rejecteduID` `rejected_userID` INT( 6 ) NULL DEFAULT NULL;
+
+
+
+
+SELECT apps._global_datelist.*, (SELECT publish_date FROM adbooker_v5.global_dates WHERE adbooker_v5.global_dates.pID = apps._global_datelist.new_pID ORDER BY  ABS( apps._global_datelist.DateIN - adbooker_v5.global_dates.publish_date ) LIMIT 0,1 ) as impreshin_date FROM apps._global_datelist
+
+
+
 RENAME TABLE `apps`.`nf_articles` TO `adbooker_v5`.`nf_articles` ;
 RENAME TABLE `apps`.`nf_articles_edits` TO `adbooker_v5`.`nf_articles_edits` ;
 RENAME TABLE `apps`.`nf_articles_logs` TO `adbooker_v5`.`nf_articles_logs` ;
 RENAME TABLE `apps`.`nf_articles_files_link` TO `adbooker_v5`.`nf_articles_files_link` ;
 RENAME TABLE `apps`.`nf_files` TO `adbooker_v5`.`nf_files` ;
+

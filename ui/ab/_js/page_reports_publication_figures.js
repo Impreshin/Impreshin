@@ -7,21 +7,21 @@ $(document).ready(function () {
 	scrolling(api);
 
 	$(document).on("click", ".order-btn", function (e) {
-			e.preventDefault();
-			var $this = $(this);
-			$("#record-list .order-btn").removeClass("asc desc");
-			//$this.addClass("active");
-			$.bbq.pushState({"order":$this.attr("data-col")});
+		e.preventDefault();
+		var $this = $(this);
+		$("#record-list .order-btn").removeClass("asc desc");
+		//$this.addClass("active");
+		$.bbq.pushState({"order":$this.attr("data-col")});
 
 		getData();
-			$.bbq.removeState("order");
+		$.bbq.removeState("order");
 
-		});
+	});
 
-	$(document).on("click","tr.figure-month-details.record",function(){
+	$(document).on("click", "tr.figure-month-details.record", function () {
 		var $this = $(this);
 		var ID = $this.attr("data-id");
-		if ($this.hasClass("active")){
+		if ($this.hasClass("active")) {
 			$("tr.figure-month-details.record.active").removeClass("active");
 			$.bbq.removeState("dID");
 		} else {
@@ -57,7 +57,7 @@ $(document).ready(function () {
 	});
 	$(document).on("click", ".report-bottom-tabs button.back", function () {
 		$.bbq.removeState("dID");
-		});
+	});
 	$(document).on("click", ".report-bottom-tabs button", function () {
 		getData();
 	});
@@ -86,17 +86,17 @@ function getData() {
 	var dID = $.bbq.getState("dID");
 
 	var order = $.bbq.getState("order");
-		order = (order)? order:"";
+	order = (order) ? order : "";
 
 	$("#whole-area .loadingmask").show();
 	var tolerance = $("#tolerance").val();
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "dID":dID, "order":order,"tolerance":tolerance}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/publication_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "dID":dID, "order":order, "tolerance":tolerance}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
-	
+
 		//console.log(data['combined']);
 		var minDate_ = Date.parse(data['date_min']);
 		var maxDate_ = Date.parse(data['date_max']);
@@ -104,11 +104,8 @@ function getData() {
 		var minDate24 = Date.parse('t - 24 m').moveToFirstDayOfMonth();
 		var maxDate24 = Date.parse('t - 1 m').moveToLastDayOfMonth();
 
-		minDate_ = (minDate_ < minDate24)? minDate_: minDate24;
-		maxDate_ = (maxDate_ < maxDate24)? maxDate_: maxDate24;
-
-
-
+		minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
+		maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
 
 		if (data['tab'] == 'charts') {
 			drawChart('chart-income', data);
@@ -182,16 +179,14 @@ function getData() {
 				}
 
 			}).data("cur", data['daterange']);
-		} else if (data['tab']=='records'){
+		} else if (data['tab'] == 'records') {
 
 			var $recordsList = $("#record-list");
-			if (data['records'][0]){
+			if (data['records'][0]) {
 				$recordsList.jqotesub($("#template-records"), data['records']);
 			} else {
 				$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 			}
-
-
 
 		}
 

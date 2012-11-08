@@ -176,13 +176,16 @@
 	$(function () {
 		$('body').tooltip({
 			selector:'[rel=tooltip]',
-            live:true
+            live:true,
+            container: 'body'
 		});
 		$('body').popover({
 			selector:'[rel=popover]',
             offset:5,
-            live:true
+            live:true,
+            container:'body'
 		});
+
 
 
 

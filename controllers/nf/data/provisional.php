@@ -78,7 +78,7 @@ class provisional extends data {
 			"filter"=>$filter
 
 		);
-		test_array($values);
+
 
 		models\user_settings::save_setting($values);
 
@@ -90,10 +90,11 @@ class provisional extends data {
 		$return = array();
 
 
+		$where = "(nf_ID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
 
 		/*
 
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
+
 
 
 

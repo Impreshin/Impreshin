@@ -15,7 +15,7 @@ $(document).ready(function () {
 		getTarget();
 	});
 
-	$(document).on("click","#new-target",function(){
+	$(document).on("click", "#new-target", function () {
 		getTarget();
 	});
 
@@ -23,7 +23,6 @@ $(document).ready(function () {
 		$.bbq.removeState("ID");
 		$("#record-list .record.active").removeClass("active");
 	});
-
 
 	$(document).on("click", ".pagination a", function (e) {
 		e.preventDefault();
@@ -98,7 +97,6 @@ $(document).ready(function () {
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
-
 
 		var $errorArea = $("#errorArea").html("");
 		var mID = $("#selectID").val();
@@ -178,9 +176,8 @@ function getData() {
 	var rows = wh / 27;
 	rows = Math.floor(rows);
 
-
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance,"page":page,"rows":rows}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
@@ -203,15 +200,7 @@ function getData() {
 			$recordsList.html('<div style="padding-top: 10px;padding-bottom: 10px;"><table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;"><tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot></table></div>')
 		}
 
-
-
-
-
-
 		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-
-
-
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
@@ -226,7 +215,7 @@ function getTarget() {
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/ab/data/reports/marketer_targets/_details", {"ID":ID,"mID":mID}, function (data) {
+	detailsRequest.push($.getJSON("/ab/data/reports/marketer_targets/_details", {"ID":ID, "mID":mID}, function (data) {
 		data = data['data'];
 		$("#targets-modal").jqotesub($("#template-report-figures-target-form"), data);
 
