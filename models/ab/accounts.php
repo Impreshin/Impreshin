@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class accounts {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class accounts {
 			FROM ab_accounts
 			WHERE ab_accounts.ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,7 +35,7 @@ class accounts {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -54,8 +57,7 @@ class accounts {
 			FROM (ab_accounts INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) LEFT JOIN ab_accounts_pub ON ab_accounts.ID = ab_accounts_pub.aID
 			$where
 			$orderby
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -64,11 +66,12 @@ class accounts {
 		} else {
 			$return = 0;
 		}
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return $return;
 	}
 
@@ -93,8 +96,6 @@ class accounts {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_accounts.*, ab_accounts_status.blocked, ab_accounts_status.labelClass, ab_accounts_status.status, ab_accounts.ID as ID, if ((SELECT count(ID) FROM ab_accounts_pub WHERE ab_accounts_pub.aID = ab_accounts.ID AND ab_accounts_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 
@@ -106,7 +107,7 @@ class accounts {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -117,19 +118,16 @@ class accounts {
 		$old = array();
 		$lookupColumns = array();
 		$lookupColumns["statusID"] = array(
-			"sql"=> "(SELECT status FROM ab_accounts_status WHERE ID = '{val}')",
-			"col"=> "status",
-			"val"=> ""
+			"sql" => "(SELECT status FROM ab_accounts_status WHERE ID = '{val}')",
+			"col" => "status",
+			"val" => ""
 		);
 
 		$a = new Axon("ab_accounts");
 		$a->load("ID='$ID'");
 
 
-
-
-
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -141,8 +139,8 @@ class accounts {
 		}
 
 		$cID = $values['cID'];
-		if (!$cID){
-			$cID=$user['publication']['cID'];
+		if (!$cID) {
+			$cID = $user['publication']['cID'];
 		}
 
 		$p = new Axon("ab_accounts_pub");
@@ -150,8 +148,8 @@ class accounts {
 
 
 		$pub = array(
-			"a"=>array(),
-			"r"=>array()
+			"a" => array(),
+			"r" => array()
 		);
 		foreach ($publications as $publication) {
 			$pID = $publication['ID'];
@@ -161,8 +159,8 @@ class accounts {
 				$p->aID = $ID;
 
 
-				if (!$p->ID){
-					$pub['a'][]= $publication['publication'];
+				if (!$p->ID) {
+					$pub['a'][] = $publication['publication'];
 					$p->save();
 				}
 
@@ -177,7 +175,6 @@ class accounts {
 		}
 
 
-
 		$str = array();
 		if (count($pub['a'])) $str[] = "Added: " . implode(", ", $pub['a']);
 		if (count($pub['r'])) $str[] = "Removed: " . implode(", ", $pub['r']);
@@ -185,14 +182,12 @@ class accounts {
 		$overwrite = array("publications");
 		if (count($str)) {
 			$pub = array(
-				"k"=> "publications",
-				"v"=> implode(" | ", $str),
-				"w"=> '-'
+				"k" => "publications",
+				"v" => implode(" | ", $str),
+				"w" => '-'
 			);
 			$overwrite['publications'] = $pub;
 		}
-
-
 
 
 		//test_array($changes);
@@ -208,9 +203,7 @@ class accounts {
 		\models\logging::_log("accounts", $label, $values, $old, $overwrite, $lookupColumns);
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -228,9 +221,7 @@ class accounts {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

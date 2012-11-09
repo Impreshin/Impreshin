@@ -1,4 +1,4 @@
-SET @companyID:="1";
+
 
 ALTER DATABASE apps DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -126,13 +126,15 @@ ALTER TABLE `nf_article_newsbook` ADD `new_placedBy` INT( 6 ) NULL DEFAULT NULL 
 
 ALTER TABLE `nf_comments` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
 
-ALTER TABLE `nf_files` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
-ALTER TABLE `nf_read_comment` ADD `new_uID` INT( 6 ) NULL DEFAULT NULL AFTER `uID`;
+
 
 /* publication ID */
 ALTER TABLE `_global_publications` ADD `newID` INT( 6 ) NULL AFTER `ID`;
 ALTER TABLE `nf_article_newsbook` ADD `new_pID` INT( 6 ) NULL DEFAULT NULL AFTER `pID`;
 ALTER TABLE `_global_datelist` ADD `new_pID` INT( 6 ) NULL AFTER `pID`;
+
+/* date id */
+ALTER TABLE `_global_datelist` ADD `newID` INT( 6 ) NULL AFTER `ID`;
 
 
 /* ----------------------------------------------------------------------------------------------------------------*/
@@ -141,16 +143,27 @@ ALTER TABLE `_global_datelist` ADD `new_pID` INT( 6 ) NULL AFTER `pID`;
 ALTER TABLE `nf_newsbooks` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 */
 
-/* ------------------------------------------------------------ */
-/*          Run the revision script /nf/import12345 now         */
-/* ------------------------------------------------------------ */
-/* ------------------------------------------------------------ */
-/*          Run the revision script /nf/data12345 now         */
-/* ------------------------------------------------------------ */
+/*|/nf/import12345|*/
+/*|/nf/data12345|*/
+
+SET @companyID:="1";
+SET @old_db:="apps";
+SET @new_db:="adbooker_v5";
 
 UPDATE nf_articles SET authorID = new_authorID, lockedBy = new_lockedBy, rejecteduID = new_rejecteduID;
-UPDATE nf_article_newsbook SET uID = new_uID, placedBy = new_placedBy, pID = new_pID;
+UPDATE nf_article_newsbook SET uID = new_uID, placedBy = new_placedBy, pID = new_pID, dID = (SELECT newID from _global_datelist WHERE _global_datelist.ID = nf_article_newsbook.dID);
+UPDATE nf_articles_logs SET userID = (SELECT newID from _global_access WHERE _global_access.ID = nf_articles_logs.userID);
+UPDATE nf_comments SET uID = (SELECT newID from _global_access WHERE _global_access.ID = nf_comments.uID);
+
+ALTER TABLE `nf_read_comment` ADD `ID` INT( 6 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+UPDATE nf_read_comment SET uID = (SELECT newID from _global_access WHERE _global_access.ID = nf_read_comment.uID);
+UPDATE nf_files SET uID = (SELECT newID from _global_access WHERE _global_access.ID = nf_files.uID);
+
 UPDATE _global_datelist SET pID = new_pID;
+
+ALTER TABLE `nf_articles` DROP `new_authorID`, DROP `new_lockedBy`, DROP `new_rejecteduID`;
+ALTER TABLE `nf_article_newsbook` DROP `new_uID`, DROP `new_placedBy`, DROP `new_pID`;
+ALTER TABLE `nf_comments` DROP `new_uID`;
 
 
 
@@ -167,19 +180,59 @@ ALTER TABLE `nf_articles` ADD INDEX ( `categoryID` );
 ALTER TABLE `nf_articles` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `ID` ,
 ADD INDEX ( `cID` );
 
-UPDATE `nf_articles` SET `cID` =@companyID;
+UPDATE `nf_articles` SET `cID` = @companyID;
 ALTER TABLE `nf_articles` CHANGE `rejecteduID` `rejected_userID` INT( 6 ) NULL DEFAULT NULL;
 
+ALTER TABLE `nf_categories` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_categories` ADD `cID` INT(6) NULL DEFAULT NULL AFTER `ID` , ADD INDEX ( `cID` );
+UPDATE `nf_categories` SET `cID` = @companyID;
+
+ALTER TABLE `nf_article_newsbook` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_article_newsbook_photos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_comments` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_read_comment` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+RENAME TABLE `nf_read_comment` TO `nf_comments_read` ;
+ALTER TABLE `nf_comments_read` CHANGE `commentID` `commentID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_comments_read` CHANGE `uID` `uID` INT( 6 ) NULL DEFAULT NULL;
+
+ALTER TABLE nf_comments_read DROP INDEX commentID;
+
+ALTER TABLE `nf_comments_read` ADD INDEX ( `commentID` );
+ALTER TABLE `nf_comments_read` ADD INDEX ( `uID` );
+
+ALTER TABLE `nf_articles` CHANGE `lockedBy` `lockedBy` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `nf_article_newsbook_photos` CHANGE `nID` `nID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_article_newsbook_photos` CHANGE `photoID` `photoID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE nf_article_newsbook_photos DROP INDEX nID;
+ALTER TABLE `nf_article_newsbook_photos` ADD INDEX ( `nID` );
+ALTER TABLE `nf_article_newsbook_photos` ADD INDEX ( `photoID` );
+ALTER TABLE `nf_categories` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `nf_files` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `nf_files` CHANGE `aID` `aID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_files` ADD INDEX ( `aID` );
 
 
+UPDATE nf_articles SET stage = '2' WHERE stage = '1' or stage='2';
+UPDATE nf_articles SET stage = '3' WHERE stage = '3' or stage='4';
+UPDATE nf_articles SET stage = '4' WHERE stage = '5';
+UPDATE nf_articles SET stage = '1' WHERE stage = '0';
 
-SELECT apps._global_datelist.*, (SELECT publish_date FROM adbooker_v5.global_dates WHERE adbooker_v5.global_dates.pID = apps._global_datelist.new_pID ORDER BY  ABS( apps._global_datelist.DateIN - adbooker_v5.global_dates.publish_date ) LIMIT 0,1 ) as impreshin_date FROM apps._global_datelist
 
 
 
 RENAME TABLE `apps`.`nf_articles` TO `adbooker_v5`.`nf_articles` ;
 RENAME TABLE `apps`.`nf_articles_edits` TO `adbooker_v5`.`nf_articles_edits` ;
-RENAME TABLE `apps`.`nf_articles_logs` TO `adbooker_v5`.`nf_articles_logs` ;
 RENAME TABLE `apps`.`nf_articles_files_link` TO `adbooker_v5`.`nf_articles_files_link` ;
+RENAME TABLE `apps`.`nf_articles_logs` TO `adbooker_v5`.`nf_articles_logs` ;
+
+RENAME TABLE `apps`.`nf_article_newsbook` TO `adbooker_v5`.`nf_article_newsbook` ;
+RENAME TABLE `apps`.`nf_article_newsbook_photos` TO `adbooker_v5`.`nf_article_newsbook_photos` ;
+
+RENAME TABLE `apps`.`nf_categories` TO `adbooker_v5`.`nf_categories` ;
+RENAME TABLE `apps`.`nf_comments` TO `adbooker_v5`.`nf_comments` ;
+RENAME TABLE `apps`.`nf_comments_read` TO `adbooker_v5`.`nf_comments_read` ;
 RENAME TABLE `apps`.`nf_files` TO `adbooker_v5`.`nf_files` ;
+
 

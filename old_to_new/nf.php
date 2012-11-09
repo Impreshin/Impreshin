@@ -5,7 +5,7 @@
  */
 
 class nf_import {
-	function __construct(){
+	function __construct() {
 		$this->old_dbname = "apps";
 		$this->old_DB = new DB('mysql:host=localhost;dbname=' . $this->old_dbname, 'william', 'stars');
 
@@ -24,7 +24,8 @@ class nf_import {
 		echo '</style>';
 
 	}
-	public  function records(){
+
+	public function records() {
 
 		if (isLocal()) {
 
@@ -41,13 +42,12 @@ class nf_import {
 			$start_offset = $offset * $records_show;
 
 
-
 			$DB = $this->old_DB;
 			$dbname = $this->old_dbname;
 			//$DB->sql("TRUNCATE TABLE apps.nf_articles_revisions");
 
 
-			if ($offset==0){
+			if ($offset == 0) {
 				/*
 				$files = $DB->sql("SELECT * FROM " . $dbname . ".nf_files ORDER BY ID ASC");
 
@@ -59,20 +59,17 @@ class nf_import {
 			}
 
 
-
-
-
 			$records = $DB->sql("SELECT * FROM " . $dbname . ".nf_articles ORDER BY ID ASC LIMIT $start_offset,$records_show");
 			$percent = 0;
 
 			$count = $DB->sql("SELECT count(ID) as nr FROM " . $dbname . ".nf_articles");
-			if (count($count)){
+			if (count($count)) {
 				$count = $count[0]['nr'];
 			} else {
 				$count = 0;
 			}
-			if ($count>0){
-				$percent = number_format((($start_offset+ $records_show) / $count) * 100,2);
+			if ($count > 0) {
+				$percent = number_format((($start_offset + $records_show) / $count) * 100, 2);
 			}
 
 
@@ -82,7 +79,7 @@ class nf_import {
 				exit();
 			}
 			echo '<div class="progress progress-striped active">
-  <div class="bar" style="width: '.$percent.'%;"></div>
+  <div class="bar" style="width: ' . $percent . '%;"></div>
 </div>';
 
 			echo '<table class="table">';
@@ -108,12 +105,8 @@ class nf_import {
 				$lb = $record['lockedBy'];
 				$d = $record['datein'];
 
-				echo '<td>'.$record['ID'].'</td>';
-				echo '<td>'.$record['heading'].'</td>';
-
-
-
-
+				echo '<td>' . $record['ID'] . '</td>';
+				echo '<td>' . $record['heading'] . '</td>';
 
 
 				$percent = 0.00;
@@ -138,12 +131,11 @@ class nf_import {
 					$patch = $diff['patch'];
 
 
-					$DB->exec("UPDATE ".$dbname.".nf_articles SET percent = '" . $percent . "' WHERE ID = '" . $ID . "'");
+					$DB->exec("UPDATE " . $dbname . ".nf_articles SET percent = '" . $percent . "' WHERE ID = '" . $ID . "'");
 				} else {
 					echo '<td colspan="6">-</td>';
 				}
 				echo "</tr>";
-
 
 
 			}
@@ -162,28 +154,32 @@ class nf_import {
 		}
 
 	}
-	public  function users(){
+
+	public function users() {
 		if (isLocal()) {
 			$DB = $this->old_DB;
 			$dbname = $this->old_dbname;
 			$newDB = $this->new_DB;
-
+			$newDBname = $newDB->dbname;
 
 			$cfg_email_domain = "@zoutnet.co.za";
 			$cfg_cID = "1";
 
 
+			if (isset($_GET['section'])) {
 
+				$oldID = "";
+				$newID = "";
+				if (isset($_POST['newID']) && isset($_GET['ID'])) {
+					$oldID = $_GET['ID'];
+					$newID = $_POST['newID'];
+				}
 
-			if (isset($_POST['newID']) && isset($_GET['ID']) && isset($_GET['section'])){
-
-				$oldID = $_GET['ID'];
-				$newID = $_POST['newID'];
 
 				$section = $_GET['section'];
 
 
-				if ($section=='users'){
+				if ($section == 'users' && $newID && $oldID) {
 					$new_user_axon = new \Axon("global_users", $newDB);
 					$old_user_axon = new \Axon("_global_access", $DB);
 					$old_user_axon->load("ID='" . $oldID . "'");
@@ -225,7 +221,7 @@ class nf_import {
 					$old_user_axon->save();
 
 
-				} elseif  ($section == "publications"){
+				} elseif ($section == "publications" && $newID && $oldID) {
 
 					$new_axon = new \Axon("global_publications", $newDB);
 					$old_axon = new \Axon("_global_publications", $DB);
@@ -250,15 +246,40 @@ class nf_import {
 
 					$new_axon->reset();
 					$old_axon->reset();
+				} elseif ($section == "dates") {
+					$dates = $DB->exec("SELECT apps._global_datelist.*, (SELECT ID FROM adbooker_v5.global_dates WHERE adbooker_v5.global_dates.pID = apps._global_datelist.new_pID ORDER BY  ABS( apps._global_datelist.DateIN - adbooker_v5.global_dates.publish_date ) LIMIT 0,1 ) as impreshin_date FROM apps._global_datelist WHERE (SELECT publish_date
+						FROM adbooker_v5.global_dates
+						WHERE adbooker_v5.global_dates.pID = apps._global_datelist.new_pID
+						ORDER BY ABS( apps._global_datelist.DateIN -
+							adbooker_v5.global_dates.publish_date ) LIMIT 0,1 ) is null"
+					);
+
+					//test_array($dates);
+					$new_axon = new \Axon("global_dates", $newDB);
+					$old_axon = new \Axon("_global_datelist", $DB);
+					foreach ($dates as $row) {
+						$oldID = $row['ID'];
+						$old_axon->load("ID='" . $oldID . "'");
+
+						$date = date("Y-m-d", strtotime($row['DateIN']));
+						$pID = $row['new_pID'];
+						$new_axon->pID = $pID;
+						$new_axon->publish_date = $date;
+						$new_axon->save();
+						$ID = $new_axon->_id;
+						$old_axon->newID = $ID;
+						$old_axon->save();
+					}
+
+
+					$DB->exec("UPDATE $dbname._global_datelist SET newID = (SELECT ID FROM $newDBname.global_dates WHERE $newDBname.global_dates.pID = $dbname._global_datelist.new_pID ORDER BY ABS( $dbname._global_datelist.DateIN - $newDBname.global_dates.publish_date ) LIMIT 0,1 );");
+
+
 				}
 
 
-
-
-
-				F3::reroute("?t=".date('YmdHs'));
+				F3::reroute("?t=" . date('YmdHs'));
 			}
-
 
 
 			$access = $DB->exec("SELECT *, (SELECT count(ID) FROM $dbname.nf_articles WHERE $dbname._global_access.ID = $dbname.nf_articles.authorID ) as `count` FROM $dbname._global_access WHERE newID is null or newID = '0' ORDER BY FullName ASC;");
@@ -268,13 +289,14 @@ class nf_import {
 			$publications_old = $DB->exec("SELECT * FROM $dbname._global_publications WHERE newID is null or newID = '0';");
 			$publications_new = $this->new_DB->exec("SELECT * FROM global_publications");
 
-			if (!count($access) && !count($publications_old)) {
+			$dates = $DB->exec("SELECT *, (SELECT publication FROM _global_publications where _global_publications.ID = _global_datelist.pID) as publication FROM _global_datelist WHERE newID is null ORDER BY DateIN DESC;");
+
+			if (!count($access) && !count($publications_old) && !count($dates)) {
 				$this->records();
 			}
 
 
-
-			if (count($access)){
+			if (count($access)) {
 
 
 				echo '<h1>Users</h1>';
@@ -286,23 +308,23 @@ class nf_import {
 				echo '<th>count</th>';
 				echo '<th>New</th>';
 				echo '</tr>';
-				foreach ($access as $user){
+				foreach ($access as $user) {
 					echo '<tr>';
-					echo '<td>'.$user['ID'].'</td>';
-					echo '<td>'.$user['FullName'].'</td>';
-					echo '<td>'.$user['Username'].'</td>';
-					echo '<td>'.$user['count'].'</td>';
+					echo '<td>' . $user['ID'] . '</td>';
+					echo '<td>' . $user['FullName'] . '</td>';
+					echo '<td>' . $user['Username'] . '</td>';
+					echo '<td>' . $user['count'] . '</td>';
 					echo '<td>';
-					echo '<form method="POST" action="?ID='.$user['ID'].'&section=users">';
+					echo '<form method="POST" action="?ID=' . $user['ID'] . '&section=users">';
 					echo '<select name="newID" id="newID">';
 					echo '<option value="new">Create a new User</option>';
 					echo '<optgroup label="Users">';
-					foreach ($new_access as $new_user){
+					foreach ($new_access as $new_user) {
 						$selected = '';
-						if ($user['FullName'] == $new_user['fullName']){
+						if ($user['FullName'] == $new_user['fullName']) {
 							$selected = 'selected="selected"';
 						}
-						echo '<option value="'.$new_user['ID'].'" '.$selected.'>'.$new_user['fullName'].' - ' . $new_user['email'].'</option>';
+						echo '<option value="' . $new_user['ID'] . '" ' . $selected . '>' . $new_user['fullName'] . ' - ' . $new_user['email'] . '</option>';
 					}
 					echo '</optgroup>';
 
@@ -318,7 +340,7 @@ class nf_import {
 				echo '<hr>';
 			}
 
-			if (count($publications_old)){
+			if (count($publications_old)) {
 				echo '<h1>Publications</h1>';
 				echo '<table class="table">';
 				echo '<tr>';
@@ -353,7 +375,31 @@ class nf_import {
 					echo '</tr>';
 				}
 
+
 				echo '</table>';
+				echo '<hr>';
+			}
+			if (count($dates)) {
+
+				echo '<h1>Dates</h1>';
+				echo '<form method="POST" action="?ID=dates&section=dates">';
+				echo '<button type="submit" class="btn">Save | this inserts all records below into the new database aswell</button>';
+				echo '</form>';
+				echo '<table class="table">';
+				echo '<tr>';
+				echo '<th>ID</th>';
+				echo '<th>Date</th>';
+				echo '<th>publication</th>';
+				echo '</tr>';
+				foreach ($dates as $row) {
+					echo '<tr>';
+					echo '<td>' . $row['ID'] . '</td>';
+					echo '<td>' . $row['DateIN'] . '</td>';
+					echo '<td>' . $row['publication'] . '</td>';
+					echo '</tr>';
+
+				}
+				echo '<hr>';
 			}
 
 			exit();

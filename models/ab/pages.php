@@ -1,17 +1,21 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \timer as timer;
+
 class pages {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -21,8 +25,7 @@ class pages {
 			SELECT *
 			FROM global_pages
 			WHERE ID = '$ID'
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -31,11 +34,11 @@ class pages {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll($where="", $orderby=""){
+	public static function getAll($where = "", $orderby = "") {
 		$user = F3::get("user");
 		$timer = new timer();
 		if ($where) {
@@ -54,26 +57,25 @@ class pages {
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby
-		"
-		);
+		");
 		$pageSize = $user['publication']['columnsav'] * $user['publication']['cmav'];
 		$r = array();
-		foreach ($result as $item){
-			$percent = ($item['cm'])?($item['cm']/$pageSize)*100:0;
-			$item['page']=number_format($item['page'],0);
-			$item['percent']=number_format($percent,2);
+		foreach ($result as $item) {
+			$percent = ($item['cm']) ? ($item['cm'] / $pageSize) * 100 : 0;
+			$item['page'] = number_format($item['page'], 0);
+			$item['percent'] = number_format($percent, 2);
 			$r[] = $item;
 		}
 
 
 		$return = $r;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function maxPages($dID,$cm=0){
+	public static function maxPages($dID, $cm = 0) {
 		$timer = new timer();
-		if (is_array($dID)){
+		if (is_array($dID)) {
 			$date = $dID;
 		} else {
 			$date = new dates();
@@ -81,7 +83,7 @@ class pages {
 		}
 
 
-		if ($date['pages']){
+		if ($date['pages']) {
 			$return = $date['pages'];
 		} else {
 			$pID = $date['pID'];
@@ -93,7 +95,7 @@ class pages {
 			$return = $stats['loading']["pages"];
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

@@ -21,8 +21,9 @@ class provisional extends data {
 
 	function _list() {
 		$user = F3::get("user");
-		$userID = $user['ID'];
+		$uID = $user['ID'];
 		$pID = $user['pID'];
+		$cID = $user['company']['ID'];
 
 
 
@@ -44,8 +45,8 @@ class provisional extends data {
 		$ordering_d = $settings['order']['o'];
 
 
-		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
-		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+		$stage = (isset($_REQUEST['stage']) && $_REQUEST['stage'] != "") ? $_REQUEST['stage'] : $settings['stage'];
+		$status = (isset($_REQUEST['status']) && $_REQUEST['status']!="") ? $_REQUEST['status'] : $settings['status'];
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
@@ -74,8 +75,8 @@ class provisional extends data {
 			"group"=> $grouping,
 			"order"=> $ordering,
 
-			"highlight"=> $highlight,
-			"filter"=>$filter
+			"stage"=> $stage,
+			"status"=>$status
 
 		);
 
@@ -90,7 +91,25 @@ class provisional extends data {
 		$return = array();
 
 
-		$where = "(nf_ID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
+		$where = "(nf_articles.cID = '$cID') AND nf_articles.deleted is null";
+		if ($stage!="all"){
+			$where .= " AND (stage = '$stage')";
+		}
+		switch ($status) {
+			case '1':
+				$where .= " AND (lockedBy = '$uID')";
+				break;
+			case '0':
+				$where .= " AND (lockedBy is null)";
+				break;
+
+
+		}
+
+
+
+
+		test_array($where);
 
 		/*
 

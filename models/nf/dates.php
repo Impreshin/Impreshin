@@ -1,18 +1,22 @@
 <?php
 
 namespace models\nf;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class dates {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -22,8 +26,7 @@ class dates {
 			SELECT *
 			FROM global_dates
 			WHERE ID = '$ID'
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -33,13 +36,14 @@ class dates {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getCurrent($pID) {
 		$timer = new timer();
 		$app = F3::get("app");
-		$column = "$app"."_currentDate";
+		$column = "$app" . "_currentDate";
 		$result = F3::get("DB")->exec("
 			SELECT global_dates.*
 			FROM global_publications INNER JOIN global_dates ON global_publications.$column = global_dates.ID
@@ -54,8 +58,7 @@ class dates {
 			WHERE pID = '$pID'
 			ORDER BY publish_date DESC
 			LIMIT 0,1
-		"
-			);
+		");
 		}
 
 		if (count($result)) {
@@ -66,11 +69,11 @@ class dates {
 			$return = F3::get("system")->error("D01");
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll($where="",$orderby="publish_date DESC",$limit="") {
+	public static function getAll($where = "", $orderby = "publish_date DESC", $limit = "") {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -82,7 +85,7 @@ class dates {
 			$orderby = " ORDER BY " . $orderby;
 		}
 		if ($limit) {
-			$limit = str_replace("LIMIT","",$limit);
+			$limit = str_replace("LIMIT", "", $limit);
 			$limit = " LIMIT " . $limit;
 
 		}
@@ -98,22 +101,22 @@ class dates {
 		");
 
 		$a = array();
-		foreach($result as $record){
+		foreach ($result as $record) {
 			$record['publish_date_display'] = date("d F Y", strtotime($record['publish_date']));
 			$a[] = $record;
 		}
 		$return = $a;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll_count($where="") {
+
+	public static function getAll_count($where = "") {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
 			$where = " ";
 		}
-
 
 
 		$result = F3::get("DB")->exec("
@@ -129,40 +132,41 @@ class dates {
 			$return = 0;
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function save($ID,$values){
+
+	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
 
 
-		if (!isset($values["pID"])|| $values["pID"]=="") $values["pID"] = $user['publication']['ID'];
+		if (!isset($values["pID"]) || $values["pID"] == "") $values["pID"] = $user['publication']['ID'];
 
 		$a = new Axon("global_dates");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$a->$key = $value;
 		}
 
 		$a->save();
 
-		if (!$a->ID){
+		if (!$a->ID) {
 			$ID = $a->_id;
 		}
 
 		$app = F3::get("app");
 
-		if (isset($value['current'])&& $value['current']){
+		if (isset($value['current']) && $value['current']) {
 			$b = new Axon("global_publications");
-			$b->load("ID='". $values["pID"] ."'");
+			$b->load("ID='" . $values["pID"] . "'");
 			$column = $app . "_currentDate";
 			$b->$column = $ID;
-			if (!$b->dry())	$b->save();
+			if (!$b->dry()) $b->save();
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -173,14 +177,11 @@ class dates {
 
 
 		$result = F3::get("DB")->exec("
-			DELETE FROM global_dates WHERE ID = '$ID'"
-		);
+			DELETE FROM global_dates WHERE ID = '$ID'");
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 	}
-
-
 
 
 	private static function dbStructure() {

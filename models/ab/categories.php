@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class categories {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class categories {
 			FROM ab_categories
 			WHERE ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,9 +35,10 @@ class categories {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		$user = F3::get("user");
@@ -50,8 +54,6 @@ class categories {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_categories.*, if ((SELECT count(ID) FROM ab_category_pub WHERE ab_category_pub.catID = ab_categories.ID AND ab_category_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 			FROM ab_categories LEFT JOIN ab_category_pub ON ab_categories.ID = ab_category_pub.catID
@@ -61,7 +63,7 @@ class categories {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -75,12 +77,12 @@ class categories {
 		$a = new Axon("ab_categories");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
 
-		 $a->save();
+		$a->save();
 
 		if (!$a->ID) {
 			$ID = $a->_id;
@@ -96,8 +98,8 @@ class categories {
 
 
 		$pub = array(
-			"a"=> array(),
-			"r"=> array()
+			"a" => array(),
+			"r" => array()
 		);
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND catID='" . $ID . "'");
@@ -124,9 +126,9 @@ class categories {
 		$overwrite = array("publications");
 		if (count($str)) {
 			$pub = array(
-				"k"=> "publications",
-				"v"=> implode(" | ", $str),
-				"w"=> '-'
+				"k" => "publications",
+				"v" => implode(" | ", $str),
+				"w" => '-'
 			);
 			$overwrite['publications'] = $pub;
 		}
@@ -141,13 +143,10 @@ class categories {
 		}
 
 
-
-
-
 		\models\logging::_log("categories", $label, $values, $old, $overwrite);
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -164,9 +163,7 @@ class categories {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

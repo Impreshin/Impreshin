@@ -1,18 +1,22 @@
 <?php
 
 namespace models\nf;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class articles {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -25,28 +29,22 @@ class articles {
 
 		$result = F3::get("DB")->exec("
 			SELECT nf_articles.*
-
-
 			FROM nf_articles
-
-
 			WHERE nf_articles.ID = '$ID';
-
-		"
-		);
+		");
 
 
 		if (count($result)) {
 			$return = ($result[0]);
 			//$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = articles::getLogs($return['ID']);
-			$return['state']="";
+			$return['state'] = "";
 
-			if ($return['publish_date'] == $currentDate){
+			if ($return['publish_date'] == $currentDate) {
 				$return['state'] = "Current";
-			} elseif ($return['publish_date']<$currentDate){
+			} elseif ($return['publish_date'] < $currentDate) {
 				$return['state'] = "Archived";
-			} elseif ($return['publish_date']>$currentDate){
+			} elseif ($return['publish_date'] > $currentDate) {
 				$return['state'] = "Future";
 			}
 
@@ -54,15 +52,13 @@ class articles {
 			$cfg = $cfg['upload'];
 
 
-
-
-
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll_count($where = "") {
 		$timer = new timer();
 		if ($where) {
@@ -77,23 +73,23 @@ class articles {
 			FROM nf_articles
 			$where
 		");
-		if (count($return)){
+		if (count($return)) {
 			$return = $return[0]['records'];
 		}
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll_select($select, $where = "", $orderby, $groupby="") {
-/*
-		return array(
-			"select"=>$select,
-			"where"=>$where,
-			"orderby"=>$orderby,
-			"group"=>$groupby
-		);
-*/
+	public static function getAll_select($select, $where = "", $orderby, $groupby = "") {
+		/*
+				return array(
+					"select"=>$select,
+					"where"=>$where,
+					"orderby"=>$orderby,
+					"group"=>$groupby
+				);
+		*/
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -104,8 +100,8 @@ class articles {
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
-	if ($groupby) {
-		$groupby = " GROUP BY " . $groupby;
+		if ($groupby) {
+			$groupby = " GROUP BY " . $groupby;
 		}
 
 
@@ -117,14 +113,17 @@ class articles {
 			$where
 $groupby
 			$orderby
-		"
-		);
+		");
 
 
-		$timer->stop(array("Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args() );
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"),$options=array("limit"=>"")) {
+
+	public static function getAll($where = "", $grouping = array(
+		"g" => "none",
+		"o" => "ASC"
+	), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
 		$timer = new timer();
 
 		if ($where) {
@@ -143,7 +142,7 @@ $groupby
 		}
 
 		if ($options['limit']) {
-			if (strpos($options['limit'],"LIMIT")==-1){
+			if (strpos($options['limit'], "LIMIT") == -1) {
 				$limit = " LIMIT " . $options['limit'];
 			} else {
 				$limit = $options['limit'];
@@ -152,10 +151,6 @@ $groupby
 		} else {
 			$limit = " ";
 		}
-
-
-
-
 
 
 		$result = F3::get("DB")->exec("
@@ -169,36 +164,26 @@ $groupby
 		");
 
 
-
-
 		$return = $result;
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
 
-
-	public static function display($data, $options=array("highlight"=>"","filter"=>"*")){
-		if (!isset($options['highlight']))$options['highlight']="";
-		if (!isset($options['filter']))$options['filter']="";
+	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
+		if (!isset($options['highlight'])) $options['highlight'] = "";
+		if (!isset($options['filter'])) $options['filter'] = "";
 
 
 		$timer = new timer();
 		$user = F3::get("user");
 		$permissions = $user['permissions'];
-		if (is_array($data)){
+		if (is_array($data)) {
 			$a = array();
 
 
-			foreach ($data as $item){
-
-
-
-
-
-
-
+			foreach ($data as $item) {
 
 
 				$a[] = ($item);
@@ -208,16 +193,12 @@ $groupby
 		}
 
 
-
-
-
-
 		$return = array();
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
 			if (isset($user['permissions']['fields'])) {
-				foreach ($user['permissions']['fields'] as $key=> $value) {
+				foreach ($user['permissions']['fields'] as $key => $value) {
 					if ($value == 0) {
 						if (isset($record[$key])) unset($record[$key]);
 						if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
@@ -231,11 +212,11 @@ $groupby
 			}
 
 
-			if (isset($options["filter"])){
-				if ($options["filter"]=="*"){
+			if (isset($options["filter"])) {
+				if ($options["filter"] == "*") {
 					$showrecord = true;
 				} else {
-					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter'] ){
+					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter']) {
 						$showrecord = true;
 					} else {
 						$showrecord = false;
@@ -245,9 +226,8 @@ $groupby
 			}
 
 
-
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
-			if ($showrecord){
+			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
 
@@ -257,7 +237,7 @@ $groupby
 
 					);
 					$arr['groups'] = "";
-					$arr['records']="";
+					$arr['records'] = "";
 
 
 					$a[$record['heading']] = $arr;
@@ -265,7 +245,7 @@ $groupby
 
 
 				if (isset($permissions['lists']['fields'])) {
-					foreach ($permissions['lists']['fields'] as $key=> $value) {
+					foreach ($permissions['lists']['fields'] as $key => $value) {
 						if ($value == 0) {
 							if (isset($record[$key])) unset($record[$key]);
 							if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
@@ -289,19 +269,20 @@ $groupby
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 
 	}
-	private static function order($grouping, $ordering){
+
+	private static function order($grouping, $ordering) {
 
 		$o = explode(".", $ordering['c']);
 		$a = array();
-		foreach($o as $b) {
+		foreach ($o as $b) {
 			$a[] = "`" . $b . "`";
 		}
-		$a = implode(".",$a);
-		$orderby = " ". $a . " " . $ordering['o'];
+		$a = implode(".", $a);
+		$orderby = " " . $a . " " . $ordering['o'];
 		$arrange = "";
 		$ordering = $grouping['o'];
 		switch ($grouping['g']) {
@@ -360,13 +341,13 @@ $groupby
 		}
 
 
-
 		return array(
-			"order"=> $orderby,
-			"select"=> $arrange
+			"order" => $orderby,
+			"select" => $arrange
 		);
 	}
-	public static function _delete($ID = "",$reason=""){
+
+	public static function _delete($ID = "", $reason = "") {
 		$timer = new timer();
 
 		$user = F3::get("user");
@@ -376,7 +357,7 @@ $groupby
 		$a = new Axon("nf_articles");
 		$a->load("ID='$ID'");
 
-		if (!$a->dry()){
+		if (!$a->dry()) {
 			$a->deleted = "1";
 			$a->deleted_userID = $userID;
 			$a->deleted_user = $user['fullName'];
@@ -386,19 +367,19 @@ $groupby
 			$a->save();
 			$changes = array(
 				array(
-					"k"=> "Deleted",
-					"v"=> "1",
-					"w"=> ""
+					"k" => "Deleted",
+					"v" => "1",
+					"w" => ""
 				),
 				array(
-					"k"=> "deleted_user",
-					"v"=> $user['fullName'],
-					"w"=> ""
+					"k" => "deleted_user",
+					"v" => $user['fullName'],
+					"w" => ""
 				),
 				array(
-					"k"=> "deleted_reason",
-					"v"=> $reason,
-					"w"=> ""
+					"k" => "deleted_reason",
+					"v" => $reason,
+					"w" => ""
 				)
 			);
 
@@ -406,14 +387,11 @@ $groupby
 		}
 
 
-
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "deleted";
 	}
 
-	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
+	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
 
 		//test_array($values);
 		$timer = new timer();
@@ -436,7 +414,6 @@ $groupby
 		$lookup = array();
 
 
-
 		$a = new Axon("nf_bookings");
 		$a->load("ID='$ID'");
 
@@ -449,79 +426,75 @@ $groupby
 		$cID = $user['publication']['cID'];
 
 
+		/*
+				if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
+					if ($a->material_file_store){
+						$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
 
 
-/*
-		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
-			if ($a->material_file_store){
-				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
+						if ((isset($values['material_status']) && $values['material_status'] == "0" && $a->material_file_store) || (isset($values['material_file_store']) && $a->material_file_store != $values['material_file_store'])) {
 
-
-				if ((isset($values['material_status']) && $values['material_status'] == "0" && $a->material_file_store) || (isset($values['material_file_store']) && $a->material_file_store != $values['material_file_store'])) {
-
-					if (file_exists($oldFolder . $a->material_file_store)) {
-						@unlink($oldFolder . $a->material_file_store);
-					}
-				} else {
+							if (file_exists($oldFolder . $a->material_file_store)) {
+								@unlink($oldFolder . $a->material_file_store);
+							}
+						} else {
 
 
 
 
 
 
-				if (isset($values['dID'])) {
+						if (isset($values['dID'])) {
 
-					//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
-					if (file_exists($oldFolder. $a->material_file_store)){
-
-
-
-						$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
+							//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
+							if (file_exists($oldFolder. $a->material_file_store)){
 
 
-						//echo "new: ". $newFolder . $a->material_file_store ."<br>";
 
-						if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
+								$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
 
-						@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
+
+								//echo "new: ". $newFolder . $a->material_file_store ."<br>";
+
+								if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
+
+								@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
+							}
+
+
+						}
+						}
+
+
+
 					}
 
 
 				}
-				}
-
-
-
-			}
-
-
-		}
-*/
-
-
+		*/
 
 
 		$changes = array();
 		$material = false;
-		foreach ($values as $key=>$value){
+		foreach ($values as $key => $value) {
 
 			$cur = $a->$key;
 			if ($cur != $value) {
-				if (isset($lookupColumns[$key])){
-					$lookupColumns[$key]['val']=$value;
-					$lookupColumns[$key]['was']= $cur;
+				if (isset($lookupColumns[$key])) {
+					$lookupColumns[$key]['val'] = $value;
+					$lookupColumns[$key]['was'] = $cur;
 					$lookup[] = $lookupColumns[$key];
 				} else {
 					$w = $cur;
 					$v = $value;
-					if ($key=="material_file_filesize") {
-						$v = $v?file_size($v):"";
-						$w = $w?file_size($w):"";
+					if ($key == "material_file_filesize") {
+						$v = $v ? file_size($v) : "";
+						$w = $w ? file_size($w) : "";
 					}
 					$changes[] = array(
-						"k"=> $key,
-						"v"=> $v,
-						"w"=> str_replace("0000-00-00 00:00:00","", $w)
+						"k" => $key,
+						"v" => $v,
+						"w" => str_replace("0000-00-00 00:00:00", "", $w)
 					);
 				}
 
@@ -529,14 +502,12 @@ $groupby
 			$a->$key = $value;
 		}
 
-		if ($opts['dry'] || !$a->dry()){
+		if ($opts['dry'] || !$a->dry()) {
 			$a->save();
 		}
 
 
-
-
-		if (!$ID){
+		if (!$ID) {
 			$label = "Article Added";
 			$ID = $a->_id;
 		} else {
@@ -545,42 +516,31 @@ $groupby
 
 		$sql = "SELECT 1 ";
 
-		foreach ($lookup as $col){
-			$sql .= ", ". str_replace("{val}",$col['val'],$col['sql']) ." AS ".$col['col'];
-			$sql .= ", ". str_replace("{val}",$col['was'],$col['sql']) ." AS ".$col['col']."_was";
+		foreach ($lookup as $col) {
+			$sql .= ", " . str_replace("{val}", $col['val'], $col['sql']) . " AS " . $col['col'];
+			$sql .= ", " . str_replace("{val}", $col['was'], $col['sql']) . " AS " . $col['col'] . "_was";
 		}
-
-
 
 
 		$v = F3::get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
 			$changes[] = array(
-				"k"=> $col['col'],
-				"v"=> $v[$col['col']],
-				"w"=> $v[$col['col'] . "_was"]
+				"k" => $col['col'],
+				"v" => $v[$col['col']],
+				"w" => $v[$col['col'] . "_was"]
 			);
 		}
 
 
-
-
-
-
-
-
-		if (count($changes)) articles::logging($ID,$changes, $label);
-
-
-
+		if (count($changes)) articles::logging($ID, $changes, $label);
 
 
 		$n = new bookings();
 		$n = $n->get($ID);
 
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $n;
 	}
 
@@ -589,28 +549,28 @@ $groupby
 
 		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM nf_articles_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
-		foreach ($return as $record){
+		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
 			$a[] = $record;
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $a;
 	}
 
-	private static function logging($ID,$log=array(),$label="Log"){
+	private static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
 
 
-		$log =  mysql_escape_string(json_encode($log));
-	//	$log = str_replace("'", "\\'", $log);
+		$log = mysql_escape_string(json_encode($log));
+		//	$log = str_replace("'", "\\'", $log);
 
 
 		F3::get("DB")->exec("INSERT INTO nf_articles_logs (`aID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 	}
 
 	public static function dbStructure() {

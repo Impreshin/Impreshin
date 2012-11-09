@@ -55,6 +55,7 @@ class controller_app_provisional {
 
 
 		$tmpl->settings = $settings;
+		$tmpl->stages = models\stages::getAll();
 
 
 		$tmpl->output();

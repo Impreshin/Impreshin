@@ -4,29 +4,21 @@
             <ul class="nav nav-pills pull-left">
 
                 <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Draft
-                            <span class="g">(10)</span>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-stage-btns">
+                        <button class="btn span1 btn-mini {% if settings['stage'] == "all" %}active{% endif %}" style="width:80px; margin-left: 10px;" data-stage="all">All
+                            <span class="g">(46)</span>
                         </button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Posted
-                            <span class="g">(24)</span></button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Proof
-                            <span class="g">(2)</span></button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Ready
-                            <span class="g">(10)</span></button>
+                        {% for row in stages %}
+                        <button class="btn span1 btn-mini {% if settings['stage'] == row['ID'] %}active{% endif %} " style="width:80px; " data-stage="{{ row['ID'] }}">{{ row['stage'] }}
+                            <span class="g count" ></span>
+                        </button>
+                        {%  endfor %}
+
                     </div>
                 </li>
 
                 <li class="divider-vertical"></li>
-                <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
-                        <button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-asterisk"></i></button>
-                        <button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-lock"></i></button>
 
-                    </div>
-                </li>
 
 
             </ul>
@@ -36,9 +28,19 @@
 
                 </ul>
                 <ul class="nav nav-pills pull-right ">
-                    <li class="divider-vertical" style="margin-right: 0;"></li>
 
+                    <li>
+                        <div class="btn-group" data-toggle="buttons-radio" id="list-status-btns">
+                            <button data-status="*" class="btn  btn-mini {% if settings['status'] == "*" %}active{% endif %}" style="width:40px;">
+                                <i class="icon-asterisk"></i></button>
+                            <button data-status="0" class="btn  btn-mini {% if settings['status'] == "0" %}active{% endif %}" style="width:40px;">
+                                <i class="icon-ok"></i></button>
+                            <button data-status="1" class="btn  btn-mini {% if settings['status'] == "1" %}active{% endif %}" style="width:40px;">
+                                <i class="icon-lock"></i></button>
 
+                        </div>
+                    </li>
+                    <li class="divider-vertical" style=""></li>
                     <li>
                         <select id="authorID" name="authorID" tabindex="8" class="" style="width: 300px;" placeholder="Select an Author">
 

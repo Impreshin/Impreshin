@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class inserts_types {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class inserts_types {
 			FROM ab_inserts_types
 			WHERE ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,9 +35,10 @@ class inserts_types {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		if ($where) {
@@ -48,8 +52,6 @@ class inserts_types {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT *
 			FROM ab_inserts_types
@@ -59,7 +61,7 @@ class inserts_types {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -70,7 +72,7 @@ class inserts_types {
 		$a = new Axon("ab_inserts_types");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -95,7 +97,7 @@ class inserts_types {
 
 		\models\logging::_log("inserts_types", $label, $values, $old);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -112,9 +114,7 @@ class inserts_types {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

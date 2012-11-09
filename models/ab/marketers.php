@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class marketers {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class marketers {
 			FROM ab_marketers
 			WHERE ab_marketers.ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,9 +35,10 @@ class marketers {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		$user = F3::get("user");
@@ -50,10 +54,6 @@ class marketers {
 		}
 
 
-
-
-
-
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 
@@ -62,16 +62,16 @@ class marketers {
 			$orderby
 		");
 		$a = array();
-		foreach ($result as $record){
+		foreach ($result as $record) {
 			$a[] = $record;
 		}
 
 
-
 		$return = $a;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
@@ -82,7 +82,7 @@ class marketers {
 		$a = new Axon("ab_marketers");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -101,8 +101,8 @@ class marketers {
 		$p = new Axon("ab_marketers_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
-			"a"=> array(),
-			"r"=> array()
+			"a" => array(),
+			"r" => array()
 		);
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND mID='" . $ID . "'");
@@ -131,9 +131,9 @@ class marketers {
 		$overwrite = array("publications");
 		if (count($str)) {
 			$pub = array(
-				"k"=> "publications",
-				"v"=> implode(" | ", $str),
-				"w"=> '-'
+				"k" => "publications",
+				"v" => implode(" | ", $str),
+				"w" => '-'
 			);
 			$overwrite['publications'] = $pub;
 		}
@@ -151,7 +151,7 @@ class marketers {
 
 		\models\logging::_log("marketers", $label, $values, $old, $overwrite, $lookupColumns);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -168,13 +168,10 @@ class marketers {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}
-
 
 
 	private static function dbStructure() {

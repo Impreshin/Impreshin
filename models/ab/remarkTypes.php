@@ -1,12 +1,14 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \timer as timer;
+
 class remarkTypes {
 	private $classname;
-	function __construct() {
 
+	function __construct() {
 
 
 	}
@@ -24,8 +26,6 @@ class remarkTypes {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT *
 			FROM ab_remark_types
@@ -35,7 +35,7 @@ class remarkTypes {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 

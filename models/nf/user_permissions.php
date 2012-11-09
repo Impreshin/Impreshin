@@ -1,6 +1,7 @@
 <?php
 
 namespace models\nf;
+
 use \F3 as F3;
 use \timer as timer;
 
@@ -15,19 +16,17 @@ class user_permissions {
 		$return = array();
 		$return['p'] = array(
 
-			"administration"=>array(
-				"application"=>array(
-
-				),
-				"system"=>array(
-					"dates"=>array(
-						"page"=> 0
+			"administration" => array(
+				"application" => array(),
+				"system"      => array(
+					"dates"        => array(
+						"page" => 0
 					),
-					"users"=> array(
-						"page"=> 0
+					"users"        => array(
+						"page" => 0
 					),
-					"publications"=> array(
-						"page"=> 0
+					"publications" => array(
+						"page" => 0
 					)
 				)
 			)
@@ -35,22 +34,15 @@ class user_permissions {
 		);
 
 
-
-		$return['d'] = array(
-
-
-		);
+		$return['d'] = array();
 
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
 
-
-	public static function _read($user_permissions){
-
-
+	public static function _read($user_permissions) {
 
 
 		$timer = new timer();
@@ -58,23 +50,12 @@ class user_permissions {
 		$permissions = $permissions['p'];
 
 
-
-
 		if (count($user_permissions)) {
-			$user_permissions= @unserialize($user_permissions);
-			$user_permissions= array_replace_recursive((array)$permissions, (array)($user_permissions) ? $user_permissions : array());
+			$user_permissions = @unserialize($user_permissions);
+			$user_permissions = array_replace_recursive((array)$permissions, (array)($user_permissions) ? $user_permissions : array());
 		} else {
 			$user_permissions = $permissions;
 		}
-
-
-
-
-
-
-
-
-
 
 
 		$return = array();
@@ -83,18 +64,11 @@ class user_permissions {
 		$return = $user_permissions;
 
 
-
-
-
-
-
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function write($uID,$cID,$values){
+	public static function write($uID, $cID, $values) {
 		$timer = new timer();
 		$a = new \Axon("global_users_company");
 		$a->load("uID='$uID' AND cID = '$cID'");
@@ -103,8 +77,7 @@ class user_permissions {
 		if (!$a->dry()) $a->save();
 
 
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 	}
 
