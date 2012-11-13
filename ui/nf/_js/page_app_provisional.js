@@ -221,11 +221,16 @@ function getList(settings) {
 	var status = $("#list-status-btns button.active").attr("data-status");
 	status = (status)? status: "";
 
+	var authorID = $("#authorID").val();
+	authorID = (authorID)? authorID: "";
+
+
+
 	var orderingactive = (order)?true:false;
 
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "stage":stage, "status":status, "order": order},function(data){
+	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "stage":stage, "status":status, "order": order, "authorID":authorID},function(data){
 		data = data['data'];
 
 
@@ -238,10 +243,15 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
+		//$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 
 
+		var stages = data['stats']['stages'];
+		var $list_stage_btns = $("#list-stage-btns");
+		$.each(stages,function(k,v){
+			$list_stage_btns.find("button[data-stage='"+k+"'] span.count").text("("+v['count']+")");
+		});
 
 
 
@@ -273,7 +283,7 @@ function getList(settings) {
 			}
 
 
-			if (!$("#ab-details-modal").is(":visible")) {
+			if (!$("#nf-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

@@ -219,6 +219,34 @@ UPDATE nf_articles SET stage = '3' WHERE stage = '3' or stage='4';
 UPDATE nf_articles SET stage = '4' WHERE stage = '5';
 UPDATE nf_articles SET stage = '1' WHERE stage = '0';
 
+ALTER TABLE `nf_articles` CHANGE `heading` `title` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `nf_article_newsbook` ADD INDEX ( `aID` );
+ALTER TABLE `nf_article_newsbook` ADD INDEX ( `pID` );
+ALTER TABLE `nf_article_newsbook` ADD INDEX ( `dID` );
+ALTER TABLE `nf_article_newsbook` ADD INDEX ( `uID` );
+
+CREATE TABLE IF NOT EXISTS `nf_article_types` (
+	`ID` int(6) NOT NULL AUTO_INCREMENT,
+	`type` varchar(50) DEFAULT NULL,
+	`orderby` tinyint(2) DEFAULT NULL,
+	PRIMARY KEY (`ID`)
+);
+
+--
+-- Dumping data for table `nf_article_types`
+--
+ALTER TABLE `nf_articles` ADD `typeID` INT( 6 ) NULL DEFAULT NULL AFTER `categoryID` ,ADD INDEX ( `typeID` );
+INSERT INTO	`nf_article_types` (`ID`, `type`, `orderby`) VALUES (1, 'Article', 1), (2, 'Photo', 2);
+UPDATE nf_articles SET typeID = '1' where articleType = 'article';
+UPDATE nf_articles SET typeID = '2' where articleType = 'photo';
+
+ALTER TABLE `nf_articles` CHANGE `stage` `stageID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `synopsis` `synopsis` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `article` `article` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `article_orig` `article_orig` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `reference` `reference` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
 
 
 
@@ -226,6 +254,7 @@ RENAME TABLE `apps`.`nf_articles` TO `adbooker_v5`.`nf_articles` ;
 RENAME TABLE `apps`.`nf_articles_edits` TO `adbooker_v5`.`nf_articles_edits` ;
 RENAME TABLE `apps`.`nf_articles_files_link` TO `adbooker_v5`.`nf_articles_files_link` ;
 RENAME TABLE `apps`.`nf_articles_logs` TO `adbooker_v5`.`nf_articles_logs` ;
+RENAME TABLE `apps`.`nf_article_types` TO `adbooker_v5`.`nf_article_types` ;
 
 RENAME TABLE `apps`.`nf_article_newsbook` TO `adbooker_v5`.`nf_article_newsbook` ;
 RENAME TABLE `apps`.`nf_article_newsbook_photos` TO `adbooker_v5`.`nf_article_newsbook_photos` ;

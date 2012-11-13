@@ -21,11 +21,13 @@ class company {
 
 	public function get($ID = "") {
 		$timer = new timer();
-		$result = F3::get("DB")->exec("
+
+		$sql = "
 				SELECT global_companies.*
 				FROM global_companies
 				WHERE global_companies.ID = '$ID'
-			");
+			";
+		$result = F3::get("DB")->exec($sql);
 		if (count($result)) {
 			$result = $result[0];
 		} else {

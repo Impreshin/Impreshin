@@ -58,8 +58,11 @@ class articles {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+	private static function list_from(){
+		return "FROM (((((nf_articles LEFT JOIN nf_article_newsbook ON nf_articles.ID = nf_article_newsbook.aID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN global_users AS global_users_author ON nf_articles.authorID = global_users_author.ID) LEFT JOIN global_users AS global_users_lockedBy ON nf_articles.lockedBy = global_users_lockedBy.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID";
+	}
 
-	public static function getAll_count($where = "") {
+	public static function getCount($where = "") {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -67,10 +70,12 @@ class articles {
 			$where = " ";
 		}
 
+		$from = self::list_from();
 
 		$return = F3::get("DB")->exec("
 			SELECT count(nf_articles.ID) as records
-			FROM nf_articles
+			$from
+
 			$where
 		");
 		if (count($return)) {
@@ -81,7 +86,7 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll_select($select, $where = "", $orderby, $groupby = "") {
+	public static function getSelect($select, $where = "", $orderby, $groupby = "") {
 		/*
 				return array(
 					"select"=>$select,
@@ -103,15 +108,15 @@ class articles {
 		if ($groupby) {
 			$groupby = " GROUP BY " . $groupby;
 		}
-
+		$from = self::list_from();
 
 		$return = F3::get("DB")->exec("
 			SELECT $select
-			FROM nf_articles
+			$from
 
 
 			$where
-$groupby
+			$groupby
 			$orderby
 		");
 
@@ -120,10 +125,7 @@ $groupby
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array(
-		"g" => "none",
-		"o" => "ASC"
-	), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
+	public static function getAll($where = "", $grouping = array("g" => "none",	"o" => "ASC"), $ordering = array("c" => "heading", "o" => "ASC"), $options = array("limit" => "")) {
 		$timer = new timer();
 
 		if ($where) {
@@ -132,6 +134,7 @@ $groupby
 			$where = " ";
 		}
 		$order = articles::order($grouping, $ordering);
+
 		$orderby = $order['order'];
 		$select = $order['select'];
 		if ($orderby) {
@@ -152,12 +155,20 @@ $groupby
 			$limit = " ";
 		}
 
-
+		//test_array($orderby);
+		$from = self::list_from();
+		//test_array($order);
 		$result = F3::get("DB")->exec("
-			SELECT nf_articles.*
+			SELECT nf_articles.*,
+				nf_article_types.type as type,nf_article_types.labelClass as type_labelClass,
+				(SELECT fullName FROM global_users WHERE global_users.ID = nf_articles.authorID) as author,
+				nf_categories.category as category,
+				nf_stages.stage as stage,
+				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type = '1') as photos,
+				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files
 			$select
 
-			FROM nf_articles
+			$from
 			$where
 			$orderby
 			$limit
@@ -171,9 +182,9 @@ $groupby
 	}
 
 
-	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
-		if (!isset($options['highlight'])) $options['highlight'] = "";
-		if (!isset($options['filter'])) $options['filter'] = "";
+	public static function display($data, $options = array("stage" => "", "status" => "*")) {
+		if (!isset($options['stage'])) $options['stage'] = "";
+		if (!isset($options['status'])) $options['status'] = "";
 
 
 		$timer = new timer();
@@ -193,6 +204,7 @@ $groupby
 		}
 
 
+
 		$return = array();
 		$a = array();
 		$groups = array();
@@ -207,23 +219,25 @@ $groupby
 			}
 
 			$showrecord = true;
-			if (isset($options["highlight"]) && $options["highlight"]) {
-				$record['highlight'] = $record[$options["highlight"]];
+
+			if ($options['stage'] == $record['stageID'] || $options['stage'] =='all'){
+				$showrecord = true;
+
+			} else {
+				$showrecord = false;
 			}
 
 
-			if (isset($options["filter"])) {
-				if ($options["filter"] == "*") {
-					$showrecord = true;
-				} else {
-					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter']) {
-						$showrecord = true;
-					} else {
-						$showrecord = false;
-					}
 
-				}
+
+
+			$highlight = '0';
+			if ($options['status'] && $record['lockedBy']){
+				$highlight = '1';
 			}
+
+
+
 
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
@@ -234,6 +248,7 @@ $groupby
 					$arr = array(
 						"heading" => $record['heading'],
 						"count"   => "",
+						"cm"=>0
 
 					);
 					$arr['groups'] = "";
@@ -243,6 +258,9 @@ $groupby
 					$a[$record['heading']] = $arr;
 				}
 
+				if ($record['typeID'] == '1') {
+					$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['cm'];
+				}
 
 				if (isset($permissions['lists']['fields'])) {
 					foreach ($permissions['lists']['fields'] as $key => $value) {
@@ -253,6 +271,7 @@ $groupby
 					}
 				}
 
+				$record['highlight']=$highlight;
 
 				$a[$record['heading']]["records"][] = $record;
 			}
@@ -287,62 +306,26 @@ $groupby
 		$ordering = $grouping['o'];
 		switch ($grouping['g']) {
 			case "type":
-				$orderby = "COALESCE(ab_bookings_types.orderby,99999) $ordering, " . $orderby;
-				$arrange = "COALESCE(ab_bookings_types.type,ab_bookings_types.type) as heading";
-				break;
-			case "date":
-				$orderby = "COALESCE(global_dates.publish_date,99999) $ordering, " . $orderby;
-				$arrange = "DATE_FORMAT(global_dates.publish_date, '%d %M %Y' ) as heading";
-				break;
-			case "placing":
-				$orderby = "COALESCE(ab_placing.orderby,99999) $ordering,  ab_bookings_types.orderby," . $orderby;
-				$arrange = "COALESCE(ab_placing.placing,ab_bookings_types.type) as heading";
-				break;
-			case "marketer":
-				$orderby = "COALESCE(ab_marketers.marketer,'zzzzzzzzz') $ordering, " . $orderby;
-				$arrange = "COALESCE(ab_marketers.marketer,'None') as heading";
-				break;
-			case "columns":
-				$orderby = "if(typeID='1',ab_bookings.col,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',concat('Columns: ',ab_bookings.col),ab_bookings_types.type) as heading";
-				break;
-			case "pages":
-				$orderby = "if(typeID='1',global_pages.page,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
-				break;
-			case "colours":
-				$orderby = "if(typeID='1',COALESCE(ab_colour_rates.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',ab_colour_rates.colour,ab_bookings_types.type) as heading";
-				break;
-			case "discountPercent":
-				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,1,2),0) $ordering, " . $orderby;
-				$arrange = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,'Under Charged','Over Charged'),'No Discount') as heading";
-				break;
-			case "accountStatus":
-				$orderby = "COALESCE(ab_accounts_status.orderby,99999) $ordering,  ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(ab_accounts_status.status<>'',concat('Account - ',ab_accounts_status.status),ab_bookings_types.type) as heading";
-				break;
-
-			case "material_production":
-				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_bookings.material_production $ordering,  " . $orderby;
-				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_bookings.material_production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
-				break;
-			case "invoicedStatus":
-				$orderby = "if (invoiceNum,1,0) $ordering, " . $orderby;
-				$arrange = "if (invoiceNum,'Invoiced','Not Invoiced') as heading";
+				$orderby = "COALESCE(nf_article_types.orderby,99999) $ordering, " . $orderby;
+				$arrange = "nf_article_types.type as heading";
 				break;
 
 
 			case "none":
-				$orderby = "" . $orderby;
+				$orderby = "" . $orderby . ",nf_articles.datein DESC ";
 				$arrange = "'None' as heading";
+				break;
+			case "author":
+				$orderby = "COALESCE(global_users_author.fullName,99999) $ordering," . $orderby;
+				$arrange = "COALESCE(global_users_author.fullName,'None') as heading";
 				break;
 
 		}
 
+		//test_array($grouping);
 
 		return array(
-			"order" => $orderby,
+			"order"  => $orderby,
 			"select" => $arrange
 		);
 	}

@@ -351,7 +351,7 @@ class user {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT global_users.ID, fullName, email, last_app, last_activity, last_page, $apps_str
+			SELECT global_users.ID, fullName, email, last_app, last_activity, last_page, global_users_company.*, global_users.ID as ID, $apps_str
 			(SELECT COUNT(DISTINCT global_publications.ID) FROM ab_users_pub INNER JOIN global_publications ON ab_users_pub.pID = global_publications.ID WHERE ab_users_pub.uID =global_users.ID ) AS publicationCount,
 			(SELECT COUNT(DISTINCT global_companies.ID) FROM global_users_company INNER JOIN global_companies ON global_users_company.cID = global_companies.ID) AS companyCount
 
@@ -365,8 +365,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$return = $result;
 
-		$timer->stop(array(
-		                  "Models" => array(
+		$timer->stop(array( "Models" => array(
 			                  "Class"  => __CLASS__,
 			                  "Method" => __FUNCTION__
 		                  )

@@ -1,0 +1,155 @@
+<script type="text/x-jqote-template" id="template-details">
+<![CDATA[
+
+<div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+
+
+</div>
+<div class="modal-body">
+
+</div>
+<div class="modal-footer">
+    <div class="row">
+
+        <div class="span9 l">
+
+
+        </div>
+
+        <div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+            <div class="btn-group">
+                <button id="details-record-prev" class="btn span2">
+                    <i class="icon-step-backward"></i> Previous
+                </button>
+                <button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="loadingmask wide"></div>
+
+</script>
+<script type="text/javascript">
+
+
+$(document).on("shown", '#nf-details-modal', function () {
+    var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
+    if (!tab) tab = "details-pane-details";
+    $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+    $('#' + tab + '', $details_modal).addClass("active");
+    $("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+});
+$(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
+    var target = e.target; // activated tab
+    var previous = e.relatedTarget; // previous tab
+    $("#nf-details-modal .nav-tabs li.active").removeClass("active");
+    var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+
+    $("#nf-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
+
+    $.bbq.pushState({"details-tab":pane});
+    $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+});
+$(document).on('hide', '#nf-details-modal', function () {
+    $.bbq.removeState("ID");
+    $("#record-list .record.active").removeClass("active");
+});
+
+
+
+
+$(document).on('click', '#details-pane-logs .record', function (e) {
+    var $this = $(this);
+    var $clicked = $(e.target).closest("tr.record");
+    var active = true;
+
+    if ($this.hasClass("active") && $clicked) active = false;
+
+    $("#details-pane-logs .record.active").removeClass("active");
+    if (active) {
+        $this.addClass("active");
+    }
+
+    var show = $("#details-pane-logs .record.active").attr("data-log-id");
+
+    $("#details-pane-logs .log-record-details").hide();
+    $("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
+    $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+});
+$(document).on('click', '#details-record-prev', function () {
+    prevRecord();
+});
+$(document).on('click', '#details-record-next', function () {
+    nextRecord();
+});
+
+function nextRecord() {
+    var ID = $.bbq.getState("ID");
+    var $item = $("#record-list .record[data-ID='" + ID + "']");
+    var $new = $item.nextAll("tr.record:first");
+    $.bbq.pushState({ID:$new.attr("data-ID")});
+    getDetails();
+}
+function prevRecord() {
+    var ID = $.bbq.getState("ID");
+    var $item = $("#record-list .record[data-ID='" + ID + "']");
+    var $new = $item.prevAll("tr.record:first");
+    $.bbq.pushState({ID:$new.attr("data-ID")});
+    getDetails();
+}
+
+function showContent_state() {
+    var ID = $.bbq.getState("ID");
+    if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+        $("#details-record-prev").attr("disabled", "disabled");
+    } else {
+        $("#details-record-prev").removeAttr("disabled");
+    }
+    if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+        $("#details-record-next").attr("disabled", "disabled");
+    } else {
+        $("#details-record-next").removeAttr("disabled");
+    }
+    var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
+    if (!tab) tab = "details-pane-details";
+    $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+    $('#' + tab + '', $details_modal).addClass("active");
+
+}
+function getDetails() {
+    var ID = $.bbq.getState("ID");
+    $("#nf-details-modal").addClass("loading");
+    for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
+    detailsRequest.push($.getJSON("/nf/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+        data = data['data'];
+        $("#record-list .record.active").removeClass("active");
+        $("#record-list .record[data-ID='" + ID + "']").addClass("active");
+        $('#ab-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+
+        if ($("#record-list:visible").length) {
+
+            if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+
+                showContent_state();
+                $("#list-next-prev-btns").show();
+                var api = $("#whole-area .scroll-pane").data("jsp");
+                if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+                    api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+                }
+
+            }
+        }
+
+        $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+    }));
+
+}
+</script>
+<div class="modal hide fade" id="nf-details-modal" data-show="false">
+</div>

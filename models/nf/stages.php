@@ -39,7 +39,7 @@ class stages {
 		return $return;
 	}
 
-	public static function _count($where = "") {
+	public static function getCount($where = "") {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";

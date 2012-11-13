@@ -15,10 +15,15 @@ class settings {
 		$timer = new timer();
 		$return = array();
 		$columns = array(
-			"heading" => array(
-				"c" => "heading",
-				"o" => "heading",
-				"h" => "Heading"
+			"title" => array(
+				"c" => "title",
+				"o" => "title",
+				"h" => "Title"
+			),
+			"author"  => array(
+				"c" => "author",
+				"o" => "author",
+				"h" => "Author",
 			),
 			"datein"  => array(
 				"c" => "datein",
@@ -30,15 +35,69 @@ class settings {
 				"c" => "cm",
 				"o" => "cm",
 				"h" => "Cm",
+				"w" => 40
+			),
+			"words"      => array(
+				"c" => "words",
+				"o" => "words",
+				"h" => "Words",
+				"w" => 40
+			),
+			"photos"      => array(
+				"c" => "photos",
+				"o" => "photos",
+				"h" => "Photos",
+				"w" => 40
+			),
+			"files"      => array(
+				"c" => "files",
+				"o" => "files",
+				"h" => "Files",
+				"w" => 40
+			),
+			"type"      => array(
+				"c" => "type",
+				"o" => "type",
+				"h" => "Type",
 				"w" => 60
+			),
+			"category"      => array(
+				"c" => "category",
+				"o" => "category",
+				"h" => "Category",
+			),
+			"stage"      => array(
+				"c" => "stage",
+				"o" => "stage",
+				"h" => "Stage",
+			),
+			"percent"      => array(
+				"c" => "percent",
+				"o" => "percent",
+				"h" => "% Diff",
+				"w" => 60
+			),
+			"stars"      => array(
+				"c" => "stars",
+				"o" => "stars",
+				"h" => "Rating",
+				"w" => 40
 			)
 
 		);
 		$return["columns"] = $columns;
 
 
-		$cfg = F3::get("cfg");
+
 		$groupByoptions = array(
+			"author" => array(
+				"n" => "Authors",
+				"g" => "author"
+			),
+			"type" => array(
+				"n" => "Types",
+				"g" => "type"
+			),
 			"none" => array(
 				"n" => "No Ordering",
 				"g" => "none"
@@ -49,7 +108,7 @@ class settings {
 		$sections = array(
 
 			"provisional" => array(
-				"none",
+				"none","author","type"
 			),
 
 		);
@@ -78,21 +137,31 @@ class settings {
 		$settings = array(
 			"provisional" => array(
 				"col"    => array(
-					"heading",
+					"title",
 					"datein",
 					"cm",
+					"words",
+					"photos",
+					"files",
+					"type",
+					"stage",
+					"author",
+					"category",
+					"percent",
+					"stars",
 				),
 				"group"  => array(
 					"g" => "none",
 					"o" => "ASC"
 				),
 				"order"  => array(
-					"c" => "heading",
+					"c" => "title",
 					"o" => "ASC"
 				),
 				"count"  => "5",
 				"stage"  => "all",
 				"status" => "*",
+				"authorID"=>"0"
 			)
 		);
 
