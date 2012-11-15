@@ -167,7 +167,8 @@ class user {
 			$company = $companyObject->get($publication['cID']);
 
 
-			if ($company[$app] != '1') {
+			test_array($company);
+			if (isset($company[$app]) && $company[$app] != '1') {
 				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
 
