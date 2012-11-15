@@ -374,14 +374,21 @@ $app->route("GET|POST /$folder/download/@folder/@ID/*", function () use ($app) {
 		$folder = $app->get("app");
 		$app->call("controllers\\$folder\\controller_general_download->" . $app->get('PARAMS.folder'));
 	});
+
+
+
 $app->route("GET|POST /$folder/thumb/@folder/@ID/*", function () use ($app) {
-		$folder = $app->get("app");
-		F3::mutex(function () use ($folder) {
-				F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
-			});
+	$folder = $app->get("app");
+	F3::mutex(function () use ($folder) {
+		F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
 	});
-
-
+});
+$app->route("GET|POST /$folder/thumb/@folder/@ID", function () use ($app) {
+	$folder = $app->get("app");
+	F3::mutex(function () use ($folder) {
+		F3::call("controllers\\$folder\\controller_general_thumb->" . F3::get('PARAMS.folder'));
+	});
+});
 // --------------------------------------------------------------------------------
 
 

@@ -98,6 +98,10 @@ class settings {
 				"n" => "Types",
 				"g" => "type"
 			),
+			"newsbook" => array(
+				"n" => "Newsbooks",
+				"g" => "newsbook"
+			),
 			"none" => array(
 				"n" => "No Ordering",
 				"g" => "none"
@@ -108,7 +112,7 @@ class settings {
 		$sections = array(
 
 			"provisional" => array(
-				"none","author","type"
+				"none","author","type","newsbook"
 			),
 
 		);
@@ -161,6 +165,7 @@ class settings {
 				"count"  => "5",
 				"stage"  => "all",
 				"status" => "*",
+				"newsbook" => "current",
 				"authorID"=>"0"
 			)
 		);

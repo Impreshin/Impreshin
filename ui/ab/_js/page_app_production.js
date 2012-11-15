@@ -242,7 +242,7 @@ function getList(settings) {
 	search = (search) ? search : "";
 
 	var orderingactive = (order) ? true : false;
-
+	$("#maintoolbar-date").html('Loading...');
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
 	listRequest.push($.getJSON("/ab/data/production/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search}, function (data) {

@@ -24,33 +24,34 @@ class articles {
 
 		$currentDate = $currentDate['publish_date'];
 
+		$user = F3::get("user");
+		$pID = $user['publication']['ID'];
+		$dID = $user['publication']['current_date']['ID'];
 
+		$from = self::list_from();
 		//test_array($currentDate);
 
 		$result = F3::get("DB")->exec("
-			SELECT nf_articles.*
-			FROM nf_articles
+			SELECT nf_articles.*,
+			nf_article_types.type as type,nf_article_types.labelClass as type_labelClass,
+				(SELECT fullName FROM global_users WHERE global_users.ID = nf_articles.authorID) as author,
+				nf_categories.category as category,
+				nf_stages.stage as stage,nf_stages.labelClass as stage_labelClass,
+				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type = '1') as photos,
+				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files,
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) as currentNewsbook,
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as used
+			$from
 			WHERE nf_articles.ID = '$ID';
 		");
 
 
 		if (count($result)) {
 			$return = ($result[0]);
-			//$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
+			$return['datein_D'] = date("d F Y H:m:s", strtotime($return['datein']));
 			$return['logs'] = articles::getLogs($return['ID']);
-			$return['state'] = "";
-
-			if ($return['publish_date'] == $currentDate) {
-				$return['state'] = "Current";
-			} elseif ($return['publish_date'] < $currentDate) {
-				$return['state'] = "Archived";
-			} elseif ($return['publish_date'] > $currentDate) {
-				$return['state'] = "Future";
-			}
-
-			$cfg = F3::get("cfg");
-			$cfg = $cfg['upload'];
-
+			$return['files'] = $this->getFiles($return['ID']);
+			$return['newsbooks'] = $this->getNewsbooks($return['ID']);
 
 		} else {
 			$return = $this->dbStructure;
@@ -58,8 +59,70 @@ class articles {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	private static function list_from(){
-		return "FROM (((((nf_articles LEFT JOIN nf_article_newsbook ON nf_articles.ID = nf_article_newsbook.aID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN global_users AS global_users_author ON nf_articles.authorID = global_users_author.ID) LEFT JOIN global_users AS global_users_lockedBy ON nf_articles.lockedBy = global_users_lockedBy.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID";
+	function getNewsbooks($ID){
+		$timer = new timer();
+		$user = F3::get("user");
+		$result = F3::get("DB")->exec("
+			SELECT global_publications.publication, global_dates.publish_date
+			FROM (nf_article_newsbook INNER JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) INNER JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID
+			WHERE nf_article_newsbook.aID = '$ID';
+
+		");
+		$return = $result;
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
+	function getFile($ID) {
+		$timer = new timer();
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$result = F3::get("DB")->exec("
+			SELECT nf_files.*
+			FROM nf_files
+			WHERE nf_files.ID = '$ID';
+		");
+
+
+		if (count($result)) {
+			$return = ($result[0]);
+		} else {
+			$table = F3::get("DB")->exec("EXPLAIN nf_files;");
+			$result = array();
+			foreach ($table as $key => $value) {
+				$result[$value["Field"]] = "";
+			}
+
+
+			$return = $result;
+		}
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	function getFiles($ID) {
+		$timer = new timer();
+		$user = F3::get("user");
+		$userID = $user['ID'];
+
+
+		$result = F3::get("DB")->exec("
+			SELECT nf_files.*
+			FROM nf_files
+			WHERE nf_files.aID = '$ID';
+		");
+
+		$return = $result;
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
+	private static function list_from() {
+		return "FROM ((((nf_articles INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN global_users AS global_users_author ON nf_articles.authorID = global_users_author.ID) LEFT JOIN global_users AS global_users_lockedBy ON nf_articles.lockedBy = global_users_lockedBy.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID";
 	}
 
 	public static function getCount($where = "") {
@@ -125,8 +188,14 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none",	"o" => "ASC"), $ordering = array("c" => "heading", "o" => "ASC"), $options = array("limit" => "")) {
+	public static function getAll($where = "", $grouping = array(
+		"g" => "none",
+		"o" => "ASC"
+	), $ordering = array("c" => "heading", "o" => "ASC"), $options = array("limit" => "")) {
 		$timer = new timer();
+		$user = F3::get("user");
+		$pID = $user['publication']['ID'];
+		$dID = $user['publication']['current_date']['ID'];
 
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -155,6 +224,7 @@ class articles {
 			$limit = " ";
 		}
 
+
 		//test_array($orderby);
 		$from = self::list_from();
 		//test_array($order);
@@ -165,7 +235,10 @@ class articles {
 				nf_categories.category as category,
 				nf_stages.stage as stage,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type = '1') as photos,
-				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files
+				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files,
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) as currentNewsbook,
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as used
+
 			$select
 
 			$from
@@ -182,9 +255,14 @@ class articles {
 	}
 
 
-	public static function display($data, $options = array("stage" => "", "status" => "*")) {
-		if (!isset($options['stage'])) $options['stage'] = "";
-		if (!isset($options['status'])) $options['status'] = "";
+	public static function display($data, $options = array("highlight" => array(), "filter" => array())) {
+		$highlight = $options['highlight'];
+		$options['highlight']['field'] = (isset($highlight[0]) && $highlight[0]) ? $highlight[0] : "";
+		$options['highlight']['value'] = ($options['highlight']['field'] && isset($highlight[1]) && $highlight[1]) ? $highlight[1] : "";
+
+		$filter = $options['filter'];
+		$options['filter']['field'] = (isset($filter[0]) && $filter[0]) ? $filter[0] : "";
+		$options['filter']['value'] = ($options['filter']['field'] && isset($filter[1]) && $filter[1]) ? $filter[1] : "";
 
 
 		$timer = new timer();
@@ -204,10 +282,11 @@ class articles {
 		}
 
 
-
 		$return = array();
 		$a = array();
 		$groups = array();
+
+
 		foreach ($data as $record) {
 			if (isset($user['permissions']['fields'])) {
 				foreach ($user['permissions']['fields'] as $key => $value) {
@@ -220,24 +299,25 @@ class articles {
 
 			$showrecord = true;
 
-			if ($options['stage'] == $record['stageID'] || $options['stage'] =='all'){
-				$showrecord = true;
 
-			} else {
-				$showrecord = false;
+			if ($options['highlight']['field']) {
+				if ($options['highlight']['value']) {
+					$record['highlight'] = ($record[$options['highlight']['field']] == $options['highlight']['value']) ? 1 : 0;
+				} else {
+					$record['highlight'] = $record[$options['highlight']['field']];
+				}
 			}
 
 
-
-
-
-			$highlight = '0';
-			if ($options['status'] && $record['lockedBy']){
-				$highlight = '1';
+			if ($options['filter']['field']) {
+				if ($options['filter']['value']) {
+					if ($record[$options['filter']['field']] == $options['filter']['value']) {
+						$showrecord = true;
+					} else {
+						$showrecord = false;
+					}
+				}
 			}
-
-
-
 
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
@@ -248,7 +328,7 @@ class articles {
 					$arr = array(
 						"heading" => $record['heading'],
 						"count"   => "",
-						"cm"=>0
+						"cm"      => 0
 
 					);
 					$arr['groups'] = "";
@@ -271,7 +351,6 @@ class articles {
 					}
 				}
 
-				$record['highlight']=$highlight;
 
 				$a[$record['heading']]["records"][] = $record;
 			}
@@ -319,13 +398,17 @@ class articles {
 				$orderby = "COALESCE(global_users_author.fullName,99999) $ordering," . $orderby;
 				$arrange = "COALESCE(global_users_author.fullName,'None') as heading";
 				break;
+			case "newsbook":
+				$orderby = "COALESCE(global_users_author.fullName,99999) $ordering," . $orderby;
+				$arrange = "COALESCE(global_users_author.fullName,'None') as heading";
+				break;
 
 		}
 
 		//test_array($grouping);
 
 		return array(
-			"order"  => $orderby,
+			"order" => $orderby,
 			"select" => $arrange
 		);
 	}
@@ -530,7 +613,7 @@ class articles {
 	private static function getLogs($ID) {
 		$timer = new timer();
 
-		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM nf_articles_logs WHERE bID = '$ID' ORDER BY datein DESC");
+		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =nf_articles_logs.userID ) AS fullName FROM nf_articles_logs WHERE aID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
@@ -562,11 +645,8 @@ class articles {
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";
 		}
-		$result["heading"] = "";
-		$result["publishDateDisplay"] = "";
-		$result["checked"] = "";
-		$result["material"] = "";
-		$result["layout"] = "";
+		$result["files"] = array();
+		$result["newsbooks"] = array();
 		return $result;
 	}
 }

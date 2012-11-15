@@ -1,155 +1,232 @@
 <script type="text/x-jqote-template" id="template-details">
-<![CDATA[
+	<![CDATA[
 
-<div class="modal-header">
-    <a class="close" data-dismiss="modal">×</a>
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>
+			<% if (this.deleted) { %>
+			<span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span>
+			<% } %>
+			<span class="label <%= this.stage_labelClass %>" style="margin-right: 5px; margin-top:-8px;"><%= this.stage %></span>
+			 <%= this.title %>
+			<small style="margin-left:10px;"><%= this.type %></small>
+
+		</h3>
+		<div class="modal-header-right" style="width:193px;">
+			<h3>
+				<div class="s" style="line-height: 1; margin-bottom:-5px;"><%= this.author %></div>
+				<small class="s" style="margin-top:-5px;"><%= this.datein %></small>
+			</h3>
+
+		</div>
+
+	</div>
+	<div class="modal-body">
+
+		<div class="tabbable tabs-right">
+			<ul class="nav nav-tabs tabs-right">
+				<li>
+					<a href="#details-pane-details" data-toggle="tab"> Details </a>
+				</li>
+				<li class="tab-icon">
+					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+				</li>
+			</ul>
+
+			<div class="tab-content" style="width: 520px;">
+				<div id="details-pane-details" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding:10px;">
+							<blockquote style="padding: 20px;">
+								<%= this.synopsis %>
+							</blockquote>
+							<div class="clerarfix"></div>
+							<h4>Article</h4>
+							<div class="clerarfix"></div>
+
+							<div style="padding: 0 10px;"><%= this.article %></div>
+
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-logs" class="tab-pane">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							logs
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="details-pane-right">
+			<h5>NewsBooks</h5>
+
+			<table class="table">
+				<% for(var i in this.newsbooks) { %>
+				<tr>
+					<td>
+						<%= this.newsbooks[i].publication %>
+					</td>
+					<td>
+						<%= this.newsbooks[i].publish_date %>
+					</td>
+				</tr>
+				<% } %>
+			</table>
+			<div class="clearfix"></div>
+			<div id="details-pane-thumbnails">
+				<h5>Photos</h5>
+				<% for(var i in this.files) { %>
+				<img src="/nf/thumb/article/<%= this.files[i].ID %>?w=100" alt=""> <% } %>
+				<h5>Files</h5>
 
 
-</div>
-<div class="modal-body">
+			</div>
 
-</div>
-<div class="modal-footer">
-    <div class="row">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="row">
 
-        <div class="span9 l">
+			<div class="span9 l">
 
 
-        </div>
+			</div>
 
-        <div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
-            <div class="btn-group">
-                <button id="details-record-prev" class="btn span2">
-                    <i class="icon-step-backward"></i> Previous
-                </button>
-                <button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
-            </div>
-        </div>
+			<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+				<div class="btn-group">
+					<button id="details-record-prev" class="btn span2">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i>
+					</button>
+				</div>
+			</div>
 
-    </div>
+		</div>
 
-</div>
-<div class="loadingmask wide"></div>
+	</div>
+	<div class="loadingmask wide"></div>
 
 </script>
 <script type="text/javascript">
 
 
-$(document).on("shown", '#nf-details-modal', function () {
-    var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
-    if (!tab) tab = "details-pane-details";
-    $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-    $('#' + tab + '', $details_modal).addClass("active");
-    $("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	$(document).on("shown", '#nf-details-modal', function () {
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs.tabs-right li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-});
-$(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
-    var target = e.target; // activated tab
-    var previous = e.relatedTarget; // previous tab
-    $("#nf-details-modal .nav-tabs li.active").removeClass("active");
-    var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+	});
+	$(document).on('show', '#nf-details-modal .nav-tabs.tabs-right', function (e) {
+		var target = e.target; // activated tab
+		var previous = e.relatedTarget; // previous tab
+		$("#nf-details-modal .nav-tabs.tabs-right li.active").removeClass("active");
+		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 
-    $("#nf-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
+		$("#nf-details-modal .nav-tabs.tabs-right li a[href='" + href + "']").parent().addClass("active");
 
-    $.bbq.pushState({"details-tab":pane});
-    $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$.bbq.pushState({"details-tab":pane});
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-});
-$(document).on('hide', '#nf-details-modal', function () {
-    $.bbq.removeState("ID");
-    $("#record-list .record.active").removeClass("active");
-});
+	});
+	$(document).on('hide', '#nf-details-modal', function () {
+		$.bbq.removeState("ID");
+		$("#record-list .record.active").removeClass("active");
+	});
 
+	$(document).on('click', '#details-pane-logs .record', function (e) {
+		var $this = $(this);
+		var $clicked = $(e.target).closest("tr.record");
+		var active = true;
 
+		if ($this.hasClass("active") && $clicked) active = false;
 
+		$("#details-pane-logs .record.active").removeClass("active");
+		if (active) {
+			$this.addClass("active");
+		}
 
-$(document).on('click', '#details-pane-logs .record', function (e) {
-    var $this = $(this);
-    var $clicked = $(e.target).closest("tr.record");
-    var active = true;
+		var show = $("#details-pane-logs .record.active").attr("data-log-id");
 
-    if ($this.hasClass("active") && $clicked) active = false;
+		$("#details-pane-logs .log-record-details").hide();
+		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 
-    $("#details-pane-logs .record.active").removeClass("active");
-    if (active) {
-        $this.addClass("active");
-    }
+	});
+	$(document).on('click', '#details-record-prev', function () {
+		prevRecord();
+	});
+	$(document).on('click', '#details-record-next', function () {
+		nextRecord();
+	});
 
-    var show = $("#details-pane-logs .record.active").attr("data-log-id");
+	function nextRecord() {
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.nextAll("tr.record:first");
+		$.bbq.pushState({ID:$new.attr("data-ID")});
+		getDetails();
+	}
+	function prevRecord() {
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.prevAll("tr.record:first");
+		$.bbq.pushState({ID:$new.attr("data-ID")});
+		getDetails();
+	}
 
-    $("#details-pane-logs .log-record-details").hide();
-    $("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
-    $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+	function showContent_state() {
+		var ID = $.bbq.getState("ID");
+		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+			$("#details-record-prev").attr("disabled", "disabled");
+		} else {
+			$("#details-record-prev").removeAttr("disabled");
+		}
+		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+			$("#details-record-next").attr("disabled", "disabled");
+		} else {
+			$("#details-record-next").removeAttr("disabled");
+		}
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs.tabs-right li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
 
-});
-$(document).on('click', '#details-record-prev', function () {
-    prevRecord();
-});
-$(document).on('click', '#details-record-next', function () {
-    nextRecord();
-});
+	}
+	function getDetails() {
+		var ID = $.bbq.getState("ID");
 
-function nextRecord() {
-    var ID = $.bbq.getState("ID");
-    var $item = $("#record-list .record[data-ID='" + ID + "']");
-    var $new = $item.nextAll("tr.record:first");
-    $.bbq.pushState({ID:$new.attr("data-ID")});
-    getDetails();
-}
-function prevRecord() {
-    var ID = $.bbq.getState("ID");
-    var $item = $("#record-list .record[data-ID='" + ID + "']");
-    var $new = $item.prevAll("tr.record:first");
-    $.bbq.pushState({ID:$new.attr("data-ID")});
-    getDetails();
-}
+		$("#nf-details-modal").addClass("loading");
+		for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
+		detailsRequest.push($.getJSON("/nf/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+			data = data['data'];
+			$("#record-list .record.active").removeClass("active");
+			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+			$('#nf-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
 
-function showContent_state() {
-    var ID = $.bbq.getState("ID");
-    if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
-        $("#details-record-prev").attr("disabled", "disabled");
-    } else {
-        $("#details-record-prev").removeAttr("disabled");
-    }
-    if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
-        $("#details-record-next").attr("disabled", "disabled");
-    } else {
-        $("#details-record-next").removeAttr("disabled");
-    }
-    var tab = $.bbq.getState("details-tab"), $details_modal = $('#ab-details-modal');
-    if (!tab) tab = "details-pane-details";
-    $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-    $('#' + tab + '', $details_modal).addClass("active");
+			if ($("#record-list:visible").length) {
 
-}
-function getDetails() {
-    var ID = $.bbq.getState("ID");
-    $("#nf-details-modal").addClass("loading");
-    for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-    detailsRequest.push($.getJSON("/nf/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
-        data = data['data'];
-        $("#record-list .record.active").removeClass("active");
-        $("#record-list .record[data-ID='" + ID + "']").addClass("active");
-        $('#ab-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
 
-        if ($("#record-list:visible").length) {
+					showContent_state();
+					$("#list-next-prev-btns").show();
+					var api = $("#whole-area .scroll-pane").data("jsp");
+					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+					}
 
-            if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+				}
+			}
 
-                showContent_state();
-                $("#list-next-prev-btns").show();
-                var api = $("#whole-area .scroll-pane").data("jsp");
-                if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
-                    api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
-                }
+			$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		}));
 
-            }
-        }
-
-        $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-    }));
-
-}
+	}
 </script>
 <div class="modal hide fade" id="nf-details-modal" data-show="false">
 </div>

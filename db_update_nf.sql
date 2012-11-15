@@ -247,7 +247,9 @@ ALTER TABLE `nf_articles` CHANGE `article` `article` TEXT CHARACTER SET utf8 COL
 ALTER TABLE `nf_articles` CHANGE `article_orig` `article_orig` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 ALTER TABLE `nf_articles` CHANGE `reference` `reference` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
-
+ALTER TABLE `nf_files` ADD `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `nf_files` CHANGE `uID` `uID` INT( 6 ) NULL DEFAULT NULL;
+UPDATE `nf_files` SET `datein`=(SELECT datein FROM nf_articles WHERE nf_articles.ID = nf_files.aID) WHERE 1;
 
 
 RENAME TABLE `apps`.`nf_articles` TO `adbooker_v5`.`nf_articles` ;

@@ -123,17 +123,21 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-stage-btns button, #list-status-btns button", function (e) {
+	$(document).on("click", "#list-stage-btns button, #list-status-btns button, #list-newsbook-btns", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
 		var stage = $("#list-stage-btns button.active").attr("data-stage");
 		stage = (stage) ? stage : "all";
+
 		var status = $("#list-status-btns button.active").attr("data-status");
 		status = (status) ? status : "*";
 
+		var newsbook = $("#list-newsbook-btns button.active").attr("data-val");
+		newsbook = (newsbook) ? newsbook : "*";
 
-		$.bbq.pushState({"stage":stage,"status":status});
+
+		$.bbq.pushState({"stage":stage,"status":status,"newsbook":newsbook});
 		getList();
 
 	});
@@ -220,17 +224,25 @@ function getList(settings) {
 	stage = (stage)? stage: "";
 	var status = $("#list-status-btns button.active").attr("data-status");
 	status = (status)? status: "";
+	var newsbook = $("#list-newsbook-btns button.active").attr("data-val");
+	newsbook = (newsbook)? newsbook: "current";
 
 	var authorID = $("#authorID").val();
 	authorID = (authorID)? authorID: "";
 
-
+	$("#maintoolbar-date").html('Loading...');
 
 	var orderingactive = (order)?true:false;
 
+	if (newsbook=='all'){
+		$("#list-stage-btns button, #list-status-btns button").attr("disabled","disabled");
+	} else {
+		$("#list-stage-btns button, #list-status-btns button").removeAttr("disabled");
+	}
+
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "stage":stage, "status":status, "order": order, "authorID":authorID},function(data){
+	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "stage":stage, "status":status, "order": order, "newsbook":newsbook},function(data){
 		data = data['data'];
 
 
@@ -253,6 +265,13 @@ function getList(settings) {
 			$list_stage_btns.find("button[data-stage='"+k+"'] span.count").text("("+v['count']+")");
 		});
 
+		$("#maintoolbar-date").html(data['date']);
+
+		if (data['newsbook'] == 'all') {
+			$("#list-stage-btns button, #list-status-btns button").attr("disabled", "disabled");
+		} else {
+			$("#list-stage-btns button, #list-status-btns button").removeAttr("disabled");
+		}
 
 
 		var $scrollpane = $("#whole-area .scroll-pane");

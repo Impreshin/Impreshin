@@ -44,7 +44,7 @@ class provisional extends data {
 
 		$stage = (isset($_REQUEST['stage']) && $_REQUEST['stage'] != "") ? $_REQUEST['stage'] : $settings['stage'];
 		$status = (isset($_REQUEST['status']) && $_REQUEST['status'] != "") ? $_REQUEST['status'] : $settings['status'];
-		$authorID = (isset($_REQUEST['authorID']) && $_REQUEST['authorID'] != "") ? $_REQUEST['authorID'] : $settings['authorID'];
+		$newsbook = (isset($_REQUEST['newsbook']) && $_REQUEST['newsbook'] != "") ? $_REQUEST['newsbook'] : $settings['newsbook'];
 
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
@@ -74,23 +74,20 @@ class provisional extends data {
 			"order"  => $ordering,
 			"stage"  => $stage,
 			"status" => $status,
-			"authorID" => $authorID
+			"newsbook" => $newsbook
 
 		);
 
 
 		models\user_settings::save_setting($values);
 
-
-		//print_r($values);
-		//exit();
 		$orderby = " client ASC";
 		$arrange = "";
 		$return = array();
-		$where = "(nf_articles.cID = '$cID') AND nf_articles.deleted is null AND (SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID)='0' ";
-		if ($authorID&&$authorID!='0'){
-			$where .= " AND authorID = '$authorID' ";
-		}
+		$where = "(nf_articles.cID = '$cID') AND nf_articles.deleted is null  ";
+
+
+
 
 
 
@@ -98,11 +95,21 @@ class provisional extends data {
 
 
 		switch ($status) {
-			case '1':
+			case '2':
 				$where .= " AND (lockedBy = '$uID')";
 				break;
+			case '1':
+				$publications = models\publications::getAll("cID='$cID'");
+				$p = array();
+				foreach ($publications as $pub) $p[] = $pub['nf_currentDate'];
+				$p = implode(",", $p);
+				$where .= " AND if((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID in ($p) LIMIT 0,1)<>0,1,0) = '1' ";
+				break;
 			case '0':
-				$where .= " AND (lockedBy is null)";
+				$where .= " AND if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) = '0'";
+				break;
+			default:
+				$where .= " AND (if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) = '1' OR if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) = '0')";
 				break;
 
 
@@ -110,6 +117,7 @@ class provisional extends data {
 
 
 
+//test_array($where);
 
 
 
@@ -117,11 +125,20 @@ class provisional extends data {
 		$stats = models\record_stats::stats($records, array("stages"));
 
 
+
+
+
+
+		$return['date'] = date("d M Y", strtotime($currentDate['publish_date_display']));
+		$return['dID'] = $currentDate['ID'];
+		$return['newsbook'] = $newsbook;
 		$return['group'] = $grouping;
 
 		$return['order'] = $ordering;
 		$return['stats'] = $stats;
-		$return['list'] = models\articles::display($records, array("stage" => $stage, "status" => $status));
+
+		if (!is_numeric($stage))$stage = "";
+		$return['list'] = models\articles::display($records, array("highlight" => array('currentNewsbook','1'),'filter'=>array('stageID',$stage)));
 
 		return $GLOBALS["output"]['data'] = $return;
 	}

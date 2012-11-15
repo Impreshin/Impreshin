@@ -84,7 +84,9 @@ class publications {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT DISTINCT global_publications.* , if ((SELECT count(ID) FROM nf_users_pub WHERE nf_users_pub.pID = global_publications.ID AND nf_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) as currentUser
+			SELECT DISTINCT global_publications.* ,
+				if ((SELECT count(ID) FROM nf_users_pub WHERE nf_users_pub.pID = global_publications.ID AND nf_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) as currentUser,
+				COALESCE((SELECT ID FROM global_dates WHERE global_dates.ID = global_publications.nf_currentDate), (SELECT ID FROM global_dates WHERE global_dates.pID = global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) as nf_currentDate
 			FROM global_publications
 			$where
 			$orderby

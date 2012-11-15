@@ -1,117 +1,111 @@
 <section id="maintoolbar">
-    <div class="container">
-        <div class="toolbar clearfix  ">
-            <ul class="nav nav-pills pull-left">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
 
-                <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-stage-btns">
-                        <button class="btn span1 btn-mini {% if settings['stage'] == "all" %}active{% endif %}" style="width:70px; margin-left: 10px;" data-stage="all">All
-                            <span class="g count">(46)</span>
-                        </button>
-                        {% for row in stages %}
-                        <button class="btn span1 btn-mini {% if settings['stage'] == row['ID'] %}active{% endif %} " style="width:85px; " data-stage="{{ row['ID'] }}">{{ row['stage'] }}
-                            <span class="g count" ></span>
-                        </button>
-                        {%  endfor %}
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="list-stage-btns">
+						<button class="btn span1 btn-mini {% if settings['stage'] == "all" %}active{% endif %}" style="width:80px; margin-left: 10px;" data-stage="all">All
+							<span class="g count">(46)</span>
+						</button>
+						{% for row in stages %}
+							<button class="btn span1 btn-mini {% if settings['stage'] == row['ID'] %}active{% endif %} " style="width:95px; " data-stage="{{ row['ID'] }}">{{ row['stage'] }}
+								<span class="g count"></span>
+							</button>
+						{% endfor %}
 
-                    </div>
-                </li>
+					</div>
+				</li>
 
-                <li class="divider-vertical"></li>
-
-
-                <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-status-btns">
-                        <button data-status="*" class="btn  btn-mini {% if settings['status'] == "*" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-asterisk"></i></button>
-                        <button data-status="0" class="btn  btn-mini {% if settings['status'] == "0" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-ok"></i></button>
-                        <button data-status="1" class="btn  btn-mini {% if settings['status'] == "1" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-lock"></i></button>
-
-                    </div>
-                </li>
-                <li class="divider-vertical"></li>
+				<li class="divider-vertical"></li>
 
 
-            </ul>
-            <div class="pull-right">
+			</ul>
+			<div class="pull-right">
 
-                <ul class="nav nav-pills pull-right ">
+				<ul class="nav nav-pills pull-right ">
 
-                    <li>
-                        <div class="dg b" id="maintoolbar-date">09 Nov 2012</div>
-                    </li>
-                    <li class="divider-vertical"></li>
-                    <li>
-                        <div class="btn-group" data-toggle="buttons-radio">
-                            <button class="btn span1 btn-mini" data-toggle="button"><i class="icon-book"></i></button>
-                            <button class="btn span1 btn-mini" data-toggle="button"><i class="icon-tags"></i></button>
-                        </div>
-                    </li>
-                    <li class="divider-vertical"></li>
+					<li>
+						<div class="dg b" id="maintoolbar-date">Loading...</div>
+					</li>
+					<li class="divider-vertical"></li>
+					<li>
+						<div class="btn-group" data-toggle="buttons-radio" id="list-status-btns">
+							<button data-status="*" class="btn span1 btn-mini {% if settings['status'] == "*" %}active{% endif %}" rel="tooltip" title="Unused + Used for this newsbook" data-placement="bottom">
+								<i class="icon-asterisk"></i>
+							</button>
+							<button data-status="0" class="btn span1 btn-mini {% if settings['status'] == "0" %}active{% endif %}" rel="tooltip" title="Unused" data-placement="bottom">
+								<i class="icon-folder-open"></i>
+							</button>
+							<button data-status="1" class="btn span1 btn-mini {% if settings['status'] == "1" %}active{% endif %}" rel="tooltip" title="Articles in all current newsbooks" data-placement="bottom">
+								<i class="icon-folder-close"></i>
+							</button>
+							<button data-status="2" class="btn span1  btn-mini {% if settings['status'] == "2" %}active{% endif %}" rel="tooltip" title="My locked records" data-placement="bottom">
+								<i class="icon-briefcase"></i>
+							</button>
 
-
-
-
-
-                    <li class="dropdown pull-right">
-                        <a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
-                        <ul class="dropdown-menu" id="record-settings" role="menu">
-                            <li class="nav-header">Group By</li>
-                            {% for row in settings['groupby'] %}
-                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
-                                    <a href="#t">{{ row['n'] }}</a>
-                                </li>
-                            {% endfor %}
-                            <li class="nav-header clearfix">Direction</li>
-                            <li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
-                                <a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
-                            <li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
-                                <a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
-                            <li class="clearfix"></li>
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+						</div>
+					</li>
+					<li class="divider-vertical"></li>
 
 
-        </div>
-        <div class="toolbar-end"></div>
-    </div>
+					<li class="dropdown pull-right">
+						<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
+						<ul class="dropdown-menu" id="record-settings" role="menu">
+							<li class="nav-header">Group By</li>
+							{% for row in settings['groupby'] %}
+								<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+									<a href="#t">{{ row['n'] }}</a>
+								</li>
+							{% endfor %}
+							<li class="nav-header clearfix">Direction</li>
+							<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+								<a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+							<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+								<a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+							<li class="clearfix"></li>
+							<li class="divider"></li>
+
+							<li>
+								<a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
 
 </section>
 
 <section role="main" id="pagecontent">
 
-    <div class="container">
+	<div class="container">
 
 
-        <article id="whole-area" class="span16">
-            <div class="content">
-                <div class="scroll-pane">
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane">
 
-                    <div data-heading="top" id="scroll-container">
+					<div data-heading="top" id="scroll-container">
 
-                        <table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+						<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
 
 
-                        </table>
+						</table>
 
-                    </div>
+					</div>
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            <div class="loadingmask wide"></div>
-        </article>
-    </div>
+			<div class="loadingmask wide"></div>
+		</article>
+	</div>
 
 
 </section>

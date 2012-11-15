@@ -1070,7 +1070,7 @@
 
         $tip
           .detach()
-          .css({ top: 0, left: 0, display: 'block' })
+          .css({ top: 0, left: 0, display: 'block', 'z-index': '1000000' })
 	      var container = $(this.options.container)
 	      container.length ? $tip.appendTo(container) : $tip.insertAfter(this.$element)
 
