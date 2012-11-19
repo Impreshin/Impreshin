@@ -66,7 +66,7 @@ class controller_reports_category_discounts {
 			"sub_section"=> "category_discounts",
 			"template"=> "page_reports_category_discounts",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Category Discounts",
+				"title"=> "AB - Reports - Category Discounts",
 			)
 		);
 		$pubstr = implode(",", $pubstr);

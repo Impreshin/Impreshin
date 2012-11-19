@@ -30,7 +30,7 @@ class controller_admin_marketers {
 			"sub_section"=> "marketers",
 			"template"=> "page_admin_marketers",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Marketers",
+				"title"=> "AB - Admin - Marketers",
 			)
 		);
 

@@ -24,6 +24,7 @@ class data {
 	function details(){
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : exit(json_encode(array("error"=> F3::get("system")->error("B01"))));
+		$edit = (isset($_REQUEST['edit'])) ? $_REQUEST['edit'] : "";
 
 		$user = F3::get("user");
 
@@ -32,6 +33,7 @@ class data {
 		$return = $record->get($ID);
 
 
+		$edits = models\articles::getEdits($return['ID']);
 
 
 
@@ -49,6 +51,13 @@ class data {
 
 
 		$return['a'] = $allow;
+		$return['edits'] = $edits;
+		$return['comments'] = array(
+			"count"    => 6,
+			"unread"   => 0,
+			"comments" => array()
+		);
+
 
 		return $GLOBALS["output"]['data'] = $return;
 	}

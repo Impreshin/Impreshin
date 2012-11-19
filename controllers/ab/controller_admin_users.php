@@ -29,7 +29,7 @@ class controller_admin_users {
 			"sub_section"=> "users",
 			"template"=> "page_admin_users",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Users",
+				"title"=> "AB - Admin - Users",
 			),
 			"help"=> "/ab/help/admin/users"
 		);

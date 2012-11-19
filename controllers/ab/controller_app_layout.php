@@ -28,7 +28,7 @@ class controller_app_layout {
 			"sub_section"=> "planning",
 			"template"=> "page_app_layout",
 			"meta"    => array(
-				"title"=> "AdBooker - Layout",
+				"title"=> "AB - Layout",
 			)
 		);
 		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");

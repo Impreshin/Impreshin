@@ -62,7 +62,7 @@ class controller_app_deleted {
 			"template"=> "page_app_deleted",
 			"print"=> "/ab/print/deleted",
 			"meta"    => array(
-				"title"=> "AdBooker - Deleted Bookings",
+				"title"=> "AB - Deleted Bookings",
 			)
 		);
 
@@ -102,7 +102,7 @@ class controller_app_deleted {
 			"sub_section"=> "deleted",
 			"template"   => "page_app_deleted",
 			"meta"       => array(
-				"title"=> "AdBooker - Print - Deleted",
+				"title"=> "AB - Print - Deleted",
 			)
 		);
 

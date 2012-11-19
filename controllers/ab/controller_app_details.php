@@ -32,7 +32,7 @@ class controller_app_details {
 			"sub_section"=> "provisional",
 			"template"=> "page_app_details",
 			"meta"    => array(
-				"title"=> "AdBooker - Print - ".$data['client'],
+				"title"=> "AB - Print - ".$data['client'],
 			)
 		);
 

@@ -66,7 +66,7 @@ class controller_reports_publication_discounts {
 			"sub_section"=> "publication_discounts",
 			"template"=> "page_reports_publication_discounts",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Publication Discounts",
+				"title"=> "AB - Reports - Publication Discounts",
 			)
 		);
 		$pubstr = implode(",", $pubstr);

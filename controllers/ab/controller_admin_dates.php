@@ -28,7 +28,7 @@ class controller_admin_dates {
 			"sub_section"=> "dates",
 			"template"=> "page_admin_dates",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Dates",
+				"title"=> "AB - Admin - Dates",
 			)
 		);
 

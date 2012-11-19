@@ -36,7 +36,7 @@ class controller_app_search {
 			"template"=> "page_app_search",
 			"print"=> "/ab/print/search",
 			"meta"    => array(
-				"title"=> "AdBooker - Search",
+				"title"=> "AB - Search",
 			)
 		);
 
@@ -111,7 +111,7 @@ class controller_app_search {
 			"sub_section"=> "search",
 			"template"   => "page_app_search",
 			"meta"       => array(
-				"title"=> "AdBooker - Print - Search",
+				"title"=> "AB - Print - Search",
 			)
 		);
 

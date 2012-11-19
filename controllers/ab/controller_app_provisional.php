@@ -47,7 +47,7 @@ class controller_app_provisional {
 			"template"=> "page_app_provisional",
 			"print"=> "/ab/print/provisional",
 			"meta"    => array(
-				"title"=> "AdBooker - Provisional",
+				"title"=> "AB - Provisional",
 			),
 			"help"=> "/ab/help/bookings"
 		);
@@ -106,7 +106,7 @@ class controller_app_provisional {
 			"sub_section"=> "provisional",
 			"template"=> "page_app_provisional",
 			"meta"    => array(
-				"title"=> "AdBooker - Print - Provisional",
+				"title"=> "AB - Print - Provisional",
 			)
 		);
 

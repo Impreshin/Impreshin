@@ -22,6 +22,9 @@
 		a {
 			padding-left  : 7px;
 			padding-right : 7px;
+			&:focus {
+				outline : none !important;
+			}
 		}
 	}
 	.tab-pane {
@@ -63,6 +66,7 @@
 		width     : 15px;
 
 		min-width : 15px;
+
 
 	}
 	.active .icon-grey {
@@ -181,9 +185,9 @@
 	}
 	#details-pane-thumbnails {
 		position: absolute;
-		right:0;
+		width:220px;
 		bottom:0;
-		left:0;
+		right:0;
 		padding-left: 5px;
 
 
@@ -198,14 +202,53 @@
 	#details-pane-right {
 		position: absolute;
 		right:0;
-		bottom:0;
-		top:80px;
 
-		width : 230px;
+		top:50px;
+
+		width : 195px;
 
 		h5 {
 			padding:5px;
 		}
+		select {
+			border:none;
+			cursor: pointer;
+			padding: 8px 4px 4px 4px;
+			font-size: 11px;
+			margin: 0;
+			text-align: right;
+			option, optgroup {
+				text-align: left;
+			}
+		}
+		.right-pane-over {
+			margin-left: -35px;
+		}
+	}
 
+	.modal-header h3 #title {
+		max-width: 440px;
+		overflow: hidden;
+		white-space : nowrap;
+		text-overflow: ellipsis;
+		display:inline-block;
+		padding-left: 5px;
+		padding-top: 5px;
+		margin-bottom: -10px;
+	}
+	.message-count {
+		position: absolute;
+		color: #666;
+		right:-2px;
+		bottom:0;
+		font-weight: bold;
+		font-size: 10px;
+		padding: 0 4px;
+		&.unread {
+			border: 1px solid red;
+			background-color: #fff;
+			color : red;
+
+		}
 	}
 }

@@ -167,6 +167,9 @@ class settings {
 				"status" => "*",
 				"newsbook" => "current",
 				"authorID"=>"0"
+			),
+			"form"=>array(
+				"type"=>"1"
 			)
 		);
 

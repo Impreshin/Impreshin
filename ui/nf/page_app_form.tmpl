@@ -1,0 +1,78 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav pull-left">
+				<li><h2 style="padding-left: 30px;" id="booking-heading">loading...</h2>
+				</li>
+			</ul>
+			<ul class="nav nav-pills pull-right">
+				<li style="padding-top: 6px; margin-right: 10px;">Booking Type:</li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
+						{% for row in bookingTypes %}
+						<button class="btn span1 btn-mini {% if details['ID'] %} {% if details['typeID']|default("1")==row['ID'] %}active{% endif %} {% else %}{% if settings['type']==row['ID'] %}active{% endif %}{% endif %}" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
+						{% endfor %}
+					</div>
+				</li>
+
+				<li class="divider-vertical"></li>
+			</ul>
+
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container">
+
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane">
+
+					<div data-heading="top" id="scroll-container">
+						<form class="form-horizontal form-fill" id="booking-form"></form>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="loadingmask wide"></div>
+		</article>
+
+
+	</div>
+
+</section>
+
+<div id='modal-form' class='modal hide fade'>
+
+</div>
+
+<div id='modal-delete' class='modal hide fade'>
+	<form style="margin: 0;">
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+		<h3>Delete Reason:</h3></div>
+	<div class='modal-body'>
+		<article class="c">
+			<textarea name="delete_reason" id="delete_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are deleting this record"></textarea>
+			<input id="record-ID" type="hidden" name="record-ID" value="{{ details['ID'] }}">
+
+		</article>
+	</div>
+	<div class='modal-footer'>
+		<div class="btn-group c" style="margin-left: 7px;">
+			<button class="btn btn-danger span2" style="float:right;" type="submit">Delete</button>
+
+		</div>
+	</div>
+	</form>
+</div>
+<script type="text/javascript">
+
+</script>

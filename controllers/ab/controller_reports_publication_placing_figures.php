@@ -62,7 +62,7 @@ class controller_reports_publication_placing_figures {
 			"sub_section"=> "publication_placing_figures",
 			"template"=> "page_reports_publication_placing_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Publication Placing Figures",
+				"title"=> "AB - Reports - Publication Placing Figures",
 			)
 		);
 		$tmpl->list = models\placing::getAll("pID = $pID", "orderby ASC, placing ASC");

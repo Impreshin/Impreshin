@@ -40,7 +40,7 @@ class articles {
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type = '1') as photos,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files,
 				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) as currentNewsbook,
-				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as used
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as inNewsBook
 			$from
 			WHERE nf_articles.ID = '$ID';
 		");
@@ -50,8 +50,8 @@ class articles {
 			$return = ($result[0]);
 			$return['datein_D'] = date("d F Y H:m:s", strtotime($return['datein']));
 			$return['logs'] = articles::getLogs($return['ID']);
-			$return['files'] = $this->getFiles($return['ID']);
-			$return['newsbooks'] = $this->getNewsbooks($return['ID']);
+			$return['files'] = articles::getFiles($return['ID']);
+			$return['newsbooks'] = articles::getNewsbooks($return['ID']);
 
 		} else {
 			$return = $this->dbStructure;
@@ -59,7 +59,8 @@ class articles {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	function getNewsbooks($ID){
+
+	public static function getNewsbooks($ID){
 		$timer = new timer();
 		$user = F3::get("user");
 		$result = F3::get("DB")->exec("
@@ -75,7 +76,7 @@ class articles {
 		return $return;
 	}
 
-	function getFile($ID) {
+	public static function getFile($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -103,7 +104,7 @@ class articles {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	function getFiles($ID) {
+	public static function getFiles($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -113,6 +114,25 @@ class articles {
 			SELECT nf_files.*
 			FROM nf_files
 			WHERE nf_files.aID = '$ID';
+		");
+
+		$return = $result;
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function getEdits($ID,$returnarticles=false){
+		$timer = new timer();
+
+		$select = array(
+			"nf_articles_edits.ID","datein","fullName","percent","percent_orig","stage","stageID"
+		);
+
+		$select = implode(", ",$select);
+		$result = F3::get("DB")->exec("
+			SELECT $select
+			FROM (nf_articles_edits INNER JOIN nf_stages ON nf_articles_edits.stageID = nf_stages.ID) INNER JOIN global_users ON nf_articles_edits.uID = global_users.ID
+			WHERE nf_articles_edits.aID = '$ID';
 		");
 
 		$return = $result;
@@ -237,7 +257,7 @@ class articles {
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type = '1') as photos,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID = nf_articles.ID AND type='2') as files,
 				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) as currentNewsbook,
-				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as used
+				if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) as inNewsBook
 
 			$select
 

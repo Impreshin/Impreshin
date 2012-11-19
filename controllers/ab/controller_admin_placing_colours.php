@@ -29,7 +29,7 @@ class controller_admin_placing_colours {
 			"sub_section"=> "placing_colours",
 			"template"=> "page_admin_placing_colours",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Placing - Colours",
+				"title"=> "AB - Admin - Placing - Colours",
 			)
 		);
 

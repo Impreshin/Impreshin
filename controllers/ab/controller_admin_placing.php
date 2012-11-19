@@ -29,7 +29,7 @@ class controller_admin_placing {
 			"sub_section"=> "placing",
 			"template"=> "page_admin_placing",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Placing",
+				"title"=> "AB - Admin - Placing",
 			)
 		);
 

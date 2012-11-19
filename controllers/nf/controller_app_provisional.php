@@ -49,7 +49,7 @@ class controller_app_provisional {
 			"sub_section"=> "provisional",
 			"template"=> "page_app_provisional",
 			"meta"    => array(
-				"title"=> "NewsFiler - Provisional",
+				"title"=> "NF - Provisional",
 			)
 		);
 

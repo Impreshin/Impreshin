@@ -30,7 +30,7 @@ class controller_admin_production {
 			"sub_section"=> "production",
 			"template"=> "page_admin_production",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Production",
+				"title"=> "AB - Admin - Production",
 			)
 		);
 

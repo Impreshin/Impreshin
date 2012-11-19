@@ -251,6 +251,12 @@ ALTER TABLE `nf_files` ADD `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE `nf_files` CHANGE `uID` `uID` INT( 6 ) NULL DEFAULT NULL;
 UPDATE `nf_files` SET `datein`=(SELECT datein FROM nf_articles WHERE nf_articles.ID = nf_files.aID) WHERE 1;
 
+ALTER TABLE `nf_articles_edits` ADD `percent` TINYINT( 3 ) NULL DEFAULT NULL AFTER `patch`;
+ALTER TABLE `nf_articles_edits` ADD `percent_orig` TINYINT( 3 ) NULL DEFAULT NULL AFTER `percent`;
+ALTER TABLE `nf_articles_edits` CHANGE `stage` `stageID` INT( 6 ) NULL DEFAULT NULL;
+
+
+
 
 RENAME TABLE `apps`.`nf_articles` TO `adbooker_v5`.`nf_articles` ;
 RENAME TABLE `apps`.`nf_articles_edits` TO `adbooker_v5`.`nf_articles_edits` ;

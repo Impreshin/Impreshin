@@ -29,7 +29,7 @@ class controller_app_overview {
 			"sub_section"=> "view",
 			"template"=> "page_app_overview",
 			"meta"    => array(
-				"title"=> "AdBooker - Overview",
+				"title"=> "AB - Overview",
 			)
 		);
 		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");

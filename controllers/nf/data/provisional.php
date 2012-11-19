@@ -131,6 +131,7 @@ class provisional extends data {
 
 		$return['date'] = date("d M Y", strtotime($currentDate['publish_date_display']));
 		$return['dID'] = $currentDate['ID'];
+
 		$return['newsbook'] = $newsbook;
 		$return['group'] = $grouping;
 

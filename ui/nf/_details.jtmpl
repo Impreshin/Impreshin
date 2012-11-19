@@ -9,7 +9,8 @@
 			<span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span>
 			<% } %>
 			<span class="label <%= this.stage_labelClass %>" style="margin-right: 5px; margin-top:-8px;"><%= this.stage %></span>
-			 <%= this.title %>
+			<span id="title" title="<%= this.title %>" ><%= this.title %></span>
+
 			<small style="margin-left:10px;"><%= this.type %></small>
 
 		</h3>
@@ -25,12 +26,18 @@
 	<div class="modal-body">
 
 		<div class="tabbable tabs-right">
-			<ul class="nav nav-tabs tabs-right">
+			<ul class="nav nav-tabs tabs-right" id="details-tabs-right" >
 				<li>
 					<a href="#details-pane-details" data-toggle="tab"> Details </a>
 				</li>
 				<li class="tab-icon">
 					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+				</li>
+				<li class="tab-icon">
+					<a href="#details-pane-comments" data-toggle="tab" style="position:relative;"> <i class="icon-comment icon-grey"></i>
+						<% if (this.comments.count >0){ %>
+							<div class="message-count <% if (this.comments.unread>0){ %>unread<% } %>"><%= this.comments.count %></div></a>
+						<% } %>
 				</li>
 			</ul>
 
@@ -57,33 +64,77 @@
 						</div>
 					</div>
 				</div>
+				<div id="details-pane-comments" class="tab-pane">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							comments
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
 		<div id="details-pane-right">
-			<h5>NewsBooks</h5>
 
-			<table class="table">
-				<% for(var i in this.newsbooks) { %>
-				<tr>
-					<td>
-						<%= this.newsbooks[i].publication %>
-					</td>
-					<td>
-						<%= this.newsbooks[i].publish_date %>
-					</td>
-				</tr>
-				<% } %>
-			</table>
-			<div class="clearfix"></div>
-			<div id="details-pane-thumbnails">
-				<h5>Photos</h5>
-				<% for(var i in this.files) { %>
-				<img src="/nf/thumb/article/<%= this.files[i].ID %>?w=100" alt=""> <% } %>
-				<h5>Files</h5>
+			<select name="edit-selector-diff" id="edit-selector-diff" style="width:95%;">
+				<option value=""> Current State &nbsp;&nbsp;</option>
+				<optgroup label="Ready">
 
+					<option value="2" <% if (this.edit=='2'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+				</optgroup>
+				<optgroup label="Proof">
+					<option value="3" <% if (this.edit=='3'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+					<option value="4" <% if (this.edit=='4'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+				</optgroup>
+				<optgroup label="Posted">
+					<option value="5" <% if (this.edit=='5'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+					<option value="6" <% if (this.edit=='6'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+					<option value="7" <% if (this.edit=='7'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+					<option value="8" <% if (this.edit=='8'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+				</optgroup>
+				<optgroup label="Draft">
+					<option value="9" <% if (this.edit=='9'){ %>selected="selected"<% } %>> 65% - Anton van Zyl</option>
+				</optgroup>
+				<optgroup label="Posted">
+					<option value="10" <% if (this.edit=='10'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+					<option value="11" <% if (this.edit=='11'){ %>selected="selected"<% } %>> 1% - Frans van der Merwe</option>
+				</optgroup>
+				<optgroup label="Draft">
+				<option value="12" <% if (this.edit=='12'){ %>selected="selected"<% } %>> 65% - Anton van Zyl</option>
+				</optgroup>
+
+			</select>
+
+			<div class="s g c">10 Edits by 3 People, 75% Changed</div>
+
+
+			<div class="right-pane-over" style="margin-top:20px;">
+				<h5>NewsBooks</h5>
+
+				<table class="table table-condensed s">
+					<% for(var i in this.newsbooks) { %>
+					<tr>
+						<td>
+							<%= this.newsbooks[i].publication %>
+						</td>
+						<td>
+							<%= this.newsbooks[i].publish_date %>
+						</td>
+					</tr>
+					<% } %>
+				</table>
+				<div class="clearfix"></div>
 
 			</div>
+
+
+
+		</div>
+		<div id="details-pane-thumbnails">
+			<h5>Photos</h5>
+			<% for(var i in this.files) { %> <img src="/nf/thumb/article/<%= this.files[i].ID %>?w=100" alt=""> <% } %>
+			<h5>Files</h5>
+
 
 		</div>
 	</div>
@@ -158,12 +209,17 @@
 		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 
 	});
+	$(document).on('change', '#edit-selector-diff', function () {
+		$.bbq.pushState({"edit":$(this).val()});
+		getDetails();
+	});
 	$(document).on('click', '#details-record-prev', function () {
 		prevRecord();
 	});
 	$(document).on('click', '#details-record-next', function () {
 		nextRecord();
 	});
+
 
 	function nextRecord() {
 		var ID = $.bbq.getState("ID");
@@ -200,10 +256,11 @@
 	}
 	function getDetails() {
 		var ID = $.bbq.getState("ID");
+		var edit = $.bbq.getState("edit");
 
 		$("#nf-details-modal").addClass("loading");
 		for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-		detailsRequest.push($.getJSON("/nf/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+		detailsRequest.push($.getJSON("/nf/data/details?r=" + Math.random(), {"ID":ID,"edit":edit}, function (data) {
 			data = data['data'];
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");

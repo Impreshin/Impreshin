@@ -63,7 +63,7 @@ class controller_reports_publication_figures {
 			"sub_section"=> "publication_figures",
 			"template"=> "page_reports_publication_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Publication Figures",
+				"title"=> "AB - Reports - Publication Figures",
 			)
 		);
 

@@ -67,7 +67,7 @@ class controller_reports_account_discounts {
 			"sub_section"=> "account_discounts",
 			"template"=> "page_reports_account_discounts",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Accounts Discounts",
+				"title"=> "AB - Reports - Accounts Discounts",
 			)
 		);
 
