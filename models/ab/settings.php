@@ -19,11 +19,11 @@ class settings {
 				"o"=> "client",
 				"h"=> "Client"
 			),
-			"publishDate"            => array(
-				"c"=> "publishDate",
-				"o"=> "publishDate",
-				"h"=> "Publish&nbsp;Date",
-				"m"=>60
+			"publishDate" => array(
+				"c" => "publishDate",
+				"o" => "publish_date",
+				"h" => "Publish&nbsp;Date",
+				"m" => 80
 			),
 			"size"                   => array(
 				"c"=> "size",
