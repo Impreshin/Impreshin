@@ -161,7 +161,7 @@ $(document).ready(function () {
 
 
 		var columns = [];
-		$("#selected-columns div").each(function(){
+		$("#selected-columns li").each(function(){
 			var $thisC = $(this);
 
 			columns.push($thisC.attr("data-column"));
