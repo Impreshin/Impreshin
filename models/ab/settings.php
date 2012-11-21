@@ -22,9 +22,9 @@ class settings {
 			),
 			"publishDate"            => array(
 				"c" => "publishDate",
-				"o" => "publishDate",
+				"o" => "publish_date",
 				"h" => "Publish&nbsp;Date",
-				"m" => 60
+				"m" => 80
 			),
 			"size"                   => array(
 				"c" => "size",
