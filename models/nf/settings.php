@@ -169,7 +169,8 @@ class settings {
 				"authorID"=>"0"
 			),
 			"form"=>array(
-				"type"=>"1"
+				"type"=>"1",
+				"categoryID"=>""
 			)
 		);
 

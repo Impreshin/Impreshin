@@ -16,6 +16,8 @@ class controller_app_form {
 		$ID = F3::get('PARAMS["ID"]');
 		$user = F3::get("user");
 
+		$cID = $user['company']['ID'];
+
 		$settings = models\settings::_read("form");
 
 
@@ -48,9 +50,20 @@ class controller_app_form {
 			"help"=>"/nf/help/form"
 		);
 
+		$categories = models\categories::getAll("cID='$cID'", "orderby ASC");
+		$catarray = array();
+		foreach($categories as $val){
+			$catarray[] = $val['ID'];
+		}
+		if (!in_array($settings['categoryID'],$catarray)){
+			$settings['categoryID'] = $categories[0]['ID'];
+		}
 
 
 		$tmpl->settings  = $settings;
+		$tmpl->details  = $details;
+		$tmpl->title  = $title;
+		$tmpl->categories  = $categories;
 
 
 

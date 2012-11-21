@@ -152,7 +152,7 @@ $(document).ready(function () {
 		var $this = $(this);
 
 		var columns = [];
-		$("#selected-columns div").each(function () {
+		$("#selected-columns li").each(function () {
 			var $thisC = $(this);
 
 			columns.push($thisC.attr("data-column"));
@@ -178,6 +178,7 @@ $(document).ready(function () {
 	$("#selected-columns, #available-columns").sortable({
 		connectWith:".connectedSortable",
 		containment:".scroll-pane",
+		zIndex     :99999,
 		update     :function (event, ui) {
 			$(this).closest(".scroll-pane").jScrollPane(jScrollPaneOptionsMP);
 

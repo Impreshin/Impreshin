@@ -2,11 +2,11 @@
 	<div class="container">
 		<div class="toolbar clearfix  ">
 			<ul class="nav pull-left">
-				<li><h2 style="padding-left: 30px;" id="booking-heading">loading...</h2>
+				<li><h2 style="padding-left: 30px;" id="booking-heading">{{ title }}</h2>
 				</li>
 			</ul>
 			<ul class="nav nav-pills pull-right">
-				<li style="padding-top: 6px; margin-right: 10px;">Booking Type:</li>
+				<li style="padding-top: 6px; margin-right: 10px;">Record Type:</li>
 				<li>
 					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
 						{% for row in bookingTypes %}
@@ -30,14 +30,11 @@
 
 		<article id="whole-area" class="span16">
 			<div class="content">
-				<div class="scroll-pane">
 
-					<div data-heading="top" id="scroll-container">
-						<form class="form-horizontal form-fill" id="booking-form"></form>
+						<form class="form-horizontal form-fill" id="capture-form"></form>
 
-					</div>
 
-				</div>
+
 
 			</div>
 
@@ -74,5 +71,8 @@
 	</form>
 </div>
 <script type="text/javascript">
-
+var data = {
+	"details": {{ details|json_encode|raw }},
+	"categories":{{ categories|json_encode|raw }}
+};
 </script>

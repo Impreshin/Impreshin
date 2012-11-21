@@ -692,6 +692,7 @@ class settings {
 		$user_settings = $user_settings->_read($user['ID']);
 		$user_settings['settings'] = @unserialize($user_settings['settings']);
 
+		//test_array($user_settings['settings']);
 
 		if ($user_settings['settings']) {
 			$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());

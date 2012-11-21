@@ -1,0 +1,28 @@
+#capture-form-sidebar {
+	border-left : 1px dotted #ccc;
+	padding-left: 10px;
+
+}
+#capture-form-sidebar h4 {
+	border-bottom : 1px dotted #CCCCCC;
+	margin-bottom : 15px;
+	padding       : 5px;
+	margin-left: -10px;
+}
+#capture-form-sidebar label {
+	cursor       : pointer;
+	margin-right : 20px;
+	padding      : 3px 3px 3px 30px;
+	margin-bottom: 0;
+}
+
+#capture-form-sidebar label:hover {
+	background-color : #DEEBFF;
+}
+#capture-form-sidebar label.active {
+	background-color : #f1f1f1;
+}
+
+.cke_button.cke_button__source .cke_button_label{
+	display : none;
+}
