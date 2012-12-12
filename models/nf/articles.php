@@ -479,7 +479,9 @@ class articles {
 
 	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
 
-		//test_array($values);
+		test_array($values);
+		$raw = $values;
+		$values = $values['values'];
 		$timer = new timer();
 		$lookupColumns = array();
 		/*
@@ -500,16 +502,11 @@ class articles {
 		$lookup = array();
 
 
-		$a = new Axon("nf_bookings");
+		$a = new Axon("nf_articles");
 		$a->load("ID='$ID'");
-
-
-		$cfg = F3::get("cfg");
-		$cfg = $cfg['upload'];
-		//test_array($cfg);
-
 		$user = F3::get("user");
-		$cID = $user['publication']['cID'];
+
+
 
 
 		/*
@@ -573,10 +570,6 @@ class articles {
 				} else {
 					$w = $cur;
 					$v = $value;
-					if ($key == "material_file_filesize") {
-						$v = $v ? file_size($v) : "";
-						$w = $w ? file_size($w) : "";
-					}
 					$changes[] = array(
 						"k" => $key,
 						"v" => $v,
@@ -619,11 +612,20 @@ class articles {
 		}
 
 
-		if (count($changes)) articles::logging($ID, $changes, $label);
+		//if (count($changes)) articles::logging($ID, $changes, $label);
 
 
-		$n = new bookings();
-		$n = $n->get($ID);
+		$n = $ID;
+
+		$p = new Axon("nf_articles_edits");
+		$p->aID = $ID;
+		$p->uID = $user['ID'];
+		$p->patch = $raw['patch'];
+		$p->percent =
+		$p->percent_orig =
+		$p->stageID =
+
+
 
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());

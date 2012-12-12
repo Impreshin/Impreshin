@@ -1,52 +1,68 @@
 {% include '_details.jtmpl' %}
 <script src="/ui/ckeditor/ckeditor.js"></script>
 <script type="text/x-jqote-template" id="template-form">
-<![CDATA[
-	<div class="scroll-pane" style="bottom: 42px;">
+	<![CDATA[
 
-		<div data-heading="top" id="scroll-container">
 	<fieldset>
 		<div class="form-header">
 
 		</div>
 		<section class="form-body" style="padding-top: 10px;">
 			<div class="row">
-				<div class="span11" >
-					<div class="control-group" style="margin-top: 10px;">
-						<label class="control-label" for="inputEmail">Title / Heading</label>
+				<div class="span11" style="padding-left: 10px; width: 680px;  ">
+					<div class="scroll-pane">
+						<fieldset style="margin-top: 20px;">
+							<legend>Details</legend>
 
-						<div class="controls">
-							<input type="text" id="inputEmail" placeholder="Title / Heading" class="span8" value="{{ details['title'] }}">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputEmail">Synopsis</label>
+							<div class="control-group" >
+								<label class="control-label" for="inputEmail">Title / Heading</label>
 
-						<div class="controls">
-							<textarea type="text" id="inputEmail" placeholder="Synopsis" class="span8" style="height:100px">{{ details['synopsis'] }}</textarea>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputEmail">Article</label>
-
-						<div class="controls">
-							<textarea id="article" name="article" placeholder="Article" class="span8 editor" style="height:100px">{{ details['synopsis'] }}</textarea>
-
-							<div id="editor">
+								<div class="controls">
+									<input type="text" id="title" name="title"  placeholder="Title / Heading" class="span8" value="{{ details['title'] }}">
+								</div>
 							</div>
-						</div>
+							<div class="control-group">
+								<label class="control-label" for="inputEmail">Synopsis</label>
+
+								<div class="controls">
+									<textarea  id="synopsis" name="synopsis" placeholder="Synopsis" class="span8" style="height:100px">{{ details['synopsis_form']|raw }}</textarea>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="inputEmail">Article</label>
+
+								<div class="controls">
+
+									<div id="article-box">
+										{{ details['article_form']|raw }}
+									</div>
+
+								</div>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend>Files</legend>
+							<div class="control-group">
+								<label class="control-label" for="inputEmail">Files</label>
+
+
+							</div>
+						</fieldset>
+
 					</div>
+
+
 				</div>
-				<div class="span4 pull-right" id="capture-form-sidebar" >
+				<div class="span4 pull-right" id="capture-form-sidebar">
 					<h4>Category</h4>
 
 
-						{% for row in categories %}
-							<label class="radio">
-								<input type="radio" name="categoryID" id="categoryID" value="{{ row['ID'] }}" {% if (details['ID'] and details['categoryID'] == row['ID']) or (details['ID']=='' and settings['categoryID']==row['ID'])  %}checked='checked'{% endif %}> {{ row['category'] }}
-							</label>
-						{% endfor %}
-<h4 style="margin-top:20px;">Authors</h4>
+					{% for row in categories %}
+						<label class="radio">
+							<input type="radio" name="categoryID" id="categoryID" value="{{ row['ID'] }}" {% if (details['ID'] and details['categoryID'] == row['ID']) or (details['ID']=='' and settings['categoryID']==row['ID']) %}checked='checked'{% endif %}> {{ row['category'] }}
+						</label>
+					{% endfor %}
+					<h4 style="margin-top:20px;">Authors</h4>
 					<select style="width:92%" id="authorID" name="authorID">
 						<optgroup label="Authors">
 
@@ -54,7 +70,6 @@
 
 
 							<option selected="selected" value="2">William Stam</option>
-
 
 
 						</optgroup>
@@ -66,58 +81,34 @@
 
 		</section>
 	</fieldset>
-			</div>
-		</div>
 
-		<div class="form-actions form-footer">
-			<div class="row r">
+
+	<div class="form-actions form-footer">
+		<div class="row r">
+			<% if (this.ID) { %>
+			<div style="float:left; margin-left:10px; padding-top: 3px;">
+				<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+
+			</div>
+			<% } %>
+			<div style="float:right; margin-right: 10px;">
 				<% if (this.ID) { %>
-				<div style="float:left; margin-left:10px; padding-top: 3px;">
-					<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
 
-				</div>
-				<% } %>
-				<div style="float:right; margin-right: 10px;">
-					<% if (this.ID) { %>
+				<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this article" data-position="above">
+					<i class="icon-fullscreen icon-d-grey"></i></button>
+				<a href="/nf/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above">
+					<i class="icon-list-alt icon-d-grey"></i></a>
+				<a href="/nf/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
+					<i class="icon-plus"></i></a> <% } %>
+				<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
 
-					<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.ID %>" rel="tooltip" title="View this article" data-position="above">
-						<i class="icon-fullscreen icon-d-grey"></i></button>
-					<a href="/nf/#scrollTo=<%= this.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Provisional List" data-position="above">
-						<i class="icon-list-alt icon-d-grey"></i></a>
-					<a href="/nf/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
-						<i class="icon-plus"></i></a>
-					<% } %>
-					<button class="btn btn-primary span4 " style="" type="submit" >Save Record</button>
-
-				</div>
 			</div>
-
 		</div>
 
-
-]]>
-</script>
-
-<script type="text/x-jqote-template" id="template-modal-form">
-	<![CDATA[
-	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
-
-		<h3>Completed</h3></div>
-	<div class='modal-body'>
-		<article class="c">
-			<img src="/ui/_images/success.png" alt="Success">
-
-
-		</article>
 	</div>
-	<div class='modal-footer'>
-		<div class="btn-group c" style="margin-left: 7px;">
-			<a href="/nf/form/" class="btn span3" id="modal-btn-new">New Record</a>
-			<a data-id="<%= this.ID %>" class="btn span3 view-record-btn">View Record</a>
-			<a href="/nf/#scrollTo=<%= this.ID %>" class="btn span3">Go to list</a>
 
-		</div>
-	</div>
+
+
 
 	]]>
 </script>

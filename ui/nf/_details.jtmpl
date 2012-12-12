@@ -14,6 +14,7 @@
 			<small style="margin-left:10px;"><%= this.type %></small>
 
 		</h3>
+		<a href="/nf/form/<%= this.ID %>">edit</a>
 		<div class="modal-header-right" style="width:193px;">
 			<h3>
 				<div class="s" style="line-height: 1; margin-bottom:-5px;"><%= this.author %></div>

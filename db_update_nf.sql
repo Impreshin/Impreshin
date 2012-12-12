@@ -255,6 +255,8 @@ ALTER TABLE `nf_articles_edits` ADD `percent` TINYINT( 3 ) NULL DEFAULT NULL AFT
 ALTER TABLE `nf_articles_edits` ADD `percent_orig` TINYINT( 3 ) NULL DEFAULT NULL AFTER `percent`;
 ALTER TABLE `nf_articles_edits` CHANGE `stage` `stageID` INT( 6 ) NULL DEFAULT NULL;
 
+ALTER TABLE `nf_stages` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `ID`;
+ALTER TABLE `nf_stages` ADD INDEX ( `cID` );
 
 
 

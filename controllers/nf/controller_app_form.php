@@ -59,6 +59,11 @@ class controller_app_form {
 			$settings['categoryID'] = $categories[0]['ID'];
 		}
 
+		$details['synopsis_form'] = rev_nl2br($details['synopsis']);
+		$details['article_form'] = rev_nl2br($details['article']);
+
+		//test_array($details['article_form']);
+
 
 		$tmpl->settings  = $settings;
 		$tmpl->details  = $details;
@@ -69,6 +74,20 @@ class controller_app_form {
 
 		$tmpl->output();
 
+	}
+	function article(){
+		$ID = F3::get('PARAMS["ID"]');
+		$detailsO = new models\articles();
+		$details = $detailsO->get($ID);
+
+		$tmpl = new \template("template.tmpl", "ui/nf/");
+		$tmpl->page = array(
+			"section"     => "form",
+			"sub_section" => "form",
+			"template"    => "page_app_form_article"
+
+		);
+		$tmpl->output();
 	}
 
 

@@ -397,6 +397,7 @@ $app->route('GET /nf/provisional', 'access; last_page; controllers\nf\controller
 $app->route('GET /nf/production', 'access; last_page; controllers\nf\controller_app_production->page');
 $app->route('GET /nf/form', 'access; last_page; controllers\nf\controller_app_form->page');
 $app->route('GET /nf/form/@ID', 'access; last_page; controllers\nf\controller_app_form->page');
+$app->route('GET /nf/form/article/@ID', 'access; last_page; controllers\nf\controller_app_form->article');
 
 $app->route('GET|POST /nf/records12345', function () use ($app) {
 		include_once("old_to_new/nf.php");

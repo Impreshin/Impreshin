@@ -23,6 +23,69 @@
 	background-color : #f1f1f1;
 }
 
+
 .cke_button.cke_button__source .cke_button_label{
 	display : none;
+}
+
+.cke_top {
+	position: relative;
+}
+
+ .scroll-pane {
+	bottom : 42px!important;
+	top    : 0px !important;
+	right  : 241px !important;
+	left   : 20px !important;
+}
+#article-box {
+	min-height: 200px;
+	cursor : pointer;
+	background-color   : #fff;
+	border             : 1px solid #ccc;
+	-webkit-box-shadow : inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow    : inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow         : inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-webkit-transition : border linear .2s, box-shadow linear .2s;
+	-moz-transition    : border linear .2s, box-shadow linear .2s;
+	-o-transition      : border linear .2s, box-shadow linear .2s;
+	transition         : border linear .2s, box-shadow linear .2s;
+	margin-left: 0px;
+	padding: 4px 6px;
+	width:456px;
+	border-radius : 4px 4px 4px 4px;
+}
+#article-box-placeholder {
+	color : #999;
+
+}
+#modal-form-article .modal-body {
+	padding: 0;
+	max-height: 600px;
+
+}
+
+#modal-form-article .modal-header {
+	border-bottom:none;
+}
+#modal-form-article .modal-footer {
+	border-top:none;
+}
+
+#modal-form-article .cke_button.cke_button__source .cke_button_label {
+
+}
+
+#modal-form-article #cke_31, #modal-form-article  #cke_33 {
+
+	position : absolute;
+
+}
+
+#modal-form-article #cke_31 {
+	right : 3px;
+}
+
+#modal-form-article #cke_33 {
+	right : 38px;
 }

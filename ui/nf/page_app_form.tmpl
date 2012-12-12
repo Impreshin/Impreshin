@@ -46,7 +46,14 @@
 
 </section>
 
-<div id='modal-form' class='modal hide fade'>
+<div id='modal-form-article' class='modal hide wide fade'>
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+		<h3>Article <small style="margin-left: 30px;">Words: <span id="modal-form-article-words"></span></small></h3>
+	</div>
+	<div class='modal-body' style="width: 920px; ">
+			<textarea name="article" id="article" cols="30" rows="10" style="width: 890px; height: 400px;" placeholder="Article">{{ details['article']|raw }}</textarea>
+
+	</div>
 
 </div>
 
