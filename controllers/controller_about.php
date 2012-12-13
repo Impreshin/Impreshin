@@ -12,6 +12,7 @@ class controller_about {
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
 			"section"    => "about",
+			"sub_section"    => "about",
 			"template"   => "page_about",
 			"meta"       => array(
 				"title"=> "About",
