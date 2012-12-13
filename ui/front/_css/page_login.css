@@ -15,3 +15,12 @@
 #login-form legend {
 	margin-bottom: 0;
 }
+#newsflash {
+	position: absolute;
+	bottom:0px;
+	padding: 10px;
+	border-top: 1px dotted #ccc;
+	text-align : center;
+
+
+}
