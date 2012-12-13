@@ -13,3 +13,12 @@
 	margin-left:10px;
 
 }
+#awards li {
+	margin-top: 5px;
+	border-bottom: 1px dotted #ccc;
+	padding-bottom: 5px;
+}
+.goaway {
+	width: 0px;
+	display: none;
+}
