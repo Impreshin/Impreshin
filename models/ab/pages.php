@@ -53,7 +53,7 @@ class pages {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT global_pages.*, section, section_colour,  COALESCE((SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID),0) as cm
+			SELECT global_pages.*, section, section_colour,  COALESCE((SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1'),0) as cm
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby

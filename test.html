@@ -1,132 +1,69 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>Requested URL is blocked by Content Security 2.0 for Squid Proxy Server</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<style type="text/css">
+	<title>App</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-			/** BASIC */
-		body {
-			margin           : 0px;
-			padding          : 0px;
-			background-color : #FF0000;
-		}
 
-			/** HEADINGS */
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-		h1 {
-			margin : 10px;
-		}
 
-			/** TEXTS */
-		body, th, td, input, textarea, select {
-			font-family : "Tahoma", Arial, Helvetica, sans-serif;
-			font-size   : 18px;
-			color       : #707070;
-		}
 
-		.text1 {
-			font-size   : 32px;
-			font-weight : normal;
-			color       : #008EBF;
-		}
 
-		.text2 {
-			font-weight : normal;
-			color       : #000000;
-		}
-
-		.text6 {
-			font-size   : 21px;
-			font-weight : normal;
-			color       : red;
-		}
-
-		.text7 {
-			font-size   : 21px;
-			font-weight : normal;
-			color       : #008EBF;
-		}
-		#content {
-			box-shadow: 10px 10px #ccc;
-			background-color: #ffffff;
-		}
-	</style>
 </head>
-<body class="bg1">
-<span id="content" >
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<body>
 
-		<tr>
-			<td>
-				<table border="0" align="center" cellpadding="0" cellspacing="0" width="800">
-					<tr>
-						<td><h2 class="text6">WARNING: requested page is BLOCKED and cannot be retrieved!</h2>
+<form action="#"><textarea name="data" id="data" cols="30" rows="10"></textarea><button type="submit">go go power rangers</button></form>
+<hr>
+<div id="result"></div>
 
-							<h2 class="text7">The requested URL contains
-								<font color="red">inappropriate contents</font>; access to this page was blocked!
-							</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 
-							<table bgcolor='lightgrey' width='100%'>
-								<tr>
-									<td><strong>Incident ID</strong></td>
-									<td><font color="red">{{INCIDENT}}</font></td>
-								</tr>
-								<tr>
-									<td><strong>Requested URI</strong></td>
-									<td><font color="red">{{URI}}</font></td>
-								</tr>
-								<tr>
-									<td><strong>Scan Duration</strong></td>
-									<td><font color="red">{{DURATION}}</font> milliseconds</td>
-								</tr>
-								<tr>
-									<td><strong>Detection Module</strong></td>
-									<td><font color="red">{{MODULE}}</font></td>
-								</tr>
-								<tr>
-									<td><strong>Detection Results</strong></td>
-									<td><font color="red">{{RESULT_ID}}</font></td>
-								</tr>
-								<tr>
-									<td><strong>Detection Info</strong></td>
-									<td><font color="red">{{RESULT_INFO}}</font></td>
-								</tr>
-								<tr>
-									<td><strong>Version</strong></td>
-									<td>{{VERSION}}</td>
-								</tr>
-								<tr>
-									<td><strong>Server</strong></td>
-									<td>{{SERVERNAME}}</td>
-								</tr>
-								<tr>
-									<td><strong>Date</strong></td>
-									<td>{{TIMESTAMP}}</td>
-								</tr>
-								<tr>
-									<td><strong>User Identified As</strong></td>
-									<td>{{USER_NAME}}</td>
-								</tr>
-								<tr>
-									<td><strong>User Address Is</strong></td>
-									<td>{{USER_IP}}</td>
-								</tr>
-								<tr>
-									<td><strong>Matched Policy</strong></td>
-									<td>{{POLICY}}</td>
-								</tr>
-							</table>
+<script type="text/javascript">
+	String.prototype.chunk = function (n) {
+		var ret = [];
+		for (var i = 0, len = this.length; i < len; i += n) {
+			ret.push(this.substr(i, n))
+		}
+		return ret
+	};
 
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</span>
+	$(document).ready(function () {
+
+
+
+		$("form").submit(function(e){
+			e.preventDefault();
+			var d = $("#data").val();
+			d = "a a b v n n m k l l 4 4 6 7 u u i i n n k m p p";
+			d = d.split(" ");
+
+			var output = $.map(d,function(v, k) {
+				if (k % 2 == 0) {
+
+					if (v == d[k + 1]) {
+						return "1";
+					} else {
+						return "0";
+					}
+				}
+			}).join("").chunk(4).join(' ');
+
+
+
+			$("#result").html(output);
+
+			return false;
+		})
+	});
+</script>
+
+
 
 </body>
 </html>
-
