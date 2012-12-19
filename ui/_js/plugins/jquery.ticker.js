@@ -310,7 +310,7 @@
 					if (opts.displayType == 'fade') {
 						// fade in effect ticker
 						$(settings.dom.revealID).hide(0, function () {
-							$(settings.dom.contentID).css(opts.direction, offset + 'px').fadeIn(opts.fadeInSpeed, postReveal);
+							$(settings.dom.contentID).fadeIn(opts.fadeInSpeed, postReveal);
 						});						
 					}
 					else if (opts.displayType == 'scroll') {
