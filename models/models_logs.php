@@ -4,23 +4,25 @@
  * Time: 9:24 AM
  */
 namespace models;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class logs {
 
-	public static function getAllContent($contentID,$returnshort=false){
+	public static function getAllContent($contentID, $returnshort = false) {
 		$timer = new timer();
 
 		$return = F3::get("DB")->sql("SELECT mp_logs.*, mp_users.name  FROM mp_logs LEFT JOIN mp_users ON mp_logs.userID = mp_users.ID WHERE contentID = '$contentID' ORDER BY datein DESC");
 
-		if ($returnshort){
+		if ($returnshort) {
 			$a = array();
-			foreach($return as $record){
+			foreach ($return as $record) {
 				$a[] = array(
-					"d"=> $record['datein'],
-					"t"=> $record['text'],
-					"n"=> $record['name']
+					"d" => $record['datein'],
+					"t" => $record['text'],
+					"n" => $record['name']
 				);
 			}
 			$return = $a;
@@ -31,13 +33,18 @@ class logs {
 		return $return;
 	}
 
-	public static function save($id=array("contentID"=>"","commentID"=>"","meetingID"=>"","companyID"=>"","answerID"=>""),$text="",$userID=""){
+	public static function save($id = array(
+		"contentID" => "",
+		"commentID" => "",
+		"meetingID" => "",
+		"companyID" => "",
+		"answerID"  => ""
+	), $text = "", $userID = "") {
 		$timer = new timer();
-		if (!$userID){
+		if (!$userID) {
 			$user = F3::get("user");
 			$userID = $user['ID'];
 		}
-
 
 
 		$c = new Axon("mp_logs");

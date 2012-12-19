@@ -16,43 +16,27 @@ $(document).ready(function () {
 
 		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
 
-
 		$.bbq.pushState({"highlight":highlight});
 		load_pages();
 
 	});
 
-
-
-
-	$(document).on("click","#reload-btn",function(){
+	$(document).on("click", "#reload-btn", function () {
 		load_pages();
 	});
 
-
-
-
-
-
-
-
-
-	$(document).on("click","#dummy-bottom .page",function(){
-		var $this=$(this);
+	$(document).on("click", "#dummy-bottom .page", function () {
+		var $this = $(this);
 		var page = "#dummy-area .pages[data-page='" + $this.attr("data-page_nr") + "']";
-		if ($("#dummy-area .pages[data-page='" + $this.attr("data-page_nr") + "']").length){
+		if ($("#dummy-area .pages[data-page='" + $this.attr("data-page_nr") + "']").length) {
 			whole_pane.scrollToElement(page, true, true);
 		}
 
-
 	});
-
-
-
 
 	load_pages();
 });
-function dummy_resize(settings){
+function dummy_resize(settings) {
 	$("#dummy-area").css("bottom", $("#dummy-bottom").outerHeight());
 	if (settings && settings.maintain_position) {
 		$("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
@@ -60,10 +44,8 @@ function dummy_resize(settings){
 		whole_pane.reinitialise();
 	}
 
-
-
 }
-function load_pages(settings){
+function load_pages(settings) {
 
 	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
 	highlight = (highlight) ? highlight : "";
@@ -83,9 +65,6 @@ function load_pages(settings){
 		} else {
 
 		}
-
-
-
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 		dummy_resize(settings);

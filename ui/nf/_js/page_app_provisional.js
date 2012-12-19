@@ -8,10 +8,10 @@ $(document).ready(function () {
 	scrolling(api);
 
 
-	var highlight = $.bbq.getState("highlight");
-	highlight = (highlight) ? highlight : "checked";
-	var filter = $.bbq.getState("filter");
-	filter = (filter) ? filter : "*";
+	var stage = $.bbq.getState("stage");
+	stage = (stage) ? stage : "all";
+	var status = $.bbq.getState("status");
+	status = (status) ? status : "*";
 
 	$("select#authorID").select2().on("change", function () {
 		getList();
@@ -23,13 +23,13 @@ $(document).ready(function () {
 		$("#settings-modal").modal('show');
 	}
 
-	if ($.bbq.getState("highlight")) {
-		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
-		$("#list-highlight-btns button[data-highlight='"+ highlight+"']").addClass("active");
+	if ($.bbq.getState("stage")) {
+		$("#list-stage-btns button[data-stage].active").removeClass("active");
+		$("#list-stage-btns button[data-stage='"+ stage+"']").addClass("active");
 	}
-	if ($.bbq.getState("filter")) {
-		$("#list-filter-btns button[data-filter].active").removeClass("active");
-		$("#list-filter-btns button[data-filter='"+ filter+"']").addClass("active");
+	if ($.bbq.getState("status")) {
+		$("#list-status-btns button[data-status].active").removeClass("active");
+		$("#list-status-btns button[data-status='"+ status+"']").addClass("active");
 	}
 
 
@@ -50,7 +50,7 @@ $(document).ready(function () {
 		$(this).closest("li").addClass("active");
 	});
 
-	$(document).on('hide', '#ab-details-modal', function () {
+	$(document).on('hide', '#nf-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
@@ -123,17 +123,21 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button", function (e) {
+	$(document).on("click", "#list-stage-btns button, #list-status-btns button, #list-newsbook-btns", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
-		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-		highlight = (highlight) ? highlight : "checked";
-		var filter = $("#list-filter-btns button.active").attr("data-filter");
-		filter = (filter) ? filter : "*";
+		var stage = $("#list-stage-btns button.active").attr("data-stage");
+		stage = (stage) ? stage : "all";
+
+		var status = $("#list-status-btns button.active").attr("data-status");
+		status = (status) ? status : "*";
+
+		var newsbook = $("#list-newsbook-btns button.active").attr("data-val");
+		newsbook = (newsbook) ? newsbook : "*";
 
 
-		$.bbq.pushState({"highlight":highlight,"filter":filter});
+		$.bbq.pushState({"stage":stage,"status":status,"newsbook":newsbook});
 		getList();
 
 	});
@@ -216,16 +220,29 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder)? groupOrder:"";
 
-	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-	highlight = (highlight)? highlight: "";
-	var filter = $("#list-filter-btns button.active").attr("data-filter");
-	filter = (filter)? filter: "";
+	var stage = $("#list-stage-btns button.active").attr("data-stage");
+	stage = (stage)? stage: "";
+	var status = $("#list-status-btns button.active").attr("data-status");
+	status = (status)? status: "";
+	var newsbook = $("#list-newsbook-btns button.active").attr("data-val");
+	newsbook = (newsbook)? newsbook: "current";
+
+	var authorID = $("#authorID").val();
+	authorID = (authorID)? authorID: "";
+
+	$("#maintoolbar-date").html('Loading...');
 
 	var orderingactive = (order)?true:false;
 
+	if (newsbook=='all'){
+		$("#list-stage-btns button, #list-status-btns button").attr("disabled","disabled");
+	} else {
+		$("#list-stage-btns button, #list-status-btns button").removeAttr("disabled");
+	}
+
 	$("#whole-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order},function(data){
+	listRequest.push($.getJSON("/nf/data/provisional/_list",{"group": group,"groupOrder":groupOrder, "stage":stage, "status":status, "order": order, "newsbook":newsbook},function(data){
 		data = data['data'];
 
 
@@ -238,11 +255,23 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
+		//$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 
 
+		var stages = data['stats']['stages'];
+		var $list_stage_btns = $("#list-stage-btns");
+		$.each(stages,function(k,v){
+			$list_stage_btns.find("button[data-stage='"+k+"'] span.count").text("("+v['count']+")");
+		});
 
+		$("#maintoolbar-date").html(data['date']);
+
+		if (data['newsbook'] == 'all') {
+			$("#list-stage-btns button, #list-status-btns button").attr("disabled", "disabled");
+		} else {
+			$("#list-stage-btns button, #list-status-btns button").removeAttr("disabled");
+		}
 
 
 		var $scrollpane = $("#whole-area .scroll-pane");
@@ -273,7 +302,7 @@ function getList(settings) {
 			}
 
 
-			if (!$("#ab-details-modal").is(":visible")) {
+			if (!$("#nf-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

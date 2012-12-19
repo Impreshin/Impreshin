@@ -3,7 +3,7 @@
  */
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
-$(document).ready(function(){
+$(document).ready(function () {
 	getList();
 	getDetails();
 	$(document).on("click", ".pagination a", function (e) {
@@ -37,9 +37,6 @@ $(document).ready(function(){
 		return false;
 	});
 
-
-
-
 	$(document).on("click", "#reload-btn", function () {
 		getList();
 		getDetails();
@@ -50,7 +47,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to delete this account status?")){
+		if (confirm("Are you sure you want to delete this account status?")) {
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_accounts_status/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
@@ -71,8 +68,8 @@ $(document).ready(function(){
 		$("#left-area .loadingmask").show();
 		$.post("/ab/save/admin_accounts_status/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
-			if (r['error'].length){
-				var str="";
+			if (r['error'].length) {
+				var str = "";
 				for (var i in r['error']) {
 					str += '<div class="alert alert-error">' + r['error'][i] + '</div>'
 				}
@@ -85,7 +82,6 @@ $(document).ready(function(){
 				getList();
 				getDetails();
 			}
-
 
 		});
 		return false;
@@ -121,23 +117,18 @@ $(document).ready(function(){
 
 	});
 
-
 });
 
-function getList(){
-
+function getList() {
 
 	var ID = $.bbq.getState("ID");
-
 
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
 
-
-
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_accounts_status/_list",{"order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_accounts_status/_list", {"order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -152,47 +143,41 @@ function getList(){
 		}
 
 		$recordsList.find("tbody").sortable({
-			'axis':"y",
+			'axis'       :"y",
 			'containment':"#record-list-middle",
-			update:function (event, ui) {
+			update       :function (event, ui) {
 				var rec = [];
-				$("#record-list tr").each(function(){
+				$("#record-list tr").each(function () {
 					rec.push($(this).attr("data-id"));
 				});
 				rec = rec.join(",");
 
-
-				$.post("/ab/save/admin_accounts_status/_sort/", {"order":rec},function(t){
+				$.post("/ab/save/admin_accounts_status/_sort/", {"order":rec}, function (t) {
 
 				});
 			}
 		});
 		$recordsList.find("tbody").disableSelection();
 
-
-
-		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() );
+		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight());
 		$("#record-list-middle").jScrollPane(jScrollPaneOptions);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 
 	}));
 
 }
-function getDetails(){
+function getDetails() {
 	var ID = $.bbq.getState("ID");
-
 
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
-
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
 	detailsRequest.push($.getJSON("/ab/data/admin_accounts_status/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
-
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 

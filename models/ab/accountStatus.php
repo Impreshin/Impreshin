@@ -1,11 +1,14 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class accountStatus {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
@@ -24,8 +27,7 @@ class accountStatus {
 			FROM ab_accounts_status
 			WHERE ab_accounts_status.ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -33,13 +35,15 @@ class accountStatus {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		if ($where) {
@@ -53,8 +57,6 @@ class accountStatus {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT * FROM ab_accounts_status
 			$where
@@ -63,9 +65,10 @@ class accountStatus {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function save($ID, $values) {
 		$user = F3::get("user");
 		$timer = new timer();
@@ -76,7 +79,7 @@ class accountStatus {
 		$a = new Axon("ab_accounts_status");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -97,7 +100,7 @@ class accountStatus {
 
 		\models\logging::_log("accounts_status", $label, $values, $old);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -114,15 +117,10 @@ class accountStatus {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}
-
-
-
 
 
 	private static function dbStructure() {

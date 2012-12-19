@@ -4,6 +4,7 @@
  * Time: 11:29 AM
  */
 namespace models;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
@@ -24,19 +25,18 @@ class user {
 				SELECT global_users.*
 				FROM global_users
 				WHERE global_users.ID = '$ID'
-			"
-		);
+			");
 		if (count($result)) {
 			$result = $result[0];
 		} else {
 			$result = $this->dbStructure();
 		}
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $result;
 	}
 
-	private static function appSettings($uID,$app, $pID){
+	private static function appSettings($uID, $app, $pID) {
 
 		$table = $app . "_users_settings";
 		$data = F3::get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
@@ -46,7 +46,7 @@ class user {
 		if (count($data)) {
 			$data = $data[0];
 			$user_settings = @unserialize($data['settings']);
-			if ($user_settings){
+			if ($user_settings) {
 				$user_settings = array_replace_recursive((array)$defaults, (array)($user_settings) ? $user_settings : array());
 			} else {
 				$user_settings = $defaults;
@@ -56,57 +56,54 @@ class user {
 
 		} else {
 			$data = array(
-				"settings"     => $defaults,
-				"pID"          => "",
-				"last_activity"=> ""
+				"settings"      => $defaults,
+				"pID"           => "",
+				"last_activity" => ""
 			);
 		}
 		$return = array(
-			"settings"     => $data['settings'],
-			"last_activity"=> $data['last_activity'],
-			"access"=>false,
-			"permissions"=> array(),
-			"extra"=>array()
+			"settings"      => $data['settings'],
+			"last_activity" => $data['last_activity'],
+			"access"        => false,
+			"permissions"   => array(),
+			"extra"         => array()
 		);
-
-
 
 
 		$appstuff = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') ORDER BY ID DESC LIMIT 0,1");
 
 
-
-
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
 
-		//	test_array($appstuff);
-			$return['access'] = ($appstuff[$app]=='1')?true:false;
-			$return['permissions']= $appstuff[$app.'_permissions'];
+			//	test_array($appstuff);
+			$return['access'] = ($appstuff[$app] == '1') ? true : false;
+			$return['permissions'] = $appstuff[$app . '_permissions'];
 
 
 			$e = array();
-			foreach (array_keys($appstuff) as $value){
-				if (substr($value,0,3)==$app."_"){
+			foreach (array_keys($appstuff) as $value) {
+				if (substr($value, 0, 3) == $app . "_") {
 					$e[$value] = $appstuff[$value];
 				}
 			}
-			unset($e[$app."_permissions"]);
+			unset($e[$app . "_permissions"]);
 
 
 			$return['extra'] = $e;
 		}
 
-	  $return['permissions'] = $permissionsClass::_read($return['permissions']);
+		$return['permissions'] = $permissionsClass::_read($return['permissions']);
 
 		return $return;
 	}
+
 	public function user($user = "") {
 		$timer = new timer();
 		$app = F3::get("app");
 		$cfg = F3::get("cfg");
 		$result = array();
-		
+
 		if (!is_array($user)) {
 			$user = $this->get($user);
 		}
@@ -116,38 +113,28 @@ class user {
 
 		$uID = $user['ID'];
 		$appSpecific = array();
-		foreach ($cfg['apps'] as $avapp){
-
-
+		foreach ($cfg['apps'] as $avapp) {
 
 
 		}
 
 
-
-
 		if ($app && $user['ID']) {
-
-
 
 
 			$table = $app . "_users_settings";
 			$lastpID = F3::get("DB")->exec("SELECT pID FROM $table WHERE uID = '$uID'");
-			if (count($lastpID)){
+			if (count($lastpID)) {
 				$lastpID = $lastpID[0]['pID'];
 			} else {
 				$lastpID = "";
 			}
 
 
-
-
-
-
 			if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $lastpID) {
 				$appClass = "\\models\\" . $app . "\\user_settings";
 				$appO = new $appClass();
-				$appClass::save_config(array("pID"=> $_GET['apID']), $result['ID']);
+				$appClass::save_config(array("pID" => $_GET['apID']), $result['ID']);
 				$lastpID = $_GET['apID'];
 			}
 
@@ -178,9 +165,10 @@ class user {
 
 			$companyObject = new company();
 			$company = $companyObject->get($publication['cID']);
-			
 
-			if ($company[$app]!='1'){
+
+			//test_array($company);
+			if (isset($company[$app]) && $company[$app] != '1') {
 				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
 
@@ -188,7 +176,6 @@ class user {
 			$result['publications'] = $publications;
 			$result['publication'] = $publication;
 			$result['company'] = $company;
-
 
 
 			$appSettings = self::appSettings($uID, $app, $pID);
@@ -200,8 +187,8 @@ class user {
 			$result['settings'] = $appSettings['settings'];
 
 
-			if (!$appSettings['access'] && $result['su']!='1') {
-				F3::reroute("/noaccess/?app=$app&cID=". $publication['cID']);
+			if (!$appSettings['access'] && $result['su'] != '1') {
+				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
 
 			if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) $result['ab_marketerID'] = $appSettings['extra']['ab_marketerID'];
@@ -211,7 +198,7 @@ class user {
 			//unset($result[$app . '_permissions']);
 
 			if ($app == "ab") {
-				if (isset($appSettings['extra']['ab_marketerID'])&& $appSettings['extra']['ab_marketerID']){
+				if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) {
 					$marketer = \models\ab\marketers_targets::_current($appSettings['extra']['ab_marketerID'], $result['publication']['ID']);
 				} else {
 					$marketer = array();
@@ -223,24 +210,18 @@ class user {
 			}
 
 
-
-			
-
 			if ($result['su'] == '1') {
 				$appClass = "\\models\\" . $app . "\\user_permissions";
 				$permissions = $appClass::permissions();
 				$permissions = $permissions['p'];
 				array_walk_recursive($permissions, function (& $item, $key) {
 						$item = "1";
-					}
-				);
+					});
 			} else {
 				$permissions = $appSettings['permissions'];
 
 
 			}
-
-
 
 
 			$permissions['administration']['_nav'] = '0';
@@ -251,13 +232,13 @@ class user {
 				if ($p['page']) $permissions['administration']['_nav'] = '1';
 			}
 			$permissions['reports']['_nav'] = '0';
-			foreach ($permissions['reports'] as $k=> $p) {
+			foreach ($permissions['reports'] as $k => $p) {
 
 				if (isset($p['page']) && $p['page']) $permissions['reports']['_nav'] = '1';
 
 
 				if (is_array($p)) {
-					foreach ($p as $s=> $ps) {
+					foreach ($p as $s => $ps) {
 						if (isset($ps['page']) && $ps['page']) {
 							$permissions['reports'][$k]['_nav'] = '1';
 							$permissions['reports']['_nav'] = '1';
@@ -266,7 +247,6 @@ class user {
 				}
 
 			}
-
 
 
 			if ($app == "ab") {
@@ -278,7 +258,7 @@ class user {
 				if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
 					$permissions['reports']['_nav'] = '1';
 					$permissions['reports']['marketer']['_nav'] = '1';
-					foreach ($permissions['reports']['marketer'] as $k=> $p) {
+					foreach ($permissions['reports']['marketer'] as $k => $p) {
 						$permissions['reports']['marketer'][$k]['spage'] = '1';
 
 					}
@@ -287,13 +267,7 @@ class user {
 			}
 
 
-
-
-
-
 			$result['permissions'] = $permissions;
-
-
 
 
 		} else {
@@ -309,7 +283,7 @@ class user {
 		//test_array($result);
 
 		$return = $result;
-		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -330,8 +304,7 @@ class user {
 
 		$result = F3::get("DB")->exec("
 			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password_hash'
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -346,7 +319,7 @@ class user {
 		}
 
 		$return = $ID;
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -379,7 +352,7 @@ class user {
 
 
 		$result = F3::get("DB")->exec("
-			SELECT global_users.ID, fullName, email, last_app, last_activity, last_page, $apps_str
+			SELECT global_users.ID, fullName, email, last_app, last_activity, last_page, global_users_company.*, global_users.ID as ID, $apps_str
 			(SELECT COUNT(DISTINCT global_publications.ID) FROM ab_users_pub INNER JOIN global_publications ON ab_users_pub.pID = global_publications.ID WHERE ab_users_pub.uID =global_users.ID ) AS publicationCount,
 			(SELECT COUNT(DISTINCT global_companies.ID) FROM global_users_company INNER JOIN global_companies ON global_users_company.cID = global_companies.ID) AS companyCount
 
@@ -388,17 +361,16 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 			$where
 			 $orderby
 			 $limit
-		"
-		);
+		");
 
 
 		$return = $result;
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array( "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return $return;
 	}
 
@@ -419,7 +391,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$a = new Axon("global_users");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$a->$key = $value;
 		}
 
@@ -454,11 +426,12 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		}
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return $ID;
 	}
 
@@ -493,11 +466,12 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$p->save();
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return "done";
 	}
 
@@ -517,11 +491,12 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$p->save();
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return "done";
 	}
 
@@ -544,11 +519,12 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$p->save();
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return "done";
 	}
 
@@ -567,11 +543,12 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$p->$app = '0';
 		$p->save();
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,
-		                                    "Method"=> __FUNCTION__
-  )
-		             ), func_get_args()
-		);
+		$timer->stop(array(
+		                  "Models" => array(
+			                  "Class"  => __CLASS__,
+			                  "Method" => __FUNCTION__
+		                  )
+		             ), func_get_args());
 		return "done";
 	}
 

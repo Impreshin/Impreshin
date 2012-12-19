@@ -3,7 +3,7 @@
  */
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
-$(document).ready(function(){
+$(document).ready(function () {
 	getList();
 	getDetails();
 
@@ -23,7 +23,6 @@ $(document).ready(function(){
 
 	});
 
-
 	$(document).on("click", "#reload-btn", function () {
 		getList();
 		getDetails();
@@ -34,7 +33,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to remove this user from the company?")){
+		if (confirm("Are you sure you want to remove this user from the company?")) {
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_users/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
@@ -46,7 +45,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-add-app", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to allow access to Adverts?")){
+		if (confirm("Are you sure you want to allow access to Adverts?")) {
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_users/add_app/?ID=" + ID, function (r) {
 				getList();
@@ -57,7 +56,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-remove-app", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to remove access to Adverts?")){
+		if (confirm("Are you sure you want to remove access to Adverts?")) {
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_users/remove_app/?ID=" + ID, function (r) {
 				getList();
@@ -74,17 +73,17 @@ $(document).ready(function(){
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");
-		if (ID=="undefined"){
-			ID="";
+		if (ID == "undefined") {
+			ID = "";
 		}
-		if (!ID){
+		if (!ID) {
 			ID = "";
 		}
 		$("#left-area .loadingmask").show();
 		$.post("/ab/save/admin_users/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
-			if (r['exists']){
-				if (confirm("This user already exists. do you want to add them to the application / company?")){
+			if (r['exists']) {
+				if (confirm("This user already exists. do you want to add them to the application / company?")) {
 					$.post("/ab/save/admin_users/add_company/?ID=" + r['exists'], function () {
 						$.bbq.pushState({"ID":r['exists']});
 						getList();
@@ -98,8 +97,8 @@ $(document).ready(function(){
 
 				return false;
 			}
-			if (r['error'].length){
-				var str="";
+			if (r['error'].length) {
+				var str = "";
 				for (var i in r['error']) {
 					str += '<div class="alert alert-error">' + r['error'][i] + '</div>';
 				}
@@ -111,7 +110,6 @@ $(document).ready(function(){
 				getList();
 				getDetails();
 			}
-
 
 		});
 		return false;
@@ -129,10 +127,9 @@ $(document).ready(function(){
 
 	});
 
-
 });
 
-function getList(){
+function getList() {
 	var ID = $.bbq.getState("ID");
 
 	var order = $.bbq.getState("order");
@@ -140,7 +137,7 @@ function getList(){
 
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_users/_list",{"order":order}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_users/_list", {"order":order}, function (data) {
 		data = data['data'];
 
 		var $recordsList = $("#record-list");
@@ -153,21 +150,19 @@ function getList(){
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
-		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() );
+		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight());
 		right_pane.reinitialise();
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 
 	}));
 
 }
-function getDetails(){
+function getDetails() {
 	var ID = $.bbq.getState("ID");
-
 
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
-
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
 	detailsRequest.push($.getJSON("/ab/data/admin_users/_details", {"ID":ID}, function (data) {
@@ -176,7 +171,6 @@ function getDetails(){
 
 		$("#ab_marketerID").select2({});
 		$("#ab_productionID").select2({});
-
 
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#left-area .loadingmask").fadeOut(transSpeed);

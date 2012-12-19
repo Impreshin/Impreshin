@@ -68,8 +68,19 @@
 
 
 
+                {% if col['c'] == "title" %}
+                    <% if (this.records[i].type_labelClass){ %>
+                    <span class="label <%= this.records[i].type_labelClass %>" title="<%= this.records[i].type %>"></span>
+                    <% } else { %>
+                    <span style="padding:0 5px;"></span>
+                    <% } %>
+                {% endif %}
 
-					<% if (this.records[i].{{ col['c'] }}) { %><%= this.records[i].{{ col['c'] }} %><% } %>
+
+
+
+
+					<% if (this.records[i].{{ col['c'] }}) { %> <%= this.records[i].{{ col['c'] }} %><% } %>
 
 
 

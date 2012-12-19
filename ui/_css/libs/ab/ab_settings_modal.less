@@ -6,33 +6,32 @@
 		}
 	}
 	.side-col {
-		width:225px;
-		height:330px;
-		position: relative;
+		width    : 225px;
+		height   : 330px;
+		position : relative;
 
-		overflow: auto;
-		border:1px solid #ccc;
+		overflow : auto;
+		border   : 1px solid #ccc;
 		.scroll-pane {
-			position: absolute;
-			top : 0;
-			bottom : 0;
-			left : 0;
-			right : 0;
+			position : absolute;
+			top      : 0;
+			bottom   : 0;
+			left     : 0;
+			right    : 0;
 		}
 
 		ul {
-			margin: 0;
-			padding: 0;
+			margin  : 0;
+			padding : 0;
 			li {
-				display: block;
-				font-size : 10px;
-				margin    : 2px;
-				padding   : 1px;
-				display   : block;
-				border-bottom    : 1px dotted #ccc;
+				display       : block;
+				font-size     : 10px;
+				margin        : 2px;
+				padding       : 1px;
+				display       : block;
+				border-bottom : 1px dotted #ccc;
 			}
 		}
-
 
 	}
 	#selected-columns, #available-columns {
@@ -46,6 +45,14 @@
 		}
 
 	}
+	&.modal.wide {
 
+		.modal-body {
+			overflow : auto;
+			height   : 500px;
+			position: relative;
 
+		}
+
+	}
 }

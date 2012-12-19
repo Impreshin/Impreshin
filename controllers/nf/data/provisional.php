@@ -4,6 +4,7 @@
  * Date: 2012/05/31 - 4:01 PM
  */
 namespace controllers\nf\data;
+
 use \F3 as F3;
 use \timer as timer;
 use \models\nf as models;
@@ -21,10 +22,9 @@ class provisional extends data {
 
 	function _list() {
 		$user = F3::get("user");
-		$userID = $user['ID'];
+		$uID = $user['ID'];
 		$pID = $user['pID'];
-
-
+		$cID = $user['company']['ID'];
 
 
 		$currentDate = $user['publication']['current_date'];
@@ -35,22 +35,21 @@ class provisional extends data {
 		$settings = models\settings::_read($section);
 
 
-
-
-		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
+		$grouping_g = (isset($_REQUEST['group']) && $_REQUEST['group'] != "") ? $_REQUEST['group'] : $settings['group']['g'];
 		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
 
 		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
 		$ordering_d = $settings['order']['o'];
 
 
-		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
-		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+		$stage = (isset($_REQUEST['stage']) && $_REQUEST['stage'] != "") ? $_REQUEST['stage'] : $settings['stage'];
+		$status = (isset($_REQUEST['status']) && $_REQUEST['status'] != "") ? $_REQUEST['status'] : $settings['status'];
+		$newsbook = (isset($_REQUEST['newsbook']) && $_REQUEST['newsbook'] != "") ? $_REQUEST['newsbook'] : $settings['newsbook'];
 
 
-		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
-			if ($settings['order']['c'] == $_REQUEST['order']){
-				if ($ordering_d=="ASC"){
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
+			if ($settings['order']['c'] == $_REQUEST['order']) {
+				if ($ordering_d == "ASC") {
 					$ordering_d = "DESC";
 				} else {
 					$ordering_d = "ASC";
@@ -61,65 +60,87 @@ class provisional extends data {
 		}
 
 		$grouping = array(
-			"g"=> $grouping_g,
-			"o"=> $grouping_d
+			"g" => $grouping_g,
+			"o" => $grouping_d
 		);
 		$ordering = array(
-			"c"=> $ordering_c,
-			"o"=> $ordering_d
+			"c" => $ordering_c,
+			"o" => $ordering_d
 		);
 
 		$values = array();
 		$values[$section] = array(
-			"group"=> $grouping,
-			"order"=> $ordering,
-
-			"highlight"=> $highlight,
-			"filter"=>$filter
+			"group"  => $grouping,
+			"order"  => $ordering,
+			"stage"  => $stage,
+			"status" => $status,
+			"newsbook" => $newsbook
 
 		);
-		test_array($values);
+
 
 		models\user_settings::save_setting($values);
 
-
-		//print_r($values);
-		//exit();
 		$orderby = " client ASC";
 		$arrange = "";
 		$return = array();
+		$where = "(nf_articles.cID = '$cID') AND nf_articles.deleted is null  ";
 
 
 
-		/*
-
-		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
 
 
 
-		$records = models\bookings::getAll($where, $grouping, $ordering);
 
 
 
-		$stats = models\record_stats::stats($records,array("cm","checked","material","layout","totalCost"));
-		$loading = models\loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
-		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
+		switch ($status) {
+			case '2':
+				$where .= " AND (lockedBy = '$uID')";
+				break;
+			case '1':
+				$publications = models\publications::getAll("cID='$cID'");
+				$p = array();
+				foreach ($publications as $pub) $p[] = $pub['nf_currentDate'];
+				$p = implode(",", $p);
+				$where .= " AND if((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID in ($p) LIMIT 0,1)<>0,1,0) = '1' ";
+				break;
+			case '0':
+				$where .= " AND if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) = '0'";
+				break;
+			default:
+				$where .= " AND (if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID AND nf_article_newsbook.dID = '$dID' LIMIT 0,1)<>0,1,0) = '1' OR if ((SELECT count(ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID = nf_articles.ID LIMIT 0,1)<>0,1,0) = '0')";
+				break;
 
-//		test_array($loading);
-		$stats['loading'] = $loading;
+
+		}
 
 
 
-		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
+//test_array($where);
+
+
+
+		$records = models\articles::getAll($where, $grouping, $ordering);
+		$stats = models\record_stats::stats($records, array("stages"));
+
+
+
+
+
+
+		$return['date'] = date("d M Y", strtotime($currentDate['publish_date_display']));
 		$return['dID'] = $currentDate['ID'];
-		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
-		$return['stats'] = $stats;
+
+		$return['newsbook'] = $newsbook;
 		$return['group'] = $grouping;
+
 		$return['order'] = $ordering;
+		$return['stats'] = $stats;
 
+		if (!is_numeric($stage))$stage = "";
+		$return['list'] = models\articles::display($records, array("highlight" => array('currentNewsbook','1'),'filter'=>array('stageID',$stage)));
 
-		$return['list'] = models\bookings::display($records, array("highlight"=>$highlight,"filter"=>$filter));
-		*/
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

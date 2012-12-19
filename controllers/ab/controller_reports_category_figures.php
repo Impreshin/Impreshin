@@ -62,7 +62,7 @@ class controller_reports_category_figures {
 			"sub_section"=> "category_figures",
 			"template"=> "page_reports_category_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Category Figures",
+				"title"=> "AB - Reports - Category Figures",
 			)
 		);
 		$tmpl->list = models\categories::getAll("cID = $cID", "category ASC");

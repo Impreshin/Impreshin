@@ -29,7 +29,7 @@ class controller_admin_inserts_types {
 			"sub_section"=> "inserts_types",
 			"template"=> "page_admin_inserts_types",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Inserts Types",
+				"title"=> "AB - Admin - Inserts Types",
 			)
 		);
 

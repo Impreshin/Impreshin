@@ -29,7 +29,7 @@ class controller_admin_loading {
 			"sub_section"=> "loading",
 			"template"=> "page_admin_loading",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Loading",
+				"title"=> "AB - Admin - Loading",
 			)
 		);
 

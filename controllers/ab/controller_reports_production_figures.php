@@ -62,7 +62,7 @@ class controller_reports_production_figures {
 			"sub_section"=> "production_figures",
 			"template"=> "page_reports_production_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Production Figures",
+				"title"=> "AB - Reports - Production Figures",
 			)
 		);
 		$tmpl->list = models\production::getAll("cID = $cID", "production ASC");

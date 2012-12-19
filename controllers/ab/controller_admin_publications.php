@@ -27,7 +27,7 @@ class controller_admin_publications {
 			"sub_section"=> "publications",
 			"template"=> "page_admin_publications",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Publications",
+				"title"=> "AB - Admin - Publications",
 			)
 		);
 

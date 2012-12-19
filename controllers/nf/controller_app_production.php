@@ -46,7 +46,7 @@ class controller_app_production {
 			"sub_section"=> "production",
 			"template"=> "page_app_provisional",
 			"meta"    => array(
-				"title"=> "NewsFiler - Production",
+				"title"=> "NF - Production",
 			)
 		);
 

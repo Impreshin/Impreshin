@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class colours {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class colours {
 			FROM ab_colour_rates
 			WHERE ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,9 +35,10 @@ class colours {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		if ($where) {
@@ -48,8 +52,6 @@ class colours {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT *
 			FROM ab_colour_rates
@@ -59,7 +61,7 @@ class colours {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -72,7 +74,7 @@ class colours {
 		$a = new Axon("ab_colour_rates");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -94,8 +96,7 @@ class colours {
 		\models\logging::_log("placing_colours", $label, $values, $old);
 
 
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -110,10 +111,7 @@ class colours {
 		$a->erase();
 
 
-
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

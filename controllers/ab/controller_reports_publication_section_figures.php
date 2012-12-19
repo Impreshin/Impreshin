@@ -62,7 +62,7 @@ class controller_reports_publication_section_figures {
 			"sub_section"=> "publication_section_figures",
 			"template"=> "page_reports_publication_section_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Publication Section Figures",
+				"title"=> "AB - Reports - Publication Section Figures",
 			)
 		);
 		$tmpl->list = models\sections::getAll("pID = $pID", "section ASC");

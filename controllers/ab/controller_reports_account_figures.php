@@ -61,7 +61,7 @@ class controller_reports_account_figures {
 			"sub_section"=> "account_figures",
 			"template"=> "page_reports_account_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Account Figures",
+				"title"=> "AB - Reports - Account Figures",
 			)
 		);
 

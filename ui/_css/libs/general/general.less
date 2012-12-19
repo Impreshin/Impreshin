@@ -10,32 +10,29 @@ table tr.headingrow {
 }
 
 form.form-fill {
-	margin:0;
-	padding:0;
+	margin  : 0;
+	padding : 0;
 	.form-header {
-		position: absolute;
-		top:0;
-		left:0;
-		right:0;
+		position : absolute;
+		top      : 0;
+		left     : 0;
+		right    : 0;
 	}
 	.form-body {
 		.fillblock();
 	}
 	.form-footer {
-		position: absolute;
-		bottom:0;
-		left:0;
-		right:0;
+		position : absolute;
+		bottom   : 0;
+		left     : 0;
+		right    : 0;
 	}
 	.form-actions {
-		margin-top: 0;
-		margin-bottom: 0;
-		padding: 5px 0 5px 0;
+		margin-top    : 0;
+		margin-bottom : 0;
+		padding       : 5px 0 5px 0;
 	}
 }
-
-
-
 
 .highlighthovered {
 	&>a, &>label, &>li, &>div {
@@ -54,23 +51,20 @@ form.form-fill {
 	}
 }
 
-
 .btn-row-details {
-	cursor:pointer;
+	cursor : pointer;
 	&:hover {
-		background-color: #DEEBFF;
+		background-color : #DEEBFF;
 	}
 }
+
 .row-details {
 	padding : 0;
 	display : none;
 }
 
-
-
-
 .clickable {
-	cursor: pointer;
+	cursor : pointer;
 }
 
 table {
@@ -110,25 +104,25 @@ form {
 }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
-	cursor: default;
+	cursor : default;
 }
 
 #pagination {
-	position : absolute;
-	bottom   : 0;
-	left     : 0;
-	right    : 0;
+	position    : absolute;
+	bottom      : 0;
+	left        : 0;
+	right       : 0;
 	.linear-gradient(#f5f5f5, #eeeeee, 30%, 100%);
 	.box-shadow(0 0 3px rgba(100, 100, 100, 0.2));
-	margin: 0;
-	border-top:1px solid #ccc;
-	padding-top: 4px;
-	height : auto;
+	margin      : 0;
+	border-top  : 1px solid #ccc;
+	padding-top : 4px;
+	height      : auto;
 
 	a {
-		width: 29px;
-		padding: 4px;
-		line-height : normal;
+		width            : 29px;
+		padding          : 4px;
+		line-height      : normal;
 		background-color : #fff;
 		&:hover {
 
@@ -142,7 +136,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 		}
 	}
 	li.active a {
-		color: #ccc;
+		color : #ccc;
 		&:hover {
 			background-color : #fff;
 		}
@@ -156,8 +150,6 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 
 }
 
-
-
 #pagination-info {
 	position      : absolute;
 	right         : 0;
@@ -168,8 +160,6 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 	color         : #999;
 	font-size     : 11px;
 }
-
-
 
 .clearfix:before, .clearfix:after {
 	content : "";
@@ -382,78 +372,70 @@ button[disabled] i {
 .jspScrollable #scroll-container {
 	padding : 0 0 0 15px;
 }
+
 #apps-select {
 
-    ul {
-        list-style : none;
-        padding: 0;
-        margin: 0;
-        li {
-            border : 1px solid transparent;
-            float            : left;
-            background-color : rgba(250, 250, 250, 0.9);
+	ul {
+		list-style : none;
+		padding    : 0;
+		margin     : 0;
+		li {
+			border           : 1px solid transparent;
+			float            : left;
+			background-color : rgba(250, 250, 250, 0.9);
 
-            &.active {
-                border: 1px solid #ccc;
-                a {
-                    background-color : #f1f1f1;
-                }
-            }
-            &.disabled {
-                a {
-                    background-color : #fff;
-                    color: #ccc;
-                }
-            }
+			&.active {
+				border : 1px solid #ccc;
+				a {
+					background-color : #f1f1f1;
+				}
+			}
+			&.disabled {
+				a {
+					background-color : #fff;
+					color            : #ccc;
+				}
+			}
 
-            a {
-                display         : block;
-                padding         : 15px 0;
-                width           : 263px;
-                color           : #444;
-                text-align      : center;
-                text-decoration : none;
-                &:hover {
-                    background-color : #DEEBFF;
-                    color            : #000;
-                }
-            }
+			a {
+				display         : block;
+				padding         : 15px 0;
+				width           : 263px;
+				color           : #444;
+				text-align      : center;
+				text-decoration : none;
+				&:hover {
+					background-color : #DEEBFF;
+					color            : #000;
+				}
+			}
 
-
-
-        }
-    }
-
+		}
+	}
 
 }
-
-
-
 
 .modal.wide {
 	width       : 920px;
 	margin-left : -460px;
-	overflow : hidden;
+	overflow    : hidden;
 	.modal-body {
-		overflow : auto;
-		height   : 500px;
-		position : relative;
-		width : 890px;
+		width    : 890px;
 	}
 	.modal-header {
 		position : relative;
 	}
 }
-.modal{
+
+.modal {
 
 	.loadingmask {
 		display : none;
 	}
 	&.loading {
 
-
 		.loadingmask {
-			display:block;
+			display : block;
 		}
 	}
 }
@@ -522,7 +504,6 @@ button[disabled] i {
 			margin-bottom : 0;
 		}
 
-
 		&:before, &:after {
 			display : table;
 			content : "";
@@ -546,22 +527,22 @@ form #form-bottom {
 	background-image   : -webkit-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 	background-image   : -ms-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 	background-image   : -o-linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
-	filter             : progid:DXImageTransform.Microsoft.gradient(startColorstr = whitesmoke, endColorstr = #eeeeee, GradientType = 0);
+
 	background-image   : linear-gradient(top, whitesmoke 30%, #eeeeee 100%);
 	-webkit-box-shadow : 0 0 3px rgba(100, 100, 100, 0.2);
 	-moz-box-shadow    : 0 0 3px rgba(100, 100, 100, 0.2);
 	box-shadow         : 0 0 3px rgba(100, 100, 100, 0.2);
 
-	.form-actions {
-		margin  : 0;
-		padding : 5px;
-	}
+.form-actions {
+	margin  : 0;
+	padding : 5px;
+}
 
-	.form-actions .btn {
-
-	}
+.form-actions .btn {
 
 }
+
+	}
 
 #notice-area {
 	&>span {
@@ -571,11 +552,11 @@ form #form-bottom {
 		padding      : 2px 5px;
 		margin-left  : -10px;
 		margin-right : 20px;
-		color : #c7c7c7;
+		color        : #c7c7c7;
 		.transition(all 0.5s ease-in-out);
 
 		&>span {
-			color: #999;
+			color : #999;
 			.transition(all 0.5s ease-in-out);
 		}
 		&>div {
@@ -584,7 +565,7 @@ form #form-bottom {
 			top              : 0;
 			bottom           : 0;
 			background-color : #666;
-			z-index : -1;
+			z-index          : -1;
 		}
 		&:hover {
 			color : #FFF;
@@ -594,35 +575,36 @@ form #form-bottom {
 		}
 	}
 }
+
 .admin_pages {
 
 }
 
 #search-box {
-  position : absolute;
-  bottom   : 0;
-  right    : 0;
+	position : absolute;
+	bottom   : 0;
+	right    : 0;
 
-  button {
-    width  : 60px;
-    height : 28px;
+	button {
+		width  : 60px;
+		height : 28px;
 
-  }
-  #search-box-toggle {
-    .opacity(0.1);
-    .transition(all 0.5s ease-in-out);
-    position : absolute;
-    bottom   : 3px;
-    right    : 3px;
-  }
-  form {
-    margin  : 3px 0;
-    display : none;
-  }
-  &:hover {
-    #search-box-toggle {
-      .opacity(1);
-    }
-  }
+	}
+	#search-box-toggle {
+		.opacity(0.1);
+		.transition(all 0.5s ease-in-out);
+		position : absolute;
+		bottom   : 3px;
+		right    : 3px;
+	}
+	form {
+		margin  : 3px 0;
+		display : none;
+	}
+	&:hover {
+		#search-box-toggle {
+			.opacity(1);
+		}
+	}
 
 }

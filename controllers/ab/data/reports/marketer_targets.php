@@ -103,7 +103,7 @@ class marketer_targets extends \data {
 				}
 				$editable = "0";
 				//test_array($user);
-				if (isset($user['ab_marketerID']) && $user['ab_marketerID'] == $ID) {
+				if (isset($user['ab_marketerID']) && $user['ab_marketerID'] == $ID){
 					if ($target['locked']!='1'){
 						$editable = '1';
 					}

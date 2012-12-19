@@ -1,17 +1,21 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \timer as timer;
+
 class bookingTypes {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -20,8 +24,7 @@ class bookingTypes {
 		$result = F3::get("DB")->exec("
 			SELECT * FROM ab_bookings_types WHERE ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -30,9 +33,10 @@ class bookingTypes {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "orderby ASC") {
 		$timer = new timer();
 		if ($where) {
@@ -46,8 +50,6 @@ class bookingTypes {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT *
 			FROM ab_bookings_types
@@ -57,10 +59,9 @@ class bookingTypes {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-
 
 
 	private static function dbStructure() {

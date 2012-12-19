@@ -99,6 +99,15 @@ function sanitize_output($buffer) {
 	return $buffer;
 }
 
+function rev_nl2br($string, $line_break = PHP_EOL) {
+/*	$string = preg_replace('#<\/p>#i', "", $string);
+	$string = preg_replace('#<p>#i', "", $string);
+
+*/
+	return $string;
+
+
+}
 function is_ajax() {
 	return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
 }

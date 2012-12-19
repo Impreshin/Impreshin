@@ -55,7 +55,7 @@ class controller_app_production {
 			"template"=> "page_app_production",
 			"print"=> "/ab/print/production",
 			"meta"    => array(
-				"title"=> "AdBooker - Production",
+				"title"=> "AB - Production",
 			)
 		);
 
@@ -92,7 +92,7 @@ class controller_app_production {
 			"sub_section"=> "production",
 			"template"   => "page_app_production",
 			"meta"       => array(
-				"title"=> "AdBooker - Print - Production",
+				"title"=> "AB - Print - Production",
 			)
 		);
 

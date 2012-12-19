@@ -4,9 +4,11 @@
  * Time: 4:30 PM
  */
 namespace models;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class logging {
 	private $log = array();
 	private $companyID;
@@ -16,7 +18,7 @@ class logging {
 
 	}
 
-	public static function getAll($where="",$orderby=""){
+	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 
 		if ($where) {
@@ -38,12 +40,12 @@ class logging {
 		$return = $a;
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
 
-	public static function save($section, $changes=array(), $label = ""){
+	public static function save($section, $changes = array(), $label = "") {
 		$return = "";
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -61,32 +63,23 @@ class logging {
 		}
 
 
-
-
-
-
-
 		return $changes;
 
 	}
-	public static function _log($class, $label, $values,$old, $overwrite = array(), $lookups=array()){
+
+	public static function _log($class, $label, $values, $old, $overwrite = array(), $lookups = array()) {
 		$changes = array();
 		$lookup = array();
 
 
 		$t = array();
-		foreach ($overwrite as $k=>$v){
+		foreach ($overwrite as $k => $v) {
 			if (!$k) $k = $v;
 			$t[] = $k;
 		}
 
 
-
-
-
-
-
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			if (!in_array($key, $t)) {
 				$cur = $old[$key];
 				if (($cur != $value)) {
@@ -98,9 +91,9 @@ class logging {
 						$w = $cur;
 						$v = $value;
 						$changes[] = array(
-							"k"=> $key,
-							"v"=> $v,
-							"w"=> str_replace("0000-00-00 00:00:00", "", $w)
+							"k" => $key,
+							"v" => $v,
+							"w" => str_replace("0000-00-00 00:00:00", "", $w)
 						);
 					}
 
@@ -108,7 +101,7 @@ class logging {
 			}
 		}
 
-		foreach ($overwrite as $k=> $v) {
+		foreach ($overwrite as $k => $v) {
 			if (is_array($overwrite) && count($overwrite)) {
 				if (is_array($v)) $changes[] = $v;
 			}
@@ -128,15 +121,15 @@ class logging {
 //		test_array($v);
 		foreach ($lookup as $col) {
 			$changes[] = array(
-				"k"=> $col['col'],
-				"v"=> $v[$col['col']],
-				"w"=> $v[$col['col'] . "_was"]
+				"k" => $col['col'],
+				"v" => $v[$col['col']],
+				"w" => $v[$col['col'] . "_was"]
 			);
 		}
 
 		//test_array($changes);
 
-		self::save($class,$changes,$label);
+		self::save($class, $changes, $label);
 
 	}
 

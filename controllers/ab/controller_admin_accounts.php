@@ -29,7 +29,7 @@ class controller_admin_accounts {
 			"sub_section"=> "accounts",
 			"template"=> "page_admin_accounts",
 			"meta"    => array(
-				"title"=> "AdBooker - Admin - Accounts",
+				"title"=> "AB - Admin - Accounts",
 			)
 		);
 

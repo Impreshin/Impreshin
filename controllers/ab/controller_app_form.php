@@ -122,7 +122,7 @@ class controller_app_form {
 			"sub_section"=> "form",
 			"template"   => "page_app_form",
 			"meta"       => array(
-				"title"=> "AdBooker - Form - $title",
+				"title"=> "AB - Form - $title",
 			),
 			"help"=>"/ab/help/form"
 		);

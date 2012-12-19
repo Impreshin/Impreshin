@@ -1,12 +1,14 @@
 <?php
 
 namespace models\nf;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class user_settings extends \models\user {
 
-	function _read($ID){
+	function _read($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -17,8 +19,7 @@ class user_settings extends \models\user {
 			FROM nf_users_settings
 			WHERE uID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -26,7 +27,7 @@ class user_settings extends \models\user {
 		} else {
 			$return = $this->settings_dbStructure();
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -46,13 +47,12 @@ class user_settings extends \models\user {
 		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
 
 
-
 		if (count($values)) $t->settings = serialize($v);
 
 		$t->save();
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 	}
 
@@ -64,13 +64,12 @@ class user_settings extends \models\user {
 		}
 
 
-
 		$t = New Axon("nf_users_settings");
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$t->$key = $value;
 		}
 
@@ -78,7 +77,7 @@ class user_settings extends \models\user {
 		$t->save();
 
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__ ) ), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $uID;
 	}
 

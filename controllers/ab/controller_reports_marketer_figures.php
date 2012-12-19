@@ -62,7 +62,7 @@ class controller_reports_marketer_figures {
 			"sub_section"=> "marketer_figures",
 			"template"=> "page_reports_marketer_figures",
 			"meta"    => array(
-				"title"=> "AdBooker - Reports - Marketer Figures",
+				"title"=> "AB - Reports - Marketer Figures",
 			)
 		);
 		$pubstr = implode(",", $pubstr);

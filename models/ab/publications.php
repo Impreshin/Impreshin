@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class publications {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -22,8 +26,7 @@ class publications {
 			SELECT *
 			FROM global_publications
 			WHERE ID = '$ID'
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,12 +35,12 @@ class publications {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
 		return $return;
 	}
 
-	public static function getAll_user($where="", $orderby=""){
+	public static function getAll_user($where = "", $orderby = "") {
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -58,16 +61,15 @@ class publications {
 			FROM (global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND (ab_users_pub.uID = global_users_company.uID)
 			$where
 			$orderby
-		"
-		);
-
+		");
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll($where="", $orderby=""){
+
+	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		$user = F3::get("user");
 		$uID = $user['ID'];
@@ -87,20 +89,19 @@ class publications {
 			FROM global_publications
 			$where
 			$orderby
-		"
-		);
+		");
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function addUser($publications=array(),$available_publications=array()){
+
+	public static function addUser($publications = array(), $available_publications = array()) {
 		$timer = new timer();
 
 
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -111,7 +112,7 @@ class publications {
 		$a = new Axon("global_publications");
 		$a->load("ID='$ID'");
 		$old = array();
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -133,7 +134,7 @@ class publications {
 
 		\models\logging::_log("publications", $label, $values, $old);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -148,10 +149,7 @@ class publications {
 		$a->erase();
 
 
-
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

@@ -4,6 +4,7 @@
  * Time: 11:29 AM
  */
 namespace models;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
@@ -20,23 +21,22 @@ class company {
 
 	public function get($ID = "") {
 		$timer = new timer();
-		$result = F3::get("DB")->exec("
+
+		$sql = "
 				SELECT global_companies.*
 				FROM global_companies
 				WHERE global_companies.ID = '$ID'
-			"
-		);
+			";
+		$result = F3::get("DB")->exec($sql);
 		if (count($result)) {
 			$result = $result[0];
 		} else {
 			$result = $this->dbStructure();
 		}
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $result;
 	}
-
-
 
 
 	private static function dbStructure() {

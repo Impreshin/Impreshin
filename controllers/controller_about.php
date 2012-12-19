@@ -11,11 +11,11 @@ class controller_about {
 	function page(){
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
-			"section"    => "about",
-			"sub_section"    => "about",
-			"template"   => "page_about",
-			"meta"       => array(
-				"title"=> "About",
+			"section"     => "about",
+			"sub_section" => "",
+			"template"    => "page_about",
+			"meta"        => array(
+				"title" => "About",
 			)
 		);
 		$tmpl->output();

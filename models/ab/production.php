@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class production {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -23,8 +27,7 @@ class production {
 			FROM ab_production
 			WHERE ab_production.ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -32,9 +35,10 @@ class production {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		$user = F3::get("user");
@@ -50,8 +54,6 @@ class production {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT DISTINCT ab_production.*, if ((SELECT count(ID) FROM ab_production_pub WHERE ab_production_pub.productionID = ab_production.ID AND ab_production_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 			FROM ab_production LEFT JOIN ab_production_pub ON ab_production.ID = ab_production_pub.productionID
@@ -61,7 +63,7 @@ class production {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -74,7 +76,7 @@ class production {
 		$a = new Axon("ab_production");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -93,8 +95,8 @@ class production {
 		$p = new Axon("ab_production_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
-			"a"=> array(),
-			"r"=> array()
+			"a" => array(),
+			"r" => array()
 		);
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND productionID='" . $ID . "'");
@@ -122,9 +124,9 @@ class production {
 		$overwrite = array("publications");
 		if (count($str)) {
 			$pub = array(
-				"k"=> "publications",
-				"v"=> implode(" | ", $str),
-				"w"=> '-'
+				"k" => "publications",
+				"v" => implode(" | ", $str),
+				"w" => '-'
 			);
 			$overwrite['publications'] = $pub;
 		}
@@ -142,7 +144,7 @@ class production {
 
 		\models\logging::_log("production", $label, $values, $old, $overwrite, $lookupColumns);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -159,9 +161,7 @@ class production {
 		$a->save();
 
 
-
-
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}

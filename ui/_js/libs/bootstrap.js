@@ -1070,8 +1070,9 @@
 
         $tip
           .detach()
-          .css({ top: 0, left: 0, display: 'block' })
-	       .appendTo(inside ? this.$element : document.body)
+          .css({ top: 0, left: 0, display: 'block', 'z-index': '1000000' })
+	      var container = $(this.options.container)
+	      container.length ? $tip.appendTo(container) : $tip.insertAfter(this.$element)
 
         pos = this.getPosition(inside)
 
@@ -1221,6 +1222,7 @@
   , title: ''
   , delay: 0
   , html: false
+  , container:''
   }
 
 }(window.jQuery);/* ===========================================================

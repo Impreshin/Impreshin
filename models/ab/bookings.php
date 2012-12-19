@@ -1,18 +1,22 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class bookings {
 	private $classname;
+
 	function __construct() {
 
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-	function get($ID){
+
+	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
@@ -48,28 +52,27 @@ class bookings {
 
 			WHERE ab_bookings.ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
 			$return = bookings::currency($result[0]);
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = bookings::getLogs($return['ID']);
-			$return['state']="";
+			$return['state'] = "";
 
-			if ($return['publish_date'] == $currentDate){
+			if ($return['publish_date'] == $currentDate) {
 				$return['state'] = "Current";
-			} elseif ($return['publish_date']<$currentDate){
+			} elseif ($return['publish_date'] < $currentDate) {
 				$return['state'] = "Archived";
-			} elseif ($return['publish_date']>$currentDate){
+			} elseif ($return['publish_date'] > $currentDate) {
 				$return['state'] = "Future";
 			}
-			if ($return['pageID'] && $return["page"] ){
-					$return["page"] = number_format($return['page'],0);
+			if ($return['pageID'] && $return["page"]) {
+				$return["page"] = number_format($return['page'], 0);
 			}
 			if (isset($user['permissions']['details']['fields'])) {
-				foreach ($user['permissions']['details']['fields'] as $key=> $value) {
+				foreach ($user['permissions']['details']['fields'] as $key => $value) {
 					if ($value == 0) {
 						if (isset($return[$key])) unset($return[$key]);
 						if (isset($return[$key . "_C"])) unset($return[$key . "_C"]);
@@ -81,7 +84,7 @@ class bookings {
 
 			$return['material_file_filesize_display'] = 0;
 			if ($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') {
-				if ($return['material_file_store']){
+				if ($return['material_file_store']) {
 					$file = $cfg['folder'] . "ab/" . $return['cID'] . "/" . $return['pID'] . "/" . $return['dID'] . "/material/" . $return['material_file_store'];
 					if (!file_exists($file)) {
 						$return['material_status'] = '0';
@@ -98,13 +101,13 @@ class bookings {
 			}
 
 
-
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+
 	public static function getAll_count($where = "") {
 		$timer = new timer();
 		if ($where) {
@@ -119,23 +122,23 @@ class bookings {
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
 			$where
 		");
-		if (count($return)){
+		if (count($return)) {
 			$return = $return[0]['records'];
 		}
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll_select($select, $where = "", $orderby, $groupby="") {
-/*
-		return array(
-			"select"=>$select,
-			"where"=>$where,
-			"orderby"=>$orderby,
-			"group"=>$groupby
-		);
-*/
+	public static function getAll_select($select, $where = "", $orderby, $groupby = "") {
+		/*
+				return array(
+					"select"=>$select,
+					"where"=>$where,
+					"orderby"=>$orderby,
+					"group"=>$groupby
+				);
+		*/
 		$timer = new timer();
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -146,8 +149,8 @@ class bookings {
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
-	if ($groupby) {
-		$groupby = " GROUP BY " . $groupby;
+		if ($groupby) {
+			$groupby = " GROUP BY " . $groupby;
 		}
 
 
@@ -159,14 +162,17 @@ class bookings {
 			$where
 $groupby
 			$orderby
-		"
-		);
+		");
 
 
-		$timer->stop(array("Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ ) ), func_get_args() );
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function getAll($where = "", $grouping = array("g"=>"none","o"=>"ASC"), $ordering = array("c"=>"client","o"=>"ASC"),$options=array("limit"=>"")) {
+
+	public static function getAll($where = "", $grouping = array(
+		"g" => "none",
+		"o" => "ASC"
+	), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
 		$timer = new timer();
 
 		if ($where) {
@@ -185,7 +191,7 @@ $groupby
 		}
 
 		if ($options['limit']) {
-			if (strpos($options['limit'],"LIMIT")==-1){
+			if (strpos($options['limit'], "LIMIT") == -1) {
 				$limit = " LIMIT " . $options['limit'];
 			} else {
 				$limit = $options['limit'];
@@ -194,10 +200,6 @@ $groupby
 		} else {
 			$limit = " ";
 		}
-
-
-
-
 
 
 		$result = F3::get("DB")->exec("
@@ -220,17 +222,15 @@ $groupby
 		");
 
 
-
-
 		$return = $result;
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
 
-	private static function currency($record){
-		if (is_array($record)){
+	private static function currency($record) {
+		if (is_array($record)) {
 			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
 			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate']);
 			if (isset($record['totalCost']) && $record['totalCost']) $record['totalCost_C'] = currency($record['totalCost']);
@@ -238,43 +238,43 @@ $groupby
 			if (isset($record['InsertRate']) && $record['InsertRate']) $record['InsertRate_C'] = currency($record['InsertRate']);
 
 
-			$record['percent_diff'] ="";
-			if ((isset($record['totalShouldbe']) && $record['totalShouldbe']) && (isset($record['totalCost']) && $record['totalCost'])){
+			$record['percent_diff'] = "";
+			if ((isset($record['totalShouldbe']) && $record['totalShouldbe']) && (isset($record['totalCost']) && $record['totalCost'])) {
 				$dif = $record['totalShouldbe'] - $record['totalCost'];
-				if (($record['totalShouldbe']!= $record['totalCost']) && $record['totalShouldbe'] > 0) {
+				if (($record['totalShouldbe'] != $record['totalCost']) && $record['totalShouldbe'] > 0) {
 					$per = ($dif / $record['totalShouldbe']) * 100;
 				} else {
 					$per = 0;
 				}
 
 
-				$record['percent_diff'] = number_format($per,2);
+				$record['percent_diff'] = number_format($per, 2);
 			}
 
 		}
 		return $record;
 
 	}
-	public static function display($data, $options=array("highlight"=>"","filter"=>"*")){
-		if (!isset($options['highlight']))$options['highlight']="";
-		if (!isset($options['filter']))$options['filter']="";
+
+	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
+		if (!isset($options['highlight'])) $options['highlight'] = "";
+		if (!isset($options['filter'])) $options['filter'] = "";
 
 
 		$timer = new timer();
 		$user = F3::get("user");
 		$permissions = $user['permissions'];
-		if (is_array($data)){
+		if (is_array($data)) {
 			$a = array();
 
 
-			foreach ($data as $item){
-
+			foreach ($data as $item) {
 
 
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
-						$item['size'] = $item['totalspace'] . "<span class='size'>". $item['cm'] . "&nbsp;x&nbsp;" . $item['col'] . "</span>";
+						$item['size'] = $item['totalspace'] . "<span class='size'>" . $item['cm'] . "&nbsp;x&nbsp;" . $item['col'] . "</span>";
 						break;
 					case 2:
 						$item['size'] = $item["InsertPO"];
@@ -285,12 +285,9 @@ $groupby
 				if (isset($item['pageID']) && $item['pageID'] && $item["page"]) {
 					$item["page"] = number_format($item['page'], 0);
 				}
-				if (isset($item['material_file_filesize'])&&$item['material_file_filesize']) {
+				if (isset($item['material_file_filesize']) && $item['material_file_filesize']) {
 					$item["material_file_filesize"] = file_size($item['material_file_filesize']);
 				}
-
-
-
 
 
 				$a[] = bookings::currency($item);
@@ -300,16 +297,12 @@ $groupby
 		}
 
 
-
-
-
-
 		$return = array();
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
 			if (isset($user['permissions']['fields'])) {
-				foreach ($user['permissions']['fields'] as $key=> $value) {
+				foreach ($user['permissions']['fields'] as $key => $value) {
 					if ($value == 0) {
 						if (isset($record[$key])) unset($record[$key]);
 						if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
@@ -323,11 +316,11 @@ $groupby
 			}
 
 
-			if (isset($options["filter"])){
-				if ($options["filter"]=="*"){
+			if (isset($options["filter"])) {
+				if ($options["filter"] == "*") {
 					$showrecord = true;
 				} else {
-					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter'] ){
+					if (isset($record[$options["highlight"]]) && $record[$options["highlight"]] == $options['filter']) {
 						$showrecord = true;
 					} else {
 						$showrecord = false;
@@ -337,9 +330,8 @@ $groupby
 			}
 
 
-
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
-			if ($showrecord){
+			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
 
@@ -351,9 +343,9 @@ $groupby
 						"pages"   => "",
 
 					);
-					$arr['totalCost']=0;
+					$arr['totalCost'] = 0;
 					$arr['groups'] = "";
-					$arr['records']="";
+					$arr['records'] = "";
 
 
 					$a[$record['heading']] = $arr;
@@ -363,10 +355,10 @@ $groupby
 				}
 
 
-					$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
+				$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
 
 				if (isset($permissions['lists']['fields'])) {
-					foreach ($permissions['lists']['fields'] as $key=> $value) {
+					foreach ($permissions['lists']['fields'] as $key => $value) {
 						if ($value == 0) {
 							if (isset($record[$key])) unset($record[$key]);
 							if (isset($record[$key . "_C"])) unset($record[$key . "_C"]);
@@ -386,27 +378,29 @@ $groupby
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
 
-			if (isset($permissions['lists']['totals']['totalCost'])&& $permissions['lists']['totals']['totalCost']) {
+			if (isset($permissions['lists']['totals']['totalCost']) && $permissions['lists']['totals']['totalCost']) {
 				$record['totalCost'] = currency($record['totalCost']);
 			} else {
 				if (isset($record['totalCost'])) unset($record['totalCost']);
-			};
+			}
+			;
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 
 	}
-	private static function order($grouping, $ordering){
+
+	private static function order($grouping, $ordering) {
 
 		$o = explode(".", $ordering['c']);
 		$a = array();
-		foreach($o as $b) {
+		foreach ($o as $b) {
 			$a[] = "`" . $b . "`";
 		}
-		$a = implode(".",$a);
-		$orderby = " ". $a . " " . $ordering['o'];
+		$a = implode(".", $a);
+		$orderby = " " . $a . " " . $ordering['o'];
 		$arrange = "";
 		$ordering = $grouping['o'];
 		switch ($grouping['g']) {
@@ -465,13 +459,13 @@ $groupby
 		}
 
 
-
 		return array(
-			"order"=> $orderby,
-			"select"=> $arrange
+			"order"  => $orderby,
+			"select" => $arrange
 		);
 	}
-	public static function _delete($ID = "",$reason=""){
+
+	public static function _delete($ID = "", $reason = "") {
 		$timer = new timer();
 
 		$user = F3::get("user");
@@ -481,7 +475,7 @@ $groupby
 		$a = new Axon("ab_bookings");
 		$a->load("ID='$ID'");
 
-		if (!$a->dry()){
+		if (!$a->dry()) {
 			$a->deleted = "1";
 			$a->deleted_userID = $userID;
 			$a->deleted_user = $user['fullName'];
@@ -491,19 +485,19 @@ $groupby
 			$a->save();
 			$changes = array(
 				array(
-					"k"=> "Deleted",
-					"v"=> "1",
-					"w"=> ""
+					"k" => "Deleted",
+					"v" => "1",
+					"w" => ""
 				),
 				array(
-					"k"=> "deleted_user",
-					"v"=> $user['fullName'],
-					"w"=> ""
+					"k" => "deleted_user",
+					"v" => $user['fullName'],
+					"w" => ""
 				),
 				array(
-					"k"=> "deleted_reason",
-					"v"=> $reason,
-					"w"=> ""
+					"k" => "deleted_reason",
+					"v" => $reason,
+					"w" => ""
 				)
 			);
 
@@ -511,13 +505,11 @@ $groupby
 		}
 
 
-
-
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "deleted";
 	}
-	public static function repeat($ID="",$dID, $exact_repeat = '1'){
+
+	public static function repeat($ID = "", $dID, $exact_repeat = '1') {
 		$timer = new timer();
 		$user = F3::get("user");
 
@@ -546,8 +538,8 @@ $groupby
 		$values['checked_user'] = null;
 		$values['userName'] = $user['fullName'];
 		$values['repeat_from'] = $data['ID'];
-		$values['pageID'] =null;
-		$values['invoiceNum'] =null;
+		$values['pageID'] = null;
+		$values['invoiceNum'] = null;
 
 
 		$values['dID'] = $dID;
@@ -569,12 +561,11 @@ $groupby
 			unset($values['keyNum']);
 
 
-
 		}
 
 
 		$a = new Axon("ab_bookings");
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$a->$key = $value;
 		}
 
@@ -582,22 +573,20 @@ $groupby
 		$a->save();
 		$ID = $a->_id;
 
-		$n= $dataO->get($ID);
+		$n = $dataO->get($ID);
 
 		$log = array(
 			array(
-				"k"=>"Repeated",
-				"v"=>$ID,
-				"w"=> $data['ID']
+				"k" => "Repeated",
+				"v" => $ID,
+				"w" => $data['ID']
 			),
 			array(
-				"k"=>"Date",
-				"v"=> $n['publishDate'],
-				"w"=>$data['publishDate']
+				"k" => "Date",
+				"v" => $n['publishDate'],
+				"w" => $data['publishDate']
 			)
 		);
-
-
 
 
 		$cfg = F3::get("cfg");
@@ -605,7 +594,7 @@ $groupby
 
 		$cID = $data['cID'];
 
-		if ($exact_repeat){
+		if ($exact_repeat) {
 			$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
 			$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $values['dID'] . "/material/";
 			if (file_exists($oldFolder . $data['material_file_store'])) {
@@ -619,36 +608,85 @@ $groupby
 		}
 
 
-
-
-
-	//	test_array(array("o"=>$oldFolder,"n"=>$newFolder));
+		//	test_array(array("o"=>$oldFolder,"n"=>$newFolder));
 		bookings::logging($data['ID'], $log, $label1);
 		bookings::logging($ID, $log, $label2);
 
-		$timer->stop(array("Models"=> array("Class" => __CLASS__, "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $n;
 	}
-	public static function save($ID="",$values=array(),$opts=array("dry"=>true,"section"=>"booking")){
+
+	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
 
 		//test_array($values);
 		$timer = new timer();
 		$lookupColumns = array();
-		$lookupColumns["dID"] = array("sql"=>"(SELECT publish_date FROM global_dates WHERE ID = '{val}')","col"=>"publish_date","val"=>"");
-		$lookupColumns["placingID"] = array("sql"=>"(SELECT placing FROM ab_placing WHERE ID = '{val}')","col"=>"placing","val"=>"");
-		$lookupColumns["categoryID"] = array("sql"=>"(SELECT `category` FROM ab_categories WHERE ID = '{val}')","col"=>"category","val"=>"");
-		$lookupColumns["marketerID"] = array("sql"=>"(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')","col"=>"marketer","val"=>"");
-		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')","col"=>"colour","val"=>"");
-		$lookupColumns["material_productionID"] = array("sql"=>"(SELECT `production` FROM ab_production WHERE ID = '{val}')","col"=>"production","val"=>"");
-		$lookupColumns["remarkTypeID"] = array("sql"=>"(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')","col"=>"remarkType","val"=>"");
-		$lookupColumns["checked_userID"] = array("sql"=>"(SELECT `fullName` FROM global_users WHERE ID = '{val}')","col"=>"checked_user","val"=>"");
-		$lookupColumns["material_source"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END)","col"=>"material_source","val"=>"");
-		$lookupColumns["material_status"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)","col"=>"material_status","val"=>"");
-		$lookupColumns["checked"] = array("sql"=>"(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)","col"=>"checked","val"=>"");
-		$lookupColumns["pageID"] = array("sql"=>"(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')","col"=>"page","val"=>"");
-		$lookupColumns["accountID"] = array("sql"=>"(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')","col"=>"Account","val"=>"");
+		$lookupColumns["dID"] = array(
+			"sql" => "(SELECT publish_date FROM global_dates WHERE ID = '{val}')",
+			"col" => "publish_date",
+			"val" => ""
+		);
+		$lookupColumns["placingID"] = array(
+			"sql" => "(SELECT placing FROM ab_placing WHERE ID = '{val}')",
+			"col" => "placing",
+			"val" => ""
+		);
+		$lookupColumns["categoryID"] = array(
+			"sql" => "(SELECT `category` FROM ab_categories WHERE ID = '{val}')",
+			"col" => "category",
+			"val" => ""
+		);
+		$lookupColumns["marketerID"] = array(
+			"sql" => "(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')",
+			"col" => "marketer",
+			"val" => ""
+		);
+		$lookupColumns["colourID"] = array(
+			"sql" => "(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')",
+			"col" => "colour",
+			"val" => ""
+		);
+		$lookupColumns["material_productionID"] = array(
+			"sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')",
+			"col" => "production",
+			"val" => ""
+		);
+		$lookupColumns["remarkTypeID"] = array(
+			"sql" => "(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')",
+			"col" => "remarkType",
+			"val" => ""
+		);
+		$lookupColumns["checked_userID"] = array(
+			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
+			"col" => "checked_user",
+			"val" => ""
+		);
+		$lookupColumns["material_source"] = array(
+			"sql" => "(CASE '{val}' WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END)",
+			"col" => "material_source",
+			"val" => ""
+		);
+		$lookupColumns["material_status"] = array(
+			"sql" => "(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)",
+			"col" => "material_status",
+			"val" => ""
+		);
+		$lookupColumns["checked"] = array(
+			"sql" => "(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)",
+			"col" => "checked",
+			"val" => ""
+		);
+		$lookupColumns["pageID"] = array(
+			"sql" => "(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')",
+			"col" => "page",
+			"val" => ""
+		);
+		$lookupColumns["accountID"] = array(
+			"sql" => "(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')",
+			"col" => "Account",
+			"val" => ""
+		);
 		$lookup = array();
-
 
 
 		$a = new Axon("ab_bookings");
@@ -663,11 +701,8 @@ $groupby
 		$cID = $user['publication']['cID'];
 
 
-
-
-
 		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
-			if ($a->material_file_store){
+			if ($a->material_file_store) {
 				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
 
 
@@ -679,31 +714,25 @@ $groupby
 				} else {
 
 
+					if (isset($values['dID'])) {
+
+						//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
+						if (file_exists($oldFolder . $a->material_file_store)) {
 
 
+							$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
 
 
-				if (isset($values['dID'])) {
+							//echo "new: ". $newFolder . $a->material_file_store ."<br>";
 
-					//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
-					if (file_exists($oldFolder. $a->material_file_store)){
+							if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
 
-
-
-						$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
+							@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
+						}
 
 
-						//echo "new: ". $newFolder . $a->material_file_store ."<br>";
-
-						if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
-
-						@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
 					}
-
-
 				}
-				}
-
 
 
 			}
@@ -712,31 +741,28 @@ $groupby
 		}
 
 
-
-
-
 		$changes = array();
 		$material = false;
-		foreach ($values as $key=>$value){
-			if (strpos($key,"aterial_")) $material = true;
+		foreach ($values as $key => $value) {
+			if (strpos($key, "aterial_")) $material = true;
 
 			$cur = $a->$key;
 			if ($cur != $value) {
-				if (isset($lookupColumns[$key])){
-					$lookupColumns[$key]['val']=$value;
-					$lookupColumns[$key]['was']= $cur;
+				if (isset($lookupColumns[$key])) {
+					$lookupColumns[$key]['val'] = $value;
+					$lookupColumns[$key]['was'] = $cur;
 					$lookup[] = $lookupColumns[$key];
 				} else {
 					$w = $cur;
 					$v = $value;
-					if ($key=="material_file_filesize") {
-						$v = $v?file_size($v):"";
-						$w = $w?file_size($w):"";
+					if ($key == "material_file_filesize") {
+						$v = $v ? file_size($v) : "";
+						$w = $w ? file_size($w) : "";
 					}
 					$changes[] = array(
-						"k"=> $key,
-						"v"=> $v,
-						"w"=> str_replace("0000-00-00 00:00:00","", $w)
+						"k" => $key,
+						"v" => $v,
+						"w" => str_replace("0000-00-00 00:00:00", "", $w)
 					);
 				}
 
@@ -744,14 +770,12 @@ $groupby
 			$a->$key = $value;
 		}
 
-		if ($opts['dry'] || !$a->dry()){
+		if ($opts['dry'] || !$a->dry()) {
 			$a->save();
 		}
 
 
-
-
-		if (!$ID){
+		if (!$ID) {
 			$label = "Booking Added";
 			$ID = $a->_id;
 		} else {
@@ -762,35 +786,31 @@ $groupby
 		if ($material) {
 			$sql .= ", (SELECT `production` FROM ab_production WHERE ID = '" . $a->material_productionID . "') AS production";
 		}
-		foreach ($lookup as $col){
-			$sql .= ", ". str_replace("{val}",$col['val'],$col['sql']) ." AS ".$col['col'];
-			$sql .= ", ". str_replace("{val}",$col['was'],$col['sql']) ." AS ".$col['col']."_was";
+		foreach ($lookup as $col) {
+			$sql .= ", " . str_replace("{val}", $col['val'], $col['sql']) . " AS " . $col['col'];
+			$sql .= ", " . str_replace("{val}", $col['was'], $col['sql']) . " AS " . $col['col'] . "_was";
 		}
-
-
 
 
 		$v = F3::get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
 			$changes[] = array(
-				"k"=> $col['col'],
-				"v"=> $v[$col['col']],
-				"w"=> $v[$col['col'] . "_was"]
+				"k" => $col['col'],
+				"v" => $v[$col['col']],
+				"w" => $v[$col['col'] . "_was"]
 			);
 		}
 
 
-
-
-		if (isset($opts['section']) && $opts['section']){
-			switch ($opts['section']){
+		if (isset($opts['section']) && $opts['section']) {
+			switch ($opts['section']) {
 				case "material":
 					if ($a->material_status == '1') {
 						$label = "Material - Ready";
 						if ($a->material_source == '1') {
-							$production = (isset($v['production']))? $v['production']:"";
-							if ($production) $label .= " (".$production.")";
+							$production = (isset($v['production'])) ? $v['production'] : "";
+							if ($production) $label .= " (" . $production . ")";
 						} else {
 							$label .= " (Supplied)";
 						}
@@ -833,20 +853,14 @@ $groupby
 		}
 
 
-
-
-
-		if (count($changes)) bookings::logging($ID,$changes, $label);
-
-
-
+		if (count($changes)) bookings::logging($ID, $changes, $label);
 
 
 		$n = new bookings();
 		$n = $n->get($ID);
 
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $n;
 	}
 
@@ -855,28 +869,28 @@ $groupby
 
 		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
-		foreach ($return as $record){
+		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
 			$a[] = $record;
 		}
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $a;
 	}
 
-	private static function logging($ID,$log=array(),$label="Log"){
+	private static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
 		$user = F3::get("user");
 		$userID = $user['ID'];
 
 
-		$log =  mysql_escape_string(json_encode($log));
-	//	$log = str_replace("'", "\\'", $log);
+		$log = mysql_escape_string(json_encode($log));
+		//	$log = str_replace("'", "\\'", $log);
 
 
 		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 	}
 
 	public static function dbStructure() {

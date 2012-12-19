@@ -3,9 +3,12 @@
  * Date: 2011/11/16
  * Time: 11:29 AM
  */
-namespace models; use \F3 as F3;
+namespace models;
+
+use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
+
 class notices {
 	public $ID;
 	private $dbStructure;
@@ -18,13 +21,10 @@ class notices {
 	}
 
 
-
 	public static function getAll($where = "", $orderby = "datein DESC") {
 		$timer = new timer();
 		$return = array();
 		$return['error'] = "";
-
-
 
 
 		if ($where) {
@@ -36,14 +36,12 @@ class notices {
 		}
 
 
-
 		$result = F3::get("DB")->sql("
 			SELECT *
 			FROM mp_notices
 			$where
 			$orderby
-		"
-		);
+		");
 
 		$return['data'] = $result;
 
@@ -52,7 +50,8 @@ class notices {
 		$timer->stop("Models - notices - getAll", func_get_args());
 		return $return;
 	}
-	public static function seen(){
+
+	public static function seen() {
 		$timer = new timer();
 		$return = array();
 		$return['error'] = "";
@@ -68,12 +67,11 @@ class notices {
 		$timer->stop("Models - notices - seen", func_get_args());
 		return $return;
 	}
+
 	public static function show($where = "", $orderby = "datein DESC") {
 		$timer = new timer();
 		$return = array();
 		$return['error'] = "";
-
-
 
 
 		if ($where) {
@@ -90,8 +88,7 @@ class notices {
 			FROM mp_notices
 			$where
 			$orderby
-		"
-		);
+		");
 
 		$return['data'] = $result;
 

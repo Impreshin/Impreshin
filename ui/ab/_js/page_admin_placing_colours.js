@@ -3,7 +3,7 @@
  */
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
-$(document).ready(function(){
+$(document).ready(function () {
 	getList();
 	getDetails();
 	$(document).on("click", ".pagination a", function (e) {
@@ -29,8 +29,6 @@ $(document).ready(function(){
 
 	});
 
-
-
 	$(document).on("change", "#searchform select", function () {
 
 		$("#searchform").trigger("submit")
@@ -43,9 +41,6 @@ $(document).ready(function(){
 		return false;
 	});
 
-
-
-
 	$(document).on("click", "#reload-btn", function () {
 		getList();
 		getDetails();
@@ -56,7 +51,7 @@ $(document).ready(function(){
 	});
 	$(document).on("click", "#btn-delete", function () {
 		var ID = $.bbq.getState("ID");
-		if (confirm("Are you sure you want to delete this Colour?")){
+		if (confirm("Are you sure you want to delete this Colour?")) {
 			$("#left-area .loadingmask").show();
 			$.post("/ab/save/admin_placing_colours/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
@@ -71,19 +66,18 @@ $(document).ready(function(){
 		var $this = $(this);
 		var data = $this.serialize();
 		var colour = $("#colour button.active").attr("data-val");
-		data = data + "&colour="+colour;
+		data = data + "&colour=" + colour;
 
 		var placingID = $("#placingID").val();
-
 
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/ab/save/admin_placing_colours/_save/?ID=" + ID+"&placingID="+placingID, data, function (r) {
+		$.post("/ab/save/admin_placing_colours/_save/?ID=" + ID + "&placingID=" + placingID, data, function (r) {
 			r = r['data'];
-			if (r['error'].length){
-				var str="";
+			if (r['error'].length) {
+				var str = "";
 				for (var i in r['error']) {
 					str += '<div class="alert alert-error">' + r['error'][i] + '</div>'
 				}
@@ -96,7 +90,6 @@ $(document).ready(function(){
 				getList();
 				getDetails();
 			}
-
 
 		});
 		return false;
@@ -132,24 +125,20 @@ $(document).ready(function(){
 
 	});
 
-
 });
 
-function getList(){
-
+function getList() {
 
 	var ID = $.bbq.getState("ID");
-
 
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
 
 	var placingID = $("#placingID").val();
 
-
 	$("#right-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list",{"order":order,"placingID":placingID}, function (data) {
+	listRequest.push($.getJSON("/ab/data/admin_placing_colours/_list", {"order":order, "placingID":placingID}, function (data) {
 		data = data['data'];
 
 		var placings = $.map(data['placing'], function (record) {
@@ -176,10 +165,6 @@ function getList(){
 
 		$("#placingID").html(placings);
 
-
-
-
-
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
 		if (data['records'][0]) {
@@ -201,38 +186,32 @@ function getList(){
 				});
 				rec = rec.join(",");
 
-				$.post("/ab/save/admin_placing_colours/_sort/?placingID="+placingID, {"order":rec}, function (t) {
+				$.post("/ab/save/admin_placing_colours/_sort/?placingID=" + placingID, {"order":rec}, function (t) {
 
 				});
 			}
 		});
 		$recordsList.find("tbody").disableSelection();
 
-
-		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight() );
+		$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight());
 		$("#record-list-middle").jScrollPane(jScrollPaneOptions);
 		$("#right-area .loadingmask").fadeOut(transSpeed);
 
 	}));
 
 }
-function getDetails(){
+function getDetails() {
 	var ID = $.bbq.getState("ID");
-
 
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
-
 
 	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
 	detailsRequest.push($.getJSON("/ab/data/admin_placing_colours/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
-
-
-
 
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 

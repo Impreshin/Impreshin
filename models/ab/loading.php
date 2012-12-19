@@ -1,6 +1,7 @@
 <?php
 
 namespace models\ab;
+
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
@@ -15,6 +16,7 @@ class loading {
 		$this->dbStructure = $classname::dbStructure();
 
 	}
+
 	function get($ID) {
 		$timer = new timer();
 		$user = F3::get("user");
@@ -26,8 +28,7 @@ class loading {
 			FROM ab_page_load
 			WHERE ID = '$ID';
 
-		"
-		);
+		");
 
 
 		if (count($result)) {
@@ -35,7 +36,7 @@ class loading {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models"=> array("Class" => __CLASS__,"Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -52,8 +53,6 @@ class loading {
 		}
 
 
-
-
 		$result = F3::get("DB")->exec("
 			SELECT ab_page_load.*
 			FROM ab_page_load
@@ -63,7 +62,7 @@ class loading {
 
 
 		$return = $result;
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -75,7 +74,7 @@ class loading {
 		$userID = $user['ID'];
 		if (!$pID) $pID = $user['pID'];
 
-		if ($pID == $user['pID']){
+		if ($pID == $user['pID']) {
 			$publication = $user['publication'];
 		} else {
 			$publication = new publications();
@@ -83,15 +82,15 @@ class loading {
 		}
 
 		$return = array(
-			"pages"  => 0,
-			"loading"=> 0,
-			"other"  => array(),
+			"pages"   => 0,
+			"loading" => 0,
+			"other"   => array(),
 			"forced"  => false,
-			"error"  => ""
+			"error"   => ""
 		);
 
 
-		if ($forcepages){
+		if ($forcepages) {
 			$forcepages = F3::get("DB")->exec("
 				SELECT *, ABS( pages - $forcepages ) AS distance FROM ab_page_load
 				WHERE pID = '$pID'
@@ -99,74 +98,68 @@ class loading {
 				LIMIT 6
 			");
 			$forcepages = $forcepages[0]["pages"];
-			$return['forced']=true;
+			$return['forced'] = true;
 		}
 
 
+		$pageSize = $publication['cmav'] * ($publication['columnsav']);
 
 
-
-
-			$pageSize = $publication['cmav'] * ($publication['columnsav']);
-
-
-			$loadingData = F3::get("DB")->exec("
+		$loadingData = F3::get("DB")->exec("
 				SELECT * FROM 	ab_page_load WHERE pID = '$pID' ORDER BY pages ASC
 			");
 
 
+		$loading = array();
+		$use = "";
+		$i = 0;
+		foreach ($loadingData as $item) {
+			$pages = $item['pages'];
+			$percent = $item['percent'];
 
+			if ($pages > 0 && $percent > 0) {
+				$avspace = $pages * $pageSize;
 
-			$loading = array();
-			$use = "";
-			$i = 0;
-			foreach ($loadingData as $item) {
-				$pages = $item['pages'];
-				$percent = $item['percent'];
+				$keepin = $avspace * ($percent / 100);
 
-				if ($pages>0 && $percent>0){
-					$avspace = $pages * $pageSize;
+				$loading[$item['ID']] = array(
+					"pages"   => $pages,
+					"loading" => number_format(($cm / $avspace) * 100, 2),
+					"nr"      => $i
+				);
 
-					$keepin = $avspace * ($percent / 100);
+				if ($forcepages) {
+					if ($item['pages'] == $forcepages) {
+						$use = $item['ID'];
 
-					$loading[$item['ID']] = array(
-						"pages"  => $pages,
-						"loading"=> number_format(($cm / $avspace) * 100, 2),
-						"nr"     => $i
-					);
-
-					if ($forcepages) {
-						if ($item['pages'] == $forcepages) {
-							$use = $item['ID'];
-
-						}
-					} else {
-						if ($cm <= $keepin && $use == "") {
-							$use = $item['ID'];
-						}
+					}
+				} else {
+					if ($cm <= $keepin && $use == "") {
+						$use = $item['ID'];
 					}
 				}
-
-
-				$i++;
-
 			}
+
+
+			$i++;
+
+		}
 
 
 		//$loading[$use]['current'] = $i;
 
-		if (!$use){
-			if (isset($loadingData[count($loadingData) - 1]['ID'])){
+		if (!$use) {
+			if (isset($loadingData[count($loadingData) - 1]['ID'])) {
 				$use = $loadingData[count($loadingData) - 1]['ID'];
 			} else {
 				$use = "";
 
 			}
 
-			$return['error']="Please check your loading settings, the current loading trumps your highest page number";
+			$return['error'] = "Please check your loading settings, the current loading trumps your highest page number";
 		}
 
-		if ($use){
+		if ($use) {
 			$return['pages'] = $loading[$use]['pages'];
 			$return['loading'] = $loading[$use]['loading'];
 
@@ -188,8 +181,7 @@ class loading {
 		}
 
 
-
-		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
@@ -201,7 +193,7 @@ class loading {
 		$a = new Axon("ab_page_load");
 		$a->load("ID='$ID'");
 
-		foreach ($values as $key=> $value) {
+		foreach ($values as $key => $value) {
 			$old[$key] = $a->$key;
 			$a->$key = $value;
 		}
@@ -221,7 +213,7 @@ class loading {
 
 		\models\logging::_log("loading", $label, $values, $old);
 
-		$timer->stop(array( "Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ )), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
 
 	}
@@ -238,7 +230,7 @@ class loading {
 		$a->save();
 
 
-		$timer->stop(array( "Models"=> array( "Class" => __CLASS__, "Method"=> __FUNCTION__ )), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return "done";
 
 	}
