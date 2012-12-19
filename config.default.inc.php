@@ -3,6 +3,9 @@
 $cfg['currency']['sign'] = "R ";
 $cfg['currency']['separator'] = " ";
 
+$cfg['news']['path'] = "http://admin.impreshin.info/news/json";
+
+
 $cfg['DB']['host'] = "localhost";
 $cfg['DB']['username'] = "username";
 $cfg['DB']['password'] = "password";
