@@ -14,12 +14,17 @@ class update {
 		$docs_folder = $root_folder . '\\docs';
 
 		chdir($root_folder);
-
-
-
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
-		shell_exec('git reset --hard HEAD');
+		if (!file_exists($root_folder."\\.git")) {
+			shell_exec('git init');
+		} else {
+			shell_exec('git reset --hard HEAD');
+		}
+
+
+
+
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 
 		$str = str_replace(".git","",$cfg['git']['path']);
