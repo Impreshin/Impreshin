@@ -12,23 +12,23 @@ use \models\user as user;
 
 class overview extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 
 	function _pages() {
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
 		$settings = models\settings::_read("overview");
 
-		$defaults = F3::get("defaults");
+		$defaults = $this->f3->get("defaults");
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
@@ -240,7 +240,7 @@ class overview extends data {
 
 
 	function _page($page=""){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -318,7 +318,7 @@ class overview extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 	function _stats($data="") {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -354,7 +354,7 @@ class overview extends data {
 
 	function _details_page(){
 		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -375,7 +375,7 @@ class overview extends data {
 	}
 	function _details_section(){
 		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 

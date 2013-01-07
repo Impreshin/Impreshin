@@ -12,6 +12,7 @@ class timer {
 
 	function __construct($force = false) {
 		$this->force = $force;
+		$this->f3 = Base::instance();
 		if (!isset($GLOBALS["timer"])) {
 			$GLOBALS["timer"] = array();
 		}
@@ -38,7 +39,7 @@ class timer {
 	}
 
 	private function totalTime($msg = "", $arguments = "") {
-		if (($this->endTimer && $this->startTimer) && (!F3::get("nonotifications") || $this->force)) {
+		if (($this->endTimer && $this->startTimer) && (!$this->f3->get("nonotifications") || $this->force)) {
 			if (is_array($msg)) {
 				$key = key($msg);
 				$class = $msg[$key]['Class'];

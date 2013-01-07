@@ -9,11 +9,12 @@ use \timer as timer;
 use \models\ab as models;
 class controller_app_overview {
 	function __construct() {
+		$this->f3 = \base::instance();
 
 	}
 	function page() {
-		$user = F3::get("user");
-		if (!$user['permissions']['overview']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['overview']['page']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 

@@ -70,7 +70,7 @@ class general {
 		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
 
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
-		//$file = F3::get('PARAMS.filename');
+		//$file = $this->f3->get('PARAMS.filename');
 		header("Content-Type: application/javascript");
 		$t = "";
 		if ($file) {
@@ -249,14 +249,14 @@ exit($t);
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
 
-		$cfg = F3::get("cfg");
+		$cfg = $this->f3->get("cfg");
 
 
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 
 
-		$app = F3::get('PARAMS.app');
+		$app = $this->f3->get('PARAMS.app');
 
 
 

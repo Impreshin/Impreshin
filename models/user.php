@@ -21,7 +21,8 @@ class user {
 
 	public function get($ID = "") {
 		$timer = new timer();
-		$result = F3::get("DB")->exec("
+		$f3 = \Base::instance();
+		$result = $f3->get("DB")->exec("
 				SELECT global_users.*
 				FROM global_users
 				WHERE global_users.ID = '$ID'
@@ -37,9 +38,9 @@ class user {
 	}
 
 	private static function appSettings($uID, $app, $pID) {
-
+		$f3 = \Base::instance();
 		$table = $app . "_users_settings";
-		$data = F3::get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
+		$data = $f3->get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
 		$settingsClass = "\\models\\" . $app . "\\settings";
 		$permissionsClass = "\\models\\" . $app . "\\user_permissions";
 		$defaults = $settingsClass::defaults();
@@ -70,7 +71,7 @@ class user {
 		);
 
 
-		$appstuff = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') ORDER BY ID DESC LIMIT 0,1");
+		$appstuff = $f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$pID') ORDER BY ID DESC LIMIT 0,1");
 
 
 		if (count($appstuff)) {
@@ -99,9 +100,10 @@ class user {
 	}
 
 	public function user($user = "") {
+		$f3 = \Base::instance();
 		$timer = new timer();
-		$app = F3::get("app");
-		$cfg = F3::get("cfg");
+		$app = $f3->get("app");
+		$cfg = $f3->get("cfg");
 		$result = array();
 
 		if (!is_array($user)) {
@@ -123,7 +125,7 @@ class user {
 
 
 			$table = $app . "_users_settings";
-			$lastpID = F3::get("DB")->exec("SELECT pID FROM $table WHERE uID = '$uID'");
+			$lastpID = $f3->get("DB")->exec("SELECT pID FROM $table WHERE uID = '$uID'");
 			if (count($lastpID)) {
 				$lastpID = $lastpID[0]['pID'];
 			} else {
@@ -169,7 +171,7 @@ class user {
 
 			//test_array($company);
 			if (isset($company[$app]) && $company[$app] != '1') {
-				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
+				$f3->reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
 
 			$result['pID'] = $pID;
@@ -188,7 +190,7 @@ class user {
 
 
 			if (!$appSettings['access'] && $result['su'] != '1') {
-				F3::reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
+				$f3->reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
 
 			if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) $result['ab_marketerID'] = $appSettings['extra']['ab_marketerID'];
@@ -289,6 +291,7 @@ class user {
 
 
 	function login($username, $password) {
+		$f3 = \Base::instance();
 		$timer = new timer();
 
 		$ID = "";
@@ -302,7 +305,7 @@ class user {
 		$password_hash = md5("aws_" . $password . "_" . md5("zoutnet"));
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password_hash'
 		");
 
@@ -324,8 +327,9 @@ class user {
 	}
 
 	static function getAll($where = "", $orderby = "fullName ASC", $limit = "") {
+		$f3 = \Base::instance();
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -342,7 +346,7 @@ class user {
 			$limit = " LIMIT " . $limit;
 
 		}
-		$apps = F3::get("cfg");
+		$apps = $f3->get("cfg");
 		$apps = $apps['apps'];
 
 		$apps_str = "";
@@ -351,7 +355,7 @@ class user {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT global_users.ID, fullName, email, last_app, last_activity, last_page, global_users_company.*, global_users.ID as ID, $apps_str
 			(SELECT COUNT(DISTINCT global_publications.ID) FROM ab_users_pub INNER JOIN global_publications ON ab_users_pub.pID = global_publications.ID WHERE ab_users_pub.uID =global_users.ID ) AS publicationCount,
 			(SELECT COUNT(DISTINCT global_companies.ID) FROM global_users_company INNER JOIN global_companies ON global_users_company.cID = global_companies.ID) AS companyCount
@@ -375,8 +379,9 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 	}
 
 	public static function save($ID, $values) {
+		$f3  = \Base::instance();
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 
 		if (isset($values['password']) && $values['password']) {
 			$values['password'] = md5("aws_" . $values['password'] . "_" . md5("zoutnet"));
@@ -388,7 +393,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 			$cID = $user['publication']['cID'];
 		}
 
-		$a = new Axon("global_users");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_users");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -404,11 +409,11 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 			$label = "User Edited";
 			$ID = $a->ID;
 		}
-		$app = F3::get("app");
+		$app = $f3->get("app");
 		$appClass = "\\models\\" . $app . "\\publications";
 
 
-		$p = new Axon($app . "_users_pub");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),$app . "_users_pub");
 		$publications = $appClass::getAll("cID='$cID'", "publication ASC");
 
 		foreach ($publications as $publication) {
@@ -437,9 +442,10 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 	public static function check_email($email) {
 
+		$f3 = \Base::instance();
 
 		$email = strtolower($email);
-		$results = f3::get("DB")->exec("SELECT ID, fullName, email FROM global_users WHERE email = '$email'");
+		$results = $f3->get("DB")->exec("SELECT ID, fullName, email FROM global_users WHERE email = '$email'");
 
 		if (count($results)) {
 			$results = $results[0];
@@ -452,12 +458,14 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 	public static function _add_company($ID, $cID = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+
+		$user = $f3->get("user");
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
-		$app = F3::get("app");
-		$p = new Axon("global_users_company");
+		$app = $f3->get("app");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
 		$p->uID = $ID;
@@ -477,12 +485,13 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 	public static function _add_app($ID, $cID = "", $app = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
-		$app = F3::get("app");
-		$p = new Axon("global_users_company");
+		$app = $f3->get("app");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
 		$p->uID = $ID;
@@ -502,15 +511,16 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 	public static function _remove_app($ID, $cID = "", $app = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
 		if (!$app) {
-			$app = F3::get("app");
+			$app = $f3->get("app");
 		}
 
-		$p = new Axon("global_users_company");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
 		$p->uID = $ID;
@@ -530,12 +540,13 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 	public static function _remove_company($ID, $cID = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
-		$app = F3::get("app");
-		$p = new Axon("global_users_company");
+		$app = $f3->get("app");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$p->load("uID='$ID' AND cID='$cID'");
 
 		$p->uID = $ID;
@@ -554,7 +565,8 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN global_users;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN global_users;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

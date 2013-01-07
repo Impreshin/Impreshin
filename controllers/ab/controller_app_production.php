@@ -10,16 +10,16 @@ use \models\ab as models;
 class controller_app_production {
 	function __construct() {
 
-
+		$this->f3 = \base::instance();
 	}
 	function page() {
-		$user = F3::get("user");
-		if (!$user['permissions']['production']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['production']['page']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
 		//test_array($user);
-		$ab_settings = F3::get("settings");
+		$ab_settings = $this->f3->get("settings");
 		$settings = models\settings::_read("production");
 
 		//test_array($settings);
@@ -75,8 +75,8 @@ class controller_app_production {
 
 	function _print() {
 		$timer = new timer();
-		$user = F3::get("user");
-		if (!$user['permissions']['production']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['production']['page']) $this->f3->error(404);
 
 		$settings = models\settings::_read("production", $user['permissions']);
 

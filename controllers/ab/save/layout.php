@@ -13,14 +13,14 @@ use \models\user as user;
 
 class layout extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _page() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$page = isset($_REQUEST['page'])?$_REQUEST['page']:"";
 		$sectionID = isset($_REQUEST['sectionID'])?$_REQUEST['sectionID']:"";
 		$colour = isset($_REQUEST['colour'])?$_REQUEST['colour']:"";
@@ -55,7 +55,7 @@ class layout extends save {
 
 
 
-		$a = new Axon("global_pages");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_pages");
 		$a->load("page='$page' AND pID = '$pID' AND dID='$dID'");
 		$changes = array();
 		$material = false;
@@ -77,7 +77,7 @@ class layout extends save {
 
 	}
 	function _drop(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : "";
 
@@ -85,7 +85,7 @@ class layout extends save {
 		$dID = $user['publication']['current_date']['ID'];
 
 		if ($page && ($page != "remove") ){
-			$a = new Axon("global_pages");
+			$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_pages");
 			$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
 			if ($a->dry()) {
 				$a->pID = $pID;
@@ -119,10 +119,10 @@ class layout extends save {
 
 	}
 	function _force(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pages = isset($_REQUEST['pages']) ? $_REQUEST['pages'] : "";
 
-		$a = new Axon("global_dates");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_dates");
 		$a->load("ID='".$user['publication']['current_date']['ID']."'");
 
 		if (!$a->dry()){

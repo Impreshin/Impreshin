@@ -18,11 +18,12 @@ class marketers {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_marketers.*
 			FROM ab_marketers
 			WHERE ab_marketers.ID = '$ID';
@@ -41,7 +42,8 @@ class marketers {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -54,7 +56,7 @@ class marketers {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 
 			FROM ab_marketers LEFT JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
@@ -73,13 +75,15 @@ class marketers {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 		$lookupColumns = array();
 
-		$a = new Axon("ab_marketers");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -98,7 +102,7 @@ class marketers {
 			$cID = $user['publication']['cID'];
 		}
 
-		$p = new Axon("ab_marketers_pub");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
 			"a" => array(),
@@ -157,10 +161,12 @@ class marketers {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
 
-		$a = new Axon("ab_marketers");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -175,7 +181,8 @@ class marketers {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_marketers;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_marketers;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

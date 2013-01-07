@@ -18,7 +18,8 @@ class bookings {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
 
@@ -27,7 +28,7 @@ class bookings {
 
 		//test_array($currentDate);
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*,
 				ab_placing.placing AS placing,
 				ab_bookings_types.type AS type,
@@ -79,7 +80,7 @@ class bookings {
 					}
 				}
 			}
-			$cfg = F3::get("cfg");
+			$cfg = $f3->get("cfg");
 			$cfg = $cfg['upload'];
 
 			$return['material_file_filesize_display'] = 0;
@@ -110,6 +111,7 @@ class bookings {
 
 	public static function getAll_count($where = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -117,7 +119,7 @@ class bookings {
 		}
 
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT count(ab_bookings.ID) as records
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
 			$where
@@ -140,6 +142,7 @@ class bookings {
 				);
 		*/
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -154,7 +157,7 @@ class bookings {
 		}
 
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT $select
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
 
@@ -173,6 +176,7 @@ $groupby
 		"g" => "none",
 		"o" => "ASC"
 	), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
+		$f3 = \Base::instance();
 		$timer = new timer();
 
 		if ($where) {
@@ -202,7 +206,7 @@ $groupby
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
 			global_dates.publish_date as publishDate,
 				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
@@ -230,6 +234,7 @@ $groupby
 
 
 	private static function currency($record) {
+		$f3 = \Base::instance();
 		if (is_array($record)) {
 			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
 			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate']);
@@ -257,12 +262,13 @@ $groupby
 	}
 
 	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
+		$f3 = \Base::instance();
 		if (!isset($options['highlight'])) $options['highlight'] = "";
 		if (!isset($options['filter'])) $options['filter'] = "";
 
 
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$permissions = $user['permissions'];
 		if (is_array($data)) {
 			$a = array();
@@ -393,6 +399,7 @@ $groupby
 	}
 
 	private static function order($grouping, $ordering) {
+		$f3 = \Base::instance();
 
 		$o = explode(".", $ordering['c']);
 		$a = array();
@@ -466,13 +473,14 @@ $groupby
 	}
 
 	public static function _delete($ID = "", $reason = "") {
-		$timer = new timer();
 
-		$user = F3::get("user");
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_bookings");
 		$a->load("ID='$ID'");
 
 		if (!$a->dry()) {
@@ -511,7 +519,8 @@ $groupby
 
 	public static function repeat($ID = "", $dID, $exact_repeat = '1') {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
 
 		$dataO = new bookings();
@@ -564,7 +573,7 @@ $groupby
 		}
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_bookings");
 		foreach ($values as $key => $value) {
 			$a->$key = $value;
 		}
@@ -589,7 +598,7 @@ $groupby
 		);
 
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 		$cfg = $cfg['upload'];
 
 		$cID = $data['cID'];
@@ -620,6 +629,7 @@ $groupby
 
 		//test_array($values);
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$lookupColumns = array();
 		$lookupColumns["dID"] = array(
 			"sql" => "(SELECT publish_date FROM global_dates WHERE ID = '{val}')",
@@ -689,15 +699,15 @@ $groupby
 		$lookup = array();
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_bookings");
 		$a->load("ID='$ID'");
 
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 		$cfg = $cfg['upload'];
 		//test_array($cfg);
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$cID = $user['publication']['cID'];
 
 
@@ -792,7 +802,7 @@ $groupby
 		}
 
 
-		$v = F3::get("DB")->exec($sql);
+		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
 			$changes[] = array(
@@ -866,8 +876,9 @@ $groupby
 
 	private static function getLogs($ID) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 
-		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
+		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
@@ -880,7 +891,8 @@ $groupby
 
 	private static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
@@ -888,13 +900,14 @@ $groupby
 		//	$log = str_replace("'", "\\'", $log);
 
 
-		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
+		$f3->get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 	}
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_bookings;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_bookings;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

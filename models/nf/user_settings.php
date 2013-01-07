@@ -10,11 +10,11 @@ class user_settings extends \models\user {
 
 	function _read($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM nf_users_settings
 			WHERE uID = '$ID';
@@ -34,12 +34,12 @@ class user_settings extends \models\user {
 	public static function save_setting($values = array(), $uID = "") {
 		$timer = new timer();
 		if (!$uID) {
-			$user = F3::get("user");
+			$user = $f3->get("user");
 			$uID = $user['ID'];
 		}
 
 
-		$t = New Axon("nf_users_settings");
+		$t = New \DB\SQL\Mapper($f3->get("DB"),"nf_users_settings");
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
@@ -59,12 +59,12 @@ class user_settings extends \models\user {
 	public static function save_config($values = array(), $uID = "") {
 		$timer = new timer();
 		if (!$uID) {
-			$user = F3::get("user");
+			$user = $f3->get("user");
 			$uID = $user['ID'];
 		}
 
 
-		$t = New Axon("nf_users_settings");
+		$t = New \DB\SQL\Mapper($f3->get("DB"),"nf_users_settings");
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
@@ -82,7 +82,7 @@ class user_settings extends \models\user {
 	}
 
 	private static function settings_dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN nf_users_settings;");
+		$table = $f3->get("DB")->exec("EXPLAIN nf_users_settings;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

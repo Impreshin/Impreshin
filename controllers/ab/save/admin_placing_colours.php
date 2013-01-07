@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_placing_colours extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -104,7 +104,7 @@ class admin_placing_colours extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\colours::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -112,7 +112,7 @@ class admin_placing_colours extends save {
 	}
 
 	function _sort() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$placingID = isset($_REQUEST['placingID']) ? $_REQUEST['placingID'] : "";
@@ -121,7 +121,7 @@ class admin_placing_colours extends save {
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_colour_rates SET orderby = '$i' WHERE ID = '$id' AND placingID = '$placingID'");
+			$this->f3->get("DB")->exec("UPDATE ab_colour_rates SET orderby = '$i' WHERE ID = '$id' AND placingID = '$placingID'");
 			$i++;
 		}
 

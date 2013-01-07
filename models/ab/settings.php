@@ -12,6 +12,7 @@ class settings {
 
 	public static function settings($permissions=array()) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$columns = array(
 			"client"                 => array(
@@ -324,7 +325,7 @@ class settings {
 			}
 		}
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 
 		if (!$cfg['upload']['material']){
 			if (isset($return['columns']['material_file_filename'])) unset($return['columns']['material_file_filename']);
@@ -339,6 +340,7 @@ class settings {
 
 	public static function defaults($application = "ab", $ID = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 			$settings = array(
 				"provisional"=>array(
@@ -662,8 +664,10 @@ class settings {
 	}
 
 	public static function _read($section, $permission=array()){
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		$settings = self::settings($user['permissions']);
 		$defaults = self::defaults();
 		$settings_raw = $settings;

@@ -18,11 +18,12 @@ class marketers_targets {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_marketers_targets
 			WHERE ID = '$ID';
@@ -47,6 +48,7 @@ class marketers_targets {
 
 	public static function _current($mID, $pID) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$result = array();
 
 
@@ -55,7 +57,7 @@ class marketers_targets {
 		if ($return['ID']) {
 
 
-			$result = F3::get("DB")->exec("
+			$result = $f3->get("DB")->exec("
 				SELECT ab_marketers_targets.*, DATEDIFF(current_date(),date_to)
 				FROM ab_marketers_targets INNER JOIN ab_marketers_targets_pub ON ab_marketers_targets.ID = ab_marketers_targets_pub.mtID
 
@@ -74,7 +76,7 @@ class marketers_targets {
 				$targets = array();
 				$pubs_array = array();
 				foreach ($result as $target) {
-					$pubs = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '" . $target['ID'] . "'");
+					$pubs = $f3->get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '" . $target['ID'] . "'");
 
 					$p = array();
 					foreach ($pubs as $pub) {
@@ -168,8 +170,9 @@ class marketers_targets {
 
 	public static function getAll($where = "", $orderby = "", $limit = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 
 		if ($where) {
@@ -187,7 +190,7 @@ class marketers_targets {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT ab_marketers_targets.*, if ((SELECT count(ID) FROM ab_marketers_targets_pub WHERE ab_marketers_targets_pub.mtID = ab_marketers_targets.ID AND ab_marketers_targets_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 			FROM ab_marketers_targets
 			$where
@@ -196,7 +199,7 @@ class marketers_targets {
 		");
 		$t = array();
 		foreach ($result as $r) {
-			$pubs = (F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '" . $r['ID'] . "'"));
+			$pubs = ($f3->get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '" . $r['ID'] . "'"));
 			$ps = array();
 			foreach ($pubs as $pub) $ps[] = $pub['pID'];
 
@@ -213,6 +216,7 @@ class marketers_targets {
 
 	public static function getAll_count($where = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -220,7 +224,7 @@ class marketers_targets {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT count(ID) as count
 			FROM ab_marketers_targets
 			$where
@@ -239,12 +243,14 @@ class marketers_targets {
 
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 		$lookupColumns = array();
-		$a = new Axon("ab_marketers_targets");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_targets");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -266,7 +272,7 @@ class marketers_targets {
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 
 
-		$p = new Axon("ab_marketers_targets_pub");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_targets_pub");
 		$pub = array(
 			"a" => array(),
 			"r" => array()
@@ -324,10 +330,12 @@ class marketers_targets {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_marketers_targets");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_targets");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -340,7 +348,8 @@ class marketers_targets {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_marketers;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_marketers;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

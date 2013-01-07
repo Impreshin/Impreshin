@@ -13,15 +13,15 @@ use \models\user as user;
 
 class bookings extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function booking_delete() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
@@ -34,7 +34,7 @@ class bookings extends save {
 	}
 
 	function form() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		//$accStuff = new models\accounts();
@@ -147,7 +147,7 @@ class bookings extends save {
 
 	}
 	function repeat(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 

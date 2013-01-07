@@ -10,9 +10,10 @@ function percentDiff($old, $new, $outputRendered=true) {
 	$new = trim(preg_replace('#^<p>\s*.nbsp;<\/p>#', '', $new));
 
 
+	$f3 = Base::instance();
 
-	$o = F3::scrub($old);
-	$a = F3::scrub($new);
+	$o = $f3->scrub($old);
+	$a = $f3->scrub($new);
 	$t = s_text::diff($o, $a, " ");
 
 

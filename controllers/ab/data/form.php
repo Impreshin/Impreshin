@@ -13,17 +13,17 @@ use \models\user as user;
 
 class form extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function account_lookup_history_suggestions(){
 		$accNum = (isset($_REQUEST['accNum'])) ? $_REQUEST['accNum'] : "";
 		$limit = (isset($_REQUEST['limit'])) ? "LIMIT " . $_REQUEST['limit'] : "";
 		$type = (isset($_REQUEST['type'])) ? $_REQUEST['type'] : "1";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -34,7 +34,7 @@ class form extends data {
 			$where = "WHERE accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
 
 
-			$data = F3::get("DB")->exec("
+			$data = $this->f3->get("DB")->exec("
 				SELECT
 					ab_categories.ID as categoryID, ab_categories.category,
 					ab_marketers.ID as marketerID, ab_marketers.marketer,
@@ -122,7 +122,7 @@ class form extends data {
 
 			$return = $data;
 		} else {
-			$accounts = F3::get("DB")->exec("
+			$accounts = $this->f3->get("DB")->exec("
 				SELECT ab_accounts.*
 				FROM ab_bookings INNER JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID
 				WHERE ab_bookings.userID = '$userID' AND pID = '$pID'

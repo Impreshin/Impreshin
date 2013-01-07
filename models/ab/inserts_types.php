@@ -18,11 +18,12 @@ class inserts_types {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_inserts_types
 			WHERE ID = '$ID';
@@ -41,6 +42,7 @@ class inserts_types {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,7 +54,7 @@ class inserts_types {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_inserts_types
 			$where
@@ -66,10 +68,11 @@ class inserts_types {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$old = array();
-		$a = new Axon("ab_inserts_types");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_inserts_types");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -103,10 +106,12 @@ class inserts_types {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_inserts_types");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_inserts_types");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -121,7 +126,8 @@ class inserts_types {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_inserts_types;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_inserts_types;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

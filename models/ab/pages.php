@@ -17,11 +17,12 @@ class pages {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM global_pages
 			WHERE ID = '$ID'
@@ -39,8 +40,10 @@ class pages {
 	}
 
 	public static function getAll($where = "", $orderby = "") {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,7 +55,7 @@ class pages {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT global_pages.*, section, section_colour,  COALESCE((SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1'),0) as cm
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
@@ -75,6 +78,7 @@ class pages {
 
 	public static function maxPages($dID, $cm = 0) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if (is_array($dID)) {
 			$date = $dID;
 		} else {
@@ -100,7 +104,8 @@ class pages {
 	}
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN global_pages;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN global_pages;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

@@ -11,10 +11,10 @@ use \FileDB as FileDB;
 class controller_docs {
 	private $raw;
 	function __construct(){
-		$app = F3::get('PARAMS.app');
-		$section = F3::get('PARAMS.section');
-		$sub_section = F3::get('PARAMS.sub_section');
-		$sub_section_item = F3::get('PARAMS.item');
+		$app = $this->f3->get('PARAMS.app');
+		$section = $this->f3->get('PARAMS.section');
+		$sub_section = $this->f3->get('PARAMS.sub_section');
+		$sub_section_item = $this->f3->get('PARAMS.item');
 
 		$this->data = $this->get($app, $section, $sub_section, $sub_section_item);
 
@@ -91,7 +91,7 @@ class controller_docs {
 		return $data;
 	}
 	function get($app="", $section="", $sub_section="", $sub_section_item=""){
-		$data = F3::get('docs');
+		$data = $this->f3->get('docs');
 		$data = $this->filter($data);
 
 
@@ -121,7 +121,7 @@ class controller_docs {
 			if (isset($data[$app])) {
 				$data = $data[$app];
 			} else {
-				F3::error(404);
+				$this->f3->error(404);
 			}
 
 		}
@@ -144,20 +144,20 @@ class controller_docs {
 							if (isset($data['help'][$sub_section_item])) {
 								$data = $data['help'][$sub_section_item];
 							} else {
-								F3::reroute("/$app/help/$section/$sub_section");
+								$this->f3->reroute("/$app/help/$section/$sub_section");
 							}
 						}
 					} else {
-						F3::reroute("/$app/help/$section");
+						$this->f3->reroute("/$app/help/$section");
 					}
 				}
 
 			} else {
 				//$data = $data[$app];
-				F3::reroute("/$app/help");
+				$this->f3->reroute("/$app/help");
 			}
 		}
-		if (!count($data))F3::error(404);
+		if (!count($data))$this->f3->error(404);
 
 		$return = array();
 		if (isset($data['help'])) $data = $data['help'];

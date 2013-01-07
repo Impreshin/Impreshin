@@ -18,16 +18,18 @@ class accounts {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_accounts.*
 			FROM ab_accounts
 			WHERE ab_accounts.ID = '$ID';
 
-		");
+		"
+		);
 
 
 		if (count($result)) {
@@ -35,12 +37,17 @@ class accounts {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class"  => __CLASS__,
+		                                     "Method" => __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 	public static function getAll_count($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,12 +59,13 @@ class accounts {
 		}
 
 
-		$result = F3::get("DB")->exec("
-			SELECT count(DISTINCT ab_accounts.ID) as count
+		$result = $f3->get("DB")->exec("
+			SELECT count(DISTINCT ab_accounts.ID) AS count
 			FROM (ab_accounts INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) LEFT JOIN ab_accounts_pub ON ab_accounts.ID = ab_accounts_pub.aID
 			$where
 			$orderby
-		");
+		"
+		);
 
 
 		if (count($result)) {
@@ -67,17 +75,19 @@ class accounts {
 			$return = 0;
 		}
 		$timer->stop(array(
-		                  "Models" => array(
-			                  "Class"  => __CLASS__,
-			                  "Method" => __FUNCTION__
-		                  )
-		             ), func_get_args());
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 	public static function getAll($where = "", $orderby = "", $limit = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -96,24 +106,31 @@ class accounts {
 		}
 
 
-		$result = F3::get("DB")->exec("
-			SELECT DISTINCT ab_accounts.*, ab_accounts_status.blocked, ab_accounts_status.labelClass, ab_accounts_status.status, ab_accounts.ID as ID, if ((SELECT count(ID) FROM ab_accounts_pub WHERE ab_accounts_pub.aID = ab_accounts.ID AND ab_accounts_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+		$result = $f3->get("DB")->exec("
+			SELECT DISTINCT ab_accounts.*, ab_accounts_status.blocked, ab_accounts_status.labelClass, ab_accounts_status.status, ab_accounts.ID AS ID, if ((SELECT count(ID) FROM ab_accounts_pub WHERE ab_accounts_pub.aID = ab_accounts.ID AND ab_accounts_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 
 			FROM ((ab_accounts INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) LEFT JOIN ab_accounts_pub ON ab_accounts.ID = ab_accounts_pub.aID) LEFT JOIN global_publications ON ab_accounts_pub.pID = global_publications.ID
 			$where
 			$orderby
 			$limit
-		");
+		"
+		);
 
 
 		$return = $result;
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class"  => __CLASS__,
+		                                     "Method" => __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 		$lookupColumns = array();
@@ -123,7 +140,7 @@ class accounts {
 			"val" => ""
 		);
 
-		$a = new Axon("ab_accounts");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts");
 		$a->load("ID='$ID'");
 
 
@@ -143,7 +160,7 @@ class accounts {
 			$cID = $user['publication']['cID'];
 		}
 
-		$p = new Axon("ab_accounts_pub");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 
 
@@ -203,17 +220,23 @@ class accounts {
 		\models\logging::_log("accounts", $label, $values, $old, $overwrite, $lookupColumns);
 
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class"  => __CLASS__,
+		                                     "Method" => __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return $ID;
 
 	}
 
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_accounts");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -221,14 +244,19 @@ class accounts {
 		$a->save();
 
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class"  => __CLASS__,
+		                                     "Method" => __FUNCTION__
+  )
+		             ), func_get_args()
+		);
 		return "done";
 
 	}
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_accounts;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_accounts;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

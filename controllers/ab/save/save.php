@@ -15,10 +15,10 @@ use models\user as user;
 class save {
 
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 	}
 
 	function __destruct() {
@@ -28,11 +28,11 @@ class save {
 
 
 	function list_settings(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
-		$ab_defaults = F3::get("defaults");
+		$ab_defaults = $this->f3->get("defaults");
 		$ab_defaults = $ab_defaults['settings'];
 		$section = (isset($_GET['section'])) ? $_GET['section'] : "";
 
@@ -76,10 +76,10 @@ class save {
 
 
 	function material_status(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 		$section = "";
-		$cfg = F3::get("cfg");
+		$cfg = $this->f3->get("cfg");
 		$cfg = $cfg['upload'];
 
 
@@ -146,7 +146,7 @@ class save {
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 		$section = "";
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 
@@ -178,7 +178,7 @@ class save {
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 		$section = "";
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 

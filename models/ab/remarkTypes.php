@@ -15,6 +15,7 @@ class remarkTypes {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -26,7 +27,7 @@ class remarkTypes {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_remark_types
 			$where

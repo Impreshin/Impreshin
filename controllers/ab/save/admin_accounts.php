@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_accounts extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -100,7 +100,7 @@ class admin_accounts extends save {
 
 	}
 	function add_company(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
@@ -110,29 +110,29 @@ class admin_accounts extends save {
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function add_app(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$app = F3::get("app");
+		$app = $this->f3->get("app");
 
 		user::_add_app($ID, $cID, $app);
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function remove_app(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$app = F3::get("app");
+		$app = $this->f3->get("app");
 
 		user::_remove_app($ID, $cID, $app);
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		models\accounts::_delete($ID);
@@ -142,7 +142,7 @@ class admin_accounts extends save {
 
 	}
 	function _pub(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$pID = $user['publication']['ID'];
@@ -151,7 +151,7 @@ class admin_accounts extends save {
 
 
 
-		$p = new Axon("ab_accounts_pub");
+		$p = new  \DB\SQL\Mapper($this->f3->get("DB"),"ab_accounts_pub");
 		$p->load("aID='$ID' and pID='$pID'");
 		if (!$p->ID){
 			$p->aID=$ID;
@@ -171,7 +171,7 @@ class admin_accounts extends save {
 			)
 		);
 
-		$a = new Axon("ab_accounts");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_accounts");
 		$a->load("ID='$ID'");
 $label = "";
 		if ($a->ID) {

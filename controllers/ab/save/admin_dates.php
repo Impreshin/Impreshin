@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_dates extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 
 
@@ -68,7 +68,7 @@ class admin_dates extends save {
 
 	}
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 

@@ -8,7 +8,8 @@ class template {
 	private $config = array(), $vars = array();
 
 	function __construct($template, $folder = "", $strictfolder = false) {
-		$this->config['cache_dir'] = F3::get('TEMP');
+		$this->f3 = Base::instance();
+		$this->config['cache_dir'] = $this->f3->get('TEMP');
 
 		$this->vars['folder'] = $folder;
 		$this->config['strictfolder'] = $strictfolder;
@@ -32,10 +33,10 @@ class template {
 
 		$curPageFull = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$curPage = explode("?", $curPageFull);
-		$_v = isset($_GET['v']) ? $_GET['v'] : F3::get('v');
-		$user = F3::get('user');
+		$_v = isset($_GET['v']) ? $_GET['v'] : $this->f3->get('v');
+		$user = $this->f3->get('user');
 
-		$cfg = F3::get('cfg');
+		$cfg = $this->f3->get('cfg');
 		unset($cfg['DB']);
 
 
@@ -46,18 +47,18 @@ class template {
 
 		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
-		$this->vars['_version'] = F3::get('version');
+		$this->vars['_version'] = $this->f3->get('version');
 		$this->vars['_v'] = $_v;
 		$this->vars['_cfg'] = $cfg;
-		$this->vars['_docs'] = F3::get('docs');
-		$this->vars['_last_pages'] = F3::get('last_pages');
+		$this->vars['_docs'] = $this->f3->get('docs');
+		$this->vars['_last_pages'] = $this->f3->get('last_pages');
 		$this->vars['isLocal'] = isLocal();
 
 
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
 		$this->vars['_settings'] = array(
-			"settings"=> F3::get('settings'),
+			"settings"=> $this->f3->get('settings'),
 			"publication"=> $publication,
 			"publications"=> $publications,
 			"json"=>array(
@@ -111,7 +112,7 @@ class template {
 			}
 
 			if (!isset($page['help']) || !$page['help']){
-				$app = F3::get("app");
+				$app = $this->f3->get("app");
 				$sub_section = $page['sub_section'];
 				if (strpos($sub_section,"_")){
 					$sub_section = explode("_", $page['sub_section']);
@@ -174,7 +175,7 @@ class template {
 
 
 	public function output() {
-		F3::set("__runTemplate", true);
+		$this->f3->set("__runTemplate", true);
 		echo $this->load();
 
 	}

@@ -10,12 +10,13 @@ use models\ab as models;
 
 class controller_app_form {
 	function __construct() {
+		$this->f3 = \base::instance();
 	}
 
 	function page() {
-		$ID = F3::get('PARAMS["ID"]');
-		$user = F3::get("user");
-		if (!$user['permissions']['form']['new']&& !$user['permissions']['form']['edit']&&!$user['permissions']['form']['edit_master']&& !$user['permissions']['form']['delete']) F3::error(404);
+		$ID = $this->f3->get('PARAMS["ID"]');
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['form']['new']&& !$user['permissions']['form']['edit']&&!$user['permissions']['form']['edit_master']&& !$user['permissions']['form']['delete']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -28,7 +29,7 @@ class controller_app_form {
 
 
 
-		$clientlist = F3::get("DB")->exec("
+		$clientlist = $this->f3->get("DB")->exec("
 			SELECT Distinct client FROM ab_bookings INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID WHERE ab_bookings.pID = '$pID' AND global_dates.publish_date >= DATE_SUB(now(),INTERVAL '60' DAY) ORDER BY global_dates.publish_date DESC LIMIT 0,200
 		"
 		);
@@ -39,7 +40,7 @@ class controller_app_form {
 
 		$clientlist = json_encode($a);
 
-		$spotlist = F3::get("DB")->exec("
+		$spotlist = $this->f3->get("DB")->exec("
 			SELECT Distinct colourSpot FROM ab_bookings WHERE pID='$pID'
 		"
 		);
@@ -102,18 +103,18 @@ class controller_app_form {
 
 		$title = "New Booking";
 		if ($details['ID']){
-			if (!$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) F3::error(404);
+			if (!$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) $this->f3->error(404);
 			if ($details['state'] == 'Current' || $details['state'] == 'Future') {
 			} else {
 				if (!$user['permissions']['form']['edit_master']){
-					F3::error(404);
+					$this->f3->error(404);
 				}
 
 			}
 
 			$title = "".$details['client'];
 		} else {
-			if (!$user['permissions']['form']['new']) F3::error(404);
+			if (!$user['permissions']['form']['new']) $this->f3->error(404);
 		}
 
 		$tmpl = new \template("template.tmpl", "ui/ab/");

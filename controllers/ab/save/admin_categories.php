@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_categories extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -88,7 +88,7 @@ class admin_categories extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\categories::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -96,7 +96,7 @@ class admin_categories extends save {
 	}
 
 	function _sort() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
@@ -104,7 +104,7 @@ class admin_categories extends save {
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			$this->f3->get("DB")->exec("UPDATE ab_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
 			$i++;
 		}
 
@@ -114,13 +114,13 @@ class admin_categories extends save {
 	}
 
 	function _pub() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$pID = $user['publication']['ID'];
 
 
-		$p = new Axon("ab_category_pub");
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_category_pub");
 		$p->load("catID='$ID' and pID='$pID'");
 		if (!$p->ID) {
 			$p->catID = $ID;
@@ -141,7 +141,7 @@ class admin_categories extends save {
 			)
 		);
 
-		$a = new Axon("ab_categories");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_categories");
 		$a->load("ID='$ID'");
 		$label = "";
 		if ($a->ID) {

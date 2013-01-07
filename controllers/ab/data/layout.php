@@ -12,14 +12,14 @@ use \models\user as user;
 
 class layout extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = \F3::get("user");
+		$user = $this->f3->get("user");
 
 		$userID = $user['ID'];
 		$pID = $user['pID'];
@@ -42,7 +42,7 @@ class layout extends data {
 
 		if (count($records)) $records = $records[0]['records'];
 		$return = array();
-		$return['placing'] = F3::get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
+		$return['placing'] = $this->f3->get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
 
 		$cols = array(
 			"ID",
@@ -87,7 +87,7 @@ class layout extends data {
 
 	function _pages() {
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -243,7 +243,7 @@ class layout extends data {
 
 
 	function _page($page=""){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -329,7 +329,7 @@ class layout extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 	function _stats($data="") {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -365,7 +365,7 @@ class layout extends data {
 
 	function _details_page(){
 		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -412,7 +412,7 @@ class layout extends data {
 	}
 	function _details_section(){
 		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 

@@ -12,14 +12,15 @@ use \models\user as user;
 
 class admin_dates extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -79,7 +80,8 @@ class admin_dates extends data {
 		$GLOBALS["output"]['data'] = $return;
 	}
 	function _details(){
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 

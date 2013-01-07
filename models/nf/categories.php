@@ -18,11 +18,11 @@ class categories {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM nf_categories
 			WHERE ID = '$ID';
@@ -41,7 +41,7 @@ class categories {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -54,7 +54,7 @@ class categories {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM nf_categories
 			$where
@@ -68,13 +68,13 @@ class categories {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$timer = new timer();
 
 		$old = array();
 
 
-		$a = new Axon("nf_categories");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_categories");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -97,10 +97,10 @@ class categories {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$timer = new timer();
 
-		$a = new Axon("nf_categories");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_categories");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -115,7 +115,7 @@ class categories {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN nf_categories;");
+		$table = $f3->get("DB")->exec("EXPLAIN nf_categories;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

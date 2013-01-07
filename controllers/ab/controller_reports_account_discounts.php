@@ -9,10 +9,10 @@ use \timer as timer;
 use \models\ab as models;
 class controller_reports_account_discounts {
 	function __construct() {
-
+		$this->f3 = \base::instance();
 	}
 	function page() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$uID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];

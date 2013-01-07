@@ -1,32 +1,29 @@
 <?php
 
-/**
-	Generic array utilities for the PHP Fat-Free Framework
+/*
+	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
 
-	The contents of this file are subject to the terms of the GNU General
-	License Version 3.0. You may not use this file except in
-	compliance with the license. Any of the license terms and conditions
-	can be waived if you get permission from the copyright holder.
+	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
-	Copyright (c) 2009-2012 F3::Factory
-	Bong Cosca <bong.cosca@yahoo.com>
+	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
+	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+	PURPOSE.
 
-		@package Matrix
-		@version 2.0.13
-**/
+	Please see the license.txt file for more information.
+*/
 
 //! Generic array utilities
-class Matrix extends Base {
+class Matrix extends Prefab {
 
 	/**
 		Retrieve values from a specified column of a multi-dimensional
 		array variable
-			@return array
-			@param $var array
-			@param $col mixed
-			@public
+		@return array
+		@param $var array
+		@param $col mixed
 	**/
-	static function pick(array $var,$col) {
+	function pick(array $var,$col) {
 		return array_map(
 			function($row) use($col) {
 				return $row[$col];
@@ -37,49 +34,47 @@ class Matrix extends Base {
 
 	/**
 		Rotate a two-dimensional array variable
-			@return array
-			@param $var array
-			@public
+		@return NULL
+		@param $var array
 	**/
-	static function transpose(array $var) {
-		$result=array();
+	function transpose(array &$var) {
+		$out=array();
 		foreach ($var as $keyx=>$cols)
 			foreach ($cols as $keyy=>$valy)
-				$result[$keyy][$keyx]=$valy;
-		return $result;
+				$out[$keyy][$keyx]=$valy;
+		$var=$out;
 	}
 
 	/**
 		Sort a multi-dimensional array variable on a specified column
-			@return array
-			@param $var array
-			@param $col mixed
-			@param $order integer
-			@public
+		@return bool
+		@param $var array
+		@param $col mixed
+		@param $order int
 	**/
-	static function sort(array &$var,$col,$order=SORT_ASC) {
+	function sort(array &$var,$col,$order=SORT_ASC) {
 		uasort(
 			$var,
 			function($val1,$val2) use($col,$order) {
-				$self=__CLASS__;
 				list($v1,$v2)=array($val1[$col],$val2[$col]);
 				$out=is_numeric($v1) && is_numeric($v2)?
-					$self::sign($v1-$v2):strcmp($v1,$v2);
+					Base::instance()->sign($v1-$v2):strcmp($v1,$v2);
 				if ($order==SORT_DESC)
 					$out=-$out;
 				return $out;
 			}
 		);
+		$var=array_values($var);
 	}
 
 	/**
 		Change the key of a two-dimensional array element
-			@param $var array
-			@param $old string
-			@param $new string
-			@public
+		@return NULL
+		@param $var array
+		@param $old string
+		@param $new string
 	**/
-	static function changekey(array &$var,$old,$new) {
+	function changekey(array &$var,$old,$new) {
 		$keys=array_keys($var);
 		$vals=array_values($var);
 		$keys[array_search($old,$keys)]=$new;

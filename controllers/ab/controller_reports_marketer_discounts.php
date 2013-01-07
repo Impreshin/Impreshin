@@ -9,10 +9,10 @@ use \timer as timer;
 use \models\ab as models;
 class controller_reports_marketer_discounts {
 	function __construct() {
-
+		$this->f3 = \base::instance();
 	}
 	function page() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$uID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
@@ -86,7 +86,7 @@ class controller_reports_marketer_discounts {
 			if (isset($user['marketer']['ID']) && $user['marketer']['ID']){
 				$selected = $user['marketer']['ID'];
 			} else {
-				F3::error("404");
+				$this->f3->error("404");
 			}
 		}
 		//test_array(models\settings::_read($section));

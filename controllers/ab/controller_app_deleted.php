@@ -9,18 +9,18 @@ use \timer as timer;
 use models\ab as models;
 class controller_app_deleted {
 	function __construct() {
-
+		$this->f3 = \base::instance();
 
 
 	}
 	function page() {
-		$user = F3::get("user");
-		if (!$user['permissions']['records']['deleted']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['records']['deleted']['page']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
 		//test_array($user);
-		$ab_settings = F3::get("settings");
+		$ab_settings = $this->f3->get("settings");
 		$settings = models\settings::_read("deleted");
 
 
@@ -48,7 +48,7 @@ class controller_app_deleted {
 
 		//test_array($ab_settings);
 
-		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
+		$date_range = $this->f3->get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
 		if (count($date_range)) {
 			$date_range = $date_range[0];
 		}
@@ -87,8 +87,8 @@ class controller_app_deleted {
 
 	function _print() {
 		$timer = new timer();
-		$user = F3::get("user");
-		if (!$user['permissions']['records']['deleted']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['records']['deleted']['page']) $this->f3->error(404);
 		$settings = models\settings::_read("deleted", $user['permissions']);
 
 

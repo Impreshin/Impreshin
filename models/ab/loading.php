@@ -19,11 +19,12 @@ class loading {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_page_load
 			WHERE ID = '$ID';
@@ -42,6 +43,7 @@ class loading {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -53,7 +55,7 @@ class loading {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_page_load.*
 			FROM ab_page_load
 			$where
@@ -68,9 +70,10 @@ class loading {
 
 	public static function getLoading($pID = "", $cm = "", $forcepages = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 		if (!$pID) $pID = $user['pID'];
 
@@ -91,7 +94,7 @@ class loading {
 
 
 		if ($forcepages) {
-			$forcepages = F3::get("DB")->exec("
+			$forcepages = $f3->get("DB")->exec("
 				SELECT *, ABS( pages - $forcepages ) AS distance FROM ab_page_load
 				WHERE pID = '$pID'
 				ORDER BY distance
@@ -105,7 +108,7 @@ class loading {
 		$pageSize = $publication['cmav'] * ($publication['columnsav']);
 
 
-		$loadingData = F3::get("DB")->exec("
+		$loadingData = $f3->get("DB")->exec("
 				SELECT * FROM 	ab_page_load WHERE pID = '$pID' ORDER BY pages ASC
 			");
 
@@ -186,11 +189,13 @@ class loading {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		$old = array();
 		$lookupColumns = array();
-		$a = new Axon("ab_page_load");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_page_load");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -219,10 +224,12 @@ class loading {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_page_load");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_page_load");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -237,7 +244,8 @@ class loading {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_page_load;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_page_load;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

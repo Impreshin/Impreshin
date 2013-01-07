@@ -10,11 +10,12 @@ class user_settings extends \models\user {
 
 	function _read($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_users_settings
 			WHERE uID = '$ID';
@@ -33,13 +34,14 @@ class user_settings extends \models\user {
 
 	public static function save_setting($values = array(), $uID = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if (!$uID) {
-			$user = F3::get("user");
+			$user = $f3->get("user");
 			$uID = $user['ID'];
 		}
 
 
-		$t = New Axon("ab_users_settings");
+		$t = New \DB\SQL\Mapper($f3->get("DB"),"ab_users_settings");
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
@@ -62,13 +64,14 @@ class user_settings extends \models\user {
 
 	public static function save_config($values = array(), $uID = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if (!$uID) {
-			$user = F3::get("user");
+			$user = $f3->get("user");
 			$uID = $user['ID'];
 		}
 
 
-		$t = New Axon("ab_users_settings");
+		$t = New \DB\SQL\Mapper($f3->get("DB"),"ab_users_settings");
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
@@ -91,7 +94,8 @@ class user_settings extends \models\user {
 	}
 
 	private static function settings_dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_users_settings;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_users_settings;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

@@ -18,11 +18,12 @@ class production {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_production
 			WHERE ab_production.ID = '$ID';
@@ -41,7 +42,8 @@ class production {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -54,7 +56,7 @@ class production {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT ab_production.*, if ((SELECT count(ID) FROM ab_production_pub WHERE ab_production_pub.productionID = ab_production.ID AND ab_production_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
 			FROM ab_production LEFT JOIN ab_production_pub ON ab_production.ID = ab_production_pub.productionID
 			$where
@@ -68,12 +70,14 @@ class production {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		$old = array();
 		$lookupColumns = array();
 
-		$a = new Axon("ab_production");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_production");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -92,7 +96,7 @@ class production {
 			$cID = $user['publication']['cID'];
 		}
 
-		$p = new Axon("ab_production_pub");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_production_pub");
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
 			"a" => array(),
@@ -150,10 +154,12 @@ class production {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_production");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_production");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -167,7 +173,8 @@ class production {
 	}
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_production;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_production;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

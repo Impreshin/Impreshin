@@ -18,11 +18,12 @@ class accountStatus {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_accounts_status.*
 			FROM ab_accounts_status
 			WHERE ab_accounts_status.ID = '$ID';
@@ -46,6 +47,7 @@ class accountStatus {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -57,7 +59,7 @@ class accountStatus {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT * FROM ab_accounts_status
 			$where
 			$orderby
@@ -70,13 +72,15 @@ class accountStatus {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 
 
-		$a = new Axon("ab_accounts_status");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts_status");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -106,10 +110,12 @@ class accountStatus {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_accounts_status");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts_status");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -124,7 +130,8 @@ class accountStatus {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_accounts_status;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_accounts_status;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

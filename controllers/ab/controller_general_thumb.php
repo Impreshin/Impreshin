@@ -11,10 +11,11 @@ use models\ab as models;
 
 class controller_general_thumb {
 	public static function material(){
-		$cfg = F3::get("cfg");
+		$f3 = \base::instance();
+		$cfg = $f3->get("cfg");
 
 		$data = new models\bookings();
-		$data = $data->get(F3::get("PARAMS.ID"));
+		$data = $data->get($f3->get("PARAMS.ID"));
 
 		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
 		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));

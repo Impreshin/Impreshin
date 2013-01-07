@@ -14,16 +14,16 @@ use \models\user as user;
 class articles extends save {
 	function __construct() {
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 
 
 	function form() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$cID = $user['company']['ID'];
 
@@ -95,7 +95,7 @@ $typeID = '1';
 
 	}
 	function repeat(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 

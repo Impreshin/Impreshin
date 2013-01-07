@@ -19,7 +19,8 @@ class user_notifications {
 
 	public static function bar() {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = $records = array();
 
 		if ($user['ID']) {

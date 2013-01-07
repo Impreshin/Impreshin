@@ -23,6 +23,7 @@ class notices {
 
 	public static function getAll($where = "", $orderby = "datein DESC") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$return['error'] = "";
 
@@ -36,7 +37,7 @@ class notices {
 		}
 
 
-		$result = F3::get("DB")->sql("
+		$result = $f3->get("DB")->sql("
 			SELECT *
 			FROM mp_notices
 			$where
@@ -53,12 +54,13 @@ class notices {
 
 	public static function seen() {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$return['error'] = "";
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
-		$result = F3::get("DB")->sql("SELECT nID FROM mp_user_seen_notice WHERE uID = '$userID'");
+		$result = $f3->get("DB")->sql("SELECT nID FROM mp_user_seen_notice WHERE uID = '$userID'");
 
 		$return['data'] = $result;
 
@@ -70,6 +72,7 @@ class notices {
 
 	public static function show($where = "", $orderby = "datein DESC") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$return['error'] = "";
 
@@ -83,7 +86,7 @@ class notices {
 		}
 
 
-		$result = F3::get("DB")->sql("
+		$result = $f3->get("DB")->sql("
 			SELECT *
 			FROM mp_notices
 			$where
@@ -100,7 +103,8 @@ class notices {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->sql("EXPLAIN mp_notices;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->sql("EXPLAIN mp_notices;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

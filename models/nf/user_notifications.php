@@ -20,7 +20,7 @@ class user_notifications {
 
 	public static function bar() {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$return = array();
 
 

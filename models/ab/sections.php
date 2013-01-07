@@ -18,11 +18,12 @@ class sections {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM global_pages_sections
 			WHERE ID = '$ID';
@@ -41,6 +42,7 @@ class sections {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,7 +54,7 @@ class sections {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM global_pages_sections
 			$where
@@ -66,13 +68,15 @@ class sections {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 		$lookupColumns = array();
 
-		$a = new Axon("global_pages_sections");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_pages_sections");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -102,10 +106,12 @@ class sections {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("global_pages_sections");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_pages_sections");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -120,7 +126,8 @@ class sections {
 
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN global_pages_sections;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN global_pages_sections;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

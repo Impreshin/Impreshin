@@ -18,11 +18,12 @@ class colours {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_colour_rates
 			WHERE ID = '$ID';
@@ -41,6 +42,7 @@ class colours {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,7 +54,7 @@ class colours {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_colour_rates
 			$where
@@ -67,11 +69,13 @@ class colours {
 
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		$old = array();
 		$lookupColumns = array();
-		$a = new Axon("ab_colour_rates");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_colour_rates");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -102,10 +106,12 @@ class colours {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_colour_rates");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_colour_rates");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -117,7 +123,8 @@ class colours {
 	}
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_colour_rates;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_colour_rates;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

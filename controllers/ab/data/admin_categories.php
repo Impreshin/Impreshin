@@ -12,15 +12,16 @@ use \models\user as user;
 
 class admin_categories extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _list() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -44,7 +45,8 @@ class admin_categories extends data {
 	}
 
 	function _details() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -66,7 +68,7 @@ class admin_categories extends data {
 		if (!$details['ID']) {
 			$userPublications = array();
 		} else {
-			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_category_pub WHERE catID = '$ID'");
+			$userPublications = $this->f3->get("DB")->exec("SELECT pID FROM ab_category_pub WHERE catID = '$ID'");
 		}
 
 

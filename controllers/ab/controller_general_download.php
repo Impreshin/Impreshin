@@ -11,10 +11,11 @@ use models\ab as models;
 
 class controller_general_download {
 	public static function material(){
-		$cfg = F3::get("cfg");
+		$f3 = \base::instance();
+		$cfg = $f3->get("cfg");
 
 		$data = new models\bookings();
-		$data = $data->get(F3::get("PARAMS.ID"));
+		$data = $data->get($f3->get("PARAMS.ID"));
 
 
 
@@ -32,9 +33,9 @@ class controller_general_download {
 
 	}
 	public static function download($file,$filename){
+		$f3 = \base::instance();
 
-
-		$file = f3::fixslashes($file);
+		$file = $f3->fixslashes($file);
 
 
 

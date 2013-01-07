@@ -12,14 +12,14 @@ use \models\user as user;
 
 class admin_users extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
@@ -61,7 +61,7 @@ class admin_users extends data {
 
 		$records = user::getAll("cID='$cID'", $ordering_c . " " . $ordering_d . ", fullName ASC");
 
-		$apps = F3::get("cfg");
+		$apps = $this->f3->get("cfg");
 		$apps = $apps['apps'];
 
 		$apps_str = "";
@@ -97,7 +97,7 @@ class admin_users extends data {
 		$GLOBALS["output"]['data'] = $return;
 	}
 	function _details(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -139,7 +139,7 @@ class admin_users extends data {
 		$return['publications'] = $publications;
 
 
-		$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
+		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
 
 		if (count($extra)) {
 			$extra = $extra[0];
