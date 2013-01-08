@@ -35,7 +35,8 @@ class settings {
 			"colour"                 => array(
 				"c"=> "colour",
 				"o"=> "ab_colour_rates.colour",
-				"h"=> "Colour"
+				"h"=> "Colour",
+				"m" => 60
 			),
 			"colourSpot"             => array(
 				"c"=> "colourSpot",
