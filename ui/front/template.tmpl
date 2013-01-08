@@ -135,7 +135,37 @@
 
 
 	});
+    function updatetimerlist(d, page_size) {
+        //console.log(d);
+        if (!d) {
+            return false;
+        }
+        $("#displaylogout").autoLogout('resetTimer');
 
+        var data = d['timer'];
+        var page = d['page'];
+        var models = d['models'];
+
+        if (d['notifications']) {
+            $("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
+        }
+
+        var pageSize = (page && page['size']) ? page['size'] : page_size;
+
+        if (data) {
+            var highlight = "";
+            if (page['time'] > {{ _cfg['debug']['highlightfrom'] }}) highlight = 'style="color: red;"';
+            var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + ' : <span class="g">Size: ' + file_size(pageSize) + '</span></td><td class="s g"' + highlight + '>' + page['time'] + '</td></tr>', thm;
+            if (models) {
+                thm = $("#template-timers-tr-models").jqote(models, "*");
+            } else {
+                thm = "";
+            }
+            $("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*") + thm);
+
+        }
+
+    }
 	var jScrollPaneOptions = {
 		showArrows:false,
 		maintainPosition: false
