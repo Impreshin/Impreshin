@@ -7,7 +7,7 @@ namespace controllers;
 use \F3 as F3;
 class controller_login {
 	function __construct(){
-
+		$this->f3 = \base::instance();
 	}
 	function page(){
 		$user = $this->f3->get("user");

@@ -5,6 +5,9 @@
  */
 
 class general {
+	function __construct() {
+		$this->f3 = \base::instance();
+	}
 	function css_min(){
 		ob_start("ob_gzhandler");
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";

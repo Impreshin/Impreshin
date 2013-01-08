@@ -11,6 +11,7 @@ use \FileDB as FileDB;
 class controller_docs {
 	private $raw;
 	function __construct(){
+		$this->f3 = \base::instance();
 		$app = $this->f3->get('PARAMS.app');
 		$section = $this->f3->get('PARAMS.section');
 		$sub_section = $this->f3->get('PARAMS.sub_section');

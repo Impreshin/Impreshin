@@ -6,7 +6,7 @@
 namespace controllers;
 class controller_about {
 	function __construct(){
-
+		$this->f3 = \base::instance();
 	}
 	function page(){
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
