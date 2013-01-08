@@ -8,7 +8,8 @@ class general {
 	function __construct() {
 		$this->f3 = \base::instance();
 	}
-	function css_min(){
+
+	function css_min() {
 		ob_start("ob_gzhandler");
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		header("Content-Type: text/css");
@@ -53,13 +54,10 @@ class general {
 			}
 
 
-
-
 		}
 
 		//exit($this->minify($t,"css"));
 		exit($t);
-
 
 
 	}
@@ -87,8 +85,6 @@ class general {
 				"/ui/_js/libs/jquery-ui.js",
 
 
-
-
 				"/ui/_js/libs/bootstrap.js",
 
 				// ------ //
@@ -108,16 +104,14 @@ class general {
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
-
-				"/ui/plupload/js/browserplus-min.js" ,
-				"/ui/plupload/js/plupload.js" ,
-				"/ui/plupload/js/plupload.gears.js" ,
-				"/ui/plupload/js/plupload.silverlight.js" ,
-				"/ui/plupload/js/plupload.flash.js" ,
-				"/ui/plupload/js/plupload.browserplus.js" ,
-				"/ui/plupload/js/plupload.html4.js" ,
-				"/ui/plupload/js/plupload.html5.js" ,
-
+				"/ui/plupload/js/browserplus-min.js",
+				"/ui/plupload/js/plupload.js",
+				"/ui/plupload/js/plupload.gears.js",
+				"/ui/plupload/js/plupload.silverlight.js",
+				"/ui/plupload/js/plupload.flash.js",
+				"/ui/plupload/js/plupload.browserplus.js",
+				"/ui/plupload/js/plupload.html4.js",
+				"/ui/plupload/js/plupload.html5.js",
 
 
 				"/ui/jqPlot/jquery.jqplot.min.js",
@@ -129,10 +123,6 @@ class general {
 				"/ui/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js",
 				"/ui/jqPlot/plugins/jqplot.pointLabels.min.js",
 				"/ui/jqPlot/plugins/jqplot.trendline.min.js",
-
-
-
-
 
 
 			);
@@ -151,13 +141,13 @@ class general {
 
 		}
 
-exit($t);
+		exit($t);
 		//exit($this->minify($t, "js"));
 
 
-
 	}
-	function minify($code,$ext){
+
+	function minify($code, $ext) {
 		$src = $code;
 		$ptr = 0;
 		$dst = '';
@@ -247,13 +237,13 @@ exit($t);
 				$ptr++;
 			}
 		}
-		return  $dst;
+		return $dst;
 	}
+
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
 
 		$cfg = $this->f3->get("cfg");
-
 
 
 		$user = $this->f3->get("user");
@@ -263,15 +253,22 @@ exit($t);
 
 
 
-		$folder = $cfg['upload']['folder'] . $app . "/". $folder;
 
-		ini_set('upload_tmp_dir', $cfg['upload']['folder'].'tmp');
+		$folder = ($cfg['upload']['folder'] . $app . "/" . $folder);
+		$tmpFolder = $cfg['upload']['folder'] . 'tmp';
+
+		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+		$tmpFolder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $tmpFolder);
+
+		test_array($_REQUEST["name"]);
+
+
+		ini_set('upload_tmp_dir', $cfg['upload']['folder'] . 'tmp');
 		ini_set('upload_max_filesize', '20M');
 		ini_set('post_max_size', '20M');
 
 
-
-		if (!file_exists($cfg['upload']['folder'] . 'tmp')) @mkdir($cfg['upload']['folder'] . 'tmp', 0777, true);
+		if (!file_exists($tmpFolder)) @mkdir($tmpFolder, 0777, true);
 		if (!file_exists($folder)) @mkdir($folder, 0777, true);
 
 		//$targetDir = $cfg['upload']['folder'] . $app . "/temp/";
@@ -288,6 +285,7 @@ exit($t);
 // Settings
 
 //$targetDir = 'uploads';
+
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -388,7 +386,6 @@ exit($t);
 			rename("{$filePath}.part", $filePath);
 
 
-
 			//\controllers\ab\controller_thumb::create_thumb($folder, $fileName);
 
 		}
@@ -398,7 +395,6 @@ exit($t);
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 
 	}
-
 
 
 }

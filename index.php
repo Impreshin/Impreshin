@@ -610,6 +610,8 @@ if ($folder) {
 }
 
 
+
+
 //ob_start("ob_gzhandler");
 if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || $app->get("showjson")) || !$app->get("__runTemplate")) {
 
@@ -624,18 +626,19 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 
 } else {
 
+
+
 	//ob_start('ob_gzhandler');
-	;
 	$timersbottom = '
 					<script type="text/javascript">
 
 				       updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
 					</script>
 				';
-	if (strpos($GLOBALS["render"], "<!--print version-->") == -1) {
-		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
-	} else {
+	if (strpos($GLOBALS["render"], "<!--print version-->") ) {
 		echo $GLOBALS["render"];
+	} else {
+		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
 	}
 
 	exit();
