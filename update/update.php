@@ -13,19 +13,26 @@ class update {
 		$root_folder = dirname(dirname(__FILE__));
 		$docs_folder = $root_folder . '\\docs';
 
+		$git_path = "/usr/lib/git-core";
+		if (!file_exists($git_path)){
+			$git_path = "";
+		} else {
+			$git_path = $git_path . "/";
+		}
+
 		chdir($root_folder);
 		$return = "";
 		$return .= "<h5>Impreshin</h5>";
 		if (!file_exists($root_folder."\\.git")) {
-			shell_exec('git init');
+			shell_exec($git_path.'git init');
 		} else {
-			shell_exec('git reset --hard HEAD');
+			shell_exec($git_path.'git reset --hard HEAD');
 		}
 
 
 
 
-		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
+		$output = shell_exec($git_path.'git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 
 		$str = str_replace(".git","",$cfg['git']['path']);
 		$output = str_replace("From $str","", $output);
@@ -45,14 +52,14 @@ class update {
 			if (!file_exists($docs_folder)){
 				mkdir($docs_folder, 2777, true);
 				chdir("docs");
-				shell_exec('git init');
+				shell_exec($git_path.'git init');
 
 			} else {
 				chdir("docs");
-				shell_exec('git reset --hard HEAD');
+				shell_exec($git_path.'git reset --hard HEAD');
 			}
 
-			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
+			$output = shell_exec($git_path.'git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
 			$str = str_replace(".git", "", $cfg['git']['docs']['path']);
 			$output = str_replace("From $str", "", $output);
 			$output = str_replace("* branch            " . $cfg['git']['docs']['branch'] . "     -> FETCH_HEAD", "", $output);

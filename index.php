@@ -627,6 +627,7 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 } else {
 
 
+	//test_array($GLOBALS['output']);
 
 	//ob_start('ob_gzhandler');
 	$timersbottom = '
@@ -641,13 +642,62 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
 	}
 
-	exit();
+	//exit();
 
 }
 
 
+// checks to see if the cookie is set, if not then leaves it blank - tells the next step that it can decide if it should show the mobile site or not
+$mobile_cookie = isset($_COOKIE['mobile'])? $_COOKIE['mobile'] : "";
+// check if we must force the mobile or not based ona  cookie value... cookies are nice and tasty... with milk...
+$force_mobile = ($mobile_cookie == "true") ? true : false;
+if (isset($_GET['mobile'])) {
+	if ($_GET['mobile'] == 'true') { // must we force the mobile site? if ?mobile=true then FORCE THAT MOBILE
+		setcookie("mobile", "true", time() + 31536000, "/");
+		$force_mobile = true;
+	} else { // if ?mobile=false then remove the force.. become powerless.. crawl up ina  corner and die.......
+		setcookie("mobile", "false");
+		$force_mobile = false;
+	}
+}
+
+if ($force_mobile){ // if we forcing the mobile part.. either via cookie or ?mobile=true then dont pass go.. dont collect R200.. go straight to the mobi site
+	header("Location:http://www.mobisite.mobi");
+} else { // no forcing happening.. its a democracy... like SA...kinda
+	if ($detect->isMobile()){ // is the device a mobile.. if not then dont do anything.. aka stay on the current page
+		if ($mobile_cookie == "" && !$detect->isTablet()){ // if it is a mobile.. and we dont have a cookie for it yet.. and its not a tablet.. then go to the mobie site... theres cookies and milk there.. with little chocolate soldiers you can bite their heads off
+			header("Location:http://www.mobisite.mobi");
+		}
+	}
+}
+
+/*
+
+steps it takes:
+	1. check if theres a mobile cookie..
+	2. checks if it must force mobile based on cookie or not
+	3. if ?mobile is set it overwrites the cookie force stuff with its own
+	4. check if we forcing mobile or not
+		4.1 if we forcing the mobile site then go there, no other tests necessary
+		4.2 does some mobile checks
+			4.2.1 if its a mobile...
+				4.2.1.1 the mobile cookie isnt set (aka havent visited the page before - otherwise it woulda forced the mobile / not in earlier steps). its also not a tablet - so if all goes well.. it should be its a mobile.. its not a tablet.. and we havent seen this client before / they havent messed around with forcing mobile. redirect that bitch
 
 
+*/
+
+
+
+
+$not_mobile_cookie = isset($_COOKIE['mobile']) ? true : false;
+if (isset($_GET['mobile'])) $not_mobile_cookie = $_GET['mobile'];
+
+
+if ($not_mobile_cookie == false && $detect->isMobile()) {
+	if (!$detect->isTablet()) {
+		header("Location:http://www.mobisite.mobi");
+	}
+}
 
 
 

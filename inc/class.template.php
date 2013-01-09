@@ -16,8 +16,19 @@ class template {
 
 		$this->template = $template;
 
+		$this->timer = new \timer();
 
 
+
+
+	}
+	function __destruct(){
+		$page = $this->template;
+		//test_array($page);
+		if (isset($this->vars['page']['template'])){
+			$page = $page . " -> " . $this->templatefolder . $this->vars['page']['template'];
+		}
+		$this->timer->stop("Template",  $page);
 	}
 
 	public function __get($name) {
@@ -76,12 +87,14 @@ class template {
 			$folders = (array) $this->vars['folder'];
 
 
+			$this->templatefolder = "";
 
 			$usethisfolder = false;
 			foreach ($folders as $folder){
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
 					$page['template'] = $tfile . '.tmpl';
 					$usethisfolder = true;
+					$this->templatefolder = $folder;
 				} else {
 					$page['template'] = 'none';
 				}
