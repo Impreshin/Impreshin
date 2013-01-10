@@ -13,14 +13,6 @@ class update {
 		$root_folder = dirname(dirname(__FILE__));
 		$docs_folder = $root_folder . '\\docs';
 
-		if (file_exists("/media/data/use_proxy")){
-			$proxy = trim(file_get_contents("/media/data/use_proxy"));
-			if ($proxy){
-				shell_exec('git config http.proxy '. $proxy);
-			}
-
-		}
-
 
 		chdir($root_folder);
 		$return = "";
@@ -32,9 +24,13 @@ class update {
 		}
 
 
+		if (file_exists("/media/data/use_proxy")) {
+			$proxy = trim(file_get_contents("/media/data/use_proxy"));
+			if ($proxy) {
+				shell_exec('git config http.proxy ' . $proxy);
+			}
 
-
-
+		}
 		$output = shell_exec('git pull https://'.$cfg['git']['username'] .':'.$cfg['git']['password'] .'@'.$cfg['git']['path'] .' ' . $cfg['git']['branch'] . ' 2>&1');
 
 		$str = str_replace(".git","",$cfg['git']['path']);
