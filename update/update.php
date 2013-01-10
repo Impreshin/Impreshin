@@ -16,8 +16,7 @@ class update {
 		if (file_exists("/media/data/use_proxy")){
 			$proxy = trim(file_get_contents("/media/data/use_proxy"));
 			if ($proxy){
-				echo $proxy;
-				shell_exec('git config http.proxy ');
+				shell_exec('git config http.proxy '. $proxy);
 			}
 
 		}
