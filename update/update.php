@@ -24,10 +24,11 @@ class update {
 		}
 
 
+		$proxy = "";
 		if (file_exists("/media/data/use_proxy")) {
 			$proxy = trim(file_get_contents("/media/data/use_proxy"));
 			if ($proxy) {
-				shell_exec('git config http.proxy ' . $proxy);
+				shell_exec('git config http.proxy ' . $proxy . ' 2>&1');
 			}
 
 		}
@@ -56,6 +57,10 @@ class update {
 			} else {
 				chdir("docs");
 				shell_exec('git reset --hard HEAD');
+			}
+
+			if ($proxy) {
+				shell_exec('git config http.proxy ' . $proxy . ' 2>&1');
 			}
 
 			$output = shell_exec('git pull https://' . $cfg['git']['docs']['username'] . ':' . $cfg['git']['docs']['password'] . '@' . $cfg['git']['docs']['path'] . ' ' . $cfg['git']['docs']['branch'] . ' 2>&1');
