@@ -329,6 +329,11 @@ $(document).ready(function () {
 
     });
 
+    $(document).bind('keydown', 'f1', function(){
+        $(".help_link").trigger("click");
+    });
+
+
 });
 var autologoutRequest = [];
 var $noticeareaIdle = $("#notice-area-idle");
