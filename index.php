@@ -636,7 +636,7 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 				       updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
 					</script>
 				';
-	if (strpos($GLOBALS["render"], "<!--print version-->") ) {
+	if (strpos($GLOBALS["render"], "<!--print version-->") || strpos($GLOBALS["render"], "<!--no_timer_list-->")) {
 		echo $GLOBALS["render"];
 	} else {
 		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
