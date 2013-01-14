@@ -82,7 +82,7 @@ class categories {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = $a->$key;
+			$old[$key] = isset($a->$key)?$a->$key:"";
 			$a->$key = $value;
 		}
 

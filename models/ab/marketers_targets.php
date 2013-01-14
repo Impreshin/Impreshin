@@ -253,8 +253,10 @@ class marketers_targets {
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_targets");
 		$a->load("ID='$ID'");
 
+
+		
 		foreach ($values as $key => $value) {
-			$old[$key] = $a->$key;
+			$old[$key] = isset($a->$key)? $a->$key: "";
 			$a->$key = $value;
 		}
 
