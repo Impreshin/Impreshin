@@ -233,6 +233,7 @@ $(document).ready(function () {
             $f[0].contentWindow.scrollbars();
 
         },
+        title: false,
         closeBtn : false
     };
 
@@ -247,6 +248,12 @@ $(document).ready(function () {
     }
 
     $("a.help_link").fancybox(fancyHelpOptions);
+
+    $(document).bind('keydown', 'f1', function (e) {
+        e.preventDefault();
+        $("#pagefooter a.help_link").trigger("click");
+        return false;
+    });
 
 });
 $(document).ready(function () {
@@ -329,9 +336,7 @@ $(document).ready(function () {
 
     });
 
-    $(document).bind('keydown', 'f1', function(){
-        $(".help_link").trigger("click");
-    });
+
 
 
 });
