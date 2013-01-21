@@ -260,7 +260,7 @@ class general {
 		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
 		$tmpFolder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $tmpFolder);
 
-		test_array($_REQUEST["name"]);
+
 
 
 		ini_set('upload_tmp_dir', $cfg['upload']['folder'] . 'tmp');
