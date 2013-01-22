@@ -256,33 +256,25 @@ class general {
 
 
 		$folder = ($cfg['upload']['folder'] . $app . "/" . $folder);
-		$tmpFolder = $cfg['upload']['folder'] . 'tmp';
+		$tmpFolder = $cfg['upload']['folder'] . 'tmp/';
 
 		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
 		$tmpFolder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $tmpFolder);
 
 /*
-		echo '<table>';
-		foreach ($_FILES["file"] as $k => $v){
-			echo '<tr>';
-			echo '<td>'.$k.'</td>';
-			echo '<td>'.$v.'</td>';
-			echo '</tr>';
-		}
-		echo '</table>';
-		exit();
+
 		test_array(array(
 			           "folder"=>$folder,
 			           "tmp_folder"=>$tmpFolder,
-			           "name"=> $_REQUEST["name"],
-			           "cfg"  => $cfg,
-			           "user" => $user,
+			         //  "name"=> $_REQUEST["name"],
+			         //  "cfg"  => $cfg,
+			         //  "user" => $user,
 			           "app"  => $app
 
 		           )
-		);*/
+		);
 
-
+*/
 		ini_set('upload_tmp_dir', $tmpFolder);
 		ini_set('upload_max_filesize', '20M');
 		ini_set('post_max_size', '20M');
@@ -305,7 +297,7 @@ class general {
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-		$targetDir = 'uploads';
+
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds
