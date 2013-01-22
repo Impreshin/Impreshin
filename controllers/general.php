@@ -242,6 +242,7 @@ class general {
 
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
+		//$folder = substr($folder,0,-1);
 
 		$cfg = $this->f3->get("cfg");
 
@@ -260,10 +261,29 @@ class general {
 		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
 		$tmpFolder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $tmpFolder);
 
+/*
+		echo '<table>';
+		foreach ($_FILES["file"] as $k => $v){
+			echo '<tr>';
+			echo '<td>'.$k.'</td>';
+			echo '<td>'.$v.'</td>';
+			echo '</tr>';
+		}
+		echo '</table>';
+		exit();
+		test_array(array(
+			           "folder"=>$folder,
+			           "tmp_folder"=>$tmpFolder,
+			           "name"=> $_REQUEST["name"],
+			           "cfg"  => $cfg,
+			           "user" => $user,
+			           "app"  => $app
+
+		           )
+		);*/
 
 
-
-		ini_set('upload_tmp_dir', $cfg['upload']['folder'] . 'tmp');
+		ini_set('upload_tmp_dir', $tmpFolder);
 		ini_set('upload_max_filesize', '20M');
 		ini_set('post_max_size', '20M');
 
@@ -276,6 +296,7 @@ class general {
 
 		$targetDir = $folder;
 
+
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -283,9 +304,8 @@ class general {
 		header("Pragma: no-cache");
 
 // Settings
-
-//$targetDir = 'uploads';
-
+//$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+		$targetDir = 'uploads';
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -384,10 +404,6 @@ class general {
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-
-
-			//\controllers\ab\controller_thumb::create_thumb($folder, $fileName);
-
 		}
 
 

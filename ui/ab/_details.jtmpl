@@ -779,7 +779,7 @@ function set_upload() {
 
 	var $form = $("#form-material");
 	var uploader = new plupload.Uploader({
-		runtimes      :'gears,html5,flash,silverlight',
+		runtimes      :'html5,gears,flash,silverlight',
 		browse_button :'material-file-area-filename',
 //container          :'container',
 		max_file_size :'200mb',
@@ -842,6 +842,7 @@ function set_upload() {
 				$material_file_area_filename.html($img + file.name);
 				$form.find("button[type='submit']").button('reset');
 			});
+
 
 			$("#material_file_filename").val(file.name);
 			$("#material_file_filesize").val(file.size);

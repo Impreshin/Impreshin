@@ -45,7 +45,7 @@ $app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|co
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 //$app->set('CACHE', TRUE);
 $app->set('DEBUG', 2);
-
+$app->set('UI', 'ui/;'. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']));
 //$app->set('EXTEND', TRUE);
 //$app->set('UI', 'ui/');
 //$app->set('TEMP', 'temp/');
@@ -521,18 +521,25 @@ $app->route("GET|POST /$folder/download/@folder/@ID/*", function ($app, $params)
 
 $app->route("GET|POST /$folder/thumb/@folder/@ID/*", function ($app, $params) {
 		$folder = $app->get("app");
-		$app->mutex(function () use ($folder, $app, $params) {
+		$app->call("controllers\\$folder\\controller_general_thumb->" . $params['folder']);
+
+		/*
+		 $app->mutex(function () use ($folder, $app, $params) {
 				$app->call("controllers\\$folder\\controller_general_thumb->" . $params['folder']);
 			}
 		);
+		*/
 	}
 );
 $app->route("GET|POST /$folder/thumb/@folder/@ID", function ($app, $params) {
 		$folder = $app->get("app");
+		$app->call("controllers\\$folder\\controller_general_thumb->" . $params['folder']);
+		/*
 		$app->mutex(function () use ($folder, $app, $params) {
 				$app->call("controllers\\$folder\\controller_general_thumb->" . $app->get('PARAMS.folder'));
 			}
 		);
+		*/
 	}
 );
 // --------------------------------------------------------------------------------
