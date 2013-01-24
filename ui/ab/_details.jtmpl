@@ -846,17 +846,14 @@ function set_upload() {
 
             $material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 
-            $.get($($img).attr("src"),function(){
-                $material_file_area_filename.html($img + file.name);
-                $form.find("button[type='submit']").button('reset');
-            });
+
 
            // console.log($($img).attr("src"))
-		/*	$('#material-file-area-filename img').load(function () {
+			$('#material-file-area-filename img').load(function () {
 				//$material_file_area_filename.html($img + file.name);
 				//$form.find("button[type='submit']").button('reset');
 			});
-*/
+
 
 			$("#material_file_filename").val(file.name);
 			$("#material_file_filesize").val(file.size);
