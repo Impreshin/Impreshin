@@ -6,7 +6,7 @@ $cfg['currency']['separator'] = " ";
 $cfg['news']['path'] = "http://admin.impreshin.info/news/json";
 
 
-$cfg['DB']['host'] = "localhost";
+$cfg['DB']['host'] = "127.0.0.1";
 $cfg['DB']['username'] = "username";
 $cfg['DB']['password'] = "password";
 $cfg['DB']['database'] = "adbooker_v5";

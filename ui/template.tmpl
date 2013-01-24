@@ -155,7 +155,8 @@
 </div>
 
 <!--[if lt IE 9]>
-<script language="javascript" type="text/javascript" src="/ui/jqPlot/excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="/ui/jqPlot/excanvas.js"></script>
+<![endif]-->
 <script src="/ui/_js/libs/jquery.{{ _v }}.js"></script>
 
 <script src="/min/js.{{ _v }}.js"></script>
@@ -454,7 +455,10 @@ $(document).ajaxComplete(function (event, request, settings) {
 });
 function updatetimerlist(d, page_size) {
     //console.log(d);
-    if (!d) {
+    return false;
+    d = jQuery.parseJSON(d);
+
+    if (!d || !typeof d == 'object') {
         return false;
     }
     $("#displaylogout").autoLogout('resetTimer');

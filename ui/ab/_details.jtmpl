@@ -438,7 +438,7 @@
 		</div>
 		<div class='popup-footer '>
 			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+				<button class="btn span2" data-dismiss="popup" type="button" id="popup_material_cancel_btn">Cancel</button>
 
 				<div style="float:right;">
 
@@ -478,7 +478,7 @@
 		</div>
 		<div class='popup-footer '>
 			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+				<button class="btn span2" data-dismiss="popup" type="button" >Cancel</button>
 
 				<div style="float:right;">
 					<table>
@@ -672,6 +672,7 @@ $(document).on('popup-show', '#popup-material', function () {
 $(document).on('change', '#popup-material input[name="source"]', function () {
 	material_person();
 });
+
 $(document).on('click', '#details-pane-logs .record', function (e) {
 	var $this = $(this);
 	var $clicked = $(e.target).closest("tr.record");
@@ -697,6 +698,13 @@ $(document).on('click', '#details-record-prev', function () {
 $(document).on('click', '#details-record-next', function () {
 	nextRecord();
 });
+$(document).on('click', '#popup_material_cancel_btn', function (e) {
+    var $form = $("#form-material");
+    $form.find("button[type='submit']").button('reset');
+
+});
+
+
 
 function nextRecord() {
 	var ID = $.bbq.getState("ID");
@@ -784,7 +792,7 @@ function set_upload() {
 //container          :'container',
 		max_file_size :'200mb',
 		max_file_count:1,
-		chunk_size    :"5MB",
+		chunk_size    :"2MB",
 		url           :'/ab/upload/?folder=' + folder,
 
 		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
@@ -836,13 +844,19 @@ function set_upload() {
 			var $material_file_area_filename = $('#material-file-area-filename');
 			var $img = '<img src="/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&s=' + file.target_name + '&instantrender=true" alt="">';
 
-			$material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
+            $material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 
-			$('#material-file-area-filename img').load(function () {
-				$material_file_area_filename.html($img + file.name);
-				$form.find("button[type='submit']").button('reset');
+            $.get($($img).attr("src"),function(){
+                $material_file_area_filename.html($img + file.name);
+                $form.find("button[type='submit']").button('reset');
+            });
+
+           // console.log($($img).attr("src"))
+		/*	$('#material-file-area-filename img').load(function () {
+				//$material_file_area_filename.html($img + file.name);
+				//$form.find("button[type='submit']").button('reset');
 			});
-
+*/
 
 			$("#material_file_filename").val(file.name);
 			$("#material_file_filesize").val(file.size);

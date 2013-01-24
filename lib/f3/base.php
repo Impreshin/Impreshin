@@ -73,8 +73,6 @@ final class Base {
 		VERBS='GET|HEAD|POST|PUT|PATCH|DELETE|CONNECT',
 		//! Default directory permissions
 		MODE=0755,
-		//! Fallback language
-		FALLBACK='en',
 		//! Syntax highlighting stylesheet
 		CSS='code.css';
 
@@ -102,6 +100,8 @@ final class Base {
 		$languages,
 		//! Equivalent Locales
 		$locales,
+		//! Default fallback language
+		$fallback='en',
 		//! NULL reference
 		$null=NULL;
 
@@ -134,10 +134,7 @@ final class Base {
 	function &ref($key,$add=TRUE) {
 		$parts=$this->cut($key);
 		if ($parts[0]=='SESSION') {
-			$id=session_id();
 			@session_start();
-			if (!$id)
-				session_regenerate_id(TRUE);
 			$this->sync('SESSION');
 		}
 		if ($add)
@@ -210,8 +207,12 @@ final class Base {
 			case 'JAR':
 				call_user_func_array('session_set_cookie_params',$val);
 				break;
+			case 'FALLBACK':
+				$this->fallback=$val;
+				$lang=$this->language($this->hive['LANGUAGE']);
 			case 'LANGUAGE':
-				$val=$this->language($val);
+				if (isset($lang) || $lang=$this->language($val))
+					$val=$this->language($val);
 				$lex=$this->lexicon($this->hive['LOCALES']);
 			case 'LOCALES':
 				if (isset($lex) || $lex=$this->lexicon($val))
@@ -236,7 +237,7 @@ final class Base {
 		@param $args string|array
 	**/
 	function get($key,$args=NULL) {
-		if (is_string($val=$this->ref($key,FALSE)) && $args)
+		if (is_string($val=$this->ref($key,FALSE)) && !is_null($args))
 			return call_user_func_array(
 				array($this,'format'),
 				array_merge(array($val),is_array($args)?$args:array($args))
@@ -441,10 +442,11 @@ final class Base {
 				$str='';
 				$num=isset($arg[0]) &&
 					ctype_digit(implode('',array_keys($arg)));
-				foreach ($arg as $key=>$val)
+				foreach ($arg as $key=>$val) {
 					$str.=($str?',':'').
 						($num?'':($this->stringify($key).'=>')).
-						$this->stringify($val);
+						($arg==$val?'*RECURSION*':$this->stringify($val));
+				}
 				return 'array('.$str.')';
 			default:
 				return var_export(
@@ -522,7 +524,8 @@ final class Base {
 		@param $str string
 	**/
 	function encode($str) {
-		return @htmlentities($str,ENT_COMPAT,$this->hive['ENCODING'],FALSE);
+		return @htmlentities($str,ENT_COMPAT,$this->hive['ENCODING'],FALSE)?:
+			$this->scrub($str);
 	}
 
 	/**
@@ -545,8 +548,8 @@ final class Base {
 		if (is_string($var)) {
 			if ($tags)
 				$tags='<'.implode('><',$this->split($tags)).'>';
-			$var=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/','',
-				($tags=='*')?$var:strip_tags($var,$tags));
+			$var=trim(preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/','',
+				($tags=='*')?$var:strip_tags($var,$tags)));
 		}
 		elseif (is_array($var))
 			foreach ($var as &$val) {
@@ -599,44 +602,59 @@ final class Base {
 		// Get formatting rules
 		$conv=localeconv();
 		$out=preg_replace_callback(
-			'/{(\d+)(?:,(\w+)(?:,(\w+))?)?}/',
+			'/\{(?P<pos>\d+)\s*(?:,\s*(?P<type>\w+)\s*'.
+			'(?:,(?P<mod>(?:\s*\w+(?:\s+\{.+?\}\s*,?)?)*))?)?\}/',
 			function($expr) use($args,$conv) {
-				if (empty($args[$expr[1]]))
+				extract($expr);
+				if (!array_key_exists($pos,$args))
 					return $expr[0];
-				if (isset($expr[2]))
-					switch ($expr[2]) {
+				if (isset($type))
+					switch ($type) {
+						case 'plural':
+							preg_match_all('/(?<tag>\w+)'.
+								'(?:\s+\{(?<data>.+?)\})/',
+								$mod,$matches,PREG_SET_ORDER);
+							$ord=array('zero','one','two');
+							foreach ($matches as $match) {
+								extract($match);
+								if (isset($ord[$args[$pos]]) &&
+									$tag==$ord[$args[$pos]] || $tag=='other')
+									return str_replace('#',$args[$pos],$data);
+							}
 						case 'number':
-							if (isset($expr[3]))
-								switch ($expr[3]) {
+							if (isset($mod))
+								switch ($mod) {
 									case 'integer':
 										return
 											number_format(
-												$args[$expr[1]],0,'',
+												$args[$pos],0,'',
 												$conv['thousands_sep']);
 									case 'currency':
 										return
 											$conv['currency_symbol'].
 											number_format(
-												$args[$expr[1]],
+												$args[$pos],
 												$conv['frac_digits'],
 												$conv['decimal_point'],
 												$conv['thousands_sep']);
 									case 'percent':
 										return
 											number_format(
-												$args[$expr[1]]*100,0,
+												$args[$pos]*100,0,
 												$conv['decimal_point'],
 												$conv['thousands_sep']).'%';
 								}
 							break;
 						case 'date':
-							return strftime(empty($expr[3]) ||
-								$expr[3]=='short'?'%x':'%A, %d %B %Y',
-								$args[$expr[1]]);
+							return strftime(empty($mod) ||
+								$mod=='short'?'%x':'%A, %d %B %Y',
+								$args[$pos]);
 						case 'time':
-							return strftime('%X',$args[$expr[1]]);
+							return strftime('%X',$args[$pos]);
+						default:
+							return $expr[0];
 					}
-				return $args[$expr[1]];
+				return $args[$pos];
 			},
 			$val
 		);
@@ -649,20 +667,27 @@ final class Base {
 		@return string
 		@param $code string
 	**/
-	function language($code) {
-		$this->languages=array(self::FALLBACK);
-		// Validate string/header
-		foreach (explode(',',$code) as $language) {
-			if (!preg_match('/^(\w{2})(?:_(\w{2}))?\b/',
-				strtolower($language),$parts))
-				return self::FALLBACK;
-			if ($parts[1]!=self::FALLBACK)
+	function language($code=NULL) {
+		if (!$code) {
+			$headers=$this->hive['HEADERS'];
+			if (isset($headers['Accept-Language']))
+				$code=$headers['Accept-Language'];
+		}
+		$code=str_replace('-','_',preg_replace('/;q=.+?(?=,|$)/','',$code));
+		$code.=($code?',':'').$this->fallback;
+		$this->languages=array();
+		foreach (array_reverse(explode(',',$code)) as $lang) {
+			if (preg_match('/^(\w{2})(?:_(\w{2}))?\b/i',$lang,$parts)) {
 				// Generic language
 				array_unshift($this->languages,$parts[1]);
-			if (isset($parts[2]))
-				// Specific language
-				array_unshift($this->languages,$parts[0]);
+				if (isset($parts[2])) {
+					// Specific language
+					$parts[0]=$parts[1].'_'.($parts[2]=strtoupper($parts[2]));
+					array_unshift($this->languages,$parts[0]);
+				}
+			}
 		}
+		$this->languages=array_unique($this->languages);
 		$this->locales=array();
 		$windows=preg_match('/^win/i',PHP_OS);
 		foreach ($this->languages as $locale) {
@@ -676,7 +701,7 @@ final class Base {
 			$this->locales[]=$locale;
 			$this->locales[]=$locale.'.'.$this->hive['ENCODING'];
 		}
-		return $parts[0];
+		return implode(',',$this->languages);
 	}
 
 	/**
@@ -686,8 +711,8 @@ final class Base {
 	**/
 	function lexicon($path) {
 		$lex=array();
-		foreach ($this->languages as $language) {
-			if ((is_file($file=($base=$path.$language).'.php') ||
+		foreach ($this->languages as $lang) {
+			if ((is_file($file=($base=$path.$lang).'.php') ||
 				is_file($file=$base.'.php')) &&
 				is_array($dict=require($file)))
 				$lex+=$dict;
@@ -781,7 +806,8 @@ final class Base {
 
 	/**
 		Log error; Execute ONERROR handler if defined, else display
-		default error page
+		default error page (HTML for synchronous requests, JSON string
+		for AJAX requests)
 		@return NULL
 		@param $code int
 		@param $text string
@@ -791,11 +817,11 @@ final class Base {
 		$prior=$this->hive['ERROR'];
 		$header=$this->status($code);
 		$req=$this->hive['VERB'].' '.$this->hive['URI'];
-		error_log($text=$text?:('HTTP '.$code.' ('.$req.')'));
-		$out='';
-		$eol="\n";
+		if (!$text)
+			$text='HTTP '.$code.' ('.$req.')';
+		error_log($text);
 		if (!$trace)
-			$trace=array_slice(debug_backtrace(FALSE),1);
+			$trace=array_slice(debug_backtrace(0),1);
 		$debug=$this->hive['DEBUG'];
 		$trace=array_filter(
 			$trace,
@@ -807,42 +833,50 @@ final class Base {
 						'__call|call_user_func)/',$frame['function']));
 			}
 		);
-		$css=$this->hive['HIGHLIGHT'] && is_file($file=__DIR__.'/'.self::CSS);
+		$highlight=$this->hive['HIGHLIGHT'] &&
+			is_file($css=__DIR__.'/'.self::CSS);
+		$out='';
+		$eol="\n";
 		// Analyze stack trace
 		foreach ($trace as $frame) {
-			$line=$this->fixslashes($frame['file']).':'.
-				$frame['line'].' ';
+			$line='';
 			if (isset($frame['class']))
 				$line.=$frame['class'].$frame['type'];
 			if (isset($frame['function']))
-				$line.=$frame['function'].
-					'('.$this->csv($frame['args']).')';
-			error_log('- '.$line);
-			$out.='&bull; '.($css?$this->highlight($line):$line).$eol;
+				$line.=$frame['function'].'('.(isset($frame['args'])?
+					$this->csv($frame['args']):'').')';
+			$src=$this->fixslashes($frame['file']).':'.$frame['line'].' ';
+			error_log('- '.$src.$line);
+			$out.='• '.($highlight?
+				($this->highlight($src).' '.$this->highlight($line)):
+				($src.$line)).$eol;
 		}
 		$this->hive['ERROR']=array(
 			'code'=>$code,
 			'text'=>$text,
 			'trace'=>$trace
 		);
+		ob_clean();
 		if ($this->hive['ONERROR'])
 			// Execute custom error handler
 			$this->call($this->hive['ONERROR'],$this);
 		elseif (!$prior && PHP_SAPI!='cli' && !$this->hive['QUIET'])
-			echo
-				'<!DOCTYPE html>'.
+			echo $this->hive['AJAX']?
+				json_encode($this->hive['ERROR']):
+				('<!DOCTYPE html>'.
 				'<html>'.$eol.
 				'<head>'.
 					'<title>'.$code.' '.$header.'</title>'.
-					($css?('<style>'.file_get_contents($file).'</style>'):'').
+					($highlight?
+						('<style>'.file_get_contents($css).'</style>'):'').
 				'</head>'.$eol.
 				'<body>'.$eol.
 					'<h1>'.$header.'</h1>'.$eol.
-					'<p>'.
-						$this->encode($text?:$req).'</p>'.$eol.
-					'<pre>'.$eol.$out.'</pre>'.$eol.
+					'<p>'.$this->encode($text?:$req).'</p>'.$eol.
+					($debug?('<pre>'.$out.'</pre>'.$eol):'').
 				'</body>'.$eol.
-				'</html>';
+				'</html>');
+		die;
 	}
 
 	/**
@@ -953,7 +987,7 @@ final class Base {
 				$this->hive['DNSBL']:
 				$this->split($this->hive['DNSBL']) as $server)
 				// DNSBL lookup
-				if (gethostbyname($host=$rev.'.'.$server)!=$host)
+				if (checkdnsrr($rev.'.'.$server,'A'))
 					return TRUE;
 		}
 		return FALSE;
@@ -995,7 +1029,7 @@ final class Base {
 			if (isset($route[$this->hive['VERB']])) {
 				$parts=parse_url($req);
 				if ($this->hive['VERB']=='GET' &&
-					preg_match('/.+?\/$/',$parts['path']))
+					preg_match('/.+\/$/',$parts['path']))
 					$this->reroute(substr($parts['path'],0,-1).
 						(isset($parts['query'])?('?'.$parts['query']):''));
 				list($handler,$ttl,$kbps)=$route[$this->hive['VERB']];
@@ -1263,7 +1297,8 @@ final class Base {
 	function highlight($text) {
 		$out='';
 		$pre=FALSE;
-		if (!preg_match('/<\?php/',$text)) {
+		$text=trim($text);
+		if (!preg_match('/^<\?php/',$text)) {
 			$text='<?php '.$text;
 			$pre=TRUE;
 		}
@@ -1341,6 +1376,7 @@ final class Base {
 		// Deprecated directives
 		ini_set('magic_quotes_gpc',0);
 		ini_set('register_globals',0);
+		// Abort on startup error
 		// Intercept errors/exceptions; PHP5.3-compatible
 		error_reporting(E_ALL|E_STRICT);
 		$fw=$this;
@@ -1386,10 +1422,6 @@ final class Base {
 				'httponly'=>TRUE
 			)
 		);
-		$language=self::FALLBACK;
-		if (isset($headers['Accept-Language']))
-			$language=str_replace('-','_',preg_replace(
-				'/;q=.+?(?=,|$)/','',$headers['Accept-Language']));
 		// Default configuration
 		$this->hive=array(
 			'AJAX'=>isset($headers['X-Requested-With']) &&
@@ -1406,6 +1438,7 @@ final class Base {
 			'ERROR'=>NULL,
 			'ESCAPE'=>TRUE,
 			'EXEMPT'=>NULL,
+			'FALLBACK'=>$this->fallback,
 			'HEADERS'=>$headers,
 			'HIGHLIGHT'=>TRUE,
 			'HOST'=>$_SERVER['SERVER_NAME'],
@@ -1417,7 +1450,8 @@ final class Base {
 					(isset($_SERVER['REMOTE_ADDR'])?
 						$_SERVER['REMOTE_ADDR']:'')),
 			'JAR'=>$jar,
-			'LANGUAGE'=>$this->language($language),
+			'LANGUAGE'=>isset($headers['Accept-Language'])?
+				$this->language($headers['Accept-Language']):$this->fallback,
 			'LOCALES'=>'./',
 			'LOGS'=>'./',
 			'ONERROR'=>NULL,
@@ -1459,6 +1493,10 @@ final class Base {
 				$global=>preg_match('/SERVER|ENV/',$global)?$sync:array()
 			);
 		}
+		if ($error=error_get_last())
+			// Error detected
+			$this->error(500,sprintf(self::E_Fatal,$error['message']),
+				array($error));
 		// Register framework autoloader
 		spl_autoload_register(array($this,'autoload'));
 		// Register shutdown handler
@@ -1645,9 +1683,9 @@ final class Cache {
 		@param $dsn bool|string
 	**/
 	function load($dsn) {
-		if ($dsn) {
+		if ($dsn=trim($dsn)) {
 			$fw=Base::instance();
-			if (preg_match('/memcache=(.+)/',$dsn,$parts) &&
+			if (preg_match('/^memcache=(.+)/',$dsn,$parts) &&
 				extension_loaded('memcache'))
 				foreach ($fw->split($parts[1]) as $server) {
 					$port=11211;
@@ -1661,14 +1699,14 @@ final class Cache {
 					else
 						memcache_add_server($this->ref,$host,$port);
 				}
-			if (empty($this->ref) && !preg_match('/folder\h*=/',$dsn))
+			if (empty($this->ref) && !preg_match('/^folder\h*=/',$dsn))
 				$dsn=($grep=preg_grep('/^(apc|wincache|xcache)/',
 					array_map('strtolower',get_loaded_extensions())))?
 						// Auto-detect
 						current($grep):
 						// Use filesystem as fallback
 						('folder='.$fw->get('TEMP').'cache/');
-			if (preg_match('/folder\h*=\h*(.+)/',$dsn,$parts) &&
+			if (preg_match('/^folder\h*=\h*(.+)/',$dsn,$parts) &&
 				!is_dir($parts[1]))
 				mkdir($parts[1],Base::MODE,TRUE);
 		}
@@ -2194,7 +2232,8 @@ final class Registry {
 		@param $key string
 	**/
 	static function clear($key) {
-		unset(self::$table[$key]);
+		//error_log($key);
+		//unset(self::$table[$key]);
 	}
 
 	//! Prohibit cloning

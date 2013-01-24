@@ -37,18 +37,20 @@ require_once('lib/Twig/Autoloader.php');
 Twig_Autoloader::register();
 require_once('inc/class.msg.php');
 require_once('inc/class.template.php');
-require_once('inc/class.email.php');
-require_once('inc/class.store.php');
+//require_once('inc/class.email.php');
+//require_once('inc/class.store.php');
 
 
 $app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 //$app->set('CACHE', TRUE);
+$app->set('TZ', 'Africa/Johannesburg');
 $app->set('DEBUG', 2);
 $app->set('UI', 'ui/;'. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']));
 //$app->set('EXTEND', TRUE);
 //$app->set('UI', 'ui/');
 //$app->set('TEMP', 'temp/');
+//$app->set('CACHE', false);
 
 
 $uri = $_SERVER['REQUEST_URI'];
@@ -583,6 +585,7 @@ $app->run();
 $GLOBALS["render"] = ob_get_contents();
 $pageSize = ob_get_length();
 
+
 ob_end_clean();
 
 $models = $GLOBALS['models'];
@@ -628,6 +631,7 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 
 	echo json_encode($GLOBALS["output"]);
 
+
 	exit();
 
 
@@ -652,8 +656,3 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 	exit();
 
 }
-
-
-
-
-

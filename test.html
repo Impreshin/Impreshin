@@ -16,15 +16,24 @@
 
 </head>
 <body>
+<div id="material-file-area-filename">
+	<img src="" alt="">
+</div>
 
-<form action="#"><textarea name="data" id="data" cols="30" rows="10"></textarea><button type="submit">go go power rangers</button></form>
-<hr>
-<div id="result"></div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 
 <script type="text/javascript">
+$(document).ready(function(){
+	var src = '/ab/thumb/material/68919/hahaha.pdf?w=25&h=25&s=p17hjihqp3kbt55q13o112e78tg3.pdf&instantrender=true';
+	$('#material-file-area-filename img').attr("src",src).load(function () {
+		console.log("loaded");
+	});
+
+});
+
+
 	String.prototype.chunk = function (n) {
 		var ret = [];
 		for (var i = 0, len = this.length; i < len; i += n) {

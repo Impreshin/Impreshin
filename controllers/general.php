@@ -114,7 +114,8 @@ class general {
 				"/ui/plupload/js/plupload.html5.js",
 
 
-				"/ui/jqPlot/jquery.jqplot.min.js",
+
+				"/ui/jqPlot/jquery.jqplot.js",
 				"/ui/jqPlot/plugins/jqplot.highlighter.js",
 				"/ui/jqPlot/plugins/jqplot.cursor.min.js",
 				"/ui/jqPlot/plugins/jqplot.canvasTextRenderer.min.js",
@@ -294,6 +295,7 @@ class general {
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
+		header("Content-Type: application/json");
 
 // Settings
 //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
