@@ -1,4 +1,5 @@
 <?php
+
 $f3 = require('lib/f3/base.php');
 ob_start();
 $f3->route('GET /', function ($f3) {
@@ -7,7 +8,7 @@ $f3->route('GET /', function ($f3) {
 );
 $f3->run();
 
-$t = ob_get_contents();
+$t =  ob_get_clean();
 ob_end_clean();
 
 echo $t;
