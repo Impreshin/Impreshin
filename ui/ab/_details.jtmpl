@@ -850,8 +850,8 @@ function set_upload() {
 
            // console.log($($img).attr("src"))
 			$('#material-file-area-filename img').load(function () {
-				//$material_file_area_filename.html($img + file.name);
-				//$form.find("button[type='submit']").button('reset');
+				$material_file_area_filename.html($img + file.name);
+				$form.find("button[type='submit']").button('reset');
 			});
 
 
