@@ -1,6 +1,6 @@
 <?php
 $f3 = require('lib/f3/base.php');
-ob_start('ob_gzhandler');
+ob_start();
 $f3->route('GET /', function ($f3) {
 		echo "woof";
 	}
@@ -8,9 +8,6 @@ $f3->route('GET /', function ($f3) {
 $f3->run();
 
 $t = ob_get_contents();
-
-
-
 ob_end_clean();
 
 echo $t;
