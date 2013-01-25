@@ -4,4 +4,4 @@ $f3->route('GET /', function ($f3) {
 		phpinfo();
 	}
 );
-$app->run();
+$f3->run();
