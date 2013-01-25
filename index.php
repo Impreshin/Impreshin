@@ -2,7 +2,7 @@
 $f3 = require('lib/f3/base.php');
 ob_start('ob_gzhandler');
 $f3->route('GET /', function ($f3) {
-		phpinfo();
+		echo "woof";
 	}
 );
 $f3->run();
