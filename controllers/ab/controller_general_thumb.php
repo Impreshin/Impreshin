@@ -84,7 +84,7 @@ class controller_general_thumb {
 
 					exec($str);
 
-				//	self::remove_white($upload_folder . $folder . $thumb);
+					self::remove_white($upload_folder . $folder . $thumb);
 				}
 
 
