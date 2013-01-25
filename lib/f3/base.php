@@ -2232,8 +2232,7 @@ final class Registry {
 		@param $key string
 	**/
 	static function clear($key) {
-		//error_log($key);
-		//unset(self::$table[$key]);
+		unset(self::$table[$key]);
 	}
 
 	//! Prohibit cloning
