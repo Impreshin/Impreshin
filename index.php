@@ -50,7 +50,7 @@ $app->set('UI', 'ui/;'. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['
 //$app->set('EXTEND', TRUE);
 //$app->set('UI', 'ui/');
 //$app->set('TEMP', 'temp/');
-//$app->set('CACHE', false);
+$app->set('CACHE', false);
 
 
 $uri = $_SERVER['REQUEST_URI'];

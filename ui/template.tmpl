@@ -455,8 +455,8 @@ $(document).ajaxComplete(function (event, request, settings) {
 });
 function updatetimerlist(d, page_size) {
     //console.log(d);
-    return false;
-    d = jQuery.parseJSON(d);
+
+   // d = jQuery.parseJSON(d);
 
     if (!d || !typeof d == 'object') {
         return false;

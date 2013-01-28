@@ -93,7 +93,7 @@ class general {
 
 				"/ui/_js/plugins/jquery.daterangepicker.js",
 				"/ui/_js/plugins/jquery.mousewheel.js",
-				"/ui/_js/plugins/mwheelIntent.js",
+				//"/ui/_js/plugins/mwheelIntent.js",
 				"/ui/_js/plugins/jquery.jqote2.js",
 				"/ui/_js/plugins/jquery.ba-bbq.js",
 				"/ui/_js/plugins/jquery.cookie.js",
