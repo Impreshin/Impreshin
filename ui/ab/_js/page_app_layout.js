@@ -298,7 +298,7 @@ function tr_draggable($parent) {
 
 	$("tr.record.dragable", $parent).draggable({
 		opacity    :0.5,
-		helper     :function (e) {
+		helper: function(e){
 			var $target = $(e.target).closest("tr.record");
 			var cm = $target.attr("data-cm");
 			var col = $target.attr("data-col");
@@ -306,9 +306,8 @@ function tr_draggable($parent) {
 
 			var width = colSize * col, offsetX = width / 2;
 			var height = cmSize * cm, offsetY = height / 2;
-			;
 
-			var str;
+			var str = "";
 			str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;">';
 			if (img) {
 				str += '<img src="' + img + '&w=' + width + '&h=' + height + '" />';
