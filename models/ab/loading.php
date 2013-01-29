@@ -199,20 +199,21 @@ class loading {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 		}
-
-		$a->save();
-
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
-		if ($a->ID) {
+		if (!$a->dry) {
 			$label = "Record Edited ($a->pages [$a->percent%])";
 		} else {
 			$label = "Record Added (" . $values['pages'] . '[' . $values['percent'] . '%])';
 		}
+		$a->save();
+
+		$ID = $a->ID;
+
+
 		//test_array($new_logging);
 
 

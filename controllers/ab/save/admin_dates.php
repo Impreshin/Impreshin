@@ -27,7 +27,7 @@ class admin_dates extends save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$publish_date = isset($_POST['publish_date']) ? $_POST['publish_date'] : "";
-		$current = isset($_POST['current']) ? $_POST['current'] : "";
+		$current = isset($_POST['current']) ? "1" : "";
 
 
 		$submit = true;
@@ -53,6 +53,8 @@ class admin_dates extends save {
 			"publish_date"=> $publish_date,
 			"current"     => $current,
 		);
+
+
 
 		if ($submit){
 			$ID = models\dates::save($ID, $values);

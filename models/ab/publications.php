@@ -59,7 +59,7 @@ class publications {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.*, ab_users_pub.uID, COALESCE(global_users_company.ab,0) as access
+			SELECT DISTINCT global_publications.*, ab_users_pub.uID, COALESCE(global_users_company.ab,0) AS access
 			FROM (global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND (ab_users_pub.uID = global_users_company.uID)
 			$where
 			$orderby
@@ -88,7 +88,7 @@ class publications {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.* , if ((SELECT count(ID) FROM ab_users_pub WHERE ab_users_pub.pID = global_publications.ID AND ab_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) as currentUser
+			SELECT DISTINCT global_publications.* , if ((SELECT count(ID) FROM ab_users_pub WHERE ab_users_pub.pID = global_publications.ID AND ab_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser
 			FROM global_publications
 			$where
 			$orderby
@@ -119,22 +119,23 @@ class publications {
 		$a->load("ID='$ID'");
 		$old = array();
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 		}
-
-		$a->save();
-
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
-
-
-		if ($a->ID) {
+		if (!$a->dry()) {
 			$label = "Record Edited ($a->publication)";
 		} else {
 			$label = "Record Added (" . $values['publication'] . ')';
 		}
+		$a->save();
+
+		$ID = $a->ID;
+
+
+
+
 		//test_array($new_logging);
 
 

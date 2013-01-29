@@ -39,7 +39,7 @@
 					<div class="controls">
 						<div class="input-prepend input-append">
 							<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
-							<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
+							<input type="text" id="rate" name="rate" class="span2" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
 							<span class="add-on">per 1000</span>
 
 						</div>

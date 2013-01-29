@@ -124,7 +124,7 @@ class dates {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT count(ID) as count
+			SELECT count(ID) AS count
 			FROM global_dates
 			$where
 		");
@@ -149,24 +149,31 @@ class dates {
 
 		if (!isset($values["pID"]) || $values["pID"] == "") $values["pID"] = $user['publication']['ID'];
 
-		//test_array($values);
+
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_dates");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 		}
 
+		if ($a->dry()) {
+			$label = "Record Added (" . $values['publish_date'] . ')';
+		} else {
+			$label = "Record Edited ($a->publish_date)";
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+		$ID = $a->ID;
+
 
 		$app = $f3->get("app");
 
-		if (isset($value['current']) && $value['current']) {
+		//test_array(array($a->ID,$ID));
+		if (isset($value['current']) && $value['current'] ) {
 			$b = new \DB\SQL\Mapper($f3->get("DB"),"global_publications");
 			$b->load("ID='" . $values["pID"] . "'");
 			$column = $app . "_currentDate";
@@ -174,16 +181,8 @@ class dates {
 			if (!$b->dry()) $b->save();
 		}
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
-		if ($a->ID) {
-			$label = "Record Edited ($a->publish_date)";
-		} else {
-			$label = "Record Added (" . $values['publish_date'] . ')';
-		}
-		//test_array($new_logging);
 
+	
 
 		\models\logging::_log("dates", $label, $values, $old);
 

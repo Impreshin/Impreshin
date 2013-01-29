@@ -55,7 +55,7 @@ class placing {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *, (SELECT count(ID) FROM ab_colour_rates WHERE ab_colour_rates.placingID = ab_placing.ID) as colourCount
+			SELECT *, (SELECT count(ID) FROM ab_colour_rates WHERE ab_colour_rates.placingID = ab_placing.ID) AS colourCount
 			FROM ab_placing
 			$where
 			$orderby
@@ -79,21 +79,21 @@ class placing {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 		}
-
-		$a->save();
-
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
-
-		if ($a->ID) {
+		if (!$a->dry()) {
 			$label = "Record Edited ($a->placing)";
 		} else {
 			$label = "Record Added (" . $values['placing'] . ')';
 		}
+		$a->save();
+
+		$ID = $a->ID;
+
+
 		//test_array($new_logging);
 
 

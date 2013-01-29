@@ -57,7 +57,7 @@ class marketers {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 
 			FROM ab_marketers LEFT JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
 			$where
@@ -87,15 +87,20 @@ class marketers {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 		}
 
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->marketer)";
+		} else {
+			$label = "Record Added (" . $values['marketer'] . ')';
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+		$ID = $a->ID;
 
 		$cID = $values['cID'];
 		if (!$cID) {
@@ -145,11 +150,7 @@ class marketers {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited ($a->marketer)";
-		} else {
-			$label = "Record Added (" . $values['marketer'] . ')';
-		}
+
 		//test_array($new_logging);
 
 

@@ -57,7 +57,7 @@ class categories {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT ab_categories.*, if ((SELECT count(ID) FROM ab_category_pub WHERE ab_category_pub.catID = ab_categories.ID AND ab_category_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			SELECT DISTINCT ab_categories.*, if ((SELECT count(ID) FROM ab_category_pub WHERE ab_category_pub.catID = ab_categories.ID AND ab_category_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 			FROM ab_categories LEFT JOIN ab_category_pub ON ab_categories.ID = ab_category_pub.catID
 			$where
 			$orderby
@@ -82,15 +82,23 @@ class categories {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
+
+		}
+
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->category)";
+		} else {
+			$label = "Record Added (" . $values['category'] . ')';
 		}
 
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+
+		$ID = $a->ID;
 
 		$cID = $values['cID'];
 		if (!$cID) {
@@ -140,11 +148,7 @@ class categories {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited ($a->category)";
-		} else {
-			$label = "Record Added (" . $values['category'] . ')';
-		}
+
 
 
 		\models\logging::_log("categories", $label, $values, $old, $overwrite);

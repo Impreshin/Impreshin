@@ -35,7 +35,7 @@ class bookings {
 				ab_marketers.marketer AS marketer, ab_marketers.code AS marketerCode,
 				global_publications.publication AS publication,
 				global_publications.cID AS cID,
-				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') as dateStatus,
+				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') AS dateStatus,
 				ab_categories.category AS category,
 				global_users.fullName AS byFullName,
 				ab_accounts.account AS account,ab_accounts.accNum AS accNum,
@@ -44,8 +44,8 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				global_pages.page,
 				(SELECT production FROM ab_production WHERE ab_production.ID = ab_bookings.material_productionID ) AS material_production,
-				ab_colour_rates.colour as colour, ab_colour_rates.label as colourLabel,
-				ab_inserts_types.insertsLabel as insertLabel
+				ab_colour_rates.colour AS colour, ab_colour_rates.label AS colourLabel,
+				ab_inserts_types.insertsLabel AS insertLabel
 
 
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
@@ -120,7 +120,7 @@ class bookings {
 
 
 		$return = $f3->get("DB")->exec("
-			SELECT count(ab_bookings.ID) as records
+			SELECT count(ab_bookings.ID) AS records
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
 			$where
 		");
@@ -208,15 +208,15 @@ $groupby
 
 		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
-			global_dates.publish_date as publishDate,
+			global_dates.publish_date AS publishDate,
 				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
-				material_status as material,
+				material_status AS material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
-				if (`page`,1,0) as layout,
-				format(global_pages.page,0) as page,
-				ab_inserts_types.insertsLabel as insertLabel,
-				ab_colour_rates.colour as colour, ab_colour_rates.label as colourLabel
+				if (`page`,1,0) AS layout,
+				format(global_pages.page,0) AS page,
+				ab_inserts_types.insertsLabel AS insertLabel,
+				ab_colour_rates.colour AS colour, ab_colour_rates.label AS colourLabel
 			$select
 
 			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
@@ -575,12 +575,14 @@ $groupby
 
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_bookings");
 		foreach ($values as $key => $value) {
-			$a->$key = $value;
+			if (isset($a->$key)){
+				$a->$key = $value;
+			}
 		}
 
 
 		$a->save();
-		$ID = $a->_id;
+		$ID = $a->ID;
 
 		$n = $dataO->get($ID);
 
@@ -755,7 +757,7 @@ $groupby
 		$material = false;
 		foreach ($values as $key => $value) {
 			if (strpos($key, "aterial_")) $material = true;
-
+			if (isset($a->$key)) {
 			$cur = $a->$key;
 			if ($cur != $value) {
 				if (isset($lookupColumns[$key])) {
@@ -777,7 +779,9 @@ $groupby
 				}
 
 			}
-			$a->$key = $value;
+
+				$a->$key = $value;
+			}
 		}
 
 		if ($opts['dry'] || !$a->dry()) {
@@ -787,7 +791,7 @@ $groupby
 
 		if (!$ID) {
 			$label = "Booking Added";
-			$ID = $a->_id;
+			$ID = $a->ID;
 		} else {
 			$label = "Booking Edited";
 		}

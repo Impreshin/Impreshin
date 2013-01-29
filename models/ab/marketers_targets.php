@@ -191,7 +191,7 @@ class marketers_targets {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT ab_marketers_targets.*, if ((SELECT count(ID) FROM ab_marketers_targets_pub WHERE ab_marketers_targets_pub.mtID = ab_marketers_targets.ID AND ab_marketers_targets_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			SELECT DISTINCT ab_marketers_targets.*, if ((SELECT count(ID) FROM ab_marketers_targets_pub WHERE ab_marketers_targets_pub.mtID = ab_marketers_targets.ID AND ab_marketers_targets_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 			FROM ab_marketers_targets
 			$where
 			$orderby
@@ -225,7 +225,7 @@ class marketers_targets {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT count(ID) as count
+			SELECT count(ID) AS count
 			FROM ab_marketers_targets
 			$where
 		");
@@ -254,17 +254,22 @@ class marketers_targets {
 		$a->load("ID='$ID'");
 
 
-		
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)? $a->$key: "";
-			$a->$key = $value;
-		}
+			if (isset($a->$key)){
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				$a->$key = $value;
+			}
 
+		}
+		if (!$a->dry) {
+			$label = "Record Edited (" . currency($a->target) . ")";
+		} else {
+			$label = "Record Added (" . currency($values['target']) . ')';
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+
+		$ID = $a->ID;
 
 		$cID = isset($values['cID']) ? $values['cID'] : "";
 		if (!$cID) {
@@ -274,6 +279,7 @@ class marketers_targets {
 		$publications = publications::getAll("cID='$cID'", "publication ASC");
 
 
+		//test_array($publications);
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_targets_pub");
 		$pub = array(
 			"a" => array(),
@@ -316,11 +322,7 @@ class marketers_targets {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited (" . currency($a->target) . ")";
-		} else {
-			$label = "Record Added (" . currency($values['target']) . ')';
-		}
+
 		//test_array($new_logging);
 
 

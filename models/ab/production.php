@@ -57,7 +57,7 @@ class production {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT ab_production.*, if ((SELECT count(ID) FROM ab_production_pub WHERE ab_production_pub.productionID = ab_production.ID AND ab_production_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+			SELECT DISTINCT ab_production.*, if ((SELECT count(ID) FROM ab_production_pub WHERE ab_production_pub.productionID = ab_production.ID AND ab_production_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 			FROM ab_production LEFT JOIN ab_production_pub ON ab_production.ID = ab_production_pub.productionID
 			$where
 			$orderby
@@ -84,12 +84,14 @@ class production {
 			$old[$key] = isset($a->$key)?$a->$key:"";
 			$a->$key = $value;
 		}
-
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->production)";
+		} else {
+			$label = "Record Added (" . $values['production'] . ')';
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+		$ID = $a->ID;
 
 		$cID = $values['cID'];
 		if (!$cID) {
@@ -138,11 +140,7 @@ class production {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited ($a->production)";
-		} else {
-			$label = "Record Added (" . $values['production'] . ')';
-		}
+
 		//test_array($new_logging);
 
 
