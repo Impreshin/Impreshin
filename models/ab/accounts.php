@@ -145,8 +145,9 @@ class accounts {
 
 
 		foreach ($values as $key => $value) {
+			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)){
-				$old[$key] = isset($a->$key) ? $a->$key : "";
+
 				$a->$key = $value;
 			}
 

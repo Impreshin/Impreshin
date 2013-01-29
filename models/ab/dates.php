@@ -154,13 +154,13 @@ class dates {
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
+			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)) {
-				$old[$key] = isset($a->$key) ? $a->$key : "";
 				$a->$key = $value;
 			}
 		}
 
-		if ($a->dry()) {
+		if (!$a->ID) {
 			$label = "Record Added (" . $values['publish_date'] . ')';
 		} else {
 			$label = "Record Edited ($a->publish_date)";
