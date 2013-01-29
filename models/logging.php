@@ -28,7 +28,7 @@ class logging {
 			$orderby = "ORDER BY " . $orderby;
 		}
 
-		$result = $f3->get("DB")->sql("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =global_logs.uID ) AS fullName FROM global_logs $where $orderby");
+		$result = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =global_logs.uID ) AS fullName FROM global_logs $where $orderby");
 
 		$a = array();
 		foreach ($result as $record) {
