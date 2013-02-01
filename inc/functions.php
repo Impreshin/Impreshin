@@ -160,7 +160,12 @@ function currency($number){
 	return str_replace(" ", "&nbsp;", $number);
 
 }
-function test_array($array){
+function test_array($array,$splitter=","){
+
+	if (!is_array($array)){
+		$array = explode($splitter,$array);
+	}
+
 	header("Content-Type: application/json");
 	echo json_encode($array);
 	exit();

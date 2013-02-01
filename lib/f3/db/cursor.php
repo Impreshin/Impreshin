@@ -30,13 +30,6 @@ abstract class Cursor extends \Magic {
 		$ptr=0;
 
 	/**
-		Return fields of mapper object as an associative array
-		@return array
-		@param $obj object
-	**/
-	abstract function cast($obj=NULL);
-
-	/**
 		Return records (array of mapper objects) that match criteria
 		@return array
 		@param $filter string|array
@@ -75,27 +68,6 @@ abstract class Cursor extends \Magic {
 	}
 
 	/**
-		Return records (array of associative arrays) that match criteria
-		@return array
-		@param $filter string|array
-		@param $options array
-	**/
-	function afind($filter=NULL,array $options=NULL) {
-		return array_map(array($this,'cast'),$this->find($filter,$options));
-	}
-
-	/**
-		Return first record (associative array) that matches criteria
-		@return array|FALSE
-		@param $filter string|array
-		@param $options array
-	**/
-	function afindone($filter=NULL,array $options=NULL) {
-		return ($found=$this->findone($filter,$options))?
-			$found->cast():FALSE;
-	}
-
-	/**
 		Return array containing subset of records matching criteria,
 		number of subsets available, and actual subset position
 		@return array
@@ -105,6 +77,8 @@ abstract class Cursor extends \Magic {
 		@param $options array
 	**/
 	function paginate($pos=0,$size=10,$filter=NULL,array $options=NULL) {
+		$count=ceil($this->count($filter,$options)/$size);
+		$pos=max(0,min($pos,$count-1));
 		return array(
 			'subset'=>$this->find($filter,
 				array_merge(
@@ -112,8 +86,8 @@ abstract class Cursor extends \Magic {
 					array('limit'=>$size,'offset'=>$pos*$size)
 				)
 			),
-			'count'=>($count=ceil($this->count($filter,$options)/$size)),
-			'pos'=>($pos && $pos<$count?$pos:NULL)
+			'count'=>$count,
+			'pos'=>$pos<$count?$pos:0
 		);
 	}
 

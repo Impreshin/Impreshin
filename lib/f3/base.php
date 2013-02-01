@@ -19,7 +19,7 @@ final class Base {
 	//@{ Framework details
 	const
 		PACKAGE='Fat-Free Framework',
-		VERSION='3.0.3-Release';
+		VERSION='3.0.5-Dev';
 	//@}
 
 	//@{ HTTP status codes (RFC 2616)
@@ -2232,7 +2232,7 @@ final class Registry {
 		@param $key string
 	**/
 	static function clear($key) {
-	//	unset(self::$table[$key]);
+		unset(self::$table[$key]);
 	}
 
 	//! Prohibit cloning

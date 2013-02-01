@@ -9,6 +9,9 @@ use models\ab as models;
 
 
 class controller_general_thumb {
+
+
+
 	public function material() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("cfg");
@@ -38,31 +41,14 @@ class controller_general_thumb {
 		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
 		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
 
-		/*
 
-		test_array(array(
-			           "file"=>array(
-				           "file" => $filename,
-				           "folder" => $upload_folder . $folder,
-				           "full_path" => $upload_folder . $folder . $filename,
-				           "exists" => file_exists($upload_folder . $folder . $filename),
-			           ),
-
-
-
-
-			           "thumb"=> array(
-				           "file"=>"thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename),
-				           "full_path" => $upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename),
-				           "exists"=> file_exists($upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename)),
-			           )
-
-		           ));
-		*/
 		if (file_exists($upload_folder . $folder . $filename)) {
 
 			$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 			$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
+
+			$w = round($w);
+			$h = round($h);
 
 			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
@@ -93,28 +79,16 @@ class controller_general_thumb {
 
 
 				if (file_exists($upload_folder . $folder . $thumb)) {
-
 					//test_array(array($folder . $thumb));
 					$image = new \Image($folder . $thumb);
 					$image->resize($w,$h,false);
 					$image->render();
-
-					exit();
-				} else {
-					exit();
+					unset($image);
 				}
-
-
 			}
-
-			//\Graphics::fakeImage(0, 0);
-			exit();
-
-
 		}
 
-		exit();
-
+		$f3->set("exit", true);
 
 	}
 

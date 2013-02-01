@@ -30,7 +30,6 @@ $pageExecute = new timer(true);
 //test_array(array("HTTP_HOST"  => $_SERVER['HTTP_HOST'], "REQUEST_URI"=> $_SERVER['REQUEST_URI']));
 
 
-
 require_once('inc/functions.php');
 require_once('inc/class.pagination.php');
 require_once('lib/Twig/Autoloader.php');
@@ -43,16 +42,21 @@ require_once('inc/class.template.php');
 
 $app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
-//$app->set('CACHE', TRUE);
 $app->set('TZ', 'Africa/Johannesburg');
 $app->set('DEBUG', 2);
-$app->set('UI', 'ui/;'. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']));
+$app->set('HIGHLIGHT', FALSE);
+$app->set('UI', 'ui/;' . str_replace(array(
+	                                     "/",
+	                                     "\\"
+                                     ), DIRECTORY_SEPARATOR, $cfg['upload']['folder']
+)
+);
 //$app->set('EXTEND', TRUE);
 //$app->set('UI', 'ui/');
 //$app->set('TEMP', 'temp/');
 $app->set('CACHE', false);
 
-
+$app->set("exit", false);
 $uri = $_SERVER['REQUEST_URI'];
 $folder = "";
 if ($uri) {
@@ -154,7 +158,7 @@ $app->route('GET|POST /@app/upload/', 'general->upload');
 
 $app->route('GET /charts/line', 'charts->line');
 
-$app->route('GET|POST /logout', function ($app,$params) use ($user) {
+$app->route('GET|POST /logout', function ($app, $params) use ($user) {
 		session_unset();
 		//session_destroy();
 		$app->reroute("/login");
@@ -173,9 +177,6 @@ $app->route('GET|POST /', function ($app) use ($user) {
 				}
 			}
 
-
-			;
-
 			$app->reroute($last_app);
 		} else {
 			$app->reroute("/login?to=" . $_SERVER['REQUEST_URI']);
@@ -185,7 +186,7 @@ $app->route('GET|POST /', function ($app) use ($user) {
 );
 $app->route('GET|POST /noaccess', function () {
 		echo "you dont have access for that app";
-		exit();
+		die();
 	}
 );
 $app->route('GET|POST /login', 'controllers\controller_login->page');
@@ -219,7 +220,7 @@ $app->route('GET /data/keepalive', function ($app, $params) use ($user) {
 			// upadate the last_activity
 		}
 		$t = array(
-			"ID"   => $user['ID'],
+			"ID" => $user['ID'],
 			"idle" => $diff
 		);
 
@@ -232,7 +233,7 @@ $app->route('GET /data/keepalive', function ($app, $params) use ($user) {
 
 
 function last_page() {
-	$f3= Base::instance();
+	$f3 = Base::instance();
 	$user = $f3->get("user");
 	$f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 
@@ -457,12 +458,6 @@ $app->route('GET /ab/reports/category/discounts', function ($f3, $params) {
 
 // --------------------------------------------------------------------------------
 
-$app->route('GET /ab/test', function ($f3, $params) {
-		$f3->chain('access; controllers\ab\controller_test->page');
-	}
-);
-
-
 $app->route("GET|POST /$folder/logs/@function", function () use ($app) {
 		$folder = $app->get("app");
 		$section = $app->get('PARAMS.function');
@@ -581,6 +576,10 @@ $app->route('GET /php', function () {
 
 $app->run();
 
+if ($app->get("exit")) {
+	exit();
+}
+
 
 $GLOBALS["render"] = ob_get_contents();
 $pageSize = ob_get_length();
@@ -618,8 +617,6 @@ if ($folder) {
 	$notificationmodel = "\\models\\$folder\\user_notifications";
 	$GLOBALS["output"]['notifications'] = $notificationmodel::show();
 }
-
-
 
 
 //ob_start("ob_gzhandler");
