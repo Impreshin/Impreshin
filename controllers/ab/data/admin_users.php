@@ -112,12 +112,12 @@ class admin_users extends data {
 		$details = $details->get($ID);
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		if (!$details['ID']){
 			$userPublications = array();
 		} else {
-			$userPublications = models\publications::getAll_user("ab_users_pub.uID='" . $details['ID'] . "'", "publication ASC");
+			$userPublications = \models\publications::getAll_user("ab_users_pub.uID='" . $details['ID'] . "'", "publication ASC");
 		}
 
 
@@ -147,6 +147,7 @@ class admin_users extends data {
 			$return['details']['permissions'] = models\user_permissions::_read($extra['ab_permissions']);
 			$return['details']['ab_marketerID'] = $extra['ab_marketerID'];
 			$return['details']['ab_productionID'] = $extra['ab_productionID'];
+			$return['details']['allow_setup'] = $extra['allow_setup'];
 		} else {
 			$return['details']['ab'] = '1';
 

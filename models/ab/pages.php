@@ -82,7 +82,7 @@ class pages {
 		if (is_array($dID)) {
 			$date = $dID;
 		} else {
-			$date = new dates();
+			$date = new \models\dates();
 			$date = $date->get($dID);
 		}
 

@@ -1,0 +1,130 @@
+
+
+
+<section role="main" id="pagecontent">
+
+	<div class="container">
+
+		<article id="left-area" class="span10">
+			<div class="content">
+				{% if show =="company_list" %}
+
+
+				{% endif %}
+				{% if show == "application_list" %}
+
+				{% endif %}
+
+				{% if show == "publication_details" or show == "publication_list" %}
+					<form class="form-horizontal" method="POST" action="?save" enctype="application/x-www-form-urlencoded">
+						<fieldset>
+							{% for row in errors %}
+							<div class="alert alert-error">{{ row }}</div>
+							{% endfor %}
+							<legend>Publication Details</legend>
+
+							<div class="control-group">
+								<label class="control-label" for="publication">Publication Name </label>
+
+								<div class="controls">
+									<input type="text" id="publication" name="publication" placeholder="Publication" value="{{ publication['publication'] }}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="columnsav">Columns </label>
+
+								<div class="controls">
+									<input class="span1" type="text" id="columnsav" name="columnsav" placeholder="Columns" value="{{ publication['columnsav'] }}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="cmav">Cm </label>
+
+								<div class="controls">
+									<input class="span1" type="text" id="cmav" name="cmav" placeholder="Cm" value="{{ publication['cmav'] }}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="pagewidth">Page Width </label>
+
+								<div class="controls">
+									<div class="input-append">
+										<input class="span1" type="text" id="pagewidth" name="pagewidth" placeholder="Width (in mm)" value="{{ publication['pagewidth'] }}">
+										<span class="add-on">mm</span>
+									</div>
+
+
+								</div>
+							</div>
+
+
+							<div class="form-actions">
+								<button type="button" class="btn span2">Cancel</button>
+								<button type="submit" class="btn btn-primary span2">Save</button>
+
+							</div>
+						</fieldset>
+					</form>
+				{% endif %}
+
+
+			</div>
+		</article>
+		<article id="right-area" class="span6 offset10">
+			<div class="content">
+				{% if show =="company_list" %}
+					<div class="c">
+						<ul class="choose_option">
+							{% for row in list['companies'] %}
+								<li><a class="btn span5 " href="/setup/{{ row['ID'] }}">{{ row['company'] }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+				{% if show == "application_list" %}
+
+					<div class="c">
+						<ul class="choose_option">
+							{% if company['ab'] %}
+								<li>
+									<a class="btn span5 " href="/setup/{{ company['ID'] }}/ab/">AdBooker</a>
+								</li>
+							{% endif %}
+							{% if company['nf'] %}
+								<li>
+									<a class="btn span5 " href="/setup/{{ company['ID'] }}/nf/">NewsFiler</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				{% endif %}
+				{% if show == "publication_list" or show=="publication_details" %}
+
+					<div class="c">
+						<ul class="choose_option">
+							{% for row in list['publications'] %}
+								<li>
+									<a class="btn span5 {% if publication['ID'] == row['ID'] %}btn-info{% endif %}" href="/setup/{{ company['ID'] }}/{{ application }}/{{ row['ID'] }}/">{{ row['publication'] }}</a>
+								</li>
+							{% endfor %}
+
+						</ul>
+					</div>
+				{% endif %}
+
+			</div>
+		</article>
+
+
+	</div>
+</section>
+
+
+<script type="text/javascript">
+
+	{% if publication['ID'] %}
+	var show_next = true;
+	{% else %}
+	var show_next = false;
+	{% endif %}
+</script>

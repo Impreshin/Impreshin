@@ -11,6 +11,13 @@ $cfg['DB']['username'] = "username";
 $cfg['DB']['password'] = "password";
 $cfg['DB']['database'] = "adbooker_v5";
 
+$cfg['package']['host'] = "127.0.0.1";
+$cfg['package']['username'] = "username";
+$cfg['package']['password'] = "password";
+$cfg['package']['database'] = "impreshin-admin";
+
+
+
 $cfg['upload']['material'] = false;
 $cfg['upload']['pages'] = false;
 $cfg['upload']['folder'] = $_SERVER['DOCUMENT_ROOT'] .  "/uploads/";

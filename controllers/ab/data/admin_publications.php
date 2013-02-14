@@ -34,7 +34,7 @@ class admin_publications extends data {
 
 
 
-		$records = models\publications::getAll($where, "publication ASC");
+		$records = \models\publications::getAll($where, "publication ASC");
 
 		$return = array();
 
@@ -51,7 +51,7 @@ class admin_publications extends data {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\publications();
+		$o = new \models\publications();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];

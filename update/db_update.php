@@ -37,6 +37,12 @@ $sql = array(
 	),
 	"9"=>array(
 		"ALTER TABLE `global_users_company` ADD `nf_author` TINYINT( 1 ) NULL DEFAULT NULL;"
+	),
+	"10"=>array(
+		"ALTER TABLE `global_companies` ADD `packageID` INT( 6 ) NULL DEFAULT NULL;"
+	),
+	"11"=>array(
+		"ALTER TABLE `global_users_company` ADD `allow_setup` TINYINT( 1 ) NULL DEFAULT '0' AFTER `uID`;"
 	)
 
 

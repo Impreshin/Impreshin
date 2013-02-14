@@ -45,14 +45,14 @@ class logging {
 	}
 
 
-	public static function save($section, $changes = array(), $label = "") {
+	public static function save($section, $changes = array(), $label = "", $cID="") {
 		$return = "";
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$app = $f3->get("app");
 
-		$cID = $user['company']['ID'];
+		$cID = $cID? $cID: $user['company']['ID'];
 		//$section = str_replace("models".$app,"",$section);
 
 
@@ -68,7 +68,7 @@ class logging {
 
 	}
 
-	public static function _log($class, $label, $values, $old, $overwrite = array(), $lookups = array()) {
+	public static function _log($class, $label, $values, $old, $overwrite = array(), $lookups = array(),$cID="") {
 		$f3 = \Base::instance();
 		$changes = array();
 		$lookup = array();
@@ -131,7 +131,7 @@ class logging {
 
 		//test_array($changes);
 
-		self::save($class, $changes, $label);
+		self::save($class, $changes, $label,$cID);
 
 	}
 

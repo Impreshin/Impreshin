@@ -34,6 +34,8 @@ class admin_users extends save {
 		$publications= isset($_POST['publications']) ? $_POST['publications'] : array();
 		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : array();
 
+		$allow_setup= isset($_POST['allow_setup']) ? "1" :"0";
+
 		$ab_marketerID= isset($_POST['ab_marketerID']) ? $_POST['ab_marketerID'] : "";
 		$ab_productionID= isset($_POST['ab_productionID']) ? $_POST['ab_productionID'] : "";
 
@@ -112,6 +114,7 @@ class admin_users extends save {
 			$a->load("uID='$ID' AND cID = '$cID'");
 			$a->ab_marketerID = $ab_marketerID;
 			$a->ab_productionID = $ab_productionID;
+			$a->allow_setup = $allow_setup;
 			$a->save();
 
 			$return['ID'] = $ID;

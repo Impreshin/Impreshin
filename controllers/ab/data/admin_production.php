@@ -88,7 +88,7 @@ class admin_production extends data {
 
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		if (!$details['ID']) {
 			$userPublications = array();

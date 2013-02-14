@@ -52,7 +52,7 @@ class controller_app_form {
 
 		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "account ASC");
 		$marketers = models\marketers::getAll("pID='$pID' AND ab_marketers.cID='$cID'", "marketer ASC");
-		$dates = models\dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
+		$dates = \models\dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
 		$placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
 		$inserts_types = models\inserts_types::getAll("pID='$pID'", "orderby ASC", "");
 		$colours = models\colours::getAll("pID='$pID'", "orderby ASC", "");
@@ -129,7 +129,7 @@ class controller_app_form {
 		);
 
 
-		$selectedDate = new models\dates();
+		$selectedDate = new \models\dates();
 		$selectedDate = $selectedDate->get($details['dID']);
 
 		$d = array();
@@ -141,7 +141,7 @@ class controller_app_form {
 			$selectedDate = array();
 		}
 
-		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
+		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");
 		$tmpl->remarkTypes = models\remarkTypes::getAll("");
 		$tmpl->clients_th_json = $clientlist;

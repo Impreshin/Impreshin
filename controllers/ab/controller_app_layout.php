@@ -32,7 +32,7 @@ class controller_app_layout {
 				"title"=> "AB - Layout",
 			)
 		);
-		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
+		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->placing = models\placing::getAll("pID='$pID'");
 		$tmpl->sections = models\sections::getAll("pID='$pID'","section ASC");
 		$tmpl->page_loading = models\loading::getAll("pID='$pID'","pages ASC");

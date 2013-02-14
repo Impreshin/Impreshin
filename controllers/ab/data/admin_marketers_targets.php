@@ -84,7 +84,7 @@ class admin_marketers_targets extends data {
 
 
 		$records = models\marketers_targets::getAll($where, $ordering_c . " " . $ordering_d . ",date_to DESC", $pagination['limit']);
-		//$records = models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
+		//$records = \models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
 		$a = array();
 		foreach ($records as $target){
 			$target['target'] = currency($target['target']);
@@ -124,7 +124,7 @@ class admin_marketers_targets extends data {
 
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		if (!$details['ID']) {
 			$userPublications = array();

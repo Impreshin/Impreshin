@@ -277,7 +277,7 @@ class marketers_targets {
 			$cID = $user['publication']['cID'];
 		}
 
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 
 		//test_array($publications);

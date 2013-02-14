@@ -40,11 +40,11 @@ class production {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "",$pID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+		$pID = $pID? $pID:  $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -77,20 +77,24 @@ class production {
 		$old = array();
 		$lookupColumns = array();
 
+		//test_array($values);
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_production");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
+			$old[$key] = isset($a->$key) ? $a->$key : "";
+			if (isset($a->$key)) {
+				$a->$key = $value;
+			}
 		}
+
 		if (!$a->dry()) {
 			$label = "Record Edited ($a->production)";
 		} else {
 			$label = "Record Added (" . $values['production'] . ')';
 		}
 		$a->save();
-
+		//test_array($values);
 		$ID = $a->ID;
 
 		$cID = $values['cID'];
@@ -99,11 +103,12 @@ class production {
 		}
 
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_production_pub");
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
 			"a" => array(),
 			"r" => array()
 		);
+
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND productionID='" . $ID . "'");
 			if (in_array($publication['ID'], $values['publications'])) {
@@ -141,7 +146,7 @@ class production {
 		//test_array($changes);
 
 
-		//test_array($new_logging);
+
 
 
 		\models\logging::_log("production", $label, $values, $old, $overwrite, $lookupColumns);

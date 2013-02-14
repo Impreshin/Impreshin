@@ -40,11 +40,11 @@ class marketers {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "", $pID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+		$pID = $pID ? $pID: $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -109,7 +109,7 @@ class marketers {
 		}
 
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_pub");
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
 			"a" => array(),
 			"r" => array()

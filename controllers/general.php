@@ -56,6 +56,7 @@ class general {
 
 		}
 
+		$t = preg_replace('/\s+/', ' ', $t);
 		//exit($this->minify($t,"css"));
 		exit($t);
 
@@ -142,104 +143,13 @@ class general {
 
 		}
 
+		//$t = preg_replace('/\s+/', ' ', $t);
 		exit($t);
 		//exit($this->minify($t, "js"));
 
 
 	}
 
-	function minify($code, $ext) {
-		$src = $code;
-		$ptr = 0;
-		$dst = '';
-
-		while ($ptr < strlen($src)) {
-			if ($src[$ptr] == '/') {
-				// Presume it's a regex pattern
-				$regex = TRUE;
-				if ($ptr > 0) {
-					// Backtrack and validate
-					$ofs = $ptr;
-					while ($ofs > 0) {
-						$ofs--;
-						// Pattern should be preceded by a punctuation
-						if (ctype_punct($src[$ofs])) {
-							while ($ptr < strlen($src)) {
-								$str = strstr(substr($src, $ptr + 1), '/', TRUE);
-								if (!strlen($str) && $src[$ptr - 1] != '/' || strpos($str, "\n") !== FALSE) {
-									// Not a regex pattern
-									$regex = FALSE;
-									break;
-								}
-								$dst .= '/' . $str;
-								$ptr += strlen($str) + 1;
-								if ($src[$ptr - 1] != '\\' || $src[$ptr - 2] == '\\') {
-									$dst .= '/';
-									$ptr++;
-									break;
-								}
-							}
-							break;
-						} elseif ($src[$ofs] != "\t" && $src[$ofs] != ' ') {
-							// Not a regex pattern
-							$regex = FALSE;
-							break;
-						}
-					}
-					if ($regex && $ofs < 1) $regex = FALSE;
-				}
-				if (!$regex || $ptr < 1) {
-					if (substr($src, $ptr + 1, 2) == '*@') {
-						// Conditional block
-						$str = strstr(substr($src, $ptr + 3), '@*/', TRUE);
-						$dst .= '/*@' . $str . $src[$ptr] . '@*/';
-						$ptr += strlen($str) + 6;
-					} elseif ($src[$ptr + 1] == '*') {
-						// Multiline comment
-						$str = strstr(substr($src, $ptr + 2), '*/', TRUE);
-						$ptr += strlen($str) + 4;
-					} elseif ($src[$ptr + 1] == '/') {
-						// Single-line comment
-						$str = strstr(substr($src, $ptr + 2), "\n", TRUE);
-						$ptr += strlen($str) + 2;
-					} else {
-						// Division operator
-						$dst .= $src[$ptr];
-						$ptr++;
-					}
-				}
-				continue;
-			}
-			if ($src[$ptr] == '\'' || $src[$ptr] == '"') {
-				$match = $src[$ptr];
-				// String literal
-				while ($ptr < strlen($src)) {
-					$str = strstr(substr($src, $ptr + 1), $src[$ptr], TRUE);
-					$dst .= $match . $str;
-					$ptr += strlen($str) + 1;
-					if ($src[$ptr - 1] != '\\' || $src[$ptr - 2] == '\\') {
-						$dst .= $match;
-						$ptr++;
-						break;
-					}
-				}
-				continue;
-			}
-			if (ctype_space($src[$ptr])) {
-				$last = substr($dst, -1);
-				$ofs = $ptr + 1;
-				if ($ofs + 1 < strlen($src)) {
-					while (ctype_space($src[$ofs])) $ofs++;
-					if (preg_match('/[\w%]' . '[\w' . ($ext == 'css' ? '\)\]\}#\-*\.' : '') . '$]/', $last . $src[$ofs])) $dst .= $src[$ptr];
-				}
-				$ptr = $ofs;
-			} else {
-				$dst .= $src[$ptr];
-				$ptr++;
-			}
-		}
-		return $dst;
-	}
 
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";

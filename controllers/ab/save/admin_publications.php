@@ -142,7 +142,7 @@ class admin_publications extends save {
 
 
 
-			$ID = models\publications::save($ID, $values);
+			$ID = \models\publications::save($ID, $values);
 
 			$return['ID'] = $ID;
 
@@ -154,7 +154,7 @@ class admin_publications extends save {
 					"publish_date"=> $publish_date,
 					"current"     => '1',
 				);
-				$t = models\dates::save("", $date_values);
+				$t = \models\dates::save("", $date_values);
 			}
 		}
 
@@ -172,7 +172,7 @@ class admin_publications extends save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\publications::_delete($ID);
+		\models\publications::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}

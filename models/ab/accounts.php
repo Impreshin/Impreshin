@@ -162,7 +162,7 @@ class accounts {
 		}
 
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_accounts_pub");
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 
 		$pub = array(

@@ -40,15 +40,12 @@ require_once('inc/class.template.php');
 //require_once('inc/class.store.php');
 
 
-$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/');
+$app->set('AUTOLOAD', './|lib/|lib/pChart/class/|controllers/|controllers/ab/|controllers/ab/data/|controllers/nf/|controllers/nf/data/|controllers/setup/');
 $app->set('PLUGINS', 'lib/f3/|lib/suga/');
 $app->set('TZ', 'Africa/Johannesburg');
 $app->set('DEBUG', 2);
 $app->set('HIGHLIGHT', FALSE);
-$app->set('UI', 'ui/;' . str_replace(array(
-	                                     "/",
-	                                     "\\"
-                                     ), DIRECTORY_SEPARATOR, $cfg['upload']['folder']
+$app->set('UI', 'ui/;' . str_replace(array( "/", "\\" ), DIRECTORY_SEPARATOR, $cfg['upload']['folder']
 )
 );
 //$app->set('EXTEND', TRUE);
@@ -74,11 +71,12 @@ $folder = strtolower($folder);
 
 
 $allowed = $cfg['apps'];
+$allowed[] = "setup";
 $folder = (in_array($folder, $allowed)) ? $folder : "";
 
 //test_array($folder);
 
-$app->set('app', $folder);
+$app->set('app', (isset($_GET['app']))?$_GET['app'] : $folder);
 $app->set('DB', new DB\SQL('mysql:host=' . $cfg['DB']['host'] . ';dbname=' . $cfg['DB']['database'] . '', $cfg['DB']['username'], $cfg['DB']['password']));
 
 
@@ -122,6 +120,8 @@ if ($folder && $user['ID']) {
 	$app->get("DB")->exec("UPDATE " . $folder . "_users_settings SET  last_activity = now() WHERE uID = '" . $user['ID'] . "'");
 }
 
+//test_array($user);
+
 $app->set('user', $user);
 $docs = array();
 if (file_exists('docs/docs.php')) {
@@ -130,7 +130,7 @@ if (file_exists('docs/docs.php')) {
 $app->set('docs', $docs);
 
 
-if ($folder) {
+if ($folder && $folder != "setup") {
 
 	$settingsmodel = "\\models\\$folder\\settings";
 	$app->set('settings', $settingsmodel::settings($user['permissions']));
@@ -146,6 +146,34 @@ if (strpos($_SERVER['HTTP_HOST'], "dev.") === true || isLocal()) {
 	$ttl = 0;
 }
 $ttl = 0;
+
+//test_array($user);
+
+
+$app->route('GET|POST /setup', function ($f3, $params) {
+		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+	}
+);
+
+$app->route('GET|POST /setup/@company', function ($f3, $params) {
+		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+	}
+);
+$app->route('GET|POST /setup/@company/@app', function ($f3, $params) {
+		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+	}
+);
+$app->route('GET|POST /setup/@company/@app/@pID', function ($f3, $params) {
+		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+	}
+);
+$app->route('GET|POST /setup/@company/@app/@pID/@section', function ($f3, $params) {
+		//test_array($params);
+		$f3->chain('access; last_page; controllers\setup\\controller_setup->page');
+	}
+);
+
+
 
 
 $app->route('GET /min/css/@filename', 'general->css_min', $ttl);
@@ -220,7 +248,7 @@ $app->route('GET /data/keepalive', function ($app, $params) use ($user) {
 			// upadate the last_activity
 		}
 		$t = array(
-			"ID" => $user['ID'],
+			"ID"   => $user['ID'],
 			"idle" => $diff
 		);
 
@@ -232,43 +260,7 @@ $app->route('GET /data/keepalive', function ($app, $params) use ($user) {
 // --------------------------------------------------------------------------------
 
 
-function last_page() {
-	$f3 = Base::instance();
-	$user = $f3->get("user");
-	$f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 
-	$app = $f3->get("app");
-	$table = $app . "_users_settings";
-	$f3->get("DB")->exec("UPDATE $table SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE uID = '" . $user['ID'] . "'");
-
-
-	$st = array();
-	$uID = $user['ID'];
-	$cfg = $f3->get("cfg");
-	foreach ($cfg['apps'] as $a) {
-		$st[] = "COALESCE((SELECT last_page FROM " . $a . "_users_settings WHERE uID = '$uID'),'/$a') as $a";
-	}
-	$st = implode(",", $st);
-	$st = $f3->get("DB")->exec("SELECT $st ");
-	if (count($st)) $st = $st[0];
-
-	foreach ($cfg['apps'] as $a) {
-		if (substr($st[$a], 0, 3) != "/$a") {
-			$st[$a] = "/$a";
-		}
-	}
-
-	$f3->set("last_pages", $st);
-
-	//test_array($app->get("last_pages"));
-}
-
-
-function access() {
-	$app = Base::instance();
-	$user = $app->get("user");
-	if (!$user['ID']) $app->reroute("/login");
-}
 
 
 $app->route('GET /ab', function ($f3, $params) {
@@ -479,45 +471,41 @@ $app->route("GET|POST /$folder/logs/@function", function () use ($app) {
 	}
 );
 
-$app->route("GET|POST /$folder/data/@function", function ($app, $params) {
-		$folder = $app->get("app");
-
+$app->route("GET|POST /$folder/data/@function", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\data\\data->" . $params['function']);
 	}
 );
-$app->route("GET|POST /$folder/data/@class/@function", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/data/@class/@function", function ($app, $params) use ($folder) {
 		//test_array($params['function']);
 		$app->call("controllers\\$folder\\data\\" . $params['class'] . "->" . $params['function']);
 	}
 );
 
-$app->route("GET|POST /$folder/data/@folder/@class/@function", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/data/@folder/@class/@function", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 	}
 );
 
-$app->route("GET|POST /$folder/save/@function", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/save/@function", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\save\\save->" . $params['function']);
 	}
 );
-$app->route("GET|POST /$folder/save/@class/@function", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/save/@class/@function", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\save\\" . $params['class'] . "->" . $params['function']);
 	}
 );
+$app->route("GET|POST /$folder/save/@folder/@class/@function", function ($app, $params) use ($folder) {
+		$app->call("controllers\\$folder\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+	}
+);
 
-$app->route("GET|POST /$folder/download/@folder/@ID/*", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/download/@folder/@ID/*", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\controller_general_download->" . $params['folder']);
 	}
 );
 
 
-$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/thumb/@folder/@ID/*", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\controller_general_thumb->" . $params['folder']);
 
 		/*
@@ -528,8 +516,7 @@ $app->route("GET|POST /$folder/thumb/@folder/@ID/*", function ($app, $params) {
 		*/
 	}
 );
-$app->route("GET|POST /$folder/thumb/@folder/@ID", function ($app, $params) {
-		$folder = $app->get("app");
+$app->route("GET|POST /$folder/thumb/@folder/@ID", function ($app, $params) use ($folder) {
 		$app->call("controllers\\$folder\\controller_general_thumb->" . $params['folder']);
 		/*
 		$app->mutex(function () use ($folder, $app, $params) {
@@ -548,6 +535,15 @@ $app->route('GET /nf/production', 'access; last_page; controllers\nf\controller_
 $app->route('GET /nf/form', 'access; last_page; controllers\nf\controller_app_form->page');
 $app->route('GET /nf/form/@ID', 'access; last_page; controllers\nf\controller_app_form->page');
 $app->route('GET /nf/form/article/@ID', 'access; last_page; controllers\nf\controller_app_form->article');
+
+
+
+
+
+
+
+
+
 
 $app->route('GET|POST /nf/records12345', function () use ($app) {
 		include_once("old_to_new/nf.php");
@@ -613,7 +609,7 @@ $GLOBALS["output"]['page'] = array(
 	"size" => ($pageSize)
 );
 
-if ($folder) {
+if ($folder && $folder != "setup") {
 	$notificationmodel = "\\models\\$folder\\user_notifications";
 	$GLOBALS["output"]['notifications'] = $notificationmodel::show();
 }

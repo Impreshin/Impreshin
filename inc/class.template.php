@@ -49,6 +49,7 @@ class template {
 
 		$cfg = $this->f3->get('cfg');
 		unset($cfg['DB']);
+		unset($cfg['package']);
 
 
 		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
@@ -90,40 +91,51 @@ class template {
 			$this->templatefolder = "";
 
 			$usethisfolder = false;
+
+			$force_js = isset($page['template_js'])?true:false;
+			$force_css = isset($page['template_css']) ? true : false;
+			$force_tmpl = isset($page['template_tmpl']) ? true : false;
+
+
 			foreach ($folders as $folder){
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
 					$page['template'] = $tfile . '.tmpl';
 					$usethisfolder = true;
 					$this->templatefolder = $folder;
+
+					$page['folder'] = $folder;
 				} else {
 					$page['template'] = 'none';
 				}
 
-				if (file_exists('' . $folder . '_js/' . $tfile . '.js')) {
+
+				if (file_exists('' . $folder . '_js/' . $tfile . '.js') && !$force_js) {
 					$page['template_js'] = '/min/js_' . $_v . '?file=/' . $folder . '_js/' . $tfile . '.js';
 				} else {
-					$page['template_js'] = "";
+					if (!isset($page['template_js'])) $page['template_js'] = "";
 				}
-				if (file_exists('' . $folder . '_css/' . $tfile . '.css')) {
+				if (file_exists('' . $folder . '_css/' . $tfile . '.css') && !$force_css) {
 					$page['template_css'] = '/min/css_' . $_v . '?file=/' . $folder . '_css/' . $tfile . '.css';
 				} else {
-					$page['template_css'] = "";
+					if (!isset($page['template_css'])) $page['template_css'] = "";
 				}
-				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl')) {
+				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl') && !$force_tmpl) {
 					//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
 
 					$file = '/' . $folder . 'templates/' . $tfile . '_templates.jtmpl';
 
 					$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
 				} else {
-					$page['template_tmpl'] = "";
+					if (!isset($page['template_tmpl'])) $page['template_tmpl'] = "";
 				}
 
 				if ($usethisfolder){
 					break;
 				}
-			}
+				
 
+			}
+			//test_array($page);
 			if (!isset($page['help']) || !$page['help']){
 				$app = $this->f3->get("app");
 				$sub_section = $page['sub_section'];
@@ -140,6 +152,8 @@ class template {
 			}
 
 			$this->vars['page'] = $page;
+
+			//test_array($page);
 			
 
 			return $this->render_template();

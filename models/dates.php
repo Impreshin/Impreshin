@@ -1,9 +1,7 @@
 <?php
 
-namespace models\ab;
+namespace models;
 
-use \F3 as F3;
-use \Axon as Axon;
 use \timer as timer;
 
 class dates {

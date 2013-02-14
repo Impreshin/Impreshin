@@ -40,7 +40,7 @@ class admin_dates extends save {
 		);
 		if ($publish_date){
 			$publish_date = date("Y-m-d",strtotime($publish_date));
-			$exists = models\dates::getAll("global_dates.publish_date='$publish_date' AND global_dates.ID <> '$ID' AND pID='$pID'");
+			$exists = \models\dates::getAll("global_dates.publish_date='$publish_date' AND global_dates.ID <> '$ID' AND pID='$pID'");
 
 
 			if (count($exists)){
@@ -57,7 +57,7 @@ class admin_dates extends save {
 
 
 		if ($submit){
-			$ID = models\dates::save($ID, $values);
+			$ID = \models\dates::save($ID, $values);
 			$return['ID'] = $ID;
 		}
 
@@ -74,7 +74,7 @@ class admin_dates extends save {
 		$pID = $user['publication']['ID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		models\dates::_delete($ID);
+		\models\dates::_delete($ID);
 
 	}
 

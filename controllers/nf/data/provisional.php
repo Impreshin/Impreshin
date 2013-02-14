@@ -98,7 +98,7 @@ class provisional extends data {
 				$where .= " AND (lockedBy = '$uID')";
 				break;
 			case '1':
-				$publications = models\publications::getAll("cID='$cID'");
+				$publications = \models\publications::getAll("cID='$cID'");
 				$p = array();
 				foreach ($publications as $pub) $p[] = $pub['nf_currentDate'];
 				$p = implode(",", $p);

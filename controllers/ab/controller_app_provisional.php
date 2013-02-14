@@ -8,6 +8,7 @@ use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
+use \models\dates as dates;
 class controller_app_provisional {
 	function __construct() {
 		$this->f3 = \base::instance();
@@ -77,7 +78,7 @@ class controller_app_provisional {
 
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
-		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
+		$tmpl->repeat_dates = dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 
 		$tmpl->settings = $settings;
 

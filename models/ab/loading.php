@@ -5,7 +5,7 @@ namespace models\ab;
 use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
-use \models\ab\publications as publications;
+use \models\publications as publications;
 
 class loading {
 	private $classname;
@@ -205,7 +205,7 @@ class loading {
 				$a->$key = $value;
 			}
 		}
-		if (!$a->dry) {
+		if (!$a->dry()) {
 			$label = "Record Edited ($a->pages [$a->percent%])";
 		} else {
 			$label = "Record Added (" . $values['pages'] . '[' . $values['percent'] . '%])';

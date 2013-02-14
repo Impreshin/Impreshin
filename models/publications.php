@@ -1,9 +1,7 @@
 <?php
 
-namespace models\ab;
+namespace models;
 
-use \F3 as F3;
-use \Axon as Axon;
 use \timer as timer;
 
 class publications {
@@ -21,6 +19,7 @@ class publications {
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
+		$app = $f3->get("app");
 
 
 		$result = $f3->get("DB")->exec("
@@ -32,7 +31,10 @@ class publications {
 
 		if (count($result)) {
 			$return = $result[0];
-			$return['current_date'] = $currentDate = dates::getCurrent($return['ID']);
+			if ($app!="setup"){
+				$return['current_date'] = $currentDate = dates::getCurrent($return['ID']);
+			}
+
 		} else {
 			$return = $this->dbStructure;
 		}
@@ -44,6 +46,7 @@ class publications {
 	public static function getAll_user($where = "", $orderby = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$app = $f3->get("app");
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -57,10 +60,11 @@ class publications {
 
 		$where = str_replace("[access]", "COALESCE(global_users_company.ab,0)", $where);
 
+		$app_users_pub = $app."_users_pub";
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.*, ab_users_pub.uID, COALESCE(global_users_company.ab,0) AS access
-			FROM (global_publications INNER JOIN ab_users_pub ON global_publications.ID = ab_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND (ab_users_pub.uID = global_users_company.uID)
+			SELECT DISTINCT global_publications.*, $app_users_pub.uID, COALESCE(global_users_company.ab,0) AS access
+			FROM (global_publications INNER JOIN $app_users_pub ON global_publications.ID = $app_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND ($app_users_pub.uID = global_users_company.uID)
 			$where
 			$orderby
 		");
@@ -74,6 +78,7 @@ class publications {
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$app = $f3->get("app");
 		$user = $f3->get("user");
 		$uID = $user['ID'];
 		if ($where) {
@@ -86,9 +91,15 @@ class publications {
 			$orderby = " ORDER BY " . $orderby;
 		}
 
+		$app_users_pub_sql = "";
+		if ($app!="setup"){
+			$app_users_pub = $app . "_users_pub";
+			$app_users_pub_sql = ", if ((SELECT count(ID) FROM $app_users_pub WHERE ab_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
+		}
+
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.* , if ((SELECT count(ID) FROM ab_users_pub WHERE ab_users_pub.pID = global_publications.ID AND ab_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser
+			SELECT DISTINCT global_publications.*  $app_users_pub_sql
 			FROM global_publications
 			$where
 			$orderby
@@ -109,7 +120,7 @@ class publications {
 		return $return;
 	}
 
-	public static function save($ID, $values) {
+	public static function save($ID, $values, $cID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
@@ -140,7 +151,7 @@ class publications {
 		//test_array($new_logging);
 
 
-		\models\logging::_log("publications", $label, $values, $old);
+		\models\logging::_log("publications", $label, $values, $old, array(), array(),$cID);
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;

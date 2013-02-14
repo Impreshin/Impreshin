@@ -115,13 +115,10 @@ class user {
 
 		$uID = $user['ID'];
 		$appSpecific = array();
-		foreach ($cfg['apps'] as $avapp) {
 
 
-		}
 
-
-		if ($app && $user['ID']) {
+		if ($app && $user['ID'] && $app != "setup") {
 
 
 			$table = $app . "_users_settings";
@@ -140,11 +137,10 @@ class user {
 				$lastpID = $_GET['apID'];
 			}
 
-			$appPublications = "\\models\\" . $app . "\\publications";
 			if ($result['su'] == '1') {
-				$publications = $appPublications::getAll("", "publication ASC");
+				$publications = publications::getAll("", "publication ASC");
 			} else {
-				$publications = $appPublications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "publication ASC");
+				$publications = publications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "publication ASC");
 			}
 
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
@@ -162,7 +158,7 @@ class user {
 			}
 
 
-			$publication = new $appPublications();
+			$publication = new publications();
 			$publication = $publication->get($pID);
 
 			$companyObject = new company();
@@ -269,6 +265,8 @@ class user {
 			}
 
 
+			$permissions['allow_setup'] = count(\models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"))==0?"0":"1";
+
 			$result['permissions'] = $permissions;
 
 
@@ -351,7 +349,10 @@ class user {
 
 		$apps_str = "";
 		foreach ($apps as $app) {
-			$apps_str .= "global_users_company." . $app . ", (SELECT last_activity FROM " . $app . "_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
+			if($app!="setup"){
+				$apps_str .= "global_users_company." . $app . ", (SELECT last_activity FROM " . $app . "_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
+			}
+
 		}
 
 
@@ -414,7 +415,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 
 		$p = new \DB\SQL\Mapper($f3->get("DB"),$app . "_users_pub");
-		$publications = $appClass::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		foreach ($publications as $publication) {
 			$p->load("pID='" . $publication['ID'] . "' AND uID='" . $ID . "'");

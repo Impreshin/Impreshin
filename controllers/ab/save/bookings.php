@@ -40,7 +40,7 @@ class bookings extends save {
 		//$accStuff = new models\accounts();
 		//$accStuff= $accStuff->get($_POST['accNum']);
 
-		$publication = new models\publications();
+		$publication = new \models\publications();
 		$publication = $publication->get($user['pID']);
 
 
