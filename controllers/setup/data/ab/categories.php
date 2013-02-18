@@ -3,14 +3,14 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace controllers\ab\data;
+namespace controllers\setup\data\ab;
 use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
 
 
-class admin_placing extends data {
+class categories {
 	function __construct() {
 		$this->f3 = \base::instance();
 		$user = $this->f3->get("user");
@@ -20,39 +20,39 @@ class admin_placing extends data {
 	}
 
 	function _list() {
+
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
-		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$pID = $_GET['pID'];
+		$cID = $_GET['cID'];
 
 
 
 
-
-		$where = "pID='$pID'";
-
+		$where = "cID='$cID'";
 
 
-		$records = models\placing::getAll($where, "orderby ASC");
+
+		$records = models\categories::getAll($where, "orderby ASC", $pID);
 
 		$return = array();
 
 		$return['records'] = $records;
 
-
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
 	function _details() {
+
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$pID = $_GET['pID'];
+		$cID = $_GET['cID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\placing();
+		$o = new models\categories();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];
@@ -62,13 +62,34 @@ class admin_placing extends data {
 
 
 		$return = array();
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
+		if (!$details['ID']) {
+			$userPublications = array();
+		} else {
+			$userPublications = $this->f3->get("DB")->exec("SELECT pID FROM ab_category_pub WHERE catID = '$ID'");
+		}
+
+
+		$pstr = array();
+		foreach ($userPublications as $u) $pstr[] = $u['pID'];
+
+		$pubarray = array();
+		$pIDarray = array();
+		foreach ($publications as $pub) {
+			$pub['selected'] = 0;
+			if (in_array($pub['ID'], $pstr)) {
+				$pub['selected'] = 1;
+			}
+			$pIDarray[] = $pub['ID'];
+			$pubarray[] = $pub;
+		}
+
+		$publications = $pubarray;
 		$return['details'] = $details;
-
-		$return['sub_placing'] = models\colours::getAll("placingID = '". $details['ID']."'", "orderby ASC");
-
+		$return['publications'] = $publications;
 		if ($details['ID']) {
-			$where = "ab_bookings.placingID='" . $details['ID'] . "'";
+			$where = "categoryID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

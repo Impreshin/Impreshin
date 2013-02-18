@@ -100,6 +100,7 @@ class controller_setup {
 
 
 			$nav[] = array(
+				"heading"=>$v['heading'],
 				"link_heading"=>$v['link_heading'],
 				"active"=>$active?"1":"0",
 				"section"=>$k

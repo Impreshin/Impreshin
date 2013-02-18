@@ -96,16 +96,13 @@ class template {
 			$force_css = isset($page['template_css']) ? true : false;
 			$force_tmpl = isset($page['template_tmpl']) ? true : false;
 
-
+			$page['template'] = $tfile . '.tmpl';
 			foreach ($folders as $folder){
+
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
-					$page['template'] = $tfile . '.tmpl';
 					$usethisfolder = true;
 					$this->templatefolder = $folder;
-
 					$page['folder'] = $folder;
-				} else {
-					$page['template'] = 'none';
 				}
 
 

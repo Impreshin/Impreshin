@@ -8,24 +8,24 @@
 				<div id="app-nav-bar">
 					<ul class="nav" id="app-nav">
 						<li class="divider-vertical"></li>
-						<li class="{% if company['ID']=="" and page['section']=="home"  %}active{% endif %}">
-							<a href="/setup">Company</a>
+						<li class="{% if company['ID']=="" and page['section']=="home"  %}active{% endif %}" rel="tooltip" title="Companies" data-placement="bottom">
+							<a href="/setup"><i class="icon-globe nav-icon"></i></a>
 						</li>
 						{% if company['ID'] %}
-							<li class="{% if  page['section']=="app"  %}active{% endif %}">
-								<a href="/setup/{{ company['ID'] }}">Application</a>
+							<li class="{% if  page['section']=="app"  %}active{% endif %}" rel="tooltip" title="Applications" data-placement="bottom">
+								<a href="/setup/{{ company['ID'] }}"><i class="icon-bookmark  nav-icon"></i></a>
 							</li>
 							{% if application %}
-							<li class="{% if page['section']=="pub"  %}active{% endif %}">
-								<a href="/setup/{{ company['ID'] }}/{{ application }}">Publication</a>
+							<li class="{% if page['section']=="pub"  %}active{% endif %}" rel="tooltip" title="Publications" data-placement="bottom">
+								<a href="/setup/{{ company['ID'] }}/{{ application }}"><i class="icon-book  nav-icon"></i></a>
 							</li>
 							{% endif %}
 
 
 							{% for row in nav %}
-								<li class="{% if section == row['section'] %}active{% endif %}"  >
+								<li class="{% if section == row['section'] %}active{% endif %}" rel="tooltip" title="{{ row['heading'] }}"  data-placement="bottom"  >
 									{% if row['active'] %}
-									<a href="{{ base_url }}{{ row['section'] }}">{{ row['link_heading'] }}</a>
+									<a href="{{ base_url }}{{ row['section'] }}" >{{ row['link_heading'] }}</a>
 									{% else %}
 									<span class="future_step">{{ row['link_heading'] }}</span>
 									{% endif %}

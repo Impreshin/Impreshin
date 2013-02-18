@@ -40,11 +40,11 @@ class categories {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "", $pID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+		$pID = $pID? $pID:   $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {

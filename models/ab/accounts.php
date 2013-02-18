@@ -84,11 +84,11 @@ class accounts {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "", $limit = "") {
+	public static function getAll($where = "", $orderby = "", $limit = "", $pID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+		$pID = $pID ? $pID : $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
