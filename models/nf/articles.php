@@ -489,7 +489,7 @@ class articles {
 		$lookupColumns["placingID"] = array("sql"=>"(SELECT placing FROM ab_placing WHERE ID = '{val}')","col"=>"placing","val"=>"");
 		$lookupColumns["categoryID"] = array("sql"=>"(SELECT `category` FROM ab_categories WHERE ID = '{val}')","col"=>"category","val"=>"");
 		$lookupColumns["marketerID"] = array("sql"=>"(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')","col"=>"marketer","val"=>"");
-		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')","col"=>"colour","val"=>"");
+		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_placing_sub WHERE ID = '{val}')","col"=>"colour","val"=>"");
 		$lookupColumns["material_productionID"] = array("sql"=>"(SELECT `production` FROM ab_production WHERE ID = '{val}')","col"=>"production","val"=>"");
 		$lookupColumns["remarkTypeID"] = array("sql"=>"(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')","col"=>"remarkType","val"=>"");
 		$lookupColumns["checked_userID"] = array("sql"=>"(SELECT `fullName` FROM global_users WHERE ID = '{val}')","col"=>"checked_user","val"=>"");

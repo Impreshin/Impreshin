@@ -121,7 +121,7 @@ class admin_placing_colours extends save {
 
 		$i = 0;
 		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE ab_colour_rates SET orderby = '$i' WHERE ID = '$id' AND placingID = '$placingID'");
+			$this->f3->get("DB")->exec("UPDATE ab_placing_sub SET orderby = '$i' WHERE ID = '$id' AND placingID = '$placingID'");
 			$i++;
 		}
 

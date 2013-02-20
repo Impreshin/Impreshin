@@ -23,7 +23,7 @@ class layout extends save {
 		$user = $this->f3->get("user");
 		$page = isset($_REQUEST['page'])?$_REQUEST['page']:"";
 		$sectionID = isset($_REQUEST['sectionID'])?$_REQUEST['sectionID']:"";
-		$colour = isset($_REQUEST['colour'])?$_REQUEST['colour']:"";
+		$colourID = isset($_REQUEST['colourID'])?$_REQUEST['colourID']:"";
 		$pID = $user['publication']['ID'];
 		$dID = $user['publication']['current_date']['ID'];
 
@@ -43,12 +43,9 @@ class layout extends save {
 			}
 			$values['sectionID']= $sectionID;
 		}
-		if ($colour!=""){
-			if ($colour == "0") {
-				$colour = "";
-			}
-			$values['colour']= $colour;
-		}
+
+		$values['colourID']= $colourID;
+
 		if ($locked!=""){
 			$values['locked']= $locked;
 		}

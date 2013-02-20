@@ -57,12 +57,34 @@ $(document).ready(function () {
 		}
 
 	});
+	$(document).on("click", "#btn-new-sub_placing", function () {
+		var c = $("#subplacingtable tbody tr").length;
+
+		var data = {
+			"ID":"new|"+c
+		};
+		$("#subplacingtable tbody").jqoteapp($("#template-new-sub-placing"), data);
+		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+	});
+
+
 	$(document).on("submit", "#capture-form", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
 
 		var $errorArea = $("#errorArea").html("");
+
+		var sub_placing_IDs = $("#subplacingtable tbody tr").map(function(){
+			return $(this).attr("data-id");
+		}).get().join(",");
+
+		data = data + "&sub_placing_IDs="+sub_placing_IDs;
+
+	//	console.log(sub_placing_IDs);
+	//	return false;
+
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
@@ -176,6 +198,27 @@ function getDetails() {
 	detailsRequest.push($.getJSON("/ab/data/admin_placing/_details", {"ID":ID}, function (data) {
 		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
+
+		$recordsList = $("#subplacingtable tbody")
+		$recordsList.sortable({
+			'axis'       : "y",
+			'containment': "#subplacingtable",
+			update       : function (event, ui) {
+				/*
+				var rec = [];
+				$("#record-list tr").each(function () {
+					rec.push($(this).attr("data-id"));
+				});
+				rec = rec.join(",");
+
+				$.post("/ab/save/admin_placing/_sort/", {"order": rec}, function (t) {
+
+				});*/
+			}
+		});
+		//$recordsList.disableSelection();
+
+
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#uID").select2({});
 

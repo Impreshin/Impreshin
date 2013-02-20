@@ -55,12 +55,15 @@ class pages {
 		}
 
 
+		$timer2 = new timer();
 		$result = $f3->get("DB")->exec("
-			SELECT global_pages.*, section, section_colour,  COALESCE((SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1'),0) as cm
+			SELECT global_pages.*, section, section_colour,  (SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as cm
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby
 		");
+		$timer2->stop("data");
+		$timer3 = new timer();
 		$pageSize = $user['publication']['columnsav'] * $user['publication']['cmav'];
 		$r = array();
 		foreach ($result as $item) {
@@ -70,7 +73,7 @@ class pages {
 			$r[] = $item;
 		}
 
-
+		$timer3->stop("looping");
 		$return = $r;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;

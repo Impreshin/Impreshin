@@ -55,7 +55,7 @@ class placing {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *, (SELECT count(ID) FROM ab_colour_rates WHERE ab_colour_rates.placingID = ab_placing.ID) AS colourCount
+			SELECT *, (SELECT count(ID) FROM ab_placing_sub WHERE ab_placing_sub.placingID = ab_placing.ID) AS colourCount
 			FROM ab_placing
 			$where
 			$orderby

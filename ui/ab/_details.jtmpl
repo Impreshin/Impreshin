@@ -64,17 +64,14 @@
 				<% if (this.typeID =='1') { %>
 				<tr>
 					<th>Placing</th>
-					<td colspan="3">:&nbsp;<%= this.placing || "" %></td>
+					<td colspan="3">:&nbsp;<%= this.placing || "" %> <% if (this.sub_placing) { %> &nbsp;&nbsp;-&nbsp;&nbsp; <%= this.sub_placing || "" %> <% } %></td>
 
 				</tr>
 
 				<tr>
 					<th>Colour</th>
-					<td> : <%= this.colour || "" %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot || "" %>)<% } %></td>
-					<% if (this.colour=="Spot" || this.colour =="Full") { %>
-					<th>Colour Rate</th>
-					<td>: <%= this.colourLabel || "" %></td>
-					<% } %>
+					<td> : <%= this.colourLabel || "" %></td>
+
 				</tr>
 				<tr>
 					<th>Size</th>

@@ -35,13 +35,13 @@ class settings {
 
 			"colour"                 => array(
 				"c"=> "colour",
-				"o"=> "ab_colour_rates.colour",
+				"o"=> "colour",
 				"h"=> "Colour"
 			),
-			"colourSpot"             => array(
-				"c"=> "colourSpot",
-				"o"=> "colourSpot",
-				"h"=> "Colour&nbsp;Spot"
+			"colourLabel"             => array(
+				"c"=> "colourLabel",
+				"o"=> "colourLabel",
+				"h"=> "Colour&nbsp;Label"
 			),
 			"rate_C"                 => array(
 				"c"=> "rate_C",
@@ -443,7 +443,8 @@ class settings {
 
 				"form"=>array(
 					"type"=>"1",
-					"last_marketer"=>""
+					"last_marketer"=>"",
+					"last_category"=>""
 				),
 				"layout"=>array(
 					"placingID"=>array()

@@ -63,6 +63,14 @@ $(document).ready(function () {
 		var $this = $(this);
 		var data = $this.serialize();
 
+		var colours = "";
+		colours = [];
+		$("#usecolours input:checked").each(function(){
+			colours.push($(this).val());
+		});
+		colours = colours.join(",");
+		data = data + "&colours="+ colours;
+
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");

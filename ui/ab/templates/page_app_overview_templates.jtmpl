@@ -10,7 +10,7 @@
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
 		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> highlight-<%= this.pages[i].highlight %>" data-page="<%= this.pages[i].page %>">
-		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour %>_text.png') right bottom no-repeat;<% } %> width: 97px; height: {{ (((97/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
+		<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 97px; height: {{ (((97/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
 
 			<% if(this.pages[i].section.c) { %>
 			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>

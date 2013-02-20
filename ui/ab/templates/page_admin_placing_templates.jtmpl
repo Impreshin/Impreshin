@@ -14,6 +14,42 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-new-sub-placing">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>">
+		<td></td>
+		<td>
+			<input name="sub-label-<%= this.ID %>" id="sub-label-<%= this.ID %>" class="span3" type="text" value=""/>
+
+		</td>
+
+		<td>
+			<div class="input-prepend">
+				<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+				<input type="text" name="sub-rate-<%= this.ID %>" id="sub-rate-<%= this.ID %>" class="span1" value="">
+
+			</div>
+
+		</td>
+		<td>
+			<select name="sub-colourID-<%= this.ID %>" id="sub-colourID-<%= this.ID %>">
+				<option value=""></option>
+				<optgroup label="Options">
+					{%  for row in _user['publication']['colours'] %}
+					<option value="{{ row['ID'] }}"<% if (this.colourID == "{{ row['ID'] }}") { %>selected="selected"<% } %>>
+						{{ row['colourLabel'] }}
+					</option>
+					{% endfor %}
+				</optgroup>
+			</select>
+
+		</td>
+
+	</tr>
+
+	]]>
+</script>
 <script type="text/x-jqote-template" id="template-details">
 	<![CDATA[
 	<div class="scroll-pane scrolly" style="bottom: 43px;">
@@ -50,30 +86,30 @@
 					<label for="rate" class="control-label">Force Colour</label>
 
 					<div class="controls">
-						<select name="colour" id="colour">
+						<select name="colourID" id="colourID">
 							<option value=""></option>
 							<optgroup label="Options">
-								<option value="None"
-								<% if (this.details.colour == "None") { %>selected="selected"<% } %>>Black and White</option>
-								<option value="Full"
-								<% if (this.details.colour == "Full") { %>selected="selected"<% } %>>Full Colour</option>
-								<option value="Spot"
-								<% if (this.details.colour == "Spot") { %>selected="selected"<% } %>>Spot Colour</option>
+								<% for (var c in this.publication.colours) { %>
+								<option value="<%= this.publication.colours[c].ID %>"
+								<% if (this.details.colourID == this.publication.colours[c].ID) { %>selected="selected"<% } %>><%= this.publication.colours[c].colourLabel %></option>								<% } %>
 							</optgroup>
-						</select> <span class="help-block g">Leave it blank if you want the user to select the option</span>
+						</select>
 					</div>
 				</div>
 
 
 			</fieldset>
-
+			<div class="help-block g">
+				Use the forced colours option if you wish to force the advert booked under this sub placing to be that colour. This option hides the colour selector in the form. leave it blank to enable the colour selector
+			</div>
 			<div class="clearfix"></div>
 			<fieldset style="margin-top:30px;">
 				<legend>Sub placings
 					<small></small>
 				</legend>
 
-				<table class="table">
+
+				<table class="table" id="subplacingtable" >
 					<thead>
 					<tr>
 						<th style="width:10px;"></th>
@@ -101,15 +137,13 @@
 
 						</td>
 						<td>
-							<select name="sub-colour-<%= this.sub_placing[i].ID %>" id="sub-colour-<%= this.sub_placing[i].ID %>">
+							<select name="sub-colourID-<%= this.sub_placing[i].ID %>" id="sub-colourID-<%= this.sub_placing[i].ID %>">
 								<option value=""></option>
 								<optgroup label="Options">
-									<option value="None"
-									<% if (this.sub_placing[i].colour == "None") { %>selected="selected"<% } %>>Black and White</option>
-									<option value="Full"
-									<% if (this.sub_placing[i].colour == "Full") { %>selected="selected"<% } %>>Full Colour</option>
-									<option value="Spot"
-									<% if (this.sub_placing[i].colour == "Spot") { %>selected="selected"<% } %>>Spot Colour</option>
+									<% for (var c in this.publication.colours) { %>
+									<option value="<%= this.publication.colours[c].ID %>" <% if (this.sub_placing[i].colourID == this.publication.colours[c].ID) { %>selected="selected"<% } %>><%= this.publication.colours[c].colourLabel %></option>
+									<% } %>
+
 								</optgroup>
 							</select>
 
@@ -118,22 +152,26 @@
 					</tr>
 					<% } %>
 					</tbody>
-					<tfooter>
+
+					<tfoot>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td colspan="3">
+								<div class="help-block g">
+									Click save record after changing or re-ordering the rows
+								</div></td>
 							<td>
-								<button class="btn span1 btn-mini" type="button" style="float:right;">
+								<button class="btn span1 btn-mini" type="button" style="float:right;" id="btn-new-sub_placing" >
 									<i class="icon-plus"></i></button>
 							</td>
 						</tr>
-					</tfooter>
+					</tfoot>
 
 				</table>
 
 
 			</fieldset>
+
+			<div class="clearfix"></div>
 
 			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
 

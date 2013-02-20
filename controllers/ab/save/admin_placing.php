@@ -30,7 +30,8 @@ class admin_placing extends save {
 
 		$placing = isset($_POST['placing']) ? $_POST['placing'] : "";
 		$rate = isset($_POST['rate']) ? $_POST['rate'] : "";
-
+		$colourID = isset($_POST['colourID']) ? $_POST['colourID'] : "";
+		$sub_placing_IDs = isset($_POST['sub_placing_IDs']) ? $_POST['sub_placing_IDs'] : "";
 
 
 
@@ -72,12 +73,14 @@ class admin_placing extends save {
 
 
 
+
+
 		$values = array(
 			"placing"         => $placing,
 			"pID"         => $pID,
 			"rate"     => $rate,
+			"colourID"     => $colourID,
 		);
-
 
 
 
@@ -92,7 +95,33 @@ class admin_placing extends save {
 			$return['ID'] = $ID;
 		}
 
+		$sub_placing = "";
+		$sub_placing_IDs = explode(",", $sub_placing_IDs);
 
+		$i = 1;
+		foreach ($sub_placing_IDs as $record) {
+			$spID = "";
+			if (is_numeric($record)) $spID = $record;
+			$sub_placing = array(
+				"pID" => $pID,
+				"placingID" => $ID,
+				"label"     => isset($_POST['sub-label-' . $record]) ? $_POST['sub-label-' . $record] : "",
+				"rate"      => isset($_POST['sub-rate-' . $record]) ? $_POST['sub-rate-' . $record] : "",
+				"colourID"  => isset($_POST['sub-colourID-' . $record]) ? $_POST['sub-colourID-' . $record] : "",
+				"orderby"   => $i++,
+			);
+			if ($spID && isset($_POST['sub-label-' . $record]) && $_POST['sub-label-' . $record] ==""){
+				// delete
+				models\sub_placing::_delete($spID);
+			} else {
+				// save
+				models\sub_placing::save($spID, $sub_placing);
+			}
+		}
+
+
+
+		//test_array($sub_placing);
 	//	test_array(array("ID"=>$ID,"values"=>$values,"result"=>$return));
 
 

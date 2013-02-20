@@ -5,6 +5,7 @@
  */
 namespace controllers\ab\data;
 use \F3 as F3;
+use models\global_colours;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
@@ -45,6 +46,7 @@ class admin_publications extends data {
 
 	function _details() {
 		$user = $this->f3->get("user");
+		$cfg = $this->f3->get("cfg");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -57,8 +59,25 @@ class admin_publications extends data {
 		$ID = $details['ID'];
 
 
-		$return = array();
+		$used = array();
+		foreach ($details['colours'] as $colour){
+			$used[] = $colour['ID'];
+		}
 
+		$colours = \models\global_colours::getAll();
+		$n = array();
+		foreach ($colours as $colour) {
+			$colour['selected'] = '0';
+			$colour['locked'] = '0';
+			if (in_array($colour['ID'],$used))	$colour['selected'] = '1';
+			if (in_array($colour['ID'], $cfg['default_colours'])) $colour['locked'] = '1';
+
+			$n[] = $colour;
+		}
+		$colours = $n;
+
+
+		$details['colours'] = $colours;
 
 		$return = array();
 

@@ -42,3 +42,6 @@ $cfg['git']['docs']['path'] = "github.com/Impreshin/Impreshin-Docs.git";
 $cfg['git']['docs']['username'] = "ImpreshinDeploy";
 $cfg['git']['docs']['password'] = "impreshindeploy015";
 $cfg['git']['docs']['branch'] = "master";
+
+
+$cfg['default_colours'] = array("1","2","3");

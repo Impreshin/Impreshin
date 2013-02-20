@@ -25,14 +25,9 @@ BEGIN
 	SET NEW.publishDate =
 		( SELECT `publish_date`
 			FROM global_dates WHERE global_dates.ID = NEW.dID) ;
-	IF NEW.colourID THEN
-		SET NEW.colour =
-			( SELECT `colour`
-				FROM ab_colour_rates WHERE ab_colour_rates.ID = NEW.colourID) ;
-		SET NEW.colourLabel =
-			( SELECT `label`
-				FROM ab_colour_rates WHERE ab_colour_rates.ID = NEW.colourID) ;
-	END IF;
+	SET NEW.sub_placing =
+		( SELECT `label`
+			FROM ab_placing_sub WHERE ab_placing_sub.ID = NEW.sub_placingID) ;
 	IF NEW.material_productionID THEN
 		SET NEW.material_production =
 			( SELECT `production`
@@ -73,6 +68,12 @@ BEGIN
 			( SELECT `placing`
 				FROM ab_placing
 				WHERE ab_placing.ID = NEW.placingID) ;
+	END IF;
+	IF  (NEW.sub_placingID <> OLD.sub_placingID) THEN
+		SET NEW.sub_placing =
+			( SELECT `label`
+				FROM ab_placing_sub
+				WHERE ab_placing_sub.ID = NEW.sub_placingID) ;
 	END IF;
 	IF  (NEW.categoryID <> OLD.categoryID) THEN
 		SET NEW.category =
@@ -115,20 +116,6 @@ BEGIN
 					WHERE ab_production.ID = OLD.material_productionID) ;
 		END IF;
 	END IF;
-
-
-	IF  (NEW.colourID <> OLD.colourID)	THEN
-		SET NEW.colour =
-			( SELECT `colour`
-				FROM ab_colour_rates
-				WHERE ab_colour_rates.ID = NEW.colourID) ;
-		SET NEW.colourLabel =
-			( SELECT `label`
-				FROM ab_colour_rates
-				WHERE ab_colour_rates.ID = NEW.colourID) ;
-
-	END IF;
-
 	IF (NEW.checked_userID <> OLD.checked_userID) THEN
 		SET NEW.checked_user =
 			( SELECT `fullName`

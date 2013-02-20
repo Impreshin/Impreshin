@@ -77,7 +77,7 @@ class bookings extends save {
 
 
 		if (isset($_POST['client'])) $values['client'] = $_POST['client'];
-		if (isset($_POST['colourID'])) $values['colourID'] = $_POST['colourID'];
+		if (isset($_POST['colour'])) $values['colour'] = $_POST['colour'];
 		if (isset($_POST['colourSpot'])) $values['colourSpot'] = $_POST['colourSpot'];
 		if (isset($_POST['col'])) $values['col'] = $_POST['col'];
 		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];

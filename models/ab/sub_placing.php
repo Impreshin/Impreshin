@@ -6,7 +6,7 @@ use \F3 as F3;
 use \Axon as Axon;
 use \timer as timer;
 
-class colours {
+class sub_placing {
 	private $classname;
 
 	function __construct() {
@@ -25,7 +25,7 @@ class colours {
 
 		$result = $f3->get("DB")->exec("
 			SELECT *
-			FROM ab_colour_rates
+			FROM ab_placing_sub
 			WHERE ID = '$ID';
 
 		");
@@ -56,7 +56,7 @@ class colours {
 
 		$result = $f3->get("DB")->exec("
 			SELECT *
-			FROM ab_colour_rates
+			FROM ab_placing_sub
 			$where
 			$orderby
 		");
@@ -75,7 +75,7 @@ class colours {
 
 		$old = array();
 		$lookupColumns = array();
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_colour_rates");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_placing_sub");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -86,9 +86,9 @@ class colours {
 			}
 		}
 		if (!$a->dry()) {
-			$label = "Record Edited ($a->colour)";
+			$label = "Record Edited ($a->label)";
 		} else {
-			$label = "Record Added (" . $values['colour'] . ')';
+			$label = "Record Added (" . $values['label'] . ')';
 		}
 		$a->save();
 
@@ -98,7 +98,7 @@ class colours {
 		//test_array($new_logging);
 
 
-		\models\logging::_log("placing_colours", $label, $values, $old);
+		\models\logging::_log("sub_placing", $label, $values, $old);
 
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
@@ -112,7 +112,7 @@ class colours {
 		$user = $f3->get("user");
 
 
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_colour_rates");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_placing_sub");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -125,7 +125,7 @@ class colours {
 
 	private static function dbStructure() {
 		$f3 = \Base::instance();
-		$table = $f3->get("DB")->exec("EXPLAIN ab_colour_rates;");
+		$table = $f3->get("DB")->exec("EXPLAIN ab_placing_sub;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

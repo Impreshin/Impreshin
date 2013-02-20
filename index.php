@@ -619,13 +619,13 @@ if ($folder && $folder != "setup") {
 if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || $app->get("showjson")) || !$app->get("__runTemplate")) {
 
 
-	ob_start('ob_gzhandler');
+
 	header("Content-Type: application/json");
 
 	echo json_encode($GLOBALS["output"]);
 
 
-	exit();
+
 
 
 } else {
@@ -646,6 +646,6 @@ if (((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_RE
 		echo str_replace("</body>", $timersbottom . '</body>', $GLOBALS["render"]);
 	}
 
-	exit();
+
 
 }

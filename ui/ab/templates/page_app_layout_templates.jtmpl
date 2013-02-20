@@ -4,7 +4,7 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colour %>" data-material="<% if(this.material=='1') { %><% if(this.material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>" data-page="<%= this.page %>">
+	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-cm="<%= this.cm %>" data-col="<%= this.col %>" data-colour="<%= this.colourID %>" data-material="<% if(this.material=='1') { %><% if(this.material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?s=<%= this.material_file_store %>" data-page="<%= this.page %>">
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
@@ -21,7 +21,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-spreads-page">
 	<![CDATA[
-		<article style="<% if (this.colour) { %>background: url('/ui/_images/ab/<%= this.colour_l %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>"  data-colour="<%= this.colour %>" >
+		<article style="<% if (this.colour.icons) { %>background: url('/ui/_images/ab/<%= this.colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>"  data-limit="<%= this.colour.limit %>" >
 
 			<% if(this.section.c) { %>
 			<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
@@ -34,7 +34,7 @@
 				<table class="s">
 					<% for(var g in this.records) { %>
 
-					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colour %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material=='1') { %><% if(this.records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
+					<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colourID %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material=='1') { %><% if(this.records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
 						</td>
@@ -57,9 +57,9 @@
 
 			<% } %>
 			<div class="msgs"></div>
-			<% if(this.colour && this.colour != "null") { %>
+			<% if(this.colour.icons!='') { %>
 			<div class="page_colour">
-				<img src="/ui/_images/ab/<%= this.colour_l %>.png" alt="" width="20">
+				<img src="/ui/_images/ab/<%= this.colour.icons %>.png" alt="" width="20">
 
 			</div>
 			<% } %>
@@ -81,7 +81,7 @@
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
 		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked=='1') { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
-		<article style="<% if (this.pages[i].colour) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour_l %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
+		<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-limit="<%= this.pages[i].colour.limit %>">
 
 			<% if(this.pages[i].section.c) { %>
 			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
@@ -94,7 +94,7 @@
 				<table class="s">
 					<% for(var g in this.pages[i].records) { %>
 
-					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colour %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material=='1') { %><% if(this.pages[i].records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
+					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colourID %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material=='1') { %><% if(this.pages[i].records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
 						<td class="span1 s g" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 
@@ -117,9 +117,9 @@
 			</footer>
 			<% } %>
 			<div class="msgs">Not enough space</div>
-			<% if(this.pages[i].colour!='') { %>
+			<% if(this.pages[i].colour.icons!='') { %>
 			<div class="page_colour">
-				<img src="/ui/_images/ab/<%= this.pages[i].colour_l %>.png" alt="" width="20">
+				<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
 
 			</div>
 			<% } %>
@@ -270,7 +270,7 @@
 
 					</td>
 					<td><% if (this.locked=='1') { %>
-						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-right: 3px" data-value="0" type="button" id="lock-btn" rel="tooltip" title="Click to un-lock this page" >
+						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-left: -15px" data-value="0" type="button" id="lock-btn" rel="tooltip" title="Click to un-lock this page" >
 
 								<i class="icon-lock icon-white"></i>
 
@@ -278,7 +278,7 @@
 						</button>
 						<% } else { %>
 
-						<button class="btn span1 btn-mini" style="margin-top: 5px; margin-right: 3px" data-value="1" type="button" id="lock-btn" rel="tooltip" title="Click to lock this page">
+						<button class="btn span1 btn-mini" style="margin-top: 5px; margin-left: -15px" data-value="1" type="button" id="lock-btn" rel="tooltip" title="Click to lock this page">
 
 							<i class="icon-lock icon-grey"></i>
 
@@ -289,15 +289,17 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<div class="btn-group" style="margin-bottom: 5px; width:100%;" data-toggle="buttons-radio" id="colours">
-							<button class="btn <% if (this.colour=='none') { %>active<% } %>" data-colour="none" type="button" style="width:<% if (!this.colour) { %>40<% } else { %>34<% } %>%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>Black & White</button>
-							<button class="btn <% if (this.colour=='Spot') { %>active<% } %>" data-colour="Spot" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>Spot Colour</button>
-							<button class="btn <% if (this.colour=='Full') { %>active<% } %>" data-colour="Full" type="button" style="width:<% if (!this.colour) { %>30<% } else { %>29<% } %>%;" 	<% if (this.locked=='1') { %>disabled="disabled"<% } %>>Full Colour</button>
-							<% if (this.colour) { %>
-							<button class="btn <% if (!this.colour) { %>active<% } %>" data-colour="0" type="button" style="width:9%;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
-								<i class="icon-remove-sign"></i></button>
-							<% } %>
-						</div>
+						{% if _user['publication']['colours_group']|length %}
+						<select name="colourID" id="colourID" class="span5">
+							<option value="">No Limit</option>
+							<optgroup label="Filters">
+								{% for row in _user['publication']['colours_group'] %}
+								<option value="{{ row['ID'] }}" <% if (this.colourID=='{{ row['ID'] }}') { %>selected="selected"<% } %>>{{ row['label'] }}</option>
+								{% endfor %}
+							</optgroup>
+						</select>
+						{% endif %}
+
 					</td>
 				</tr>
 			</table>

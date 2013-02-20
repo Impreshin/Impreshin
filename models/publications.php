@@ -20,6 +20,7 @@ class publications {
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$app = $f3->get("app");
+		$cfg = $f3->get("cfg");
 
 
 		$result = $f3->get("DB")->exec("
@@ -34,10 +35,21 @@ class publications {
 			if ($app!="setup"){
 				$return['current_date'] = $currentDate = dates::getCurrent($return['ID']);
 			}
+			$colours = $cfg['default_colours'];
+
+			if ($return['colours']){
+				$colours = explode(",", $return['colours']);
+			}
+			$colours = implode(",",$colours);
+
+			$return['colours'] = global_colours::getAll("ID in ($colours)");
+			$return['colours_group'] = global_colours::getAll_group("", $return['colours']);
 
 		} else {
 			$return = $this->dbStructure;
 		}
+		//test_array($return);
+
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
 		return $return;
@@ -177,6 +189,7 @@ class publications {
 
 	private static function dbStructure() {
 		$f3 = \Base::instance();
+		$cfg = $f3->get("cfg");
 		$table = $f3->get("DB")->exec("EXPLAIN global_publications;");
 		$result = array();
 		foreach ($table as $key => $value) {
@@ -184,6 +197,7 @@ class publications {
 		}
 		$result["heading"] = "";
 		$result["publishDateDisplay"] = "";
+		$result["colours"] = global_colours::getAll("ID in (".implode(",", $cfg['default_colours'] ).")");
 		return $result;
 	}
 }

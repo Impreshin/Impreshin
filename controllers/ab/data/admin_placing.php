@@ -64,8 +64,9 @@ class admin_placing extends data {
 		$return = array();
 
 		$return['details'] = $details;
+		$return['publication'] = $user['publication'];
 
-		$return['sub_placing'] = models\colours::getAll("placingID = '". $details['ID']."'", "orderby ASC");
+		$return['sub_placing'] = models\sub_placing::getAll("placingID = '". $details['ID']."'", "orderby ASC");
 
 		if ($details['ID']) {
 			$where = "ab_bookings.placingID='" . $details['ID'] . "'";

@@ -31,6 +31,7 @@ class admin_publications extends save {
 		$publication = isset($_POST['publication']) ? $_POST['publication'] : "";
 		$InsertRate = isset($_POST['InsertRate']) ? $_POST['InsertRate'] : "";
 		$printOrder = isset($_POST['printOrder']) ? $_POST['printOrder'] : "";
+		$colours = isset($_POST['colours']) ? $_POST['colours'] : "";
 
 		$columnsav = isset($_POST['columnsav']) ? $_POST['columnsav'] : "";
 		$cmav = isset($_POST['cmav']) ? $_POST['cmav'] : "";
@@ -129,6 +130,7 @@ class admin_publications extends save {
 			"cmav"     => $cmav,
 			"pagewidth"     => $pagewidth,
 			"ab_upload_material"     => $ab_upload_material,
+			"colours"     => $colours,
 		);
 
 
