@@ -13,11 +13,11 @@
 				<li>
 					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
 
-						<% for(var i in this.types) { %>
-							<button class="btn span1 btn-mini <% if(this.data.settings.type == this.types[i].ID){ %> active <% } %>" style="width:80px;" data-type="<%= this.types[i].ID %>">
-								<%= this.types[i].type %>
+						{% for row in bookingTypes %}
+							<button class="btn span1 btn-mini <% if(this.data.settings.type == "{{ row["ID"] }}"){ %> active <% } %>" style="width:80px;" data-type="{{ row["ID"] }}">
+								{{ row["type"] }}
 							</button>
-						<% } %>
+						{% endfor %}
 					</div>
 				</li>
 
@@ -78,9 +78,128 @@
 					</div>
 				</div>
 
-				<div id="form-diff">
+				<section id="form-diff">
+					<article id="form-diff-1">
+						<div class="control-group">
+							<label for="placingID" class="control-label">Placing*</label>
 
-				</div>
+							<div class="controls">
+								<select id="placingID" name="placingID" class="display_notes" style="width: 342px;">
+
+
+									{% for row in placing %}
+										<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}" data-force-colour="{{ row['colourID'] }}" <% if (this.details.placingID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['placing'] }}</option>
+									{% endfor %}
+
+								</select>
+
+
+							</div>
+						</div>
+						<div class="control-group" id="sub_placing_area" >
+							<label for="sub_placingID" class="control-label">Sub Placing*</label>
+
+							<div class="controls">
+								<select id="sub_placingID" name="sub_placingID" class="display_notes" style="width: 342px;">
+
+
+
+
+								</select>
+
+
+							</div>
+						</div>
+
+
+						<div class="control-group" id="colour_area">
+							<label class="control-label">Colours*</label>
+
+							<div class="controls">
+								<select id="colourID" name="colourID" style="width: 342px;">
+									{% for row in _user['publication']['colours'] %}
+									<option value="{{ row['ID'] }}" <% if (this.details.colourID == {{ row['ID'] }}) { %>selected="selected"<% } %>>
+										{{ row['colourLabel'] }}
+									</option>
+									{% endfor %}
+
+								</select>
+
+
+								<input type="hidden" name="colour" id="colour"/>
+							</div>
+						</div>
+
+
+						<div id="sizearea" class="fieldgroup">
+
+
+							<table>
+								<tr>
+									<td class="span3">
+										<div class="control-group">
+											<label for="cm" class="control-label">Cm*</label>
+
+											<div class="controls">
+												<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.details.cm) { %><%= this.details.cm %><% } %>">
+
+											</div>
+										</div>
+									</td>
+									<td class="form-narrow span3">
+										<div class="control-group">
+											<label for="col" class="control-label">Columns*</label>
+
+											<div class="controls">
+												<input type="text" id="col" name="col" class="span1 display_notes" value="<% if (this.details.col) { %><%= this.details.col %><% } %>">
+
+											</div>
+										</div>
+
+									</td>
+									<td style="padding-right: 34px;">
+										<span class="uneditable-input span1" id="size-msg" style="float: right; cursor:default;"><strong></strong></span>
+									</td>
+								</tr>
+							</table>
+						</div>
+
+					</article>
+					<article id="form-diff-2">
+						<div class="control-group">
+							<label for="InsertPO" class="control-label">Print Order</label>
+
+							<div class="controls">
+								<input type="text" id="InsertPO" name="InsertPO" class="span2 display_notes" placeholder="<% if (this.details.printOrder) { %><%= this.details.printOrder %><% } %>" value="<% if (this.details.InsertPO) { %><%= this.details.InsertPO %><% } %>">
+								<span class="msgbox" id="InsertPO-msg"><% if (this.settings.printOrder) { %><span data-val="<%= this.settings.printOrder %>" data-fld="InsertPO" class="badge"><%= this.settings.printOrder %></span><% } %></span>
+
+
+							</div>
+						</div>
+						{% if inserts_types is iterable %}
+							<div class="control-group">
+								<label for="insertTypeID" class="control-label">Type*</label>
+
+
+								<div class="controls">
+									<select id="insertTypeID" name="insertTypeID" class="display_notes" style="width: 342px;">
+
+
+										{% for row in inserts_types %}
+											<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"
+											<% if (this.details.insertTypeID == {{ row['ID'] }}) { %>selected="selected"<% } %>>
+												{{ row['insertsLabel'] }}
+											</option>
+										{% endfor %}
+
+									</select>
+
+
+								</div>
+							</div>
+						{% endif %}
+					</article>
+				</section>
 				<div class="control-group">
 					<label for="rate" class="control-label">Tariff</label>
 
@@ -134,7 +253,7 @@
 
 
 							{% for row in marketers %}
-								<option value="{{ row['ID'] }}" <% if (this.details.marketerID == this.settings.last_marketer) { %>selected="selected"<% } %>>{{ row['marketer'] }}</option>
+								<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_marketer) { %>selected="selected"<% } %>>{{ row['marketer'] }}</option>
 							{% endfor %}
 
 
@@ -166,7 +285,7 @@
 					<div class="controls">
 						<select name="categoryID" id="categoryID" style="width: 342px;">
 							{% for row in categories %}
-								<option value="{{ row['ID'] }}" <% if (this.details.categoryID == this.settings.last_category) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
+								<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_category) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
 							{% endfor %}
 
 						</select>
@@ -273,117 +392,7 @@
 </form>
 ]]>
 </script>
-<script type="text/x-jqote-template" id="template-form-1">
-	<![CDATA[
-	<div class="control-group">
-		<label for="placingID" class="control-label">Placing*</label>
 
-		<div class="controls">
-			<select id="placingID" name="placingID" class="" style="width: 342px;">
-
-
-				{% for row in placing %}
-				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"
-				<% if (this.details.placingID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['placing'] }}</option>				{% endfor %}
-
-			</select>
-
-
-		</div>
-	</div>
-
-
-	<div class="control-group" style="display:none;">
-		<label class="control-label">Colours*</label>
-
-		<div class="controls">
-			<select id="colourID" name="colourID" class="display_notes" style="width: 342px;">
-
-
-			</select>
-
-
-			<input type="hidden" name="colour" id="colour"/>
-		</div>
-	</div>
-
-	<div class="control-group" id="colourSpot-area">
-		<label for="colourSpot" class="control-label"></label>
-
-		<div class="controls">
-			<div class="input-prepend">
-				<span class="add-on s">Spot Colour</span><input type="text" id="colourSpot" name="colourSpot" class="span3" placeholder="" value="<% if (this.colourSpot) { %><%= this.colourSpot %><% } %>"><span id="colourSpot-msg" class="msgbox"></span>
-			</div>
-
-
-		</div>
-	</div>
-	<div id="sizearea" class="fieldgroup">
-
-
-		<table>
-			<tr>
-				<td class="span3">
-					<div class="control-group">
-						<label for="cm" class="control-label">Cm*</label>
-
-						<div class="controls">
-							<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.details.cm) { %><%= this.details.cm %><% } %>">
-
-						</div>
-					</div>
-				</td>
-				<td class="form-narrow span3">
-					<div class="control-group">
-						<label for="col" class="control-label">Columns*</label>
-
-						<div class="controls">
-							<input type="text" id="col" name="col" class="span1 display_notes" value="<% if (this.details.col) { %><%= this.details.col %><% } %>">
-
-						</div>
-					</div>
-
-				</td>
-				<td style="padding-right: 34px;">
-					<span class="uneditable-input span1" id="size-msg" style="float: right; cursor:default;"><strong></strong></span>
-				</td>
-			</tr>
-		</table>
-	</div>
-	]]>
-</script>
-<script type="text/x-jqote-template" id="template-form-2">
-	<![CDATA[
-	<div class="control-group">
-		<label for="InsertPO" class="control-label">Print Order</label>
-
-		<div class="controls">
-			<input type="text" id="InsertPO" name="InsertPO" class="span2 display_notes" placeholder="<% if (this.details.printOrder) { %><%= this.details.printOrder %><% } %>" value="<% if (this.details.InsertPO) { %><%= this.details.InsertPO %><% } %>">
-			<span class="msgbox" id="InsertPO-msg"><% if (this.details.printOrder) { %><span data-val="<%= this.details.printOrder %>" data-fld="InsertPO" class="badge"><%= this.details.printOrder %></span><% } %></span>
-
-
-		</div>
-	</div>
-	{% if inserts_types %}
-	<div class="control-group">
-		<label for="insertTypeID" class="control-label">Type*</label>
-
-
-		<div class="controls">
-			<select id="insertTypeID" name="insertTypeID"  class="" style="width: 342px;">
-
-
-				{% for row in inserts_types %}
-				<option value="{{ row['ID'] }}" data-rate="{{ row['rate'] }}"
-				<% if (this.details.insertTypeID == {{ row['ID'] }}) { %>selected="selected"<% } %>>{{ row['insertsLabel'] }}</option>				{% endfor %}
-
-			</select>
-
-
-		</div>
-	</div>
-	{% endif %} ]]>
-</script>
 <script type="text/x-jqote-template" id="template-suggestions">
 	<![CDATA[
 	<ul class="nav nav-tabs" style="margin-bottom:0;">

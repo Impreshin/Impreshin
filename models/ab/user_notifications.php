@@ -46,7 +46,7 @@ class user_notifications {
 				$return['checked'] = array(
 					"total"   => $recordsCount,
 					"done"    => $checked,
-					"percent" => ($recordsCount - $checked) ? number_format((($checked / $recordsCount) * 100), 2) : ""
+					"percent" =>  number_format((($checked / $recordsCount) * 100), 2)
 				);
 			}
 
@@ -65,7 +65,7 @@ class user_notifications {
 				$return['placed'] = array(
 					"total"   => $recordsCount,
 					"done"    => $done,
-					"percent" => ($recordsCount - $done) ? number_format((($done / $recordsCount) * 100), 2) : ""
+					"percent" => number_format((($done / $recordsCount) * 100), 2)
 				);
 			}
 

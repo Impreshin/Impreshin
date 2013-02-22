@@ -114,8 +114,11 @@ class admin_placing extends save {
 				// delete
 				models\sub_placing::_delete($spID);
 			} else {
-				// save
-				models\sub_placing::save($spID, $sub_placing);
+				if (isset($_POST['sub-label-' . $record]) && $_POST['sub-label-' . $record]){
+					// save
+					models\sub_placing::save($spID, $sub_placing);
+				}
+
 			}
 		}
 

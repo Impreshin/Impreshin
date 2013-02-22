@@ -416,6 +416,8 @@ function display_notes_cost() {
 
 			break;
 	}
+
+
 	$("#rate_fld").val(rate);
 
 	if (discount) {

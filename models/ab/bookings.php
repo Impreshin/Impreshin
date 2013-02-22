@@ -722,6 +722,7 @@ class bookings {
 			"col" => "sub_placing",
 			"val" => ""
 		);
+
 		$lookupColumns["material_productionID"] = array(
 			"sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')",
 			"col" => "production",

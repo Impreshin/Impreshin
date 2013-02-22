@@ -53,7 +53,9 @@ $sql = array(
 		"UPDATE `ab_placing_sub` SET `colour`= (SELECT ID from system_publishing_colours where system_publishing_colours.colour = ab_placing_sub.colour);",
 		"ALTER TABLE `ab_placing_sub` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;",
 		"ALTER TABLE `ab_placing` ADD `colourID` INT( 6 ) NULL DEFAULT NULL AFTER `placing`;",
-		"ALTER TABLE `global_pages` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;"
+		"ALTER TABLE `global_pages` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;",
+		"ALTER TABLE `ab_marketers_targets` CHANGE `target` `target` DECIMAL( 10, 2 ) NULL DEFAULT NULL;",
+		"file:../db_triggers.sql"
 
 
 

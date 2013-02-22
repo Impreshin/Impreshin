@@ -118,3 +118,6 @@ margin-right: 30px;
 .btn-group.square > .btn:first-child {
 	margin-left: 0;
 }
+#form-diff > article, #sub_placing_area, #colour_area {
+	display:none;
+}

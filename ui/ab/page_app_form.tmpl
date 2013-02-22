@@ -45,7 +45,7 @@
 	<div class='modal-body'>
 		<article class="c">
 			<textarea name="delete_reason" id="delete_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are deleting this record"></textarea>
-			<input id="record-ID" type="hidden" name="record-ID" value="{{ details['ID'] }}">
+
 
 		</article>
 	</div>
@@ -57,7 +57,9 @@
 	</div>
 	</form>
 </div>
+<input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
 <script type="text/javascript">
-	var detailsID = "{{ ID }}";
+	var var_sub_placing = {{ sub_placing|json_encode()|raw }};
+	var var_publication = {{ _user['publication']|json_encode()|raw }};
 
 </script>

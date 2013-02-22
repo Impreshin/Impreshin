@@ -113,22 +113,7 @@
 		});
 
 
-		$(document).on("show", ".modal", function () {
-			var $this = $(this);
-			var h = $(window).height();
-			var th = $(this).height();
 
-			mt = (th) / 2;
-			if (h < th) {
-				$this.css({
-					"margin-top":-(h / 2)
-				});
-
-			} else {
-				$this.css("margin-top", -mt);
-			}
-
-		});
 
 
 	});

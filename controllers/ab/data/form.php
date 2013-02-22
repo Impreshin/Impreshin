@@ -53,11 +53,11 @@ class form extends data {
 		$clientlist = $a;
 
 
-
-
+		$record['remarkTypeID'] = ($record['remarkTypeID'])? $record['remarkTypeID']:"1";
 		if ($record['typeID']) $settings['type'] = $record['typeID'];
 		if ($record['marketerID']) $settings['last_marketer'] = $record['marketerID'];
 		if ($record['categoryID']) $settings['last_category'] = $record['categoryID'];
+		$settings['printOrder'] = $user['publication']['printOrder'];
 
 		$return['details'] = $record;
 		$return['settings'] = $settings;

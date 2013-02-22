@@ -166,18 +166,35 @@ var logsRequest = [];
 var activityRequest = [];
 var transSpeed = '{{ transSpeed |default('400') }}';
 $(function () {
+
+
     $('body').tooltip({
-        selector : '[rel=tooltip]',
+        selector : '*[rel=tooltip]',
         live     : true,
         container: 'body'
 
     });
     $('body').popover({
-        selector : '[rel=popover]',
+        selector : '*[rel=popover]',
         offset   : 5,
         live     : true,
-        container: 'body'
+        container: 'body',
+	    html: true
     });
+
+	$('#notice-area').popover({
+        selector : 'span.nbar',
+        offset   : 0,
+        live     : true,
+        container: 'body',
+	    html: true,
+		trigger: "hover",
+		placement: "top"
+    });
+
+
+
+
 
     $('.dropdown-toggle').dropdown();
 
@@ -283,22 +300,7 @@ $(document).ready(function () {
         $($popup).fadeIn(transSpeed).trigger("popup-show");
     });
 
-    $(document).on("show", ".modal", function () {
-        var $this = $(this);
-        var h = $(window).height();
-        var th = $(this).height();
 
-        var mt = (th) / 2;
-        if (h < th) {
-            $this.css({
-                "margin-top": -(h / 2)
-            });
-
-        } else {
-            $this.css("margin-top", -mt);
-        }
-
-    });
     $(document).on('click', '.btn-row-details', function (e) {
         var $this = $(this), $table = $this.closest("table");
         var $clicked = $(e.target).closest("tr.btn-row-details");

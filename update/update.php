@@ -98,6 +98,7 @@ class update {
 		$filename = "backup_cv" . $v;
 
 
+
 		if ($uv != $v) {
 
 			$nsql = array();
@@ -106,6 +107,7 @@ class update {
 				$version = $version * 1;
 				if ($version > $v) {
 					foreach ($exec as $t) {
+
 						$nsql[] = $t;
 					}
 
@@ -120,16 +122,26 @@ class update {
 			foreach ($sql as $e) {
 				//echo $e . "<br>";
 				if ($e) {
+					//echo substr($e, 0, 5);
 					$updates = $updates + 1;
-					mysql_query($e, $link) or die(mysql_error());
+					if (substr($e, 0, 5) == "file:") {
+						$file = str_replace("file:","",$e);
+						$e= @file_get_contents($file);
+
+
+					}
+					self::db_execute($cfg,$e);
+				//	mysql_query($e, $link) or die(mysql_error());
+
+
 				}
 			}
 
 
 			if ($v){
-				mysql_query("UPDATE system SET `value`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
+				//mysql_query("UPDATE system SET `value`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
 			} else {
-				mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
+				//mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
 			}
 
 
@@ -173,6 +185,38 @@ class update {
 
 		return "$filename";// passthru("tail -1 $filename");
 
+
+	}
+	static function db_execute($cfg,$sql){
+		$link = mysqli_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password'], $cfg['DB']['database']);
+
+		/* check connection */
+		if (mysqli_connect_errno()) {
+			printf("Connect failed: %s\n", mysqli_connect_error());
+			exit();
+		}
+
+		$query = $sql;
+
+		/* execute multi query */
+		if (mysqli_multi_query($link, $query)) {
+			do {
+				/* store first result set */
+				if ($result = mysqli_store_result($link)) {
+					while ($row = mysqli_fetch_row($result)) {
+						//printf("%s\n", $row[0]);
+					}
+					mysqli_free_result($result);
+				}
+				/* print divider */
+				if (mysqli_more_results($link)) {
+					//printf("-----------------\n");
+				}
+			} while (mysqli_next_result($link));
+		}
+
+		/* close connection */
+		mysqli_close($link);
 
 	}
 }

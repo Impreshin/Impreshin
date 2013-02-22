@@ -262,7 +262,7 @@ class marketers_targets {
 			}
 
 		}
-		if (!$a->dry) {
+		if (!$a->dry()) {
 			$label = "Record Edited (" . currency($a->target) . ")";
 		} else {
 			$label = "Record Added (" . currency($values['target']) . ')';

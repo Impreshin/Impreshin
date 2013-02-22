@@ -84,10 +84,14 @@ class controller_app_form {
 			"current"  => $currentDate,
 			"future"   => $dates
 		);
+		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");
 		$tmpl->remarkTypes = models\remarkTypes::getAll("");
 		$tmpl->marketers  = models\marketers::getAll("pID='$pID' AND ab_marketers.cID='$cID'", "marketer ASC");
 		$tmpl->production = models\production::getAll("pID='$pID' AND ab_production.cID='$cID'", "production ASC");
 		$tmpl->categories = models\categories::getAll("pID='$pID' AND ab_categories.cID='$cID'", "orderby ASC");
+		$tmpl->inserts_types = models\inserts_types::getAll("pID='$pID'", "orderby ASC", "");
+		$tmpl->placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
+		$tmpl->sub_placing = models\sub_placing::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->accounts = $accounts;
 		$tmpl->ID = $details['ID'];
 		$tmpl->output();
