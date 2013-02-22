@@ -55,10 +55,11 @@ $sql = array(
 		"ALTER TABLE `ab_placing` ADD `colourID` INT( 6 ) NULL DEFAULT NULL AFTER `placing`;",
 		"ALTER TABLE `global_pages` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;",
 		"ALTER TABLE `ab_marketers_targets` CHANGE `target` `target` DECIMAL( 10, 2 ) NULL DEFAULT NULL;",
-		"file:../db_triggers.sql"
-
-
-
+		"CREATE TABLE IF NOT EXISTS `system_publishing_colours` ( `ID` int(6) NOT NULL AUTO_INCREMENT,  `colour` varchar(30) DEFAULT NULL,  `colourLabel` varchar(30) DEFAULT NULL,  `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+		"INSERT INTO `system_publishing_colours` (`ID`, `colour`, `colourLabel`, `orderby`) VALUES (1, 'None', 'Black and White', 1), (2, 'Full', 'Full Colour', 2), (3, 'Spot', 'Spot Colour', 3);",
+		"CREATE TABLE IF NOT EXISTS `system_publishing_colours_groups` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `label` varchar(50) DEFAULT NULL,  `colours` varchar(50) DEFAULT NULL,  `icon` varchar(100) DEFAULT NULL,  `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+		"INSERT INTO `system_publishing_colours_groups` (`ID`, `label`, `colours`, `icon`, `orderby`) VALUES(1, 'Full Colour', '1,2,3', NULL, 2),(2, 'Black & White', '1', NULL, 1),(3, 'Spot Colour', '1,3', NULL, 3);",
+		"file:../db_triggers.sql",
 	)
 
 
