@@ -69,8 +69,8 @@ class admin_users extends data {
 
 		$a = array();
 		foreach ($records as $record){
-			foreach ($apps as $app) {
-				$t = time() - strtotime($record[$app . '_last_activity']);
+
+				$t = time() - strtotime($record['last_activity']);
 				if ($t < 172800 * 1){
 					$t = 1;
 				} elseif ($t < 172800 * 3){
@@ -79,13 +79,13 @@ class admin_users extends data {
 					$t = 3;
 				}
 
-				$record[$app.'_last_activity'] = array(
-					"time"=> $record[$app . '_last_activity'],
-					"display"=>timesince($record[$app . '_last_activity']),
+				$record['last_activity'] = array(
+					"time"=> $record['last_activity'],
+					"display"=>timesince($record['last_activity']),
 					"active"=>$t
 				);
 
-			}
+
 			$a[] = $record;
 		}
 		$records = $a;

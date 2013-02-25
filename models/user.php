@@ -117,8 +117,8 @@ class user {
 		$appSpecific = array();
 
 
+		if ($app && $user['ID'] && in_array($app, $cfg['apps'])) {
 
-		if ($app && $user['ID'] && $app != "setup") {
 
 
 			$table = $app . "_users_settings";
@@ -160,12 +160,47 @@ class user {
 
 			$publication = new publications();
 			$publication = $publication->get($pID);
-
+			$cID = $publication['cID'];
+			if (!$publication['ID']) {
+				$companies_user = \models\company::getAll_user($user['ID']);
+				if (count($companies_user))	$cID = $companies_user[0]['ID'];
+				//test_array($companies_user);
+			}
 			$companyObject = new company();
-			$company = $companyObject->get($publication['cID']);
+			$company = $companyObject->get($cID);
 
 
-			//test_array($company);
+			if ($publication['ID']==""){
+				$uri = $_SERVER['REQUEST_URI'];
+				$folder = "";
+				if ($uri) {
+					$uri = explode("/", $uri);
+					$folder = isset($uri[1]) ? $uri[1] : "";
+
+					if (strpos($folder, "?")) {
+						$folder = explode("?", $folder);
+						$folder = isset($folder[0]) ? $folder[0] : "";
+					}
+
+
+				}
+				//test_array(\models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"));
+				if ($folder!=="setup"){
+
+					test_array($folder);
+					if (count(\models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"))!=0) {
+						$f3->reroute("/setup");
+					}
+				}
+
+
+
+			}
+
+
+
+
+
 			if (isset($company[$app]) && $company[$app] != '1') {
 				$f3->reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
@@ -185,17 +220,20 @@ class user {
 			$result['settings'] = $appSettings['settings'];
 
 
+			//test_array($appSettings['access']);
 			if (!$appSettings['access'] && $result['su'] != '1') {
-				$f3->reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
+			//	$f3->reroute("/noaccess/?app=$app&cID=" . $publication['cID']);
 			}
+			unset($result['password']);
 
+			if ($app == "ab") {
 			if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) $result['ab_marketerID'] = $appSettings['extra']['ab_marketerID'];
 			if (isset($appSettings['extra']['ab_productionID']) && $appSettings['extra']['ab_productionID']) $result['ab_productionID'] = $appSettings['extra']['ab_productionID'];
 
-			unset($result['password']);
+
 			//unset($result[$app . '_permissions']);
 
-			if ($app == "ab") {
+
 				if (isset($appSettings['extra']['ab_marketerID']) && $appSettings['extra']['ab_marketerID']) {
 					$marketer = \models\ab\marketers_targets::_current($appSettings['extra']['ab_marketerID'], $result['publication']['ID']);
 				} else {
@@ -206,6 +244,8 @@ class user {
 					$result['marketer'] = $marketer;
 				}
 			}
+
+
 
 
 			if ($result['su'] == '1') {
@@ -279,7 +319,7 @@ class user {
 
 		}
 
-
+		//test_array($result);
 		//test_array($result);
 
 		$return = $result;
@@ -324,11 +364,12 @@ class user {
 		return $return;
 	}
 
-	static function getAll($where = "", $orderby = "fullName ASC", $limit = "") {
+	static function getAll($where = "", $orderby = "fullName ASC", $limit = "",$pID="") {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+
+		$pID = $pID ? $pID : $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -346,14 +387,14 @@ class user {
 		}
 		$apps = $f3->get("cfg");
 		$apps = $apps['apps'];
+		$app = (isset($_REQUEST['app'])&&in_array($_REQUEST['app'], $apps))? $_REQUEST['app']: $f3->get("app");
 
 		$apps_str = "";
-		foreach ($apps as $app) {
-			if($app!="setup"){
-				$apps_str .= "global_users_company." . $app . ", (SELECT last_activity FROM " . $app . "_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
-			}
-
+		if ($app){
+			$apps_str = "global_users_company." . $app . ", (SELECT last_activity FROM " . $app . "_users_settings WHERE " . $app . "_users_settings.uID = global_users.ID) as " . $app . "_last_activity,  if ((SELECT count(ID) FROM " . $app . "_users_pub WHERE " . $app . "_users_pub.uID = global_users.ID AND " . $app . "_users_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub, ";
 		}
+
+	
 
 
 		$result = $f3->get("DB")->exec("

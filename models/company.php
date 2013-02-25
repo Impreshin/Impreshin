@@ -79,7 +79,7 @@ class company {
 
 		}
 
-		$sql = "SELECT global_companies.*, global_companies.company, global_users_company.allow_setup
+		$sql = "SELECT DISTINCT global_companies.*, global_companies.company, global_users_company.allow_setup
 				FROM global_companies INNER JOIN global_users_company ON global_companies.ID = global_users_company.cID
 				$where
 			$orderby

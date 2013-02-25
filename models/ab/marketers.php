@@ -74,6 +74,24 @@ class marketers {
 		return $return;
 	}
 
+	public static function getPublications($ID) {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		$cID = $user['company']['ID'];
+
+		$return = $f3->get("DB")->exec("
+			SELECT global_publications.*
+			FROM ab_marketers_pub INNER JOIN global_publications ON ab_marketers_pub.pID = global_publications.ID
+			WHERE global_publications.cID = '$cID' AND ab_marketers_pub.mID = '$ID'
+		");
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
 	public static function save($ID, $values) {
 		$timer = new timer();
 		$f3 = \Base::instance();

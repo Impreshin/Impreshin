@@ -57,7 +57,7 @@ class dates {
 		$dates = new \models\dates();
 		$dates = $dates->get($ID);
 		$dates['current'] = '0';
-		if ($user['publication']['current_date']['ID']== $dates['ID'])	$dates['current'] = '1';
+		if (isset($user['publication']['current_date']['ID']) && $user['publication']['current_date']['ID']== $dates['ID'])	$dates['current'] = '1';
 
 		if ($dates['ID']){
 			$pID = $dates['pID'];

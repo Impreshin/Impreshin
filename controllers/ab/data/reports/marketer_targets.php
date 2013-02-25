@@ -177,7 +177,7 @@ class marketer_targets extends \controllers\ab\data\data {
 
 
 		$return = array();
-		$publications = \models\publications::getAll_user("global_users_company.cID = '". $cID."' and global_users_company.uID='" . $mID . "' and [access] = '1'", "publication ASC");
+		$publications = models\marketers::getPublications($mID);
 
 		if (!$details['ID']) {
 			$userPublications = array();

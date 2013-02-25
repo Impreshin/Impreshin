@@ -45,9 +45,16 @@ class controller_setup {
 		$data['page']['prev'] = $data['page']['prev']? $base_url . $data['page']['prev']: $base_url;
 
 
+		$permissions= array(
+			"p"=>"",
+			"d"=>""
+		);
+		$permissionsO = "\\models\\".$this->app."\\user_permissions";
+		$permissionsD = $permissionsO::permissions();
 
-
-
+		if (count($permissionsD)){
+			$permissions = $permissionsD;
+		}
 
 
 
@@ -76,6 +83,13 @@ class controller_setup {
 		$tmpl->company = $company;
 		$tmpl->publication = $publication;
 		$tmpl->application = $this->app;
+
+
+
+
+		$tmpl->permissions = $permissions['p'];
+		$tmpl->permissions_desc = $permissions['d'];
+
 		$tmpl->output();
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}

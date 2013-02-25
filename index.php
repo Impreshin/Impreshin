@@ -116,8 +116,11 @@ if ($folder && $user['ID']) {
 
 	$app->get("DB")->exec("UPDATE global_users SET last_app = '$folder', last_activity = now() WHERE ID = '" . $user['ID'] . "'");
 
+	if (in_array($folder, $cfg['apps'])){
+		$app->get("DB")->exec("UPDATE " . $folder . "_users_settings SET  last_activity = now() WHERE uID = '" . $user['ID'] . "'");
+	}
 
-	$app->get("DB")->exec("UPDATE " . $folder . "_users_settings SET  last_activity = now() WHERE uID = '" . $user['ID'] . "'");
+
 }
 
 //test_array($user);
@@ -151,25 +154,25 @@ $ttl = 0;
 
 
 $app->route('GET|POST /setup', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+		$f3->chain('access; controllers\setup\controller_home->page');
 	}
 );
 
 $app->route('GET|POST /setup/@company', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+		$f3->chain('access; controllers\setup\controller_home->page');
 	}
 );
 $app->route('GET|POST /setup/@company/@app', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+		$f3->chain('access; controllers\setup\controller_home->page');
 	}
 );
 $app->route('GET|POST /setup/@company/@app/@pID', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\setup\controller_home->page');
+		$f3->chain('access; controllers\setup\controller_home->page');
 	}
 );
 $app->route('GET|POST /setup/@company/@app/@pID/@section', function ($f3, $params) {
 		//test_array($params);
-		$f3->chain('access; last_page; controllers\setup\\controller_setup->page');
+		$f3->chain('access; controllers\setup\\controller_setup->page');
 	}
 );
 

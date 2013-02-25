@@ -24,71 +24,35 @@ class users {
 		$pID = $_GET['pID'];
 		$cID = $_GET['cID'];
 
-		$section = "admin_users";
-
-		$settings = models\settings::_read($section);
-
-		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
-		$ordering_d = $settings['order']['o'];
-
-		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
-			if ($settings['order']['c'] == $_REQUEST['order']) {
-				if ($ordering_d == "ASC") {
-					$ordering_d = "DESC";
-				} else {
-					$ordering_d = "ASC";
-				}
-
-			}
-
-		}
-
-
-		$values = array();
-		$values[$section] = array(
-			"order"      => array(
-				"c"=> $ordering_c,
-				"o"=> $ordering_d
-			),
-
-		);
-
-		models\user_settings::save_setting($values);
-
-
-
-
-
-		$records = user::getAll("cID='$cID'", $ordering_c . " " . $ordering_d . ", fullName ASC");
+		$records = user::getAll("cID='$cID'", "fullName ASC","",$pID);
 
 		$apps = $this->f3->get("cfg");
 		$apps = $apps['apps'];
 
 		$apps_str = "";
 
-
 		$a = array();
-		foreach ($records as $record){
-			foreach ($apps as $app) {
-				$t = time() - strtotime($record[$app . '_last_activity']);
-				if ($t < 172800 * 1){
+		foreach ($records as $record) {
+				$t = time() - strtotime($record['last_activity']);
+				if ($t < 172800 * 1) {
 					$t = 1;
-				} elseif ($t < 172800 * 3){
+				} elseif ($t < 172800 * 3) {
 					$t = 2;
 				} else {
 					$t = 3;
 				}
 
-				$record[$app.'_last_activity'] = array(
-					"time"=> $record[$app . '_last_activity'],
-					"display"=>timesince($record[$app . '_last_activity']),
-					"active"=>$t
+				$record['last_activity'] = array(
+					"time"    => $record['last_activity'],
+					"display" => timesince($record['last_activity']),
+					"active"  => $t
 				);
 
-			}
 			$a[] = $record;
 		}
 		$records = $a;
+
+
 
 
 		$return = array();
@@ -137,12 +101,17 @@ class users {
 		$publications = $pubarray;
 		$return['details'] = $details;
 		$return['publications'] = $publications;
+		$return['marketers'] = models\marketers::getAll("cID='$cID'", "marketer ASC", $pID);;
+		$return['production'] = models\production::getAll("cID='$cID'", "production ASC", $pID);;
 
 
-		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
+		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $cID . "'");
+		
+
 
 		if (count($extra)) {
 			$extra = $extra[0];
+
 			$return['details']['ab'] = $extra['ab'];
 			$return['details']['permissions'] = models\user_permissions::_read($extra['ab_permissions']);
 			$return['details']['ab_marketerID'] = $extra['ab_marketerID'];

@@ -45,7 +45,7 @@ $sql = array(
 		"ALTER TABLE `global_users_company` ADD `allow_setup` TINYINT( 1 ) NULL DEFAULT '0' AFTER `uID`;"
 	),
 	"12"=>array(
-		"RENAME TABLE `ab_placing_sub` TO `ab_placing_sub`;",
+		"RENAME TABLE `ab_colour_rates` TO `ab_placing_sub`;",
 		"ALTER TABLE `ab_bookings` ADD `sub_placingID` INT( 6 ) NULL DEFAULT NULL AFTER `placing` , ADD `sub_placing` VARCHAR( 50 ) NULL DEFAULT NULL AFTER `sub_placingID` , ADD INDEX ( `sub_placingID` );",
 		"UPDATE ab_bookings SET colourID = (SELECT ID from system_publishing_colours WHERE system_publishing_colours.colour = ab_bookings.colour) WHERE ab_bookings.colour <> ''",
 		"ALTER TABLE `ab_bookings` DROP `colour`, DROP `colourSpot`, DROP `colourLabel`;",

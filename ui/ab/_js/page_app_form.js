@@ -32,6 +32,19 @@ $(document).ready(function () {
 
 
 	});
+	$(document).on("change", "form input, form select", function () {
+
+		if (("form .fielderror").length){
+			$("form .fielderror").remove();
+			resizeform();
+		}
+
+
+
+	});
+	$(document).on("shown", "#suggestion-tabs", function () {
+		resizeform();
+	});
 
 	$(document).on("change", "#sub_placingID", function () {
 		var $this = $(this);
@@ -53,7 +66,11 @@ $(document).ready(function () {
 
 	});
 
+	$(document).on("change", "#accountID", function () {
+		account_note();
+		account_lookup_history_suggestions();
 
+	});
 	$(document).on("click", ".dates-btn", function () {
 		var $this = $(".dates-btn"), $otherdates = $("#dates_list .otherdates"), $dates_list = $("#dates_list");
 		if ($dates_list.hasClass("showit")) {
@@ -142,8 +159,9 @@ function getData(){
 		sub_placing_fn(data['details']['sub_placingID']);
 		colours_fn();
 		display_notes();
-
-		resizeform();
+		account_note();
+		account_lookup_history_suggestions();
+		//resizeform();
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}));
 
@@ -267,7 +285,7 @@ function colours_fn(){
 
 function display_notes() {
 
-	$("form .alert").remove();
+
 
 	var cm = $("#cm").val(), col = $("#col").val();
 	cm = cm.replace(/[^0-9\.]/g, "");
@@ -420,7 +438,7 @@ function display_notes() {
 
 }
 function error_msg($fld, msg) {
-	var str = '<div class="alert alert-error">' + msg + '</div>';
+	var str = '<div class="alert fielderror alert-error">' + msg + '</div>';
 	if (!$fld.hasClass("control-group") && !$fld.hasClass("fieldgroup")) {
 		$fld = $fld.closest(".control-group");
 	}
@@ -432,7 +450,7 @@ function error_msg($fld, msg) {
 
 function form_submit() {
 	$form = $("#booking-form");
-	$(".alert", $form).remove();
+	$(".fielderror", $form).remove();
 
 	var available_dates = $.map($("#dates_list input:checkbox"), function (i) {
 		return $(i).val();
@@ -492,5 +510,44 @@ function form_submit() {
 			$("#modal-form").jqotesub($("#template-modal-form"), response[0]).modal("show");
 		});
 	}
+
+}
+function account_note() {
+	var $this = $("#accountID");
+	var $account = $("#accountID option:selected");
+	var $select = $this.data("select2");
+
+	var $opt = $("option:selected", $this);
+
+	var alertclass = "", alertText="";
+	if ($opt.attr("data-blocked") == '1') {
+		$($select.container).addClass("select-error");
+		alertclass = "alert-error";
+		alertText = "Account Blocked!"
+	} else {
+		$($select.container).removeClass("select-error");
+	}
+
+	$("#account_remark").html("");
+	if ($opt.attr("data-remark")) {
+		$("#account_remark").html('<div class="alert '+ alertclass+'"><strong>'+ alertText+'</strong> '+ $opt.attr("data-remark")+'</div>');
+	}
+
+}
+function account_lookup_history_suggestions() {
+	var type = $("#booking-type button.active").attr("data-type");
+	var accNum = $("#accountID").val();
+	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
+	for (var i = 0; i < logsRequest.length; i++) logsRequest[i].abort();
+	logsRequest.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum": accNum, "limit": "4", "type": type}, function (data) {
+		data = data['data'];
+		if (accNum) {
+			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
+		} else {
+			$suggestions.jqotesub($("#template-suggestions-accounts"), data).stop(true, true).fadeIn();
+		}
+		resizeform();
+
+	}));
 
 }

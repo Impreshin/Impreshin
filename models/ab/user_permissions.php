@@ -143,9 +143,7 @@ class user_permissions {
 					),
 					"placing"       => array(
 						"page"    => 0,
-						"colours" => array(
-							"page" => 0
-						)
+
 					),
 					"loading"       => array(
 						"page" => 0

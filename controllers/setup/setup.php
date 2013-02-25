@@ -49,23 +49,23 @@ $setup = array(
 		),
 		"placing"       => array(
 			"heading"      => "Placing",
-			"link_heading" => $i++
-		),
-		"colours"       => array(
-			"heading"      => "Colours",
-			"link_heading" => $i++
+			"link_heading" => $i++,
+			"page"=>"w_placing"
 		),
 		"insert_types"       => array(
 			"heading"      => "Insert Types",
-			"link_heading" => $i++
+			"link_heading" => $i++,
+			"page"=>"w_inserts_types"
 		),
 		"users"          => array(
 			"heading"      => "Users",
-			"link_heading" => $i++
+			"link_heading" => $i++,
+			"page"=>"w_users"
 		),
 		"done"           => array(
 			"heading"      => "Done",
-			"link_heading" => "Done"
+			"link_heading" => "Done",
+			"page"=>"w_done"
 		)
 
 	)

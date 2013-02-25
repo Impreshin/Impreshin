@@ -139,9 +139,9 @@ class update {
 
 
 			if ($v){
-				//mysql_query("UPDATE system SET `value`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
+				mysql_query("UPDATE system SET `value`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
 			} else {
-				//mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
+				mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
 			}
 
 

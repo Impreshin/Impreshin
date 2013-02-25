@@ -59,6 +59,7 @@ class provisional extends data {
 
 		}
 
+
 		$grouping = array(
 			"g"=> $grouping_g,
 			"o"=> $grouping_d

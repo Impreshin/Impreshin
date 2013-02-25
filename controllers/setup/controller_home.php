@@ -35,6 +35,31 @@ class controller_home {
 		$publication = $publicationO->get($this->pID);
 
 
+		$setup = array();
+		$nav = array();
+		include_once("setup.php");
+
+		if ($this->app){
+			if (isset($setup[$this->app])) {
+				$setup = $setup[$this->app];
+
+				foreach ($setup as $k => $v) {
+					$nav[] = array(
+						"link_heading" => $v['link_heading'],
+						"active"       => "0",
+						"section"      => $k
+					);
+				}
+			} else {
+				$this->f3->error(404);
+
+			}
+		}
+
+
+
+
+
 		//test_array($_POST);
 		$error = array();
 		if (isset($_GET['save']) && count($_POST)) {
@@ -63,7 +88,7 @@ class controller_home {
 					"pagewidth"   => $pagewidth
 				);
 					$t = \models\publications::save($publication['ID'], $values, $company['ID']);
-				$this->f3->reroute("/setup/".$company['ID']."/".$app."/".$t."/step1");
+				$this->f3->reroute("/setup/".$company['ID']."/".$app."/".$t."/". $nav[0]['section']);
 
 			}
 
@@ -77,7 +102,7 @@ class controller_home {
 
 		$show = "company_list";
 		$heading = "Please select a company";
-		$nav = array();
+
 
 		if ($company['ID']) {
 			$section = "app";
@@ -91,19 +116,6 @@ class controller_home {
 			$show = "publication_list";
 			$heading = "Please select a publication or add a new one";
 
-
-			$setup = array();
-
-			include_once("setup.php");
-			if (!isset($setup[$this->app])) $this->f3->error(404);
-			$setup = $setup[$this->app];
-			foreach ($setup as $k => $v) {
-				$nav[] = array(
-					"link_heading"    => $v['link_heading'],
-					"active"  => "0",
-					"section" => $k
-				);
-			}
 			$first = ($nav[0]['section']);
 		}
 		if ($publication['ID']) {

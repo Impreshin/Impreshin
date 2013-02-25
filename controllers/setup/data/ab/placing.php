@@ -10,7 +10,7 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class marketers {
+class placing {
 	function __construct() {
 		$this->f3 = \base::instance();
 		$user = $this->f3->get("user");
@@ -20,7 +20,6 @@ class marketers {
 	}
 
 	function _list() {
-
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
@@ -29,21 +28,23 @@ class marketers {
 
 
 
-		$where = "cID='$cID'";
+
+
+		$where = "pID='$pID'";
 
 
 
-		$records = models\marketers::getAll($where,"marketer ASC", $pID);
+		$records = models\placing::getAll($where, "orderby ASC");
 
 		$return = array();
 
 		$return['records'] = $records;
 
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
 	function _details() {
-
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $_GET['pID'];
@@ -51,7 +52,7 @@ class marketers {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\marketers();
+		$o = new models\placing();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];
@@ -61,35 +62,14 @@ class marketers {
 
 
 		$return = array();
-		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
-		if (!$details['ID']) {
-			$userPublications = array();
-		} else {
-			$userPublications = $this->f3->get("DB")->exec("SELECT pID FROM ab_marketers_pub WHERE mID = '$ID'");
-		}
-
-
-		$pstr = array();
-		foreach ($userPublications as $u) $pstr[] = $u['pID'];
-
-		$pubarray = array();
-		$pIDarray = array();
-		foreach ($publications as $pub) {
-			$pub['selected'] = 0;
-			if (in_array($pub['ID'], $pstr)) {
-				$pub['selected'] = 1;
-			}
-			$pIDarray[] = $pub['ID'];
-			$pubarray[] = $pub;
-		}
-
-		$publications = $pubarray;
 		$return['details'] = $details;
-		$return['publications'] = $publications;
+		$return['publication'] = $user['publication'];
+
+		$return['sub_placing'] = models\sub_placing::getAll("placingID = '". $details['ID']."'", "orderby ASC");
 
 		if ($details['ID']) {
-			$where = "marketerID='" . $details['ID'] . "' AND ab_bookings.pID in (" . implode(",", $pIDarray) . ")";
+			$where = "ab_bookings.placingID='" . $details['ID'] . "'";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

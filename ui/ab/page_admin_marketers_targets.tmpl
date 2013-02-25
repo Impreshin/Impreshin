@@ -37,7 +37,7 @@
 
 
 		<div class="row">
-			<article id="left-area" class="span11">
+			<article id="left-area" class="span10">
 				<form class="form-horizontal" id="capture-form">
 				<div class="content" id="form-area">
 
@@ -45,10 +45,10 @@
 				<div class="loadingmask wide"></div>
 			</form>
 			</article>
-			<article id="right-area" class="span5 offset11">
+			<article id="right-area" class="span6 offset10">
 				<div>
 					<form action="" style="margin: 0;" id="searchform">
-						<select class="span5" name="marketerID" id="marketerID" style="margin-bottom: 0;">
+						<select class="span6" name="marketerID" id="marketerID" style="margin-bottom: 0;">
 
 							{% for row in marketers %}
 							<option value="{{ row['ID'] }}" {% if settings['marketerID'] == row['ID'] %}selected="selected"{% endif %}>{{ row['marketer'] }}</option>

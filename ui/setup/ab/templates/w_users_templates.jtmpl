@@ -113,9 +113,13 @@
 
 								<option value="" <% if (this.details.ab_marketerID=="") { %>selected="selected"<% } %>>Not a Marketer</option>
 								<optgroup label="Marketers">
-									{% for row in marketers %}
-									<option value="{{ row['ID'] }}"
-									<% if (this.details.ab_marketerID=="{{ row['ID'] }}") { %>selected="selected"<% } %>>{{ row['marketer'] }}</option>                                    {% endfor %}
+									<% for(var i in this.marketers) { %>
+									<option value="<%= this.marketers[i].ID %>"
+									<% if (this.details.ab_marketerID==this.marketers[i].ID) { %>selected="selected"<% } %>>
+									<%= this.marketers[i].marketer %>
+
+									</option>
+									<% } %>
 								</optgroup>
 
 							</select>
@@ -129,9 +133,12 @@
 							<select name="ab_productionID" id="ab_productionID" placeholder="Select Production" class="span4">
 								<option value="" <% if (this.details.ab_productionID=="") { %>selected="selected"<% } %>>Not Production</option>
 								<optgroup label="Production">
-									{% for row in production %}
-									<option value="{{ row['ID'] }}"
-									<% if (this.details.ab_productionID=="{{ row['ID'] }}") { %>selected="selected"<% } %>>{{ row['production'] }}</option>                                    {% endfor %}
+									<% for(var i in this.production) { %>
+									<option value="<%= this.production[i].ID %>"
+									<% if (this.details.ab_productionID==this.production[i].ID) { %>selected="selected"<% } %>>
+									<%= this.production[i].production %>
+									</option>
+									<% } %>
 								</optgroup>
 
 							</select>
@@ -228,6 +235,10 @@
 
 
 			</fieldset>
+				<% } else { %>
+				<button class="btn btn-mini span4 btn-add-app" style="margin-top:2px;" type="button"  >
+					Grant Access to the application for this user
+				</button>
 				<% } %>
 
 		</div>

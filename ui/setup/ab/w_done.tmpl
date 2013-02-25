@@ -1,0 +1,35 @@
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<div class="row">
+			<article id="whole-area" class="span16">
+				<div class="content">
+					<div class="scroll-pane">
+
+						<div data-heading="top" id="scroll-container">
+
+						<h3 class="c" style="margin-top: 40px; margin-bottom: 40px;">Congratulations, wizard complete</h3>
+							<div class="c">
+								<a class="btn " style="width:300px;" href="/{{ application }}?apID={{ publication['ID'] }}">Go back to the begining</a>
+								<a class="btn " style="width:300px;" href="/{{ application }}?apID={{ publication['ID'] }}">Go to the application</a>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</article>
+
+		</div>
+
+
+	</div>
+
+</section>
+<script type="text/javascript">
+	var pID = "{{ publication['ID'] }}";
+	var cID = "{{ company['ID'] }}";
+</script>
