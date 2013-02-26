@@ -33,8 +33,14 @@ class form extends data {
 		$cfg = $this->f3->get("cfg");
 		$recordO = new models\bookings();
 		$record = $recordO->get($ID);
-		if ($record['ID'] && ($record['pID'] != $pID || $record['deleted'] == '1')) {
-			$record = $$recordO->dbStructure();
+		if ($record['ID'] && ($record['pID'] != $pID)) {
+			$record = $recordO->dbStructure();
+		}
+
+		if (!$user['permissions']['form']['new'] && !$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) {
+
+
+
 		}
 
 

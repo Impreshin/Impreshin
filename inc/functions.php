@@ -35,6 +35,7 @@ function access() {
 	$app = Base::instance();
 	$user = $app->get("user");
 	if (!$user['ID']) $app->reroute("/login");
+
 }
 
 function isLocal() {

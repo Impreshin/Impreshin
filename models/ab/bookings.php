@@ -722,6 +722,11 @@ class bookings {
 			"col" => "sub_placing",
 			"val" => ""
 		);
+		$lookupColumns["colourID"] = array(
+			"sql" => "(SELECT `colourLabel` FROM system_publishing_colours WHERE ID = '{val}')",
+			"col" => "colour",
+			"val" => ""
+		);
 
 		$lookupColumns["material_productionID"] = array(
 			"sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')",
@@ -736,6 +741,11 @@ class bookings {
 		$lookupColumns["checked_userID"] = array(
 			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
 			"col" => "checked_user",
+			"val" => ""
+		);
+		$lookupColumns["deleted_userID"] = array(
+			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
+			"col" => "deleted_user",
 			"val" => ""
 		);
 		$lookupColumns["material_source"] = array(

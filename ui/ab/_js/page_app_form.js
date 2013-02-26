@@ -133,7 +133,12 @@ function getData(){
 		data = data['data'];
 		var title = "";
 		if (data['details']['ID']){
-			title = "Edit Record";
+			if (data['details']['deleted']=='1'){
+				title = "Edit Deleted Record";
+			} else {
+				title = "Edit Record";
+			}
+
 		} else {
 			title = "New Record";
 		}

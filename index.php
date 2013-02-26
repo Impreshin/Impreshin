@@ -325,12 +325,23 @@ $app->route('GET /ab/print/deleted', function ($f3, $params) {
 );
 
 
-$app->route('GET /ab/form', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\ab\controller_app_form->page');
+$app->route('GET /ab/form', function ($f3, $params) use ($user) {
+		//test_array($user);
+		if ($user['permissions']['form']['new']) {
+			$f3->chain('access; last_page; controllers\ab\controller_app_form->page');
+		} else {
+			$f3->error(404);
+		}
+
 	}
 );
-$app->route('GET /ab/form/@ID', function ($f3, $params) {
-		$f3->chain('access; last_page; controllers\ab\controller_app_form->page');
+$app->route('GET /ab/form/@ID', function ($f3, $params) use ($user) {
+		if ($user['permissions']['form']['edit'] || $user['permissions']['form']['edit_master'] || $user['permissions']['form']['delete']) {
+			$f3->chain('access; last_page; controllers\ab\controller_app_form->page');
+		} else {
+			$f3->error(404);
+
+		}
 	}
 );
 

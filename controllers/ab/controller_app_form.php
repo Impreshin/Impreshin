@@ -19,7 +19,7 @@ class controller_app_form {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
-		if (!$user['permissions']['form']['new'] && !$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) $this->f3->error(404);
+
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
@@ -28,9 +28,11 @@ class controller_app_form {
 		$detailsO = new models\bookings();
 		$details = $detailsO->get($ID);
 		//test_array($details);
-		if ($details['ID'] && ($details['pID'] != $pID || $details['deleted'] == '1')) {
+		if ($details['ID'] && ($details['pID'] != $pID)) {
 			$details = $detailsO->dbStructure();
 		}
+
+
 
 
 		$dates = \models\dates::getAll("pID='$pID' AND publish_date > '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");

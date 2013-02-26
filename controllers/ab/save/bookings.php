@@ -133,7 +133,11 @@ class bookings extends save {
 			"last_marketer"      => $values['marketerID'],
 			"last_category"      => $values['categoryID']
 		);
-
+		$values['deleted']=NULL;
+		$values['deleted_userID']= NULL;
+		$values['deleted_user']= NULL;
+		$values['deleted_date']= NULL;
+		$values['deleted_reason']= NULL;
 
 		models\user_settings::save_setting($ss);
 
