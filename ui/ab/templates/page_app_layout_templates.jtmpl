@@ -57,7 +57,7 @@
 
 			<% } %>
 			<div class="msgs"></div>
-			<% if(this.colour.icons!='') { %>
+			<% if(this.colour.icons) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.colour.icons %>.png" alt="" width="20">
 
@@ -117,7 +117,7 @@
 			</footer>
 			<% } %>
 			<div class="msgs">Not enough space</div>
-			<% if(this.pages[i].colour.icons!='') { %>
+			<% if(this.pages[i].colour.icons) { %>
 			<div class="page_colour">
 				<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
 
