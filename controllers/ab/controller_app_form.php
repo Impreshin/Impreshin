@@ -86,6 +86,7 @@ class controller_app_form {
 			"current"  => $currentDate,
 			"future"   => $dates
 		);
+		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");
 		$tmpl->remarkTypes = models\remarkTypes::getAll("");
 		$tmpl->marketers  = models\marketers::getAll("pID='$pID' AND ab_marketers.cID='$cID'", "marketer ASC");

@@ -186,8 +186,9 @@ class Auth extends Prefab {
 		HTTP basic auth mechanism
 		@return bool
 		@param $func callback
+		@param $halt bool
 	**/
-	function basic($func=NULL) {
+	function basic($func=NULL,$halt=TRUE) {
 		$fw=Base::instance();
 		$realm=$fw->get('REALM');
 		if (isset($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW']) &&
@@ -201,7 +202,9 @@ class Auth extends Prefab {
 			return TRUE;
 		if (PHP_SAPI!='cli')
 			header('WWW-Authenticate: Basic realm="'.$realm.'"');
-		$fw->error(401);
+		if ($halt)
+			$fw->error(401);
+		return FALSE;
 	}
 
 	/**

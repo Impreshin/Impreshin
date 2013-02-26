@@ -67,7 +67,7 @@ class controller_app_deleted {
 		);
 
 
-
+		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->date_range = json_encode($date_range);
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");

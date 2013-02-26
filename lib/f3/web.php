@@ -79,19 +79,51 @@ class Web extends Prefab {
 	}
 
 	/**
+		Return the MIME types stated in the HTTP Accept header as an array;
+		If a list of MIME types is specified, return the best match; or
+		FALSE if none found
+		@return array|string|FALSE
+		@param $list string|array
+	**/
+	function acceptable($list=NULL) {
+		$accept=array();
+		foreach (explode(',',str_replace(' ','',$_SERVER['HTTP_ACCEPT']))
+			as $mime)
+			if (preg_match('/(.+?)(?:;q=([\d\.]+)|$)/',$mime,$parts))
+				$accept[$parts[1]]=isset($parts[2])?$parts[2]:1;
+		if (!$accept)
+			$accept['*/*']=1;
+		else {
+			krsort($accept);
+			arsort($accept);
+		}
+		if ($list) {
+			if (is_string($list))
+				$list=explode(',',$list);
+			foreach ($accept as $mime=>$q)
+				if ($q && $out=preg_grep('/'.
+					str_replace('\*','.*',preg_quote($mime,'/')).'/',$list))
+					return current($out);
+			return FALSE;
+		}
+		return $accept;
+	}
+
+	/**
 		Transmit file to HTTP client; Return file size if successful,
 		FALSE otherwise
 		@return int|FALSE
 		@param $file string
 		@param $mime string
 		@param $kbps int
+		@param $force bool
 	**/
-	function send($file,$mime=NULL,$kbps=0) {
+	function send($file,$mime=NULL,$kbps=0,$force=TRUE) {
 		if (!is_file($file))
 			return FALSE;
 		if (PHP_SAPI!='cli') {
 			header('Content-Type: '.$mime?:$this->mime($file));
-			if ($mime=='application/octet-stream')
+			if ($force)
 				header('Content-Disposition: attachment; '.
 					'filename='.basename($file));
 			header('Accept-Ranges: bytes');
@@ -350,6 +382,22 @@ class Web extends Prefab {
 	}
 
 	/**
+		Replace old headers with new elements
+		@return NULL
+		@param $old array
+		@param $new string|array
+	**/
+	function subst(array &$old,$new) {
+		if (is_string($new))
+			$new=array($new);
+		foreach ($new as $hdr) {
+			$old=preg_grep('/'.preg_quote(strstr($hdr,':',TRUE),'/').':.+/',
+					$old,PREG_GREP_INVERT);
+			array_push($old,$hdr);
+		}
+	}
+
+	/**
 		Submit HTTP request; Use HTTP context options (described in
 		http://www.php.net/manual/en/context.http.php) if specified;
 		Cache the page as instructed by remote server
@@ -385,24 +433,27 @@ class Web extends Prefab {
 					unset($header);
 					break;
 				}
-			array_push($options['header'],'Host: '.$parts['host']);
+			$this->subst($options['header'],'Host: '.$parts['host']);
 		}
-		array_push($options['header'],
-			'Accept-Encoding: gzip,deflate',
-			'User-Agent: Mozilla/5.0 (compatible; '.php_uname('s').')',
-			'Connection: close'
+		$this->subst($options['header'],
+			array(
+				'Accept-Encoding: gzip,deflate',
+				'User-Agent: Mozilla/5.0 (compatible; '.php_uname('s').')',
+				'Connection: close'
+			)
 		);
-		if (isset($options['content']))
-			array_push($options['header'],
-				'Content-Type: application/x-www-form-urlencoded',
-				'Content-Length: '.strlen($options['content'])
-			);
+		if (isset($options['content'])) {
+			if ($options['method']=='POST')
+				$this->subst($options['header'],
+					'Content-Type: application/x-www-form-urlencoded');
+			$this->subst($options['header'],
+				'Content-Length: '.strlen($options['content']));
+		}
 		if (isset($parts['user'],$parts['pass']))
-			array_push($options['header'],
+			$this->subst($options['header'],
 				'Authorization: Basic '.
 					base64_encode($parts['user'].':'.$parts['pass'])
 			);
-		$options['header']=array_unique($options['header']);
 		$options+=array(
 			'method'=>'GET',
 			'header'=>$options['header'],
@@ -418,7 +469,7 @@ class Web extends Prefab {
 				$hash=$fw->hash($options['method'].' '.$url).'.url',$data)) {
 				if (preg_match('/Last-Modified: (.+?)'.preg_quote($eol).'/',
 					implode($eol,$data['headers']),$mod))
-					array_push($options['header'],
+					$this->subst($options['header'],
 						'If-Modified-Since: '.$mod[1]);
 			}
 		}
@@ -477,14 +528,7 @@ class Web extends Prefab {
 								continue;
 							}
 							if ($src[$ptr]=='/') {
-								if (substr($src,$ptr+1,2)=='*@') {
-									// Conditional block
-									$str=strstr(
-										substr($src,$ptr+3),'@*/',TRUE);
-									$data.='/*@'.$str.$src[$ptr].'@*/';
-									$ptr+=strlen($str)+6;
-								}
-								elseif ($src[$ptr+1]=='*') {
+								if ($src[$ptr+1]=='*') {
 									// Multiline comment
 									$str=strstr(
 										substr($src,$ptr+2),'*/',TRUE);
@@ -631,20 +675,27 @@ class Web extends Prefab {
 			array(
 				'À'=>'A','Á'=>'A','Â'=>'A','Ã'=>'A','Å'=>'A','Ä'=>'A',
 				'Ă'=>'A','Æ'=>'AE','à'=>'a','á'=>'a','â'=>'a','ã'=>'a',
-				'å'=>'a','ä'=>'a','ă'=>'a','æ'=>'ae','Þ'=>'B','þ'=>'b',
-				'Č'=>'C','Ć'=>'C','Ç'=>'C','č'=>'c','ć'=>'c','ç'=>'c',
-				'Ď'=>'D','ð'=>'d','ď'=>'d','Đ'=>'Dj','đ'=>'dj','È'=>'E',
-				'É'=>'E','Ê'=>'E','Ë'=>'E','Ě'=>'e','ě'=>'e','è'=>'e',
-				'é'=>'e','ê'=>'e','ë'=>'e','Ì'=>'I','Í'=>'I','Î'=>'I',
-				'Ï'=>'I','ì'=>'i','í'=>'i','î'=>'i','ï'=>'i','Ľ'=>'L',
-				'ľ'=>'l','Ñ'=>'N','Ň'=>'N','ñ'=>'n','ň'=>'n','Ò'=>'O',
-				'Ó'=>'O','Ô'=>'O','Õ'=>'O','Ø'=>'O','Ö'=>'O','Œ'=>'OE',
-				'ò'=>'o','ó'=>'o','ô'=>'o','õ'=>'o','ö'=>'o','œ'=>'oe',
-				'ø'=>'o','Ŕ'=>'R','Ř'=>'R','ŕ'=>'r','ř'=>'r','Š'=>'S',
-				'Ș'=>'s','ș'=>'s','š'=>'s','ß'=>'ss','Ț'=>'T','ț'=>'t',
-				'Ť'=>'T','ť'=>'t','Ù'=>'U','Ú'=>'U','Û'=>'U','Ü'=>'U',
+				'å'=>'a','ä'=>'a','ă'=>'a','æ'=>'ae','Б'=>'B','Þ'=>'B',
+				'б'=>'b','þ'=>'b','Č'=>'C','Ć'=>'C','Ç'=>'C','č'=>'c',
+				'ć'=>'c','ç'=>'c','Ч'=>'Ch','ч'=>'ch','Ď'=>'D','Д'=>'D',
+				'ð'=>'d','ď'=>'d','д'=>'d','Đ'=>'Dj','đ'=>'dj','È'=>'E',
+				'Э'=>'E','É'=>'E','Ê'=>'E','Ë'=>'E','Ě'=>'e','ě'=>'e',
+				'è'=>'e','э'=>'e','é'=>'e','ê'=>'e','ë'=>'e','Ф'=>'F',
+				'ф'=>'f','Г'=>'G','г'=>'g','Ì'=>'I','Í'=>'I','Î'=>'I',
+				'Ï'=>'I','И'=>'I','Й'=>'I','ì'=>'i','í'=>'i','î'=>'i',
+				'ï'=>'i','и'=>'i','й'=>'i','Я'=>'IA','я'=>'ia','Ľ'=>'L',
+				'Л'=>'L','ľ'=>'l','л'=>'l','Н'=>'N','Ñ'=>'N','Ň'=>'N',
+				'н'=>'n','ñ'=>'n','ň'=>'n','Ò'=>'O','Ó'=>'O','Ô'=>'O',
+				'Õ'=>'O','Ø'=>'O','Ö'=>'O','Œ'=>'OE','ò'=>'o','ó'=>'o',
+				'ô'=>'o','õ'=>'o','ö'=>'o','œ'=>'oe','ø'=>'o','П'=>'P',
+				'п'=>'p','Ŕ'=>'R','Ř'=>'R','ŕ'=>'r','ř'=>'r','Š'=>'S',
+				'Ș'=>'s','ș'=>'s','š'=>'s','Ш'=>'Sh','ш'=>'sh','Щ'=>'Shch',
+				'щ'=>'shch','ß'=>'ss','Ț'=>'T','ț'=>'t','Ť'=>'T','ť'=>'t',
+				'Ц'=>'TS','ц'=>'ts','Ù'=>'U','Ú'=>'U','Û'=>'U','Ü'=>'U',
 				'Ů'=>'U','ù'=>'u','ú'=>'u','û'=>'u','ü'=>'u','ů'=>'u',
-				'Ý'=>'Y','Ÿ'=>'Y','ý'=>'y','ÿ'=>'y','Ž'=>'Z','ž'=>'z'
+				'в'=>'v','Ы'=>'Y','ы'=>'y','Ý'=>'Y','Ÿ'=>'Y','ý'=>'y',
+				'ÿ'=>'y','З'=>'Z','Ž'=>'Z','ž'=>'z','з'=>'z','Ж'=>'Zh',
+				'ж'=>'zh'
 			))))),'-');
 	}
 

@@ -67,11 +67,13 @@ class controller_home {
 			$columnsav = Isset($_REQUEST['columnsav']) ? $_REQUEST['columnsav'] : "";
 			$cmav = Isset($_REQUEST['cmav']) ? $_REQUEST['cmav'] : "";
 			$pagewidth = Isset($_REQUEST['pagewidth']) ? $_REQUEST['pagewidth'] : "";
+			$printOrder = Isset($_REQUEST['printOrder']) ? $_REQUEST['printOrder'] : "";
 
 			if (!$publication_name) $error[] = "Publication not specified";
 			if (!$columnsav || !is_numeric($columnsav)) $error[] = "Page Columns not specified or not numeric";
 			if (!$cmav || !is_numeric($cmav)) $error[] = "Page cm not specified or not numeric";
 			if (!$pagewidth || !is_numeric($pagewidth)) $error[] = "Page width not specified or not numeric";
+			if (!$printOrder || !is_numeric($printOrder)) $error[] = "Print Order not specified or not numeric";
 
 			$publication['publication'] = $publication_name;
 			$publication['columnsav'] = $columnsav;
@@ -85,7 +87,8 @@ class controller_home {
 					"publication" => $publication_name,
 					"columnsav"   => $columnsav,
 					"cmav"        => $cmav,
-					"pagewidth"   => $pagewidth
+					"pagewidth"   => $pagewidth,
+					"printOrder"   => $printOrder
 				);
 					$t = \models\publications::save($publication['ID'], $values, $company['ID']);
 				$this->f3->reroute("/setup/".$company['ID']."/".$app."/".$t."/". $nav[0]['section']);

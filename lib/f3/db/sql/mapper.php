@@ -142,6 +142,8 @@ class Mapper extends \DB\Cursor {
 			if ($var=='fields' && $mapper->{$var}[$key]['pkey'])
 				$mapper->{$var}[$key]['previous']=$val;
 		}
+		$mapper->query=array($row);
+		$mapper->ptr=0;
 		return $mapper;
 	}
 
@@ -167,8 +169,9 @@ class Mapper extends \DB\Cursor {
 		@param $fields string
 		@param $filter string|array
 		@param $options array
+		@param $ttl int
 	**/
-	function select($fields,$filter=NULL,array $options=NULL) {
+	function select($fields,$filter=NULL,array $options=NULL,$ttl=0) {
 		if (!$options)
 			$options=array();
 		$options+=array(
@@ -197,7 +200,7 @@ class Mapper extends \DB\Cursor {
 			$sql.=' LIMIT '.$options['limit'];
 		if ($options['offset'])
 			$sql.=' OFFSET '.$options['offset'];
-		$result=$this->db->exec($sql.';',$args);
+		$result=$this->db->exec($sql.';',$args,$ttl);
 		$out=array();
 		foreach ($result as &$row) {
 			foreach ($row as $field=>&$val) {
@@ -221,8 +224,9 @@ class Mapper extends \DB\Cursor {
 		@return array
 		@param $filter string|array
 		@param $options array
+		@param $ttl int
 	**/
-	function find($filter=NULL,array $options=NULL) {
+	function find($filter=NULL,array $options=NULL,$ttl=0) {
 		if (!$options)
 			$options=array();
 		$options+=array(
@@ -234,7 +238,7 @@ class Mapper extends \DB\Cursor {
 		$adhoc='';
 		foreach ($this->adhoc as $key=>$field)
 			$adhoc.=','.$field['expr'].' AS '.$key;
-		return $this->select('*'.$adhoc,$filter,$options);
+		return $this->select('*'.$adhoc,$filter,$options,$ttl);
 	}
 
 	/**
@@ -291,19 +295,6 @@ class Mapper extends \DB\Cursor {
 		$ctr=0;
 		$fields='';
 		$values='';
-		foreach ($this->fields as $key=>$field)
-			if ($field['changed']) {
-				$fields.=($ctr?',':'').
-					($this->engine=='mysql'?('`'.$key.'`'):$key);
-				$values.=($ctr?',':'').'?';
-				$args[$ctr+1]=array($field['value'],$field['pdo_type']);
-				$ctr++;
-			}
-		if ($fields)
-			$this->db->exec(
-				'INSERT INTO '.$this->table.' ('.$fields.') '.
-				'VALUES ('.$values.');',$args
-			);
 		$pkeys=array();
 		$inc=NULL;
 		foreach ($this->fields as $key=>&$field) {
@@ -311,12 +302,24 @@ class Mapper extends \DB\Cursor {
 				$pkeys[]=$key;
 				$field['previous']=$field['value'];
 				if (!$inc && $field['pdo_type']==\PDO::PARAM_INT &&
-					is_null($field['value']) && !$field['nullable'])
+					empty($field['value']) && !$field['nullable'])
 					$inc=$key;
+			}
+			if ($field['changed'] && $key!=$inc) {
+				$fields.=($ctr?',':'').
+					($this->engine=='mysql'?('`'.$key.'`'):$key);
+				$values.=($ctr?',':'').'?';
+				$args[$ctr+1]=array($field['value'],$field['pdo_type']);
+				$ctr++;
 			}
 			$field['changed']=FALSE;
 			unset($field);
 		}
+		if ($fields)
+			$this->db->exec(
+				'INSERT INTO '.$this->table.' ('.$fields.') '.
+				'VALUES ('.$values.');',$args
+			);
 		$seq=NULL;
 		if ($this->engine=='pgsql')
 			$seq=$this->table.'_'.end($pkeys).'_seq';
