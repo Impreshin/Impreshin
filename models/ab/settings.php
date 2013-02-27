@@ -723,34 +723,35 @@ class settings {
 		}
 //test_array($settings['groupby'][$section]);
 
-		
-		if (isset($return['group'])&&isset($settings['groupby'][$section])){
-			$gb = array();
-			
-			foreach ($settings['groupby'][$section] as $g){
-				$gb[] = $g['g'];
-			}
+		if (isset($return['col'])){
+			if (isset($return['group'])&&isset($settings['groupby'][$section])){
+				$gb = array();
 
-			if (!in_array($return['group']['g'],$gb)){
-				if (isset($defaults['settings'][$section]['group']['g'])) {
-					$return['group']['g'] = $defaults['settings'][$section]['group']['g'];
+				foreach ($settings['groupby'][$section] as $g){
+					$gb[] = $g['g'];
 				}
+
+				if (!in_array($return['group']['g'],$gb)){
+					if (isset($defaults['settings'][$section]['group']['g'])) {
+						$return['group']['g'] = $defaults['settings'][$section]['group']['g'];
+					}
+				}
+
+
+
+
 			}
+			//test_array($defaults);
+			if (isset($return['order'])){
+				if (!isset($settings['columns'][$return['order']['c']])&&isset($defaults['settings'][$section]['order']['c'])) {
+					$return['order']['c'] = $defaults['settings'][$section]['order']['c'];
+				}
+				if (!in_array($return['order']['o'],array("ASC","DESC")) && isset($defaults['settings'][$section]['order']['o'])) {
+					$return['order']['o'] = $defaults['settings'][$section]['order']['o'];
+				}
 
 
-
-
-		}
-		//test_array($defaults);
-		if (isset($return['order'])){
-			if (!isset($settings['columns'][$return['order']['c']])&&isset($defaults['settings'][$section]['order']['c'])) {
-				$return['order']['c'] = $defaults['settings'][$section]['order']['c'];
 			}
-			if (!in_array($return['order']['o'],array("ASC","DESC")) && isset($defaults['settings'][$section]['order']['o'])) {
-				$return['order']['o'] = $defaults['settings'][$section]['order']['o'];
-			}
-
-
 		}
 
 
