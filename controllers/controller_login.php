@@ -7,10 +7,10 @@ namespace controllers;
 use \F3 as F3;
 class controller_login {
 	function __construct(){
-
+		$this->f3 = \base::instance();
 	}
 	function page(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
 			"section"    => "login",
@@ -26,7 +26,7 @@ class controller_login {
 
 		$msg = "Please Login";
 		if (($username && $password) ){
-			if (isset($user['ID']) && $user['ID']) F3::reroute("/?to=".(isset($_GET['to'])?$_GET['to']:''));
+			if (isset($user['ID']) && $user['ID']) $this->f3->reroute("/?to=".(isset($_GET['to'])?$_GET['to']:''));
 			$msg = "Login Failed";
 		}
 		if (!$username) $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : "";

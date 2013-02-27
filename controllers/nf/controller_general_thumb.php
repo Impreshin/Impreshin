@@ -11,12 +11,13 @@ use models\nf as models;
 
 class controller_general_thumb {
 	public static function article(){
-		$cfg = F3::get("cfg");
+		$f3 = \base::instance();
+		$cfg = $f3->get("cfg");
 
 		$dataO = new models\articles();
 
 
-		$file = $dataO->getFile(F3::get("PARAMS.ID"));
+		$file = $dataO->getFile($f3->get("PARAMS.ID"));
 		$data = $dataO->get($file['aID']);
 
 	//	test_array($file);

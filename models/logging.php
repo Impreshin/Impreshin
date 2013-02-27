@@ -20,7 +20,7 @@ class logging {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where;
 		}
@@ -28,7 +28,7 @@ class logging {
 			$orderby = "ORDER BY " . $orderby;
 		}
 
-		$result = F3::get("DB")->sql("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =global_logs.uID ) AS fullName FROM global_logs $where $orderby");
+		$result = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =global_logs.uID ) AS fullName FROM global_logs $where $orderby");
 
 		$a = array();
 		foreach ($result as $record) {
@@ -45,13 +45,14 @@ class logging {
 	}
 
 
-	public static function save($section, $changes = array(), $label = "") {
+	public static function save($section, $changes = array(), $label = "", $cID="") {
 		$return = "";
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
-		$app = F3::get("app");
+		$app = $f3->get("app");
 
-		$cID = $user['company']['ID'];
+		$cID = $cID? $cID: $user['company']['ID'];
 		//$section = str_replace("models".$app,"",$section);
 
 
@@ -59,7 +60,7 @@ class logging {
 		if (count($changes)) {
 			$log = mysql_escape_string(json_encode($changes));
 
-			F3::get("DB")->exec("INSERT INTO global_logs (`cID`, `app`,`section`, `log`, `label`, `uID`) VALUES ('$cID', '$app','$section','$log','$label','$userID')");
+			$f3->get("DB")->exec("INSERT INTO global_logs (`cID`, `app`,`section`, `log`, `label`, `uID`) VALUES ('$cID', '$app','$section','$log','$label','$userID')");
 		}
 
 
@@ -67,7 +68,8 @@ class logging {
 
 	}
 
-	public static function _log($class, $label, $values, $old, $overwrite = array(), $lookups = array()) {
+	public static function _log($class, $label, $values, $old, $overwrite = array(), $lookups = array(),$cID="") {
+		$f3 = \Base::instance();
 		$changes = array();
 		$lookup = array();
 
@@ -115,7 +117,7 @@ class logging {
 		}
 
 //test_array($sql);
-		$v = F3::get("DB")->exec($sql);
+		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 
 //		test_array($v);
@@ -129,7 +131,7 @@ class logging {
 
 		//test_array($changes);
 
-		self::save($class, $changes, $label);
+		self::save($class, $changes, $label,$cID);
 
 	}
 

@@ -12,14 +12,15 @@ use \models\user as user;
 
 class admin_dates extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -65,12 +66,12 @@ class admin_dates extends data {
 
 
 		$where = "pID='$pID'";
-		$recordsFound = models\dates::getAll_count($where);
+		$recordsFound = \models\dates::getAll_count($where);
 		$limit = $nrrecords;
 		$pagination = new \pagination();
 		$pagination = $pagination->calculate_pages($recordsFound, $limit, $selectedpage, 7);
 
-		$records = models\dates::getAll("pID='$pID'", $ordering_c . " " .$ordering_d . ",publish_date DESC", $pagination['limit']);
+		$records = \models\dates::getAll("pID='$pID'", $ordering_c . " " .$ordering_d . ",publish_date DESC", $pagination['limit']);
 
 		$return = array();
 		$return['pagination'] = $pagination;
@@ -79,13 +80,14 @@ class admin_dates extends data {
 		$GLOBALS["output"]['data'] = $return;
 	}
 	function _details(){
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$dates = new models\dates();
+		$dates = new \models\dates();
 		$dates = $dates->get($ID);
 		$dates['current'] = '0';
 		if ($user['publication']['current_date']['ID']== $dates['ID'])	$dates['current'] = '1';
@@ -100,7 +102,7 @@ class admin_dates extends data {
 		$dates['records'] = $recordsFound;
 
 
-		$last2 = models\dates::getAll("pID='$pID'", "publish_date DESC", "0,2");
+		$last2 = \models\dates::getAll("pID='$pID'", "publish_date DESC", "0,2");
 
 		if (count($last2)==2){
 			$last_0 = new \DateTime($last2[0]['publish_date']);

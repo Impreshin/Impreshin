@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_placing extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -30,7 +30,8 @@ class admin_placing extends save {
 
 		$placing = isset($_POST['placing']) ? $_POST['placing'] : "";
 		$rate = isset($_POST['rate']) ? $_POST['rate'] : "";
-
+		$colourID = isset($_POST['colourID']) ? $_POST['colourID'] : "";
+		$sub_placing_IDs = isset($_POST['sub_placing_IDs']) ? $_POST['sub_placing_IDs'] : "";
 
 
 
@@ -72,12 +73,14 @@ class admin_placing extends save {
 
 
 
+
+
 		$values = array(
 			"placing"         => $placing,
 			"pID"         => $pID,
 			"rate"     => $rate,
+			"colourID"     => $colourID,
 		);
-
 
 
 
@@ -92,7 +95,36 @@ class admin_placing extends save {
 			$return['ID'] = $ID;
 		}
 
+		$sub_placing = "";
+		$sub_placing_IDs = explode(",", $sub_placing_IDs);
 
+		$i = 1;
+		foreach ($sub_placing_IDs as $record) {
+			$spID = "";
+			if (is_numeric($record)) $spID = $record;
+			$sub_placing = array(
+				"pID" => $pID,
+				"placingID" => $ID,
+				"label"     => isset($_POST['sub-label-' . $record]) ? $_POST['sub-label-' . $record] : "",
+				"rate"      => isset($_POST['sub-rate-' . $record]) ? $_POST['sub-rate-' . $record] : "",
+				"colourID"  => isset($_POST['sub-colourID-' . $record]) ? $_POST['sub-colourID-' . $record] : "",
+				"orderby"   => $i++,
+			);
+			if ($spID && isset($_POST['sub-label-' . $record]) && $_POST['sub-label-' . $record] ==""){
+				// delete
+				models\sub_placing::_delete($spID);
+			} else {
+				if (isset($_POST['sub-label-' . $record]) && $_POST['sub-label-' . $record]){
+					// save
+					models\sub_placing::save($spID, $sub_placing);
+				}
+
+			}
+		}
+
+
+
+		//test_array($sub_placing);
 	//	test_array(array("ID"=>$ID,"values"=>$values,"result"=>$return));
 
 
@@ -103,7 +135,7 @@ class admin_placing extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\placing::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -111,7 +143,7 @@ class admin_placing extends save {
 	}
 
 	function _sort() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 		$pID = $user['publication']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
@@ -120,7 +152,7 @@ class admin_placing extends save {
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_placing SET orderby = '$i' WHERE ID = '$id' AND pID = '$pID'");
+			$this->f3->get("DB")->exec("UPDATE ab_placing SET orderby = '$i' WHERE ID = '$id' AND pID = '$pID'");
 			$i++;
 		}
 

@@ -1,0 +1,83 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Setup
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;">
+						<small>Publications</small>
+					</h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+
+				<ul class="nav nav-pills pull-right ">
+
+
+					<li>
+						<a href="/setup/{{ company['ID'] }}/">
+							<button class="btn span3" type="button">
+								<i class="icon-circle-arrow-left" style="float: left;"></i> Previous
+							</button>
+						</a>
+					</li>
+					<li class="divider-vertical"></li>
+					<li style="padding-right: 10px;">
+						{% if list|length > 1 %}
+							<a href="/setup/{{ company['ID'] }}/{{ application }}/step2">
+								<button class="btn span3" type="button">
+									Next <i class="icon-circle-arrow-right" style="float: right;"></i>
+								</button>
+							</a>
+						{% else %}
+							<button class="btn span3" type="button" disabled="disabled">
+								Next <i class="icon-circle-arrow-right" style="float: right;"></i>
+							</button>
+						{% endif %}
+					</li>
+
+
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container admin_pages">
+
+
+		<article id="whole-area" class="span16">
+			<form class="form-horizontal" id="capture-form">
+				<div class="content" id="form-area">
+					<h2 class="c" style="margin-top:30px;">Please select a Publication</h2>
+
+					<div class="c" style="padding-left: 320px;">
+						<ul class="choose_option">
+							{% for row in list %}
+								<li><a href="/setup/{{ company['ID'] }}/{{ application }}/step1?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+							{% endfor %}
+							<li><a href="/setup/{{ row['ID'] }}">{{ row['publication'] }}</a></li>
+						</ul>
+					</div>
+
+
+				</div>
+
+			</form>
+		</article>
+
+
+	</div>
+
+</section>
+
+

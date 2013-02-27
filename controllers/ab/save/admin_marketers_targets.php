@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_marketers_targets extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -34,6 +34,7 @@ class admin_marketers_targets extends save {
 		$date_from = isset($_POST['date_from']) ? $_POST['date_from'] : "";
 		$date_to = isset($_POST['date_to']) ? $_POST['date_to'] : "";
 		$locked = isset($_POST['locked']) ? $_POST['locked'] : "0";
+
 
 
 
@@ -115,7 +116,7 @@ class admin_marketers_targets extends save {
 
 
 	function _delete() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\marketers_targets::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -123,13 +124,13 @@ class admin_marketers_targets extends save {
 	}
 
 	function _pub() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$pID = $user['publication']['ID'];
 
 
-		$p = new Axon("ab_marketers_targets_pub");
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_marketers_targets_pub");
 		$p->load("mtID='$ID' and pID='$pID'");
 		if (!$p->ID) {
 			$p->mtID = $ID;
@@ -150,7 +151,7 @@ class admin_marketers_targets extends save {
 			)
 		);
 
-		$a = new Axon("ab_marketers");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_marketers");
 		$a->load("ID='$ID'");
 		$label = "";
 		if ($a->ID) {

@@ -19,7 +19,8 @@ class user_notifications {
 
 	public static function bar() {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = $records = array();
 
 		if ($user['ID']) {
@@ -45,7 +46,7 @@ class user_notifications {
 				$return['checked'] = array(
 					"total"   => $recordsCount,
 					"done"    => $checked,
-					"percent" => ($recordsCount - $checked) ? number_format((($checked / $recordsCount) * 100), 2) : ""
+					"percent" => ($checked && $recordsCount)? number_format((($checked / $recordsCount) * 100), 2):""
 				);
 			}
 
@@ -64,7 +65,7 @@ class user_notifications {
 				$return['placed'] = array(
 					"total"   => $recordsCount,
 					"done"    => $done,
-					"percent" => ($recordsCount - $done) ? number_format((($done / $recordsCount) * 100), 2) : ""
+					"percent" => ($done && $recordsCount)? number_format((($done / $recordsCount) * 100), 2):""
 				);
 			}
 

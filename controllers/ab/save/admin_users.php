@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_users extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -33,6 +33,8 @@ class admin_users extends save {
 		$password= isset($_POST['password']) ? $_POST['password'] : "";
 		$publications= isset($_POST['publications']) ? $_POST['publications'] : array();
 		$permissions= isset($_POST['permissions']) ? $_POST['permissions'] : array();
+
+		$allow_setup= isset($_POST['allow_setup']) ? "1" :"0";
 
 		$ab_marketerID= isset($_POST['ab_marketerID']) ? $_POST['ab_marketerID'] : "";
 		$ab_productionID= isset($_POST['ab_productionID']) ? $_POST['ab_productionID'] : "";
@@ -108,10 +110,11 @@ class admin_users extends save {
 
 
 			models\user_permissions::write($ID, $cID, $permissions);
-			$a = new \Axon("global_users_company");
+			$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_users_company");
 			$a->load("uID='$ID' AND cID = '$cID'");
 			$a->ab_marketerID = $ab_marketerID;
 			$a->ab_productionID = $ab_productionID;
+			$a->allow_setup = $allow_setup;
 			$a->save();
 
 			$return['ID'] = $ID;
@@ -125,7 +128,7 @@ class admin_users extends save {
 
 	}
 	function add_company(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
@@ -135,33 +138,33 @@ class admin_users extends save {
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function add_app(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$app = F3::get("app");
+		$app = $this->f3->get("app");
 
 		user::_add_app($ID, $cID, $app);
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function remove_app(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$app = F3::get("app");
+		$app = $this->f3->get("app");
 
 		user::_remove_app($ID, $cID, $app);
 		return $GLOBALS["output"]['data'] = array("ID"=>$ID);
 	}
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$a = new \Axon("global_users_company");
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_users_company");
 		$a->load("uID='$ID' AND cID = '$cID'");
 
 		$a->erase();
@@ -172,13 +175,13 @@ class admin_users extends save {
 	}
 
 	function _pub() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$pID = $user['publication']['ID'];
 
 
-		$p = new Axon("ab_users_pub");
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_users_pub");
 		$p->load("uID='$ID' and pID='$pID'");
 		if (!$p->ID) {
 			$p->uID = $ID;

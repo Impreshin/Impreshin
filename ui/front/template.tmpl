@@ -34,10 +34,8 @@
 	<link rel="alternate" media="print" href="{{ page['print'] }}">
 	<link rel="alternate" type="text/html" media="print" href="{{ page['print'] }}">
 	{% endif %}
-    <!--
+
 	<link rel="shortcut icon" type="image/x-icon" href="/ui/_images/favicon.ico">
-	<link rel="apple-touch-icon" href="/ui/_images/apple-touch.png">
-    -->
 
 
 </head>
@@ -54,7 +52,7 @@
 		</div>
 		<div class="clearfix">
 			<div class="row">
-				<div class="c"> - Copyright © 2012 - Impreshin  {% if _cfg['git']['branch'] != 'master' %} [ {{ _cfg['git']['branch'] }} ] {% endif %}</div>
+				<div class="c"> - Copyright © {{ "now"|date("Y") }} - Impreshin  {% if _cfg['git']['branch'] != 'master' %} [ {{ _cfg['git']['branch'] }} ] {% endif %}</div>
 
 			</div>
 		</div>
@@ -64,7 +62,6 @@
 
 
 <script  src="/ui/_js/libs/jquery.{{_v}}.js"></script>
-
 <script src="/min/js.{{_v}}.js"></script>
 <script src="/ui/_js/plugins/jquery.ticker.js" type="text/javascript"></script>
 
@@ -116,26 +113,41 @@
 		});
 
 
-		$(document).on("show", ".modal", function () {
-			var $this = $(this);
-			var h = $(window).height();
-			var th = $(this).height();
 
-			mt = (th) / 2;
-			if (h < th) {
-				$this.css({
-					"margin-top":-(h / 2)
-				});
-
-			} else {
-				$this.css("margin-top", -mt);
-			}
-
-		});
 
 
 	});
+    function updatetimerlist(d, page_size) {
+        //console.log(d);
+        if (!d) {
+            return false;
+        }
+        $("#displaylogout").autoLogout('resetTimer');
 
+        var data = d['timer'];
+        var page = d['page'];
+        var models = d['models'];
+
+        if (d['notifications']) {
+            $("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
+        }
+
+        var pageSize = (page && page['size']) ? page['size'] : page_size;
+
+        if (data) {
+            var highlight = "";
+            if (page['time'] > {{ _cfg['debug']['highlightfrom'] }}) highlight = 'style="color: red;"';
+            var th = '<tr class="heading" style="background-color: #fdf5ce;"><td >' + page['page'] + ' : <span class="g">Size: ' + file_size(pageSize) + '</span></td><td class="s g"' + highlight + '>' + page['time'] + '</td></tr>', thm;
+            if (models) {
+                thm = $("#template-timers-tr-models").jqote(models, "*");
+            } else {
+                thm = "";
+            }
+            $("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*") + thm);
+
+        }
+
+    }
 	var jScrollPaneOptions = {
 		showArrows:false,
 		maintainPosition: false

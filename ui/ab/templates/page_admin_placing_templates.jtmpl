@@ -10,6 +10,41 @@
 		</td>
 
 
+	</tr>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-new-sub-placing">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>">
+		<td></td>
+		<td>
+			<input name="sub-label-<%= this.ID %>" id="sub-label-<%= this.ID %>" class="span3" type="text" value=""/>
+
+		</td>
+
+		<td>
+			<div class="input-prepend">
+				<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+				<input type="text" name="sub-rate-<%= this.ID %>" id="sub-rate-<%= this.ID %>" class="span1" value="">
+
+			</div>
+
+		</td>
+		<td>
+			<select name="sub-colourID-<%= this.ID %>" id="sub-colourID-<%= this.ID %>">
+				<option value=""></option>
+				<optgroup label="Options">
+					{%  for row in _user['publication']['colours'] %}
+					<option value="{{ row['ID'] }}"<% if (this.colourID == "{{ row['ID'] }}") { %>selected="selected"<% } %>>
+						{{ row['colourLabel'] }}
+					</option>
+					{% endfor %}
+				</optgroup>
+			</select>
+
+		</td>
 
 	</tr>
 
@@ -23,7 +58,9 @@
 
 
 			<fieldset style="margin-top: 20px;">
-				<legend><% if (this.details.ID) { %>Edit<% if (this.records!=0) { %> - <span class="g" style="font-size: 12px;"> Records:<%= this.records  %></span> <% } %><% } else { %>New<% } %></legend>
+				<legend><% if (this.details.ID) { %>Edit<% if (this.records!=0) { %> -
+					<span class="g" style="font-size: 12px;"> Records:<%= this.records  %></span> <% } %><% } else { %>New<% } %>
+				</legend>
 				<div id="errorArea"></div>
 
 				<div class="control-group">
@@ -34,7 +71,7 @@
 					</div>
 				</div>
 				<div class="control-group">
-					<label for="rate" class="control-label">Rate</label>
+					<label for="rate" class="control-label">Default Rate</label>
 
 					<div class="controls">
 						<div class="input-prepend">
@@ -42,25 +79,101 @@
 							<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
 
 						</div>
+						<span class="help-inline g">* Used if no sub placing selected</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="rate" class="control-label">Force Colour</label>
+
+					<div class="controls">
+						<select name="colourID" id="colourID">
+							<option value=""></option>
+							<optgroup label="Options">
+								<% for (var c in this.publication.colours) { %>
+								<option value="<%= this.publication.colours[c].ID %>"
+								<% if (this.details.colourID == this.publication.colours[c].ID) { %>selected="selected"<% } %>><%= this.publication.colours[c].colourLabel %></option>								<% } %>
+							</optgroup>
+						</select>
 					</div>
 				</div>
 
 
+			</fieldset>
+			<div class="help-block g">
+				Use the forced colours option if you wish to force the advert booked under this sub placing to be that colour. This option hides the colour selector in the form. leave it blank to enable the colour selector
+			</div>
+			<div class="clearfix"></div>
+			<fieldset style="margin-top:30px;">
+				<legend>Sub placings
+					<small></small>
+				</legend>
 
 
+				<table class="table" id="subplacingtable" >
+					<thead>
+					<tr>
+						<th style="width:10px;"></th>
+						<th class="span4">Label</th>
+						<th class="span2">Rate</th>
+						<th class="span3">Forced Colour</th>
+					</tr>
+					</thead>
 
+					<tbody>
+					<% for(var i in this.sub_placing) { %>
+					<tr data-id="<%= this.sub_placing[i].ID %>">
+						<td></td>
+						<td>
+							<input name="sub-label-<%= this.sub_placing[i].ID %>" id="sub-label-<%= this.sub_placing[i].ID %>" class="span3" type="text" value="<%= this.sub_placing[i].label %>"/>
 
+						</td>
 
+						<td>
+							<div class="input-prepend">
+								<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+								<input type="text" name="sub-rate-<%= this.sub_placing[i].ID %>" id="sub-rate-<%= this.sub_placing[i].ID %>" class="span1" value="<%= this.sub_placing[i].rate %>">
 
+							</div>
+
+						</td>
+						<td>
+							<select name="sub-colourID-<%= this.sub_placing[i].ID %>" id="sub-colourID-<%= this.sub_placing[i].ID %>">
+								<option value=""></option>
+								<optgroup label="Options">
+									<% for (var c in this.publication.colours) { %>
+									<option value="<%= this.publication.colours[c].ID %>" <% if (this.sub_placing[i].colourID == this.publication.colours[c].ID) { %>selected="selected"<% } %>><%= this.publication.colours[c].colourLabel %></option>
+									<% } %>
+
+								</optgroup>
+							</select>
+
+						</td>
+
+					</tr>
+					<% } %>
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<td colspan="3">
+								<div class="help-block g">
+									Click save record after changing or re-ordering the rows
+								</div></td>
+							<td>
+								<button class="btn span1 btn-mini" type="button" style="float:right;" id="btn-new-sub_placing" >
+									<i class="icon-plus"></i></button>
+							</td>
+						</tr>
+					</tfoot>
+
+				</table>
 
 
 			</fieldset>
+
+			<div class="clearfix"></div>
+
 			<div class="alert alert-info">Drag the options in the list on the right up and down to reorder them</div>
-			{% if _user['permissions']['administration']['application']['placing']['colours']['page']  %}
-			<% if (this.details.ID) { %>
-			<div class="alert alert-success">Some info on the colours admin aswell <a href="/ab/admin/placing/colours#p=<%= this.details.ID %>">Colours</a> </div>
-			<% } %>
-			{% endif %}
 
 		</div>
 
@@ -70,9 +183,9 @@
 	<div id="form-bottom">
 		<div class="form-actions">
 			<div style="float:left; margin-left:0; padding-top: 3px;">
-                <button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="View the log" data-position="above" id="btn-log" data-section="{{ page['section'] }}_{{ page['sub_section'] }}">
-                    <i class="icon-list-alt icon-d-grey"></i>
-                </button>
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="View the log" data-position="above" id="btn-log" data-section="{{ page['section'] }}_{{ page['sub_section'] }}">
+					<i class="icon-list-alt icon-d-grey"></i>
+				</button>
 				<% if (this.details.ID) { %>
 
 

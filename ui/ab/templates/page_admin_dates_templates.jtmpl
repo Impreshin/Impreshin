@@ -84,8 +84,15 @@
 						<label class="checkbox g">
 
 
-						<input type="checkbox" name="current" id="current" value="1" <% if (this.current=='1') { %>checked="checked"<% } %> >
-						Ticking this box will make this the current system date</label>
+
+						<input type="checkbox" name="current" id="current" value="1" <% if (this.current=='1') { %>disabled="disabled" checked="checked"<% } %> >
+                            <% if (this.current=='1') { %>
+                                This record is currently the current date
+                            <% } else { %>
+						        Ticking this box will make this the current system date
+                            <% } %>
+
+                        </label>
 					</div>
 				</div>
 

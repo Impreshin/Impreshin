@@ -7,10 +7,10 @@
 
 		</td>
 
-		<th style="width: 90px;" <% if (this.ab_last_activity.time) { %>title="<%= this.ab_last_activity.time %>"<% } %>>
+		<th style="width: 90px;" <% if (this.last_activity.time) { %>title="<%= this.last_activity.time %>"<% } %>>
 			<% if (this.ab){ %>
 			<span class="s g " style="text-shadow:none;">
-			<%= this.ab_last_activity.display %>
+			<%= this.last_activity.display %>
 			</span>
 
 
@@ -75,6 +75,7 @@
 						<input type="password" id="password" name="password"  class="span2">
 					</div>
 				</div>
+
 
 
 
@@ -150,6 +151,15 @@
 					<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
 					<% } %>
 					<fieldset style="margin-top: 20px;" id="permissions">
+						<div class="control-group">
+							<label for="allow_setup" class="control-label">Allow Setup</label>
+
+							<div class="controls">
+								<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+									<input type="checkbox" value="1" name="allow_setup" id="allow_setup" <% if (this.details.allow_setup=='1'){ %>checked="checked"<% } %>>Allow this user to access the setup wizards
+								</label>
+							</div>
+						</div>
 
 					{% for key,value in permissions %}
 						<div class="control-group" style="{% if loop.first==false %}border-top: 1px dotted #ccc;{% endif %} padding-top: 10px; margin-bottom: 0; padding-bottom:5px;">

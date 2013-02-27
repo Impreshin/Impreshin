@@ -5,6 +5,7 @@
  */
 namespace controllers\ab\data;
 use \F3 as F3;
+use models\global_colours;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
@@ -12,15 +13,15 @@ use \models\user as user;
 
 class admin_publications extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _list() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -34,7 +35,7 @@ class admin_publications extends data {
 
 
 
-		$records = models\publications::getAll($where, "publication ASC");
+		$records = \models\publications::getAll($where, "publication ASC");
 
 		$return = array();
 
@@ -44,21 +45,39 @@ class admin_publications extends data {
 	}
 
 	function _details() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
+		$cfg = $this->f3->get("cfg");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\publications();
+		$o = new \models\publications();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];
 
 
-		$return = array();
+		$used = array();
+		foreach ($details['colours'] as $colour){
+			$used[] = $colour['ID'];
+		}
 
+		$colours = \models\global_colours::getAll();
+		$n = array();
+		foreach ($colours as $colour) {
+			$colour['selected'] = '0';
+			$colour['locked'] = '0';
+			if (in_array($colour['ID'],$used))	$colour['selected'] = '1';
+			if (in_array($colour['ID'], $cfg['default_colours'])) $colour['locked'] = '1';
+
+			$n[] = $colour;
+		}
+		$colours = $n;
+
+
+		$details['colours'] = $colours;
 
 		$return = array();
 

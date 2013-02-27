@@ -10,17 +10,17 @@ use models\ab as models;
 class controller_app_search {
 	function __construct() {
 
-
+		$this->f3 = \base::instance();
 
 	}
 	function page() {
-		$user = F3::get("user");
-		if (!$user['permissions']['records']['search']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['records']['search']['page']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
 		//test_array($user);
-		$ab_settings = F3::get("settings");
+		$ab_settings = $this->f3->get("settings");
 		//test_array($ab_settings);
 
 
@@ -61,19 +61,19 @@ class controller_app_search {
 
 			}
 
-		$dates = models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
+		$dates = \models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
 
 	//test_array($dates);
 
 
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
-		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
+		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->dates = $dates;
 
 
 
-		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
+		$date_range = $this->f3->get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
 		if (count($date_range)){
 			$date_range = $date_range[0];
 		}
@@ -95,8 +95,8 @@ class controller_app_search {
 
 	function _print() {
 		$timer = new timer();
-		$user = F3::get("user");
-		if (!$user['permissions']['records']['search']['page']) F3::error(404);
+		$user = $this->f3->get("user");
+		if (!$user['permissions']['records']['search']['page']) $this->f3->error(404);
 		$settings = models\settings::_read("search", $user['permissions']);
 
 

@@ -10,18 +10,19 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class publication_discounts extends \data {
+class publication_discounts extends \controllers\ab\data\data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _data() {
 		$timer = new timer();
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -80,7 +81,7 @@ class publication_discounts extends \data {
 			if (isset($user['marketer']['ID']) && $user['marketer']['ID']) {
 				$marketerID = $user['marketer']['ID'];
 			} else {
-				F3::error("404");
+				$this->f3->error("404");
 			}
 		}
 		$tab = "charts";
@@ -108,7 +109,7 @@ class publication_discounts extends \data {
 		$daterange_s = explode(" to ", $daterange);
 
 
-		$years_d = F3::get("DB")->exec("SELECT distinct year(publish_date) AS record_year FROM global_dates WHERE pID in ($publications) ORDER BY year(publish_date) DESC");
+		$years_d = $this->f3->get("DB")->exec("SELECT distinct year(publish_date) AS record_year FROM global_dates WHERE pID in ($publications) ORDER BY year(publish_date) DESC");
 
 
 		//($settings['years'])? $settings['years']:$years_d[0]['record_year'];
@@ -202,7 +203,7 @@ class publication_discounts extends \data {
 		$return['comp']['data'] = models\report_discounts::figures($where, $yearsSend,$tolerance);
 
 
-		$date_range = F3::get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");
+		$date_range = $this->f3->get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID  in ($publications)");
 		if (count($date_range)) {
 			$date_range = $date_range[0];
 		}

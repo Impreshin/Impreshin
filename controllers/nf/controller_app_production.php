@@ -10,15 +10,16 @@ use \models\ab as models;
 use \models\user as user;
 class controller_app_production {
 	function __construct() {
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) F3::reroute("/login");
+		if (!$userID) $this->f3->reroute("/login");
 	}
 	function page() {
 
 		$timer = new timer();
-		$user = F3::get("user");
-		//F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+		$user = $this->f3->get("user");
+		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 
 
 
@@ -26,7 +27,7 @@ class controller_app_production {
 		$pID = $user['pID'];
 		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
-		$settings = F3::get("settings");
+		$settings = $this->f3->get("settings");
 
 
 

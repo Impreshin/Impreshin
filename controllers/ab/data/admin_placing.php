@@ -12,15 +12,15 @@ use \models\user as user;
 
 class admin_placing extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _list() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -40,11 +40,12 @@ class admin_placing extends data {
 
 		$return['records'] = $records;
 
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
 	function _details() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -63,6 +64,9 @@ class admin_placing extends data {
 		$return = array();
 
 		$return['details'] = $details;
+		$return['publication'] = $user['publication'];
+
+		$return['sub_placing'] = models\sub_placing::getAll("placingID = '". $details['ID']."'", "orderby ASC");
 
 		if ($details['ID']) {
 			$where = "ab_bookings.placingID='" . $details['ID'] . "'";

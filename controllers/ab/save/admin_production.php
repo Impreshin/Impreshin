@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_production extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -91,7 +91,7 @@ class admin_production extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\production::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -99,13 +99,13 @@ class admin_production extends save {
 	}
 
 	function _pub() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$pID = $user['publication']['ID'];
 
 
-		$p = new Axon("ab_production_pub");
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_production_pub");
 		$p->load("productionID='$ID' and pID='$pID'");
 		if (!$p->ID) {
 			$p->productionID = $ID;

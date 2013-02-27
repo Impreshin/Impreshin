@@ -1,0 +1,64 @@
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<div class="row">
+			<article id="left-area" class="span11">
+				<form class="form-horizontal" id="capture-form">
+					<div class="content" id="form-area">
+
+					</div>
+					<div class="loadingmask wide"></div>
+				</form>
+			</article>
+			<article id="right-area" class="span5 offset11">
+				<div>
+					<table class="table table-condensed  s records">
+						<thead>
+						<tr>
+							<th>Status</th>
+							<th style="width: 40px;" class="c">Label</th>
+							<th style="width: 40px;" class=" c">Blocked</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="content">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 25px;">
+
+						<div data-heading="top" class="">
+							<table style="" id="record-list" class="table table-condensed  s records">
+								<tbody style="border-left:none;">
+
+
+								</tbody>
+							</table>
+
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+				<div id="record-details-bottom">
+					<div id="pagination" class="pagination"></div>
+				</div>
+				<section id="rightsideOver">
+
+				</section>
+				<div class="loadingmask round"></div>
+
+
+			</article>
+		</div>
+
+
+	</div>
+
+</section>
+<script type="text/javascript">
+	var pID = "{{ publication['ID'] }}";
+	var cID = "{{ company['ID'] }}";
+</script>

@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 	$searchform = $("#search-box form");
 	$searchbox = $searchform.find(".search-query");
-	$(document).bind('keydown', 'ctrl+f', function (e) {
+	$(document).bind('keyup', 'ctrl+f', function (e) {
 		e.preventDefault();
 		$searchform.toggle("slide", { direction:"right" }, 1000, function () {
 			if ($(this).is(":visible")) {

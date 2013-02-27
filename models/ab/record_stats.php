@@ -8,7 +8,8 @@ namespace models\ab;
 class record_stats {
 	public static function stats($where, $columns = array("cm"), $pages = "") { // "cm","checked","material","material_approved","layout","placed","placed_cm"
 		$timer = new \timer();
-		$user = \F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
 //$columns = array("cm","placed","placed_cm");
 		if (is_array($where)) {

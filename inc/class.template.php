@@ -8,15 +8,27 @@ class template {
 	private $config = array(), $vars = array();
 
 	function __construct($template, $folder = "", $strictfolder = false) {
-		$this->config['cache_dir'] = F3::get('TEMP');
+		$this->f3 = Base::instance();
+		$this->config['cache_dir'] = $this->f3->get('TEMP');
 
 		$this->vars['folder'] = $folder;
 		$this->config['strictfolder'] = $strictfolder;
 
 		$this->template = $template;
 
+		$this->timer = new \timer();
 
 
+
+
+	}
+	function __destruct(){
+		$page = $this->template;
+		//test_array($page);
+		if (isset($this->vars['page']['template'])){
+			$page = $page . " -> " . $this->templatefolder . $this->vars['page']['template'];
+		}
+		$this->timer->stop("Template",  $page);
 	}
 
 	public function __get($name) {
@@ -32,11 +44,12 @@ class template {
 
 		$curPageFull = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$curPage = explode("?", $curPageFull);
-		$_v = isset($_GET['v']) ? $_GET['v'] : F3::get('v');
-		$user = F3::get('user');
+		$_v = isset($_GET['v']) ? $_GET['v'] : $this->f3->get('v');
+		$user = $this->f3->get('user');
 
-		$cfg = F3::get('cfg');
+		$cfg = $this->f3->get('cfg');
 		unset($cfg['DB']);
+		unset($cfg['package']);
 
 
 		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
@@ -46,18 +59,18 @@ class template {
 
 		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
-		$this->vars['_version'] = F3::get('version');
+		$this->vars['_version'] = $this->f3->get('version');
 		$this->vars['_v'] = $_v;
 		$this->vars['_cfg'] = $cfg;
-		$this->vars['_docs'] = F3::get('docs');
-		$this->vars['_last_pages'] = F3::get('last_pages');
+		$this->vars['_docs'] = $this->f3->get('docs');
+		$this->vars['_last_pages'] = $this->f3->get('last_pages');
 		$this->vars['isLocal'] = isLocal();
 
 
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
 		$this->vars['_settings'] = array(
-			"settings"=> F3::get('settings'),
+			"settings"=> $this->f3->get('settings'),
 			"publication"=> $publication,
 			"publications"=> $publications,
 			"json"=>array(
@@ -75,43 +88,53 @@ class template {
 			$folders = (array) $this->vars['folder'];
 
 
+			$this->templatefolder = "";
 
 			$usethisfolder = false;
+
+			$force_js = isset($page['template_js'])?true:false;
+			$force_css = isset($page['template_css']) ? true : false;
+			$force_tmpl = isset($page['template_tmpl']) ? true : false;
+
+			$page['template'] = $tfile . '.tmpl';
 			foreach ($folders as $folder){
+
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
-					$page['template'] = $tfile . '.tmpl';
 					$usethisfolder = true;
-				} else {
-					$page['template'] = 'none';
+					$this->templatefolder = $folder;
+					$page['folder'] = $folder;
 				}
 
-				if (file_exists('' . $folder . '_js/' . $tfile . '.js')) {
+
+				if (file_exists('' . $folder . '_js/' . $tfile . '.js') && !$force_js) {
 					$page['template_js'] = '/min/js_' . $_v . '?file=/' . $folder . '_js/' . $tfile . '.js';
 				} else {
-					$page['template_js'] = "";
+					if (!isset($page['template_js'])) $page['template_js'] = "";
 				}
-				if (file_exists('' . $folder . '_css/' . $tfile . '.css')) {
+				if (file_exists('' . $folder . '_css/' . $tfile . '.css') && !$force_css) {
 					$page['template_css'] = '/min/css_' . $_v . '?file=/' . $folder . '_css/' . $tfile . '.css';
 				} else {
-					$page['template_css'] = "";
+					if (!isset($page['template_css'])) $page['template_css'] = "";
 				}
-				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl')) {
+				if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl') && !$force_tmpl) {
 					//exit('/tmpl?file=' . $tfile . '_templates.jtmpl');
 
 					$file = '/' . $folder . 'templates/' . $tfile . '_templates.jtmpl';
 
 					$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
 				} else {
-					$page['template_tmpl'] = "";
+					if (!isset($page['template_tmpl'])) $page['template_tmpl'] = "";
 				}
 
 				if ($usethisfolder){
 					break;
 				}
-			}
+				
 
+			}
+			//test_array($page);
 			if (!isset($page['help']) || !$page['help']){
-				$app = F3::get("app");
+				$app = $this->f3->get("app");
 				$sub_section = $page['sub_section'];
 				if (strpos($sub_section,"_")){
 					$sub_section = explode("_", $page['sub_section']);
@@ -126,6 +149,8 @@ class template {
 			}
 
 			$this->vars['page'] = $page;
+
+			//test_array($page);
 			
 
 			return $this->render_template();
@@ -174,7 +199,7 @@ class template {
 
 
 	public function output() {
-		F3::set("__runTemplate", true);
+		$this->f3->set("__runTemplate", true);
 		echo $this->load();
 
 	}

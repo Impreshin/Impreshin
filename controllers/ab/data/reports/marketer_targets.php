@@ -10,18 +10,19 @@ use \models\ab as models;
 use \models\user as user;
 
 
-class marketer_targets extends \data {
+class marketer_targets extends \controllers\ab\data\data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _data() {
 		$timer = new timer();
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -159,7 +160,8 @@ class marketer_targets extends \data {
 	}
 
 	function _details() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -175,12 +177,12 @@ class marketer_targets extends \data {
 
 
 		$return = array();
-		$publications = models\publications::getAll_user("global_users_company.cID = '". $cID."' and global_users_company.uID='" . $mID . "' and [access] = '1'", "publication ASC");
+		$publications = models\marketers::getPublications($mID);
 
 		if (!$details['ID']) {
 			$userPublications = array();
 		} else {
-			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
+			$userPublications = $this->f3->get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
 		}
 
 

@@ -1,31 +1,60 @@
 /*
- * Date: 2012/05/05 - 1:00 PM
+ * Date: 2013/02/19 - 2:31 PM
  */
-var $form = $("#booking-form").data({
-	clients    :var_clients,
-	spots      :var_spots,
-	colours    :var_colours,
-	details    :var_details,
-	publication:var_publication
-});
-var accountLookup = [];
-
+var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
 $(document).ready(function () {
+	getData();
 
-	$(document).on("click", ".dates-btn", function () {
-		var $this = $(".dates-btn"), $otherdates = $("#dates_list .otherdates"), $dates_list = $("#dates_list");
-		if ($dates_list.hasClass("showit")) {
-			$dates_list.removeClass("showit");
-			$this.html("More");
-		} else {
-			$dates_list.addClass("showit");
-			$this.html("Less");
+
+
+	$(document).on("click", ".view-record-btn", function () {
+		var id = $(this).attr("data-id");
+		if (id) {
+			$(this).closest(".modal").modal("hide");
+			$.bbq.pushState({"ID": id});
+
+			getDetails();
 		}
 
-		show_checkhox();
-		resizeform($("form"));
+	});
+	$(document).on("click", "#booking-type button", function () {
+		var type = $(this).attr("data-type");
+		$.bbq.pushState({"type": type});
+		$("#form-diff > article").hide();
+		$("#form-diff-" + type).show();
+		display_notes();
 	});
 
+	$(document).on("change", "#placingID", function () {
+		sub_placing_fn();
+		colours_fn();
+		resizeform();
+
+
+	});
+	$(document).on("change", "form input, form select", function () {
+
+		if (("form .fielderror").length){
+			$("form .fielderror").remove();
+			resizeform();
+		}
+
+
+
+	});
+	$(document).on("shown", "#suggestion-tabs", function () {
+		resizeform();
+	});
+
+	$(document).on("change", "#sub_placingID", function () {
+		var $this = $(this);
+		var ID = $this.val(), placingID = $this.find("option:selected").attr("data-placingID");
+		$("#placingID").find("option[value='"+placingID+"']").attr("data-sub-selected",ID);
+		colours_fn();
+		resizeform();
+
+
+	});
 	$(document).on("click", "*[data-fld]", function () {
 		var $this = $(this), fld = $this.attr("data-fld"), val = $this.attr("data-val");
 
@@ -36,58 +65,28 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#booking-type button", function () {
-		$.bbq.pushState({"type":$(this).attr("data-type")});
-		load_form_diff();
-		display_notes();
+
+	$(document).on("change", "#accountID", function () {
+		account_note();
 		account_lookup_history_suggestions();
 
 	});
-
-	$(document).on("click", ".view-record-btn", function () {
-		var id = $(this).attr("data-id");
-		if (id) {
-			$(this).closest(".modal").modal("hide");
-			$.bbq.pushState({"ID":id});
-
-			getDetails();
+	$(document).on("click", ".dates-btn", function () {
+		var $this = $(".dates-btn"), $otherdates = $("#dates_list .otherdates"), $dates_list = $("#dates_list");
+		if ($dates_list.hasClass("showit")) {
+			$dates_list.removeClass("showit");
+			$this.html("More");
+		} else {
+			$dates_list.addClass("showit");
+			$this.html("Less");
 		}
 
+		show_checkhox_fn();
+		resizeform($("form"));
 	});
-
 	$(document).on("change", ".display_notes", function () {
 		display_notes();
 	});
-	$(document).on("change", "#placingID", function () {
-		load_colours();
-		display_notes();
-
-	});
-	$(document).on("change", "#insertTypeID", function () {
-		display_notes();
-
-	});
-
-	$(document).on("click", "#all_accounts a", function (e) {
-		e.preventDefault();
-		var $this = $(this);
-		$("#all_accounts .active").removeClass("active");
-		$this.addClass("active");
-		$("#accNum").val($this.attr("data-accNum")).trigger("change");
-		var $account = $("#account").removeClass("btn-danger");
-		$account.html($this.attr("data-account"));
-
-		if ($this.attr("data-blocked") == '1') {
-			$account.addClass("btn-danger");
-		}
-		$remark = $("#account_remark").html("");
-		if ($this.attr("data-remark")) {
-			$remark.html($this.attr("data-remark"));
-		}
-		//account_lookup_history_suggestions($this.attr("data-accNum"));
-		submit_state();
-	});
-
 	$(document).on("submit", "#booking-form", function (e) {
 		e.preventDefault();
 		form_submit();
@@ -96,13 +95,11 @@ $(document).ready(function () {
 	});
 	$(document).on("reset", "#booking-form", function (e) {
 		e.preventDefault();
-		$form.data("details", "");
-		load_form();
+		$("#record-ID").val("");
+		getData();
 		return false;
 
 	});
-
-	load_form();
 
 	$(document).on("submit", "#modal-delete form", function (e) {
 		e.preventDefault();
@@ -122,79 +119,64 @@ $(document).ready(function () {
 
 	});
 
+
 });
 
-function load_form() {
+function getData(){
+	ID = $("#record-ID").val();
 
-	var details = $form.data("details");
-	if (details['ID']) {
-		$("#booking-heading").html("Edit Booking");
-		$("#booking-type button.active").removeClass("active");
-		$("#booking-type button[data-type='" + details['typeID'] + "']").addClass("active");
+	$("#left-area .loadingmask").show();
 
-	} else {
-		$("#booking-heading").html("New Booking");
-		var type = $.bbq.getState("type");
-		type = (type) ? type : "";
-		if (type) {
-			$("#booking-type button.active").removeClass("active");
-			$("#booking-type button[data-type='" + type + "']").addClass("active");
-		}
-		$form.data("details")['remarkTypeID'] = '1';
+	$("#whole-area .loadingmask").show();
+	for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
+	activityRequest.push($.getJSON("/ab/data/form/_details", {"ID": ID}, function (data) {
+		data = data['data'];
+		var title = "";
+		if (data['details']['ID']){
+			if (data['details']['deleted']=='1'){
+				title = "Edit Deleted Record";
+			} else {
+				title = "Edit Record";
+			}
 
-	}
-
-	$form.jqotesub($("#template-form"), details);
-	load_form_diff();
-
-	$(".form-body", $form).css({"top":$(".form-header", $form).outerHeight(), "bottom":$(".form-footer", $form).outerHeight()});
-
-	//console.log(clients);
-	$("#client").typeahead({
-		source:$form.data("clients")
-	});
-	$("#colourSpot").typeahead({
-		source:$form.data("spots")
-	});
-
-	$("#whole-area .loadingmask").fadeOut(transSpeed);
-
-	show_checkhox();
-	load_colours();
-	account_lookup_history_suggestions();
-	submit_state();
-	display_notes();
-
-	$(document).on("change", "#accountID", function () {
-		var $this = $(this);
-		var $select = $this.data("select2");
-
-		var $opt = $("option:selected", $this);
-
-		if ($opt.attr("data-blocked") == '1') {
-			$($select.container).addClass("select-error");
 		} else {
-			$($select.container).removeClass("select-error");
+			title = "New Record";
 		}
+		document.title = "AB - Form - " + title;
 
-		$("#account_remark").html("");
-		if ($opt.attr("data-remark")) {
-			$("#account_remark").html($opt.attr("data-remark"))
+		var toolbar = {
+			"heading": title,
+			"data":data
+		};
+
+		$("#scroll-container").jqotesub($("#template-form"), data);
+		$("#maintoolbar").jqotesub($("#template-toolbar"), toolbar);
+		$("#form-diff > article").hide();
+		var type = data['settings']['type'];
+		if ($.bbq.getState("type")){
+			type = $.bbq.getState("type");
 		}
+		var $bookingTypeBtns = $("#booking-type");
+		$bookingTypeBtns.find("button[data-type='" + type + "']").trigger("click");
+		//$("#form-diff-"+ type).show();
+
+		dropdowns_fn(data);
+		sub_placing_fn(data['details']['sub_placingID']);
+		colours_fn();
+		display_notes();
+		account_note();
 		account_lookup_history_suggestions();
-
-	});
+		//resizeform();
+		$("#whole-area .loadingmask").fadeOut(transSpeed);
+	}));
 
 }
-
-function load_form_diff() {
-	var type = $("#booking-type button.active").attr("data-type");
-
-	var_details['printOrder'] = $form.data("publication")['printOrder'];
-	if ($("#template-form-" + type).length) $("#form-diff").jqotesub($("#template-form-" + type), var_details);
-
+function dropdowns_fn(data){
+	$('#client').typeahead({
+		"source": data['clients']
+	});
 	$("#accountID").select2({
-		formatResult   :function (result, query, markup) {
+		formatResult   : function (result, query, markup) {
 			var $el = $(result.element);
 			var $return = "";
 			if ($el.attr("data-accNum")) {
@@ -213,60 +195,29 @@ function load_form_diff() {
 
 			return $return;
 		},
-		formatSelection:function (result) {
+		formatSelection: function (result) {
 
 			return result.text;
 		}
 
 
 	});
-	if (type == '1') {
-		$("#placingID").select2({});
-		load_colours();
-	} else if (type == '2') {
-		$("#insertTypeID").select2({});
-	}
 	$("#marketerID").select2({});
 	$("#categoryID").select2({});
-
+	$("#insertTypeID").select2({});
+	$("#placingID").select2({});
+	$("#colourID").select2({});
 }
-function load_colours() {
-	var colours = $form.data("colours");
-	var selectedID = $form.data("details")['colourID'];
-	var place = $("#placingID").val();
+function resizeform() {
 
-	var str = $.map(colours, function (v, i) {
-		if (i == place || i == '') {
+	var pane = $(".form-body").jScrollPane(jScrollPaneOptions);
+	var api = pane.data("jsp");
+	//api.reinitialise();
 
-			var selected = "";
-			var item_records = $.map(v['records'], function (v, i) {
-				if (v['ID'] == selectedID) {
-					selected = 'selected="selected"';
-				} else {
-					selected = "";
-				}
-				return '<option value="' + v['ID'] + '" data-colour="' + v['colour'] + '" data-rate="' + v['rate'] + '" ' + selected + '>' + v['label'] + '</option>';
-			});
-
-			var item = '<optgroup label="' + v['place'] + '">';
-			item += item_records.join("");
-			item += '</optgroup>';
-			return item;
-		}
-
-	});
-	str = str.join("");
-	var $colourblock = $("#colourID");
-	$colourblock.html("");
-	if (str) {
-		$colourblock.html(str).closest(".control-group").show();
-	} else {
-		$colourblock.html("").closest(".control-group").hide();
-	}
-
+	scrolling(api);
 }
 
-function show_checkhox() {
+function show_checkhox_fn() {
 	$("#dates_list .otherdates input:checkbox, #dates_list .otherdates input:radio").each(function () {
 		var $this = $(this), $label = $this.closest(".otherdates");
 		if ($this.is(":checked")) {
@@ -278,121 +229,111 @@ function show_checkhox() {
 	});
 	$("#dates_list .otherdates.showit").show();
 }
-function resizeform(form) {
+function sub_placing_fn(s){
+	var d = var_sub_placing, $sub_placingID = $("#sub_placingID"),	$sub_placing_area = $("#sub_placing_area"), $placingID = $("#placingID");
+	var placingID = $placingID.val();
+	var selected = "";
 
-	var pane = $(".form-body", form).jScrollPane(jScrollPaneOptions);
-	var api = pane.data("jsp");
-	//api.reinitialise();
-
-	scrolling(api);
-}
-
-function account_lookup_history_suggestions() {
-	var type = $("#booking-type button.active").attr("data-type");
-	var accNum = $("#accountID").val();
-	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
-	accountLookup.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum, "limit":"4", "type":type}, function (data) {
-		data = data['data'];
-		if (accNum) {
-			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
-		} else {
-			$suggestions.jqotesub($("#template-suggestions-accounts"), data).stop(true, true).fadeIn();
-		}
-		resizeform();
-
-	}));
-
-}
-function display_notes() {
-	var type = $("#booking-type button.active").attr("data-type");
-	var $this = $(this), rate = "";
-	switch (type) {
-		case "1":
-			rate = $("#placingID option:selected").attr("data-rate");
-			break;
-		case "2":
-			rate = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
-			break;
-	}
-	$(".alert", $form).remove();
-
-	var colour = $("#colourID option:selected").attr("data-colour");
-	$("#colour").val(colour);
-	var $colourSpotarea = $("#colourSpot-area");
-	if (colour == "Spot") {
-		$colourSpotarea.show();
+	if (s){
+		selected = s;
 	} else {
-		$colourSpotarea.hide();
+		var placingID_data = $placingID.find("option:selected").attr("data-sub-selected");
+		if (placingID_data) selected = placingID_data;
 	}
 
-	display_notes_rate();
-	if (type == "1") display_notes_size();
-	display_notes_cost();
-}
-function display_notes_rate() {
-	var $item = $("#rate"), val = $item.val(), string = "", msgtext = "", colour_rate = $("#colourID option:selected").attr("data-rate");
-
-	var type = $("#booking-type button.active").attr("data-type");
-	switch (type) {
-		case "1":
-			shouldbe = (colour_rate) ? colour_rate : $("#placingID option:selected").attr("data-rate");
-			break;
-		case "2":
-			shouldbe = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
-			break;
-	}
-
-	val = val.replace(/[^0-9\.]/g, "");
-	shouldbe = Number(shouldbe).toFixed(2);
-	if (val) {
-
-		val = Number(val);
-		val = val.toFixed(2);
-		$item.val(val);
-		var dif = shouldbe - val;
-		if (dif > 0) {
-			msgtext = "Under: " + (shouldbe - val).toFixed(2);
-			string = '<span class="label label-warning">' + msgtext + '</span>';
-		} else if (dif < 0) {
-			msgtext = "Over: " + (val - shouldbe).toFixed(2);
-			string = '<span class="label label-info">' + msgtext + '</span>';
+	var html = $.map(d, function(el, index) {
+		if (el['placingID']== placingID){
+			var selected_t = "";
+			if (el['ID']==selected){
+				selected_t = 'selected="selected"';
+			}
+			return '<option value="'+el['ID']+'" data-placingID="'+el['placingID']+'" data-rate="'+el['rate']+'" data-force-colour="'+el['colourID']+'" '+ selected_t+'>'+el['label']+'</option>';
 		}
 
+	});
+
+
+	if (html.length){
+		html = html.join("");
+		$sub_placingID.html(html);
+		$sub_placing_area.show();
+		$sub_placingID.select2({});
+	} else {
+		$sub_placing_area.hide();
 	}
-	string = '<span class="badge" data-fld="rate" data-val="' + shouldbe + '">' + shouldbe + '</span>' + string;
-	$("#rate-msg").html(string);
-	$("#rate").attr("placeholder", shouldbe).blur();
+
+
+
 }
-function display_notes_size() {
+function colours_fn(){
+	var $colour_area = $("#colour_area"), $colourID = $("#colourID"), $placingID = $("#placingID"), $sub_placingID = $("#sub_placingID");
+	var forceColour = "";
+	var placingID_FC = $placingID.find("option:selected").attr("data-force-colour");
+	var sub_placingID_FC = $sub_placingID.find("option:selected").attr("data-force-colour");
+
+
+	if (placingID_FC) {
+		forceColour = placingID_FC;
+	}
+	if (sub_placingID_FC && $("#sub_placing_area:visible").length) {
+		forceColour = sub_placingID_FC;
+	}
+	$colourID.val(forceColour);
+	if (forceColour && forceColour != 0){
+		$colour_area.hide();
+	} else {
+		$colour_area.show();
+	}
+
+
+}
+
+function display_notes() {
+
+
+
 	var cm = $("#cm").val(), col = $("#col").val();
 	cm = cm.replace(/[^0-9\.]/g, "");
 	col = col.replace(/[^0-9\.]/g, "");
 
 	$("#cm").val(cm);
 	$("#col").val(col);
+
+
+	var discount = $("#discount").val(), agencyDiscount = $("#agencyDiscount").val(), InsertPO = $("#InsertPO").attr("placeholder", var_publication['printOrder']).val();
+	InsertPO = (InsertPO) ? InsertPO : var_publication['printOrder'];
+
+	var col_cm ="";
 	if (col && cm) {
 
 		$("#size-msg strong").html(col * cm);
+		col_cm = cm * col;
 	}
 
-}
-function display_notes_cost() {
-	var cm = $("#cm").val(), col = $("#col").val(), discount = $("#discount").val(), agencyDiscount = $("#agencyDiscount").val(), colour_rate = $("#colourID option:selected").attr("data-rate");
-	InsertPO = $("#InsertPO").val();
 
-	InsertPO = (InsertPO) ? InsertPO : $form.data("publication")['printOrder'];
-
-	if (cm) cm = cm.replace(/[^0-9\.]/g, "");
-	if (col) col = col.replace(/[^0-9\.]/g, "");
-
-	var col_cm = cm * col;
 
 	var type = $("#booking-type button.active").attr("data-type");
-	var shouldbe, shouldbe_e, exact_rate;
+	var shouldbe="", shouldbe_e="", exact_rate="", string = "", msgtext = "";
+
 	switch (type) {
 		case "1":
-			rate = ($("#rate").val());
-			exact_rate = (colour_rate) ? colour_rate : $("#placingID option:selected").attr("data-rate");
+			var rate = ($("#rate").val());
+
+			var placingID_Rate = $("#placingID").find("option:selected").attr("data-rate");
+			var sub_placingID_Rate = $("#sub_placingID").find("option:selected").attr("data-rate");
+
+
+			if (placingID_Rate) {
+				exact_rate = placingID_Rate;
+			}
+			if (sub_placingID_Rate && $("#sub_placing_area:visible").length) {
+				exact_rate = sub_placingID_Rate;
+			}
+
+
+
+
+
 			if (!rate) {
 				rate = exact_rate
 			}
@@ -405,7 +346,7 @@ function display_notes_cost() {
 		case "2":
 
 			rate = $("#rate").val();
-			exact_rate = $("#insertTypeID option:selected").attr("data-rate") || $form.data("publication")['InsertRate'];
+			exact_rate = $("#insertTypeID option:selected").attr("data-rate") || var_publication['InsertRate'];
 			if (!rate) {
 				rate = exact_rate
 			}
@@ -416,6 +357,26 @@ function display_notes_cost() {
 
 			break;
 	}
+	exact_rate = Number(exact_rate).toFixed(2);
+	if (rate) {
+
+		rate = Number(rate);
+		rate = rate.toFixed(2);
+		//$("#rate").val(rate);
+		var dif = exact_rate - rate;
+		if (dif > 0) {
+			msgtext = "Under: " + (exact_rate - rate).toFixed(2);
+			string = '<span class="label label-warning">' + msgtext + '</span>';
+		} else if (dif < 0) {
+			msgtext = "Over: " + (rate - exact_rate).toFixed(2);
+			string = '<span class="label label-info">' + msgtext + '</span>';
+		}
+
+	}
+	string = '<span class="badge" data-fld="rate" data-val="' + exact_rate + '">' + exact_rate + '</span>' + string;
+	$("#rate-msg").html(string);
+	$("#rate").attr("placeholder", exact_rate).blur();
+
 	$("#rate_fld").val(rate);
 
 	if (discount) {
@@ -478,19 +439,23 @@ function display_notes_cost() {
 
 	$("#totalCost-msg").html(string);
 	resizeform();
-}
-function submit_state() {
-	var submit = false, $submit = $("form button[type='submit']");
-	if ($("#account").hasClass("btn-danger")) submit = false;
 
-	if (submit) {
-		//$submit.removeAttr("disabled");
-	} else {
-		//$submit.attr("disabled", "disabled");
-	}
+
 }
+function error_msg($fld, msg) {
+	var str = '<div class="alert fielderror alert-error">' + msg + '</div>';
+	if (!$fld.hasClass("control-group") && !$fld.hasClass("fieldgroup")) {
+		$fld = $fld.closest(".control-group");
+	}
+
+	$fld.prepend(str);
+	return false;
+
+}
+
 function form_submit() {
-	$(".alert", $form).remove();
+	$form = $("#booking-form");
+	$(".fielderror", $form).remove();
 
 	var available_dates = $.map($("#dates_list input:checkbox"), function (i) {
 		return $(i).val();
@@ -501,7 +466,7 @@ function form_submit() {
 	var type = $("#booking-type button.active").attr("data-type");
 
 	if (!type) {
-		alert("somehting went wrong, please select a booking type");
+		alert("Something went wrong, please select a booking type");
 		return false;
 	}
 
@@ -541,22 +506,53 @@ function form_submit() {
 	if (submit) {
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
+		var var_detailsID = $("#record-ID").val();
+		$.post("/ab/save/bookings/form?ID=" + var_detailsID + "&type=" + type, data, function (response) {
 
-		$.post("/ab/save/bookings/form?ID=" + details['ID'] + "&type=" + type, data, function (response) {
-
+			$("#record-ID").val(response[0]['ID']);
+			getData();
 			$("#pagecontent .loadingmask").fadeOut(transSpeed);
 			$("#modal-form").jqotesub($("#template-modal-form"), response[0]).modal("show");
 		});
 	}
 
 }
-function error_msg($fld, msg) {
-	var str = '<div class="alert alert-error">' + msg + '</div>';
-	if (!$fld.hasClass("control-group") && !$fld.hasClass("fieldgroup")) {
-		$fld = $fld.closest(".control-group");
+function account_note() {
+	var $this = $("#accountID");
+	var $account = $("#accountID option:selected");
+	var $select = $this.data("select2");
+
+	var $opt = $("option:selected", $this);
+
+	var alertclass = "", alertText="";
+	if ($opt.attr("data-blocked") == '1') {
+		$($select.container).addClass("select-error");
+		alertclass = "alert-error";
+		alertText = "Account Blocked!"
+	} else {
+		$($select.container).removeClass("select-error");
 	}
 
-	$fld.prepend(str);
-	return false;
+	$("#account_remark").html("");
+	if ($opt.attr("data-remark")) {
+		$("#account_remark").html('<div class="alert '+ alertclass+'"><strong>'+ alertText+'</strong> '+ $opt.attr("data-remark")+'</div>');
+	}
+
+}
+function account_lookup_history_suggestions() {
+	var type = $("#booking-type button.active").attr("data-type");
+	var accNum = $("#accountID").val();
+	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
+	for (var i = 0; i < logsRequest.length; i++) logsRequest[i].abort();
+	logsRequest.push($.getJSON("/ab/data/form/account_lookup_history_suggestions", {"accNum": accNum, "limit": "4", "type": type}, function (data) {
+		data = data['data'];
+		if (accNum) {
+			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
+		} else {
+			$suggestions.jqotesub($("#template-suggestions-accounts"), data).stop(true, true).fadeIn();
+		}
+		resizeform();
+
+	}));
 
 }

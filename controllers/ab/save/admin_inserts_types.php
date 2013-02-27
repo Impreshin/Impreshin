@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_inserts_types extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -99,7 +99,7 @@ class admin_inserts_types extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		models\inserts_types::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
@@ -107,7 +107,7 @@ class admin_inserts_types extends save {
 	}
 
 	function _sort() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
 		$pID = $user['publication']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
@@ -116,7 +116,7 @@ class admin_inserts_types extends save {
 
 		$i = 0;
 		foreach ($order as $id) {
-			F3::get("DB")->exec("UPDATE ab_inserts_types SET orderby = '$i' WHERE ID = '$id' AND pID = '$pID'");
+			$this->f3->get("DB")->exec("UPDATE ab_inserts_types SET orderby = '$i' WHERE ID = '$id' AND pID = '$pID'");
 			$i++;
 		}
 

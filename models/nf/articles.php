@@ -18,20 +18,20 @@ class articles {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
 
 		$currentDate = $currentDate['publish_date'];
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		$dID = $user['publication']['current_date']['ID'];
 
 		$from = self::list_from();
 		//test_array($currentDate);
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_articles.*,
 			nf_article_types.type as type,nf_article_types.labelClass as type_labelClass,
 				(SELECT fullName FROM global_users WHERE global_users.ID = nf_articles.authorID) as author,
@@ -62,8 +62,8 @@ class articles {
 
 	public static function getNewsbooks($ID){
 		$timer = new timer();
-		$user = F3::get("user");
-		$result = F3::get("DB")->exec("
+		$user = $f3->get("user");
+		$result = $f3->get("DB")->exec("
 			SELECT global_publications.publication, global_dates.publish_date
 			FROM (nf_article_newsbook INNER JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) INNER JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID
 			WHERE nf_article_newsbook.aID = '$ID';
@@ -78,11 +78,11 @@ class articles {
 
 	public static function getFile($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_files.*
 			FROM nf_files
 			WHERE nf_files.ID = '$ID';
@@ -92,7 +92,7 @@ class articles {
 		if (count($result)) {
 			$return = ($result[0]);
 		} else {
-			$table = F3::get("DB")->exec("EXPLAIN nf_files;");
+			$table = $f3->get("DB")->exec("EXPLAIN nf_files;");
 			$result = array();
 			foreach ($table as $key => $value) {
 				$result[$value["Field"]] = "";
@@ -106,11 +106,11 @@ class articles {
 	}
 	public static function getFiles($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_files.*
 			FROM nf_files
 			WHERE nf_files.aID = '$ID';
@@ -129,7 +129,7 @@ class articles {
 		);
 
 		$select = implode(", ",$select);
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT $select
 			FROM (nf_articles_edits INNER JOIN nf_stages ON nf_articles_edits.stageID = nf_stages.ID) INNER JOIN global_users ON nf_articles_edits.uID = global_users.ID
 			WHERE nf_articles_edits.aID = '$ID';
@@ -155,7 +155,7 @@ class articles {
 
 		$from = self::list_from();
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT count(nf_articles.ID) as records
 			$from
 
@@ -193,7 +193,7 @@ class articles {
 		}
 		$from = self::list_from();
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT $select
 			$from
 
@@ -213,7 +213,7 @@ class articles {
 		"o" => "ASC"
 	), $ordering = array("c" => "heading", "o" => "ASC"), $options = array("limit" => "")) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$pID = $user['publication']['ID'];
 		$dID = $user['publication']['current_date']['ID'];
 
@@ -248,7 +248,7 @@ class articles {
 		//test_array($orderby);
 		$from = self::list_from();
 		//test_array($order);
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_articles.*,
 				nf_article_types.type as type,nf_article_types.labelClass as type_labelClass,
 				(SELECT fullName FROM global_users WHERE global_users.ID = nf_articles.authorID) as author,
@@ -286,7 +286,7 @@ class articles {
 
 
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$permissions = $user['permissions'];
 		if (is_array($data)) {
 			$a = array();
@@ -436,11 +436,11 @@ class articles {
 	public static function _delete($ID = "", $reason = "") {
 		$timer = new timer();
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$a = new Axon("nf_articles");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_articles");
 		$a->load("ID='$ID'");
 
 		if (!$a->dry()) {
@@ -489,7 +489,7 @@ class articles {
 		$lookupColumns["placingID"] = array("sql"=>"(SELECT placing FROM ab_placing WHERE ID = '{val}')","col"=>"placing","val"=>"");
 		$lookupColumns["categoryID"] = array("sql"=>"(SELECT `category` FROM ab_categories WHERE ID = '{val}')","col"=>"category","val"=>"");
 		$lookupColumns["marketerID"] = array("sql"=>"(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')","col"=>"marketer","val"=>"");
-		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')","col"=>"colour","val"=>"");
+		$lookupColumns["colourID"] = array("sql"=>"(SELECT `colour` FROM ab_placing_sub WHERE ID = '{val}')","col"=>"colour","val"=>"");
 		$lookupColumns["material_productionID"] = array("sql"=>"(SELECT `production` FROM ab_production WHERE ID = '{val}')","col"=>"production","val"=>"");
 		$lookupColumns["remarkTypeID"] = array("sql"=>"(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')","col"=>"remarkType","val"=>"");
 		$lookupColumns["checked_userID"] = array("sql"=>"(SELECT `fullName` FROM global_users WHERE ID = '{val}')","col"=>"checked_user","val"=>"");
@@ -502,9 +502,9 @@ class articles {
 		$lookup = array();
 
 
-		$a = new Axon("nf_articles");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_articles");
 		$a->load("ID='$ID'");
-		$user = F3::get("user");
+		$user = $f3->get("user");
 
 
 
@@ -601,7 +601,7 @@ class articles {
 		}
 
 
-		$v = F3::get("DB")->exec($sql);
+		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
 			$changes[] = array(
@@ -617,7 +617,7 @@ class articles {
 
 		$n = $ID;
 
-		$p = new Axon("nf_articles_edits");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"nf_articles_edits");
 		$p->aID = $ID;
 		$p->uID = $user['ID'];
 		$p->patch = $raw['patch'];
@@ -635,7 +635,7 @@ class articles {
 	private static function getLogs($ID) {
 		$timer = new timer();
 
-		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =nf_articles_logs.userID ) AS fullName FROM nf_articles_logs WHERE aID = '$ID' ORDER BY datein DESC");
+		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =nf_articles_logs.userID ) AS fullName FROM nf_articles_logs WHERE aID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
@@ -648,7 +648,7 @@ class articles {
 
 	private static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
@@ -656,13 +656,13 @@ class articles {
 		//	$log = str_replace("'", "\\'", $log);
 
 
-		F3::get("DB")->exec("INSERT INTO nf_articles_logs (`aID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
+		$f3->get("DB")->exec("INSERT INTO nf_articles_logs (`aID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 	}
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN nf_articles;");
+		$table = $f3->get("DB")->exec("EXPLAIN nf_articles;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

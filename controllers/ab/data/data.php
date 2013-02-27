@@ -1,17 +1,17 @@
 <?php
 namespace controllers\ab\data;
-use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
 
 class data {
 
+	protected $f3;
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
@@ -23,11 +23,11 @@ class data {
 
 	function details(){
 
-		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : exit(json_encode(array("error"=> F3::get("system")->error("B01"))));
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : exit(json_encode(array("error"=> $this->f3->get("system")->error("B01"))));
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 
-		$cfg = F3::get("cfg");
+		$cfg = $this->f3->get("cfg");
 		$record = new models\bookings();
 		$return = $record->get($ID);
 

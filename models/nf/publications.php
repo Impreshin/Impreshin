@@ -18,11 +18,11 @@ class publications {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM global_publications
 			WHERE ID = '$ID'
@@ -55,7 +55,7 @@ class publications {
 		$where = str_replace("[access]", "COALESCE(global_users_company.nf,0)", $where);
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT global_publications.*, nf_users_pub.uID, COALESCE(global_users_company.nf,0) as access
 			FROM (global_publications INNER JOIN nf_users_pub ON global_publications.ID = nf_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND (nf_users_pub.uID = global_users_company.uID)
 			$where
@@ -70,7 +70,7 @@ class publications {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$uID = $user['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
@@ -83,7 +83,7 @@ class publications {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT global_publications.* ,
 				if ((SELECT count(ID) FROM nf_users_pub WHERE nf_users_pub.pID = global_publications.ID AND nf_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) as currentUser,
 				COALESCE((SELECT ID FROM global_dates WHERE global_dates.ID = global_publications.nf_currentDate), (SELECT ID FROM global_dates WHERE global_dates.pID = global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) as nf_currentDate
@@ -107,10 +107,10 @@ class publications {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$timer = new timer();
 
-		$a = new Axon("global_publications");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_publications");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
@@ -130,10 +130,10 @@ class publications {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$timer = new timer();
 
-		$a = new Axon("global_publications");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_publications");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -145,7 +145,7 @@ class publications {
 	}
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN global_publications;");
+		$table = $f3->get("DB")->exec("EXPLAIN global_publications;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

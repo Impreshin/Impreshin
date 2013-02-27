@@ -64,17 +64,14 @@
 				<% if (this.typeID =='1') { %>
 				<tr>
 					<th>Placing</th>
-					<td colspan="3">:&nbsp;<%= this.placing || "" %></td>
+					<td colspan="3">:&nbsp;<%= this.placing || "" %> <% if (this.sub_placing) { %> &nbsp;&nbsp;-&nbsp;&nbsp; <%= this.sub_placing || "" %> <% } %></td>
 
 				</tr>
 
 				<tr>
 					<th>Colour</th>
-					<td> : <%= this.colour || "" %> <% if (this.colour=="Spot") { %>(<%= this.colourSpot || "" %>)<% } %></td>
-					<% if (this.colour=="Spot" || this.colour =="Full") { %>
-					<th>Colour Rate</th>
-					<td>: <%= this.colourLabel || "" %></td>
-					<% } %>
+					<td> : <%= this.colourLabel || "" %></td>
+
 				</tr>
 				<tr>
 					<th>Size</th>
@@ -283,7 +280,10 @@
 
 <div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
 	<% if (this.material_file_filename && this.a.material_pane) { %>
-	<img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>"> <% } %>
+
+    <img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
+
+    <% } %>
 </div>
 
 <% if (this.material_status!='1') { %> <img src="/ui/_images/question.png" alt="" class="material-state"> <% } else { %>
@@ -438,7 +438,7 @@
 		</div>
 		<div class='popup-footer '>
 			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+				<button class="btn span2" data-dismiss="popup" type="button" id="popup_material_cancel_btn">Cancel</button>
 
 				<div style="float:right;">
 
@@ -478,7 +478,7 @@
 		</div>
 		<div class='popup-footer '>
 			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+				<button class="btn span2" data-dismiss="popup" type="button" >Cancel</button>
 
 				<div style="float:right;">
 					<table>
@@ -672,6 +672,7 @@ $(document).on('popup-show', '#popup-material', function () {
 $(document).on('change', '#popup-material input[name="source"]', function () {
 	material_person();
 });
+
 $(document).on('click', '#details-pane-logs .record', function (e) {
 	var $this = $(this);
 	var $clicked = $(e.target).closest("tr.record");
@@ -697,6 +698,13 @@ $(document).on('click', '#details-record-prev', function () {
 $(document).on('click', '#details-record-next', function () {
 	nextRecord();
 });
+$(document).on('click', '#popup_material_cancel_btn', function (e) {
+    var $form = $("#form-material");
+    $form.find("button[type='submit']").button('reset');
+
+});
+
+
 
 function nextRecord() {
 	var ID = $.bbq.getState("ID");
@@ -779,12 +787,12 @@ function set_upload() {
 
 	var $form = $("#form-material");
 	var uploader = new plupload.Uploader({
-		runtimes      :'gears,html5,flash,silverlight',
+		runtimes      :'html5,gears,flash,silverlight',
 		browse_button :'material-file-area-filename',
 //container          :'container',
 		max_file_size :'200mb',
 		max_file_count:1,
-		chunk_size    :"5MB",
+		chunk_size    :"2MB",
 		url           :'/ab/upload/?folder=' + folder,
 
 		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
@@ -836,12 +844,16 @@ function set_upload() {
 			var $material_file_area_filename = $('#material-file-area-filename');
 			var $img = '<img src="/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&s=' + file.target_name + '&instantrender=true" alt="">';
 
-			$material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
+            $material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 
+
+
+           // console.log($($img).attr("src"))
 			$('#material-file-area-filename img').load(function () {
 				$material_file_area_filename.html($img + file.name);
 				$form.find("button[type='submit']").button('reset');
 			});
+
 
 			$("#material_file_filename").val(file.name);
 			$("#material_file_filesize").val(file.size);

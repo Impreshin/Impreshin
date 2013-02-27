@@ -12,6 +12,7 @@ use \timer as timer;
 class report_discounts {
 	public static function figures($where, $years, $margin = "25") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$months = array(
 			array(
@@ -261,6 +262,7 @@ class report_discounts {
 
 	public static function lines($where, $dates = array("from" => "", "to" => ""), $publications) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		if (is_array($publications)) {
 			$publications_where = implode(",", $publications);
@@ -288,7 +290,7 @@ class report_discounts {
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
 
 
-		$publications = publications::getAll("ID in ($publications_where)");
+		$publications = \models\publications::getAll("ID in ($publications_where)");
 
 
 		$data = self::line_build_data($d, $date1, $date2, $publications);
@@ -300,6 +302,7 @@ class report_discounts {
 
 	private static function line_build_data($records, $date1, $date2, $publications) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 
 		$blank = array(

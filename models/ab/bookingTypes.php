@@ -17,11 +17,12 @@ class bookingTypes {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT * FROM ab_bookings_types WHERE ID = '$ID';
 
 		");
@@ -39,6 +40,7 @@ class bookingTypes {
 
 	public static function getAll($where = "", $orderby = "orderby ASC") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -50,7 +52,7 @@ class bookingTypes {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_bookings_types
 			$where
@@ -65,7 +67,8 @@ class bookingTypes {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_bookings_types;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_bookings_types;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

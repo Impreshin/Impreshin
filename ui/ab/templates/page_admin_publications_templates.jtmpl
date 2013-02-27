@@ -70,20 +70,8 @@
 
 
 			</fieldset>
-            {%  if _cfg['upload']['material'] and _user['company']['ab_upload_material']=='1'  %}
-            <fieldset style="margin-top: 20px;">
-                <legend>File Repository</legend>
-                <div class="control-group">
-                    <label for="upload_material" class="control-label">Upload material</label>
-
-                    <div class="controls">
-                        <input type="checkbox" id="ab_upload_material" name="ab_upload_material" class="span1" value="1" <% if (this.details.ab_upload_material=='1') { %>checked="checked"<% } %>> <span class="help-inline">If ticked the pdf's of the bookings material must be uploaded to mark the records material as ready</span>
-                    </div>
-                </div>
 
 
-            </fieldset>
-            {% endif %}
 			<fieldset style="margin-top: 20px;">
 				<legend>Page Size</legend>
 				<div class="control-group">
@@ -120,6 +108,43 @@
 											<% } %>
 											<% } %>
 			</fieldset>
+			{% if _cfg['upload']['material'] and _user['company']['ab_upload_material']=='1' %}
+				<fieldset style="margin-top: 20px;">
+					<legend>File Repository</legend>
+					<div class="control-group">
+						<label for="upload_material" class="control-label">Upload material</label>
+
+						<div class="controls">
+							<input type="checkbox" id="ab_upload_material" name="ab_upload_material" class="span1" value="1" <% if (this.details.ab_upload_material=='1') { %>checked="checked"<% } %>>
+							<span class="help-inline">If ticked the pdf's of the bookings material must be uploaded to mark the records material as ready</span>
+						</div>
+					</div>
+
+
+				</fieldset>
+			{% endif %}
+			<fieldset style="margin-top: 20px;" id="usecolours">
+				<legend>Publication Colours</legend>
+
+
+				<div class="control-group">
+					<label for="optionsCheckboxList" class="control-label">Colours</label>
+
+					<div class="controls highlighthovered">
+						<% for(var i in this.details.colours) { %>
+						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="<%= this.details.colours[i].ID %>" <% if (this.details.colours[i].selected=='1'){ %>checked="checked"<% } %>><%= this.details.colours[i].colourLabel %>&nbsp;&nbsp;-&nbsp;&nbsp;
+							<span style="color:#ccc;">(<%= this.details.colours[i].colour %>)</span>
+
+						</label> <% } %>
+
+
+					</div>
+				</div>
+
+
+			</fieldset>
+
 
 
 		</div>

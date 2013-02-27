@@ -1,0 +1,91 @@
+<script type="text/x-jqote-template" id="template-list">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>" class="record">
+		<td class="">
+			<%= this.section %>
+		</td>
+		<td style="width:40px;" class="c">
+			<% if (this.section_colour){ %>
+			<span  style="padding: 0 10px; background-color: <%= this.section_colour %>; margin-left: 10px;"> </span>
+			<% } %>
+		</td>
+
+
+
+	</tr>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+	<div class="scroll-pane scrolly" style="bottom: 43px;">
+
+		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+
+
+			<fieldset style="margin-top: 20px;">
+				<legend><% if (this.details.ID) { %>Edit<% } else { %>New<% } %></legend>
+				<div id="errorArea"></div>
+
+				<div class="control-group">
+					<label for="section" class="control-label">Section</label>
+
+					<div class="controls">
+						<input type="text" id="section" name="section" class="span3" value="<% if (this.details.section) { %><%= this.details.section %><% } %>">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label for="section_colour" class="control-label">Colour</label>
+
+					<div class="controls">
+						<div class="input-append">
+							<input type="text" id="section_colour" name="section_colour" class="" style="width: 60px;" value="<% if (this.details.section_colour) { %><%= this.details.section_colour %><% } %>">
+						</div>
+
+					</div>
+				</div>
+
+
+
+
+
+
+			</fieldset>
+
+
+		</div>
+
+	</div>
+
+
+	<div id="form-bottom">
+		<div class="form-actions">
+			<div style="float:left; margin-left:0; padding-top: 3px;">
+
+				<% if (this.details.ID) { %>
+
+
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="Delete this record" data-position="above" id="btn-delete">
+					<i class="icon-trash icon-d-grey"></i>
+				</button>
+				<% } %>
+			</div>
+			<div style="float:right; margin-right: 10px;">
+
+				<% if (this.details.ID) { %>
+				<button class="btn btn-mini span1 " style="margin-top:2px;" type="button" rel="tooltip" title="New Record" data-position="above" id="btn-new">
+					<i class="icon-plus icon-d-grey"></i>
+				</button>
+				<% } %>
+				<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
+
+
+			</div>
+		</div>
+	</div>
+
+	]]>
+</script>
+

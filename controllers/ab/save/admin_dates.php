@@ -13,21 +13,21 @@ use \models\user as user;
 
 class admin_dates extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$publish_date = isset($_POST['publish_date']) ? $_POST['publish_date'] : "";
-		$current = isset($_POST['current']) ? $_POST['current'] : "";
+		$current = isset($_POST['current']) ? "1" : "";
 
 
 		$submit = true;
@@ -40,7 +40,7 @@ class admin_dates extends save {
 		);
 		if ($publish_date){
 			$publish_date = date("Y-m-d",strtotime($publish_date));
-			$exists = models\dates::getAll("global_dates.publish_date='$publish_date' AND global_dates.ID <> '$ID' AND pID='$pID'");
+			$exists = \models\dates::getAll("global_dates.publish_date='$publish_date' AND global_dates.ID <> '$ID' AND pID='$pID'");
 
 
 			if (count($exists)){
@@ -54,8 +54,10 @@ class admin_dates extends save {
 			"current"     => $current,
 		);
 
+
+
 		if ($submit){
-			$ID = models\dates::save($ID, $values);
+			$ID = \models\dates::save($ID, $values);
 			$return['ID'] = $ID;
 		}
 
@@ -68,11 +70,11 @@ class admin_dates extends save {
 
 	}
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		models\dates::_delete($ID);
+		\models\dates::_delete($ID);
 
 	}
 

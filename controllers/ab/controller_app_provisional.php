@@ -8,17 +8,19 @@ use \F3 as F3;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
+use \models\dates as dates;
 class controller_app_provisional {
 	function __construct() {
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) F3::reroute("/login");
+		if (!$userID) $this->f3->reroute("/login");
 	}
 	function page() {
 
 		$timer = new timer();
-		$user = F3::get("user");
-		//F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+		$user = $this->f3->get("user");
+		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 
 
 
@@ -26,7 +28,7 @@ class controller_app_provisional {
 		$pID = $user['pID'];
 		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
-		$ab_settings = F3::get("settings");
+		$ab_settings = $this->f3->get("settings");
 
 
 
@@ -76,7 +78,7 @@ class controller_app_provisional {
 
 
 		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
-		$tmpl->repeat_dates = models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
+		$tmpl->repeat_dates = dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 
 		$tmpl->settings = $settings;
 
@@ -90,7 +92,7 @@ class controller_app_provisional {
 
 	function _print() {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 
 		$settings = models\settings::_read("provisional", $user['permissions']);
 

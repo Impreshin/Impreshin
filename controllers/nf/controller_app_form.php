@@ -10,11 +10,12 @@ use models\nf as models;
 
 class controller_app_form {
 	function __construct() {
+		$this->f3 = \base::instance();
 	}
 
 	function page() {
-		$ID = F3::get('PARAMS["ID"]');
-		$user = F3::get("user");
+		$ID = $this->f3->get('PARAMS["ID"]');
+		$user = $this->f3->get("user");
 
 		$cID = $user['company']['ID'];
 
@@ -76,7 +77,7 @@ class controller_app_form {
 
 	}
 	function article(){
-		$ID = F3::get('PARAMS["ID"]');
+		$ID = $this->f3->get('PARAMS["ID"]');
 		$detailsO = new models\articles();
 		$details = $detailsO->get($ID);
 

@@ -13,15 +13,14 @@ use \models\user as user;
 
 class provisional extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _list() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$uID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['company']['ID'];
@@ -99,7 +98,7 @@ class provisional extends data {
 				$where .= " AND (lockedBy = '$uID')";
 				break;
 			case '1':
-				$publications = models\publications::getAll("cID='$cID'");
+				$publications = \models\publications::getAll("cID='$cID'");
 				$p = array();
 				foreach ($publications as $pub) $p[] = $pub['nf_currentDate'];
 				$p = implode(",", $p);

@@ -4,18 +4,24 @@
  * Date: 2012/07/04 - 3:17 PM
  */
 namespace controllers\ab;
-use \F3 as F3;
 use \timer as timer;
 use models\ab as models;
 
 
 class controller_general_thumb {
-	public static function material(){
-		$cfg = F3::get("cfg");
+
+
+
+	public function material() {
+		$f3 = \base::instance();
+		$cfg = $f3->get("cfg");
+		$f3->set("showjson",False);
 
 		$data = new models\bookings();
-		$data = $data->get(F3::get("PARAMS.ID"));
+		$data = $data->get($f3->get("PARAMS.ID"));
 
+
+		header("Content-Type: image/png");
 		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
 		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
 		header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
@@ -24,67 +30,69 @@ class controller_general_thumb {
 			die();
 		}
 
-		$folder = $cfg['upload']['folder'] . "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/" ;
+		$folder = "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
 		$filename = $data['material_file_store'];
 
-		if (isset($_GET['instantrender'])){
+		if (isset($_GET['instantrender'])) {
 			$filename = $_GET['s'];
 		}
 
-		if (file_exists($folder. $filename)){
+
+		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+
+
+		if (file_exists($upload_folder . $folder . $filename)) {
 
 			$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 			$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
 
-				$file_extension = strtolower(substr(strrchr($filename, "."), 1));
+			$w = round($w);
+			$h = round($h);
 
-
-				if ($file_extension == "pdf") {
-					$thumb = $folder . "thumb/" . str_replace(".pdf", ".png", $filename);
-					if (!file_exists($folder . "thumb/")) mkdir($folder . "thumb/", 01777, true);
-
-					if (!file_exists($thumb) && file_exists($folder . $filename)) {
-						$exportPath = $thumb;
-						$res = "96";
-						$pdf = $folder . $filename;
-
-						$str = "gs -dCOLORSCREEN -dNOPAUSE -box -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
-						exec($str);
-
-						self::remove_white($thumb);
-					}
+			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
 
 
 
 
+			if ($file_extension == "pdf") {
+				$thumb = "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename);
+
+				if (!file_exists($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR, 01777, true);
+
+				if (!file_exists($upload_folder . $folder . $thumb) && file_exists($upload_folder . $folder . $filename)) {
+					$exportPath = $upload_folder . $folder . $thumb;
+					$res = "96";
+					$pdf = $upload_folder . $folder . $filename;
+
+					$str = "gs -dCOLORSCREEN -dNOPAUSE -box -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
+
+					exec($str);
+
+					self::remove_white($upload_folder . $folder . $thumb);
+				}
 
 
 
 
 
-					if (file_exists($thumb)) {
-						\Graphics::thumb($thumb, $w, $h);
-						exit();
-					}
 
-
-
-
+				if (file_exists($upload_folder . $folder . $thumb)) {
+					//test_array(array($folder . $thumb));
+					$image = new \Image($folder . $thumb);
+					$image->resize($w,$h,false);
+					$image->render();
+					unset($image);
+				}
 			}
-			\Graphics::fakeImage(0, 0);
-
-
-
 		}
 
-		exit();
-
-
+		$f3->set("exit", true);
 
 	}
 
-	public static function remove_white($thumb){
+	public static function remove_white($thumb) {
 		$img = imagecreatefrompng($thumb);
 		//find the size of the borders
 		$b_top = 0;
@@ -136,9 +144,8 @@ class controller_general_thumb {
 //finally, output the image
 
 
-		imagejpeg($newimg, $thumb);
+		imagepng($newimg, $thumb);
 	}
-
 
 
 }

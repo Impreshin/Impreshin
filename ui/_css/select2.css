@@ -284,8 +284,8 @@ Version: 3.2
 }
 
 .select2-results .select2-highlighted {
-  background: #3875d7;
-  color: #fff;
+  background: #DEEBFF;
+  color: #444;
 }
 .select2-results li em {
   background: #feffde;

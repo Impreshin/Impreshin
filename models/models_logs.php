@@ -13,8 +13,9 @@ class logs {
 
 	public static function getAllContent($contentID, $returnshort = false) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 
-		$return = F3::get("DB")->sql("SELECT mp_logs.*, mp_users.name  FROM mp_logs LEFT JOIN mp_users ON mp_logs.userID = mp_users.ID WHERE contentID = '$contentID' ORDER BY datein DESC");
+		$return = $f3->get("DB")->sql("SELECT mp_logs.*, mp_users.name  FROM mp_logs LEFT JOIN mp_users ON mp_logs.userID = mp_users.ID WHERE contentID = '$contentID' ORDER BY datein DESC");
 
 		if ($returnshort) {
 			$a = array();
@@ -41,13 +42,14 @@ class logs {
 		"answerID"  => ""
 	), $text = "", $userID = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if (!$userID) {
-			$user = F3::get("user");
+			$user = $f3->get("user");
 			$userID = $user['ID'];
 		}
 
 
-		$c = new Axon("mp_logs");
+		$c = new \DB\SQL\Mapper($f3->get("DB"),"mp_logs");
 
 		if ((isset($id["contentID"]))) $c->contentID = (isset($id["contentID"])) ? $id["contentID"] : "";
 		if ((isset($id["commentID"]))) $c->commentID = (isset($id["commentID"])) ? $id["commentID"] : "";

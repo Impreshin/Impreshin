@@ -16,9 +16,15 @@ class bookings {
 
 	}
 
+	private static function _from(){
+		$return = "FROM (((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID";
+		return $return;
+	}
+
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
 
@@ -27,14 +33,17 @@ class bookings {
 
 		//test_array($currentDate);
 
-		$result = F3::get("DB")->exec("
+		$from = self::_from();
+
+		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*,
 				ab_placing.placing AS placing,
+				ab_placing_sub.label AS sub_placing,
 				ab_bookings_types.type AS type,
 				ab_marketers.marketer AS marketer, ab_marketers.code AS marketerCode,
 				global_publications.publication AS publication,
 				global_publications.cID AS cID,
-				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') as dateStatus,
+				global_dates.publish_date AS publish_date, if(global_dates.publish_date<$currentDate,'0','1') AS dateStatus,
 				ab_categories.category AS category,
 				global_users.fullName AS byFullName,
 				ab_accounts.account AS account,ab_accounts.accNum AS accNum,
@@ -43,16 +52,18 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				global_pages.page,
 				(SELECT production FROM ab_production WHERE ab_production.ID = ab_bookings.material_productionID ) AS material_production,
-				ab_colour_rates.colour as colour, ab_colour_rates.label as colourLabel,
-				ab_inserts_types.insertsLabel as insertLabel
+				system_publishing_colours.colour AS colour,
+				system_publishing_colours.colourLabel AS colourLabel,
+				ab_placing_sub.label AS sub_placing,
+				ab_inserts_types.insertsLabel AS insertLabel
 
-
-			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
+			$from
 
 
 			WHERE ab_bookings.ID = '$ID';
 
-		");
+		"
+		);
 
 
 		if (count($result)) {
@@ -79,7 +90,7 @@ class bookings {
 					}
 				}
 			}
-			$cfg = F3::get("cfg");
+			$cfg = $f3->get("cfg");
 			$cfg = $cfg['upload'];
 
 			$return['material_file_filesize_display'] = 0;
@@ -104,29 +115,43 @@ class bookings {
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 	public static function getAll_count($where = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
 			$where = " ";
 		}
 
-
-		$return = F3::get("DB")->exec("
-			SELECT count(ab_bookings.ID) as records
-			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
+		$from = self::_from();
+		$return = $f3->get("DB")->exec("
+			SELECT count(ab_bookings.ID) AS records
+			$from
 			$where
-		");
+		"
+		);
 		if (count($return)) {
 			$return = $return[0]['records'];
 		}
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
@@ -140,6 +165,7 @@ class bookings {
 				);
 		*/
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -153,26 +179,35 @@ class bookings {
 			$groupby = " GROUP BY " . $groupby;
 		}
 
-
-		$return = F3::get("DB")->exec("
+		$from = self::_from();
+		$return = $f3->get("DB")->exec("
 			SELECT $select
-			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
-
-
+			$from
 			$where
-$groupby
+			$groupby
 			$orderby
-		");
+		"
+		);
 
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 	public static function getAll($where = "", $grouping = array(
 		"g" => "none",
 		"o" => "ASC"
-	), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
+	), $ordering = array(
+		"c" => "client",
+		"o" => "ASC"
+	), $options = array("limit" => "")) {
+		$f3 = \Base::instance();
 		$timer = new timer();
 
 		if ($where) {
@@ -201,35 +236,45 @@ $groupby
 			$limit = " ";
 		}
 
-
-		$result = F3::get("DB")->exec("
+		$from = self::_from();
+		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
-			global_dates.publish_date as publishDate,
+			global_dates.publish_date AS publishDate,
+			ab_placing_sub.label AS sub_placing,
 				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
-				material_status as material,
+				material_status AS material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
-				if (`page`,1,0) as layout,
-				format(global_pages.page,0) as page,
-				ab_inserts_types.insertsLabel as insertLabel,
-				ab_colour_rates.colour as colour, ab_colour_rates.label as colourLabel
+				if (`page`,1,0) AS layout,
+				format(global_pages.page,0) AS page,
+				ab_inserts_types.insertsLabel AS insertLabel,
+				system_publishing_colours.colour AS colour,
+				system_publishing_colours.colourLabel AS colourLabel,
+				ab_placing_sub.label AS sub_placing
 			$select
-
-			FROM ((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_colour_rates ON ab_bookings.colourID = ab_colour_rates.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID
+			$from
 			$where
 			$orderby
 			$limit
-		");
+		"
+		);
 
 
 		$return = $result;
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 	}
 
 
 	private static function currency($record) {
+		$f3 = \Base::instance();
 		if (is_array($record)) {
 			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
 			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate']);
@@ -256,13 +301,17 @@ $groupby
 
 	}
 
-	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
+	public static function display($data, $options = array(
+		"highlight" => "",
+		"filter"    => "*"
+	)) {
+		$f3 = \Base::instance();
 		if (!isset($options['highlight'])) $options['highlight'] = "";
 		if (!isset($options['filter'])) $options['filter'] = "";
 
 
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$permissions = $user['permissions'];
 		if (is_array($data)) {
 			$a = array();
@@ -387,12 +436,19 @@ $groupby
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $return;
 
 	}
 
 	private static function order($grouping, $ordering) {
+		$f3 = \Base::instance();
 
 		$o = explode(".", $ordering['c']);
 		$a = array();
@@ -429,8 +485,8 @@ $groupby
 				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
 				break;
 			case "colours":
-				$orderby = "if(typeID='1',COALESCE(ab_colour_rates.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',ab_colour_rates.colour,ab_bookings_types.type) as heading";
+				$orderby = "if(typeID='1',COALESCE(system_publishing_colours.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(typeID='1',COALESCE(system_publishing_colours.colour,''),ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
 				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,1,2),0) $ordering, " . $orderby;
@@ -466,13 +522,14 @@ $groupby
 	}
 
 	public static function _delete($ID = "", $reason = "") {
-		$timer = new timer();
 
-		$user = F3::get("user");
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		$a->load("ID='$ID'");
 
 		if (!$a->dry()) {
@@ -505,13 +562,20 @@ $groupby
 		}
 
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return "deleted";
 	}
 
 	public static function repeat($ID = "", $dID, $exact_repeat = '1') {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
 
 		$dataO = new bookings();
@@ -564,14 +628,16 @@ $groupby
 		}
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		foreach ($values as $key => $value) {
-			$a->$key = $value;
+			if (isset($a->$key)) {
+				$a->$key = $value;
+			}
 		}
 
 
 		$a->save();
-		$ID = $a->_id;
+		$ID = $a->ID;
 
 		$n = $dataO->get($ID);
 
@@ -589,7 +655,7 @@ $groupby
 		);
 
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 		$cfg = $cfg['upload'];
 
 		$cID = $data['cID'];
@@ -612,14 +678,24 @@ $groupby
 		bookings::logging($data['ID'], $log, $label1);
 		bookings::logging($ID, $log, $label2);
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $n;
 	}
 
-	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
+	public static function save($ID = "", $values = array(), $opts = array(
+		"dry"     => true,
+		"section" => "booking"
+	)) {
 
 		//test_array($values);
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$lookupColumns = array();
 		$lookupColumns["dID"] = array(
 			"sql" => "(SELECT publish_date FROM global_dates WHERE ID = '{val}')",
@@ -641,11 +717,17 @@ $groupby
 			"col" => "marketer",
 			"val" => ""
 		);
+		$lookupColumns["sub_placingID"] = array(
+			"sql" => "(SELECT `label` FROM ab_placing_sub WHERE ID = '{val}')",
+			"col" => "sub_placing",
+			"val" => ""
+		);
 		$lookupColumns["colourID"] = array(
-			"sql" => "(SELECT `colour` FROM ab_colour_rates WHERE ID = '{val}')",
+			"sql" => "(SELECT `colourLabel` FROM system_publishing_colours WHERE ID = '{val}')",
 			"col" => "colour",
 			"val" => ""
 		);
+
 		$lookupColumns["material_productionID"] = array(
 			"sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')",
 			"col" => "production",
@@ -659,6 +741,11 @@ $groupby
 		$lookupColumns["checked_userID"] = array(
 			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
 			"col" => "checked_user",
+			"val" => ""
+		);
+		$lookupColumns["deleted_userID"] = array(
+			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
+			"col" => "deleted_user",
 			"val" => ""
 		);
 		$lookupColumns["material_source"] = array(
@@ -689,15 +776,15 @@ $groupby
 		$lookup = array();
 
 
-		$a = new Axon("ab_bookings");
+		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		$a->load("ID='$ID'");
 
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 		$cfg = $cfg['upload'];
 		//test_array($cfg);
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$cID = $user['publication']['cID'];
 
 
@@ -745,29 +832,31 @@ $groupby
 		$material = false;
 		foreach ($values as $key => $value) {
 			if (strpos($key, "aterial_")) $material = true;
-
-			$cur = $a->$key;
-			if ($cur != $value) {
-				if (isset($lookupColumns[$key])) {
-					$lookupColumns[$key]['val'] = $value;
-					$lookupColumns[$key]['was'] = $cur;
-					$lookup[] = $lookupColumns[$key];
-				} else {
-					$w = $cur;
-					$v = $value;
-					if ($key == "material_file_filesize") {
-						$v = $v ? file_size($v) : "";
-						$w = $w ? file_size($w) : "";
+			if (isset($a->$key)) {
+				$cur = $a->$key;
+				if ($cur != $value) {
+					if (isset($lookupColumns[$key])) {
+						$lookupColumns[$key]['val'] = $value;
+						$lookupColumns[$key]['was'] = $cur;
+						$lookup[] = $lookupColumns[$key];
+					} else {
+						$w = $cur;
+						$v = $value;
+						if ($key == "material_file_filesize") {
+							$v = $v ? file_size($v) : "";
+							$w = $w ? file_size($w) : "";
+						}
+						$changes[] = array(
+							"k" => $key,
+							"v" => $v,
+							"w" => str_replace("0000-00-00 00:00:00", "", $w)
+						);
 					}
-					$changes[] = array(
-						"k" => $key,
-						"v" => $v,
-						"w" => str_replace("0000-00-00 00:00:00", "", $w)
-					);
+
 				}
 
+				$a->$key = $value;
 			}
-			$a->$key = $value;
 		}
 
 		if ($opts['dry'] || !$a->dry()) {
@@ -777,7 +866,7 @@ $groupby
 
 		if (!$ID) {
 			$label = "Booking Added";
-			$ID = $a->_id;
+			$ID = $a->ID;
 		} else {
 			$label = "Booking Edited";
 		}
@@ -792,7 +881,7 @@ $groupby
 		}
 
 
-		$v = F3::get("DB")->exec($sql);
+		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
 			$changes[] = array(
@@ -860,27 +949,41 @@ $groupby
 		$n = $n->get($ID);
 
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $n;
 	}
 
 	private static function getLogs($ID) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 
-		$return = F3::get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
+		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
 			$a[] = $record;
 		}
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 		return $a;
 	}
 
 	private static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
@@ -888,13 +991,20 @@ $groupby
 		//	$log = str_replace("'", "\\'", $log);
 
 
-		F3::get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
+		$f3->get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array(
+			             "Models" => array(
+				             "Class"  => __CLASS__,
+				             "Method" => __FUNCTION__
+			             )
+		             ), func_get_args()
+		);
 	}
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_bookings;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_bookings;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

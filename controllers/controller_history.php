@@ -6,7 +6,7 @@
 namespace controllers;
 class controller_history {
 	function __construct(){
-
+		$this->f3 = \base::instance();
 	}
 	function page(){
 

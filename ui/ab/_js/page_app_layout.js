@@ -99,12 +99,12 @@ $(document).ready(function () {
 		page = page.join("");
 
 		var section = $("#sectionID", $this).val();
-		var colour = $("#colours button.active", $this).attr("data-colour");
+		var colour = $("#colourID", $this).val();
 
 		var data = {
 			"page"     :page,
 			"sectionID":section,
-			"colour"   :colour
+			"colourID"   :colour
 		};
 
 		activityRequest.push($.post("/ab/save/layout/_page", data, function (response) {
@@ -298,7 +298,7 @@ function tr_draggable($parent) {
 
 	$("tr.record.dragable", $parent).draggable({
 		opacity    :0.5,
-		helper     :function (e) {
+		helper: function(e){
 			var $target = $(e.target).closest("tr.record");
 			var cm = $target.attr("data-cm");
 			var col = $target.attr("data-col");
@@ -306,9 +306,8 @@ function tr_draggable($parent) {
 
 			var width = colSize * col, offsetX = width / 2;
 			var height = cmSize * cm, offsetY = height / 2;
-			;
 
-			var str;
+			var str = "";
 			str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px;">';
 			if (img) {
 				str += '<img src="' + img + '&w=' + width + '&h=' + height + '" />';
@@ -354,31 +353,17 @@ function page_droppable($element) {
 					reason.push("Not enough space");
 				}
 
-				var pageColour = $page.attr("data-colour");
+				var limit = $page.attr("data-limit");
 				var draggedColour = $dragged.attr("data-colour");
-				var acceptableColours = "";
-				if (pageColour) {
-					pageColour = pageColour.toLowerCase();
-					draggedColour = draggedColour.toLowerCase();
-					switch (pageColour) {
-						case "full":
-							acceptableColours = ["full", "spot", "none", "null", ""];
-							break;
-						case "spot":
-							acceptableColours = ["spot", "none", "null", ""];
-							break;
-						case "none":
-							acceptableColours = ["none", "null", ""];
-							break;
-						default:
-							acceptableColours = ["full", "spot", "none", "null", ""];
-							break;
 
-					}
 
-					if (acceptableColours.indexOf(draggedColour) == -1) {
+
+				if (limit && limit != "undefined") {
+					limit = limit.split(",");
+					if (limit.indexOf(draggedColour) < 0){
 						allowDrop = false;
 						reason.push("Booking colour");
+
 					}
 
 				}
@@ -424,34 +409,17 @@ function page_droppable($element) {
 				allowDrop = false;
 			}
 
-			var pageColour = $page.attr("data-colour");
+			var limit = $page.attr("data-limit");
 			var draggedColour = $dragged.attr("data-colour");
-			var acceptableColours = "";
-			if (pageColour) {
-				pageColour = pageColour.toLowerCase();
-				draggedColour = draggedColour.toLowerCase();
-				switch (pageColour) {
-					case "full":
-						acceptableColours = ["full", "spot", "none", "null", ""];
-						break;
-					case "spot":
-						acceptableColours = ["spot", "none", "null", ""];
-						break;
-					case "none":
-						acceptableColours = ["none", "null", ""];
-						break;
-					default :
-						acceptableColours = ["full", "spot", "none", "null", ""];
-						break;
 
-				}
-
-				if (acceptableColours.indexOf(draggedColour) == -1) {
+			if (limit && limit != "undefined") {
+				limit = limit.split(",");
+				if (limit.indexOf(draggedColour) < 0) {
 					allowDrop = false;
+
 				}
 
 			}
-
 			if ($this.hasClass("locked")) {
 				allowDrop = false;
 			}

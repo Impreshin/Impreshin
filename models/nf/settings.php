@@ -182,7 +182,7 @@ class settings {
 	}
 
 	public static function _read($section, $permission = array()) {
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$timer = new timer();
 		$settings = self::settings($user['permissions']);
 		$defaults = self::defaults();

@@ -1,29 +1,13 @@
 <section id="maintoolbar">
-	<div class="container">
-		<div class="toolbar clearfix  ">
-			<ul class="nav pull-left">
-				<li><h2 style="padding-left: 30px;" id="booking-heading">loading...</h2>
-				</li>
-			</ul>
-			<ul class="nav nav-pills pull-right">
-				<li style="padding-top: 6px; margin-right: 10px;">Booking Type:</li>
-				<li>
-					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
-						{% for row in bookingTypes %}
-						<button class="btn span1 btn-mini {% if details['ID'] %} {% if details['typeID']|default("1")==row['ID'] %}active{% endif %} {% else %}{% if settings['type']==row['ID'] %}active{% endif %}{% endif %}" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
-						{% endfor %}
-					</div>
-				</li>
-
-				<li class="divider-vertical"></li>
-			</ul>
 
 
-		</div>
-		<div class="toolbar-end"></div>
-	</div>
 
 </section>
+
+
+
+
+
 
 <section role="main" id="pagecontent">
 	<div class="container">
@@ -33,7 +17,7 @@
 				<div class="scroll-pane">
 
 					<div data-heading="top" id="scroll-container">
-						<form class="form-horizontal form-fill" id="booking-form"></form>
+
 
 					</div>
 
@@ -61,7 +45,7 @@
 	<div class='modal-body'>
 		<article class="c">
 			<textarea name="delete_reason" id="delete_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are deleting this record"></textarea>
-			<input id="record-ID" type="hidden" name="record-ID" value="{{ details['ID'] }}">
+
 
 		</article>
 	</div>
@@ -73,10 +57,9 @@
 	</div>
 	</form>
 </div>
+<input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
 <script type="text/javascript">
-	var var_clients = {{ clients_th_json|raw }};
-	var var_spots = {{ spots_th_json|raw }};
-	var var_colours = {{ colours_th_json|raw }};
-	var var_details = {{ details_th_json|raw }};
-	var var_publication = {{ _settings['json']['publication']|raw }};
+	var var_sub_placing = {{ sub_placing|json_encode()|raw }};
+	var var_publication = {{ _user['publication']|json_encode()|raw }};
+
 </script>

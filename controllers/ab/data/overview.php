@@ -12,23 +12,23 @@ use \models\user as user;
 
 class overview extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 
 	function _pages() {
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
 		$settings = models\settings::_read("overview");
 
-		$defaults = F3::get("defaults");
+		$defaults = $this->f3->get("defaults");
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
@@ -92,7 +92,6 @@ class overview extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
-				$a['colourSpot'] = $booking['colourSpot'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
@@ -109,6 +108,10 @@ class overview extends data {
 
 		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
+		$colourGroups = array();
+		foreach ($user['publication']['colours_group'] as $g) {
+			$colourGroups[$g['ID']] = $g;
+		}
 
 
 		$r = array();
@@ -146,6 +149,24 @@ class overview extends data {
 			}
 
 
+			$colour = array(
+				"heading"=>"",
+				"limit"=>"",
+				"icons"=>"",
+			);
+			if ($page['colourID']){
+				if (isset($colourGroups[$page['colourID']])){
+					$colour = array(
+						"heading"=> $colourGroups[$page['colourID']]['label'],
+						"icons"=> strtolower(str_replace(array(" ","&","_"),"",$colourGroups[$page['colourID']]['label'])),
+						"limit"=> $colourGroups[$page['colourID']]['colour_string'],
+					);
+				}
+
+
+			}
+
+
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
 				"locked"   => $page['locked'],
@@ -155,7 +176,7 @@ class overview extends data {
 					"n"=>$page['section'],
 					"c"=>$page['section_colour']
 				),
-				"colour" => $page['colour'],
+				"colour" => $colour,
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm'],
 				//"records"=> $records,
@@ -240,7 +261,7 @@ class overview extends data {
 
 
 	function _page($page=""){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -318,7 +339,7 @@ class overview extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 	function _stats($data="") {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -354,7 +375,7 @@ class overview extends data {
 
 	function _details_page(){
 		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -375,7 +396,7 @@ class overview extends data {
 	}
 	function _details_section(){
 		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 

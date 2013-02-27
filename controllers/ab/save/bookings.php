@@ -13,15 +13,15 @@ use \models\user as user;
 
 class bookings extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function booking_delete() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
@@ -34,13 +34,13 @@ class bookings extends save {
 	}
 
 	function form() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		//$accStuff = new models\accounts();
 		//$accStuff= $accStuff->get($_POST['accNum']);
 
-		$publication = new models\publications();
+		$publication = new \models\publications();
 		$publication = $publication->get($user['pID']);
 
 
@@ -77,11 +77,8 @@ class bookings extends save {
 
 
 		if (isset($_POST['client'])) $values['client'] = $_POST['client'];
-		if (isset($_POST['colourID'])) $values['colourID'] = $_POST['colourID'];
-		if (isset($_POST['colourSpot'])) $values['colourSpot'] = $_POST['colourSpot'];
-		if (isset($_POST['col'])) $values['col'] = $_POST['col'];
-		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
-		if (isset($values['cm']) && isset($values['col'])) $values['totalspace'] = $values['cm'] * $values['col'];
+
+
 
 
 		if (isset($_POST['rate'])) $values['rate'] = ($_POST['rate']) ? $_POST['rate'] : $_POST['rate_fld'];
@@ -93,11 +90,27 @@ class bookings extends save {
 		if (isset($_POST['agencyDiscount'])) $values['agencyDiscount'] = $_POST['agencyDiscount'];
 
 
-		if (isset($_POST['placingID'])) $values['placingID'] = $_POST['placingID'];
+		switch ($type) {
+			case 1:
+				if (isset($_POST['col'])) $values['col'] = $_POST['col'];
+				if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
+				if (isset($values['cm']) && isset($values['col'])) $values['totalspace'] = $values['cm'] * $values['col'];
+				if (isset($_POST['placingID'])) $values['placingID'] = $_POST['placingID'];
+				if (isset($_POST['sub_placingID'])) $values['sub_placingID'] = $_POST['sub_placingID'];
+				if (isset($_POST['colourID'])) $values['colourID'] = $_POST['colourID'];
+				break;
+			case 2:
+				if (isset($_POST['InsertPO'])) $values['InsertPO'] = ($_POST['InsertPO']) ? $_POST['InsertPO'] : $publication['printOrder'];
+				if (isset($_POST['insertTypeID'])) $values['insertTypeID'] = $_POST['insertTypeID'];
+				break;
+		}
+
+
+
 
 		if (isset($_POST['categoryID'])) $values['categoryID'] = $_POST['categoryID'];
 
-		if (isset($_POST['InsertPO'])) $values['InsertPO'] = ($_POST['InsertPO']) ? $_POST['InsertPO'] : $publication['printOrder'];
+
 		if (isset($_POST['rate']) && $type == "2") $values['InsertRate'] = ($_POST['rate']) ? $_POST['rate'] : $publication['InsertRate'];
 
 
@@ -108,7 +121,7 @@ class bookings extends save {
 		if (isset($_POST['remarkTypeID'])) $values['remarkTypeID'] = $_POST['remarkTypeID'];
 
 		if (isset($_POST['marketerID'])) $values['marketerID'] = $_POST['marketerID'];
-		if (isset($_POST['insertTypeID'])) $values['insertTypeID'] = $_POST['insertTypeID'];
+
 
 
 		//if (isset($_POST['accNum'])) $values['accNum'] = $_POST['accNum'];
@@ -117,9 +130,14 @@ class bookings extends save {
 		$ss = array();
 		$ss["form"] = array(
 			"type"      => $type,
-			"last_marketer"      => $values['marketerID']
+			"last_marketer"      => $values['marketerID'],
+			"last_category"      => $values['categoryID']
 		);
-
+		$values['deleted']=NULL;
+		$values['deleted_userID']= NULL;
+		$values['deleted_user']= NULL;
+		$values['deleted_date']= NULL;
+		$values['deleted_reason']= NULL;
 
 		models\user_settings::save_setting($ss);
 
@@ -128,6 +146,7 @@ class bookings extends save {
 
 		$a = array();
 		$b = array();
+		//test_array($values);
 		foreach ($_POST['dID'] AS $date) {
 			$v = $values;
 			$v['dID'] = $date;
@@ -147,7 +166,7 @@ class bookings extends save {
 
 	}
 	function repeat(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
 

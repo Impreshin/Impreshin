@@ -12,14 +12,14 @@ use \models\user as user;
 
 class layout extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = \F3::get("user");
+		$user = $this->f3->get("user");
 
 		$userID = $user['ID'];
 		$pID = $user['pID'];
@@ -42,14 +42,14 @@ class layout extends data {
 
 		if (count($records)) $records = $records[0]['records'];
 		$return = array();
-		$return['placing'] = F3::get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
+		$return['placing'] = $this->f3->get("DB")->exec("SELECT ID, placing, (SELECT count(ab_bookings.ID) FROM ab_bookings LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID WHERE placingID =ab_placing.ID AND ab_bookings.pID = '$pID' AND ab_bookings.dID = '$dID' AND deleted is null AND checked = '1' AND (page is null OR page > '$maxPage')) AS recordCount FROM ab_placing WHERE pID = '$pID' ORDER BY orderby");
 
 		$cols = array(
 			"ID",
 			"client",
 			"colour",
-			"colourSpot",
 			"colourLabel",
+			"colourID",
 			"col",
 			"cm",
 			"totalspace",
@@ -87,7 +87,7 @@ class layout extends data {
 
 	function _pages() {
 
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -123,9 +123,7 @@ class layout extends data {
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
-				$a['colour'] = $booking['colour'];
-				$a['colour_l'] = strtolower($booking['colour']);
-				$a['colourSpot'] = $booking['colourSpot'];
+				$a['colourID'] = $booking['colourID'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
@@ -137,13 +135,41 @@ class layout extends data {
 				$bookings[$booking['pageID']][] = $a;
 			}
 		}
+		$colourGroups = array();
+		foreach ($user['publication']['colours_group'] as $g){
+			$colourGroups[$g['ID']] = $g;
+		}
 
+
+
+		//test_array($colourGroups);
 
 
 		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
 		$r = array();
 		foreach ($pagesReal as $page){
+
+			$colour = array(
+				"heading"=>"",
+				"limit"=>"",
+				"icons"=>"",
+			);
+			if ($page['colourID']){
+				if (isset($colourGroups[$page['colourID']])){
+					$colour = array(
+						"heading"=> $colourGroups[$page['colourID']]['label'],
+						"icons"=> strtolower(str_replace(array(" ","&","_"),"",$colourGroups[$page['colourID']]['label'])),
+						"limit"=> $colourGroups[$page['colourID']]['colour_string'],
+					);
+				}
+
+
+			}
+
+
+
+
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
@@ -153,8 +179,7 @@ class layout extends data {
 					"n"=> ($page['section']) ? $page['section'] : "",
 					"c"=> ($page['section_colour']) ? $page['section_colour'] : ""
 				),
-				"colour" => ($page['colour'])? $page['colour']:"",
-				"colour_l" => strtolower(($page['colour'])? $page['colour']:""),
+				"colour" => $colour,
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm'],
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
@@ -190,7 +215,6 @@ class layout extends data {
 			"count"  => $pagesCount,
 			"spreads"=> $spreads
 		);
-
 
 		$spread = array();
 
@@ -243,7 +267,7 @@ class layout extends data {
 
 
 	function _page($page=""){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -269,11 +293,33 @@ class layout extends data {
 		);
 
 
+		$colourGroups = array();
+		foreach ($user['publication']['colours_group'] as $g) {
+			$colourGroups[$g['ID']] = $g;
+		}
 
 
 		$pagesReal = models\pages::getAll("page='$page' AND global_pages.pID='$pID' AND global_pages.dID = '$dID'", "page ASC, ID DESC");
 
 		$page = $pagesReal[0];
+
+		$colour = array(
+				"heading"=>"",
+				"limit"=>"",
+				"icons"=>"",
+			);
+			if ($page['colourID']){
+				if (isset($colourGroups[$page['colourID']])){
+					$colour = array(
+						"heading"=> $colourGroups[$page['colourID']]['label'],
+						"icons"=> strtolower(str_replace(array(" ","&","_"),"",$colourGroups[$page['colourID']]['label'])),
+						"limit"=> $colourGroups[$page['colourID']]['colour_string'],
+					);
+				}
+
+
+			}
+
 
 
 		$r = array(
@@ -284,8 +330,7 @@ class layout extends data {
 					"n"=> $page['section'],
 					"c"=> $page['section_colour']
 				),
-				"colour" => $page['colour'],
-				"colour_l" => strtolower($page['colour']),
+				"colour" => $colour,
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm']
 			);
@@ -299,9 +344,7 @@ class layout extends data {
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
-				$a['colour'] = $booking['colour'];
-				$a['colour_l'] = strtolower($booking['colour']);
-				$a['colourSpot'] = $booking['colourSpot'];
+				$a['colourID'] = $booking['colourID'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
@@ -329,7 +372,7 @@ class layout extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 	function _stats($data="") {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
@@ -365,7 +408,7 @@ class layout extends data {
 
 	function _details_page(){
 		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -392,7 +435,6 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
-				$a['colourSpot'] = $booking['colourSpot'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];
@@ -412,7 +454,7 @@ class layout extends data {
 	}
 	function _details_section(){
 		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 

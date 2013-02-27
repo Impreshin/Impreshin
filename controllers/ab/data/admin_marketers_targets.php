@@ -12,15 +12,16 @@ use \models\user as user;
 
 class admin_marketers_targets extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _list() {
-		$user = F3::get("user");
+
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
@@ -83,7 +84,7 @@ class admin_marketers_targets extends data {
 
 
 		$records = models\marketers_targets::getAll($where, $ordering_c . " " . $ordering_d . ",date_to DESC", $pagination['limit']);
-		//$records = models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
+		//$records = \models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
 		$a = array();
 		foreach ($records as $target){
 			$target['target'] = currency($target['target']);
@@ -106,7 +107,7 @@ class admin_marketers_targets extends data {
 	}
 
 	function _details() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -123,12 +124,12 @@ class admin_marketers_targets extends data {
 
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		if (!$details['ID']) {
 			$userPublications = array();
 		} else {
-			$userPublications = F3::get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
+			$userPublications = $this->f3->get("DB")->exec("SELECT pID FROM ab_marketers_targets_pub WHERE mtID = '$ID'");
 		}
 
 

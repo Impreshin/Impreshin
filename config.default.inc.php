@@ -6,10 +6,17 @@ $cfg['currency']['separator'] = " ";
 $cfg['news']['path'] = "http://admin.impreshin.info/news/json";
 
 
-$cfg['DB']['host'] = "localhost";
+$cfg['DB']['host'] = "127.0.0.1";
 $cfg['DB']['username'] = "username";
 $cfg['DB']['password'] = "password";
 $cfg['DB']['database'] = "adbooker_v5";
+
+$cfg['package']['host'] = "127.0.0.1";
+$cfg['package']['username'] = "username";
+$cfg['package']['password'] = "password";
+$cfg['package']['database'] = "impreshin-admin";
+
+
 
 $cfg['upload']['material'] = false;
 $cfg['upload']['pages'] = false;
@@ -35,3 +42,6 @@ $cfg['git']['docs']['path'] = "github.com/Impreshin/Impreshin-Docs.git";
 $cfg['git']['docs']['username'] = "ImpreshinDeploy";
 $cfg['git']['docs']['password'] = "impreshindeploy015";
 $cfg['git']['docs']['branch'] = "master";
+
+
+$cfg['default_colours'] = array("1","2","3");

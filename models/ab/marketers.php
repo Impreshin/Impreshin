@@ -18,11 +18,12 @@ class marketers {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT ab_marketers.*
 			FROM ab_marketers
 			WHERE ab_marketers.ID = '$ID';
@@ -39,10 +40,11 @@ class marketers {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "", $pID="") {
 		$timer = new timer();
-		$user = F3::get("user");
-		$pID = $user['publication']['ID'];
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		$pID = $pID ? $pID: $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -54,8 +56,8 @@ class marketers {
 		}
 
 
-		$result = F3::get("DB")->exec("
-			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+		$result = $f3->get("DB")->exec("
+			SELECT DISTINCT ab_marketers.*, if ((SELECT count(ID) FROM ab_marketers_pub WHERE ab_marketers_pub.mID = ab_marketers.ID AND ab_marketers_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 
 			FROM ab_marketers LEFT JOIN ab_marketers_pub ON ab_marketers.ID = ab_marketers_pub.mID
 			$where
@@ -72,34 +74,60 @@ class marketers {
 		return $return;
 	}
 
-	public static function save($ID, $values) {
-		$user = F3::get("user");
+	public static function getPublications($ID) {
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		$cID = $user['company']['ID'];
+
+		$return = $f3->get("DB")->exec("
+			SELECT global_publications.*
+			FROM ab_marketers_pub INNER JOIN global_publications ON ab_marketers_pub.pID = global_publications.ID
+			WHERE global_publications.cID = '$cID' AND ab_marketers_pub.mID = '$ID'
+		");
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
+	public static function save($ID, $values) {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 		$lookupColumns = array();
 
-		$a = new Axon("ab_marketers");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = $a->$key;
-			$a->$key = $value;
+			$old[$key] = isset($a->$key) ? $a->$key : "";
+			if (isset($a->$key)) {
+
+				$a->$key = $value;
+			}
 		}
 
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->marketer)";
+		} else {
+			$label = "Record Added (" . $values['marketer'] . ')';
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+		$ID = $a->ID;
 
 		$cID = $values['cID'];
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
 
-		$p = new Axon("ab_marketers_pub");
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers_pub");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 		$pub = array(
 			"a" => array(),
 			"r" => array()
@@ -141,11 +169,7 @@ class marketers {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited ($a->marketer)";
-		} else {
-			$label = "Record Added (" . $values['marketer'] . ')';
-		}
+
 		//test_array($new_logging);
 
 
@@ -157,10 +181,12 @@ class marketers {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
 
-		$a = new Axon("ab_marketers");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_marketers");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -175,7 +201,8 @@ class marketers {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_marketers;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_marketers;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

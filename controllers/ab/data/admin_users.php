@@ -12,14 +12,14 @@ use \models\user as user;
 
 class admin_users extends data {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 	function _list() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
@@ -61,7 +61,7 @@ class admin_users extends data {
 
 		$records = user::getAll("cID='$cID'", $ordering_c . " " . $ordering_d . ", fullName ASC");
 
-		$apps = F3::get("cfg");
+		$apps = $this->f3->get("cfg");
 		$apps = $apps['apps'];
 
 		$apps_str = "";
@@ -69,8 +69,8 @@ class admin_users extends data {
 
 		$a = array();
 		foreach ($records as $record){
-			foreach ($apps as $app) {
-				$t = time() - strtotime($record[$app . '_last_activity']);
+
+				$t = time() - strtotime($record['last_activity']);
 				if ($t < 172800 * 1){
 					$t = 1;
 				} elseif ($t < 172800 * 3){
@@ -79,13 +79,13 @@ class admin_users extends data {
 					$t = 3;
 				}
 
-				$record[$app.'_last_activity'] = array(
-					"time"=> $record[$app . '_last_activity'],
-					"display"=>timesince($record[$app . '_last_activity']),
+				$record['last_activity'] = array(
+					"time"=> $record['last_activity'],
+					"display"=>timesince($record['last_activity']),
 					"active"=>$t
 				);
 
-			}
+
 			$a[] = $record;
 		}
 		$records = $a;
@@ -97,7 +97,7 @@ class admin_users extends data {
 		$GLOBALS["output"]['data'] = $return;
 	}
 	function _details(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
@@ -112,12 +112,12 @@ class admin_users extends data {
 		$details = $details->get($ID);
 
 		$return = array();
-		$publications = models\publications::getAll("cID='$cID'", "publication ASC");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 		if (!$details['ID']){
 			$userPublications = array();
 		} else {
-			$userPublications = models\publications::getAll_user("ab_users_pub.uID='" . $details['ID'] . "'", "publication ASC");
+			$userPublications = \models\publications::getAll_user("ab_users_pub.uID='" . $details['ID'] . "'", "publication ASC");
 		}
 
 
@@ -139,7 +139,7 @@ class admin_users extends data {
 		$return['publications'] = $publications;
 
 
-		$extra = F3::get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
+		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
 
 		if (count($extra)) {
 			$extra = $extra[0];
@@ -147,6 +147,7 @@ class admin_users extends data {
 			$return['details']['permissions'] = models\user_permissions::_read($extra['ab_permissions']);
 			$return['details']['ab_marketerID'] = $extra['ab_marketerID'];
 			$return['details']['ab_productionID'] = $extra['ab_productionID'];
+			$return['details']['allow_setup'] = $extra['allow_setup'];
 		} else {
 			$return['details']['ab'] = '1';
 

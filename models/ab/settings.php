@@ -12,6 +12,7 @@ class settings {
 
 	public static function settings($permissions=array()) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$columns = array(
 			"client"                 => array(
@@ -34,14 +35,13 @@ class settings {
 
 			"colour"                 => array(
 				"c"=> "colour",
-				"o"=> "ab_colour_rates.colour",
-				"h"=> "Colour",
-				"m" => 60
+				"o"=> "colour",
+				"h"=> "Colour"
 			),
-			"colourSpot"             => array(
-				"c"=> "colourSpot",
-				"o"=> "colourSpot",
-				"h"=> "Colour&nbsp;Spot"
+			"colourLabel"             => array(
+				"c"=> "colourLabel",
+				"o"=> "colourLabel",
+				"h"=> "Colour&nbsp;Label"
 			),
 			"rate_C"                 => array(
 				"c"=> "rate_C",
@@ -325,7 +325,7 @@ class settings {
 			}
 		}
 
-		$cfg = F3::get("cfg");
+		$cfg = $f3->get("cfg");
 
 		if (!$cfg['upload']['material']){
 			if (isset($return['columns']['material_file_filename'])) unset($return['columns']['material_file_filename']);
@@ -340,6 +340,7 @@ class settings {
 
 	public static function defaults($application = "ab", $ID = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 			$settings = array(
 				"provisional"=>array(
@@ -442,7 +443,8 @@ class settings {
 
 				"form"=>array(
 					"type"=>"1",
-					"last_marketer"=>""
+					"last_marketer"=>"",
+					"last_category"=>""
 				),
 				"layout"=>array(
 					"placingID"=>array()
@@ -663,8 +665,10 @@ class settings {
 	}
 
 	public static function _read($section, $permission=array()){
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 		$settings = self::settings($user['permissions']);
 		$defaults = self::defaults();
 		$settings_raw = $settings;
@@ -714,10 +718,41 @@ class settings {
 			$return['col'] = $columns;
 			$return['count']=count($columns);
 		}
-		if (isset($settings_raw['groupby'][$section])) $return['groupby']= $settings_raw['groupby'][$section];
+		if (isset($settings_raw['groupby'][$section])) {
+			$return['groupby']= $settings_raw['groupby'][$section];
+		}
+//test_array($settings['groupby'][$section]);
+
+		
+		if (isset($return['group'])&&isset($settings['groupby'][$section])){
+			$gb = array();
+			
+			foreach ($settings['groupby'][$section] as $g){
+				$gb[] = $g['g'];
+			}
+
+			if (!in_array($return['group']['g'],$gb)){
+				if (isset($defaults['settings'][$section]['group']['g'])) {
+					$return['group']['g'] = $defaults['settings'][$section]['group']['g'];
+				}
+			}
 
 
-		//test_array($return);
+
+
+		}
+		//test_array($defaults);
+		if (isset($return['order'])){
+			if (!isset($settings['columns'][$return['order']['c']])&&isset($defaults['settings'][$section]['order']['c'])) {
+				$return['order']['c'] = $defaults['settings'][$section]['order']['c'];
+			}
+			if (!in_array($return['order']['o'],array("ASC","DESC")) && isset($defaults['settings'][$section]['order']['o'])) {
+				$return['order']['o'] = $defaults['settings'][$section]['order']['o'];
+			}
+
+
+		}
+
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());
 		return $return;

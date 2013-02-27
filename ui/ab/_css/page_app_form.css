@@ -118,3 +118,12 @@ margin-right: 30px;
 .btn-group.square > .btn:first-child {
 	margin-left: 0;
 }
+#form-diff > article, #sub_placing_area, #colour_area {
+	display:none;
+}
+#lastplacedbooking table tbody {
+	border-left:none!important;
+}
+#account_remark .alert {
+	margin:10px 30px 0 0;
+}

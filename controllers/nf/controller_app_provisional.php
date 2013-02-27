@@ -10,16 +10,17 @@ use \models\nf as models;
 use \models\user as user;
 class controller_app_provisional {
 	function __construct() {
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) F3::reroute("/login");
+		if (!$userID) $this->f3->reroute("/login");
 	}
 	function page() {
 
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$cID = $user['company']['ID'];
-		//F3::get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
+		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 
 
 		$authors = \models\user::getAll("nf_author = '1' AND nf = '1' AND cID = '$cID'");
@@ -33,7 +34,7 @@ class controller_app_provisional {
 		$settings = models\settings::_read("provisional", $user['permissions']);
 
 
-		$raw_settings = F3::get("settings");
+		$raw_settings = $this->f3->get("settings");
 
 
 		//$settings = models\settings::_read("provisional",$user['permissions']);

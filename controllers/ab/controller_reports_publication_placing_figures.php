@@ -9,10 +9,10 @@ use \timer as timer;
 use \models\ab as models;
 class controller_reports_publication_placing_figures {
 	function __construct() {
-
+		$this->f3 = \base::instance();
 	}
 	function page() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$uID = $user['ID'];
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
@@ -25,9 +25,9 @@ class controller_reports_publication_placing_figures {
 
 
 		if ($user['su'] == '1') {
-			$publications = models\publications::getAll("cID = '$cID'", "publication ASC");
+			$publications = \models\publications::getAll("cID = '$cID'", "publication ASC");
 		} else {
-			$publications = models\publications::getAll_user("ab_users_pub.uID='$uID' AND global_publications.cID = '$cID'", "publication ASC");
+			$publications = \models\publications::getAll_user("ab_users_pub.uID='$uID' AND global_publications.cID = '$cID'", "publication ASC");
 		}
 		$p = array();
 		$publicationselected = array();

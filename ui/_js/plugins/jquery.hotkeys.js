@@ -160,7 +160,7 @@ Note:
     // clicked with the mouse and not the document event it would make sense to get the document
     hotkeys.findElement = function (elem){
         if (!jQuery(elem).attr('hkId')){
-            if (jQuery.browser.opera || jQuery.browser.safari){
+            if (navigator.userAgent.match(/opera/i) !== null || navigator.userAgent.match(/safari/i) !== null){
                 while (!jQuery(elem).attr('hkId') && elem.parentNode){
                     elem = elem.parentNode;
                 }

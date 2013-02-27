@@ -70,7 +70,7 @@ class user_permissions {
 
 	public static function write($uID, $cID, $values) {
 		$timer = new timer();
-		$a = new \Axon("global_users_company");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$a->load("uID='$uID' AND cID = '$cID'");
 		$a->nf_permissions = serialize($values);
 

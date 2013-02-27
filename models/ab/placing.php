@@ -18,11 +18,12 @@ class placing {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_placing
 			WHERE ID = '$ID';
@@ -41,6 +42,7 @@ class placing {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -52,8 +54,8 @@ class placing {
 		}
 
 
-		$result = F3::get("DB")->exec("
-			SELECT *, (SELECT count(ID) FROM ab_colour_rates WHERE ab_colour_rates.placingID = ab_placing.ID) as colourCount
+		$result = $f3->get("DB")->exec("
+			SELECT *, (SELECT count(ID) FROM ab_placing_sub WHERE ab_placing_sub.placingID = ab_placing.ID) AS colourCount
 			FROM ab_placing
 			$where
 			$orderby
@@ -66,29 +68,33 @@ class placing {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+
 		$old = array();
 		$lookupColumns = array();
-		$a = new Axon("ab_placing");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_placing");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = $a->$key;
-			$a->$key = $value;
+			$old[$key] = isset($a->$key) ? $a->$key : "";
+			if (isset($a->$key)) {
+
+				$a->$key = $value;
+			}
 		}
-
-		$a->save();
-
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
-
-		if ($a->ID) {
+		if (!$a->dry()) {
 			$label = "Record Edited ($a->placing)";
 		} else {
 			$label = "Record Added (" . $values['placing'] . ')';
 		}
+		$a->save();
+
+		$ID = $a->ID;
+
+
 		//test_array($new_logging);
 
 
@@ -101,10 +107,12 @@ class placing {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_placing");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_placing");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -119,7 +127,8 @@ class placing {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_placing;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_placing;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

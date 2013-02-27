@@ -18,11 +18,12 @@ class categories {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT *
 			FROM ab_categories
 			WHERE ID = '$ID';
@@ -39,10 +40,11 @@ class categories {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "", $pID="") {
 		$timer = new timer();
-		$user = F3::get("user");
-		$pID = $user['publication']['ID'];
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		$pID = $pID? $pID:   $user['publication']['ID'];
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -54,8 +56,8 @@ class categories {
 		}
 
 
-		$result = F3::get("DB")->exec("
-			SELECT DISTINCT ab_categories.*, if ((SELECT count(ID) FROM ab_category_pub WHERE ab_category_pub.catID = ab_categories.ID AND ab_category_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) as currentPub
+		$result = $f3->get("DB")->exec("
+			SELECT DISTINCT ab_categories.*, if ((SELECT count(ID) FROM ab_category_pub WHERE ab_category_pub.catID = ab_categories.ID AND ab_category_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
 			FROM ab_categories LEFT JOIN ab_category_pub ON ab_categories.ID = ab_category_pub.catID
 			$where
 			$orderby
@@ -68,33 +70,44 @@ class categories {
 	}
 
 	public static function save($ID, $values) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
 
 
-		$a = new Axon("ab_categories");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_categories");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = $a->$key;
-			$a->$key = $value;
+			$old[$key] = isset($a->$key) ? $a->$key : "";
+			if (isset($a->$key)) {
+
+				$a->$key = $value;
+			}
+
+		}
+
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->category)";
+		} else {
+			$label = "Record Added (" . $values['category'] . ')';
 		}
 
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+
+		$ID = $a->ID;
 
 		$cID = $values['cID'];
 		if (!$cID) {
 			$cID = $user['publication']['cID'];
 		}
 
-		$p = new Axon("ab_category_pub");
-		$publications = publications::getAll("cID='$cID'", "publication ASC");
+		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_category_pub");
+		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");
 
 
 		$pub = array(
@@ -136,11 +149,7 @@ class categories {
 
 		//test_array($changes);
 
-		if ($a->ID) {
-			$label = "Record Edited ($a->category)";
-		} else {
-			$label = "Record Added (" . $values['category'] . ')';
-		}
+
 
 
 		\models\logging::_log("categories", $label, $values, $old, $overwrite);
@@ -152,10 +161,12 @@ class categories {
 	}
 
 	public static function _delete($ID) {
-		$user = F3::get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new Axon("ab_categories");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"ab_categories");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -170,7 +181,8 @@ class categories {
 
 
 	private static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN ab_categories;");
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN ab_categories;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

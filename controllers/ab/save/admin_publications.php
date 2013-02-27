@@ -13,15 +13,15 @@ use \models\user as user;
 
 class admin_publications extends save {
 	function __construct() {
-
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => F3::get("system")->error("U01"))));
+		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
 
 	}
 
 	function _save() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
 		$cID = $user['publication']['cID'];
 
@@ -31,6 +31,7 @@ class admin_publications extends save {
 		$publication = isset($_POST['publication']) ? $_POST['publication'] : "";
 		$InsertRate = isset($_POST['InsertRate']) ? $_POST['InsertRate'] : "";
 		$printOrder = isset($_POST['printOrder']) ? $_POST['printOrder'] : "";
+		$colours = isset($_POST['colours']) ? $_POST['colours'] : "";
 
 		$columnsav = isset($_POST['columnsav']) ? $_POST['columnsav'] : "";
 		$cmav = isset($_POST['cmav']) ? $_POST['cmav'] : "";
@@ -129,6 +130,7 @@ class admin_publications extends save {
 			"cmav"     => $cmav,
 			"pagewidth"     => $pagewidth,
 			"ab_upload_material"     => $ab_upload_material,
+			"colours"     => $colours,
 		);
 
 
@@ -142,7 +144,7 @@ class admin_publications extends save {
 
 
 
-			$ID = models\publications::save($ID, $values);
+			$ID = \models\publications::save($ID, $values);
 
 			$return['ID'] = $ID;
 
@@ -154,7 +156,7 @@ class admin_publications extends save {
 					"publish_date"=> $publish_date,
 					"current"     => '1',
 				);
-				$t = models\dates::save("", $date_values);
+				$t = \models\dates::save("", $date_values);
 			}
 		}
 
@@ -170,21 +172,21 @@ class admin_publications extends save {
 
 
 	function _delete(){
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\publications::_delete($ID);
+		\models\publications::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
 	function _pub() {
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$uID = $user['ID'];
 
 
-		$p = new Axon("ab_users_pub");
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"ab_users_pub");
 		$p->load("pID='$ID' and uID='$uID'");
 		if (!$p->ID) {
 			$p->uID = $uID;

@@ -5,7 +5,11 @@
  */
 
 class general {
-	function css_min(){
+	function __construct() {
+		$this->f3 = \base::instance();
+	}
+
+	function css_min() {
 		ob_start("ob_gzhandler");
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		header("Content-Type: text/css");
@@ -50,13 +54,11 @@ class general {
 			}
 
 
-
-
 		}
 
+		$t = preg_replace('/\s+/', ' ', $t);
 		//exit($this->minify($t,"css"));
 		exit($t);
-
 
 
 	}
@@ -70,7 +72,7 @@ class general {
 		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
 
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
-		//$file = F3::get('PARAMS.filename');
+		//$file = $this->f3->get('PARAMS.filename');
 		header("Content-Type: application/javascript");
 		$t = "";
 		if ($file) {
@@ -84,8 +86,6 @@ class general {
 				"/ui/_js/libs/jquery-ui.js",
 
 
-
-
 				"/ui/_js/libs/bootstrap.js",
 
 				// ------ //
@@ -94,7 +94,7 @@ class general {
 
 				"/ui/_js/plugins/jquery.daterangepicker.js",
 				"/ui/_js/plugins/jquery.mousewheel.js",
-				"/ui/_js/plugins/mwheelIntent.js",
+				//"/ui/_js/plugins/mwheelIntent.js",
 				"/ui/_js/plugins/jquery.jqote2.js",
 				"/ui/_js/plugins/jquery.ba-bbq.js",
 				"/ui/_js/plugins/jquery.cookie.js",
@@ -105,19 +105,18 @@ class general {
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
-
-				"/ui/plupload/js/browserplus-min.js" ,
-				"/ui/plupload/js/plupload.js" ,
-				"/ui/plupload/js/plupload.gears.js" ,
-				"/ui/plupload/js/plupload.silverlight.js" ,
-				"/ui/plupload/js/plupload.flash.js" ,
-				"/ui/plupload/js/plupload.browserplus.js" ,
-				"/ui/plupload/js/plupload.html4.js" ,
-				"/ui/plupload/js/plupload.html5.js" ,
-
+				"/ui/plupload/js/browserplus-min.js",
+				"/ui/plupload/js/plupload.js",
+				"/ui/plupload/js/plupload.gears.js",
+				"/ui/plupload/js/plupload.silverlight.js",
+				"/ui/plupload/js/plupload.flash.js",
+				"/ui/plupload/js/plupload.browserplus.js",
+				"/ui/plupload/js/plupload.html4.js",
+				"/ui/plupload/js/plupload.html5.js",
 
 
-				"/ui/jqPlot/jquery.jqplot.min.js",
+
+				"/ui/jqPlot/jquery.jqplot.js",
 				"/ui/jqPlot/plugins/jqplot.highlighter.js",
 				"/ui/jqPlot/plugins/jqplot.cursor.min.js",
 				"/ui/jqPlot/plugins/jqplot.canvasTextRenderer.min.js",
@@ -126,10 +125,6 @@ class general {
 				"/ui/jqPlot/plugins/jqplot.categoryAxisRenderer.min.js",
 				"/ui/jqPlot/plugins/jqplot.pointLabels.min.js",
 				"/ui/jqPlot/plugins/jqplot.trendline.min.js",
-
-
-
-
 
 
 			);
@@ -148,127 +143,55 @@ class general {
 
 		}
 
-exit($t);
+		//$t = preg_replace('/\s+/', ' ', $t);
+		exit($t);
 		//exit($this->minify($t, "js"));
 
 
-
 	}
-	function minify($code,$ext){
-		$src = $code;
-		$ptr = 0;
-		$dst = '';
 
-		while ($ptr < strlen($src)) {
-			if ($src[$ptr] == '/') {
-				// Presume it's a regex pattern
-				$regex = TRUE;
-				if ($ptr > 0) {
-					// Backtrack and validate
-					$ofs = $ptr;
-					while ($ofs > 0) {
-						$ofs--;
-						// Pattern should be preceded by a punctuation
-						if (ctype_punct($src[$ofs])) {
-							while ($ptr < strlen($src)) {
-								$str = strstr(substr($src, $ptr + 1), '/', TRUE);
-								if (!strlen($str) && $src[$ptr - 1] != '/' || strpos($str, "\n") !== FALSE) {
-									// Not a regex pattern
-									$regex = FALSE;
-									break;
-								}
-								$dst .= '/' . $str;
-								$ptr += strlen($str) + 1;
-								if ($src[$ptr - 1] != '\\' || $src[$ptr - 2] == '\\') {
-									$dst .= '/';
-									$ptr++;
-									break;
-								}
-							}
-							break;
-						} elseif ($src[$ofs] != "\t" && $src[$ofs] != ' ') {
-							// Not a regex pattern
-							$regex = FALSE;
-							break;
-						}
-					}
-					if ($regex && $ofs < 1) $regex = FALSE;
-				}
-				if (!$regex || $ptr < 1) {
-					if (substr($src, $ptr + 1, 2) == '*@') {
-						// Conditional block
-						$str = strstr(substr($src, $ptr + 3), '@*/', TRUE);
-						$dst .= '/*@' . $str . $src[$ptr] . '@*/';
-						$ptr += strlen($str) + 6;
-					} elseif ($src[$ptr + 1] == '*') {
-						// Multiline comment
-						$str = strstr(substr($src, $ptr + 2), '*/', TRUE);
-						$ptr += strlen($str) + 4;
-					} elseif ($src[$ptr + 1] == '/') {
-						// Single-line comment
-						$str = strstr(substr($src, $ptr + 2), "\n", TRUE);
-						$ptr += strlen($str) + 2;
-					} else {
-						// Division operator
-						$dst .= $src[$ptr];
-						$ptr++;
-					}
-				}
-				continue;
-			}
-			if ($src[$ptr] == '\'' || $src[$ptr] == '"') {
-				$match = $src[$ptr];
-				// String literal
-				while ($ptr < strlen($src)) {
-					$str = strstr(substr($src, $ptr + 1), $src[$ptr], TRUE);
-					$dst .= $match . $str;
-					$ptr += strlen($str) + 1;
-					if ($src[$ptr - 1] != '\\' || $src[$ptr - 2] == '\\') {
-						$dst .= $match;
-						$ptr++;
-						break;
-					}
-				}
-				continue;
-			}
-			if (ctype_space($src[$ptr])) {
-				$last = substr($dst, -1);
-				$ofs = $ptr + 1;
-				if ($ofs + 1 < strlen($src)) {
-					while (ctype_space($src[$ofs])) $ofs++;
-					if (preg_match('/[\w%]' . '[\w' . ($ext == 'css' ? '\)\]\}#\-*\.' : '') . '$]/', $last . $src[$ofs])) $dst .= $src[$ptr];
-				}
-				$ptr = $ofs;
-			} else {
-				$dst .= $src[$ptr];
-				$ptr++;
-			}
-		}
-		return  $dst;
-	}
+
 	function upload() {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
+		//$folder = substr($folder,0,-1);
 
-		$cfg = F3::get("cfg");
-
-
-
-		$user = F3::get("user");
+		$cfg = $this->f3->get("cfg");
 
 
-		$app = F3::get('PARAMS.app');
+		$user = $this->f3->get("user");
+
+
+		$app = $this->f3->get('PARAMS.app');
 
 
 
-		$folder = $cfg['upload']['folder'] . $app . "/". $folder;
 
-		ini_set('upload_tmp_dir', $cfg['upload']['folder'].'tmp');
+		$folder = ($cfg['upload']['folder'] . $app . "/" . $folder);
+		$tmpFolder = $cfg['upload']['folder'] . 'tmp/';
+
+		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+		$tmpFolder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $tmpFolder);
+
+/*
+
+		test_array(array(
+			           "folder"=>$folder,
+			           "tmp_folder"=>$tmpFolder,
+			         //  "name"=> $_REQUEST["name"],
+			         //  "cfg"  => $cfg,
+			         //  "user" => $user,
+			           "app"  => $app
+
+		           )
+		);
+
+*/
+		ini_set('upload_tmp_dir', $tmpFolder);
 		ini_set('upload_max_filesize', '20M');
 		ini_set('post_max_size', '20M');
 
 
-
-		if (!file_exists($cfg['upload']['folder'] . 'tmp')) @mkdir($cfg['upload']['folder'] . 'tmp', 0777, true);
+		if (!file_exists($tmpFolder)) @mkdir($tmpFolder, 0777, true);
 		if (!file_exists($folder)) @mkdir($folder, 0777, true);
 
 		//$targetDir = $cfg['upload']['folder'] . $app . "/temp/";
@@ -276,15 +199,17 @@ exit($t);
 
 		$targetDir = $folder;
 
+
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
+		header("Content-Type: application/json");
 
 // Settings
+//$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
 
-//$targetDir = 'uploads';
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -383,11 +308,6 @@ exit($t);
 		if (!$chunks || $chunk == $chunks - 1) {
 			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-
-
-
-			//\controllers\ab\controller_thumb::create_thumb($folder, $fileName);
-
 		}
 
 
@@ -395,7 +315,6 @@ exit($t);
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 
 	}
-
 
 
 }

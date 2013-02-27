@@ -37,6 +37,29 @@ $sql = array(
 	),
 	"9"=>array(
 		"ALTER TABLE `global_users_company` ADD `nf_author` TINYINT( 1 ) NULL DEFAULT NULL;"
+	),
+	"10"=>array(
+		"ALTER TABLE `global_companies` ADD `packageID` INT( 6 ) NULL DEFAULT NULL;"
+	),
+	"11"=>array(
+		"ALTER TABLE `global_users_company` ADD `allow_setup` TINYINT( 1 ) NULL DEFAULT '0' AFTER `uID`;"
+	),
+	"12"=>array(
+		"RENAME TABLE `ab_colour_rates` TO `ab_placing_sub`;",
+		"ALTER TABLE `ab_bookings` ADD `sub_placingID` INT( 6 ) NULL DEFAULT NULL AFTER `placing` , ADD `sub_placing` VARCHAR( 50 ) NULL DEFAULT NULL AFTER `sub_placingID` , ADD INDEX ( `sub_placingID` );",
+		"UPDATE ab_bookings SET colourID = (SELECT ID from system_publishing_colours WHERE system_publishing_colours.colour = ab_bookings.colour) WHERE ab_bookings.colour <> ''",
+		"ALTER TABLE `ab_bookings` DROP `colour`, DROP `colourSpot`, DROP `colourLabel`;",
+		"ALTER TABLE `global_publications` ADD `colours` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `publication`;",
+		"UPDATE `ab_placing_sub` SET `colour`= (SELECT ID from system_publishing_colours where system_publishing_colours.colour = ab_placing_sub.colour);",
+		"ALTER TABLE `ab_placing_sub` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;",
+		"ALTER TABLE `ab_placing` ADD `colourID` INT( 6 ) NULL DEFAULT NULL AFTER `placing`;",
+		"ALTER TABLE `global_pages` CHANGE `colour` `colourID` INT( 6 ) NULL DEFAULT NULL;",
+		"ALTER TABLE `ab_marketers_targets` CHANGE `target` `target` DECIMAL( 10, 2 ) NULL DEFAULT NULL;",
+		"CREATE TABLE IF NOT EXISTS `system_publishing_colours` ( `ID` int(6) NOT NULL AUTO_INCREMENT,  `colour` varchar(30) DEFAULT NULL,  `colourLabel` varchar(30) DEFAULT NULL,  `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+		"INSERT INTO `system_publishing_colours` (`ID`, `colour`, `colourLabel`, `orderby`) VALUES (1, 'None', 'Black and White', 1), (2, 'Full', 'Full Colour', 2), (3, 'Spot', 'Spot Colour', 3);",
+		"CREATE TABLE IF NOT EXISTS `system_publishing_colours_groups` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `label` varchar(50) DEFAULT NULL,  `colours` varchar(50) DEFAULT NULL,  `icon` varchar(100) DEFAULT NULL,  `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+		"INSERT INTO `system_publishing_colours_groups` (`ID`, `label`, `colours`, `icon`, `orderby`) VALUES(1, 'Full Colour', '1,2,3', NULL, 2),(2, 'Black & White', '1', NULL, 1),(3, 'Spot Colour', '1,3', NULL, 3);",
+		"file:../db_triggers.sql",
 	)
 
 

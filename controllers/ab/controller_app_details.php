@@ -10,15 +10,16 @@ use \models\ab as models;
 use \models\user as user;
 class controller_app_details {
 	function __construct() {
-		$user = F3::get("user");
+		$this->f3 = \base::instance();
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) F3::reroute("/login");
+		if (!$userID) $this->f3->reroute("/login");
 	}
 
 
 	function _print() {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $this->f3->get("user");
 
 
 		$dataO = new \controllers\ab\data\data();

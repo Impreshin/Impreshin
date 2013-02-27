@@ -18,13 +18,13 @@ class stages {
 
 	function get($ID) {
 		$timer = new timer();
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
 		//test_array($currentDate);
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT * FROM nf_stages	WHERE nf_stages.ID = '$ID';
 
 		");
@@ -48,7 +48,7 @@ class stages {
 		}
 
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT count(nf_stages.ID) as records
 			FROM nf_stages
 			$where
@@ -85,7 +85,7 @@ class stages {
 		}
 
 
-		$return = F3::get("DB")->exec("
+		$return = $f3->get("DB")->exec("
 			SELECT $select
 			FROM nf_stages
 
@@ -117,7 +117,7 @@ class stages {
 		}
 
 
-		$result = F3::get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_stages.*
 
 			FROM nf_stages
@@ -137,11 +137,11 @@ class stages {
 	public static function _delete($ID = "", $reason = "") {
 		$timer = new timer();
 
-		$user = F3::get("user");
+		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
-		$a = new Axon("nf_stages");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_stages");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -155,7 +155,7 @@ class stages {
 		$timer = new timer();
 
 
-		$a = new Axon("nf_stages");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_stages");
 		$a->load("ID='$ID'");
 		foreach ($values as $key => $value) {
 			$cur = $a->$key;
@@ -180,7 +180,7 @@ class stages {
 
 
 	public static function dbStructure() {
-		$table = F3::get("DB")->exec("EXPLAIN nf_stages;");
+		$table = $f3->get("DB")->exec("EXPLAIN nf_stages;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

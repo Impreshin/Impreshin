@@ -38,7 +38,7 @@ TRUNCATE TABLE ab_bookings;
 TRUNCATE TABLE ab_bookings_logs;
 TRUNCATE TABLE ab_categories;
 TRUNCATE TABLE ab_category_pub;
-TRUNCATE TABLE ab_colour_rates;
+TRUNCATE TABLE ab_placing_sub;
 TRUNCATE TABLE ab_inserts_types;
 TRUNCATE TABLE ab_marketers;
 TRUNCATE TABLE ab_marketers_pub;

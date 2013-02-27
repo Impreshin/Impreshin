@@ -13,6 +13,7 @@ class user_permissions {
 
 	public static function permissions() {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
 			"details"        => array(
@@ -142,9 +143,7 @@ class user_permissions {
 					),
 					"placing"       => array(
 						"page"    => 0,
-						"colours" => array(
-							"page" => 0
-						)
+
 					),
 					"loading"       => array(
 						"page" => 0
@@ -332,6 +331,7 @@ class user_permissions {
 
 
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$permissions = self::permissions();
 		$permissions = $permissions['p'];
 
@@ -356,7 +356,8 @@ class user_permissions {
 
 	public static function write($uID, $cID, $values) {
 		$timer = new timer();
-		$a = new \Axon("global_users_company");
+		$f3 = \Base::instance();
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
 		$a->load("uID='$uID' AND cID = '$cID'");
 		$a->ab_permissions = serialize($values);
 
