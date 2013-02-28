@@ -99,6 +99,8 @@ jQuery.fn.daterangepicker = function(settings){
 	
 	//datepicker options from options
 	options.datepickerOptions = (settings) ? jQuery.extend(datepickerOptions, settings.datepickerOptions) : datepickerOptions;
+
+
 	
 	//Capture Dates from input(s)
 	var inputDateA, inputDateB = Date.parse('today');
@@ -140,9 +142,12 @@ jQuery.fn.daterangepicker = function(settings){
 			if (!this.text && this.heading) {
 				jQuery('<li class="ui-daterangepicker-heading">' + this.heading + '</li>').appendTo(ul)
 			} else {
+
 				jQuery('<li class="ui-daterangepicker-'+ this.text.replace(/ /g, '') +' "><a href="#">'+ this.text +'</a></li>')
 					.data('dateStart', this.dateStart)
 					.data('dateEnd', this.dateEnd)
+					.data('value', this.value)
+					.data('text', this.text)
 					.appendTo(ul);
 			}
 
@@ -172,8 +177,14 @@ jQuery.fn.daterangepicker = function(settings){
 				clickActions(jQuery(this),rp, rpPickers, doneBtn);
 				return false;
 			});
+
+
+
+
 		return ul;
 	})();
+
+
 				
 	//function to format a date string        
 	function fDate(date){
@@ -205,12 +216,42 @@ jQuery.fn.daterangepicker = function(settings){
 		if(rp.data('state') == 'closed'){ 
 			positionRP();
 			rp.fadeIn(300).data('state', 'open');
+
+			var ar = $.map(options.presetRanges, function (v) {
+				return v.value
+			});
+			var p = ar.indexOf(rangeInput.val());
+
+
+			if (p >= 0) {
+				p = p + 1;
+				$(".ui-daterangepicker-" + options.presetRanges[p].text.replace(/ /g, ''),rp).addClass("active")
+			}
+
+
+
+
+
+
 			options.onOpen(); 
 		}
 	}
 	function hideRP(){
 		if(rp.data('state') == 'open'){ 
 			rp.fadeOut(300).data('state', 'closed');
+
+			var ar = $.map(options.presetRanges, function (v) {
+				return v.value
+			});
+			var p = ar.indexOf(rangeInput.val());
+
+			var title = rangeInput.val();
+			if (p >= 0) {
+				p = p + 1;
+				title = options.presetRanges[p].text
+			}
+
+			rangeInput.text(title);
 			options.onClose(); 
 		}
 	}
@@ -279,6 +320,8 @@ jQuery.fn.daterangepicker = function(settings){
 			rp.find('.title-end').text(options.rangeEndTitle);
 			rp.find('.range-start').restoreDateFromData().css('opacity',1).show(400);
 			rp.find('.range-end').restoreDateFromData().css('opacity',1).show(400);
+
+
 			setTimeout(function(){doneBtn.fadeIn();}, 400);
 		}
 		else if (el.is('.ui-daterangepicker-presetDate')) {
@@ -298,7 +341,6 @@ jQuery.fn.daterangepicker = function(settings){
 			}, 400);
 
 
-
 		}
 		else {
 			//custom date range specified in the options (no calendars shown)
@@ -306,11 +348,40 @@ jQuery.fn.daterangepicker = function(settings){
 			rp.find('.range-start, .range-end').css('opacity',0).hide(400, function(){
 				rpPickers.hide();
 			});
-			var dateStart = (typeof el.data('dateStart') == 'string') ? Date.parse(el.data('dateStart')) : el.data('dateStart')();
-			var dateEnd = (typeof el.data('dateEnd') == 'string') ? Date.parse(el.data('dateEnd')) : el.data('dateEnd')();
-			rp.find('.range-start').datepicker('setDate', dateStart).find('.ui-datepicker-current-day').trigger('click');
-			rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
+
+			if (el.data('value')) {
+				var value = (typeof el.data('value') == 'string') ? el.data('value') : "";
+				rangeInput.val(value)
+				rangeInput.text(el.data('text'));
+				if (el.data('dateStart')) {
+					var dateStart = (typeof el.data('dateStart') == 'string') ? Date.parse(el.data('dateStart')) : el.data('dateStart')();
+					rp.find('.range-start').datepicker('setDate', dateStart);
+				}
+
+				if (el.data('dateEnd')) {
+					var dateEnd = (typeof el.data('dateEnd') == 'string') ? Date.parse(el.data('dateEnd')) : el.data('dateEnd')();
+					rp.find('.range-end').datepicker('setDate', dateEnd);
+				}
+
+				toggleRP();
+				return false;
+
+			}
+
+			if (el.data('dateStart')){
+				var dateStart = (typeof el.data('dateStart') == 'string') ? Date.parse(el.data('dateStart')) : el.data('dateStart')();
+				rp.find('.range-start').datepicker('setDate', dateStart).find('.ui-datepicker-current-day').trigger('click');
+			}
+
+			if (el.data('dateEnd')){
+				var dateEnd = (typeof el.data('dateEnd') == 'string') ? Date.parse(el.data('dateEnd')) : el.data('dateEnd')();
+				rp.find('.range-end').datepicker('setDate', dateEnd).find('.ui-datepicker-current-day').trigger('click');
+			}
+
 		}
+
+//console.log(options.presetRanges)
+
 		
 		return false;
 	}	
@@ -353,9 +424,30 @@ jQuery.fn.daterangepicker = function(settings){
 			}
 	)
 	.appendTo(rpPickers);
-	
-	
-	
+
+	var ar = $.map(options.presetRanges, function (v) {
+		return v.value
+	});
+	var p = ar.indexOf(rangeInput.val());
+
+	var title = rangeInput.val();
+	if (p >= 0) {
+		p = p + 1;
+		$("ui-daterangepicker-" + options.presetRanges[p].text.replace(/ /g, '')).addClass("active");
+		title = options.presetRanges[p].text
+
+		if (options.presetRanges[p].dateStart) {
+			rp.find('.range-start').data('saveDate', options.presetRanges[p].dateStart());
+		}
+		if (options.presetRanges[p].dateEnd) {
+			rp.find('.range-end').data('setDate', options.presetRanges[p].dateEnd());
+		}
+
+	}
+	if (title) {
+		rangeInput.text(title);
+
+	}
 	
 	//inputs toggle rangepicker visibility
 	jQuery(this).click(function(){
