@@ -358,7 +358,7 @@ function page_droppable($element) {
 
 
 
-				if (limit && limit != "undefined") {
+				if (limit && limit != "undefined"  && limit != "null") {
 					limit = limit.split(",");
 					if (limit.indexOf(draggedColour) < 0){
 						allowDrop = false;
@@ -412,7 +412,7 @@ function page_droppable($element) {
 			var limit = $page.attr("data-limit");
 			var draggedColour = $dragged.attr("data-colour");
 
-			if (limit && limit != "undefined") {
+			if (limit && limit != "undefined"  && limit != "null") {
 				limit = limit.split(",");
 				if (limit.indexOf(draggedColour) < 0) {
 					allowDrop = false;
