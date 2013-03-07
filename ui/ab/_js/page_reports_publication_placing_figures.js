@@ -121,32 +121,32 @@ function getData() {
 			$('#date-picker').daterangepicker({
 				presetRanges     :[
 					{heading:'Preset Ranges'},
-					{text        :'6 Months',
-						dateStart:function () {
+					{text        : '6 Months', value: "6m",
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 6 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'12 Months',
-						dateStart:function () {
+					{text        : '12 Months', value: "12m",
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 12 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'24 Months',
-						dateStart:function () {
+					{text        : '24 Months', value: '24m',
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 24 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}

@@ -108,7 +108,6 @@ function getData() {
 			drawChart('chart-income', data);
 			drawChart('chart-cm', data);
 			drawChart('chart-records', data);
-
 			var minDate_ = Date.parse(data['date_min']);
 			var maxDate_ = Date.parse(data['date_max']);
 
@@ -118,20 +117,22 @@ function getData() {
 			minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
 			maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
 
+
 			$('#date-picker').daterangepicker({
 				presetRanges     :[
 					{heading:'Preset Ranges'},
-					{text        :'6 Months',
-						dateStart:function () {
+
+					{text: '6 Months', value: "6m",
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 6 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'12 Months',
+					{text        :'12 Months', value:"12m",
 						dateStart:function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 12 m').moveToFirstDayOfMonth();
@@ -141,7 +142,7 @@ function getData() {
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'24 Months',
+					{text        :'24 Months', value: '24m',
 						dateStart:function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 24 m').moveToFirstDayOfMonth();
@@ -176,6 +177,7 @@ function getData() {
 				},
 				onClose          :function () {
 
+					//console.log($('#date-picker').val())
 					setTimeout(function () {
 						if ($('#date-picker').data('cur') != $('#date-picker').val()) {
 							getData();
@@ -207,7 +209,6 @@ function getData() {
 	}));
 }
 function drawChart(element, data) {
-	//console.log(label.length)
 
 	var col = "";
 	switch (element) {

@@ -82,12 +82,25 @@ class account_figures extends \controllers\ab\data\data {
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
 			if (!$daterange) {
-				$daterange = date("Y-m-01", strtotime('-12 month'))." to ".date("Y-m-t", strtotime('-1 month'));
+				$daterange = "12m";
 			}
 		}
 
+		$daterange_s = $daterange;
+		switch ($daterange) {
+			case "6m":
+				$daterange_s = date("Y-m-01", strtotime('-6 month')) . " to " . date("Y-m-t", strtotime('-1 month'));
+				break;
+			case "12m":
+				$daterange_s = date("Y-m-01", strtotime('-12 month')) . " to " . date("Y-m-t", strtotime('-1 month'));
+				break;
+			case "24m":
+				$daterange_s = date("Y-m-01", strtotime('-24 month')) . " to " . date("Y-m-t", strtotime('-1 month'));
+				break;
 
-		$daterange_s = explode(" to ", $daterange);
+		}
+		;
+		$daterange_s = explode(" to ", $daterange_s);
 
 
 		$years_d = $this->f3->get("DB")->exec("SELECT distinct year(publish_date) AS record_year FROM global_dates WHERE pID in ($publications) ORDER BY year(publish_date) DESC");
@@ -170,7 +183,7 @@ class account_figures extends \controllers\ab\data\data {
 
 		}
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general";
+		$where = "ab_bookings.pID in ($publications) AND year(global_dates.publish_date) in ($yearsSend_str) AND $where_general";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend,$tolerance);
 
 

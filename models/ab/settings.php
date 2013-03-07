@@ -741,6 +741,28 @@ class settings {
 
 
 			}
+			if (isset($return['order'])) {
+
+				$gb = array();
+
+				//test_array($settings['columns']);
+				foreach ($settings['columns'] as $k=> $g) {
+
+					$gb[] = isset($g['o'])?$g['o']:$k;
+				}
+
+
+				if (!in_array($return['order']['c'], $gb)) {
+					if (isset($defaults['settings'][$section]['order']['c'])) {
+						$return['order']['c'] = $defaults['settings'][$section]['order']['c'];
+					}
+				}
+
+
+
+
+			}
+			/*
 			//test_array($defaults);
 			if (isset($return['order'])){
 				if (!isset($settings['columns'][$return['order']['c']])&&isset($defaults['settings'][$section]['order']['c'])) {
@@ -752,7 +774,10 @@ class settings {
 
 
 			}
+			*/
 		}
+		
+	//	test_array($return);
 
 
 		$timer->stop(array("Models"=>array("Class"=> __CLASS__ , "Method"=> __FUNCTION__)), func_get_args());

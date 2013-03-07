@@ -104,42 +104,45 @@ function getData() {
 		var minDate24 = Date.parse('t - 24 m').moveToFirstDayOfMonth();
 		var maxDate24 = Date.parse('t - 1 m').moveToLastDayOfMonth();
 
-		minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
-		maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
+	//	minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
+	//	maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
 
 		if (data['tab'] == 'charts') {
 			drawChart('chart-income', data);
 			drawChart('chart-cm', data);
 			drawChart('chart-records', data);
+		//	console.log(minDate_)
+		//	console.log(maxDate_)
+
 			$('#date-picker').daterangepicker({
 				presetRanges     :[
 					{heading:'Preset Ranges'},
-					{text        :'6 Months',
-						dateStart:function () {
+					{text        : '6 Months', value: "6m",
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 6 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'12 Months',
-						dateStart:function () {
-
+					{text        : '12 Months', value: "12m",
+						dateStart: function () {
+							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 12 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
-
+						dateEnd  : function () {
+							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
 					},
-					{text        :'24 Months',
-						dateStart:function () {
+					{text        : '24 Months', value: '24m',
+						dateStart: function () {
 							//console.log("prev From: " + prevMonth.startDate)
 							return Date.parse('t - 24 m').moveToFirstDayOfMonth();
 						},
-						dateEnd  :function () {
+						dateEnd  : function () {
 							//console.log("prev To: " + prevMonth.endDate)
 							return Date.parse('t -1 m').moveToLastDayOfMonth();
 						}
