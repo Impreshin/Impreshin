@@ -17,7 +17,7 @@ class bookings {
 	}
 
 	private static function _from(){
-		$return = "FROM (((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID";
+		$return = "FROM ((((((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID) LEFT JOIN ab_production ON ab_bookings.material_productionID = ab_production.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_1 ON ab_placing.colourID = system_publishing_colours_1.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_2 ON ab_placing_sub.colourID = system_publishing_colours_2.ID";
 		return $return;
 	}
 
@@ -36,9 +36,23 @@ class bookings {
 		$from = self::_from();
 
 		$result = $f3->get("DB")->exec("
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			SELECT ab_bookings.*,
 				ab_placing.placing AS placing,
-				ab_placing_sub.label AS sub_placing,
+
 				ab_bookings_types.type AS type,
 				ab_marketers.marketer AS marketer, ab_marketers.code AS marketerCode,
 				global_publications.publication AS publication,
@@ -51,10 +65,13 @@ class bookings {
 				ab_accounts.accNum AS accNum,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				global_pages.page,
-				(SELECT production FROM ab_production WHERE ab_production.ID = ab_bookings.material_productionID ) AS material_production,
-				system_publishing_colours.colour AS colour,
-				system_publishing_colours.colourLabel AS colourLabel,
-				ab_placing_sub.label AS sub_placing,
+				ab_production.production AS material_production,
+
+				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
+COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
+COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
+
+
 				ab_inserts_types.insertsLabel AS insertLabel
 
 			$from
@@ -236,6 +253,7 @@ class bookings {
 		} else {
 			$limit = " ";
 		}
+		
 
 		$from = self::_from();
 		$result = $f3->get("DB")->exec("
@@ -246,12 +264,13 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status AS material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,
+				ab_production.production AS material_production,
 				if (`page`,1,0) AS layout,
 				format(global_pages.page,0) AS page,
 				ab_inserts_types.insertsLabel AS insertLabel,
-				system_publishing_colours.colour AS colour,
-				system_publishing_colours.colourLabel AS colourLabel,
-				ab_placing_sub.label AS sub_placing
+				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
+				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
+				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel
 			$select
 			$from
 			$where
@@ -486,8 +505,8 @@ class bookings {
 				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
 				break;
 			case "colours":
-				$orderby = "if(typeID='1',COALESCE(system_publishing_colours.colour,'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',COALESCE(system_publishing_colours.colour,''),ab_bookings_types.type) as heading";
+				$orderby = "if(typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),''),ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
 				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,1,2),0) $ordering, " . $orderby;
@@ -499,8 +518,8 @@ class bookings {
 				break;
 
 			case "material_production":
-				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_bookings.material_production $ordering,  " . $orderby;
-				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_bookings.material_production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
+				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_production.production $ordering,  " . $orderby;
+				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_production.production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
 				break;
 			case "invoicedStatus":
 				$orderby = "if (invoiceNum,1,0) $ordering, " . $orderby;
