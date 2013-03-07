@@ -156,14 +156,15 @@ class bookings {
 	}
 
 	public static function getAll_select($select, $where = "", $orderby, $groupby = "") {
-		/*
-				return array(
+/*
+				test_array(array(
 					"select"=>$select,
 					"where"=>$where,
 					"orderby"=>$orderby,
 					"group"=>$groupby
-				);
-		*/
+				));
+*/
+
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {

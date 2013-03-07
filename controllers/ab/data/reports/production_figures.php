@@ -183,7 +183,7 @@ class production_figures extends \controllers\ab\data\data {
 
 		}
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general";
+		$where = "ab_bookings.pID in ($publications) AND year(global_dates.publish_date) in ($yearsSend_str) AND $where_general";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend, $tolerance);
 
 

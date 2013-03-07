@@ -210,7 +210,7 @@ class category_discounts extends \controllers\ab\data\data {
 
 		}
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general $dir_sql";
+		$where = "ab_bookings.pID in ($publications) AND year(global_dates.publish_date) in ($yearsSend_str) AND $where_general $dir_sql";
 		$return['comp']['data'] = models\report_discounts::figures($where, $yearsSend,$tolerance);
 
 

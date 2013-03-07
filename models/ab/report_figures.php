@@ -66,9 +66,12 @@ class report_figures {
 		);
 
 
-		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, ab_bookings.typeID";
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID, typeID");
+		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
+
+
+		
 
 
 		$blank = array(

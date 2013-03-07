@@ -104,13 +104,16 @@ function getData() {
 		var minDate24 = Date.parse('t - 24 m').moveToFirstDayOfMonth();
 		var maxDate24 = Date.parse('t - 1 m').moveToLastDayOfMonth();
 
-		minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
-		maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
+	//	minDate_ = (minDate_ < minDate24) ? minDate_ : minDate24;
+	//	maxDate_ = (maxDate_ < maxDate24) ? maxDate_ : maxDate24;
 
 		if (data['tab'] == 'charts') {
 			drawChart('chart-income', data);
 			drawChart('chart-cm', data);
 			drawChart('chart-records', data);
+		//	console.log(minDate_)
+		//	console.log(maxDate_)
+
 			$('#date-picker').daterangepicker({
 				presetRanges     :[
 					{heading:'Preset Ranges'},

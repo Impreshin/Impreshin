@@ -142,6 +142,7 @@ class publication_figures extends \controllers\ab\data\data {
 				);
 
 
+	//	test_array($values);
 
 				models\user_settings::save_setting($values);
 
@@ -200,7 +201,8 @@ class publication_figures extends \controllers\ab\data\data {
 
 
 		$return['comp']['years']=$years;
-		$where = "ab_bookings.pID in ($publications) AND year(publishDate) in ($yearsSend_str) AND $where_general";
+		$where = "ab_bookings.pID in ($publications) AND year(global_dates.publish_date) in ($yearsSend_str) AND $where_general";
+		//test_array($where);
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend, $tolerance);
 
 
@@ -208,7 +210,7 @@ class publication_figures extends \controllers\ab\data\data {
 		if (count($date_range)) {
 			$date_range = $date_range[0];
 		}
-
+		//test_array($date_range);
 
 
 		$return['pubs'] = count(explode(",",$publications));
