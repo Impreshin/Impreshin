@@ -168,7 +168,7 @@ class marketer_targets extends \controllers\ab\data\data {
 		//test_array($cID);
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
-		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : "";
+		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : (isset($user['marketer']['ID']))? $user['marketer']['ID']:"";
 
 		$o = new models\marketers_targets();
 		$details = $o->get($ID);
@@ -178,6 +178,9 @@ class marketer_targets extends \controllers\ab\data\data {
 
 		$return = array();
 		$publications = models\marketers::getPublications($mID);
+
+		
+
 
 		if (!$details['ID']) {
 			$userPublications = array();

@@ -1,8 +1,6 @@
 <script type="text/x-jqote-template" id="template-notifications">
     <![CDATA[
-
-
-
+<div></div>
     <% if (this.checked) { %>
 		<span class="nbar" title="Checked - <%= this.checked.done %> of <%= this.checked.total %>" data-content='<div class="progress <% if (this.checked.percent>100 || this.checked.percent==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%;"></div></div>'>
 
