@@ -571,6 +571,8 @@ function drop(ID, page, $dragged) {
 	var oldPage = $($dragged).attr("data-page");
 	oldPage = oldPage != "undefined" ? oldPage : "";
 
+
+
 	listRequest.push($.post("/ab/save/layout/_drop?ID=" + ID, {"page":page}, function (data) {
 		data = data['data'];
 		$dragged.remove();
@@ -589,6 +591,7 @@ function drop(ID, page, $dragged) {
 				tr_draggable($("#page-" + oldPage));
 			});
 		}
+		getDetails_right();
 	}));
 
 }

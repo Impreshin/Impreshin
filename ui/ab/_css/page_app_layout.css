@@ -221,7 +221,7 @@ padding: 0 3px;
 	margin: 0;
 
 }
-##record-details-bottom  table td {
+#record-details-bottom  table td {
 	padding: 0 5px;
 }
 #dummy-bottom {
@@ -379,4 +379,23 @@ display: none;
 }
 .pages .record td {
 	border-bottom: 1px dotted #e1e1e1;
+}
+
+.stats-table {
+border-bottom:1px solid #ccc;
+}
+.stats-table th {
+	text-align: right;
+}
+
+
+#section-page-list {
+	border-bottom : 1px solid #ccc;
+}
+#section-page-list th {
+	width:25%;
+	text-align: center;
+}
+#section-page-list td {
+	text-align: center;
 }

@@ -430,6 +430,8 @@ class layout extends data {
 
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1' AND pageID='$pageID'", "client ASC");
 		$bookings = array();
+		$cm = 0;
+		$records = 0;
 		foreach ($bookingsRaw as $booking) {
 				$a = array();
 				$a['ID'] = $booking['ID'];
@@ -445,11 +447,25 @@ class layout extends data {
 				$a['material_status'] = $booking['material_status'];
 
 				$bookings[] = $a;
+			if ($a['cm']) $cm = $cm + $a['totalspace'];
+			$records++;
 		}
 
 		$page['records']= $bookings;
 
 
+		$pageSize = $user['publication']['cmav'] * $user['publication']['columnsav'];
+		$totalAVspace = $pageSize;
+		$loading = ($cm) ? ($cm / $totalAVspace) * 100 : 0;
+		$loading = number_format($loading, 2);
+
+
+
+		$page['stats'] = array(
+			"cm"=>$cm,
+			"records" => $records,
+			"loading" => $loading
+		);
 		$GLOBALS["output"]['data'] = $page;
 	}
 	function _details_section(){
@@ -457,11 +473,47 @@ class layout extends data {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
+		$pID = $user['publication']['ID'];
+
+		$dID = $user['publication']['current_date']['ID'];
+
+
+
+
+
+
 
 		$section = new models\sections();
 		$section = $section->get($ID);
+		$pages = models\pages::getAll("sectionID='".$section['ID']."' AND global_pages.dID = '$dID' AND global_pages.pID='$pID'");
 
+		$cm = 0;
+		$records = 0;
+		$n = array();
+		$pageSize = $user['publication']['cmav'] * $user['publication']['columnsav'];
+		foreach ($pages as $page){
+			if ($page['cm']) $cm = $cm+$page['cm'];
+			if ($page['records']) $records = $records+$page['records'];
+			$page['loading'] = number_format(($page['cm']) ? ($page['cm'] / $pageSize) * 100 : 0, 2);
+
+			$n[] = $page;
+		}
+		$pages = $n;
+
+
+		$totalAVspace = $pageSize * count($pages);
+		$loading = ($cm)? ($cm / $totalAVspace)*100:0;
+		$loading = number_format($loading,2);
+		
+		$stats = array(
+			"pages"=>count($pages),
+			"cm"=> $cm,
+			"records"=> $records,
+			"loading"=> $loading
+		);
 		$return = $section;
+		$return['pages'] = $pages;
+		$return['stats'] = $stats;
 
 		$GLOBALS["output"]['data'] = $return;
 	}
