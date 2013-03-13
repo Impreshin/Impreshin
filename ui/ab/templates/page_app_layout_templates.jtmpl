@@ -8,7 +8,16 @@
 		<td class="span1" style="padding-left: 0;">
 			<span class="size"><%= this.cm %>&nbsp;x&nbsp;<%= this.col %></span></td>
 		<td class="span1"><% if (this.colour) { %><%= this.colour %><% } %></td>
-		<td><% if (this.remark) { %><% if (this.remarkTypeLabelClass) { %><span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>"></span><% } else { %><span class="label"></span><% } %><% } else { %><span style="padding:0 5px;"></span><% } %><%= this.client %>
+		<td>
+			<% if (this.remark) { %>
+				<% if (this.remarkTypeLabelClass) { %>
+					<span title="<%= this.remarkType %>" class="label <%= this.remarkTypeLabelClass %>">&nbsp;</span>
+				<% } else { %> <span style="padding:0 5px;">&nbsp;</span>
+				<% } %>
+			<% } else { %>
+				<span style="padding:0 5px;">&nbsp;</span>
+			<% } %>
+			<%= this.client %>
 		</td>
 		<td style="width: 20px;" class="c">
 			<% if (this.material_status=='1'){ %>
@@ -95,7 +104,7 @@
 					<% for(var g in this.pages[i].records) { %>
 
 					<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colourID %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material=='1') { %><% if(this.pages[i].records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
-						<td class="span1 s g" style="padding-left: 0;">
+						<td class="span1 s g c" style="padding-left: 0;">
 							<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span></td>
 
 						<td><%= this.pages[i].records[g].client %>
@@ -223,6 +232,12 @@
 		<%= this.remark %>
 	</fieldset>
 	<% } %>
+	<% if (this.sub_placing){ %>
+	<fieldset style="margin-top: -5px;">
+		<legend>Sub Placing</legend>
+		<%= this.sub_placing %>
+	</fieldset>
+	<% } %>
 
 	</article>
 
@@ -235,6 +250,7 @@
 
 	</header>
 	<article class="body">
+		<div class="scroll-pane scrolly" id="page-record-list-middle" >
 		<table class="table table-condensed  s records <% if (this.locked=='1') { %>g<% } %>" id="page-booking-list" >
 			<thead>
 			<tr>
@@ -250,9 +266,11 @@
 		</table>
 
 
-
+		</div>
 	</article>
-	<footer class="footer">
+	<footer class="footer" >
+		<button class="btn btn-mini span5 close-right-over " style="margin-left:0; " type="button">&gt; Back to list &lt;</button>
+		<div class="clearfix"></div>
 		<% if (this.a.edit){ %>
 		<form action="" style="margin:0;" id="pages_settings_form">
 			<table>
@@ -290,7 +308,7 @@
 				<tr>
 					<td colspan="2">
 						{% if _user['publication']['colours_group']|length %}
-						<select name="colourID" id="colourID" class="span5">
+						<select name="colourID" id="colourID" class="span5" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
 							<option value="">No Limit</option>
 							<optgroup label="Filters">
 								{% for row in _user['publication']['colours_group'] %}

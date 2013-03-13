@@ -156,13 +156,17 @@ padding: 0 3px;
 	overflow-y : auto;
 	margin-bottom: 15px;
 }
-#record-list-middle {
+#record-list-middle, #page-record-list-middle {
 
 	position : absolute;
 	bottom   : 42px;
 	left     : 0;
 	right    : 0;
 	top: 200px;
+}
+#page-record-list-middle {
+	top: 30px;
+
 }
 
 
@@ -185,6 +189,7 @@ padding: 0 3px;
 	-webkit-box-shadow : 0 -1px 3px rgba(100, 100, 100, 0.2);
 	-moz-box-shadow    : 0 -1px 3px rgba(100, 100, 100, 0.2);
 	box-shadow         : 0 -1px 3px rgba(100, 100, 100, 0.2);
+
 }
 #record-details-bottom h4 {
 	padding: 5px;
@@ -289,7 +294,7 @@ padding: 0 3px;
 #rightsideOver {
 	position:absolute;
 	top : 0;
-	bottom : 0;
+	bottom : 0px;
 	left : -1px;
 	right : 0;
 	background-color: rgba(250,250,250,1);
@@ -321,8 +326,11 @@ display: none;
 	left           : 0;
 	right          : 0;
 	border-top  : 1px dotted #ccc;
+	padding-top:3px;
 
-
+	-webkit-box-shadow : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	-moz-box-shadow    : 0 -1px 3px rgba(100, 100, 100, 0.2);
+	box-shadow         : 0 -1px 3px rgba(100, 100, 100, 0.2);
 }
 
 #rightsideOver  .body {
