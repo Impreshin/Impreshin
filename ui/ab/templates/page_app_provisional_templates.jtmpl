@@ -1,4 +1,3 @@
-
 {% include '_records.jtmpl' %}
 {% include '_details.jtmpl' %}
 
@@ -16,49 +15,63 @@
 		<div class="row" style="position: absolute; top: 5px; left: 0; text-align: center; right:0;">
 
 			<div class="span2"><span class="s dg">Pages:</span>
-				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %>  >
-					<%= this.stats.loading.pages %>
-					<% if (this.stats.loading.forced) { %>*<% } %>
-				</strong>
+				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %> > <%= this.stats.loading.pages %> <% if (this.stats.loading.forced) { %>*<% } %>				</strong>
 			</div>
 			<div class="span2"><span class="s dg">Cm:</span> <strong><%= this.stats.cm %></strong></div>
-			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong></div>
+			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong>
+			</div>
 
 		</div>
 
 		<div id="toolbar-stats-pane" class="statstable">
-			<table class="table" >
+
+			Records:
+			<strong><%= this.stats.records.total %></strong> &nbsp; <% if (this.stats.totalCost) { %>| &nbsp Total Revenue:
+			<strong><%= this.stats.totalCost %></strong> <% } %>
+
+			<table class="table" style="margin-bottom:0; margin-top:10px;">
 				<tr>
-					<td class="c">
-						<strong><%= this.stats.records.total %></strong>&nbsp;
-						<small>Records</small>
+					<th class="r span2">
+						Checked:
+					</th>
+					<td >
+						<div class="progress">
+							<div class="bar" style="width: <%= this.stats.records.checked.p %>%;"></div>
+							<div class="text"><strong><%= this.stats.records.checked.r %> &nbsp;  <small> &nbsp; <%= this.stats.records.checked.p %>%</small></strong>
+							</div>
+						</div>
 					</td>
-					<td class="c">
-						<strong><%= this.stats.records.checked.r %></strong>&nbsp;
-						<small>Checked</small>
+
+				</tr>
+				<tr>
+					<th class="r span2">
+						Material:
+					</th>
+					<td >
+						<div class="progress">
+							<div class="bar" style="width: <%= this.stats.records.material.p %>%;"></div>
+							<div class="text"><strong><%= this.stats.records.material.r %> &nbsp;  <small> &nbsp; <%= this.stats.records.material.p %>%</small></strong>
+							</div>
+						</div>
 					</td>
-					<td class="c">
-						<strong><%= this.stats.records.material.r %></strong>&nbsp;
-						<small>Material</small>
-					</td>
-					<td class="c">
-						<strong><%= this.stats.records.layout.r %></strong>&nbsp;
-						<small>Layout</small>
+
+				</tr>
+				<tr>
+					<th class="r span2">
+						Layout:
+					</th>
+					<td >
+						<div class="progress">
+							<div class="bar" style="width: <%= this.stats.records.layout.p %>%;"></div>
+							<div class="text"><strong><%= this.stats.records.layout.r %> &nbsp;  <small> &nbsp; <%= this.stats.records.layout.p %>%</small></strong>
+							</div>
+						</div>
 					</td>
 
 				</tr>
 			</table>
-			<% if (this.stats.totalCost) { %>Total Revenue: <%= this.stats.totalCost %><% } %>
-			<table>
-				<tr>
 
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+
 		</div>
 	</li>
 	]]>

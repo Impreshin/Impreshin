@@ -59,12 +59,22 @@ class overview extends data {
 				"total"            => 0,
 				"material"         => array(
 					"y"=> 0,
-					"n"=> 0
+					"n"=> 0,
+					"p"=>0,
+					"t"=>0
 				),
 				"material_approved"=> array(
 					"y"=> 0,
-					"n"=> 0
-				)
+					"n"=> 0,
+					"p" => 0,
+					"t" => 0
+				),
+				"bar"=> array(
+					"y" => 0,
+					"n" => 0,
+					"p" => 0,
+					"t" => 0
+				),
 			)
 
 		);
@@ -134,17 +144,38 @@ class overview extends data {
 			}
 			$stats['records']['total']=count($records);
 			$h = "";
+
+			if ($stats['records']['total']) {
+				$stats['records']['material']['p'] = number_format(($stats['records']['material']['y'] / $stats['records']['total']) * 100, 2);
+			}
+			$stats['records']['material']['t'] = $stats['records']['total'];
+			if ($stats['records']['material']['t']) {
+				$stats['records']['material_approved']['p'] = number_format(($stats['records']['material_approved']['y'] / $stats['records']['material']['y']) * 100, 2);
+			}
+
+
+			$stats['records']['material_approved']['t'] = $stats['records']['material']['y'];
+
+
 			switch ($highlight){
 				case "material":
 					if ($stats['records']['material']['n']) $h = "no";
 					if (!$stats['records']['material']['n'] && $stats['records']['material']['y']) $h = "yes";
+					$stats['records']['bar'] = $stats['records']['material'];
+
 					break;
 				case "material_approved":
 					if ($stats['records']['material_approved']['n']) $h = "no";
 					if (!$stats['records']['material_approved']['n'] && $stats['records']['material_approved']['y']) $h = "yes";
+					$stats['records']['bar'] = $stats['records']['material_approved'];
 					break;
 				case "locked":
 					if ($page['locked']=='1') $h = "no";
+					$stats['records']['bar'] = array(
+						"y" => 0,
+						"n" => 0,
+						"p" => 0
+					);
 					break;
 			}
 
@@ -165,6 +196,9 @@ class overview extends data {
 
 
 			}
+
+
+
 
 
 			$r[$page['page']] = array(

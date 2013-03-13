@@ -80,10 +80,23 @@
 
 #toolbar-stats-link {
 	cursor : pointer;
+	th {
+		font-weight: normal;
+		font-style: italic;
+	}
 
 	.bar {
 		.opacity(0.2);
 
+	}
+	.progress {
+		position:relative;
+		.text {
+			position:absolute;
+			left:0;
+			right:0;
+			padding-left:10px;
+		}
 	}
 }
 

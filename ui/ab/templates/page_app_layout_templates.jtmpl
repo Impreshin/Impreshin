@@ -195,17 +195,45 @@
 		</div>
 
 		<div id="toolbar-stats-pane" class="statstable">
-
-			<table>
+			Pages: <strong><%= this.stats.loading.pages %></strong> &nbsp; | &nbsp Records:
+			<strong><%= this.stats.records.total %></strong>
+			<table class="table" style="margin-bottom:0; margin-top:10px;">
 				<tr>
+					<th class="r span2">
+						Placed:
+					</th>
+					<td>
+						<div class="progress">
+							<div class="bar" style="width: <%= this.stats.records.placed.p %>%;"></div>
+							<div class="text"><strong><%= this.stats.records.placed.r %> &nbsp;
+									<small> &nbsp; <%= this.stats.records.placed.p %>%</small>
+								</strong>
+							</div>
+						</div>
+					</td>
 
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
 				</tr>
+				<tr>
+					<th class="r span2">
+						Locked:
+					</th>
+					<td>
+						<div class="progress">
+							<div class="bar" style="width: <%= this.stats.records.locked.p %>%;"></div>
+							<div class="text"><strong><%= this.stats.records.locked.r %> &nbsp;
+									<small> &nbsp; <%= this.stats.records.locked.p %>%</small>
+								</strong>
+							</div>
+						</div>
+					</td>
+
+				</tr>
+
 			</table>
+
+
+
+
 		</div>
 	</li>
 	]]>

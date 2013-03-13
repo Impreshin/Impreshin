@@ -79,7 +79,23 @@ class layout extends data {
 		$return['placingID'] = $placingID;
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
+
+
+		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'", "page ASC");
+		$lockedPages = 0;
+		foreach ($pagesReal as $page) {
+
+			if ($page['locked'] == '1') $lockedPages++;
+		}
+
+		$stats['records']['locked'] = array(
+			"r" => $lockedPages,
+			"p" => number_format($lockedPages ? ($lockedPages / count($pagesReal)) * 100 : 0, 2)
+		);
+
 		$return['stats'] = $stats;
+
+
 
 
 		return $GLOBALS["output"]['data'] = $return;
@@ -148,6 +164,7 @@ class layout extends data {
 		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'","page ASC");
 
 		$r = array();
+		$lockedPages = 0;
 		foreach ($pagesReal as $page){
 
 			$colour = array(
@@ -166,6 +183,7 @@ class layout extends data {
 
 
 			}
+			if ($page['locked']=='1') $lockedPages++;
 
 
 
@@ -255,6 +273,12 @@ class layout extends data {
 		$pages = array();
 		$pages["spreads"] = $spread;
 		$pages["count"] = $pagesCount;
+
+		$stats['records']['locked'] = array(
+			"r"=>$lockedPages,
+			"p"=> number_format($lockedPages? ($lockedPages / $pagesCount)*100:0,2)
+		);
+
 
 
 		$return = $pages;
@@ -358,9 +382,21 @@ class layout extends data {
 			}
 		}
 
-		$r['records'] = $bookings;
+		$pagesReal = models\pages::getAll("global_pages.pID='$pID' AND global_pages.dID = '$dID'", "page ASC");
+		$lockedPages = 0;
+		foreach ($pagesReal as $page) {
 
-		$r['stats'] = $this->_stats();;
+			if ($page['locked'] == '1') $lockedPages++;
+		}
+
+		$r['records'] = $bookings;
+		$stats = $this->_stats();
+		$stats['records']['locked'] = array(
+			"r" => $lockedPages,
+			"p" => number_format($lockedPages ? ($lockedPages / count($pagesReal)) * 100 : 0, 2)
+		);
+
+		$r['stats'] = $stats;
 
 
 		$return = $r;
@@ -437,6 +473,7 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
+				$a['colourLabel'] = $booking['colourLabel'];
 				$a['col'] = $booking['col'];
 				$a['cm'] = $booking['cm'];
 				$a['totalspace'] = $booking['totalspace'];

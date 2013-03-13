@@ -20,10 +20,11 @@
 
 			</header>
 			<div>
+				<!--
 				<table>
 					<tr>
 						<td colspan="2">
-							<h5>Records <%= this.pages[i].stats.records.total %></h5>
+							<h5>Records </h5>
 						</td>
 					</tr>
 					<tr>
@@ -54,9 +55,54 @@
 					</tr>
 				</table>
 
+-->
+
+
+
+				<% if (this.pages[i].stats.records.bar.n) { %>
+				<div class="progress progress-info progress-striped" style="position:absolute; top:0; left:0; right:0; bottom:0;">
+					<div class="bar" style="height: <%= this.pages[i].stats.records.bar.p %>%;"></div>
+					<div class="text">
+
+						<div class="vals">
+							<strong><%= this.pages[i].stats.records.bar.y %>
+								<span class="dg f13"> of </span> <%= this.pages[i].stats.records.bar.t %> </strong></div>
+
+					</div>
+				</div>
+				<% } %>
+				<!--
+<% if (this.pages[i].stats.records.material_approved.n) { %>
+				<div class="progress">
+					<div class="bar" style="width: <%= this.pages[i].stats.records.material_approved.p %>%;"></div>
+					<div class="text">
+						<small>Approved: </small>
+						<strong><%= this.pages[i].stats.records.material_approved.y %>
+							<span class="g"> of </span> <%= this.pages[i].stats.records.material.y %> </strong>
+					</div>
+				</div>
+				<% } %>
+-->
+
+
 
 
 			</div>
+			<% if (this.pages[i].stats.records.total > 0) { %>
+			<div class="record-count"> <%= this.pages[i].stats.records.total %><br><div class="label">Record<% if (this.pages[i].stats.records.total > 1) { %>s<% } %></div></div>
+			<% } %>
+
+			<% if(this.pages[i].colour.icons) { %>
+			<div class="page_colour">
+				<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
+
+			</div>
+			<% } %> <% if(this.pages[i].locked=='1') { %>
+			<div class="page_locked">
+				<i class="icon-lock icon-d-grey"></i>
+
+			</div>
+			<% } %>
 
 		</article>
 	</div>
@@ -92,6 +138,57 @@
 		<% if (this.percent) { %>
 			<div class="bar" style="width: <%= this.percent %>%; <% if (this.percent > 60){ %><% if (this.percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
 			<% } %>
+	</div>
+
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-page-details-modal">
+	<![CDATA[
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3 id="myModalLabel"><% if (this.locked=='1') { %><i class="icon-lock icon-grey" style="margin-right:7px; margin-top:4px;"></i><% } %>Page <%= this.page %> <small><%= this.section||"" %></small></h3>
+		<% if (this.section_colour){ %>
+		<div style="background-color:<%= this.section_colour %>; height:3px;"></div>
+		<% } %>
+	</div>
+	<div class="modal-body">
+		<table class="table table-condensed">
+			<thead>
+			<tr>
+				<th style="width:70px;">Size</th>
+				<th>Client</th>
+
+				<th>Colour</th>
+				<th>Material</th>
+			</tr>
+			</thead>
+			<tbody>
+			<% for (var i in this.records) { %>
+			<tr>
+				<td>
+					<%= this.records[i].totalspace %>
+					<span class="g" style="float:right; margin-right:5px;"><%= this.records[i].cm %> x <%= this.records[i].col %></span>
+				</td>
+				<td><%= this.records[i].client||"" %></td>
+
+				<td><%= this.records[i].colour||"" %> <span class="s g"><%= this.records[i].colourLabel||"" %></span>
+				</td>
+				<td style="width: 20px;" class="c">
+					<% if (this.records[i].material_status=='1'){ %>
+					<i class="icon-ok <% if(this.records[i].material_approved!='1') { %>icon-grey<% } %>"></i> <% } else { %>
+					<i class="icon-remove icon-l-grey"></i> <% } %>
+				</td>
+
+			</tr>
+			<% } %>
+			</tbody>
+		</table>
+
+	</div>
+	<div class="modal-footer">
+		<button class="btn" style="width:100px;" data-dismiss="modal">Close</button>
 	</div>
 
 
