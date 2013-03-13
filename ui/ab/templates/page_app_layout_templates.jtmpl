@@ -48,7 +48,7 @@
 					<% } %>
 				</table>
 			</div>
-			<% if (this.percent) { %>
+			<% if (this.percent && this.cm) { %>
 			<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 				<div class="bar" style="width: <%= this.percent %>%;"></div>
 				<div class="text"><%= this.percent %>% with a total of <%= this.cm %>cm</div>
@@ -109,7 +109,7 @@
 				</table>
 
 			</div>
-			<% if (this.pages[i].percent) { %>
+			<% if (this.pages[i].percent && this.pages[i].cm) { %>
 			<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 				<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
 				<div class="text"><%= this.pages[i].percent %>% with a total of <%= this.pages[i].cm %>cm</div>
@@ -270,7 +270,7 @@
 
 					</td>
 					<td><% if (this.locked=='1') { %>
-						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-left: -15px" data-value="0" type="button" id="lock-btn" rel="tooltip" title="Click to un-lock this page" >
+						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-left: -15px" data-value="0" type="button" id="lock-btn"  title="Click to un-lock this page" >
 
 								<i class="icon-lock icon-white"></i>
 
@@ -278,7 +278,7 @@
 						</button>
 						<% } else { %>
 
-						<button class="btn span1 btn-mini" style="margin-top: 5px; margin-left: -15px" data-value="1" type="button" id="lock-btn" rel="tooltip" title="Click to lock this page">
+						<button class="btn span1 btn-mini" style="margin-top: 5px; margin-left: -15px" data-value="1" type="button" id="lock-btn"  title="Click to lock this page">
 
 							<i class="icon-lock icon-grey"></i>
 
