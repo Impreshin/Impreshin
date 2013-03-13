@@ -39,7 +39,7 @@ class pages {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "") {
+	public static function getAll($where = "", $orderby = "global_pages.page ASC") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
@@ -57,7 +57,9 @@ class pages {
 
 		$timer2 = new timer();
 		$result = $f3->get("DB")->exec("
-			SELECT global_pages.*, section, section_colour,  (SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as cm
+			SELECT global_pages.*, section, section_colour,
+				(SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as cm,
+				(SELECT count(ID) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as records
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby

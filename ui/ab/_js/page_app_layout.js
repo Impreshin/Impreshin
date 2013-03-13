@@ -73,6 +73,7 @@ $(document).ready(function () {
 		getDetails();
 	});
 
+
 	$(document).on("click", ".pages .record, .details_record", function () {
 		var $this = $(this);
 		getDetails_small($this.attr("data-id"));
@@ -83,6 +84,11 @@ $(document).ready(function () {
 		$.bbq.pushState({"ID":$this.attr("data-id")});
 		getDetails();
 	});
+
+
+
+
+
 
 	$(document).on('hide', '#ab-details-modal', function () {
 		var s = {
@@ -227,8 +233,18 @@ function dummy_resize(settings) {
 
 }
 function records_list_resize() {
-	$("#record-list-middle").css("bottom", $("#record-details-bottom").outerHeight());
+	var bottomHeight = $("#record-details-bottom").outerHeight();
+	$("#record-list-middle").css("bottom", bottomHeight);
+	var $rightsideOver = $("#rightsideOver");
+	if ($rightsideOver.length){
+		var b = $("#rightsideOver .footer").outerHeight();
+
+		//$("#record-list-middle").
+		$rightsideOver.css({"bottom": bottomHeight}).find(".scroll-pane").css("bottom",b-42).jScrollPane(jScrollPaneOptions);
+	}
+
 	right_pane.reinitialise();
+
 }
 function PadDigits(n, totalDigits) {
 	n = n.toString();
@@ -490,14 +506,14 @@ function isScrolledIntoView(elem) {
 }
 function getDetails_small(ID) {
 	$('#record-details-bottom').stop(true, true).fadeTo(transSpeed, 0.5);
-	detailsRequest.push($.getJSON("/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+	$.getJSON("/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
 		data = data['data'];
-		$("#record-list .record.active").removeClass("active");
-		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+		$(".record.active").removeClass("active");
+		$(".record[data-ID='" + ID + "']").addClass("active");
 		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data).stop(true, true).fadeTo(transSpeed, 1);
 
 		records_list_resize();
-	}));
+	});
 }
 function getDetails_right() {
 	var section = $.bbq.getState("details");
@@ -537,8 +553,7 @@ function getDetails_right() {
 					break;
 			}
 
-			$(".body", $rightsideOver).css({"top":$(".header", $rightsideOver).outerHeight(), "bottom":$(".footer", $rightsideOver).outerHeight()}).jScrollPane(jScrollPaneOptions);
-
+			records_list_resize();
 			$("#right-area .loadingmask").fadeOut(transSpeed);
 		});
 	}
@@ -555,6 +570,8 @@ function showList() {
 function drop(ID, page, $dragged) {
 	var oldPage = $($dragged).attr("data-page");
 	oldPage = oldPage != "undefined" ? oldPage : "";
+
+
 
 	listRequest.push($.post("/ab/save/layout/_drop?ID=" + ID, {"page":page}, function (data) {
 		data = data['data'];
@@ -574,6 +591,7 @@ function drop(ID, page, $dragged) {
 				tr_draggable($("#page-" + oldPage));
 			});
 		}
+		getDetails_right();
 	}));
 
 }

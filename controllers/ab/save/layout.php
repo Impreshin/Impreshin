@@ -44,7 +44,10 @@ class layout extends save {
 			$values['sectionID']= $sectionID;
 		}
 
-		$values['colourID']= $colourID;
+		if ($colourID != "") {
+			$values['colourID'] = $colourID;
+		}
+
 
 		if ($locked!=""){
 			$values['locked']= $locked;
