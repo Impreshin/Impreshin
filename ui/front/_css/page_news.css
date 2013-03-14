@@ -1,6 +1,10 @@
 .nav.nav-tabs.nav-stacked .active a{
 	background-color: #DEEBFF;
 }
+
+.nav.nav-tabs.nav-stacked a {
+	padding: 4px 12px;
+}
 #left-area h1 {
 	margin-top: 30px;
 	border-bottom: 1px dotted #ccc;
