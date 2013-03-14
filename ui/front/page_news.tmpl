@@ -1,0 +1,63 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+
+			<ul class="nav nav-pills pull-left">
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">News</h2>
+				</li>
+
+				<li class="divider-vertical"></li>
+				<li>
+					<h2>
+						<small>{{ date }}</small>
+					</h2>
+				</li>
+
+			</ul>
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<article id="left-area" class="span11">
+			<div class="content">
+				<div class="scroll-pane scrolly">
+					{{ item|raw }}
+				</div>
+			</div>
+
+		</article>
+		<article id="right-area" class="span5 offset11">
+
+			<h2 style="border-bottom: 1px dotted #ccc; margin-top: 10px; padding-left: 10px; margin-bottom: 10px;">Archives</h2>
+
+			<div style="margin-right:13px;">
+				<ul class="nav nav-tabs nav-stacked">
+					{% for row in items %}
+						<li {% if row['selected']=='1' %}class="active"{% endif %}>
+							<a href="/news/{{ row['folder'] }}">{{ row['date'] }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+
+			</div>
+
+
+		</article>
+	</div>
+
+
+	</div>
+
+</section>
+<script type="text/javascript">
+	var git_path = "{{ _cfg['git']['path'] }}";
+	var git_branch = "{{ _cfg['git']['branch'] }}";
+	var git_login = "{{ _cfg['git']['username'] }}";
+	var git_token = "{{ _cfg['git']['token'] }}";
+</script>
