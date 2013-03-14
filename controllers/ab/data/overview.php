@@ -145,11 +145,11 @@ class overview extends data {
 			$stats['records']['total']=count($records);
 			$h = "";
 
-			if ($stats['records']['total']) {
+			if ($stats['records']['total'] && $stats['records']['material']['y']) {
 				$stats['records']['material']['p'] = number_format(($stats['records']['material']['y'] / $stats['records']['total']) * 100, 2);
 			}
 			$stats['records']['material']['t'] = $stats['records']['total'];
-			if ($stats['records']['material']['t']) {
+			if ($stats['records']['material']['t'] && $stats['records']['material_approved']['y']) {
 				$stats['records']['material_approved']['p'] = number_format(($stats['records']['material_approved']['y'] / $stats['records']['material']['y']) * 100, 2);
 			}
 
