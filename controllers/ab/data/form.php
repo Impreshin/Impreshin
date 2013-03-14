@@ -49,7 +49,7 @@ class form extends data {
 
 
 		$clientlist = $this->f3->get("DB")->exec("
-			SELECT DISTINCT client FROM ab_bookings INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID WHERE ab_bookings.pID = '$pID' AND global_dates.publish_date >= DATE_SUB(now(),INTERVAL '60' DAY) ORDER BY global_dates.publish_date DESC LIMIT 0,200
+			SELECT DISTINCT client FROM ab_bookings INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID WHERE ab_bookings.pID = '$pID' AND global_dates.publish_date >= DATE_SUB(now(),INTERVAL '90' DAY) ORDER BY global_dates.publish_date DESC LIMIT 0,200
 		"
 		);
 		$a = array();

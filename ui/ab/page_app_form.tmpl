@@ -59,6 +59,7 @@
 </div>
 <input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
 <script type="text/javascript">
+	var var_record_ID = '{{ ID }}';
 	var var_sub_placing = {{ sub_placing|json_encode()|raw }};
 	var var_publication = {{ _user['publication']|json_encode()|raw }};
 

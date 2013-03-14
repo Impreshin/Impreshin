@@ -95,7 +95,7 @@ $(document).ready(function () {
 	});
 	$(document).on("reset", "#booking-form", function (e) {
 		e.preventDefault();
-		$("#record-ID").val("");
+
 		getData();
 		return false;
 
@@ -110,7 +110,7 @@ $(document).ready(function () {
 			alert("You must specify a reason");
 		} else {
 			$("input", $(this)).attr("disabled", "disabled");
-			$.post("/ab/save/bookings/booking_delete/?ID=" + $("#record-ID").val(), data, function (r) {
+			$.post("/ab/save/bookings/booking_delete/?ID=" + var_record_ID, data, function (r) {
 				alert("Booking deleted");
 				document.location = "/ab/";
 			});
@@ -123,7 +123,7 @@ $(document).ready(function () {
 });
 
 function getData(){
-	ID = $("#record-ID").val();
+	var ID = var_record_ID;
 
 	$("#left-area .loadingmask").show();
 
@@ -506,10 +506,10 @@ function form_submit() {
 	if (submit) {
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
-		var var_detailsID = $("#record-ID").val();
+		var var_detailsID = var_record_ID;
 		$.post("/ab/save/bookings/form?ID=" + var_detailsID + "&type=" + type, data, function (response) {
 
-			$("#record-ID").val(response[0]['ID']);
+			//$("#record-ID").val(response[0]['ID']);
 			getData();
 			$("#pagecontent .loadingmask").fadeOut(transSpeed);
 			$("#modal-form").jqotesub($("#template-modal-form"), response[0]).modal("show");
