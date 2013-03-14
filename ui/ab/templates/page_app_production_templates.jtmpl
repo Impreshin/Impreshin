@@ -26,7 +26,7 @@
 			Records: <strong><%= this.stats.records.total %></strong>
 			<table class="table" style="margin-bottom:0; margin-top:10px;">
 				<tr>
-					<th class="r span2">
+					<th class="r span1">
 						Material:
 					</th>
 					<td>
@@ -41,7 +41,7 @@
 
 				</tr>
 				<tr>
-					<th class="r span2">
+					<th class="r ">
 						Approved:
 					</th>
 					<td>
