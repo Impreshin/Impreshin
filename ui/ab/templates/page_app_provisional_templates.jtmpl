@@ -25,8 +25,8 @@
 
 		<div id="toolbar-stats-pane" class="statstable">
 
-			Records:
-			<strong><%= this.stats.records.total %></strong> &nbsp; <% if (this.stats.totalCost) { %>| &nbsp Total Revenue:
+			Records:&nbsp;
+			<strong><%= this.stats.records.total %></strong> &nbsp; <% if (this.stats.totalCost) { %>| &nbsp Total Revenue:&nbsp;
 			<strong><%= this.stats.totalCost %></strong> <% } %>
 
 			<table class="table" style="margin-bottom:0; margin-top:10px;">

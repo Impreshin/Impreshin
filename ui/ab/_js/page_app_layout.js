@@ -44,6 +44,13 @@ $(document).ready(function () {
 		var $this = $(this);
 		$.bbq.removeState("details");
 		$.bbq.pushState({details:"page-" + $this.attr("data-page")});
+
+		var page = "#dummy-area .pages[data-page='" + $this.attr("data-page") + "']";
+		if ($("#dummy-area .pages[data-page='" + $this.attr("data-page") + "']").length) {
+			left_pane.scrollToElement(page, true, true);
+		}
+
+
 		getDetails_right();
 	});
 

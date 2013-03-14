@@ -187,15 +187,14 @@
 			<div class="span2"><span class="s dg">Pages:</span>
 				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %> > <%= this.stats.loading.pages %> <% if (this.stats.loading.forced) { %>*<% } %>                </strong>
 			</div>
-			<div class="span2"><span class="s dg">Placed:</span> <strong><%= this.stats.records.placed.r %></strong> of
-				<strong><%= this.stats.records.total %></strong></div>
+			<div class="span2"><span class="s dg">Placed:</span> <strong> <%= this.stats.records.placed.r %> </strong> of <strong> <%= this.stats.records.total %></strong></div>
 			<div class="span2"><span class="s dg">Loading:</span> <strong><%= this.stats.loading.loading %>%</strong>
 			</div>
 
 		</div>
 
 		<div id="toolbar-stats-pane" class="statstable">
-			Pages: <strong><%= this.stats.loading.pages %></strong> &nbsp; | &nbsp Records:
+			Pages: <strong><%= this.stats.loading.pages %></strong> &nbsp; | &nbsp Records:&nbsp;
 			<strong><%= this.stats.records.total %></strong>
 			<table class="table" style="margin-bottom:0; margin-top:10px;">
 				<tr>
