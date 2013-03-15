@@ -75,7 +75,7 @@
 				<div>
 					<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0; margin-left: -1px;">
 						{% for row in placing %}
-						<option value="{{ row['ID'] }}">{{ row['placing'] }}</option>
+						<option value="{{ row['ID'] }}" {% if row['ID']==settings['placingID'][_user['publication']['ID']] %}selected="selected"{% endif %}>{{ row['placing'] }}</option>
 						{% endfor %}
 					</select>
 					<table class="table table-condensed  s records">

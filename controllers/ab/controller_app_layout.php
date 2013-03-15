@@ -37,6 +37,7 @@ class controller_app_layout {
 		$tmpl->sections = models\sections::getAll("pID='$pID'","section ASC");
 		$tmpl->page_loading = models\loading::getAll("pID='$pID'","pages ASC");
 		$tmpl->production = models\production::getAll("pID='$pID'", "production ASC");
+		$tmpl->settings = models\settings::_read("layout");
 		$tmpl->output();
 
 	}

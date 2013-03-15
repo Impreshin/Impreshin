@@ -26,13 +26,23 @@ class layout extends data {
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : "";
+		$settings = models\settings::_read("layout");
+
+		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : $settings['placingID'];
 
 		$stats = $this->_stats();
 
 		$maxPage = $stats['loading']['pages'];
 
+		$values = array();
+		$values["layout"] = array(
+			"placingID" => array(
+				$pID=>$placingID,
+			)
+		);
 
+
+		models\user_settings::save_setting($values);
 
 
 		$records = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.placingID='$placingID' AND (page is null OR page > '$maxPage')");
