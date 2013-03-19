@@ -124,7 +124,8 @@ class settings {
 				"c"=> "datein",
 				"o"=> "datein",
 				"h"=> "Date\\Time",
-				"d"=>"Date and Time the booking was added"
+				"d"=>"Date and Time the booking was added",
+				"m" => 60
 			),
 			"datein_date"                 => array(
 				"c"=> "datein_date",
@@ -132,6 +133,13 @@ class settings {
 				"h"=> "Date",
 				"d" => "Date the booking was added",
 				"w" => 60
+			),
+			"last_change"                 => array(
+				"c"=> "last_change",
+				"o"=> "last_change",
+				"h"=> "Last&nbsp;Change",
+				"d" => "Date the booking was last changed",
+				"m" => 60
 			),
 			"checked"                => array(
 				"c"=> "checked",

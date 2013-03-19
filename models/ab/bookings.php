@@ -67,6 +67,7 @@ class bookings {
 				global_pages.page,
 				ab_production.production AS material_production,
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
+				(SELECT datein FROM ab_bookings_logs WHERE ab_bookings_logs.bID = ab_bookings.ID  ORDER BY ID DESC LIMIT 0,1) AS last_change,
 
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
 COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
@@ -272,7 +273,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
-				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date
+				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
+				(SELECT datein FROM ab_bookings_logs WHERE ab_bookings_logs.bID = ab_bookings.ID ORDER BY ID DESC LIMIT 0,1 ) AS last_change
 			$select
 			$from
 			$where
