@@ -709,10 +709,10 @@ function capitaliseFirstLetter(string) {
     ]]>
 </script>
 {% if page['template_tmpl'] %}
-    {% include page['template_tmpl'] %}
+    {% include page['template_tmpl']%}
 {% endif %}
 
-{% include 'templates/template.jtmpl' %}
+{% include 'templates/template.jtmpl' ignore missing %}
 
 {% if  _cfg['ga'] %}
     <script type="text/javascript">
