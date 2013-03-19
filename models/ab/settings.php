@@ -123,6 +123,11 @@ class settings {
 			"datein"                 => array(
 				"c"=> "datein",
 				"o"=> "datein",
+				"h"=> "Date\\Time"
+			),
+			"datein_date"                 => array(
+				"c"=> "datein_date",
+				"o"=> "datein_date",
 				"h"=> "Date"
 			),
 			"checked"                => array(
