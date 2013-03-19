@@ -137,7 +137,14 @@ class settings {
 			"last_change"                 => array(
 				"c"=> "last_change",
 				"o"=> "last_change",
-				"h"=> "Last&nbsp;Change",
+				"h"=> "Last&nbsp;Changed&nbsp;DT",
+				"d" => "Date the booking was last changed",
+				"m" => 60
+			),
+			"last_change_date"                 => array(
+				"c"=> "last_change_date",
+				"o"=> "last_change",
+				"h"=> "Last&nbsp;Changed",
 				"d" => "Date the booking was last changed",
 				"m" => 60
 			),

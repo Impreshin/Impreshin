@@ -355,6 +355,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 
 				}
 
+				$item['last_change_date'] = date("Y-m-d",strtotime($item['last_change'])) ;
 				if (isset($item['pageID']) && $item['pageID'] && $item["page"]) {
 					$item["page"] = number_format($item['page'], 0);
 				}
