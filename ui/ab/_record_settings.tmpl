@@ -27,7 +27,7 @@
                         <div class="scroll-pane list-col">
                             <ul class="connectedSortable" id="available-columns" >
                             {% for row in settings_columns['available'] %}
-                                <li data-column="{{ row['c'] }}">{{ row['h']|raw }}</li>
+                                <li data-column="{{ row['c'] }}" title="{{ row['d']|default("") }}">{{ row['h']|raw }} {% if row['d'] %}<span class="s g"> | {{ row['d'] }}</span>{% endif %}</li>
                             {% endfor %}
                             </ul>
                         </div>
@@ -38,7 +38,7 @@
                         <div class="scroll-pane list-col">
                             <ul class="connectedSortable" id="selected-columns">
                                 {% for row in settings_columns['selected'] %}
-                                    <li data-column="{{ row['c'] }}">{{ row['h']|raw }}</li>
+                                    <li data-column="{{ row['c'] }}" title="{{ row['d']|default("") }}">{{ row['h']|raw }} {% if row['d'] %}<span class="s g"> | {{ row['d'] }}</span>{% endif %}</li>
                                 {% endfor %}
                             </ul>
                         </div>

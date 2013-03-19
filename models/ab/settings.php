@@ -123,12 +123,15 @@ class settings {
 			"datein"                 => array(
 				"c"=> "datein",
 				"o"=> "datein",
-				"h"=> "Date\\Time"
+				"h"=> "Date\\Time",
+				"d"=>"Date and Time the booking was added"
 			),
 			"datein_date"                 => array(
 				"c"=> "datein_date",
 				"o"=> "datein_date",
-				"h"=> "Date"
+				"h"=> "Date",
+				"d" => "Date the booking was added",
+				"w" => 60
 			),
 			"checked"                => array(
 				"c"=> "checked",
