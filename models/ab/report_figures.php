@@ -197,7 +197,7 @@ class report_figures {
 					"year"    => $year,
 					"totals"  => ($total) ? ($total) : array("total" => ""),
 					"cm"      => ($cm) ? $cm : "",
-					"yield"   => ($cm && $total['type']['t_1']) ? $total['type']['t_1'] / $cm : "",
+					"yield"   => ($cm && isset($total['type']['t_1']) && $total['type']['t_1']) ? $total['type']['t_1'] / $cm : "",
 					"records" => ($records) ? $records : "",
 					"d"       => array(
 						"totals"  => "",
