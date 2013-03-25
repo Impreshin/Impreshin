@@ -95,6 +95,42 @@ class company {
 		return $return;
 
 	}
+	public static function getAll($where = "", $orderby = "company ASC", $limit = "") {
+		$timer = new timer();
+		$f3 = \Base::instance();
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+
+		if ($limit) {
+			$limit = str_replace("LIMIT", "", $limit);
+			$limit = " LIMIT " . $limit;
+
+		}
+
+		$sql = "SELECT global_companies.*
+		FROM global_companies
+				$where
+			$orderby
+			$limit
+
+				";
+
+			$result = $f3->get("DB")->exec($sql);
+
+
+		$return = $result;
+		$timer->stop(array( "Models" => array( "Class"  => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+
+	}
 
 
 	private static function dbStructure() {

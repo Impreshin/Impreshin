@@ -130,8 +130,13 @@ class controller_home {
 		}
 
 
+		if ($user['su'] == '1') {
+			$companies = \models\company::getAll();
+		} else {
+			$companies = \models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'");
+		}
 
-
+		//test_array($companies);
 
 
 		$tmpl = new \template("template.tmpl", "ui/setup/", true);
@@ -150,8 +155,10 @@ class controller_home {
 		$tmpl->company = $company;
 		$tmpl->publication = $publication;
 
+
+
 		$tmpl->list = array(
-			"companies"    => \models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"),
+			"companies"    => $companies,
 			"publications" => \models\publications::getAll("cID = '" . $company['ID'] . "'")
 		);
 
