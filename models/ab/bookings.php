@@ -286,13 +286,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 
 		$return = $result;
 
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
-		);
+		$timer->stop(array("Models" => array( "Class"  => __CLASS__,"Method" => __FUNCTION__ ) ), func_get_args());
 		return $return;
 	}
 

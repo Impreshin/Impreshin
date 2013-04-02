@@ -27,15 +27,14 @@ class admin_marketers_targets extends save {
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		$mID = isset($_REQUEST['mID']) ? $_REQUEST['mID'] : isset($user['marketer']['ID']) ? $user['marketer']['ID'] : "";
+		$mID = isset($_REQUEST['mID']) ? $_REQUEST['mID'] : "";
+		if (!isset($_REQUEST['mID'])) $mID = isset($user['marketer']['ID']) ? $user['marketer']['ID'] : "";
 
-		$target = isset($_POST['target']) ? $_POST['target'] : "";
+			$target = isset($_POST['target']) ? $_POST['target'] : "";
 		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
 		$date_from = isset($_POST['date_from']) ? $_POST['date_from'] : "";
 		$date_to = isset($_POST['date_to']) ? $_POST['date_to'] : "";
 		$locked = isset($_POST['locked']) ? $_POST['locked'] : "0";
-
-
 
 
 
@@ -82,6 +81,7 @@ class admin_marketers_targets extends save {
 			"date_to"              => $date_to,
 			"locked"              => $locked
 		);
+
 
 
 //$values = $values['p']['p'];
