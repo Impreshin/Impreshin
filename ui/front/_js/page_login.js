@@ -14,7 +14,6 @@ $(document).ready(function(){
 					return (a.days_ago > b.days_ago) ? 1 : ((b.days_ago > a.days_ago) ? -1 : 0);
 				});
 
-				console.log(data);
 				var news = $.map(data,function (v) {
 					var ret = "";
 					var txt = '<span class="g s">' + v.datein_d + '</span> | ' + v.news;
