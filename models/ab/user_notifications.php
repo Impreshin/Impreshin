@@ -23,7 +23,7 @@ class user_notifications {
 		$user = $f3->get("user");
 		$return = $records = array();
 
-		if ($user['ID']) {
+		if ($user['ID'] && isset($user['publication']['ID']) && isset($user['publication']['current_date']['ID'])) {
 
 
 			if (isset($user['marketer'])) {
