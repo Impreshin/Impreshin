@@ -298,7 +298,7 @@
 				<li class="nav-header">Other</li>
 				{% endif %}
 
-				{% if _user['permissions']['allow_setup']=='1' %}
+				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
 					<li>
 						<a href="/setup"><i class="icon-wrench menu-icon"></i> Setup Wizard</a>
 					</li>
