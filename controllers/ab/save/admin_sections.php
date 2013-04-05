@@ -63,7 +63,8 @@ class admin_sections extends save {
 		$values = array(
 			"section"         => $section,
 			"section_colour"=> $section_colour,
-			"pID"=> $pID
+			"pID"=> $pID,
+			"cID"=> $cID
 		);
 
 
