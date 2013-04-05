@@ -167,8 +167,12 @@ class marketer_targets extends \controllers\ab\data\data {
 		$cID = $user['publication']['cID'];
 		//test_array($cID);
 
+		$Mid_USER = "";
+		IF (isset($user['marketer']) && ISSET($user['marketer']['ID']) && $user['marketer']['ID']){
+			$Mid_USER = $user['marketer']['ID'];
+		}
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
-		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : (isset($user['marketer']) && isset($user['marketer']['ID']))? $user['marketer']['ID']:"";
+		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : $Mid_USER;
 
 		$o = new models\marketers_targets();
 		$details = $o->get($ID);
