@@ -132,6 +132,7 @@ class accounts {
 		$user = $f3->get("user");
 
 
+		if (isset($values['ID'])) unset($values['ID']);
 		$old = array();
 		$lookupColumns = array();
 		$lookupColumns["statusID"] = array(
@@ -145,10 +146,12 @@ class accounts {
 
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key) ? $a->$key : "";
-			if (isset($a->$key)){
+			if ($key!="ID"){
+				$old[$key] = isset($a->$key) ? $a->$key : "";
+				if (isset($a->$key)) {
 
-				$a->$key = $value;
+					$a->$key = $value;
+				}
 			}
 
 		}

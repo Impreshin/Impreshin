@@ -213,6 +213,11 @@
 						<a href="/ab/admin/accounts/status" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Account {% endif %}Status</a>
 					</li>
 				{% endif %}
+				{% if _user['permissions']['administration']['application']['accounts']['import']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_import" %} active {% endif %}">
+						<a href="/ab/admin/accounts/import" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Accounts {% endif %}Import</a>
+					</li>
+				{% endif %}
 
 				{% if _user['permissions']['administration']['application']['categories']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "categories" %} active {% endif %}">

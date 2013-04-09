@@ -365,6 +365,10 @@ $app->route('GET /ab/admin/accounts/status', function ($f3, $params) {
 		$f3->chain('access; last_page; controllers\ab\controller_admin_accounts_status->page');
 	}
 );
+$app->route('GET /ab/admin/accounts/import', function ($f3, $params) {
+		$f3->chain('access; last_page; controllers\ab\controller_admin_accounts_import->page');
+	}
+);
 $app->route('GET /ab/admin/sections', function ($f3, $params) {
 		$f3->chain('access; last_page; controllers\ab\controller_admin_sections->page');
 	}

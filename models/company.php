@@ -132,7 +132,35 @@ class company {
 
 	}
 
+public static function save($ID, $values, $cID="") {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_companies");
+		$a->load("ID='$ID'");
+		$old = array();
+		foreach ($values as $key => $value) {
+			if (isset($a->$key)) {
+				$a->$key = $value;
+			}
+		}
+		$a->save();
+
+		$ID = $a->ID;
+
+
+
+
+		//test_array($new_logging);
+
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $ID;
+
+	}
 	private static function dbStructure() {
 		$f3 = \Base::instance();
 		$table = $f3->get("DB")->exec("EXPLAIN global_companies;");

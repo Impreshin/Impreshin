@@ -124,6 +124,9 @@ class user_permissions {
 						"page"   => 0,
 						"status" => array(
 							"page" => 0
+						),
+						"import" => array(
+							"page" => 0
 						)
 					),
 					"categories"    => array(
