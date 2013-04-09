@@ -8,7 +8,7 @@
 		<article id="left-area" class="span10">
 			<div class="content">
 				{% if show =="company_list" %}
-					{% if _user['sup'] or company['ID'] %}
+					{% if _user['su'] or company['ID'] %}
 				<form class="form-horizontal" method="POST" action="?savecompany&cID={{ company['ID'] }}" enctype="application/x-www-form-urlencoded">
 					<fieldset>
 						{% for row in errors %}

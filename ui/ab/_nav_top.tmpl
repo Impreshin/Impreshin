@@ -299,7 +299,7 @@
 				{% if _user['permissions']['administration']['system']['company']['page'] %}
 					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 				{% endif %}
-				{% if _user['permissions']['allow_setup']=='1' %}
+				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
 				<li class="nav-header">Other</li>
 				{% endif %}
 
