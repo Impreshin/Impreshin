@@ -1,0 +1,149 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Administration
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;">
+						<small>Accounts Mass Import</small>
+					</h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+
+				<ul class="nav nav-pills pull-right ">
+
+
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a id="reload-btn" href="javascript:void(0);" style="width:15px;"><i class="icon-refresh"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<form class="form-horizontal" id="capture-form">
+<section role="main" id="pagecontent">
+	<div class="container admin_pages">
+
+
+		<div class="row">
+			<article id="left-area" class="span11">
+
+					<div class="content" id="form-area">
+
+					</div>
+					<div class="loadingmask wide"></div>
+
+			</article>
+			<article id="right-area" class="span5 offset11">
+				<div class="content">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="">
+
+						<h2>Options</h2>
+						<div class="">
+							<label for="optionsCheckboxList" class=""><strong>Publications</strong> </label>
+<div class="clearfix"></div>
+							<div class=" highlighthovered" style="margin-left: 20px;">
+								{% for row in publications %}
+								<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+									<input type="checkbox" value="{{ row['ID'] }}" name="publications[]" checked="checked">{{ row['publication'] }}
+								</label>
+								{% endfor %}
+
+
+							</div>
+						</div>
+						<div class="">
+							<label for="optionsCheckboxList" class=""><strong>Status</strong> </label>
+
+							<div class=" highlighthovered" style="margin-left: 20px;">
+								{% for row in accountStatus %}
+									<label class="radio" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+										<input type="radio" value="{{ row['ID'] }}" name="statusID" {% if loop.index0 =='0' %}checked='checked'{% endif %}>
+										{% if row['labelClass'] %}
+											<span class="label {{ row['labelClass'] }}">{{ row['status'] }}</span>
+										{% else %}
+											{{ row['status'] }}
+										{% endif %}
+									</label>
+								{% endfor %}
+
+
+							</div>
+						</div>
+						<div class="s" style="margin-top: 30px;">
+
+
+							<h3>CSV</h3>
+
+
+
+
+
+							<div class="control-group">
+								<label class="control-label" for="text_csv_deliminator">Columns separated with:</label>
+
+								<div class="controls">
+									<input type="text" id="text_csv_deliminator" name="text_csv_deliminator" placeholder="," class="span1" value=",">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="text_csv_enclosed">Columns enclosed with:</label>
+
+								<div class="controls">
+									<input type="text" id="text_csv_enclosed" name="text_csv_enclosed"  placeholder='"' class="span1" value'"'>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="text_csv_escaped">Columns escaped with:</label>
+
+								<div class="controls">
+									<input type="text" id="text_csv_escaped" name="text_csv_escaped" placeholder='"' class="span1" value'"'>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="text_csv_new_line">Lines terminated with:</label>
+
+								<div class="controls">
+									<input type="text" id="text_csv_new_line" name="text_csv_new_line"  placeholder="auto" class="span1" value="auto">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="text_csv_columns">Column names:</label>
+
+								<input type="text" id="text_csv_columns" name="text_csv_columns" placeholder="AccountNumber, AccountName" value="accNum, account" class="span5">
+							</div>
+
+
+						</div>
+
+					</div>
+
+
+				</div>
+
+				<section id="rightsideOver">
+
+				</section>
+				<div class="loadingmasks round"></div>
+
+			</article>
+		</div>
+
+
+	</div>
+
+</section>
+</form>
+

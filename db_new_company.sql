@@ -51,6 +51,7 @@ TRUNCATE TABLE ab_production_pub;
 TRUNCATE TABLE ab_users_pub;
 TRUNCATE TABLE ab_users_settings;
 TRUNCATE TABLE global_companies;
+TRUNCATE TABLE global_logs;
 TRUNCATE TABLE global_dates;
 TRUNCATE TABLE global_pages;
 TRUNCATE TABLE global_pages_sections;

@@ -8,6 +8,33 @@
 		<article id="left-area" class="span10">
 			<div class="content">
 				{% if show =="company_list" %}
+					{% if _user['su'] or company['ID'] %}
+				<form class="form-horizontal" method="POST" action="?savecompany&cID={{ company['ID'] }}" enctype="application/x-www-form-urlencoded">
+					<fieldset>
+						{% for row in errors %}
+							<div class="alert alert-error">{{ row }}</div>
+						{% endfor %}
+						<legend>{% if company['ID'] %}Edit{% else %}New{% endif %} Company</legend>
+
+						<div class="control-group">
+							<label class="control-label" for="company">Company Name </label>
+
+							<div class="controls">
+								<input type="text" id="company" name="company" placeholder="Company" value="{{ company['company'] }}">
+							</div>
+						</div>
+						</fieldset>
+					<div class="form-actions">
+						<a href="/setup/" class="btn span2">Cancel</a>
+						<button type="submit" class="btn btn-primary span2">Save</button>
+
+					</div>
+					</form>
+						{% else %}
+							<div class="alert" style="margin-top: 50px; margin-right: 10px;">
+								<strong>Setup Wizard!</strong><p style="margin-top: 10px;"> It's best practice to go through the entire wizard in 1 go. </p><p>When you initially setup the company / publication its mandatory as errors might prevent you coming back here to finish them later on</p>
+							</div>
+						{% endif %}
 
 
 				{% endif %}
@@ -67,7 +94,7 @@
 
 
 							<div class="form-actions">
-								<button type="button" class="btn span2">Cancel</button>
+								<a href="/setup/{{ company['ID'] }}/{{ application }}" class="btn span2">Cancel</a>
 								<button type="submit" class="btn btn-primary span2">Save</button>
 
 							</div>
@@ -84,7 +111,13 @@
 					<div class="c">
 						<ul class="choose_option">
 							{% for row in list['companies'] %}
-								<li><a class="btn span5 " href="/setup/{{ row['ID'] }}">{{ row['company'] }}</a></li>
+								<li>
+									<div class="btn-group">
+										<a class="btn span4 " href="/setup/{{ row['ID'] }}">{{ row['company'] }}</a>
+										<a class="btn span1 " href="/setup/?cID={{ row['ID'] }}"><i class="icon-pencil"></i></a>
+									</div>
+
+								</li>
 							{% endfor %}
 						</ul>
 					</div>
@@ -112,7 +145,10 @@
 						<ul class="choose_option">
 							{% for row in list['publications'] %}
 								<li>
-									<a class="btn span5 {% if publication['ID'] == row['ID'] %}btn-info{% endif %}" href="/setup/{{ company['ID'] }}/{{ application }}/{{ row['ID'] }}/">{{ row['publication'] }}</a>
+									<div class="btn-group">
+										<a class="btn span4 {% if publication['ID'] == row['ID'] %}btn-info{% endif %}" href="/setup/{{ company['ID'] }}/{{ application }}/{{ row['ID'] }}/{{ it['first'] }}">{{ row['publication'] }}</a>
+										<a class="btn span1 {% if publication['ID'] == row['ID'] %}btn-info{% endif %}" href="/setup/{{ company['ID'] }}/{{ application }}/{{ row['ID'] }}/"><i class="icon-pencil"></i></a>
+									</div>
 								</li>
 							{% endfor %}
 

@@ -1,0 +1,86 @@
+
+<script type="text/x-jqote-template" id="template-details">
+    <![CDATA[
+    <div class="scroll-pane scrolly" style="bottom: 43px;">
+        <div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+            <fieldset style="margin-top: 20px;">
+
+
+
+	            <% if (this.details.csv){ %>
+	            <legend>Select records to insert / overwrite</legend>
+	            <div id="errorArea"></div>
+	            <table class="table table-condensed s" id="import-records-table" >
+		            <thead>
+		            <tr>
+			            <th style="width: 20px;">Accept</th>
+			            <th style="width: 50px;">accNum</th>
+			            <th>Account</th>
+			            <th colspan="2">Existing</th>
+		            </tr>
+		            </thead>
+		            <tbody>
+		            <% for(var i in this.details.records) { %>
+		            <tr class="record <% if (this.details.records[i].match.ID) { %>highlight<% } %>" data-account="<%= this.details.records[i].account %>" data-accNum="<%= this.details.records[i].accNum %>">
+			            <td class="c check">
+				            <% if (this.details.records[i].account && this.details.records[i].accNum) { %>
+				            <input type="checkbox" name="account<% if (this.details.records[i].match.ID) { %>-edit-<%= this.details.records[i].match.ID %><% } else { %>-new[]<% } %>" id="account<% if (this.details.records[i].match.ID) { %>-<%= this.details.records[i].match.ID %><% } else { %>[]<% } %>" value="<%= this.details.records[i].accNum %>|!|<%= this.details.records[i].account %>" <% if (!this.details.records[i].match.ID) { %>checked='checked'<% } %>/>
+				            <% } %>
+			            </td>
+			            <td>
+				            <%= this.details.records[i].accNum %>
+			            </td>
+			            <td>
+				            <%= this.details.records[i].account %>
+			            </td>
+			            <td class="span1"> <% if (this.details.records[i].match.ID){ %>
+				            <% if (this.details.records[i].match.labelClass){ %>
+				            <span class="<%= this.details.records[i].match.labelClass %> label"> <%= this.details.records[i].match.status %></span><% } else { %><%= this.details.records[i].match.status %><% } %> <% } %>
+			            </td>
+			            <td>
+				            <% if (this.details.records[i].match.ID){ %>
+
+				            <%= this.details.records[i].match.account %><% } %>
+
+			            </td>
+		            </tr>
+		            <% } %>
+		            </tbody>
+	            </table>
+
+	            <input type="hidden" id="csv" name="csv" value="<%= this.details.csv||"" %>"/>
+	            <% } else { %>
+	            <legend>Paste CSV content here</legend>
+	            <div id="errorArea"></div>
+	                <textarea name="csv" id="csv" cols="30" rows="10" class="span10" style="margin-left: 12px;"></textarea>
+				<% } %>
+            </fieldset>
+
+        </div>
+
+    </div>
+
+
+    <div id="form-bottom">
+        <div class="form-actions">
+
+            <div style="float:right; margin-right: 10px;">
+
+
+
+                <button class="btn  span2 " style="" type="button" id="cancel-btn" >Cancel</button>
+	            <button class="btn btn-info span4 " style="" type="submit">Scan contents</button>
+	            <% if (this.details.csv){ %>
+	            <button class="btn btn-primary span2 " style="" type="button" id="save-btn" disabled="disabled" >Save Records</button>
+
+
+	            <% } %>
+
+
+            </div>
+        </div>
+    </div>
+
+    ]]>
+</script>
+

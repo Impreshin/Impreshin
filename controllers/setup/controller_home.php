@@ -27,6 +27,9 @@ class controller_home {
 		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
 		$app = $this->app;
 
+		if (isset($_GET['cID'])){
+			$this->cID = $_GET['cID'];
+		}
 		$companyO = new \models\company();
 		$company = $companyO->get($this->cID);
 
@@ -97,6 +100,28 @@ class controller_home {
 
 
 		}
+		if (isset($_GET['savecompany']) && count($_POST)) {
+			$company_name = Isset($_REQUEST['company']) ? $_REQUEST['company'] : "";
+
+
+			if (!$company_name) $error[] = "Company not specified";
+
+
+
+			if (!count($error)) {
+				$values = array(
+
+					"company" => $company_name,
+					"ab"   => '1',
+					"nf"        => '1',
+				);
+				$t = \models\company::save($company['ID'], $values);
+				$this->f3->reroute("/setup/" . $t);
+
+			}
+
+
+		}
 
 		$first = "";
 		$section = "home";
@@ -107,7 +132,7 @@ class controller_home {
 		$heading = "Please select a company";
 
 
-		if ($company['ID']) {
+		if ($company['ID'] && !isset($_GET['cID'])) {
 			$section = "app";
 			$previous = "/setup/";
 			$show = "application_list";
@@ -164,7 +189,8 @@ class controller_home {
 
 		$tmpl->it = array(
 			"prev" => $previous,
-			"next" => $next
+			"next" => $next,
+			"first"=>$first
 		);
 		$tmpl->show = $show;
 		$tmpl->heading = $heading;
