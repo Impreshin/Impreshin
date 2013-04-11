@@ -126,6 +126,53 @@ class placing {
 	}
 
 
+	public static function copyfrom($new_pID, $old_pID){
+		$timer = new timer();
+		$f3 = \Base::instance();
+
+
+		$source = $f3->get("DB")->exec("
+			SELECT *
+			FROM ab_placing
+			where pID = '$old_pID'
+		"
+		);
+		$source_sub = $f3->get("DB")->exec("
+			SELECT *
+			FROM ab_placing_sub
+			where pID = '$old_pID'
+		"
+		);
+		$subs = array();
+		foreach ($source_sub as $item_sub){
+			$subs[$item_sub['placingID']][] = $item_sub;
+		}
+
+
+		//test_array($subs);
+
+		foreach ($source as $item){
+			$subs_ =isset($subs[$item['ID']])? $subs[$item['ID']]: array();
+			$item['pID']=$new_pID;
+			unset($item['ID']);
+
+			$ID = self::save("",$item);
+			foreach ($subs_ as $subPlacing){
+				unset($subPlacing['ID']);
+				$subPlacing['placingID'] = $ID;
+				$subPlacing['pID'] = $new_pID;
+				sub_placing::save("",$subPlacing);
+			}
+		}
+
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return "done";
+	}
+
+
+
 	private static function dbStructure() {
 		$f3 = \Base::instance();
 		$table = $f3->get("DB")->exec("EXPLAIN ab_placing;");

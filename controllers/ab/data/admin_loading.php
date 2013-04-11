@@ -41,6 +41,42 @@ class admin_loading extends data {
 
 		$return['records'] = $records;
 
+		if (!count($records)) {
+			$copyfrom = array();
+
+			$publications = \models\publications::getAll("cID = '" . $user['company']['ID'] . "'");
+
+			if (count($publications)) {
+				$pubIDs = array();
+				foreach ($publications as $publication) {
+					$pubIDs[] = $publication['ID'];
+				}
+
+
+				$records = models\loading::getAll("pID in (" . implode(",", $pubIDs) . ")", "pages ASC");
+
+				$a = array();
+				foreach ($records as $record) {
+					$a[$record['pID']] = isset($a[$record['pID']]) ? $a[$record['pID']] + 1 : 1;
+				}
+				//test_array($a);
+				foreach ($publications as $publication) {
+					if (isset($a[$publication['ID']]) && ($a[$publication['ID']])) {
+						$copyfrom[] = array(
+							"ID"    => $publication['ID'],
+							"label" => $publication['publication'],
+							"count" => isset($a[$publication['ID']]) ? $a[$publication['ID']] : 0
+						);
+					}
+
+				}
+
+
+				$return['copyfrom'] = $copyfrom;
+			}
+
+		}
+
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

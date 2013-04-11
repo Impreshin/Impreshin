@@ -112,6 +112,19 @@ class admin_loading extends save {
 
 	}
 
+	function _copyfrom() {
+		$user = $this->f3->get("user");
+		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+
+
+		models\loading::copyfrom($pID, $oldpID);
+
+
+		return $GLOBALS["output"]['data'] = "done";
+
+	}
 
 
 

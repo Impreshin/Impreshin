@@ -124,6 +124,30 @@ class inserts_types {
 		return "done";
 
 	}
+	public static function copyfrom($new_pID, $old_pID){
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$dbstructure = self::dbStructure();
+		unset($dbstructure['ID']);
+
+		$source = $f3->get("DB")->exec("
+			SELECT *
+			FROM ab_inserts_types
+			where pID = '$old_pID'
+		"
+		);
+		foreach ($source as $item){
+			$item['pID']=$new_pID;
+			unset($item['ID']);
+
+			self::save("",$item);
+		}
+
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return "done";
+	}
 
 
 	private static function dbStructure() {
