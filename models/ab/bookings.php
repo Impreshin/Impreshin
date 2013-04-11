@@ -358,7 +358,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 
 
-				if (($permissions['view']['only_my_records'] == '1' && $item['userID'] != $user['ID'])) {
+				if (($permissions['view']['only_my_records'] == '1' && $item['userID'] != $user['ID']) && $user['su']!='1') {
 					$showrecord = false;
 
 				}
