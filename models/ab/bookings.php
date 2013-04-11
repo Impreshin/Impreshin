@@ -336,7 +336,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 
 
 			foreach ($data as $item) {
-
+				$showrecord = true;
 
 				$item['size'] = "";
 				switch ($item['typeID']) {
@@ -358,7 +358,16 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 
 
-				$a[] = bookings::currency($item);
+				if (($permissions['view']['only_my_records'] == '1' && $item['userID'] != $user['ID'])) {
+					$showrecord = false;
+
+				}
+
+					if ($showrecord) $a[] = bookings::currency($item);
+
+
+
+
 			}
 			$data = $a;
 
@@ -397,6 +406,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 			}
 
+		//	test_array($permissions);
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
 			if ($showrecord) {

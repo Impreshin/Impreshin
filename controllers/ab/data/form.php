@@ -86,11 +86,18 @@ class form extends data {
 		$userID = $user['ID'];
 		$pID = $user['pID'];
 
+		//test_array($user);
+
+		$extra_where = "";
+		if ($user['permissions']['form']['all_suggestions']!='1'){
+			$extra_where = "AND ab_bookings.userID = '".$user['ID']."'";
+		}
+
 		$timer = new timer();
 
 		if ($accNum) {
 
-			$where = "WHERE accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate ORDER BY publishDate DESC";
+			$where = "WHERE accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND DATE_SUB(now(),INTERVAL '60' DAY) < publishDate $extra_where ORDER BY publishDate DESC";
 
 
 			$data = $this->f3->get("DB")->exec("
@@ -158,7 +165,7 @@ class form extends data {
 
 			}
 
-			$d = models\bookings::getAll_select("ab_bookings.ID, client, global_dates.publish_date as publishDate, totalCost, totalspace, cm, col, InsertPO, typeID, account as heading", "accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND deleted is null", "global_dates.publish_date DESC LIMIT 0,6");
+			$d = models\bookings::getAll_select("ab_bookings.ID, client, global_dates.publish_date as publishDate, totalCost, totalspace, cm, col, InsertPO, typeID, account as heading", "accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND deleted is null $extra_where", "global_dates.publish_date DESC LIMIT 0,6");
 
 			$d = models\bookings::display($d);
 

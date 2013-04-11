@@ -16,6 +16,9 @@ class user_permissions {
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
+			"view"=> array(
+				"only_my_records"=>0
+			),
 			"details"        => array(
 				"actions" => array(
 					"check"    => 0,
@@ -44,6 +47,7 @@ class user_permissions {
 				"new"         => 0,
 				"edit"        => 0,
 				"delete"      => 0,
+				"all_suggestions"      => 0,
 				"edit_master" => 0
 			),
 			"production"     => array(
@@ -172,6 +176,9 @@ class user_permissions {
 
 
 		$return['d'] = array(
+			"view"=>array(
+			'only_my_records'=>"Best to keep this de-checked, if its checked then the user will ONLY see their own records"
+			),
 			"details"        => array(
 				"actions" => array(
 					"check"    => "Gives the user permission to be able to 'check' records",
@@ -200,6 +207,7 @@ class user_permissions {
 				"new"         => "Gives the user permission to be able to capture a booking",
 				"edit"        => "Gives the user permission to be able to edit bookings",
 				"delete"      => "Gives the user permission to be able to delete bookings",
+				"all_suggestions"      => "If ticked, all bookings for the account are returned as suggestions, not only the current users' records",
 				"edit_master" => "This will override any edit locks there may be, like not being able to edit a record in archives / once it is placed.<br> Usualy only the big chief gets this permission"
 			),
 			"production"     => array(
