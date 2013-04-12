@@ -90,7 +90,7 @@ class form extends data {
 
 		$extra_where = "";
 		if ($user['permissions']['form']['all_suggestions']!='1'){
-			$extra_where = "AND ab_bookings.userID = '".$user['ID']."'";
+			$extra_where = "AND ab_bookings.userID = '". $userID."'";
 		}
 
 		$timer = new timer();
