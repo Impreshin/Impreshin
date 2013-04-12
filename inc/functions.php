@@ -138,6 +138,10 @@ function sanitize_output($buffer) {
 	//$buffer = preg_replace($search, $replace, $buffer);
 	return $buffer;
 }
+function safe($data){
+	$data = str_replace("\'","\\'",$data);
+	return $data;
+}
 
 function rev_nl2br($string, $line_break = PHP_EOL) {
 /*	$string = preg_replace('#<\/p>#i', "", $string);
