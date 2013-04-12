@@ -17,7 +17,7 @@
 			<% } %>
 		</th>
 		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
-			<% if (this.currentPub){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
+			<% if (this.currentPub=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 
 
