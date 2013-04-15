@@ -207,6 +207,7 @@ function dropdowns_fn(data){
 	$("#insertTypeID").select2({});
 	$("#placingID").select2({});
 	$("#colourID").select2({});
+	$("#payment_methodID").select2({});
 }
 function resizeform() {
 
@@ -438,6 +439,16 @@ function display_notes() {
 	$("#totalShouldbe_e").val(shouldbe_e);
 
 	$("#totalCost-msg").html(string);
+
+
+	var $payment_method_note = $("#payment_method_note");
+	if ($("#payment_methodID").val()=='1'){
+		$payment_method_note.hide();
+	} else {
+		$payment_method_note.show();
+	}
+
+
 	resizeform();
 
 

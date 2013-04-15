@@ -116,6 +116,18 @@ $(document).ready(function () {
 		}));
 
 	});
+	$(document).on("click", "#copyfrom-btn", function () {
+		var copyfromID = $("#copyfrom").val();
+
+		if (confirm("Clicking ok will copy all the records from the selected publication into the current publication?")) {
+		$("#right-area .loadingmask").show();
+		$.post("/ab/save/admin_inserts_types/_copyfrom/?pID=" + copyfromID, "", function (r) {
+
+			getList();
+		});
+		}
+
+	});
 
 });
 
@@ -139,7 +151,10 @@ function getList() {
 			$("#record-list tr[data-id='" + ID + "']").addClass("active");
 
 		} else {
-			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
+
+			if (data['copyfrom'] && data['copyfrom'].length){
+				copyfrom(data['copyfrom'], $recordsList);
+			}
 		}
 		$recordsList.find("tbody").sortable({
 			'axis'       :"y",
@@ -182,4 +197,16 @@ function getDetails() {
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	}));
+}
+function copyfrom(data, $recordsList){
+	var select = "";
+		select += '<select id="copyfrom" name="copyfrom" class="span3" style="float:left; margin-right: 0px;">';
+		for (var i in data){
+			select += '<option value="' + data[i].ID + '">'+data[i].label+' (' + data[i].count + ')</option>';
+		}
+
+		select += '</select>';
+
+	$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found<hr>Copy records from<div class="">'+select+'<button id="copyfrom-btn" type="button" class="span1 btn btn-mini">Copy</button></div></td></tr></tfoot>');
+
 }

@@ -5,6 +5,7 @@
  */
 namespace controllers\ab\data;
 use \F3 as F3;
+use models\nf\publications;
 use \timer as timer;
 use \models\ab as models;
 use \models\user as user;
@@ -40,6 +41,44 @@ class admin_inserts_types extends data {
 		$return = array();
 
 		$return['records'] = $records;
+
+
+		if (!count($records)){
+			$copyfrom = array();
+
+			$publications = \models\publications::getAll("cID = '".$user['company']['ID']."'");
+
+			if (count($publications)){
+				$pubIDs = array();
+				foreach ($publications as $publication) {
+					$pubIDs[] = $publication['ID'];
+				}
+
+
+				$records = models\inserts_types::getAll("pID in (" . implode(",", $pubIDs) . ")", "orderby ASC");
+
+				$a = array();
+				foreach ($records as $record){
+					$a[$record['pID']] = isset($a[$record['pID']])? $a[$record['pID']]+1:1;
+				}
+				//test_array($a);
+				foreach ($publications as $publication) {
+					if (isset($a[$publication['ID']]) && ($a[$publication['ID']])){
+						$copyfrom[] = array(
+							"ID"    => $publication['ID'],
+							"label" => $publication['publication'],
+							"count" => isset($a[$publication['ID']]) ? $a[$publication['ID']] : 0
+						);
+					}
+
+				}
+
+
+
+				$return['copyfrom'] = $copyfrom;
+			}
+
+		}
 
 		return $GLOBALS["output"]['data'] = $return;
 	}

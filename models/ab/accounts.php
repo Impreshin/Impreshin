@@ -221,7 +221,7 @@ class accounts {
 		//test_array($new_logging);
 
 
-		\models\logging::_log("accounts", $label, $values, $old, $overwrite, $lookupColumns);
+		//\models\logging::_log("accounts", $label, $values, $old, $overwrite, $lookupColumns);
 
 
 		$timer->stop(array("Models" => array("Class"  => __CLASS__,

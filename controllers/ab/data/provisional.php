@@ -88,10 +88,11 @@ class provisional extends data {
 		//exit();
 		$orderby = " client ASC";
 		$arrange = "";
-
-
-
 		$where = "(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null";
+
+
+
+
 
 
 

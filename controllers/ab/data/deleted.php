@@ -100,7 +100,9 @@ class deleted extends data {
 
 
 		$where = "(ab_bookings.pID = '$pID')  AND ab_bookings.deleted = '1' $searchsql";
-
+		if (($user['permissions']['view']['only_my_records'] == '1')) {
+			$where = $where . " AND userID = '" . $user['ID'] . "'";
+		}
 		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] :"";
 		if (!$selectedpage) $selectedpage = 1;
 

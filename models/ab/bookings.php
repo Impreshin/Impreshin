@@ -17,7 +17,7 @@ class bookings {
 	}
 
 	private static function _from(){
-		$return = "FROM ((((((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID) LEFT JOIN ab_production ON ab_bookings.material_productionID = ab_production.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_1 ON ab_placing.colourID = system_publishing_colours_1.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_2 ON ab_placing_sub.colourID = system_publishing_colours_2.ID";
+		$return = "FROM (((((((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID) LEFT JOIN ab_production ON ab_bookings.material_productionID = ab_production.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_1 ON ab_placing.colourID = system_publishing_colours_1.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_2 ON ab_placing_sub.colourID = system_publishing_colours_2.ID) LEFT JOIN system_payment_methods ON ab_bookings.payment_methodID = system_payment_methods.ID";
 		return $return;
 	}
 
@@ -66,6 +66,7 @@ class bookings {
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				global_pages.page,
 				ab_production.production AS material_production,
+				system_payment_methods.label AS payment_method,
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
 				(SELECT datein FROM ab_bookings_logs WHERE ab_bookings_logs.bID = ab_bookings.ID  ORDER BY ID DESC LIMIT 0,1) AS last_change,
 
@@ -270,6 +271,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				if (`page`,1,0) AS layout,
 				format(global_pages.page,0) AS page,
 				ab_inserts_types.insertsLabel AS insertLabel,
+				system_payment_methods.label AS payment_method,
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
@@ -336,7 +338,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 
 
 			foreach ($data as $item) {
-
+				$showrecord = true;
 
 				$item['size'] = "";
 				switch ($item['typeID']) {
@@ -358,7 +360,19 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 
 
-				$a[] = bookings::currency($item);
+				if (($user['permissions']['view']['only_my_records'] == '1')) {
+					if ($user['ID']!=$item['userID']){
+						$item['haha']=$user['ID'];
+							$showrecord = false;
+					}
+				}
+
+
+					if ($showrecord) $a[] = bookings::currency($item);
+
+
+
+
 			}
 			$data = $a;
 
@@ -397,6 +411,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 			}
 
+		//	test_array($permissions);
 
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
 			if ($showrecord) {
@@ -525,7 +540,10 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$arrange = "if (invoiceNum,'Invoiced','Not Invoiced') as heading";
 				break;
 
-
+			case "payment_method":
+				$orderby = "COALESCE(system_payment_methods.label,'zzzzzzzzz') $ordering, " . $orderby;
+				$arrange = "COALESCE(system_payment_methods.label,'None') as heading";
+				break;
 			case "none":
 				$orderby = "" . $orderby;
 				$arrange = "'None' as heading";
@@ -790,6 +808,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$lookupColumns["accountID"] = array(
 			"sql" => "(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')",
 			"col" => "Account",
+			"val" => ""
+		);
+		$lookupColumns["payment_methodID"] = array(
+			"sql" => "(SELECT label FROM system_payment_methods WHERE ID = '{val}')",
+			"col" => "payment_method",
 			"val" => ""
 		);
 		$lookup = array();

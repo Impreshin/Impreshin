@@ -6,7 +6,7 @@
 			<%= this.marketer %>
 		</td>
 		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
-			<% if (this.currentPub){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
+			<% if (this.currentPub=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 
 
@@ -63,6 +63,8 @@
 					<label for="optionsCheckboxList" class="control-label">Publications</label>
 
 					<div class="controls highlighthovered">
+						<label class="checkbox s g" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
+							<input type="checkbox" value="" name="" class="checkall">Check All </label>
 						<% for(var i in this.publications) { %>
 						<label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
 							<input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected=='1'){ %>checked="checked"<% } %>><%= this.publications[i].publication %>

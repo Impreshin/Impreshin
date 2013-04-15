@@ -277,6 +277,9 @@ $(document).ready(function () {
         });
     }
 
+	$(document).on('click', '.checkall', function () {
+		$(this).closest('.control-group').find(':checkbox').prop('checked', this.checked);
+	});
     $(document).on("change", "#pubSelectID", function () {
         window.location = "?apID=" + $(this).val();
     });

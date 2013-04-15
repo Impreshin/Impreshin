@@ -435,13 +435,18 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 			$cID = $user['publication']['cID'];
 		}
 
+
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_users");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$a->$key = $value;
-		}
+			if (isset($a->$key)){
+				$a->$key = $value;
+			}
 
+
+		}
+		//test_array($user);
 		$a->save();
 
 		if (!$a->ID) {

@@ -26,6 +26,8 @@ class admin_sections extends save {
 		$cID = $user['publication']['cID'];
 
 
+
+
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$section = isset($_POST['section']) ? $_POST['section'] : "";
@@ -99,4 +101,17 @@ class admin_sections extends save {
 
 	}
 
+	function _copyfrom() {
+		$user = $this->f3->get("user");
+		$cID = $user['publication']['cID'];
+		$pID = (isset($_GET['new_pID']))? $_GET['new_pID']: $user['publication']['ID'];
+		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+
+
+		models\sections::copyfrom($pID, $oldpID);
+
+
+		return $GLOBALS["output"]['data'] = "done";
+
+	}
 }

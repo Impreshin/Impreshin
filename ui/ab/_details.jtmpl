@@ -114,12 +114,14 @@
 
 				<tr>
 					<th>Key Number</th>
-					<td colspan="3">: <%= this.keyNum || "" %></td>
+					<td>: <%= this.keyNum || "" %></td>
+					<th>Order Number</th>
+					<td >:&nbsp;<%= this.orderNum || "" %></td>
 				</tr>
 
 				<tr>
-					<th>Order Number</th>
-					<td colspan="3">:&nbsp;<%= this.orderNum || "" %></td>
+					<th>Payment Method</th>
+					<td colspan="3">:&nbsp;<% if (this.payment_method){ %> <em><%=this.payment_method %> </em> - <%= this.payment_method_note || "" %><% } %></td>
 				</tr>
 				<tr>
 					<th>Marketer</th>

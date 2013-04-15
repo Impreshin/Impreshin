@@ -125,6 +125,30 @@ class sections {
 
 	}
 
+	public static function copyfrom($new_pID, $old_pID){
+		$timer = new timer();
+		$f3 = \Base::instance();
+
+
+		$source = $f3->get("DB")->exec("
+			SELECT *
+			FROM global_pages_sections
+			where pID = '$old_pID'
+		"
+		);
+		foreach ($source as $item){
+			$item['pID']=$new_pID;
+			unset($item['ID']);
+
+			self::save("",$item);
+		}
+
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return "done";
+	}
+
 
 	public static function dbStructure() {
 		$f3 = \Base::instance();
