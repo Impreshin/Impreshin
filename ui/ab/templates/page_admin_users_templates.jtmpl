@@ -167,7 +167,7 @@
 
 					{% for key,value in permissions %}
 						<div class="control-group" style="{% if loop.first==false %}border-top: 1px dotted #ccc;{% endif %} padding-top: 10px; margin-bottom: 0; padding-bottom:5px;">
-							<label for="optionsCheckboxList" class="control-label">{{ key|capitalize }}</label>
+							<label for="optionsCheckboxList" class="control-label">{{ key|capitalize|replace({"_":" "}) }}</label>
 
 
 							<div class="controls">
@@ -182,7 +182,7 @@
 										{% if v['page'] == '1' or v['page'] =='0' %}
 										<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.page=='1') { %>checked="checked"<% } %>>
 										{% endif %}
-										{{ k|capitalize }}
+										{{ k|capitalize|replace({"_":" "}) }}
 										{% if permissions_desc[key][k] and permissions_desc[key][k] is not iterable %}
 											<span class="help-block">{{ permissions_desc[key][k]|raw }}</span>
 										{% endif %}
@@ -197,7 +197,7 @@
 											{% if sv['page'] == '1' or sv['page'] =='0' %}
 											<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.page=='1') { %>checked="checked"<% } %>>
 											{% endif %}
-											{{ sk|capitalize }}
+											{{ sk|capitalize|replace({"_":" "}) }}
 											{% if permissions_desc[key][k][sk] and permissions_desc[key][k][sk] is not iterable %}
 												<span class="help-block">{{ permissions_desc[key][k][sk]|raw }}</span>
 											{% endif %}
@@ -212,7 +212,7 @@
 												{% if ssv['page'] == '1' or ssv['page'] =='0' %}
 												<input type="checkbox" value="1" name="permissions[{{ key }}][{{ k }}][{{ sk }}][{{ ssk }}][page]" <% if (this.details.permissions && this.details.permissions.{{ key }}.{{ k }}.{{ sk }}.{{ ssk }}.page=='1') { %>checked="checked"<% } %>>
 												{% endif %}
-												{{ ssk|capitalize }}
+												{{ ssk|capitalize|replace({"_":" "}) }}
 												{% if permissions_desc[key][k][sk][ssk] and permissions_desc[key][k][sk][ssk] is not iterable %}
 													<span class="help-block">{{ permissions_desc[key][k][sk][ssk]|raw }}</span>
 												{% endif %}

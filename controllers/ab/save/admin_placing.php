@@ -164,7 +164,7 @@ class admin_placing extends save {
 	function _copyfrom() {
 		$user = $this->f3->get("user");
 		$cID = $user['publication']['cID'];
-		$pID = $user['publication']['ID'];
+		$pID = (isset($_GET['new_pID'])) ? $_GET['new_pID'] : $user['publication']['ID'];
 		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
 
 
