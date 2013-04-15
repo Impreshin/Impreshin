@@ -272,6 +272,20 @@
 
 	</div>
 </div>
+<div class="control-group">
+	<label for="orderNum" class="control-label">Payment Method</label>
+
+	<div class="controls">
+		<select name="payment_methodID" id="payment_methodID" style="width: 142px;" class="display_notes">
+			{% for row in payment_methods %}
+				<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.details.payment_methodID) { %>selected="selected"<% } %>>{{ row['label']|default("&nbsp;")|raw }}</option>
+			{% endfor %}
+
+		</select>
+		<input type="text" id="payment_method_note" name="payment_method_note" placeholder="Note" style="width:170px; margin-left:12px; display:none;" value="<% if (this.details.payment_method_note) { %><%= this.details.payment_method_note %><% } %>"/>
+
+	</div>
+</div>
 
 <div class="control-group">
 	<label for="orderNum" class="control-label">Category</label>

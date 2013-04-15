@@ -95,6 +95,7 @@ class controller_app_form {
 		$tmpl->inserts_types = models\inserts_types::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->sub_placing = models\sub_placing::getAll("pID='$pID'", "orderby ASC", "");
+		$tmpl->payment_methods = \models\_system::payment_methods_getAll();
 		$tmpl->accounts = $accounts;
 		$tmpl->ID = $details['ID'];
 		$tmpl->output();

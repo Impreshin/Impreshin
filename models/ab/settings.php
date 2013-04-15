@@ -110,6 +110,16 @@ class settings {
 				"o"=> "keyNum",
 				"h"=> "Key&nbsp;Num"
 			),
+			"payment_method" => array(
+				"c" => "payment_method",
+				"o" => "payment_method",
+				"h" => "Payment&nbsp;Method"
+			),
+			"payment_method_note" => array(
+				"c" => "payment_method_note",
+				"o" => "payment_method_note",
+				"h" => "Payment&nbsp;Method&nbsp;Note"
+			),
 			"insertsLabel"=>array(
 				"c"=> "insertLabel",
 				"o"=> "ab_inserts_types.insertsLabel",
@@ -308,6 +318,10 @@ class settings {
 				"n"=> "Invoiced Status",
 				"g"=> "invoicedStatus"
 			),
+			"payment_method"=> array(
+				"n"=> "Payment Method",
+				"g"=> "payment_method"
+			),
 			"none"=> array(
 				"n"=> "No Ordering",
 				"g"=> "none"
@@ -318,10 +332,10 @@ class settings {
 
 
 		$sections = array(
-			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced","none"),
-			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","invoiced","none"),
+			"all"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced","payment_method","none"),
+			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","invoiced","payment_method","none"),
 			"production"=>array("placing","type","colours","columns","pages","material_production","none"),
-			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced","none"),
+			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced",	"payment_method","none"),
 		);
 
 		$groupby = array();

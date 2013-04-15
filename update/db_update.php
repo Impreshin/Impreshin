@@ -65,6 +65,12 @@ $sql = array(
 		"ALTER TABLE `ab_marketers_targets` CHANGE `target` `target` DECIMAL( 10, 2 ) NULL DEFAULT NULL;",
 
 		"file:../db_triggers.sql",
+	),
+	"13"=>array(
+		"ALTER TABLE `ab_bookings` ADD `payment_methodID` INT( 6 ) NULL DEFAULT NULL AFTER `keyNum` ,ADD `payment_method_note` VARCHAR( 100 ) NULL DEFAULT NULL AFTER `payment_methodID` ,ADD INDEX ( `payment_methodID` )",
+		"CREATE TABLE IF NOT EXISTS `system_payment_methods` ( `ID` int(6) NOT NULL AUTO_INCREMENT, `label` varchar(30) DEFAULT NULL, `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+		"INSERT INTO `system_payment_methods` (`label`, `orderby`) VALUES (NULL, 1),('Cash', 2),('EFT', 3),('Cheque', 4);"
+
 	)
 
 
