@@ -360,10 +360,13 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 
 
-				if (($permissions['view']['only_my_records'] == '1' && isset($item['userID']) && $item['userID'] != $user['ID']) && $user['su']!='1') {
-					$showrecord = false;
-
+				if (($user['permissions']['view']['only_my_records'] == '1')) {
+					if ($user['ID']!=$item['userID']){
+						$item['haha']=$user['ID'];
+							$showrecord = false;
+					}
 				}
+
 
 					if ($showrecord) $a[] = bookings::currency($item);
 

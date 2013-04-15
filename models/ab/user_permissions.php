@@ -177,7 +177,7 @@ class user_permissions {
 
 		$return['d'] = array(
 			"view"=>array(
-			'only_my_records'=>"Best to keep this de-checked, if its checked then the user will ONLY see their own records"
+			'only_my_records'=>"Best to keep this de-checked, if its checked then the user will ONLY see their own records. This runs the risk of duplicates forming on the list"
 			),
 			"details"        => array(
 				"actions" => array(
