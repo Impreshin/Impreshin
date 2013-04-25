@@ -57,7 +57,16 @@
 	<label for="accountID" class="control-label">Account Number*</label>
 
 	<div class="controls">
-		<select id="accountID" name="accountID" style="width: 342px;" placeholder="Select an Account">
+		<% var wi = "342px"; %>
+		{% if showsearch %}
+		<% var wi = "280px"; %>
+			<button class="btn btn-mini span1" type="button" id="account-search" style="float:right; margin-right:30px;">
+				<i class="icon-search"></i></button>
+		{% endif %}
+
+
+
+		<select id="accountID" name="accountID" style="width: <%= wi %>; float:left;" placeholder="Select an Account">
 
 			<option></option>
 			{% for row in accounts %}
@@ -68,6 +77,7 @@
 
 
 		</select>
+
 
 		<div style="margin: 0;" class="help-block" id="account_remark"></div>
 
@@ -561,6 +571,20 @@
 
 		</div>
 	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-modal-account-search-tr">
+	<![CDATA[
+	<tr class="record" data-id="<%= this.ID||'' %>" data-accNum="<%= this.accNum||'' %>" data-account="<%= this.account||'' %>" data-blocked="<%= this.blocked||'' %>" data-labelClass="<%= this.labelClass||'' %>" data-remark="<%= this.remark||'' %>">
+		<td >
+
+			<%= this.accNum %></td>
+		<td><% if (this.labelClass){ %>
+			<span class="label <%= this.labelClass %>" style="margin-right: 5px;">
+				<%= this.status %> </span> <% } %><%= this.account %></td>
+		<td class="g"><%= this.remark %></td>
+	</tr>
 
 	]]>
 </script>

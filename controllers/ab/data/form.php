@@ -221,5 +221,35 @@ class form extends data {
 		);
 		return $GLOBALS["output"]['data'] = $return;
 	}
+	function _accounts(){
+		$timer = new timer();
+		$user = $this->f3->get("user");
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
+
+
+		$return = array();
+		$search = isset($_REQUEST['search'])?$_REQUEST['search']:"";
+
+		//$search = "cas";
+
+		if ($search){
+			$where = "pID='$pID' AND ab_accounts.cID='$cID' AND (ab_accounts.account LIKE :search1 OR ab_accounts.accNum LIKE  :search2 OR ab_accounts.remark LIKE  :search3)";
+
+
+			$args[':search1'] = '%' . $search . '%';
+			$args[':search2'] = '%' . $search . '%';
+			$args[':search3'] = '%' . $search . '%';
+
+			$return['records'] = models\accounts::getAll($where, "last_used DESC, account ASC", "", "", array("args" => $args));
+		} else {
+			$return['records'] = array();
+		}
+
+		$return['count'] = count($return['records']);
+
+		$timer->stop("Controller - _accounts", array("search" => $search));
+		return $GLOBALS["output"]['data'] = $return;
+	}
 
 }

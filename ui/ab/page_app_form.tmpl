@@ -1,12 +1,7 @@
 <section id="maintoolbar">
 
 
-
 </section>
-
-
-
-
 
 
 <section role="main" id="pagecontent">
@@ -39,22 +34,22 @@
 
 <div id='modal-delete' class='modal hide fade'>
 	<form style="margin: 0;">
-	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+		<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
 
-		<h3>Delete Reason:</h3></div>
-	<div class='modal-body'>
-		<article class="c">
-			<textarea name="delete_reason" id="delete_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are deleting this record"></textarea>
+			<h3>Delete Reason:</h3></div>
+		<div class='modal-body'>
+			<article class="c">
+				<textarea name="delete_reason" id="delete_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are deleting this record"></textarea>
 
 
-		</article>
-	</div>
-	<div class='modal-footer'>
-		<div class="btn-group c" style="margin-left: 7px;">
-			<button class="btn btn-danger span2" style="float:right;" type="submit">Delete</button>
-
+			</article>
 		</div>
-	</div>
+		<div class='modal-footer'>
+			<div class="btn-group c" style="margin-left: 7px;">
+				<button class="btn btn-danger span2" style="float:right;" type="submit">Delete</button>
+
+			</div>
+		</div>
 	</form>
 </div>
 <input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
@@ -64,3 +59,39 @@
 	var var_publication = {{ _user['publication']|json_encode()|raw }};
 
 </script>
+<div id="account-search-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="account-search-modal" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+
+		<div class="input-append">
+			<form action="" id="account-search-form" style="margin:0;">
+				<input id="account-search-box" type="text" name="account-search-box" placeholder="Account Search" style="margin:0;"/>
+				<button class="btn btn-mini" type="submit" style="width:70px; padding-top:7px; ">Search</button>
+			</form>
+		</div>
+
+
+		<span id="accounts-search-results-count"></span>
+	</div>
+	<div style="position: relative;">
+		<div class="modal-body" style="height: 300px; position: relative;">
+			<table class="table table-condensed s">
+				<thead>
+				<tr>
+					<th class="span2">Acc Num.</th>
+					<th>Account</th>
+					<th>Remark</th>
+				</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+
+		</div>
+		<div class="loadingmask wide"></div>
+	</div>
+
+
+</div>

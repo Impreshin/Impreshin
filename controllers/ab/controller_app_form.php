@@ -20,6 +20,8 @@ class controller_app_form {
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
 
+		$cfg = $this->f3->get("cfg");
+
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
@@ -48,7 +50,17 @@ class controller_app_form {
 			$selectedDate = array();
 		}
 
-		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "account ASC");
+		$accCount = models\accounts::getAll_count("pID='$pID' AND ab_accounts.cID='$cID'");
+
+		$showsearch = false;
+		$limit = "";
+		if ($accCount> $cfg['form']['max_accounts']){
+			$showsearch = true;
+			$limit = "0,". $cfg['form']['max_accounts'];
+
+		}
+
+		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "last_used DESC, account ASC",$limit);
 		$b = array();
 		foreach ($accounts as $account) {
 			$b[] = array(
@@ -97,6 +109,7 @@ class controller_app_form {
 		$tmpl->sub_placing = models\sub_placing::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->payment_methods = \models\_system::payment_methods_getAll();
 		$tmpl->accounts = $accounts;
+		$tmpl->showsearch = $showsearch;
 		$tmpl->ID = $details['ID'];
 		$tmpl->output();
 
@@ -129,7 +142,7 @@ class controller_app_form {
 		$clientlist = json_encode($a);
 
 
-		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "account ASC");
+		$accounts = models\accounts::getAll("pID='$pID' AND ab_accounts.cID='$cID'", "account ASC","0,2");
 		$marketers = models\marketers::getAll("pID='$pID' AND ab_marketers.cID='$cID'", "marketer ASC");
 		$dates = \models\dates::getAll("pID='$pID' AND publish_date > '".$currentDate['publish_date']."'", "publish_date ASC", "");
 		$placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
@@ -219,6 +232,8 @@ class controller_app_form {
 		if ($selectedDate['ID'] == $currentDate['ID'] || in_array($selectedDate['ID'],$d) ){
 			$selectedDate = array();
 		}
+		
+
 
 		$tmpl->repeat_dates = \models\dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
 		$tmpl->bookingTypes = models\bookingTypes::getAll("", "orderby ASC");

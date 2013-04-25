@@ -45,3 +45,4 @@ $cfg['git']['docs']['branch'] = "master";
 
 
 $cfg['default_colours'] = array("1","2","3");
+$cfg['form']['max_accounts'] = 300;

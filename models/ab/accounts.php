@@ -84,7 +84,7 @@ class accounts {
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "", $limit = "", $pID="") {
+	public static function getAll($where = "", $orderby = "", $limit = "", $pID="", $options=array()) {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
@@ -104,16 +104,21 @@ class accounts {
 			$limit = " LIMIT " . $limit;
 
 		}
+		$ttl = "";
+		$args = "";
+		if (isset($options['ttl'])) $ttl = $options['ttl'];
+		if (isset($options['args'])) $args = $options['args'];
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT ab_accounts.*, ab_accounts_status.blocked, ab_accounts_status.labelClass, ab_accounts_status.status, ab_accounts.ID AS ID, if ((SELECT count(ID) FROM ab_accounts_pub WHERE ab_accounts_pub.aID = ab_accounts.ID AND ab_accounts_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub
+			SELECT DISTINCT ab_accounts.*, ab_accounts_status.blocked, ab_accounts_status.labelClass, ab_accounts_status.status, ab_accounts.ID AS ID, if ((SELECT count(ID) FROM ab_accounts_pub WHERE ab_accounts_pub.aID = ab_accounts.ID AND ab_accounts_pub.pID = '$pID' LIMIT 0,1)<>0,1,0) AS currentPub,
+			(SELECT global_dates.publish_date FROM ab_bookings INNER JOIN global_dates ON ab_bookings.dID = global_dates.ID WHERE ab_bookings.accountID = ab_accounts.ID ORDER BY global_dates.publish_date DESC LIMIT 0,1) AS last_used
 
 			FROM ((ab_accounts INNER JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) LEFT JOIN ab_accounts_pub ON ab_accounts.ID = ab_accounts_pub.aID) LEFT JOIN global_publications ON ab_accounts_pub.pID = global_publications.ID
 			$where
 			$orderby
 			$limit
-		"
+		", $args
 		);
 
 
