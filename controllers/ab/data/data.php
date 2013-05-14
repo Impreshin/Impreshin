@@ -36,13 +36,13 @@ class data {
 
 
 		$allow = array(
-			"repeat"=>0,
-			"edit"=>0,
-			"print"=>1,
-			"material_pane"=>0,
-			"checked"=>0,
-			"material"=>0,
-			"invoice"=>0
+			"repeat"=>"0",
+			"edit"=>"0",
+			"print"=>"1",
+			"material_pane"=>"0",
+			"checked"=>"0",
+			"material"=>"0",
+			"invoice"=>"0"
 
 		);
 
@@ -71,12 +71,12 @@ class data {
 		}
 
 		if ($return['pageID']) {
-			$allow['edit'] = 0;
-			$allow['checked'] = 0;
+			$allow['edit'] = "0";
+			$allow['checked'] = "0";
 		}
 
 		if ($return['checked']){
-			$allow['edit'] = 0;
+			$allow['edit'] = "0";
 		}
 
 
@@ -91,7 +91,7 @@ class data {
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
 		if ($permissions['form']['edit_master']) {
-			$allow['edit'] = 1;
+			$allow['edit'] = "1";
 		}
 
 		$return['a'] = $allow;

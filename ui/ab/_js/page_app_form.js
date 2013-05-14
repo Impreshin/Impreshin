@@ -5,8 +5,6 @@ var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("
 $(document).ready(function () {
 	getData();
 
-
-
 	$(document).on("click", ".view-record-btn", function () {
 		var id = $(this).attr("data-id");
 		if (id) {
@@ -17,6 +15,49 @@ $(document).ready(function () {
 		}
 
 	});
+
+	$(document).on("shown", "#account-search-modal", function () {
+		$("#account-search-box").focus();
+	});
+
+	$(document).on("click", "#account-search", function () {
+		var $this = $(this);
+
+		$("#account-search-modal").modal("show");
+
+		account_search();
+
+	});
+
+	$(document).on("submit", "#account-search-form", function(e){
+		e.preventDefault();
+		account_search();
+		return false;
+	});
+
+	$(document).on("click", "#account-search-modal .record", function () {
+		var $this = $(this);
+
+		//<option value="" data-accNum="" data-account="" data-blocked="" data-labelClass="" data-remark="">accNum | account</option>
+
+		$accountID = $("#accountID");
+
+		if ($("option[value='"+ $this.attr("data-id")+"']", $accountID).length ==0){
+			$accountID.append('<option value="' + $this.attr("data-id") + '" data-accNum="' + $this.attr("data-accNum") + '" data-account="' + $this.attr("data-account") + '" data-blocked="' + $this.attr("data-blocked") + '" data-labelClass="' + $this.attr("data-labelclass") + '" data-remark="' + $this.attr("data-remark") + '">' + $this.attr("data-accNum") + ' | ' + $this.attr("data-account") + '</option>')
+		}
+
+
+
+		$accountID.val($this.attr("data-id")).trigger("change");
+
+		$("#account-search-modal").modal("hide");
+
+
+
+	});
+
+
+
 	$(document).on("click", "#booking-type button", function () {
 		var type = $(this).attr("data-type");
 		$.bbq.pushState({"type": type});
@@ -30,16 +71,13 @@ $(document).ready(function () {
 		colours_fn();
 		resizeform();
 
-
 	});
 	$(document).on("change", "form input, form select", function () {
 
-		if (("form .fielderror").length){
+		if (("form .fielderror").length) {
 			$("form .fielderror").remove();
 			resizeform();
 		}
-
-
 
 	});
 	$(document).on("shown", "#suggestion-tabs", function () {
@@ -49,10 +87,9 @@ $(document).ready(function () {
 	$(document).on("change", "#sub_placingID", function () {
 		var $this = $(this);
 		var ID = $this.val(), placingID = $this.find("option:selected").attr("data-placingID");
-		$("#placingID").find("option[value='"+placingID+"']").attr("data-sub-selected",ID);
+		$("#placingID").find("option[value='" + placingID + "']").attr("data-sub-selected", ID);
 		colours_fn();
 		resizeform();
-
 
 	});
 	$(document).on("click", "*[data-fld]", function () {
@@ -119,10 +156,37 @@ $(document).ready(function () {
 
 	});
 
-
 });
+function account_search() {
+	var $body = $("#account-search-modal tbody").html("");
+	var search = $("#account-search-box").val();
+	var $count = $("#accounts-search-results-count").html("");
 
-function getData(){
+	var $loadingmask = $("#account-search-modal .loadingmask").show();
+	if (search){
+
+		$.getJSON("/ab/data/form/_accounts", {"search": search}, function (data) {
+			data = data['data'];
+
+			$count.html(data['count'] + " Record(s) found");
+			$body.jqotesub($("#template-modal-account-search-tr"), data['records']);
+			$loadingmask.hide();
+
+		});
+	} else {
+		$loadingmask.hide();
+		$body.html('<tr><td colspan="3">Use the search box to search for a record<td></tr>')
+	}
+
+
+	//
+
+
+
+
+}
+
+function getData() {
 	var ID = var_record_ID;
 
 	$("#left-area .loadingmask").show();
@@ -132,8 +196,8 @@ function getData(){
 	activityRequest.push($.getJSON("/ab/data/form/_details", {"ID": ID}, function (data) {
 		data = data['data'];
 		var title = "";
-		if (data['details']['ID']){
-			if (data['details']['deleted']=='1'){
+		if (data['details']['ID']) {
+			if (data['details']['deleted'] == '1') {
 				title = "Edit Deleted Record";
 			} else {
 				title = "Edit Record";
@@ -146,14 +210,14 @@ function getData(){
 
 		var toolbar = {
 			"heading": title,
-			"data":data
+			"data"   : data
 		};
 
 		$("#scroll-container").jqotesub($("#template-form"), data);
 		$("#maintoolbar").jqotesub($("#template-toolbar"), toolbar);
 		$("#form-diff > article").hide();
 		var type = data['settings']['type'];
-		if ($.bbq.getState("type")){
+		if ($.bbq.getState("type")) {
 			type = $.bbq.getState("type");
 		}
 		var $bookingTypeBtns = $("#booking-type");
@@ -171,7 +235,7 @@ function getData(){
 	}));
 
 }
-function dropdowns_fn(data){
+function dropdowns_fn(data) {
 	$('#client').typeahead({
 		"source": data['clients']
 	});
@@ -230,31 +294,30 @@ function show_checkhox_fn() {
 	});
 	$("#dates_list .otherdates.showit").show();
 }
-function sub_placing_fn(s){
-	var d = var_sub_placing, $sub_placingID = $("#sub_placingID"),	$sub_placing_area = $("#sub_placing_area"), $placingID = $("#placingID");
+function sub_placing_fn(s) {
+	var d = var_sub_placing, $sub_placingID = $("#sub_placingID"), $sub_placing_area = $("#sub_placing_area"), $placingID = $("#placingID");
 	var placingID = $placingID.val();
 	var selected = "";
 
-	if (s){
+	if (s) {
 		selected = s;
 	} else {
 		var placingID_data = $placingID.find("option:selected").attr("data-sub-selected");
 		if (placingID_data) selected = placingID_data;
 	}
 
-	var html = $.map(d, function(el, index) {
-		if (el['placingID']== placingID){
+	var html = $.map(d, function (el, index) {
+		if (el['placingID'] == placingID) {
 			var selected_t = "";
-			if (el['ID']==selected){
+			if (el['ID'] == selected) {
 				selected_t = 'selected="selected"';
 			}
-			return '<option value="'+el['ID']+'" data-placingID="'+el['placingID']+'" data-rate="'+el['rate']+'" data-force-colour="'+el['colourID']+'" '+ selected_t+'>'+el['label']+'</option>';
+			return '<option value="' + el['ID'] + '" data-placingID="' + el['placingID'] + '" data-rate="' + el['rate'] + '" data-force-colour="' + el['colourID'] + '" ' + selected_t + '>' + el['label'] + '</option>';
 		}
 
 	});
 
-
-	if (html.length){
+	if (html.length) {
 		html = html.join("");
 		$sub_placingID.html(html);
 		$sub_placing_area.show();
@@ -263,15 +326,12 @@ function sub_placing_fn(s){
 		$sub_placing_area.hide();
 	}
 
-
-
 }
-function colours_fn(){
+function colours_fn() {
 	var $colour_area = $("#colour_area"), $colourID = $("#colourID"), $placingID = $("#placingID"), $sub_placingID = $("#sub_placingID");
 	var forceColour = "";
 	var placingID_FC = $placingID.find("option:selected").attr("data-force-colour");
 	var sub_placingID_FC = $sub_placingID.find("option:selected").attr("data-force-colour");
-
 
 	if (placingID_FC) {
 		forceColour = placingID_FC;
@@ -280,18 +340,15 @@ function colours_fn(){
 		forceColour = sub_placingID_FC;
 	}
 	$colourID.val(forceColour);
-	if (forceColour && forceColour != 0){
+	if (forceColour && forceColour != 0) {
 		$colour_area.hide();
 	} else {
 		$colour_area.show();
 	}
 
-
 }
 
 function display_notes() {
-
-
 
 	var cm = $("#cm").val(), col = $("#col").val();
 	cm = cm.replace(/[^0-9\.]/g, "");
@@ -300,21 +357,18 @@ function display_notes() {
 	$("#cm").val(cm);
 	$("#col").val(col);
 
-
 	var discount = $("#discount").val(), agencyDiscount = $("#agencyDiscount").val(), InsertPO = $("#InsertPO").attr("placeholder", var_publication['printOrder']).val();
 	InsertPO = (InsertPO) ? InsertPO : var_publication['printOrder'];
 
-	var col_cm ="";
+	var col_cm = "";
 	if (col && cm) {
 
 		$("#size-msg strong").html(col * cm);
 		col_cm = cm * col;
 	}
 
-
-
 	var type = $("#booking-type button.active").attr("data-type");
-	var shouldbe="", shouldbe_e="", exact_rate="", string = "", msgtext = "";
+	var shouldbe = "", shouldbe_e = "", exact_rate = "", string = "", msgtext = "";
 
 	switch (type) {
 		case "1":
@@ -323,17 +377,12 @@ function display_notes() {
 			var placingID_Rate = $("#placingID").find("option:selected").attr("data-rate");
 			var sub_placingID_Rate = $("#sub_placingID").find("option:selected").attr("data-rate");
 
-
 			if (placingID_Rate) {
 				exact_rate = placingID_Rate;
 			}
 			if (sub_placingID_Rate && $("#sub_placing_area:visible").length) {
 				exact_rate = sub_placingID_Rate;
 			}
-
-
-
-
 
 			if (!rate) {
 				rate = exact_rate
@@ -440,17 +489,14 @@ function display_notes() {
 
 	$("#totalCost-msg").html(string);
 
-
 	var $payment_method_note = $("#payment_method_note");
-	if ($("#payment_methodID").val()=='1'){
+	if ($("#payment_methodID").val() == '1') {
 		$payment_method_note.hide();
 	} else {
 		$payment_method_note.show();
 	}
 
-
 	resizeform();
-
 
 }
 function error_msg($fld, msg) {
@@ -535,7 +581,7 @@ function account_note() {
 
 	var $opt = $("option:selected", $this);
 
-	var alertclass = "", alertText="";
+	var alertclass = "", alertText = "";
 	if ($opt.attr("data-blocked") == '1') {
 		$($select.container).addClass("select-error");
 		alertclass = "alert-error";
@@ -546,7 +592,7 @@ function account_note() {
 
 	$("#account_remark").html("");
 	if ($opt.attr("data-remark")) {
-		$("#account_remark").html('<div class="alert '+ alertclass+'"><strong>'+ alertText+'</strong> '+ $opt.attr("data-remark")+'</div>');
+		$("#account_remark").html('<div class="alert ' + alertclass + '"><strong>' + alertText + '</strong> ' + $opt.attr("data-remark") + '</div>');
 	}
 
 }

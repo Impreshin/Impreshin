@@ -320,13 +320,15 @@
 	<div class="row">
 
 		<div class="span9 l">
-			<% if (this.a.checked) { %> <% if (this.checked=='1') { %>
-			<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
-			<% } else { %>
-			<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
-			<% } %> <% } %>
+			<% if (this.a.checked=='1') { %>
+				<% if (this.checked=='1') { %>
+					<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
+				<% } else { %>
+					<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
+				<% } %>
+			<% } %>
 
-			<% if (this.a.invoice) { %> <% if (this.invoiceNum) { %>
+			<% if (this.a.invoice=='1') { %> <% if (this.invoiceNum) { %>
 			<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
 			<% } else { %>
 			<button class="btn  span2" type="button" id="booking-invoiced" data-invoice="">Invoiced</button>
