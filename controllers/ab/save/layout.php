@@ -93,7 +93,6 @@ class layout extends save {
 				$a->page = $page;
 
 				$a->save();
-				;
 
 				$pageID = $a->_id;
 			} else {
@@ -108,12 +107,21 @@ class layout extends save {
 		$values=array(
 			"pageID"=> $pageID
 		);
-		models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
-		$data = array("ID"=>$ID);
+
+		$record = new models\bookings();
+		$record = $record->get($ID);
+		if ($record['checked']=='1' and $record['ID']){
+			models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+
+		}
+
+		$data = array("ID" => $ID);
 		if ($page && ($page != "remove")) {
 			$data = new \controllers\ab\data\layout();
 			$data = $data->_page($page);
 		}
+
+
 
 		return $GLOBALS["output"]['data'] = $data;
 

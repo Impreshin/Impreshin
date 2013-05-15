@@ -92,6 +92,7 @@ class data {
 
 		if ($permissions['form']['edit_master']) {
 			$allow['edit'] = "1";
+			$allow['checked'] = "1";
 		}
 
 		$return['a'] = $allow;
