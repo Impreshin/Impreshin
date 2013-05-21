@@ -255,6 +255,7 @@ class user {
 				array_walk_recursive($permissions, function (& $item, $key) {
 						$item = "1";
 					});
+				$permissions['view']['only_my_records'] = '0';
 			} else {
 				$permissions = $appSettings['permissions'];
 
