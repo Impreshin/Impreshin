@@ -14,9 +14,9 @@
 	</h3>
 
 	<div id="modal-header-btns">
-		<% if (this.a.repeat) { %>
-		<a href="#popup-repeat" data-target="popup" rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a> <% } %> <% if (this.a.edit) { %>
-		<a href="/ab/form/<%= this.ID %>?apID=<%= this.pID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a> <% } %> <% if (this.a.print) { %>
+		<% if (this.a.repeat=='1') { %>
+		<a href="#popup-repeat" data-target="popup" rel="tooltip" data-placement="bottom" title="Repeat this booking"><i class="icon-repeat icon-d-grey"></i></a> <% } %> <% if (this.a.edit=='1') { %>
+		<a href="/ab/form/<%= this.ID %>?apID=<%= this.pID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a> <% } %> <% if (this.a.print=='1') { %>
 		<a href="/ab/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this booking"><i class="icon-print icon-d-grey"></i></a> <% } %>
 
 	</div>
@@ -41,7 +41,7 @@
 	<li class="tab-icon">
 		<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
 	</li>
-	<% if (this.a.material_pane) { %>
+	<% if (this.a.material_pane=='1') { %>
 	<li class="tab-icon">
 		<a href="#details-pane-material" data-toggle="tab"><i class="icon-file icon-grey"></i></a>
 	</li>
@@ -250,7 +250,7 @@
 	</div>
 </div>
 
-<% if (this.a.material_pane) { %>
+<% if (this.a.material_pane=='1') { %>
 <div id="details-pane-material" class="tab-pane">
 	<div class="scroll-pane">
 
@@ -273,7 +273,7 @@
 </div>
 <% if (this.typeID =='1') { %>
 
-<a <% if (this.material_file_filename) { %><% if (this.a.material_pane) { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material) { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" > <% if (this.page){ %>
+<a <% if (this.material_file_filename) { %><% if (this.a.material_pane=='1') { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material=='1') { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" > <% if (this.page){ %>
 <div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 
 <% } %> <% if (this.material_production) { %>
@@ -281,7 +281,7 @@
 <% } %>
 
 <div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
-	<% if (this.material_file_filename && this.a.material_pane) { %>
+	<% if (this.material_file_filename && this.a.material_pane=='1') { %>
 
     <img src="/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
 
@@ -292,7 +292,7 @@
 <img src="/ui/_images/success.png" alt="" class="material-state"> <% } %>
 
 </a>
-<% if (this.a.material) { %>
+<% if (this.a.material=='1') { %>
 
 <div id="details-bottom-right-btns">
 	<div class="btn-group" style="width: 100%;">
@@ -306,7 +306,7 @@
 
 <% } %> <% } else if (this.typeID=='2') { %>
 
-<% if (this.a.material) { %>
+<% if (this.a.material=='1') { %>
 <div id="details-bottom-right-btns">
 	<% if (this.material_status=='1') { %>
 	<a class="btn btn-mini btn-success" style="width: 98%;" id="insert-material-status" data-status="0"> Material</a> <% } else { %>
@@ -350,7 +350,7 @@
 
 </section>
 <div class="loadingmask wide"></div>
-<% if (this.a.material) { %>
+<% if (this.a.material=='1') { %>
 <div class="popup" id="popup-material">
 	<form class="form" id="form-material">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
@@ -454,7 +454,7 @@
 		</div>
 	</form>
 </div>
-<% } %> <% if (this.a.repeat) { %>
+<% } %> <% if (this.a.repeat=='1') { %>
 <div class="popup" id="popup-repeat" style="height: 230px;">
 	<form class="form form-horizontal" id="form-repeat">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
