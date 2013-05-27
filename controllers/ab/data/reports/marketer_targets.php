@@ -183,7 +183,7 @@ class marketer_targets extends \controllers\ab\data\data {
 		$return = array();
 		$publications = models\marketers::getPublications($mID);
 
-		
+
 
 
 		if (!$details['ID']) {
