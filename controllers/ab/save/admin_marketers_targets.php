@@ -28,7 +28,9 @@ class admin_marketers_targets extends save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$mID = isset($_REQUEST['mID']) ? $_REQUEST['mID'] : "";
-		if (!isset($_REQUEST['mID'])) $mID = isset($user['marketer']['ID']) ? $user['marketer']['ID'] : "";
+		if (!$mID || $mID=="undefined") {
+			$mID = isset($user['marketer']['ID']) ? $user['marketer']['ID'] : "";
+		}
 
 			$target = isset($_POST['target']) ? $_POST['target'] : "";
 		$publications = isset($_POST['publications']) ? $_POST['publications'] : array();
@@ -38,6 +40,7 @@ class admin_marketers_targets extends save {
 
 
 
+		//test_array($mID);
 
 		$return = array(
 			"error"   => array(),
