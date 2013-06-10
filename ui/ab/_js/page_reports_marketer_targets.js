@@ -7,6 +7,15 @@ $(document).ready(function () {
 
 	scrolling(api);
 
+	$(document).on("click", "#record-filter-btns button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		getData();
+
+	});
+
+
 	$(document).on("click", ".record", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -176,8 +185,14 @@ function getData() {
 	var rows = wh / 27;
 	rows = Math.floor(rows);
 
+
+
+	var filter = $("#record-filter-btns button.active").attr("data-filter");
+	filter = (filter) ? filter : "";
+
+
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows, "filter":filter}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);

@@ -17,7 +17,7 @@ class controller_reports_marketer_targets {
 		$pID = $user['pID'];
 		$cID = $user['publication']['cID'];
 
-		$section = "reports_marketer";
+		$section = "reports_marketer_targets";
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
