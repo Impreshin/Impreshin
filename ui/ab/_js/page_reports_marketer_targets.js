@@ -100,8 +100,10 @@ $(document).ready(function () {
 
 		var $errorArea = $("#errorArea").html("");
 		var mID = $("#selectID").val();
+		mID = mID ? mID : "";
 
 		var ID = $.bbq.getState("ID");
+		ID = ID ? ID : "";
 		$("#left-area .loadingmask").show();
 		$.post("/ab/save/admin_marketers_targets/_save/?ID=" + ID + "&mID=" + mID, data, function (r) {
 			r = r['data'];
@@ -152,6 +154,7 @@ function getData() {
 	years = years.join(",");
 
 	var ID = $("#selectID").val();
+	ID = ID ? ID : "";
 
 	var page = $.bbq.getState("page");
 	page = (page) ? page : "";
@@ -209,7 +212,9 @@ function getData() {
 
 function getTarget() {
 	var ID = $.bbq.getState("ID");
+	ID = ID ? ID : "";
 	var mID = $("#selectID").val();
+	mID = mID ? mID : "";
 
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
