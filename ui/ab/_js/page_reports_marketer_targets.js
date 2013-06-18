@@ -109,6 +109,7 @@ $(document).ready(function () {
 
 		var $errorArea = $("#errorArea").html("");
 		var mID = $("#selectID").val();
+		mID = mID?mID:"";
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
@@ -161,6 +162,8 @@ function getData() {
 	years = years.join(",");
 
 	var ID = $("#selectID").val();
+	ID = ID ? ID : "";
+
 
 	var page = $.bbq.getState("page");
 	page = (page) ? page : "";
@@ -225,6 +228,7 @@ function getData() {
 function getTarget() {
 	var ID = $.bbq.getState("ID");
 	var mID = $("#selectID").val();
+	mID = mID ? mID : "";
 
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
