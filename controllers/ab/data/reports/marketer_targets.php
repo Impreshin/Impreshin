@@ -27,13 +27,13 @@ class marketer_targets extends \controllers\ab\data\data {
 		$pID = $user['pID'];
 
 		$cID = $user['publication']['cID'];
-		$section = "reports_marketer";
+		$section = "reports_marketer_targets";
 		$return = array();
 
 		$settings = models\settings::_read($section);
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-
+		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter'] != "") ? $_REQUEST['filter'] : $settings['filter'];
 
 		if (isset($user['marketer']['ID'])&&$user['marketer']['ID']&&$user['permissions']['reports']['marketer']['targets']['page']!='1') $ID = $user['marketer']['ID'];
 
@@ -41,13 +41,10 @@ class marketer_targets extends \controllers\ab\data\data {
 		$values = array();
 
 		$values[$section] = array(
-			"years"=> $settings['years'],
-			"timeframe"=> $settings['timeframe'],
-			"combined"=> $settings['combined'],
-			"order"=> $settings['order'],
-			"tolerance"=> $settings['tolerance'],
+			"ID"=> $ID,
+			"filter"=> $settings['filter'],
+
 		);
-		$values[$section]['ID']["cID_$cID"] = $ID;
 
 		models\user_settings::save_setting($values);
 
@@ -75,6 +72,20 @@ class marketer_targets extends \controllers\ab\data\data {
 		$select = "sum(totalcost) as totalcost, count(ab_bookings.ID) as records";
 		$where = "ab_bookings.marketerID = '$ID' ";
 
+
+		$filter_where = "";
+		SWITCH ($filter){
+			CASE "*":
+
+				BREAK;
+			CASE "1":
+				$filter_where = " AND checked ='1'";
+				BREAK;
+			CASE "0":
+				$filter_where = " AND checked !='1'";
+				BREAK;
+		}
+
 		$t = array();
 		foreach ($targets as $target){
 			$target['date_from_D'] = date("d F Y",strtotime($target['date_from']));
@@ -85,7 +96,7 @@ class marketer_targets extends \controllers\ab\data\data {
 			$pubs = explode(",",$pubs);
 
 			if (in_array($pID,$pubs)){
-				$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '" . $target['date_from'] . "' AND global_dates.publish_date <= '" . $target['date_to'] . "') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null AND checked ='1'", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
+				$records = models\bookings::getAll_select($select, $where . "AND (global_dates.publish_date >= '" . $target['date_from'] . "' AND global_dates.publish_date <= '" . $target['date_to'] . "') AND ab_bookings.pID in (" . $target['pubs'] . ") AND deleted is null  $filter_where", "global_dates.publish_date ASC ", "ab_bookings.marketerID");
 
 
 				//test_array(array("targets"=>$target,"records"=>$records));
@@ -171,8 +182,8 @@ class marketer_targets extends \controllers\ab\data\data {
 		IF (isset($user['marketer']) && ISSET($user['marketer']['ID']) && $user['marketer']['ID']){
 			$Mid_USER = $user['marketer']['ID'];
 		}
-		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
-		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : $Mid_USER;
+		$ID = (isset($_REQUEST['ID'])&& $_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$mID = (isset($_REQUEST['mID'])&& $_REQUEST['mID']) ? $_REQUEST['mID'] : $Mid_USER;
 
 		$o = new models\marketers_targets();
 		$details = $o->get($ID);
@@ -182,6 +193,7 @@ class marketer_targets extends \controllers\ab\data\data {
 
 		$return = array();
 		$publications = models\marketers::getPublications($mID);
+
 
 
 

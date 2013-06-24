@@ -641,6 +641,11 @@ class settings {
 					"count"      => "5",
 					"tolerance"=>25
 				),
+				"reports_marketer_targets"=>array(
+					"ID"=>"",
+
+					"filter"=>'1'
+				),
 
 				"reports_production"=>array(
 					"years"=>"",

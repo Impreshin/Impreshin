@@ -227,6 +227,10 @@ $app->route('GET /news/@item', 'controllers\controller_news->page');
 $app->route('GET /history', 'controllers\controller_history->page');
 $app->route('GET /history/commits', 'controllers\controller_history->getCommits');
 $app->route('GET /about', 'controllers\controller_about->page');
+$app->route('GET /activity', 'controllers\controller_activity->page');
+$app->route('GET /activity/data', 'controllers\controller_activity->data');
+
+
 
 $app->route('GET|POST /@app/help', 'controllers\controller_docs->help_page');
 $app->route('GET|POST /@app/help/@section', 'controllers\controller_docs->section_page');

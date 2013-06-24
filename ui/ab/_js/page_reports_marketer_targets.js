@@ -7,6 +7,15 @@ $(document).ready(function () {
 
 	scrolling(api);
 
+	$(document).on("click", "#record-filter-btns button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		getData();
+
+	});
+
+
 	$(document).on("click", ".record", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -100,10 +109,9 @@ $(document).ready(function () {
 
 		var $errorArea = $("#errorArea").html("");
 		var mID = $("#selectID").val();
-		mID = mID ? mID : "";
+		mID = mID?mID:"";
 
 		var ID = $.bbq.getState("ID");
-		ID = ID ? ID : "";
 		$("#left-area .loadingmask").show();
 		$.post("/ab/save/admin_marketers_targets/_save/?ID=" + ID + "&mID=" + mID, data, function (r) {
 			r = r['data'];
@@ -156,6 +164,7 @@ function getData() {
 	var ID = $("#selectID").val();
 	ID = ID ? ID : "";
 
+
 	var page = $.bbq.getState("page");
 	page = (page) ? page : "";
 
@@ -179,8 +188,14 @@ function getData() {
 	var rows = wh / 27;
 	rows = Math.floor(rows);
 
+
+
+	var filter = $("#record-filter-btns button.active").attr("data-filter");
+	filter = (filter) ? filter : "";
+
+
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows}, function (data) {
+	listRequest.push($.getJSON("/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows, "filter":filter}, function (data) {
 		data = data['data'];
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
@@ -212,7 +227,6 @@ function getData() {
 
 function getTarget() {
 	var ID = $.bbq.getState("ID");
-	ID = ID ? ID : "";
 	var mID = $("#selectID").val();
 	mID = mID ? mID : "";
 
