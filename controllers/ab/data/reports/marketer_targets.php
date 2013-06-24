@@ -182,8 +182,8 @@ class marketer_targets extends \controllers\ab\data\data {
 		IF (isset($user['marketer']) && ISSET($user['marketer']['ID']) && $user['marketer']['ID']){
 			$Mid_USER = $user['marketer']['ID'];
 		}
-		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
-		$mID = (isset($_REQUEST['mID'])) ? $_REQUEST['mID'] : $Mid_USER;
+		$ID = (isset($_REQUEST['ID'])&& $_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$mID = (isset($_REQUEST['mID'])&& $_REQUEST['mID']) ? $_REQUEST['mID'] : $Mid_USER;
 
 		$o = new models\marketers_targets();
 		$details = $o->get($ID);
@@ -193,6 +193,7 @@ class marketer_targets extends \controllers\ab\data\data {
 
 		$return = array();
 		$publications = models\marketers::getPublications($mID);
+
 
 
 
