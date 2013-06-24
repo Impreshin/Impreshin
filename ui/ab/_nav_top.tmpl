@@ -180,14 +180,28 @@
 
 
 			<ul class="dropdown-menu">
+				{% set lastCompany = "" %}
 				{% for row in _user['publications'] %}
+					{% if lastCompany != row['company'] %}
+						<li class="heading">{{ row['company'] }}</li>
+					{% endif %}
+					{% set lastCompany = row['company'] %}
 					<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}">
 						<a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
 				{% endfor %}
 			</ul>
 		{% else %}
 			<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+				{% set lastCompany = "" %}
 				{% for row in _user['publications'] %}
+					{% if lastCompany != row['company'] %}
+						<optgroup label="{{ row['company'] }}">
+					{% else %}
+						{% if lastCompany  %}
+							</optgroup>
+						{% endif %}
+					{% endif %}
+					{% set lastCompany = row['company'] %}
 					<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
 				{% endfor %}
 

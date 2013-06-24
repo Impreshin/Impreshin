@@ -138,9 +138,9 @@ class user {
 			}
 
 			if ($result['su'] == '1') {
-				$publications = publications::getAll("", "publication ASC");
+				$publications = publications::getAll("", "company ASC, publication ASC");
 			} else {
-				$publications = publications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "publication ASC");
+				$publications = publications::getAll_user("global_users_company.uID='" . $result['ID'] . "' and [access] = '1'", "company ASC, publication ASC");
 			}
 
 			$pID = (count($publications)) ? $publications[0]['ID'] : "";
