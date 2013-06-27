@@ -140,8 +140,8 @@ class bookings extends save {
 		$ss = array();
 		$ss["form"] = array(
 			"type"      => $type,
-			"last_marketer"      => $values['marketerID'],
-			"last_category"      => $values['categoryID']
+			"last_marketer"      => ($values['marketerID']) ? $values['marketerID'] : "",
+			"last_category"      => ($values['categoryID'])? $values['categoryID'] : ""
 		);
 		$values['deleted']=NULL;
 		$values['deleted_userID']= NULL;

@@ -75,8 +75,9 @@ class publications {
 		$app_users_pub = $app."_users_pub";
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.*, $app_users_pub.uID, COALESCE(global_users_company.ab,0) AS access
-			FROM (global_publications INNER JOIN $app_users_pub ON global_publications.ID = $app_users_pub.pID) INNER JOIN global_users_company ON (global_publications.cID = global_users_company.cID) AND ($app_users_pub.uID = global_users_company.uID)
+			SELECT DISTINCT global_publications.*, $app_users_pub.uID, COALESCE(global_users_company.ab,0) AS access, global_companies.company
+
+			FROM ((global_publications INNER JOIN $app_users_pub ON global_publications.ID = $app_users_pub.pID) INNER JOIN global_users_company ON ($app_users_pub.uID = global_users_company.uID) AND (global_publications.cID = global_users_company.cID)) INNER JOIN global_companies ON global_publications.cID = global_companies.ID
 			$where
 			$orderby
 		");
@@ -111,8 +112,8 @@ class publications {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT global_publications.*  $app_users_pub_sql
-			FROM global_publications
+			SELECT DISTINCT global_publications.*, global_companies.company  $app_users_pub_sql
+			FROM global_publications INNER JOIN global_companies ON global_publications.cID = global_companies.ID
 			$where
 			$orderby
 		");
