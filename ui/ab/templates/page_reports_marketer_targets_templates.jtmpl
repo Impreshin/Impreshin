@@ -161,7 +161,7 @@
 		            <input type="checkbox" value="" name="" class="checkall">Check All </label>
                 <% for(var i in this.publications) { %>
                 <label class="checkbox" style="padding-top: 3px;padding-bottom: 3px; cursor:pointer;">
-                    <input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.publications[i].selected){ %>checked="checked"<% } %> style="margin-top: 0; margin-left: 10px;margin-right: 10px;"><%= this.publications[i].publication %>
+                    <input type="checkbox" value="<%= this.publications[i].ID %>" name="publications[]" <% if (this.details.ID) { %><% if (this.publications[i].selected){ %>checked="checked"<% } %><% } else { %>checked="checked"<% } %> style="margin-top: 0; margin-left: 10px;margin-right: 10px;"><%= this.publications[i].publication %>
                 </label> <% } %>
 
 
