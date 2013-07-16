@@ -143,7 +143,7 @@ class settings {
 				"h"=> "Date",
 				"d" => "Date the booking was added",
 				"w" => 60
-			),
+			),/*
 			"last_change"                 => array(
 				"c"=> "last_change",
 				"o"=> "last_change",
@@ -157,7 +157,7 @@ class settings {
 				"h"=> "Last&nbsp;Changed",
 				"d" => "Date the booking was last changed",
 				"m" => 60
-			),
+			),*/
 			"checked"                => array(
 				"c"=> "checked",
 				"o"=> "checked",
