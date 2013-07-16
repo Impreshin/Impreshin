@@ -263,9 +263,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
 				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
-				ab_bookings_logs.datein  AS last_change
+				now()  AS last_change
 			$select
-			FROM ($from LEFT JOIN (SELECT  bID, MAX(ID) AS lastChangeID FROM ab_bookings_logs GROUP BY bID) s1 ON ab_bookings.ID = s1.bID JOIN ab_bookings_logs ON ab_bookings_logs.ID = s1.lastChangeID)
+			FROM ($from )
 			$where
 			$orderby
 			$limit
