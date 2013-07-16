@@ -117,7 +117,10 @@ class marketers_targets {
 				$pubs = implode(",", $pubs_array);
 
 
-				$b = bookings::getAll("(global_dates.publish_date)>='" . $start_date . "' and (global_dates.publish_date)<='" . $end_date . "' AND ab_bookings.pID in ($pubs) AND marketerID='" . $return['ID'] . "' AND deleted is null");
+				$b = $f3->get("DB")->exec("SELECT ab_bookings.* FROM ((((ab_bookings LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) WHERE (global_dates.publish_date)>='" . $start_date . "' and (global_dates.publish_date)<='" . $end_date . "' AND ab_bookings.pID in ($pubs) AND marketerID='" . $return['ID'] . "' AND deleted is null");
+
+
+				//$b = bookings::getAll("(global_dates.publish_date)>='" . $start_date . "' and (global_dates.publish_date)<='" . $end_date . "' AND ab_bookings.pID in ($pubs) AND marketerID='" . $return['ID'] . "' AND deleted is null");
 
 
 				foreach ($b as $t) {
