@@ -187,7 +187,7 @@ class user {
 				//test_array(\models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"));
 				if ($folder!=="setup"){
 
-					test_array($folder);
+					//test_array($folder);
 					if (count(\models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and allow_setup ='1'"))!=0) {
 						$f3->reroute("/setup");
 					}
@@ -240,6 +240,7 @@ class user {
 					$marketer = array();
 				}
 
+				//test_array($marketer);
 				if (count($marketer)) {
 					$result['marketer'] = $marketer;
 				}
