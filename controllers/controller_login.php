@@ -64,8 +64,12 @@ class controller_login {
 
 		$msg = "Please Login";
 		if (($username && $password) ){
-			if (isset($user['ID']) && $user['ID']) $this->f3->reroute("/?to=".(isset($_GET['to'])?$_GET['to']:''));
-			$msg = "Login Failed";
+			if (isset($user['ID']) && $user['ID']) {
+				$this->f3->reroute("/?to=".(isset($_GET['to'])?$_GET['to']:''));
+			} else {
+				$msg = "Login Failed";
+			}
+
 		}
 		if (!$username) $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : "";
 

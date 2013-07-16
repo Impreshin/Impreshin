@@ -104,7 +104,9 @@ $userO = new \models\user();
 
 if ($username && $password) {
 	$uID = $userO->login($username, $password);
-	$app->reroute("/");
+	if ($uID) {
+		$app->reroute("/");
+	}
 }
 
 
