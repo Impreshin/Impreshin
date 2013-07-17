@@ -91,9 +91,9 @@ class deleted extends data {
 			$search_dates = explode("to",$search_dates);
 
 			if (count($search_dates)==1){
-				$searchsql .= " AND global_dates.publish_date = '".$search_dates[0]."'";
+				$searchsql .= " AND global_dates.publish_date = '".trim($search_dates[0])."'";
 			} else {
-				$searchsql .= " AND (global_dates.publish_date >= '" . $search_dates[0]."' AND global_dates.publish_date <= '" . $search_dates[1]."')";
+				$searchsql .= " AND (global_dates.publish_date >= '" . trim($search_dates[0])."' AND global_dates.publish_date <= '" . trim($search_dates[1])."')";
 			}
 
 		}

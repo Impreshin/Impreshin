@@ -71,6 +71,12 @@ $sql = array(
 		"CREATE TABLE IF NOT EXISTS `system_payment_methods` ( `ID` int(6) NOT NULL AUTO_INCREMENT, `label` varchar(30) DEFAULT NULL, `orderby` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`));",
 		"INSERT INTO `system_payment_methods` (`label`, `orderby`) VALUES (NULL, 1),('Cash', 2),('EFT', 3),('Cheque', 4);"
 
+	),
+	"14"=>array(
+		"ALTER TABLE ab_bookings_logs DROP INDEX bID;",
+		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `bID` );",
+		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `userID` );",
+		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `datein` );"
 	)
 
 

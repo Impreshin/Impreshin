@@ -21,7 +21,7 @@ $cfg['package']['database'] = "impreshin-admin";
 $cfg['upload']['material'] = false;
 $cfg['upload']['pages'] = false;
 $cfg['upload']['folder'] = $_SERVER['DOCUMENT_ROOT'] .  "/uploads/";
-$cfg['debug']['highlightfrom'] = 0.5;
+$cfg['debug']['highlightfrom'] = 0.7;
 
 $cfg['apps'] = array("ab","nf");
 $cfg['gzip'] = false;
