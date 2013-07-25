@@ -7,15 +7,11 @@
 class template {
 	private $config = array(), $vars = array();
 
-	function __construct($template, $folder = "", $strictfolder = false) {
+	function __construct($template, $folder = "") {
 		$this->f3 = Base::instance();
 		$this->config['cache_dir'] = $this->f3->get('TEMP');
-
 		$this->vars['folder'] = $folder;
-		$this->config['strictfolder'] = $strictfolder;
-
 		$this->template = $template;
-
 		$this->timer = new \timer();
 
 
@@ -26,7 +22,7 @@ class template {
 		$page = $this->template;
 		//test_array($page);
 		if (isset($this->vars['page']['template'])){
-			$page = $page . " -> " . $this->templatefolder . $this->vars['page']['template'];
+			$page = $page . " -> " . $this->vars['folder'] . $this->vars['page']['template'];
 		}
 		$this->timer->stop("Template",  $page);
 	}
@@ -43,24 +39,34 @@ class template {
 	public function load() {
 
 		$curPageFull = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		$curPage = explode("?", $curPageFull);
-		$_v = isset($_GET['v']) ? $_GET['v'] : $this->f3->get('v');
-		$user = $this->f3->get('user');
+		$cfg = $this->f3->get('CFG');
+		unset($cfg['DB']);
+		unset($cfg['package']);
 
-		$cfg = $this->f3->get('cfg');
+		$v = $this->f3->get("VERSION");
+
+
+		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
+		$this->vars['_v'] = $v;
+
+
+
+
+		$user = $this->f3->get('user');
+		
+
+		$cfg = $this->f3->get('CFG');
 		unset($cfg['DB']);
 		unset($cfg['package']);
 
 
-		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
+		$this->vars['_nav_top'] = $this->vars['folder'] . "_nav_top.tmpl";
 
-		$publications = $user['publications'];
-		$publication = $user['publication'];
+
 
 		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
 		$this->vars['_version'] = $this->f3->get('version');
-		$this->vars['_v'] = $_v;
 		$this->vars['_cfg'] = $cfg;
 		$this->vars['_docs'] = $this->f3->get('docs');
 		$this->vars['_last_pages'] = $this->f3->get('last_pages');
@@ -69,34 +75,74 @@ class template {
 
 		$this->vars['_httpdomain'] = siteURL();
 		$this->vars['_user'] = $user;
-		$this->vars['_settings'] = array(
-			"settings"=> $this->f3->get('settings'),
-			"publication"=> $publication,
-			"publications"=> $publications,
-			"json"=>array(
-				"publication" => json_encode($publication),
-				"publications"=> json_encode($publications),
-			)
-		);
 
+		//test_array($this->vars);
 		$userID = $this->vars['_user'];
+
 
 		if (isset($this->vars['page'])) {
 			$page = $this->vars['page'];
 			$tfile = $page['template'];
 
-			$folders = (array) $this->vars['folder'];
-
-
-			$this->templatefolder = "";
-
-			$usethisfolder = false;
-
-			$force_js = isset($page['template_js'])?true:false;
-			$force_css = isset($page['template_css']) ? true : false;
-			$force_tmpl = isset($page['template_tmpl']) ? true : false;
-
 			$page['template'] = $tfile . '.tmpl';
+
+			$folder = $this->vars['folder'];
+
+			$page['js'] = array();
+			$page['css'] = array();
+			if (isset($this->vars['page']['js'])) {
+				if (is_array($this->vars['page']['js'])){
+					foreach ($this->vars['page']['js'] as $item){
+						$page['js'][] = $item;
+					}
+				} else {
+					$page['js'][] = $this->vars['page']['js'];
+				}
+			}
+
+			if (file_exists('' . $folder . '_js/' . $tfile . '.js')) {
+				$page['js'][] = '/' . $folder . '_js/' . $tfile .".". $v.'.js';
+			}
+
+
+			if (isset($this->vars['page']['css'])) {
+				if (is_array($this->vars['page']['css'])) {
+					foreach ($this->vars['page']['css'] as $item) {
+						$page['css'][] = $item;
+					}
+				} else {
+					$page['css'][] = $this->vars['page']['css'];
+				}
+			}
+
+
+			if (file_exists('' . $folder . '_css/' . $tfile . '.css')) {
+				$page['css'][] = '/' . $folder . '_css/' . $tfile .".". $v.'.css';
+			}
+			if (file_exists('' . $folder . '_css/style.css')) {
+				$page['css'][] = '/' . $folder . '_css/style.'.$v.'.css';
+			}
+
+
+
+			if (file_exists('' . $folder . 'templates/' . $tfile . '_templates.jtmpl')) {
+				$page['template_tmpl'] = 'templates/' . $tfile . '_templates.jtmpl';
+			} else {
+				if (!isset($page['template_tmpl'])) $page['template_tmpl'] = "";
+			}
+			if (file_exists('' . $folder . 'templates/' . $tfile . '.jtmpl')) {
+				$page['template_tmpl'] = 'templates/' . $tfile . '.jtmpl';
+			} else {
+				if (!isset($page['template_tmpl'])) $page['template_tmpl'] = "";
+			}
+
+
+
+
+			//test_array($page);
+
+			/*
+
 			foreach ($folders as $folder){
 
 				if (file_exists('' . $folder . '' . $tfile . '.tmpl')) {
@@ -151,8 +197,8 @@ class template {
 			$this->vars['page'] = $page;
 
 			//test_array($page);
-			
-
+			*/
+			$this->vars['page'] = $page;
 			return $this->render_template();
 		} else {
 			return $this->render_string();
@@ -174,9 +220,7 @@ class template {
 			);
 		}
 
-		if ($this->config['strictfolder']){
-			$folder = $this->vars['folder'];
-		}
+
 
 		$loader = new Twig_Loader_Filesystem($folder);
 		$twig = new Twig_Environment($loader, array(
@@ -200,6 +244,7 @@ class template {
 
 	public function output() {
 		$this->f3->set("__runTemplate", true);
+		$this->f3->set("json", false);
 		echo $this->load();
 
 	}

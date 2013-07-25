@@ -5,8 +5,8 @@
  */
 namespace models;
 
-use \F3 as F3;
-use \Axon as Axon;
+
+
 use \timer as timer;
 
 class company {
@@ -31,7 +31,7 @@ class company {
 		$result = $f3->get("DB")->exec($sql);
 
 
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 
 
 

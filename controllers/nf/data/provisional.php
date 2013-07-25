@@ -5,7 +5,7 @@
  */
 namespace controllers\nf\data;
 
-use \F3 as F3;
+
 use \timer as timer;
 use \models\nf as models;
 use \models\user as user;
@@ -78,7 +78,7 @@ class provisional extends data {
 		);
 
 
-		models\user_settings::save_setting($values);
+		models\settings::save($values);
 
 		$orderby = " client ASC";
 		$arrange = "";

@@ -4,9 +4,9 @@
  * Date: 2012/05/31 - 4:01 PM
  */
 namespace controllers\setup\data\ab;
-use \F3 as F3;
+
 use \timer as timer;
-use \models\ab as models;
+use \apps\ab\models as models;
 use \models\user as user;
 
 
@@ -26,7 +26,7 @@ class users {
 
 		$records = user::getAll("cID='$cID'", "fullName ASC","",$pID);
 
-		$apps = $this->f3->get("cfg");
+		$apps = $this->f3->get("CFG");
 		$apps = $apps['apps'];
 
 		$apps_str = "";

@@ -73,7 +73,7 @@ class general {
 
 		$file = (isset($_GET['file'])) ? $_GET['file'] : "";
 		//$file = $this->f3->get('PARAMS.filename');
-		header("Content-Type: application/javascript");
+		header("Content-Type: application/x-javascript");
 		$t = "";
 		if ($file) {
 			$fileDetails = pathinfo(($file));
@@ -155,7 +155,7 @@ class general {
 		$folder = (isset($_GET['folder'])) ? $_GET['folder'] : "";
 		//$folder = substr($folder,0,-1);
 
-		$cfg = $this->f3->get("cfg");
+		$cfg = $this->f3->get("CFG");
 
 
 		$user = $this->f3->get("user");

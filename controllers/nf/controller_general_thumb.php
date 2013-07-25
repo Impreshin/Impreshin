@@ -4,7 +4,7 @@
  * Date: 2012/07/04 - 3:17 PM
  */
 namespace controllers\nf;
-use \F3 as F3;
+
 use \timer as timer;
 use models\nf as models;
 
@@ -12,7 +12,7 @@ use models\nf as models;
 class controller_general_thumb {
 	public static function article(){
 		$f3 = \base::instance();
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 
 		$dataO = new models\articles();
 

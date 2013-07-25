@@ -11,7 +11,7 @@ function last_page() {
 
 	$st = array();
 	$uID = $user['ID'];
-	$cfg = $f3->get("cfg");
+	$cfg = $f3->get("CFG");
 	foreach ($cfg['apps'] as $a) {
 		$st[] = "COALESCE((SELECT last_page FROM " . $a . "_users_settings WHERE uID = '$uID'),'/$a') as $a";
 	}
@@ -121,21 +121,35 @@ function is_bot() {
 
 	return false; // Not a bot
 }
+
 function sanitize_output($buffer) {
-	$search = array(
-		'/\>[^\S ]+/s',
-		//strip whitespaces after tags, except space
-		'/[^\S ]+\</s',
-		//strip whitespaces before tags, except space
-		'/(\s)+/s'
-		// shorten multiple whitespace sequences
-	);
-	$replace = array(
-		'>',
-		'<',
-		'\\1'
-	);
-	//$buffer = preg_replace($search, $replace, $buffer);
+
+
+
+
+	$re = '%# Collapse whitespace everywhere but in blacklisted elements.
+        (?>             # Match all whitespans other than single space.
+          [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
+        | \s{2,}        # or two or more consecutive-any-whitespace.
+        ) # Note: The remaining regex consumes no text at all...
+        (?=             # Ensure we are not in a blacklist tag.
+          [^<]*+        # Either zero or more non-"<" {normal*}
+          (?:           # Begin {(special normal*)*} construct
+            <           # or a < starting a non-blacklist tag.
+            (?!/?(?:textarea|pre|script)\b)
+            [^<]*+      # more non-"<" {normal*}
+          )*+           # Finish "unrolling-the-loop"
+          (?:           # Begin alternation group.
+            <           # Either a blacklist start tag.
+            (?>textarea|pre|script)\b
+          | \z          # or end of file.
+          )             # End alternation group.
+        )  # If we made it here, we are not in a blacklist tag.
+        %Six';
+	//$buffer = preg_replace($re, " ", $buffer);
+
+
+	//if ($buffer === null) exit("PCRE Error! File too big.\n");
 	return $buffer;
 }
 function safe($data){
@@ -202,6 +216,79 @@ function currency($number){
 	$number = $GLOBALS['cfg']['currency']['sign'] . number_format($number, 2, '.', $GLOBALS['cfg']['currency']['separator']);
 	return str_replace(" ", "&nbsp;", $number);
 
+}
+
+function money_format($format, $number) {
+	$regex = '/%((?:[\^!\-]|\+|\(|\=.)*)([0-9]+)?' . '(?:#([0-9]+))?(?:\.([0-9]+))?([in%])/';
+	if (setlocale(LC_MONETARY, 0) == 'C') {
+		setlocale(LC_MONETARY, '');
+	}
+	$locale = localeconv();
+	preg_match_all($regex, $format, $matches, PREG_SET_ORDER);
+	foreach ($matches as $fmatch) {
+		$value = floatval($number);
+		$flags = array('fillchar' => preg_match('/\=(.)/', $fmatch[1], $match) ? $match[1] : ' ', 'nogroup' => preg_match('/\^/', $fmatch[1]) > 0, 'usesignal' => preg_match('/\+|\(/', $fmatch[1], $match) ? $match[0] : '+', 'nosimbol' => preg_match('/\!/', $fmatch[1]) > 0, 'isleft' => preg_match('/\-/', $fmatch[1]) > 0);
+		$width = trim($fmatch[2]) ? (int)$fmatch[2] : 0;
+		$left = trim($fmatch[3]) ? (int)$fmatch[3] : 0;
+		$right = trim($fmatch[4]) ? (int)$fmatch[4] : $locale['int_frac_digits'];
+		$conversion = $fmatch[5];
+
+		$positive = true;
+		if ($value < 0) {
+			$positive = false;
+			$value *= -1;
+		}
+		$letter = $positive ? 'p' : 'n';
+
+		$prefix = $suffix = $cprefix = $csuffix = $signal = '';
+
+		$signal = $positive ? $locale['positive_sign'] : $locale['negative_sign'];
+		switch (true) {
+			case $locale["{$letter}_sign_posn"] == 1 && $flags['usesignal'] == '+':
+				$prefix = $signal;
+				break;
+			case $locale["{$letter}_sign_posn"] == 2 && $flags['usesignal'] == '+':
+				$suffix = $signal;
+				break;
+			case $locale["{$letter}_sign_posn"] == 3 && $flags['usesignal'] == '+':
+				$cprefix = $signal;
+				break;
+			case $locale["{$letter}_sign_posn"] == 4 && $flags['usesignal'] == '+':
+				$csuffix = $signal;
+				break;
+			case $flags['usesignal'] == '(':
+			case $locale["{$letter}_sign_posn"] == 0:
+				$prefix = '(';
+				$suffix = ')';
+				break;
+		}
+		if (!$flags['nosimbol']) {
+			$currency = $cprefix . ($conversion == 'i' ? $locale['int_curr_symbol'] : $locale['currency_symbol']) . $csuffix;
+		} else {
+			$currency = '';
+		}
+		$space = $locale["{$letter}_sep_by_space"] ? ' ' : '';
+
+		$value = number_format($value, $right, $locale['mon_decimal_point'], $flags['nogroup'] ? '' : $locale['mon_thousands_sep']);
+		$value = @explode($locale['mon_decimal_point'], $value);
+
+		$n = strlen($prefix) + strlen($currency) + strlen($value[0]);
+		if ($left > 0 && $left > $n) {
+			$value[0] = str_repeat($flags['fillchar'], $left - $n) . $value[0];
+		}
+		$value = implode($locale['mon_decimal_point'], $value);
+		if ($locale["{$letter}_cs_precedes"]) {
+			$value = $prefix . $currency . $space . $value . $suffix;
+		} else {
+			$value = $prefix . $value . $space . $currency . $suffix;
+		}
+		if ($width > 0) {
+			$value = str_pad($value, $width, $flags['fillchar'], $flags['isleft'] ? STR_PAD_RIGHT : STR_PAD_LEFT);
+		}
+
+		$format = str_replace($fmatch[0], $value, $format);
+	}
+	return $format;
 }
 function test_array($array,$splitter=","){
 

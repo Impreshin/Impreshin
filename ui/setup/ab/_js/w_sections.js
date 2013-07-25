@@ -83,7 +83,7 @@ $(document).ready(function () {
 		//console.log(pID)
 		if (confirm("Clicking ok will copy all the records from the selected publication into the current publication?")) {
 			$("#right-area .loadingmask").show();
-			$.post("/ab/save/admin_sections/_copyfrom/?pID=" + copyfromID+ "&new_pID="+pID,"", function (r) {
+			$.post("/apps/ab/save/admin_sections/_copyfrom/?pID=" + copyfromID+ "&new_pID="+pID,"", function (r) {
 
 				getList();
 			});

@@ -1,6 +1,6 @@
 #login-form {
 	display: block;
-	height: 220px;
+	height: 210px;
 	width: 500px;
 	position: absolute;
 	top:50%;
@@ -12,9 +12,8 @@
 	margin-bottom: 0;
 }
 
-#login-form legend {
-	margin-bottom: 0;
-}
+
+
 #newsflash {
 	position: absolute;
 	bottom:0px;

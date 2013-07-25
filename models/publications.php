@@ -20,7 +20,7 @@ class publications {
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$app = $f3->get("app");
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 
 
 		$result = $f3->get("DB")->exec("
@@ -36,6 +36,8 @@ class publications {
 				$return['current_date'] = $currentDate = dates::getCurrent($return['ID']);
 			}
 			$colours = $cfg['default_colours'];
+			
+
 
 			if ($return['colours']){
 				$colours = explode(",", $return['colours']);
@@ -190,7 +192,7 @@ class publications {
 
 	private static function dbStructure() {
 		$f3 = \Base::instance();
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 		$table = $f3->get("DB")->exec("EXPLAIN global_publications;");
 		$result = array();
 		foreach ($table as $key => $value) {

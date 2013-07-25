@@ -120,7 +120,7 @@ $(document).ready(function () {
 
 		if (confirm("Clicking ok will copy all the records from the selected publication into the current publication?")) {
 			$("#right-area .loadingmask").show();
-			$.post("/ab/save/admin_placing/_copyfrom/?pID=" + copyfromID + "&new_pID=" + pID, "", function (r) {
+			$.post("/apps/ab/save/admin_placing/_copyfrom/?pID=" + copyfromID + "&new_pID=" + pID, "", function (r) {
 
 				getList();
 			});
@@ -205,7 +205,7 @@ function getDetails() {
 				});
 				rec = rec.join(",");
 
-				$.post("/ab/save/admin_placing/_sort/", {"order": rec}, function (t) {
+				$.post("/apps/ab/save/admin_placing/_sort/", {"order": rec}, function (t) {
 
 				});*/
 			}
