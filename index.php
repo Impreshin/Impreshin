@@ -13,7 +13,7 @@ if (!$SID) {
 $cfg = array();
 require_once('config.default.inc.php');
 require_once('config.inc.php');
-
+date_default_timezone_set($cfg['TZ']);
 $GLOBALS['cfg'] = $cfg;
 //$app = require('lib/f3/base.php');
 
