@@ -158,13 +158,7 @@ class app {
 			//	test_array($appstuff);
 			$return['access'] = ($appstuff[$app] == '1') ? true : false;
 
-			if ($user['su'] == '1') {
-				array_walk_recursive($permissions, function (& $item, $key) {
-						$item = "1";
-					}
-				);
-				$permissions['view']['only_my_records'] = '0';
-			}
+
 
 
 			$permissions = self::permissions_read($appstuff[$app . '_permissions']);
@@ -186,7 +180,13 @@ class app {
 		}
 
 
-
+		if ($user['su'] == '1') {
+			array_walk_recursive($permissions, function (& $item, $key) {
+					$item = "1";
+				}
+			);
+			$permissions['view']['only_my_records'] = '0';
+		}
 
 
 
@@ -240,6 +240,7 @@ class app {
 		}
 
 
+	//	test_array($permissions);
 		$return['permissions'] = $permissions;
 		//test_array($return);
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
