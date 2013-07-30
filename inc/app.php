@@ -35,8 +35,34 @@ class app {
 		return $this->f3->reroute($uri);
 	}
 
-	function chain($funcs, $args = NULL) {
+	function chain_($funcs, $args = NULL) {
 		return $this->f3->chain($funcs,$args);
+	}
+
+	function chain($funcs, $args = NULL) {
+		$call = array();
+		$out = array();
+
+		foreach (is_array($funcs) ? $funcs : $this->f3->split($funcs) as $func) {
+			$o = $this->f3->call($func, $args);
+			$out[] = $o;
+			if ($this->f3->get("stopchain")) {
+				break 1;
+			}
+		}
+
+
+
+
+
+		//test_array($out);
+		return $out;
+	}
+
+
+
+	function relay($funcs, $args = NULL) {
+		return $this->f3->relay($funcs,$args);
 	}
 
 	function run() {

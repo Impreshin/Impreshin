@@ -268,9 +268,21 @@ var jScrollPaneOptionsMP = {
 	maintainPosition: true
 };
 
-$(document).ajaxComplete(function (event, request, settings) {
+
+
+$(document).ajaxComplete(function(event, request, settings) {
+
 	var u = settings.url;
 	var d = $.parseJSON(request.responseText);
+
+
+
+	console.log(d);
+	if (d['reroute']){
+		window.location = d['redirect'];
+		return false;
+	}
+
 
 	var page_size = request.getResponseHeader('Content-Length');
 	page_size = (page_size) ? page_size : "";

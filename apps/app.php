@@ -35,8 +35,27 @@ class app {
 	}
 
 	function access() {
+		$app = $this->current_app();
+		$reroute = "";
+		if (!$this->user['ID'] && $reroute=="") $reroute = "/login";
+		if (!$this->user['access'] && $reroute=="") $reroute = "/app/$app/access";
 
-		if (!$this->user['ID']) $this->f3->reroute("/login");
+
+
+		if ($reroute){
+			$this->f3->set("stopchain",true);
+			if ($this->f3->get("AJAX")) {
+
+				test_array(array("reroute"=>$reroute));
+			} else {
+				$this->f3->reroute($reroute);
+			}
+
+
+		} else {
+		}
+
+
 	}
 
 	function last_page() {
@@ -71,6 +90,14 @@ class app {
 			$data = $data[0];
 			$user_settings = @unserialize($data['settings']);
 			$settings = array_replace_recursive((array)$settings, (array)($user_settings) ? $user_settings : array());
+		} else {
+			$table = $this->f3->get("DB")->exec("EXPLAIN $table;");
+			$result = array();
+			foreach ($table as $key => $value) {
+				$result[$value["Field"]] = "";
+			}
+
+			$data =  $result;
 		}
 
 
@@ -151,7 +178,9 @@ class app {
 
 		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$lastpID') ORDER BY ID DESC LIMIT 0,1");
 
-
+		$return['access'] = false;
+		$applications_list = $this->f3->get("applications");
+		$applications = array();
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
 
@@ -161,7 +190,9 @@ class app {
 
 
 
+
 			$permissions = self::permissions_read($appstuff[$app . '_permissions']);
+
 
 
 
@@ -172,7 +203,14 @@ class app {
 				if ( $a[0] == $app && $value != $app) {
 					$e[$value] = $appstuff[$value];
 				}
+
 			}
+			foreach ($applications_list as $a=>$v) {
+				if (isset($appstuff[$a]) && $appstuff[$a]=='1'){
+					$applications[$a] = $applications_list[$a];
+				}
+			}
+
 			unset($e[$app . "_permissions"]);
 
 
@@ -180,14 +218,22 @@ class app {
 		}
 
 
+
+
+
 		if ($user['su'] == '1') {
+			//$applications = $applications_list;
 			array_walk_recursive($permissions, function (& $item, $key) {
 					$item = "1";
 				}
 			);
-			$permissions['view']['only_my_records'] = '0';
+
+			$return['access'] = true;
 		}
 
+
+		$return['applications'] = $applications;
+		//test_array($return);
 
 
 
@@ -220,7 +266,9 @@ class app {
 
 		if ($app == "ab") {
 
-
+			if ($user['su'] == '1') {
+				$permissions['view']['only_my_records'] = '0';
+			}
 
 
 			$permissions['records']['_nav'] = '0';

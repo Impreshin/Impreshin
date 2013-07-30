@@ -27,6 +27,7 @@ class provisional extends data {
 
 
 
+
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 

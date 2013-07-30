@@ -92,6 +92,8 @@ $user = $userO->get($uID);
 
 
 $app->set('user', $user);
+$app->set('applications', array());
+
 
 
 
@@ -178,10 +180,11 @@ $app->route('GET /ab', function($app){
 
 
 $router = array();
+$apps = $app->get("applications");
 foreach (glob("./apps/*/routes.php") as $route) {
 
 	include_once($route);
-
+	$app->set("applications", $apps);
 }
 //test_array($routes);
 
@@ -191,7 +194,7 @@ foreach ($router as $key=> $routes) {
 		$app->route($route['method'] . ' ' . $route['path'], function () use ($app, $route, $key) {
 				$str = array();
 				$str[] = 'apps\\'.$key.'\\app->app';
-				if ($route['a']) $str[] = 'apps\app->access';
+				if ($route['a']) $str[] = 'apps\\' . $key . '\\app->access';
 				if ($route['l']) $str[] = 'apps\\'.$key.'\\app->last_page';
 				if ($route['controller']) $str[] = $route['controller'];
 				$str = implode("; ", $str);
@@ -201,31 +204,56 @@ foreach ($router as $key=> $routes) {
 		);
 
 	}
-	$app->route("GET|POST /app/$key/data/@function", function ($app, $params) use ($key) {
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\data\\data->" . $params['function']);
+	$app->route("GET|POST /app/$key/data/@function", function ($f3,$params) use ($app,$key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\data\\data->" . $params['function']);
 		}
 	);
-	$app->route("GET|POST /app/$key/data/@class/@function", function ($app, $params) use ($key) {
+	$app->route("GET|POST /app/$key/data/@class/@function", function ($f3, $params) use ($app, $key) {
 
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\data\\" . $params['class'] . "->" . $params['function']);
-		}
-	);
-
-	$app->route("GET|POST /app/$key/data/@folder/@class/@function", function ($app, $params) use ($key) {
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\data\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
 
-	$app->route("GET|POST /app/$key/save/@function", function ($app, $params) use ($key) {
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\save\\save->" . $params['function']);
+	$app->route("GET|POST /app/$key/data/@folder/@class/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
-	$app->route("GET|POST /app/$key/save/@class/@function", function ($app, $params) use ($key) {
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\save\\" . $params['class'] . "->" . $params['function']);
+
+	$app->route("GET|POST /app/$key/save/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\save\\save->" . $params['function']);
 		}
 	);
-	$app->route("GET|POST /app/$key/save/@folder/@class/@function", function ($app, $params) use ($key) {
-			$app->chain("apps\\$key\\app->app; apps\\$key\\controllers\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+	$app->route("GET|POST /app/$key/save/@class/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\save\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
+	$app->route("GET|POST /app/$key/save/@folder/@class/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
+	$app->route("GET /app/$key/access", function ($f3, $params) use ($app, $key) {
+			$ap = "\\apps\\$key\\app";
+			$a = new $ap();
+			$user = $a->user();
+
+			//test_array($user['applications']);
+			$applications = $app->get("applications");
+
+			$tmpl = new \template("template.tmpl", "ui/front/", true);
+			$tmpl->page = array(
+				"section"    => "noaccess",
+				"sub_section"=> "",
+				"template"   => "page_no_access",
+				"meta"       => array(
+					"title"=> "No Access to the app",
+				),
+
+			);
+			$tmpl->applications = $applications;
+			$tmpl->application = $applications[$key];
+			$tmpl->user = $user;
+			$tmpl->output();
+
 		}
 	);
 
@@ -234,14 +262,14 @@ foreach ($router as $key=> $routes) {
 
 $app->route('GET|POST /app/@app/upload/', 'general->upload');
 
-$app->route("GET|POST /app/@app/download/@folder/@ID/*", function ($app, $params) use ($folder) {
+$app->route("GET|POST /app/@app/download/@folder/@ID/*", function ($f3, $params) use ($app, $key) {
 		$a = $params['app'];
 		$app->call("controllers\\$a\\controller_general_download->" . $params['folder']);
 	}
 );
 
 
-$app->route("GET|POST /app/@app/thumb/@folder/@ID/*", function ($app, $params) use ($folder) {
+$app->route("GET|POST /app/@app/thumb/@folder/@ID/*", function ($f3, $params) use ($app, $key) {
 		$a = $params['app'];
 
 		$app->call("controllers\\$a\\controller_general_thumb->" . $params['folder']);
@@ -254,7 +282,7 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID/*", function ($app, $params) u
 		*/
 	}
 );
-$app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($app, $params) use ($folder) {
+$app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use ($app, $key) {
 		$a = $params['app'];
 		$app->call("controllers\\$a\\controller_general_thumb->" . $params['folder']);
 		/*

@@ -11,7 +11,7 @@ class data {
 		$this->f3 = \base::instance();
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		if (!$userID) exit(json_encode(array("error" => $this->f3->get("system")->error("U01"))));
+
 		$this->f3->set("json",true);
 		$GLOBALS["output"]['notifications'] = \apps\ab\models\notifications::show();
 	}

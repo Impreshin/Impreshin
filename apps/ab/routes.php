@@ -338,6 +338,14 @@ $routes[] =	array(
 
 $router['ab'] = $routes;
 
+$apps["ab"] = array(
+		"name" => "AdBooker",
+		"description"=>"Advert management tool"
+);
+
+
+
+
 $app->route("GET|POST /app/ab/download/@folder/@ID/*", function ($app, $params)  {
 		$app->chain("apps\\ab\\app->app; apps\\ab\\controllers\\controller_general_download->" . $params['folder']);
 	}

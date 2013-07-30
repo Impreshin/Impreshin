@@ -6326,6 +6326,7 @@ form #form-bottom .form-actions {
 }
 #pageheader .navbar-inner {
   border-radius: 0;
+  max-height: 40px;
 }
 #pageheader .menu-icon {
   background-image: url(/ui/_images/glyphicons-halflings-l-grey.png) !important;
