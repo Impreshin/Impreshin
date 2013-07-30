@@ -95,9 +95,9 @@ function getData() {
 	$("#whole-area .loadingmask").show();
 	var tolerance = $("#tolerance").val();
 
-	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/app/ab/data/reports/marketer_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/reports/marketer_figures/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance}, function (data) {
+
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
@@ -203,7 +203,7 @@ function getData() {
 		var $scrollpane = $("#whole-area .scroll-pane");
 		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
-	}));
+	}, "data");
 
 }
 function drawChart(element, data) {

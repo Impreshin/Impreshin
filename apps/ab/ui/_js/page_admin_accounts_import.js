@@ -90,7 +90,6 @@ function getDetails(data) {
 
 	if (data) {
 		//console.log(data);
-		data = data['data'];
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 
@@ -102,10 +101,9 @@ function getDetails(data) {
 	}
 }
 function getData() {
-	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/app/ab/data/admin_accounts_import/_details", "", function (data) {
+	$.getData("/app/ab/data/admin_accounts_import/_details", "", function (data) {
 		getDetails(data)
-	}));
+	},"details");
 }
 function save_button(){
 

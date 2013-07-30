@@ -756,9 +756,7 @@ function material_person() {
 function getDetails() {
 	var ID = $.bbq.getState("ID");
 	$("#ab-details-modal").addClass("loading");
-	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/app/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
-		data = data['data'];
+	$.getData("/app/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
 		$("#record-list .record.active").removeClass("active");
 		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
 		$('#ab-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
@@ -778,7 +776,7 @@ function getDetails() {
 		}
 
 		$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-	}));
+	},"details");
 
 }
 function set_upload() {

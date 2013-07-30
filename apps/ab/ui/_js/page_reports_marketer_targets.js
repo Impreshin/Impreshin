@@ -194,9 +194,9 @@ function getData() {
 	filter = (filter) ? filter : "";
 
 
-	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/app/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows, "filter":filter}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/reports/marketer_targets/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "page":page, "rows":rows, "filter":filter}, function (data) {
+
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
 
@@ -221,7 +221,7 @@ function getData() {
 		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
-	}));
+	},"data");
 
 }
 
@@ -233,9 +233,9 @@ function getTarget() {
 	$("#record-list tr.active").removeClass("active");
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 
-	for (var i = 0; i < detailsRequest.length; i++) detailsRequest[i].abort();
-	detailsRequest.push($.getJSON("/app/ab/data/reports/marketer_targets/_details", {"ID":ID, "mID":mID}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/reports/marketer_targets/_details", {"ID":ID, "mID":mID}, function (data) {
+
 		$("#targets-modal").jqotesub($("#template-report-figures-target-form"), data);
 
 		$("#targets-modal #date_from").datepicker({
@@ -253,5 +253,5 @@ function getTarget() {
 
 		$('#targets-modal').modal('show')
 
-	}));
+	}, "details");
 }

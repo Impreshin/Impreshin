@@ -3,6 +3,8 @@ var listRequest = [];
 var logsRequest = [];
 var activityRequest = [];
 var transSpeed = '300';
+
+
 $(function () {
 
 	$('body').tooltip({
@@ -269,30 +271,6 @@ var jScrollPaneOptionsMP = {
 };
 
 
-
-$(document).ajaxComplete(function(event, request, settings) {
-
-	var u = settings.url;
-	var d = $.parseJSON(request.responseText);
-
-
-
-	console.log(d);
-	if (d['reroute']){
-		window.location = d['redirect'];
-		return false;
-	}
-
-
-	var page_size = request.getResponseHeader('Content-Length');
-	page_size = (page_size) ? page_size : "";
-
-	if (u == "/app/keepalive") {
-	} else {
-		updatetimerlist(d, page_size);
-	}
-
-});
 function updatetimerlist(d, page_size) {
 	//console.log(d);
 
@@ -325,7 +303,7 @@ function updatetimerlist(d, page_size) {
 
 	$("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*") + thm);
 
-	// console.log($("#systemTimers").prepend(th + $("#template-timers-tr").jqote(data, "*")));
+
 }
 
 }

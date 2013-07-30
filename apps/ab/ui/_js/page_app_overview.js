@@ -47,7 +47,7 @@ $(document).ready(function () {
 function getPageDetails(){
 	var ID = $.bbq.getState("page");
 	$.getJSON("/app/ab/data/layout/_details_page?r=" + Math.random(), {"val": ID}, function (data) {
-		data = data['data'];
+
 		$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
 	});
 }
@@ -67,9 +67,9 @@ function load_pages(settings) {
 	var placingID = $("#placingID").val();
 
 	$("#whole-area .loadingmask").show();
-	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/app/ab/data/overview/_pages", {"highlight":highlight}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/overview/_pages", {"highlight":highlight}, function (data) {
+
 
 		var $recordsList = $("#pages-area");
 		if (data['spreads'][0]) {
@@ -83,5 +83,5 @@ function load_pages(settings) {
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 		dummy_resize(settings);
-	}));
+	}, "data");
 }

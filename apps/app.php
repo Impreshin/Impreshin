@@ -288,7 +288,7 @@ class app {
 		}
 
 
-	//	test_array($permissions);
+		//test_array($permissions);
 		$return['permissions'] = $permissions;
 		//test_array($return);
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());

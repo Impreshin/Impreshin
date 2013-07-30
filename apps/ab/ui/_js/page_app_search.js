@@ -293,9 +293,9 @@ function getList(settings) {
 	$("#whole-area .loadingmask").show();
 
 	var $search_stats = $("#search-stats").html("Searching");
-	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/app/ab/data/search/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search, "dates":dates, "page":page}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/search/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search, "dates":dates, "page":page}, function (data) {
+
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -360,6 +360,6 @@ function getList(settings) {
 		}
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
-	}));
+	}, "data");
 
 }

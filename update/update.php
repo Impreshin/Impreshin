@@ -180,7 +180,7 @@ class update {
 			$gzip = "";
 		}
 
-		passthru("mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname $gzip > $filename");
+		passthru("mysqldump --opt --single-transaction --host=$dbhost --user=$dbuser --password=$dbpwd $dbname $gzip > $filename");
 
 
 		return "$filename";// passthru("tail -1 $filename");

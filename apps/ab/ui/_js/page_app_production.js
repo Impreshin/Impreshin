@@ -244,9 +244,9 @@ function getList(settings) {
 	var orderingactive = (order) ? true : false;
 	$("#maintoolbar-date").html('Loading...');
 	$("#whole-area .loadingmask").show();
-	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.getJSON("/app/ab/data/production/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/production/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search}, function (data) {
+
 
 		var $recordsList = $("#record-list");
 		if (data['list'][0]) {
@@ -298,6 +298,6 @@ function getList(settings) {
 		}
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
-	}));
+	}, "data");
 
 }

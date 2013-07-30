@@ -100,8 +100,7 @@ class general {
 				"/ui/_js/plugins/jquery.cookie.js",
 				"/ui/_js/plugins/jquery.autologout.js",
 				"/ui/_js/plugins/select2.js",
-				"/ui/_js/plugins/jquery.miniColors.js",
-				"/ui/_js/plugins/FeedEk.js",
+				"/ui/_js/plugins/jquery.getData.js",
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 

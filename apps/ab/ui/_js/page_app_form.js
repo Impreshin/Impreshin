@@ -166,7 +166,7 @@ function account_search() {
 	if (search){
 
 		$.getJSON("/app/ab/data/form/_accounts", {"search": search}, function (data) {
-			data = data['data'];
+
 
 			$count.html(data['count'] + " Record(s) found");
 			$body.jqotesub($("#template-modal-account-search-tr"), data['records']);
@@ -192,9 +192,8 @@ function getData() {
 	$("#left-area .loadingmask").show();
 
 	$("#whole-area .loadingmask").show();
-	for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
-	activityRequest.push($.getJSON("/app/ab/data/form/_details", {"ID": ID}, function (data) {
-		data = data['data'];
+	$.getData("/app/ab/data/form/_details", {"ID": ID}, function (data) {
+
 		var title = "";
 		if (data['details']['ID']) {
 			if (data['details']['deleted'] == '1') {
@@ -232,7 +231,7 @@ function getData() {
 		account_lookup_history_suggestions();
 		//resizeform();
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
-	}));
+	}, "data");
 
 }
 function dropdowns_fn(data) {
@@ -600,9 +599,9 @@ function account_lookup_history_suggestions() {
 	var type = $("#booking-type button.active").attr("data-type");
 	var accNum = $("#accountID").val();
 	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
-	for (var i = 0; i < logsRequest.length; i++) logsRequest[i].abort();
-	logsRequest.push($.getJSON("/app/ab/data/form/account_lookup_history_suggestions", {"accNum": accNum, "limit": "4", "type": type}, function (data) {
-		data = data['data'];
+
+	$.getData("/app/ab/data/form/account_lookup_history_suggestions", {"accNum": accNum, "limit": "4", "type": type}, function (data) {
+
 		if (accNum) {
 			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
 		} else {
@@ -610,6 +609,6 @@ function account_lookup_history_suggestions() {
 		}
 		resizeform();
 
-	}));
+	}, "suggestions");
 
 }

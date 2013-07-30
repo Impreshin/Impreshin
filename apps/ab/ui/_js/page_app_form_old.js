@@ -291,8 +291,8 @@ function account_lookup_history_suggestions() {
 	var type = $("#booking-type button.active").attr("data-type");
 	var accNum = $("#accountID").val();
 	$suggestions = $("#suggestion-area").stop(true, true).fadeOut();
-	accountLookup.push($.getJSON("/app/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum, "limit":"4", "type":type}, function (data) {
-		data = data['data'];
+	$.getData("/app/ab/data/form/account_lookup_history_suggestions", {"accNum":accNum, "limit":"4", "type":type}, function (data) {
+
 		if (accNum) {
 			$suggestions.jqotesub($("#template-suggestions"), data).stop(true, true).fadeIn();
 		} else {
@@ -300,7 +300,7 @@ function account_lookup_history_suggestions() {
 		}
 		resizeform();
 
-	}));
+	}, "account");
 
 }
 function display_notes() {
