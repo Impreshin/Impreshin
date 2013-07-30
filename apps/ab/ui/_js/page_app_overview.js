@@ -46,7 +46,7 @@ $(document).ready(function () {
 });
 function getPageDetails(){
 	var ID = $.bbq.getState("page");
-	$.getJSON("/app/ab/data/layout/_details_page?r=" + Math.random(), {"val": ID}, function (data) {
+	$.getData("/app/ab/data/layout/_details_page?r=" + Math.random(), {"val": ID}, function (data) {
 
 		$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
 	});
