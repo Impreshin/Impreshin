@@ -538,7 +538,7 @@ function getDetails_right() {
 
 		$.getJSON("/app/ab/data/layout/_details_" + section + "?r=" + Math.random(), {"val":ID}, function (data) {
 
-
+			data = data['data'];
 			switch (section) {
 				case "page":
 					$rightsideOver.jqotesub($("#template-right-page"), data);
