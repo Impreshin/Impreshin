@@ -21,7 +21,8 @@ class controller_history {
 			"template"   => "page_history",
 			"meta"       => array(
 				"title"=> "History",
-			)
+			),
+			"js" => "/ui/_js/plugins/FeedEk.js"
 		);
 		$tmpl->output();
 
