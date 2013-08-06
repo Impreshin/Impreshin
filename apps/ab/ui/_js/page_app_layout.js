@@ -514,14 +514,14 @@ function isScrolledIntoView(elem) {
 }
 function getDetails_small(ID) {
 	$('#record-details-bottom').stop(true, true).fadeTo(transSpeed, 0.5);
-	$.getJSON("/app/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+	$.getData("/app/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
 
 		$(".record.active").removeClass("active");
 		$(".record[data-ID='" + ID + "']").addClass("active");
 		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data).stop(true, true).fadeTo(transSpeed, 1);
 
 		records_list_resize();
-	});
+	},"details");
 }
 function getDetails_right() {
 	var section = $.bbq.getState("details");
