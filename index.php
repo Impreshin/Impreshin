@@ -236,7 +236,7 @@ foreach ($router as $key=> $routes) {
 			$a = new $ap();
 			$user = $a->user();
 
-			//test_array($user['applications']);
+			test_array($user);
 			$applications = $app->get("applications");
 
 			$tmpl = new \template("template.tmpl", "ui/front/", true);

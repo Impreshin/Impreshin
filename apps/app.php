@@ -38,7 +38,7 @@ class app {
 		$app = $this->current_app();
 		$reroute = "";
 		if (!$this->user['ID'] && $reroute=="") $reroute = "/login";
-		if (!$this->user['access'] && $reroute=="") $reroute = "/app/$app/access";
+		//if (!$this->user['access'] && $reroute=="") $reroute = "/app/$app/access";
 
 
 
@@ -91,14 +91,15 @@ class app {
 			$user_settings = @unserialize($data['settings']);
 			$settings = array_replace_recursive((array)$settings, (array)($user_settings) ? $user_settings : array());
 		} else {
-			$table = $this->f3->get("DB")->exec("EXPLAIN $table;");
+			$tableS = $this->f3->get("DB")->exec("EXPLAIN $table;");
 			$result = array();
-			foreach ($table as $key => $value) {
+			foreach ($tableS as $key => $value) {
 				$result[$value["Field"]] = "";
 			}
 
 			$data =  $result;
 		}
+
 
 
 
@@ -110,64 +111,111 @@ class app {
 		$return = $user;
 		$return["settings"] = $data['settings'];
 		$return["last_activity"] = $data['last_activity'];
-		$return["access"] = false;
+		//$return["access"] = false;
 		$return["permissions"] = array();
 		$return["extra"] = array();
 
 
 		$lastpID = $data['pID'];
+		$lastcID = $data['cID'];
+
+		$publicationObject = new models\publications();
 		if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $lastpID) {
 			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
-			$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."' WHERE uID = '$uID'");
+			$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
 			$lastpID = $_GET['apID'];
+			$lastcIDV = $publicationObject->get($lastpID);
+			$lastcID = $lastcIDV['cID'];
+		}
+
+		if ((isset($_GET['acID']) && $_GET['acID']) && $_GET['acID'] != $lastcID) {
+			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
+			$this->f3->get("DB")->exec("UPDATE $table SET cID = '" . $_GET['acID'] . "' WHERE uID = '$uID'");
+			$lastcID = $_GET['acID'];
 		}
 
 
 
 
-
+		//test_array(array($lastcID, $lastpID));
 
 
 		/*** get a list of publications and create an array to find out of the user can access the publication or not***/
-
+		$cID = $pID = "";
 		if ($user['su'] == '1') {
 			$publications = models\publications::getAll("", "company ASC, publication ASC");
+			$companies = \models\company::getAll("", "company ASC");
 		} else {
-			$publications = models\publications::getAll_user("global_users_company.uID='" . $user['ID'] . "' and [access] = '1'", "company ASC, publication ASC");
-		}
+			$companies = \models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and [access]", "company ASC");
 
-		$pID = (count($publications)) ? $publications[0]['ID'] : "";
+			$compstr = array();
+			foreach ($companies AS $item) {
+				$compstr[] = $item["ID"];
+			}
+
+			
+			if (in_array($lastcID, $compstr)) {
+				$cID = $lastcID;
+			} else {
+				$lastcID = "";
+				$cID = (count($companies)) ? $companies[0]['ID'] : "";
+			}
+
+
+
+
+
+			$publications = models\publications::getAll_user("global_users_company.uID='" . $user['ID'] . "' and global_users_company.cID in (" . implode(",",$compstr) . ") and [access] = '1'", "company ASC, publication ASC");
+
+
+		}
+		
+
+
+
+
+
+
+		//$cID = $cID ? $cID: (count($companies)) ? $companies[0]['ID'] : "";
 
 
 
 		$pubstr = array();
 		$publication = "";
+		$pubArray = array();
 		foreach ($publications AS $pub) {
-			$pubstr[] = $pub["ID"];
+			if ($pub['cID']==$cID){
+				$pubstr[] = $pub["ID"];
+			}
+
+			$pubArray[$pub["ID"]] = $pub;
 		}
+		$pID = (count($pubstr)) ? $pubstr[0] : "";
+
 
 		if (in_array($lastpID, $pubstr)) {
 			$pID = $lastpID;
-
 		}
-		//test_array($pID);
 
-		$publication = new models\publications();
-		$publication = $publication->get($pID);
-		$cID = $publication['cID'];
-		if (!$publication['ID']) {
-			$companies_user = \models\company::getAll_user($user['ID']);
-			if (count($companies_user)) $cID = $companies_user[0]['ID'];
-			//test_array($companies_user);
-		}
+
+
+
+		$publication = $publicationObject->get($pID);
+
+
+
 		$companyObject = new models\company();
 		$company = $companyObject->get($cID);
 
+		//test_array(array("company"=>$company,"publication"=>$publication));
 
 		$return['pID'] = $pID;
+		$return['companies'] = $companies;
+
+		$return['company'] = $company;
 		$return['publications'] = $publications;
 		$return['publication'] = $publication;
-		$return['company'] = $company;
+
 
 
 		$DefaultPermissionsClass = $this->namespace . "\\permissions";
@@ -197,6 +245,7 @@ class app {
 
 
 
+
 			$e = array();
 			foreach (array_keys($appstuff) as $value) {
 				$a  = explode("_", $value);
@@ -207,6 +256,20 @@ class app {
 			}
 			foreach ($applications_list as $a=>$v) {
 				if (isset($appstuff[$a]) && $appstuff[$a]=='1'){
+
+
+					$table = $a . "_users_settings";
+					$data = $this->f3->get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
+
+					if (count($data)) {
+						$data = $data[0];
+						$applications_list[$a]['last_page'] = $data['last_page'];
+
+					} else {
+						$applications_list[$a]['last_page'] = "/app/" . $a;
+
+					}
+
 					$applications[$a] = $applications_list[$a];
 				}
 			}
@@ -215,6 +278,8 @@ class app {
 
 
 			$return['extra'] = $e;
+
+			$permissions['allow_setup'] = $appstuff['allow_setup'];
 		}
 
 
@@ -229,6 +294,7 @@ class app {
 			);
 
 			$return['access'] = true;
+			$permissions['allow_setup'] = '1';
 		}
 
 
@@ -290,7 +356,11 @@ class app {
 
 		//test_array($permissions);
 		$return['permissions'] = $permissions;
+
+
 		//test_array($return);
+		$this->user = $return;
+
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}

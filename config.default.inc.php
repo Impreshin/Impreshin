@@ -5,7 +5,7 @@ $cfg['TZ'] = "Africa/Johannesburg";
 //$cfg['currency']['separator'] = " ";
 
 
-$cfg['news']['path'] = "http://admin.impreshin.info/news/json";
+$cfg['news']['path'] = "http://admin.impreshin.com/news/json";
 
 
 $cfg['DB']['host'] = "127.0.0.1";

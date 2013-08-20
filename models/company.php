@@ -62,7 +62,7 @@ class company {
 	public static function getAll_user($where = "", $orderby = "", $limit = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
-
+		$app = $f3->get("app");
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -78,7 +78,11 @@ class company {
 			$limit = " LIMIT " . $limit;
 
 		}
+		$where = str_replace("[access]", "(COALESCE(global_users_company." . $app . ",0)=1 AND COALESCE(global_companies." . $app . ",0)=1)", $where);
 
+
+		
+		//test_array($where);
 		$sql = "SELECT DISTINCT global_companies.*, global_companies.company, global_users_company.allow_setup
 				FROM global_companies INNER JOIN global_users_company ON global_companies.ID = global_users_company.cID
 				$where

@@ -72,7 +72,7 @@ class publications {
 		}
 
 
-		$where = str_replace("[access]", "COALESCE(global_users_company.ab,0)", $where);
+		$where = str_replace("[access]", "COALESCE(global_users_company.". $app.",0)", $where);
 
 		$app_users_pub = $app."_users_pub";
 

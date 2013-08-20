@@ -77,6 +77,10 @@ $sql = array(
 		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `bID` );",
 		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `userID` );",
 		"ALTER TABLE `ab_bookings_logs` ADD INDEX ( `datein` );"
+	),
+"15"=>array(
+		"ALTER TABLE `ab_users_settings` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `pID` , ADD INDEX ( `cID` ) ;",
+		"ALTER TABLE `nf_users_settings` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `pID` , ADD INDEX ( `cID` ) ;"
 	)
 
 

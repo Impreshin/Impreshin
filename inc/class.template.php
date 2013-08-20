@@ -50,6 +50,11 @@ class template {
 		$this->vars['_v'] = $v;
 
 
+		$app = $this->f3->get("app");
+		$app_list = $this->f3->get("applications");
+
+		$app = isset($app_list[$app])? $app_list[$app]:"";
+
 
 
 		$user = $this->f3->get('user');
@@ -63,14 +68,16 @@ class template {
 		$this->vars['_nav_top'] = $this->vars['folder'] . "_nav_top.tmpl";
 
 
+		//test_array($user);
 
 		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
 		$this->vars['_version'] = $this->f3->get('version');
 		$this->vars['_cfg'] = $cfg;
 		$this->vars['_docs'] = $this->f3->get('docs');
-		$this->vars['_last_pages'] = $this->f3->get('last_pages');
 		$this->vars['isLocal'] = isLocal();
+		$this->vars['_application'] = $app;
+
 
 
 		$this->vars['_httpdomain'] = siteURL();
@@ -216,7 +223,8 @@ class template {
 		} else {
 			$folder = array(
 				"ui/",
-				$this->vars['folder']
+				$this->vars['folder'],
+				"apps/"
 			);
 		}
 
