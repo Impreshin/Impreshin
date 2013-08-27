@@ -3,6 +3,8 @@
  */
 var pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 var api = pane.data("jsp");
+
+$("#stageID").select2();
 $(document).ready(function () {
 
 	scrolling(api);

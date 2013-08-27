@@ -13,11 +13,11 @@
                 <li class="divider-vertical"></li>
                 <li>
                     <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
-                        <button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
+                        <button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
                             <i class="icon-asterisk"></i></button>
-                        <button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+                        <button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
                             <i class="icon-ok"></i></button>
-                        <button data-filter="0" class="btn  btn-mini {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
+                        <button data-filter="0" class="btn  btn-mini btn-icon {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
                             <i class="icon-remove"></i></button>
                     </div>
                 </li>
@@ -92,7 +92,7 @@
 
 
             <div id="search-box">
-                <button type="button" class="btn btn-mini" style="width: 30px;" id="search-box-toggle">
+                <button type="button" class="btn btn-mini  btn-icon" style="width: 30px;" id="search-box-toggle">
                     <i class="icon-search"></i></button>
                 <form class="form-search " style="margin-right: 40px;">
                     <div class="input-append">

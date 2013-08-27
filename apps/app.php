@@ -224,10 +224,12 @@ class app {
 
 		/*** find company specific settings for the user like permissions and access to the various apps **/
 
-		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = (SELECT cID FROM global_publications WHERE global_publications.ID = '$lastpID') ORDER BY ID DESC LIMIT 0,1");
+		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' ORDER BY if((SELECT global_publications.cID FROM global_publications WHERE global_publications.ID = '$lastpID')=global_users_company.cID,1,0) DESC, ID DESC LIMIT 0,1");
 
 		$return['access'] = false;
 		$applications_list = $this->f3->get("applications");
+
+
 		$applications = array();
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
@@ -240,6 +242,7 @@ class app {
 
 
 			$permissions = self::permissions_read($appstuff[$app . '_permissions']);
+
 
 
 
@@ -358,7 +361,7 @@ class app {
 		$return['permissions'] = $permissions;
 
 
-		//test_array($return);
+	//	test_array($return);
 		$this->user = $return;
 
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());

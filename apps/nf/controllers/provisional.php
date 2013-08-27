@@ -26,8 +26,7 @@ class provisional extends \apps\nf\controllers\_ {
 		$currentDate = $user['publication']['current_date'];
 		//test_array($user);
 		$app_settings = \apps\nf\settings::_available();
-
-
+		$stages = models\stages::getAll("cID='". $user['company']['ID']."'","orderby ASC");
 
 
 
@@ -78,6 +77,7 @@ class provisional extends \apps\nf\controllers\_ {
 
 
 		$tmpl->settings = $settings;
+		$tmpl->stages = $stages;
 
 		$tmpl->settings_columns = array(
 			"selected"=> $selected,

@@ -290,7 +290,7 @@ class report_discounts {
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
 
 
-		$publications = \models\publications::getAll("ID in ($publications_where)");
+		$publications = \models\publications::getAll("global_publications.ID in ($publications_where)");
 
 
 		$data = self::line_build_data($d, $date1, $date2, $publications);

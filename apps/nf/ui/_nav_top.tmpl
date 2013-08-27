@@ -26,27 +26,57 @@
 	<li class="divider-vertical"></li>
 
 	<li class="{% if page['section'] == "bookings" %} active {% endif %}">
-		<a href="/app/nf/">Bookings</a>
+		<a href="/app/nf/">List</a>
+
+	</li>
+	<li class="{% if page['section'] == "planning" %} active {% endif %}">
+		<a href="/app/nf/">Newsbook</a>
+
+	</li>
+	<li class="{% if page['section'] == "planning" %} active {% endif %}">
+		<a href="/app/nf/">Layout</a>
+
+	</li>
+	<li class="{% if page['section'] == "planning" %} active {% endif %}">
+		<a href="/app/nf/">Production</a>
+
+	</li>
+<li class="{% if page['section'] == "planning" %} active {% endif %}">
+		<a href="/app/nf/">Overview</a>
 
 	</li>
 
-	{% if _user['permissions']['records']['_nav'] %}
-		<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
-			<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
-			<ul class="dropdown-menu">
-				{% if _user['permissions']['records']['deleted']['page'] %}
-					<li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
-						<a href="/app/ab/records/deleted/"><i class="icon-trash menu-icon"></i>Deleted Records</a>
-					</li>
-				{% endif %} {% if _user['permissions']['records']['search']['page'] %}
-					<li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
-						<a href="/app/ab/records/search/"><i class="icon-search menu-icon"></i>Search</a>
-					</li>
+	<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
+		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
+		<ul class="dropdown-menu">
+			<li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
+				<a href="/app/ab/records/deleted/"><i class="icon-trash menu-icon"></i>Deleted Records</a>
+			</li>
+			<li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
+				<a href="/app/ab/records/search/"><i class="icon-search menu-icon"></i>Search</a>
+			</li>
 
-				{% endif %}
-			</ul>
-		</li>
-	{% endif %}
+		</ul>
+	</li>
+
+	<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
+		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
+		<ul class="dropdown-menu">
+
+			<li class="nav-header">Authors</li>
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
+				<a href="/app/nf/reports/authors/summary">Summary</a>
+			</li>
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
+				<a href="/app/nf/reports/authors/progress">Progress</a>
+			</li>
+			<li class="nav-header">Other</li>
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
+				<a href="/app/nf/reports/authors/progress">Publications</a>
+			</li>
+		</ul>
+	</li>
+
 
 	<li class="divider-vertical" style="margin-right: 0;"></li>
 
@@ -145,7 +175,7 @@
 						<a href="/app/ab/admin/placing">Placing</a>
 					</li>
 				{% endif %}
-<!--
+				<!--
 				{% if _user['permissions']['administration']['application']['placing']['colours']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "placing_colours" %} active {% endif %}">
 						<a href="/app/ab/admin/placing/colours" {% if _user['permissions']['administration']['application']['placing']['page'] %}style="padding-left: 30px;">{% else %}>Placing {% endif %}Colours</a>
@@ -185,7 +215,7 @@
 					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 				{% endif %}
 				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
-				<li class="nav-header">Other</li>
+					<li class="nav-header">Other</li>
 				{% endif %}
 
 				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}

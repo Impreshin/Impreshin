@@ -21,7 +21,7 @@ class controller_reports_category_discounts extends \apps\ab\controllers\_ {
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
-		$s = models\settings::settings();
+		$s = \apps\ab\settings::_available();;
 		$s = $s['columns']['percent_diff'];
 		$settings['col'][] = $s;
 		$settings['count'] = count($settings['col']);

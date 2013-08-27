@@ -3,7 +3,7 @@
 namespace DB;
 
 /*
-	Copyright (c) 2009-2012 F3::Factory/Bong Cosca, All rights reserved.
+	Copyright (c) 2009-2013 F3::Factory/Bong Cosca, All rights reserved.
 
 	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
 
@@ -31,36 +31,39 @@ class SQL extends \PDO {
 		$log;
 
 	/**
-		Begin SQL transaction
-		@return NULL
+	*	Begin SQL transaction
+	*	@return bool
 	**/
 	function begin() {
-		parent::begintransaction();
+		$out=parent::begintransaction();
 		$this->trans=TRUE;
+		return $out;
 	}
 
 	/**
-		Rollback SQL transaction
-		@return NULL
+	*	Rollback SQL transaction
+	*	@return bool
 	**/
 	function rollback() {
-		parent::rollback();
+		$out=parent::rollback();
 		$this->trans=FALSE;
+		return $out;
 	}
 
 	/**
-		Commit SQL transaction
-		@return NULL
+	*	Commit SQL transaction
+	*	@return bool
 	**/
 	function commit() {
-		parent::commit();
+		$out=parent::commit();
 		$this->trans=FALSE;
+		return $out;
 	}
 
 	/**
-		Map data type of argument to a PDO constant
-		@return int
-		@param $val scalar
+	*	Map data type of argument to a PDO constant
+	*	@return int
+	*	@param $val scalar
 	**/
 	function type($val) {
 		switch (gettype($val)) {
@@ -77,13 +80,14 @@ class SQL extends \PDO {
 
 
 	/**
-		Execute SQL statement(s)
-		@return array|int|FALSE
-		@param $cmds string|array
-		@param $args string|array
-		@param $ttl int
+	*	Execute SQL statement(s)
+	*	@return array|int|FALSE
+	*	@param $cmds string|array
+	*	@param $args string|array
+	*	@param $ttl int
+	*	@param $log bool
 	**/
-	function exec($cmds,$args=NULL,$ttl=0) {
+	function exec($cmds,$args=NULL,$ttl=0,$log=TRUE) {
 		$auto=FALSE;
 		if (is_null($args))
 			$args=array();
@@ -109,7 +113,7 @@ class SQL extends \PDO {
 			$keys=$vals=array();
 			if ($fw->get('CACHE') && $ttl && ($cached=$cache->exists(
 				$hash=$fw->hash($cmd.$fw->stringify($arg)).'.sql',
-				$result)) && $cached+$ttl>microtime(TRUE)) {
+				$result)) && $cached[0]+$ttl>microtime(TRUE)) {
 				foreach ($arg as $key=>$val) {
 					$vals[]=$fw->stringify(is_array($val)?$val[0]:$val);
 					$keys[]='/'.(is_numeric($key)?'\?':preg_quote($key)).'/';
@@ -138,7 +142,8 @@ class SQL extends \PDO {
 					user_error('PDOStatement: '.$error[2]);
 				}
 				if (preg_match(
-					'/\b(?:CALL|EXPLAIN|SELECT|PRAGMA|SHOW)\b/i',$cmd)) {
+					'/\b(?:CALL|EXPLAIN|SELECT|PRAGMA|SHOW|RETURNING)\b/i',
+					$cmd)) {
 					$result=$query->fetchall(\PDO::FETCH_ASSOC);
 					$this->rows=count($result);
 					if ($fw->get('CACHE') && $ttl)
@@ -159,9 +164,10 @@ class SQL extends \PDO {
 					user_error('PDO: '.$error[2]);
 				}
 			}
-			$this->log.=date('r').' ('.
-				sprintf('%.1f',1e3*(microtime(TRUE)-$now)).'ms) '.
-				preg_replace($keys,$vals,$cmd,1).PHP_EOL;
+			if ($log)
+				$this->log.=date('r').' ('.
+					sprintf('%.1f',1e3*(microtime(TRUE)-$now)).'ms) '.
+					preg_replace($keys,$vals,$cmd,1).PHP_EOL;
 		}
 		if ($this->trans && $auto)
 			$this->commit();
@@ -169,35 +175,35 @@ class SQL extends \PDO {
 	}
 
 	/**
-		Return number of rows affected by last query
-		@return int
+	*	Return number of rows affected by last query
+	*	@return int
 	**/
 	function count() {
 		return $this->rows;
 	}
 
 	/**
-		Return SQL profiler results
-		@return string
+	*	Return SQL profiler results
+	*	@return string
 	**/
 	function log() {
 		return $this->log;
 	}
 
 	/**
-		Retrieve schema of SQL table
-		@return array|FALSE
-		@param $table string
-		@param $ttl int
+	*	Retrieve schema of SQL table
+	*	@return array|FALSE
+	*	@param $table string
+	*	@param $ttl int
 	**/
 	function schema($table,$ttl=0) {
 		// Supported engines
 		$cmd=array(
 			'sqlite2?'=>array(
-				'PRAGMA table_info('.$table.');',
+				'PRAGMA table_info("'.$table.'");',
 				'name','type','dflt_value','notnull',0,'pk',1),
 			'mysql'=>array(
-				'SHOW columns FROM `'.$this->dbname.'`.'.$table.';',
+				'SHOW columns FROM `'.$this->dbname.'`.`'.$table.'`;',
 				'Field','Type','Default','Null','YES','Key','PRI'),
 			'mssql|sqlsrv|sybase|dblib|pgsql|odbc'=>array(
 				'SELECT '.
@@ -227,14 +233,12 @@ class SQL extends \PDO {
 								'k.table_catalog=t.table_catalog':
 								'k.table_schema=t.table_schema').' '):'').
 				'WHERE '.
-					'c.table_name='.
-						($this->quote($table)?:('"'.$table.'"')).' '.
+					'c.table_name='.$this->quote($table).' '.
 					($this->dbname?
 						('AND '.
 							($this->engine=='pgsql'?
 							'c.table_catalog':'c.table_schema').
-							'='.($this->quote($this->dbname)?:
-								('"'.$this->dbname.'"'))):'').
+							'='.$this->quote($this->dbname)):'').
 				';',
 				'field','type','defval','nullable','YES','pkey','PRIMARY KEY')
 		);
@@ -258,35 +262,68 @@ class SQL extends \PDO {
 	}
 
 	/**
-		Return database engine
-		@return string
+	*	Quote string
+	*	@return string
+	*	@param $val mixed
+	*	@param $type int
+	**/
+	function quote($val,$type=\PDO::PARAM_STR) {
+		return $this->engine=='odbc'?
+			(is_string($val)?
+				\Base::instance()->stringify(str_replace('\'','\'\'',$val)):
+				$val):
+			parent::quote($val,$type);
+	}
+
+	/**
+	*	Return database engine
+	*	@return string
 	**/
 	function driver() {
 		return $this->engine;
 	}
 
 	/**
-		Return server version
-		@return string
+	*	Return server version
+	*	@return string
 	**/
 	function version() {
 		return parent::getattribute(parent::ATTR_SERVER_VERSION);
 	}
 
 	/**
-		Return database name
-		@return string
+	*	Return database name
+	*	@return string
 	**/
 	function name() {
 		return $this->dbname;
 	}
 
 	/**
-		Instantiate class
-		@param $dsn string
-		@param $user string
-		@param $pw string
-		@param $options array
+	*	Return quoted identifier name
+	*	@return string
+	*	@param $key
+	**/
+	function quotekey($key) {
+		if ($this->engine=='mysql')
+			$key="`".$key."`";
+		elseif (preg_match('/sybase|dblib/',$this->engine))
+			$key="'".$key."'";
+		elseif (preg_match('/sqlite2?|pgsql/',$this->engine))
+			$key='"'.$key.'"';
+		elseif (preg_match('/mssql|sqlsrv|odbc/',$this->engine))
+			$key="[".$key."]";
+		elseif ($this->engine=='oci')
+			$key='"'.strtoupper($key).'"';
+		return $key;
+	}
+
+	/**
+	*	Instantiate class
+	*	@param $dsn string
+	*	@param $user string
+	*	@param $pw string
+	*	@param $options array
 	**/
 	function __construct($dsn,$user=NULL,$pw=NULL,array $options=NULL) {
 		if (preg_match('/^.+?(?:dbname|database)=(.+?)(?=;|$)/i',$dsn,$parts))

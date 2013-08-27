@@ -109,7 +109,7 @@ class publications {
 		$app_users_pub_sql = "";
 		if ($app!="setup"){
 			$app_users_pub = $app . "_users_pub";
-			$app_users_pub_sql = ", if ((SELECT count(ID) FROM $app_users_pub WHERE ab_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
+			$app_users_pub_sql = ", if ((SELECT count($app_users_pub.ID) FROM $app_users_pub WHERE $app_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
 		}
 
 

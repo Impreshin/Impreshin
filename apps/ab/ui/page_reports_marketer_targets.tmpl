@@ -20,11 +20,11 @@
 				<ul class="nav nav-pills pull-right ">
 					<li>
 						<div class="btn-group" data-toggle="buttons-radio" id="record-filter-btns" style="margin-top: 0;">
-							<button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;" title="All records">
+							<button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;" title="All records">
 								<i class="icon-asterisk"></i></button>
-							<button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;" title="Only checked records">
+							<button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;" title="Only checked records">
 								<i class="icon-ok"></i></button>
-							<button data-filter="0" class="btn  btn-mini {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;" title="Only not checked records">
+							<button data-filter="0" class="btn  btn-mini btn-icon {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;" title="Only not checked records">
 								<i class="icon-remove"></i></button>
 						</div>
 
@@ -32,7 +32,7 @@
 					</li>
 					<li class="divider-vertical"></li>
 					<li>
-						<button class="btn  btn-mini span1" id="new-target" type="button" ><i class="icon-plus"></i></button>
+						<button class="btn  btn-mini btn-icon span1" id="new-target" type="button" ><i class="icon-plus"></i></button>
 					</li>
 
 					{% if _user['permissions']['reports']['marketer']['targets']['page'] =='1' %}

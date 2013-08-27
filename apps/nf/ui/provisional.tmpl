@@ -5,29 +5,87 @@
 
                 <li>
                     <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Checked</button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Material</button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Layout</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Articles</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Comments</button>
+
                     </div>
                 </li>
                 <li class="divider-vertical"></li>
-                <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
-                        <button data-filter="*" class="btn  btn-mini {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-asterisk"></i></button>
-                        <button data-filter="1" class="btn  btn-mini {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-ok"></i></button>
-                        <button data-filter="0" class="btn  btn-mini {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
-                            <i class="icon-remove"></i></button>
-                    </div>
-                </li>
+	            <li>
+		            <div id="list-filter-btns" data-toggle="buttons-radio" class="btn-group">
+			            <button style="width:40px;" class="btn  btn-mini active" data-filter="*">
+				            <i class="icon-asterisk"></i></button>
+			            <button style="width:40px;" class="btn  btn-mini " data-filter="1">
+				            <i class="icon-lock"></i></button>
+			            <button style="width:40px;" class="btn  btn-mini " data-filter="0">
+				            <i class="icon-unlock"></i></button>
+		            </div>
+	            </li>
+                <li class="divider-vertical"></li>
+	            <li>
+		            <select name="stageID" id="stageID" class="span3">
+			            <option value="0">Drafts</option>
+			            {% for row in stages %}
+			            <option value="0">{{ row['stage'] }}</option>
+			            {% endfor %}
+		            </select>
+	            </li>
+
                 <li class="divider-vertical"></li>
             </ul>
             <div class="pull-right">
-                <ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+	            <ul id="provisional-stats-bar" class="nav nav-pills pull-left">
 
-
-                </ul>
+		            <li id="toolbar-stats-link" style="position: relative;" class="span6">
+			            <div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
+				            <div id="list-stats-progress-bar" style="width: 0%;" class="bar"></div>
+			            </div>
+			            <div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
+				            <div class="span2"><span class="s dg">Pages:</span><strong> 4 </strong></div>
+				            <div class="span2"><span class="s dg">Cm:</span> <strong>0</strong></div>
+				            <div class="span2"><span class="s dg">Loading:</span> <strong>0.00%</strong></div>
+			            </div>
+			            <div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong>0</strong> &nbsp; | &nbsp; Total Revenue:&nbsp;<strong>R&nbsp;0.00</strong>
+				            <table style="margin-bottom:0; margin-top:10px;" class="table">
+					            <tbody>
+					            <tr>
+						            <th class="r span1">Checked:</th>
+						            <td>
+							            <div class="progress">
+								            <div style="width: 0%;" class="bar"></div>
+								            <div class="text"><strong>0 &nbsp;
+										            <small> &nbsp; 0%</small>
+									            </strong></div>
+							            </div>
+						            </td>
+					            </tr>
+					            <tr>
+						            <th class="r ">Material:</th>
+						            <td>
+							            <div class="progress">
+								            <div style="width: 0%;" class="bar"></div>
+								            <div class="text"><strong>0 &nbsp;
+										            <small> &nbsp; 0%</small>
+									            </strong></div>
+							            </div>
+						            </td>
+					            </tr>
+					            <tr>
+						            <th class="r ">Layout:</th>
+						            <td>
+							            <div class="progress">
+								            <div style="width: 0%;" class="bar"></div>
+								            <div class="text"><strong>0 &nbsp;
+										            <small> &nbsp; 0%</small>
+									            </strong></div>
+							            </div>
+						            </td>
+					            </tr>
+					            </tbody>
+				            </table>
+			            </div>
+		            </li>
+	            </ul>
                 <ul class="nav nav-pills pull-right ">
                     <li class="divider-vertical" style="margin-right: 0;"></li>
 
