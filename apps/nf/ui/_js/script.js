@@ -4,6 +4,13 @@ var logsRequest = [];
 var activityRequest = [];
 var transSpeed = '300';
 
+var text_toolbar = [
+	{ name: 'source', items: [ 'Source' ] },
+	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
+	{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+
+];
+
 
 $(function () {
 
@@ -188,6 +195,7 @@ $("#displaylogout").autoLogout({
 	},
 	onLogout     : function (timer) {
 
+		
 		window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
 	},
 	keepAlive    : function () {
@@ -222,7 +230,7 @@ $("#displaylogout").autoLogout({
 
 		if (idle >= (parts * 9) + 2) {
 			remaining = LogoutTime - idle;
-			$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automaticaly logged out in " + (remaining) + " seconds");
+			$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automatically logged out in " + (remaining) + " seconds");
 		} else {
 			$this.stop(true, true).fadeOut(1000);
 		}

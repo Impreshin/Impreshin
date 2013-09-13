@@ -4,13 +4,13 @@
 var pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 var api = pane.data("jsp");
 
-$("#stageID").select2();
-$(document).ready(function () {
 
+$(document).ready(function () {
+	$("#stageID").select2();
 	scrolling(api);
 
-	var highlight = $.bbq.getState("highlight");
-	highlight = (highlight) ? highlight : "checked";
+	var type_switch = $.bbq.getState("type_switch");
+	type_switch = (type_switch) ? type_switch : "1";
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
 
@@ -18,9 +18,9 @@ $(document).ready(function () {
 		$("#settings-modal").modal('show');
 	}
 
-	if ($.bbq.getState("highlight")) {
-		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
-		$("#list-highlight-btns button[data-highlight='" + highlight + "']").addClass("active");
+	if ($.bbq.getState("type_switch")) {
+		$("#list-type_switch-btns button[data-type_switch].active").removeClass("active");
+		$("#list-type_switch-btns button[data-type_switch='" + type_switch + "']").addClass("active");
 	}
 	if ($.bbq.getState("filter")) {
 		$("#list-filter-btns button[data-filter].active").removeClass("active");
@@ -44,7 +44,7 @@ $(document).ready(function () {
 		$(this).closest("li").addClass("active");
 	});
 
-	$(document).on('hide', '#ab-details-modal', function () {
+	$(document).on('hide', '#nf-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
@@ -114,16 +114,24 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button", function (e) {
+	$(document).on("click", "#list-type_switch-btns button, #list-filter-btns button", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
-		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-		highlight = (highlight) ? highlight : "checked";
+		var type_switch = $("#list-type_switch-btns button.active").attr("data-type_switch");
+		type_switch = (type_switch) ? type_switch : "checked";
 		var filter = $("#list-filter-btns button.active").attr("data-filter");
 		filter = (filter) ? filter : "*";
 
-		$.bbq.pushState({"highlight":highlight, "filter":filter});
+		$.bbq.pushState({"type_switch": type_switch, "filter":filter});
+		getList();
+
+	});
+	$(document).on("change", "#stageID", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+
 		getList();
 
 	});
@@ -240,8 +248,8 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder) ? groupOrder : "";
 
-	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-	highlight = (highlight) ? highlight : "";
+	var type_switch = $("#list-type_switch-btns button.active").attr("data-type_switch");
+	type_switch = (type_switch) ? type_switch : "";
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter) ? filter : "";
 
@@ -250,12 +258,15 @@ function getList(settings) {
 
 	var orderingactive = (order) ? true : false;
 
+
+	var stageID = $("#stageID").val();
+
 	$("#maintoolbar-date").html('Loading...');
 
 	$("#whole-area .loadingmask").show();
 
 
-	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search}, function (data) {
+	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "type_switch": type_switch, "filter": filter, "order": order, "search": search, "stageID": stageID}, function (data) {
 		var $recordsList = $("#record-list");
 		if (data['list'][0]) {
 			$recordsList.jqotesub($("#template-records"), data['list']);
@@ -289,7 +300,7 @@ function getList(settings) {
 				api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, false);
 			}
 
-			if (!$("#ab-details-modal").is(":visible")) {
+			if (!$("#nf-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

@@ -66,6 +66,40 @@ class stages {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+	public static function getNext($currentStage, $stages=array()) {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		$currentStage = $currentStage? $currentStage:"1";
+
+
+		if (!count($stages)) 
+			$stages = self::getAll("cID='" . $user['company']['ID'] . "' OR cID = '0'", "orderby ASC");
+		
+		$last = array("ID" => "");
+		$next = array("ID" => "");
+		$current = array("ID" => "");
+		foreach ($stages AS $item) {
+
+			if ($last['ID'] == $currentStage) {
+				$next = $item;
+			}
+			if ($item['ID'] == $currentStage) {
+				$current = $item;
+			}
+
+			$last = $item;
+
+		}
+
+
+		
+
+		$return = $next;
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
 
 	public static function save($ID, $values) {
 		$timer = new timer();

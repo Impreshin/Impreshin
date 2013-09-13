@@ -1,0 +1,58 @@
+{% include '_records.jtmpl' %}
+{% include '_details.jtmpl' %}
+
+<script type="text/x-jqote-template" id="template-provisional-stats-bar">
+	<![CDATA[
+
+	<li id="toolbar-stats-link" style="position: relative;" class="span6">
+		<div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
+			<div id="list-stats-progress-bar" style="width: 12%;" class="bar"></div>
+		</div>
+		<div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
+			<div class="span2"><span class="s dg">Articles:</span><strong> 43 </strong></div>
+			<div class="span2"><span class="s dg">Locked:</span> <strong>4</strong></div>
+			<div class="span2"><span class="s dg">Drafts:</span> <strong>12</strong></div>
+		</div>
+		<div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong>0</strong>
+			<table style="margin-bottom:0; margin-top:10px;" class="table">
+				<tbody>
+				<tr>
+					<th class="r span1">Drafts:</th>
+					<td>
+						<div class="progress">
+							<div style="width: 12%;" class="bar"></div>
+							<div class="text"><strong>0 &nbsp;
+									<small> &nbsp; 12%</small>
+								</strong></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th class="r ">Posted:</th>
+					<td>
+						<div class="progress">
+							<div style="width: 6%;" class="bar"></div>
+							<div class="text"><strong>0 &nbsp;
+									<small> &nbsp; 6%</small>
+								</strong></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th class="r ">Ready:</th>
+					<td>
+						<div class="progress">
+							<div style="width: 63%;" class="bar"></div>
+							<div class="text"><strong>0 &nbsp;
+									<small> &nbsp; 63%</small>
+								</strong></div>
+						</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</li>
+
+	]]>
+</script>

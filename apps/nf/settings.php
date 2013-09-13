@@ -27,9 +27,55 @@ class settings {
 		 */
 
 		$columns = array(
-			"client"                 => array(
-				"h"=> "Client"
+			"title"                 => array(
+				"h"=> "Title",
 			),
+			"datein"=>array(
+				"h"=>"Date"
+			),
+			"stars"=>array(
+				"h"=>"stars"
+			),
+			"stage"=>array(
+				"h"=>"Stage"
+			),
+			"author"=>array(
+				"h"=>"Author"
+			),
+			"cm"=>array(
+				"h"=>"Cm"
+			),
+			"words"=>array(
+				"h"=>"Words"
+			),
+			"percent_last"=>array(
+				"h"=>"% last"
+			),
+			"percent_orig"=>array(
+				"h"=>"% Changed"
+			),
+			/*
+			"newsbooks"=>array(
+				"h"=>"Newsbooks",
+				"o"=>"global_publications.publication, global_dates.publish_date"
+			),
+			*/
+			"category"=>array(
+				"h"=>"Category",
+				"o"=>"nf_categories.category"
+			),
+			"commentCount"=>array(
+				"h"=>"Comments",
+				"o"=>"commentCount"
+			),
+			"photosCount"=>array(
+				"h"=>"Photos",
+				"o"=>"photosCount"
+			),
+			"filesCount"=>array(
+				"h"=>"Files",
+				"o"=>"filesCount"
+			)
 
 
 
@@ -57,6 +103,18 @@ class settings {
 			"none"=> array(
 				"n"=> "No Ordering",
 				"g"=> "none"
+			),
+			"stage"=> array(
+				"n"=> "Stage",
+				"g"=> "stage"
+			),
+			"category"=> array(
+				"n"=> "Category",
+				"g"=> "category"
+			),
+			"author"=> array(
+				"n"=> "Authors",
+				"g"=> "author"
 			)
 		);
 
@@ -64,7 +122,8 @@ class settings {
 
 
 		$sections = array(
-			"all"=>array("none"),
+			"provisional"=>array("none","stage","author","category"),
+		
 		);
 
 		$groupby = array();
@@ -81,6 +140,24 @@ class settings {
 		$return["groupby"] = $groupby;
 
 
+		$return["allowedFileTypes"] = array( // filetype => icon/type => extentions
+			"1"=>array(
+				"img"=> array("jpg", "gif", "png", "jpeg"),
+			),
+			"2"=>array(
+				"doc" => array("doc", "docx"),
+				"xls" => array("xls", "xlsx"),
+				"pdf" => array("pdf"),
+				"file" => array("txt")
+			),
+			"3"=>array(
+				"vid"=>array("avi")
+			)
+
+		);
+
+		
+
 		if (isset($permissions['lists']['fields'])) {
 			foreach ($permissions['lists']['fields'] as $key=> $value) {
 				if ($value == 0) {
@@ -91,7 +168,6 @@ class settings {
 		}
 
 		$cfg = $f3->get("CFG");
-
 
 
 
@@ -107,27 +183,32 @@ class settings {
 			$settings = array(
 				"provisional"=>array(
 					"col"        => array(
-						"client",
-						"size",
-						"colour",
-						"remark",
-						"marketer"
+						"title",
+						"author",
+						"stage",
+						"cm",
+						"newsbooks"
+
 					),
 					"group"      => array(
-						"g"=>"placing",
+						"g"=>"author",
 						"o"=>"ASC"
 					),
 					"order"      => array(
-						"c"=> "client",
+						"c"=> "title",
 						"o"=> "ASC"
 					),
 					"count"      => "5",
-					"highlight"=> "checked",
+					"type_switch"=> "1",
 					"filter"   => "*",
-					"search" => ""
+					"search" => "",
+					"stageID"=>"0"
 
 				),
+				"form"=>array(
+					"last_type"=>"1",
 
+				),
 				"admin_users"=>array(
 					"order"=>array(
 						"c"=>"fullName",

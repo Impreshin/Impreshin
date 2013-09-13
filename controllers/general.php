@@ -104,14 +104,8 @@ class general {
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
-				"/ui/plupload/js/browserplus-min.js",
-				"/ui/plupload/js/plupload.js",
-				"/ui/plupload/js/plupload.gears.js",
-				"/ui/plupload/js/plupload.silverlight.js",
-				"/ui/plupload/js/plupload.flash.js",
-				"/ui/plupload/js/plupload.browserplus.js",
-				"/ui/plupload/js/plupload.html4.js",
-				"/ui/plupload/js/plupload.html5.js",
+				//"/ui/plupload/js/browserplus-min.js",
+				"/ui/plupload/js/plupload.full.js",
 
 
 
@@ -309,8 +303,20 @@ class general {
 			rename("{$filePath}.part", $filePath);
 		}
 
-
+/*
+		$exif = @exif_read_data($targetDir . DIRECTORY_SEPARATOR . $fileName,0,true);
 // Return JSON-RPC response
+
+		$result = array(
+			"jsonrpc"=>"2.0",
+			"result"=>"null",
+			"id"=>"id"
+		);
+
+		if ($exif){
+			$result['exif']['meta'] = $exif['IFD0'];
+		}
+		test_array($result);*/
 		die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
 
 	}

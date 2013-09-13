@@ -1,27 +1,21 @@
 <?php
 
 namespace apps\ab\models;
-
-
-
 use \timer as timer;
 
 class bookings {
 	private $classname;
 
 	function __construct() {
-
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
-
 	}
 
-	private static function _from(){
+	private static function _from() {
 		$return = "(((((((((((((((((ab_bookings LEFT JOIN ab_placing ON ab_bookings.placingID = ab_placing.ID) LEFT JOIN ab_bookings_types ON ab_bookings.typeID = ab_bookings_types.ID) LEFT JOIN ab_marketers ON ab_bookings.marketerID = ab_marketers.ID) LEFT JOIN ab_categories ON ab_bookings.categoryID = ab_categories.ID) LEFT JOIN global_users ON ab_bookings.userID = global_users.ID) LEFT JOIN global_publications ON ab_bookings.pID = global_publications.ID) LEFT JOIN ab_accounts ON ab_bookings.accountID = ab_accounts.ID) LEFT JOIN global_dates ON ab_bookings.dID = global_dates.ID) LEFT JOIN ab_accounts_status ON ab_accounts.statusID = ab_accounts_status.ID) INNER JOIN ab_remark_types ON ab_bookings.remarkTypeID = ab_remark_types.ID) LEFT JOIN global_pages ON ab_bookings.pageID = global_pages.ID) LEFT JOIN ab_placing_sub ON ab_bookings.sub_placingID = ab_placing_sub.ID) LEFT JOIN ab_inserts_types ON ab_bookings.insertTypeID = ab_inserts_types.ID) LEFT JOIN system_publishing_colours ON ab_bookings.colourID = system_publishing_colours.ID) LEFT JOIN ab_production ON ab_bookings.material_productionID = ab_production.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_1 ON ab_placing.colourID = system_publishing_colours_1.ID) LEFT JOIN system_publishing_colours AS system_publishing_colours_2 ON ab_placing_sub.colourID = system_publishing_colours_2.ID) LEFT JOIN system_payment_methods ON ab_bookings.payment_methodID = system_payment_methods.ID";
+
 		return $return;
 	}
-
-
 
 	function get($ID) {
 		$timer = new timer();
@@ -29,14 +23,9 @@ class bookings {
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$currentDate = $user['publication']['current_date'];
-
 		$currentDate = $currentDate['publish_date'];
-
-
 		//test_array($currentDate);
-
 		$from = self::_from();
-
 		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*,
 				ab_placing.placing AS placing,
@@ -58,8 +47,8 @@ class bookings {
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
 
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
-COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
-COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
+COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) AS colour,
+COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) AS colourLabel,
 
 
 				ab_inserts_types.insertsLabel AS insertLabel
@@ -71,14 +60,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 
 		"
 		);
-
-
 		if (count($result)) {
 			$return = bookings::currency($result[0]);
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state'] = "";
-
 			if ($return['publish_date'] == $currentDate) {
 				$return['state'] = "Current";
 			} elseif ($return['publish_date'] < $currentDate) {
@@ -99,7 +85,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			}
 			$cfg = $f3->get("CFG");
 			$cfg = $cfg['upload'];
-
 			$return['material_file_filesize_display'] = 0;
 			if ($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') {
 				if ($return['material_file_store']) {
@@ -111,24 +96,17 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$return['material_file_filesize_display'] = file_size($return['material_file_filesize']);
 					}
 				}
-
 			} else {
 				$return['material_file_store'] = "";
 				$return['material_file_filename'] = "";
 				$return['material_file_filesize'] = "";
 			}
-
-
 		} else {
 			$return = $this->dbStructure;
 		}
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $return;
 	}
 
@@ -140,7 +118,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		} else {
 			$where = " ";
 		}
-
 		$from = self::_from();
 		$return = $f3->get("DB")->exec("
 			SELECT count(ab_bookings.ID) AS records
@@ -151,27 +128,21 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		if (count($return)) {
 			$return = $return[0]['records'];
 		}
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $return;
 	}
 
 	public static function getAll_select($select, $where = "", $orderby, $groupby = "") {
-/*
-				test_array(array(
-					"select"=>$select,
-					"where"=>$where,
-					"orderby"=>$orderby,
-					"group"=>$groupby
-				));
-*/
-
+		/*
+						test_array(array(
+							"select"=>$select,
+							"where"=>$where,
+							"orderby"=>$orderby,
+							"group"=>$groupby
+						));
+		*/
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {
@@ -179,14 +150,12 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		} else {
 			$where = " ";
 		}
-
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
 		if ($groupby) {
 			$groupby = " GROUP BY " . $groupby;
 		}
-
 		$from = self::_from();
 		$return = $f3->get("DB")->exec("
 			SELECT $select
@@ -196,28 +165,15 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$orderby
 		"
 		);
-
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array(
-		"g" => "none",
-		"o" => "ASC"
-	), $ordering = array(
-		"c" => "client",
-		"o" => "ASC"
-	), $options = array("limit" => "")) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "client", "o" => "ASC"), $options = array("limit" => "")) {
 		$f3 = \Base::instance();
 		$timer = new timer();
-
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -232,19 +188,15 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		if ($select) {
 			$select = " ," . $select;
 		}
-
 		if ($options['limit']) {
 			if (strpos($options['limit'], "LIMIT") == -1) {
 				$limit = " LIMIT " . $options['limit'];
 			} else {
 				$limit = $options['limit'];
 			}
-
 		} else {
 			$limit = " ";
 		}
-		
-
 		$from = self::_from();
 		$result = $f3->get("DB")->exec("
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
@@ -260,8 +212,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				ab_inserts_types.insertsLabel AS insertLabel,
 				system_payment_methods.label AS payment_method,
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
-				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) as colour,
-				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) as colourLabel,
+				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colour,NULL), system_publishing_colours_1.colour, system_publishing_colours.colour) AS colour,
+				COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel) AS colourLabel,
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
 				now()  AS last_change
 			$select
@@ -271,14 +223,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$limit
 		"
 		);
-
-
 		$return = $result;
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
-		$timer->stop(array("Models" => array( "Class"  => __CLASS__,"Method" => __FUNCTION__ ) ), func_get_args());
 		return $return;
 	}
-
 
 	private static function currency($record) {
 		$f3 = \Base::instance();
@@ -288,8 +237,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			if (isset($record['totalCost']) && $record['totalCost']) $record['totalCost_C'] = currency($record['totalCost']);
 			if (isset($record['totalShouldbe']) && $record['totalShouldbe']) $record['totalShouldbe_C'] = currency($record['totalShouldbe']);
 			if (isset($record['InsertRate']) && $record['InsertRate']) $record['InsertRate_C'] = currency($record['InsertRate']);
-
-
 			$record['percent_diff'] = "";
 			if ((isset($record['totalShouldbe']) && $record['totalShouldbe']) && (isset($record['totalCost']) && $record['totalCost'])) {
 				$dif = $record['totalShouldbe'] - $record['totalCost'];
@@ -298,35 +245,24 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				} else {
 					$per = 0;
 				}
-
-
 				$record['percent_diff'] = number_format($per, 2);
 			}
-
 		}
-		return $record;
 
+		return $record;
 	}
 
-	public static function display($data, $options = array(
-		"highlight" => "",
-		"filter"    => "*"
-	)) {
+	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
 		$f3 = \Base::instance();
 		if (!isset($options['highlight'])) $options['highlight'] = "";
 		if (!isset($options['filter'])) $options['filter'] = "";
-
-
 		$timer = new timer();
 		$user = $f3->get("user");
 		$permissions = $user['permissions'];
 		if (is_array($data)) {
 			$a = array();
-
-
 			foreach ($data as $item) {
 				$showrecord = true;
-
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
@@ -335,37 +271,24 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 					case 2:
 						$item['size'] = $item["InsertPO"];
 						break;
-
 				}
-
-				if (isset($item['last_change'])) $item['last_change_date'] = date("Y-m-d",strtotime($item['last_change'])) ;
+				if (isset($item['last_change'])) $item['last_change_date'] = date("Y-m-d", strtotime($item['last_change']));
 				if (isset($item['pageID']) && $item['pageID'] && $item["page"]) {
 					$item["page"] = number_format($item['page'], 0);
 				}
 				if (isset($item['material_file_filesize']) && $item['material_file_filesize']) {
 					$item["material_file_filesize"] = file_size($item['material_file_filesize']);
 				}
-
-
 				if (($user['permissions']['view']['only_my_records'] == '1')) {
-					if ($user['ID']!=$item['userID']){
-						$item['haha']=$user['ID'];
-							$showrecord = false;
+					if ($user['ID'] != $item['userID']) {
+						$item['haha'] = $user['ID'];
+						$showrecord = false;
 					}
 				}
-
-
-					if ($showrecord) $a[] = bookings::currency($item);
-
-
-
-
+				if ($showrecord) $a[] = bookings::currency($item);
 			}
 			$data = $a;
-
 		}
-
-
 		$return = array();
 		$a = array();
 		$groups = array();
@@ -378,13 +301,10 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 					}
 				}
 			}
-
 			$showrecord = true;
 			if (isset($options["highlight"]) && $options["highlight"]) {
 				$record['highlight'] = $record[$options["highlight"]];
 			}
-
-
 			if (isset($options["filter"])) {
 				if ($options["filter"] == "*") {
 					$showrecord = true;
@@ -394,39 +314,23 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 					} else {
 						$showrecord = false;
 					}
-
 				}
 			}
-
-		//	test_array($permissions);
-
+			//	test_array($permissions);
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
 			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
-
-					$arr = array(
-						"heading" => $record['heading'],
-						"count"   => "",
-						"cm"      => 0,
-						"percent" => "",
-						"pages"   => "",
-
-					);
+					$arr = array("heading" => $record['heading'], "count" => "", "cm" => 0, "percent" => "", "pages" => "",);
 					$arr['totalCost'] = 0;
 					$arr['groups'] = "";
 					$arr['records'] = "";
-
-
 					$a[$record['heading']] = $arr;
 				}
 				if ($record['typeID'] == '1') {
 					$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['totalspace'];
 				}
-
-
 				$a[$record['heading']]["totalCost"] = $a[$record['heading']]["totalCost"] + $record['totalCost'];
-
 				if (isset($permissions['lists']['fields'])) {
 					foreach ($permissions['lists']['fields'] as $key => $value) {
 						if ($value == 0) {
@@ -435,42 +339,29 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						}
 					}
 				}
-
-
 				$a[$record['heading']]["records"][] = $record;
 			}
 		}
-
 		$return = array();
-
-
 //exit();
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
-
 			if (isset($permissions['lists']['totals']['totalCost']) && $permissions['lists']['totals']['totalCost']) {
 				$record['totalCost'] = currency($record['totalCost']);
 			} else {
 				if (isset($record['totalCost'])) unset($record['totalCost']);
-			}
-			;
+			};
 			$record['groups'] = $groups;
 			$return[] = $record;
 		}
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
-		return $return;
 
+		return $return;
 	}
 
 	private static function order($grouping, $ordering) {
 		$f3 = \Base::instance();
-
 		$o = explode(".", $ordering['c']);
 		$a = array();
 		foreach ($o as $b) {
@@ -510,7 +401,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$arrange = "if(typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),''),ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
-
 				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,if((totalShouldbe - totalCost)/totalShouldbe>0.5,5,if((totalShouldbe - totalCost)/totalShouldbe>0.2,4,3)),0),1) $ordering, " . $orderby;
 				$arrange = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,if((totalShouldbe - totalCost)/totalShouldbe>0.5,'50%+ Under Charged',if((totalShouldbe - totalCost)/totalShouldbe>0.2,'20%+  Under Charged','Under Charged')),'Over Charged'),'No Discount') as heading";
 				break;
@@ -518,7 +408,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$orderby = "COALESCE(ab_accounts_status.orderby,99999) $ordering,  ab_bookings_types.orderby, " . $orderby;
 				$arrange = "if(ab_accounts_status.status<>'',concat('Account - ',ab_accounts_status.status),ab_bookings_types.type) as heading";
 				break;
-
 			case "material_production":
 				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_production.production $ordering,  " . $orderby;
 				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_production.production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
@@ -527,7 +416,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$orderby = "if (invoiceNum,1,0) $ordering, " . $orderby;
 				$arrange = "if (invoiceNum,'Invoiced','Not Invoiced') as heading";
 				break;
-
 			case "payment_method":
 				$orderby = "COALESCE(system_payment_methods.label,'zzzzzzzzz') $ordering, " . $orderby;
 				$arrange = "COALESCE(system_payment_methods.label,'None') as heading";
@@ -536,65 +424,32 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$orderby = "" . $orderby;
 				$arrange = "'None' as heading";
 				break;
-
 		}
 
 		//test_array($orderby);
-
-		return array(
-			"order"  => $orderby,
-			"select" => $arrange
-		);
+		return array("order" => $orderby, "select" => $arrange);
 	}
 
 	public static function _delete($ID = "", $reason = "") {
-
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-
-
 		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		$a->load("ID='$ID'");
-
 		if (!$a->dry()) {
 			$a->deleted = "1";
 			$a->deleted_userID = $userID;
 			$a->deleted_user = $user['fullName'];
 			$a->deleted_date = date("Y-m-d H:i:s");
 			$a->deleted_reason = ($reason);
-
 			$a->save();
-			$changes = array(
-				array(
-					"k" => "Deleted",
-					"v" => "1",
-					"w" => ""
-				),
-				array(
-					"k" => "deleted_user",
-					"v" => $user['fullName'],
-					"w" => ""
-				),
-				array(
-					"k" => "deleted_reason",
-					"v" => $reason,
-					"w" => ""
-				)
-			);
-
+			$changes = array(array("k" => "Deleted", "v" => "1", "w" => ""), array("k" => "deleted_user", "v" => $user['fullName'], "w" => ""), array("k" => "deleted_reason", "v" => $reason, "w" => ""));
 			bookings::logging($a->ID, $changes, "Booking Deleted");
 		}
-
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return "deleted";
 	}
 
@@ -602,25 +457,17 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-
-
 		$dataO = new bookings();
 		$data = $dataO->get($ID);
-
 		if (!$data['ID'] || $data["accountBlocked"] == '1') {
 			exit();
 		}
-
 		$values = $data;
-
-
 		unset($values['ID']);
 		unset($values['logs']);
 		unset($values['publishDate']);
 		unset($values['dID']);
 		unset($values['userName']);
-
-
 		$values['userID'] = $user['ID'];
 		$values['checked'] = "0";
 		$values['checked_date'] = null;
@@ -630,17 +477,13 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$values['repeat_from'] = $data['ID'];
 		$values['pageID'] = null;
 		$values['invoiceNum'] = null;
-
-
 		$values['dID'] = $dID;
-
 		if ($exact_repeat) {
 			$label1 = "Booking was repeated";
 			$label2 = "Repeat Booking";
 		} else {
 			$label1 = "Booking was repeated (material not kept)";
 			$label2 = "Repeat Booking (material not kept)";
-
 			unset($values['material_file_filename']);
 			unset($values['material_file_filesize']);
 			unset($values['material_file_store']);
@@ -649,216 +492,87 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			unset($values['material_approved']);
 			unset($values['orderNum']);
 			unset($values['keyNum']);
-
-
 		}
-
-
 		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		foreach ($values as $key => $value) {
 			if (isset($a->$key)) {
 				$a->$key = $value;
 			}
 		}
-
-
 		$a->save();
 		$ID = $a->ID;
-
 		$n = $dataO->get($ID);
-
-		$log = array(
-			array(
-				"k" => "Repeated",
-				"v" => $ID,
-				"w" => $data['ID']
-			),
-			array(
-				"k" => "Date",
-				"v" => $n['publishDate'],
-				"w" => $data['publishDate']
-			)
-		);
-
-
+		$log = array(array("k" => "Repeated", "v" => $ID, "w" => $data['ID']), array("k" => "Date", "v" => $n['publishDate'], "w" => $data['publishDate']));
 		$cfg = $f3->get("CFG");
 		$cfg = $cfg['upload'];
-
 		$cID = $data['cID'];
-
 		if ($exact_repeat) {
 			$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
 			$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $data['pID'] . "/" . $values['dID'] . "/material/";
 			if (file_exists($oldFolder . $data['material_file_store'])) {
-
 				if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
 				@copy($oldFolder . $data['material_file_store'], $newFolder . $data['material_file_store']);
 			}
-
 		} else {
-
 		}
-
-
 		//	test_array(array("o"=>$oldFolder,"n"=>$newFolder));
 		bookings::logging($data['ID'], $log, $label1);
 		bookings::logging($ID, $log, $label2);
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $n;
 	}
 
-	public static function save($ID = "", $values = array(), $opts = array(
-		"dry"     => true,
-		"section" => "booking"
-	)) {
-
+	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
 		//test_array($values);
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$lookupColumns = array();
-		$lookupColumns["dID"] = array(
-			"sql" => "(SELECT publish_date FROM global_dates WHERE ID = '{val}')",
-			"col" => "publish_date",
-			"val" => ""
-		);
-		$lookupColumns["placingID"] = array(
-			"sql" => "(SELECT placing FROM ab_placing WHERE ID = '{val}')",
-			"col" => "placing",
-			"val" => ""
-		);
-		$lookupColumns["categoryID"] = array(
-			"sql" => "(SELECT `category` FROM ab_categories WHERE ID = '{val}')",
-			"col" => "category",
-			"val" => ""
-		);
-		$lookupColumns["marketerID"] = array(
-			"sql" => "(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')",
-			"col" => "marketer",
-			"val" => ""
-		);
-		$lookupColumns["sub_placingID"] = array(
-			"sql" => "(SELECT `label` FROM ab_placing_sub WHERE ID = '{val}')",
-			"col" => "sub_placing",
-			"val" => ""
-		);
-		$lookupColumns["colourID"] = array(
-			"sql" => "(SELECT `colourLabel` FROM system_publishing_colours WHERE ID = '{val}')",
-			"col" => "colour",
-			"val" => ""
-		);
-
-		$lookupColumns["material_productionID"] = array(
-			"sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')",
-			"col" => "production",
-			"val" => ""
-		);
-		$lookupColumns["remarkTypeID"] = array(
-			"sql" => "(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')",
-			"col" => "remarkType",
-			"val" => ""
-		);
-		$lookupColumns["checked_userID"] = array(
-			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
-			"col" => "checked_user",
-			"val" => ""
-		);
-		$lookupColumns["deleted_userID"] = array(
-			"sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')",
-			"col" => "deleted_user",
-			"val" => ""
-		);
-		$lookupColumns["material_source"] = array(
-			"sql" => "(CASE '{val}' WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END)",
-			"col" => "material_source",
-			"val" => ""
-		);
-		$lookupColumns["material_status"] = array(
-			"sql" => "(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)",
-			"col" => "material_status",
-			"val" => ""
-		);
-		$lookupColumns["checked"] = array(
-			"sql" => "(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)",
-			"col" => "checked",
-			"val" => ""
-		);
-		$lookupColumns["pageID"] = array(
-			"sql" => "(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')",
-			"col" => "page",
-			"val" => ""
-		);
-		$lookupColumns["accountID"] = array(
-			"sql" => "(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')",
-			"col" => "Account",
-			"val" => ""
-		);
-		$lookupColumns["payment_methodID"] = array(
-			"sql" => "(SELECT label FROM system_payment_methods WHERE ID = '{val}')",
-			"col" => "payment_method",
-			"val" => ""
-		);
+		$lookupColumns["dID"] = array("sql" => "(SELECT publish_date FROM global_dates WHERE ID = '{val}')", "col" => "publish_date", "val" => "");
+		$lookupColumns["placingID"] = array("sql" => "(SELECT placing FROM ab_placing WHERE ID = '{val}')", "col" => "placing", "val" => "");
+		$lookupColumns["categoryID"] = array("sql" => "(SELECT `category` FROM ab_categories WHERE ID = '{val}')", "col" => "category", "val" => "");
+		$lookupColumns["marketerID"] = array("sql" => "(SELECT `marketer` FROM ab_marketers WHERE ID = '{val}')", "col" => "marketer", "val" => "");
+		$lookupColumns["sub_placingID"] = array("sql" => "(SELECT `label` FROM ab_placing_sub WHERE ID = '{val}')", "col" => "sub_placing", "val" => "");
+		$lookupColumns["colourID"] = array("sql" => "(SELECT `colourLabel` FROM system_publishing_colours WHERE ID = '{val}')", "col" => "colour", "val" => "");
+		$lookupColumns["material_productionID"] = array("sql" => "(SELECT `production` FROM ab_production WHERE ID = '{val}')", "col" => "production", "val" => "");
+		$lookupColumns["remarkTypeID"] = array("sql" => "(SELECT `remarkType` FROM ab_remark_types WHERE ID = '{val}')", "col" => "remarkType", "val" => "");
+		$lookupColumns["checked_userID"] = array("sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')", "col" => "checked_user", "val" => "");
+		$lookupColumns["deleted_userID"] = array("sql" => "(SELECT `fullName` FROM global_users WHERE ID = '{val}')", "col" => "deleted_user", "val" => "");
+		$lookupColumns["material_source"] = array("sql" => "(CASE '{val}' WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END)", "col" => "material_source", "val" => "");
+		$lookupColumns["material_status"] = array("sql" => "(CASE '{val}' WHEN 1 THEN 'Ready' WHEN 0 THEN 'Not Ready' END)", "col" => "material_status", "val" => "");
+		$lookupColumns["checked"] = array("sql" => "(CASE '{val}' WHEN 1 THEN 'Checked' WHEN 0 THEN 'Not Checked' END)", "col" => "checked", "val" => "");
+		$lookupColumns["pageID"] = array("sql" => "(SELECT TRUNCATE(`page`,0) FROM global_pages WHERE ID = '{val}')", "col" => "page", "val" => "");
+		$lookupColumns["accountID"] = array("sql" => "(SELECT concat(accNum,' | ',account) FROM ab_accounts WHERE ID = '{val}')", "col" => "Account", "val" => "");
+		$lookupColumns["payment_methodID"] = array("sql" => "(SELECT label FROM system_payment_methods WHERE ID = '{val}')", "col" => "payment_method", "val" => "");
 		$lookup = array();
-
-
 		$a = new \DB\SQL\Mapper($f3->get("DB"), "ab_bookings");
 		$a->load("ID='$ID'");
-
-
 		$cfg = $f3->get("CFG");
 		$cfg = $cfg['upload'];
 		//test_array($cfg);
-
 		$user = $f3->get("user");
 		$cID = $user['publication']['cID'];
-
-
 		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
 			if ($a->material_file_store) {
 				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
-
-
 				if ((isset($values['material_status']) && $values['material_status'] == "0" && $a->material_file_store) || (isset($values['material_file_store']) && $a->material_file_store != $values['material_file_store'])) {
-
 					if (file_exists($oldFolder . $a->material_file_store)) {
 						@unlink($oldFolder . $a->material_file_store);
 					}
 				} else {
-
-
 					if (isset($values['dID'])) {
-
 						//echo "old: " . $oldFolder . $a->material_file_store . "<br>";
 						if (file_exists($oldFolder . $a->material_file_store)) {
-
-
 							$newFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $values['dID'] . "/material/";
-
-
 							//echo "new: ". $newFolder . $a->material_file_store ."<br>";
-
 							if (!file_exists($newFolder)) @mkdir($newFolder, 0777, true);
-
 							@rename($oldFolder . $a->material_file_store, $newFolder . $a->material_file_store);
 						}
-
-
 					}
 				}
-
-
 			}
-
-
 		}
-
-
 		$changes = array();
 		$material = false;
 		foreach ($values as $key => $value) {
@@ -877,31 +591,21 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 							$v = $v ? file_size($v) : "";
 							$w = $w ? file_size($w) : "";
 						}
-						$changes[] = array(
-							"k" => $key,
-							"v" => $v,
-							"w" => str_replace("0000-00-00 00:00:00", "", $w)
-						);
+						$changes[] = array("k" => $key, "v" => $v, "w" => str_replace("0000-00-00 00:00:00", "", $w));
 					}
-
 				}
-
 				$a->$key = $value;
 			}
 		}
-
 		if ($opts['dry'] || !$a->dry()) {
 			$a->save();
 		}
-
-
 		if (!$ID) {
 			$label = "Booking Added";
 			$ID = $a->ID;
 		} else {
 			$label = "Booking Edited";
 		}
-
 		$sql = "SELECT 1 ";
 		if ($material) {
 			$sql .= ", (SELECT `production` FROM ab_production WHERE ID = '" . $a->material_productionID . "') AS production";
@@ -910,19 +614,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$sql .= ", " . str_replace("{val}", $col['val'], $col['sql']) . " AS " . $col['col'];
 			$sql .= ", " . str_replace("{val}", $col['was'], $col['sql']) . " AS " . $col['col'] . "_was";
 		}
-
-
 		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
-			$changes[] = array(
-				"k" => $col['col'],
-				"v" => $v[$col['col']],
-				"w" => $v[$col['col'] . "_was"]
-			);
+			$changes[] = array("k" => $col['col'], "v" => $v[$col['col']], "w" => $v[$col['col'] . "_was"]);
 		}
-
-
 		if (isset($opts['section']) && $opts['section']) {
 			switch ($opts['section']) {
 				case "material":
@@ -937,7 +633,6 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 					} else {
 						$label = "Material - Not Ready";
 					}
-
 					break;
 				case "material_approved":
 					if ($a->material_approved == '1') {
@@ -967,47 +662,29 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$label = "Booking removed from a page";
 					}
 					break;
-
-
 			}
 		}
-
-
 		if (count($changes)) bookings::logging($ID, $changes, $label);
-
-
 		$n = new bookings();
 		$n = $n->get($ID);
-
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $n;
 	}
 
 	private static function getLogs($ID) {
 		$timer = new timer();
 		$f3 = \Base::instance();
-
 		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
 			$a[] = $record;
 		}
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
+
 		return $a;
 	}
 
@@ -1016,20 +693,10 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-
-
 		$log = mysql_escape_string(json_encode($log));
 		//	$log = str_replace("'", "\\'", $log);
-
-
 		$f3->get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
-
-		$timer->stop(array(
-			             "Models" => array(
-				             "Class"  => __CLASS__,
-				             "Method" => __FUNCTION__
-			             )
-		             ), func_get_args()
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
 	}
 
@@ -1045,6 +712,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$result["checked"] = "";
 		$result["material"] = "";
 		$result["layout"] = "";
+
 		return $result;
 	}
 }

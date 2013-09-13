@@ -137,7 +137,7 @@ class search extends data {
 
 
 		$return['group'] = $grouping;
-		$return['order'] = $ordering;
+		$return['order'] = array("c" => $ordering_c, "o" => $ordering_d);
 		$return['pagination'] = $pagination;
 
 		$return['stats']['records']= $recordsFound;

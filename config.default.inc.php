@@ -48,3 +48,7 @@ $cfg['git']['docs']['branch'] = "master";
 
 $cfg['default_colours'] = array("1","2","3");
 $cfg['form']['max_accounts'] = 300;
+
+$cfg['nf']['default_cm_calc_css'] = '#cm-block {display    : block; width      : 88px;	font-size  : 10px; text-align : justify;	font-family:"Times New Roman", Times, serif; line-height:100%;} #cm-block p {margin-top    : 3px; margin-bottom : 3px; text-indent   : 0.3cm;}';
+
+$cfg['nf']['whitelist_tags'] = "b,i,em,strong,p,br";

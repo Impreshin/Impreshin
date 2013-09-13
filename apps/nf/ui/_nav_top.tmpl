@@ -11,22 +11,16 @@
 <div id="app-nav-bar">
 <ul class="nav" id="app-nav">
 
-	{% if _user['permissions']['form']['new'] %}
 		<li class="divider-vertical"></li>
 		<li class="icon-btn {% if page['section'] == "form" %} active {% endif %}">
 			<a href="/app/nf/form/" class="nav-icon-btn">
-				{% if  page['section'] == "form" and details['ID']!="" %}
-					<i class="icon-pencil icon-d-grey"></i>
-				{% else %}
 					<i class="icon-plus icon-d-grey"></i>
-				{% endif %}
 			</a>
 		</li>
-	{% endif %}
 	<li class="divider-vertical"></li>
 
 	<li class="{% if page['section'] == "bookings" %} active {% endif %}">
-		<a href="/app/nf/">List</a>
+		<a href="/app/nf/">Articles</a>
 
 	</li>
 	<li class="{% if page['section'] == "planning" %} active {% endif %}">
@@ -39,10 +33,6 @@
 	</li>
 	<li class="{% if page['section'] == "planning" %} active {% endif %}">
 		<a href="/app/nf/">Production</a>
-
-	</li>
-<li class="{% if page['section'] == "planning" %} active {% endif %}">
-		<a href="/app/nf/">Overview</a>
 
 	</li>
 
@@ -84,45 +74,74 @@
 </ul>
 <ul class="nav pull-right" style="margin-left: 0;margin-right: 0;">
 
+
+
+
 	<li class="dropdown" style="padding-left: 0; padding-right: 0; width: 150px; " id="pubSelectID-container">
-		{% if _user['companies']|length < 15 %}
-			<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
-				<div id="nav-pub-list">
-					{{ _user['company']['company'] }}<b class="caret"></b>
-				</div>
-			</a>
+		{% if use_pub %}
+			{% if _user['publications']|length < 15 %}
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+					<div id="nav-pub-list">
+						{{ _user['publication']['publication'] }}<b class="caret"></b>
+					</div>
+				</a>
 
 
 
-			<ul class="dropdown-menu">
-				{% for row in _user['companies'] %}
-					<li class="{% if row['ID'] ==  _user['company']['ID'] %}active{% endif %}">
-						<a href="?acID={{ row['ID'] }}">{{ row['company'] }}</a></li>
-				{% endfor %}
-			</ul>
+				<ul class="dropdown-menu">
+					{% for row in _user['publications'] %}
+						<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}">
+							<a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+					{% for row in _user['publications'] %}
+						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
+					{% endfor %}
+
+				</select>
+			{% endif %}
+
+
 		{% else %}
-			<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
-				{% for row in _user['companies'] %}
-					<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['company']['ID'] %}selected="selected"{% endif %}>{{ row['company'] }}</option>
-				{% endfor %}
+			{% if _user['companies']|length < 15 %}
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+					<div id="nav-pub-list">
+						{{ _user['company']['company'] }}<b class="caret"></b>
+					</div>
+				</a>
 
-			</select>
+
+
+				<ul class="dropdown-menu">
+					{% for row in _user['companies'] %}
+						<li class="{% if row['ID'] ==  _user['company']['ID'] %}active{% endif %}">
+							<a href="?acID={{ row['ID'] }}">{{ row['company'] }}</a></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+					{% for row in _user['companies'] %}
+						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['company']['ID'] %}selected="selected"{% endif %}>{{ row['company'] }}</option>
+					{% endfor %}
+
+				</select>
+			{% endif %}
 		{% endif %}
 
 
 	</li>
 	<li class="divider-vertical"></li>
-	{% if _user['permissions']['administration']['_nav'] %}
+
 		<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
 			<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-cog icon-d-grey"></i>
 			</a>
 			<ul class="dropdown-menu">
 				<li class="nav-header">Application</li>
-				{% if _user['permissions']['administration']['application']['accounts']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts" %} active {% endif %}">
-						<a href="/app/ab/admin/accounts">Accounts</a>
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "checklists" %} active {% endif %}">
+						<a href="/app/nf/admin/checklists">Checklist Items</a>
 					</li>
-				{% endif %}
 				{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
 						<a href="/app/ab/admin/accounts/status" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Account {% endif %}Status</a>
@@ -226,7 +245,6 @@
 			</ul>
 		</li>
 		<li class="divider-vertical"></li>
-	{% endif %}
 	<li style="margin-right: -10px;">
 		<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
 	</li>

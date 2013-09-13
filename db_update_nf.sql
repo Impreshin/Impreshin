@@ -169,11 +169,52 @@ UPDATE `nf_files` SET `datein`=(SELECT datein FROM nf_articles WHERE nf_articles
 
 CREATE TABLE IF NOT EXISTS `nf_stages` (`ID` INT(6) NOT NULL AUTO_INCREMENT, `cID` INT(6) DEFAULT NULL, `stage` VARCHAR(100) DEFAULT NULL, `orderby` INT(6) DEFAULT NULL, PRIMARY KEY (`ID`), KEY `cID` (`cID`));
 
-INSERT INTO `nf_stages` (`ID`, `cID`, `stage`, `orderby`) VALUES (1, @companyID, 'Posted', 1), (2, @companyID, 'Proof', 2), (3, @companyID, 'Ready', 3);
 
-ALTER TABLE `nf_articles_body` ADD `words` INT(6) NULL DEFAULT NULL
-AFTER `datein`;
-ALTER TABLE `nf_articles_body` ADD `percent_orig` DECIMAL(5, 2) NULL DEFAULT NULL
-AFTER `words`;
-ALTER TABLE `nf_articles_body` ADD `percent_last` DECIMAL(5, 2) NULL DEFAULT NULL
-AFTER `words`;
+ALTER TABLE `nf_articles` ADD `stageID_new` INT(6) NULL DEFAULT NULL
+AFTER `stageID`;
+INSERT INTO `nf_stages` (`ID`, `cID`, `stage`, `orderby`) VALUES (1, 0, 'Draft', 0), (2, @companyID, 'Ready',9999), (3, @companyID, 'Posted', 1), (4, @companyID, 'Proof', 2);
+
+
+UPDATE nf_articles SET stageID_new = '1' WHERE stageID = '0';
+UPDATE nf_articles SET stageID_new = '3' WHERE stageID = '1' OR stageID = '2';
+UPDATE nf_articles SET stageID_new = '4' WHERE stageID = '3' OR stageID = '4';
+UPDATE nf_articles SET stageID_new = '2' WHERE stageID = '5';
+
+ALTER TABLE `nf_articles` DROP `stageID`;
+ALTER TABLE `nf_articles` CHANGE `stageID_new` `stageID` INT(6) NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` ADD INDEX (`stageID`);
+
+
+ALTER TABLE `nf_articles_body` ADD `words` INT(6) NULL DEFAULT NULL AFTER `datein`;
+ALTER TABLE `nf_articles_body` ADD `percent_orig` DECIMAL(5, 2) NULL DEFAULT NULL AFTER `words`;
+ALTER TABLE `nf_articles_body` ADD `percent_last` DECIMAL(5, 2) NULL DEFAULT NULL AFTER `words`;
+
+ALTER TABLE `nf_stages` ADD `labelClass` VARCHAR(50) NULL DEFAULT NULL AFTER `orderby`;
+
+ALTER TABLE `nf_article_newsbook` ADD `pageID` INT(6) NULL DEFAULT NULL
+AFTER `placedPage`, ADD INDEX (`pageID`);
+
+ALTER TABLE `nf_articles` ADD INDEX (`authorID`) ;
+ALTER TABLE `nf_articles` DROP `synopsis`, DROP `reference`, DROP `declare`;
+ALTER TABLE `nf_articles` CHANGE `ID` `ID` INT(6) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `nf_categories` CHANGE `category` `category` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_article_types` ADD `labelClass` VARCHAR(30) NULL DEFAULT NULL ;
+ALTER TABLE `nf_stages` CHANGE `labelClass` `labelClass` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `nf_articles` CHANGE `stars` `priority` TINYINT(1) NULL DEFAULT '0';
+
+CREATE TABLE IF NOT EXISTS `nf_checklists` (`ID` INT(6) NOT NULL AUTO_INCREMENT, `cID` INT(6) DEFAULT NULL, `label` VARCHAR(100) DEFAULT NULL, `orderby` INT(3) DEFAULT NULL, PRIMARY KEY (`ID`), KEY `cID` (`cID`));
+
+ALTER TABLE `nf_checklists` ADD `categoryID` INT( 6 ) NULL DEFAULT NULL AFTER `cID`, ADD INDEX ( `categoryID` ) ;
+
+ALTER TABLE `nf_checklists` ADD `description` TEXT NULL DEFAULT NULL AFTER `label`;
+
+ALTER TABLE `nf_articles` ADD `checklist` VARCHAR(250) NULL DEFAULT NULL AFTER `locked_uID` ;
+
+ALTER TABLE `global_companies` ADD `nf_cm_css` TEXT NULL DEFAULT NULL;
+
+CREATE TABLE IF NOT EXISTS `nf_articles_logs` (`ID` INT(6) NOT NULL AUTO_INCREMENT, `aID` INT(6) DEFAULT NULL, `log` TEXT, `label` VARCHAR(100) DEFAULT NULL, `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP, `userID` INT(6) DEFAULT NULL, PRIMARY KEY (`ID`), KEY `userID` (`userID`), KEY `datein` (`datein`), KEY `aID` (`aID`));
+
+ALTER TABLE `nf_files` ADD INDEX (`type`);
+
+ALTER TABLE `nf_article_types` CHANGE `labelClass` `icon` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;

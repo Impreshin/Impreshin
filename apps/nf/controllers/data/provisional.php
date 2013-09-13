@@ -41,8 +41,9 @@ class provisional extends data {
 		$ordering_d = $settings['order']['o'];
 
 
-		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
+		$type_switch = (isset($_REQUEST['type_switch']) && $_REQUEST['type_switch'] != "") ? $_REQUEST['type_switch'] : $settings['type_switch'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+		$stageID = (isset($_REQUEST['stageID']) && $_REQUEST['stageID']!="") ? $_REQUEST['stageID'] : $settings['stageID'];
 
 
 		$search = (isset($_REQUEST['search']) && $_REQUEST['search']!="") ? $_REQUEST['search'] : "";
@@ -67,6 +68,7 @@ class provisional extends data {
 
 
 
+
 		$grouping = array(
 			"g"=> $grouping_g,
 			"o"=> $grouping_d
@@ -81,9 +83,10 @@ class provisional extends data {
 			"group"=> $grouping,
 			"order"=> $ordering,
 
-			"highlight"=> $highlight,
+			"type_switch"=> $type_switch,
 			"filter"=>$filter,
-			"search"=>$search
+			"search"=>$search,
+			"stageID"=>$stageID
 
 		);
 
@@ -102,12 +105,25 @@ class provisional extends data {
 		}
 
 
+		$where = "cID ='".$user['company']['ID']."' ";
+		if ($stageID != "0"){
+			$where .= " AND nf_articles.stageID = '$stageID'";
+		}
 
+		//$where = "1";
+		$where .= " AND archived = '0'";
+		$records = models\articles::getAll($where, $grouping, $ordering);
+
+		$stats = array();
 
 		$return = array();
-
-
-
+		$return['stats'] = $stats;
+		$return['group'] = $grouping;
+		$return['order'] = array(
+			"c"=> $ordering_c,
+			"o"=> $ordering_d
+		);
+		$return['list'] = models\articles::display($records, array("filter" => $filter));
 
 
 		

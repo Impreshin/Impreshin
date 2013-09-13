@@ -134,7 +134,7 @@ class provisional extends data {
 		$return['newsbook'] = $newsbook;
 		$return['group'] = $grouping;
 
-		$return['order'] = $ordering;
+		$return['order'] = array("c" => $ordering_c, "o" => $ordering_d);
 		$return['stats'] = $stats;
 
 		if (!is_numeric($stage))$stage = "";

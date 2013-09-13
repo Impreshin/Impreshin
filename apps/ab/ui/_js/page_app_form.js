@@ -533,25 +533,25 @@ function form_submit() {
 	var $fld = "";
 	$fld = $("#client");
 	if (!$fld.val()) {
-		submit = error_msg($fld, "<strong>Client</strong>, is Required");
+		submit = error_msg($fld, "<strong>Client</strong> is Required");
 	}
 
 	$fld = $("#accountID");
 	if (!$fld.val()) {
-		submit = error_msg($fld, "<strong>Account Number</strong>, is Required");
+		submit = error_msg($fld, "<strong>Account Number</strong> is Required");
 	}
 	$account = "";
 
 	if ($("option:selected", $fld).attr("data-blocked") == '1') {
-		submit = error_msg($fld, "<strong>Account</strong>, is Blocked");
+		submit = error_msg($fld, "<strong>Account</strong> is Blocked");
 	}
 
 	var cm = $("#cm").val();
 	var col = $("#col").val();
 	if (type == '1' && (cm == '' || col == '')) {
 		var msg = "";
-		if (cm == '') msg = "<strong>Cm</strong>, " + msg;
-		if (col == '') msg = "<strong>Columns</strong>, " + msg;
+		if (cm == '') msg = "<strong>Cm</strong> " + msg;
+		if (col == '') msg = "<strong>Columns</strong> " + msg;
 
 		msg = msg + " is Required";
 		submit = error_msg($("#sizearea"), msg);

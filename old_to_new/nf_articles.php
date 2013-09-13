@@ -37,8 +37,8 @@ mysql_select_db($cfg['DB']['database'], $link);
 
 $sql = "
 SELECT ID, title,  	words, percent_last, percent_orig,
-	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID ORDER BY ID ASC LIMIT 0,1) as orig,
-	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID <> (SELECT ID FROM nf_articles_body WHERE nf_articles.ID = aID ORDER BY ID ASC LIMIT 0,1) ORDER BY ID DESC LIMIT 0,1)  as latest
+	(SELECT CONCAT(nf_articles_body.ID,'|||',body) FROM nf_articles_body WHERE nf_articles.ID = aID ORDER BY ID ASC LIMIT 0,1) as orig,
+	(SELECT CONCAT(nf_articles_body.ID,'|||',body) FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID <> (SELECT ID FROM nf_articles_body WHERE nf_articles.ID = aID ORDER BY ID ASC LIMIT 0,1) ORDER BY ID DESC LIMIT 0,1)  as latest
 FROM  nf_articles
 ORDER BY ID DESC LIMIT 0,10";
 $result = mysql_query($sql, $link) or die(mysql_error());
@@ -68,6 +68,21 @@ del, del p {
 while ($row = mysql_fetch_assoc($result)) {
 	$orig = $row['orig'];
 	$latest = $row['latest'];
+	$origID = "";
+	$latestID = "";
+	if ($orig){
+		$orig = explode("|||", $orig);
+		$origID = $orig[0];
+		$orig = $orig[1];
+	}
+if ($latest) {
+		$latest = explode("|||", $latest);
+		$latestID = $latest[0];
+		$latest = $latest[1];
+}
+
+
+
 
 
 	similar_text($orig, $latest, $sim);
@@ -86,7 +101,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	$articles[] = $row;
 
 	$label = "";
-	if ($row['orig']){
+	if ($orig){
 		$label .= "<small>Percent:</small> <span class='label ' style=' margin-right: 5px;'>" . $percent . "</span>";
 	} else {
 		//$label .= "<span class='span1' style='padding: 4px; margin-right: 5px;'> </span>";
@@ -108,6 +123,7 @@ while ($row = mysql_fetch_assoc($result)) {
 
 	echo "<h4>" . $row['title'] . "</h4>\n";
 	echo "<h4>$label</h4>\n";
+	echo "origID: ".$origID." | LatestID: ".$latestID;
 	echo '<div style="padding-top: 10px;">';
 	echo $diffHTML;
 	echo '</div>';

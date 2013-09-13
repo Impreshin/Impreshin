@@ -41,6 +41,7 @@ class app {
 		//if (!$this->user['access'] && $reroute=="") $reroute = "/app/$app/access";
 
 
+	
 
 		if ($reroute){
 			$this->f3->set("stopchain",true);
@@ -75,6 +76,7 @@ class app {
 		$uID = $user['ID'];
 
 
+		$this->access();
 
 		$app = $this->current_app();
 		/*** lookup the settings stored for the user for the current app ***/

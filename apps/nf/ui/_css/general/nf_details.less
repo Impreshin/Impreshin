@@ -1,4 +1,4 @@
-#ab-details-modal {
+#nf-details-modal {
 	width       : 800px;
 	margin-left : -400px;
 	overflow    : hidden;
@@ -22,6 +22,14 @@
 		a {
 			padding-left  : 7px;
 			padding-right : 7px;
+			.badge {
+				background-color: #ccc;
+				float:right;
+			 &.badge-info {
+				 background-color : #3A87AD;
+			 }
+			}
+
 		}
 	}
 	.tab-pane {
@@ -56,17 +64,24 @@
 	}
 	li.tab-icon {
 		height : 36px;
-		width  : 100%;
+
+		.badge {
+
+			background-color: #ccc;
+
+
+		}
 
 	}
 	.tab-icon a {
 		width     : 15px;
 
 		min-width : 15px;
+		display: inline-block;
 
 	}
 	.active .icon-grey {
-		background-image : url(/ui/_images/glyphicons-halflings-d-grey.png);
+		color:#666;
 	}
 	table td, table th {
 		border-top-color : #f1f1f1;
@@ -74,7 +89,12 @@
 	table th {
 		color       : #999;
 		font-weight : bold;
-		text-align  : right;
+		
+	}
+	table.records {
+		tbody , thead {
+			.box-shadow(none);
+		}
 	}
 
 	.modal-header-right {
@@ -83,39 +103,7 @@
 		right    : 30px;
 	}
 
-	.popup {
 
-		.date_list {
-			label {
-				padding      : 3px;
-				cursor       : pointer;
-
-				padding-left : 30px;
-				margin-right : 20px;
-				&:hover {
-					background-color : #DEEBFF;
-				}
-				.help-inline {
-					font-size : 10px;
-					color     : #ccc;
-				}
-			}
-			input {
-				margin-left : -20px;
-			}
-
-			.dates_list_current {
-				border           : 1px solid #ccc;
-				background-color : #f1f1f1;
-
-				margin-bottom    : 5px;
-				margin-right     : 20px;
-				padding-left     : 29px;
-
-			}
-		}
-
-	}
 	.log-changes-table th {
 		text-align : left !important;
 	}
@@ -131,101 +119,93 @@
 		display : none;
 	}
 
-	#material-file-area {
 
-		width                 : 300px;
-		position              : relative;
-		background-color      : whitesmoke;
-		border                : 1px solid #eeeeee;
-		border                : 1px solid rgba(0, 0, 0, 0.05);
-		-webkit-border-radius : 4px;
-		-moz-border-radius    : 4px;
-		border-radius         : 4px;
-		-webkit-box-shadow    : inset 0 1px 1px rgba(0, 0, 0, 0.05);
-		-moz-box-shadow       : inset 0 1px 1px rgba(0, 0, 0, 0.05);
-		box-shadow            : inset 0 1px 1px rgba(0, 0, 0, 0.05);
-
-		height                : 18px;
-		line-height           : 18px;
-		padding               : 4px;
-
-		.progress {
-			position      : absolute;
-			left          : 0;
-			right         : 0;
-			top           : 0;
-			border-radius : 0;
-			display       : none;
-			height        : 26px;
-
-			.bar {
-
-				height : 26px;
-				.opacity(50);
-			}
+	#details-pane-details {
+		ins, ins p {
+			color           : green;
+			background      : #dfd;
+			text-decoration : none;
 		}
-		#material-file-area-filename {
-			position : relative;
-			z-index  : 2;
-			cursor   : pointer;
-			color    : #444;
-			display  : block;
-			width    : 100%;
-
-			&:hover {
-
-			}
-
-			img {
-				margin-right : 10px;
-			}
-		}
-
-	}
-	#details-pane-material {
-		a {
-			display          : block;
-			position         : absolute;
-			top              : 0;
-			left             : 0;
-			right            : 0;
-			bottom           : 0;
-			background-color : red;
-			width            : 100%;
-			height           : 100%;
-			text-align       : center;
-		}
-		#material-pane-header {
-			position : absolute;
-			top      : 0;
-			left     : 0;
-			right    : 0;
-			color    : #444;
-
-		}
-		.glow {
-			.box-shadow(0 0 10px rgba(100, 100, 100, 0.5));
-			margin-left : auto;
-			margin-left : auto;
-			margin-top  : 20px;
+		del, del p {
+			color           : red;
+			background      : #fdd;
+			text-decoration : none;
 		}
 	}
-	#details-advert-size {
-		.box-shadow(0 0 13px rgba(100, 100, 100, 0.2));
-		border   : 1px solid #ccc;
+	#details-info-pane {
 		position : absolute;
-		right    : 25px;
-		bottom   : 33px;
-		.material-state {
-			.opacity(20);
-			position    : absolute;
-			bottom      : 0;
-			margin-left : -64px;
-			left        : 50%;
-			text-align  : center;
+		right    : 5px;
+		bottom   : 0px;
+		width: 220px;
+
+
+		.table {
+			margin-bottom: 0;
 		}
 
+		.photo-slider {
+
+			position : relative;
+			z-index : 0;
+			width : 220px;
+
+
+
+			.item {
+				width            : 170px;
+				height           : 140px;
+				background-color : #f1f1f1;
+				margin-left      : 25px;
+			}
+
+			.carousel-control {
+				border        : 1px solid #FFFFFF;
+				border-radius : 23px;
+				font-size     : 20px;
+				font-weight   : 100;
+				height        : 35px;
+				left          : 15px;
+				line-height   : 30px;
+				margin-top    : -20px;
+				opacity       : 0;
+				top           : 50%;
+				width         : 20px;
+				.transition(opacity 0.5s linear);
+
+				&.right {
+					left:auto;
+					right : 0;
+				}
+				&.left {
+					left : 0;
+					right:auto;
+				}
+			}
+
+			&:hover .carousel-control{
+				opacity : 0.2;
+			}
+
+
+		}
+
+
+
 	}
+	#details-pane-media {
+		table.records{
+			tbody {
+				tr {
+					td {
+						line-height : 24px;
+					}
+				}
+			}
+		}
+		
+		
+	}
+	
 
 	#details-bottom-right-btns {
 		position   : absolute;
@@ -252,5 +232,6 @@
 		}
 
 	}
+
 }
 

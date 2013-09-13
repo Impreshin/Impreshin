@@ -4,30 +4,33 @@
             <ul class="nav nav-pills pull-left">
 
                 <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Articles</button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Comments</button>
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-type_switch-btns">
+                        <button class="btn span1 btn-mini {% if settings['type_switch'] == "1" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-type_switch="1">Articles</button>
+                        <button class="btn span1 btn-mini {% if settings['type_switch'] == "2" %}active{% endif %} " style="width:80px;" data-type_switch="2">Comments</button>
 
                     </div>
                 </li>
                 <li class="divider-vertical"></li>
 	            <li>
 		            <div id="list-filter-btns" data-toggle="buttons-radio" class="btn-group">
-			            <button style="width:40px;" class="btn  btn-mini active" data-filter="*">
+			            <button style="width:40px;" class="btn  btn-mini btn-icon active" data-filter="*">
 				            <i class="icon-asterisk"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini " data-filter="1">
+			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="1">
 				            <i class="icon-lock"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini " data-filter="0">
+			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="0">
 				            <i class="icon-unlock"></i></button>
 		            </div>
 	            </li>
                 <li class="divider-vertical"></li>
 	            <li>
 		            <select name="stageID" id="stageID" class="span3">
-			            <option value="0">Drafts</option>
-			            {% for row in stages %}
-			            <option value="0">{{ row['stage'] }}</option>
-			            {% endfor %}
+			            <option value="0">All</option>
+			            <optgroup label="Stages">
+				            {% for row in stages %}
+					            <option value="{{ row['ID'] }}" {% if settings['stageID'] == row['ID'] %}selected="selected"{% endif %}>{{ row['stage'] }}</option>
+				            {% endfor %}
+			            </optgroup>
+
 		            </select>
 	            </li>
 
@@ -36,55 +39,7 @@
             <div class="pull-right">
 	            <ul id="provisional-stats-bar" class="nav nav-pills pull-left">
 
-		            <li id="toolbar-stats-link" style="position: relative;" class="span6">
-			            <div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
-				            <div id="list-stats-progress-bar" style="width: 0%;" class="bar"></div>
-			            </div>
-			            <div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
-				            <div class="span2"><span class="s dg">Pages:</span><strong> 4 </strong></div>
-				            <div class="span2"><span class="s dg">Cm:</span> <strong>0</strong></div>
-				            <div class="span2"><span class="s dg">Loading:</span> <strong>0.00%</strong></div>
-			            </div>
-			            <div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong>0</strong> &nbsp; | &nbsp; Total Revenue:&nbsp;<strong>R&nbsp;0.00</strong>
-				            <table style="margin-bottom:0; margin-top:10px;" class="table">
-					            <tbody>
-					            <tr>
-						            <th class="r span1">Checked:</th>
-						            <td>
-							            <div class="progress">
-								            <div style="width: 0%;" class="bar"></div>
-								            <div class="text"><strong>0 &nbsp;
-										            <small> &nbsp; 0%</small>
-									            </strong></div>
-							            </div>
-						            </td>
-					            </tr>
-					            <tr>
-						            <th class="r ">Material:</th>
-						            <td>
-							            <div class="progress">
-								            <div style="width: 0%;" class="bar"></div>
-								            <div class="text"><strong>0 &nbsp;
-										            <small> &nbsp; 0%</small>
-									            </strong></div>
-							            </div>
-						            </td>
-					            </tr>
-					            <tr>
-						            <th class="r ">Layout:</th>
-						            <td>
-							            <div class="progress">
-								            <div style="width: 0%;" class="bar"></div>
-								            <div class="text"><strong>0 &nbsp;
-										            <small> &nbsp; 0%</small>
-									            </strong></div>
-							            </div>
-						            </td>
-					            </tr>
-					            </tbody>
-				            </table>
-			            </div>
-		            </li>
+
 	            </ul>
                 <ul class="nav nav-pills pull-right ">
                     <li class="divider-vertical" style="margin-right: 0;"></li>
@@ -101,9 +56,9 @@
                             {% endfor %}
                             <li class="nav-header clearfix">Direction</li>
                             <li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
-                                <a href="#"><i class="icon-chevron-up icon-grey"></i> ASC</a></li>
+                                <a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
                             <li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
-                                <a href="#"><i class="icon-chevron-down icon-grey"></i> DESC</a></li>
+                                <a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
                             <li class="clearfix"></li>
                             <li class="divider"></li>
 

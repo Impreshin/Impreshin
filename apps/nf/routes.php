@@ -10,8 +10,30 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/form',
+	"controller"=>'apps\nf\controllers\form->page_new',
+	"a"=>true,
+	"l"=>true,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/form/@ID',
+	"controller"=>'apps\nf\controllers\form->page_edit',
+	"a"=>true,
+	"l"=>true,
+);
 // administration
 
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/checklists',
+	"controller"=>'apps\nf\controllers\admin\checklists->page',
+	"a"=>true,
+	"l"=>true,
+);
 $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/nf/admin/dates',
@@ -37,9 +59,17 @@ $routes[] =	array(
 	"l"=>true,
 );
 
+$app->route("GET|POST /app/nf/thumb", function ($app, $params) {
+		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_image->thumbnail");
 
+	}
+);
 
+$app->route("GET|POST /app/nf/thumb/@w/@h", function ($app, $params) {
+		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_image->thumbnail");
 
+	}
+);
 
 
 // utilities

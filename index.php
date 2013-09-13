@@ -57,7 +57,7 @@ if (file_exists("./.git/refs/heads/" . $cfg['git']['branch'])) {
 
 
 $app->set('AUTOLOAD', implode("|", $autoload));
-$app->set('PLUGINS', 'lib/f3/');
+$app->set('PLUGINS', 'lib/f3/|lib/mods/');
 $app->set('TZ', $cfg['TZ']);
 $app->set('DEBUG', 2);
 $app->set('HIGHLIGHT', FALSE);
@@ -261,6 +261,7 @@ foreach ($router as $key=> $routes) {
 
 
 $app->route('GET|POST /app/@app/upload/', 'general->upload');
+$app->route('GET|POST /app/@app/upload', 'general->upload');
 
 $app->route("GET|POST /app/@app/download/@folder/@ID/*", function ($f3, $params) use ($app, $key) {
 		$a = $params['app'];

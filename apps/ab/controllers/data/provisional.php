@@ -136,7 +136,7 @@ class provisional extends data {
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
 		$return['stats'] = $stats;
 		$return['group'] = $grouping;
-		$return['order'] = $ordering;
+		$return['order'] = array("c" => $ordering_c, "o" => $ordering_d);
 
 
 		$return['list'] = models\bookings::display($records, array("highlight"=>$highlight,"filter"=>$filter));

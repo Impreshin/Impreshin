@@ -1,10 +1,10 @@
 // _changes.less
 
 .icon-grey, .icon-l-grey {
-	background-image : url("@{iconLGreySpritePath}");
+	color: #ccc;
 }
 .icon-d-grey {
-	background-image : url("@{iconDGreySpritePath}");
+	color:#666;
 }
 
 .modal-backdrop {
@@ -52,26 +52,6 @@
 
 
 
-.dropdown-menu table {
-	margin: 0;
-	tr {
-
-		&:hover, &.active {
-			background-color : @dropdownLinkBackgroundHover;
-			td {
-				color           : @dropdownLinkColorHover;
-				text-decoration : none;
-				cursor: pointer;
-			}
-		}
-		td {
-			font-weight : normal;
-			line-height : 18px;
-			padding     : 3px 15px;
-		}
-
-	}
-}
 
 
 .navbar .brand {
@@ -85,7 +65,12 @@
 
 [class^="icon-"], [class*=" icon-"] {
 	margin-top: 0;
+
+
+
 }
+
+
 
 h1, h2, h3, h4, h5, h6 {
 	margin : 0;
@@ -121,4 +106,10 @@ h4 small { font-size: 12px; }
 
 body.cke_editable{
 	margin:5px;
+}
+table {
+	margin: 0;
+	th {
+		text-align: left;
+	}
 }

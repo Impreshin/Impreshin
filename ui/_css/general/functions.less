@@ -21,3 +21,11 @@
 	bottom   : @bottom;
 	left     : @left;
 }
+
+.transition(@value: all 0.5s ease-in-out) {
+	-moz-transition    : @value;
+	-o-transition      : @value;
+	-webkit-transition : @value;
+	-ms-transition     : @value;
+	transition         : @value;
+}

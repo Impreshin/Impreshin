@@ -1,0 +1,109 @@
+.file-icon {
+	height             : 24px;
+	width              : 18px;
+	background         : rgb(255, 255, 255);
+	background         : -moz-linear-gradient(45deg, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 80%, rgba(242, 242, 242, 1) 84%);
+	background         : -webkit-gradient(linear, left bottom, right top, color-stop(77%, rgba(255, 255, 255, 1)), color-stop(80%, rgba(255, 255, 255, 1)), color-stop(84%, rgba(242, 242, 242, 1)));
+	background         : -webkit-linear-gradient(45deg, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 80%, rgba(242, 242, 242, 1) 84%);
+	background         : -o-linear-gradient(45deg, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 80%, rgba(242, 242, 242, 1) 84%);
+	background         : -ms-linear-gradient(45deg, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 80%, rgba(242, 242, 242, 1) 84%);
+	background         : linear-gradient(45deg, rgba(255, 255, 255, 1) 77%, rgba(255, 255, 255, 1) 80%, rgba(242, 242, 242, 1) 84%);
+	filter             : progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f2f2f2', GradientType=1);
+	margin             : 0 10px;
+	position           : relative;
+	-webkit-box-shadow : 0 1px 3px rgba(0, 0, 0, .5), inset 0 0 0 1px white;
+	-moz-box-shadow    : 0 1px 3px rgba(0, 0, 0, .5), inset 0 0 0 1px white;
+	box-shadow         : 0 1px 3px rgba(0, 0, 0, .5), inset 0 0 0 1px white;
+	float              : left;
+	&:before {
+		content            : "";
+		position           : absolute;
+		height             : 10px;
+		width              : 24px;
+		top                : 9px;
+		left               : 4px;
+		-webkit-box-shadow : 0 1px 1px rgba(0, 0, 0, .3);
+		-moz-box-shadow    : 0 1px 1px rgba(0, 0, 0, .3);
+		box-shadow         : 0 1px 1px rgba(0, 0, 0, .3);
+	}
+	&:after {
+		position               : absolute;
+		height                 : 6px;
+		width                  : 18px;
+		top                    : 9px;
+		left                   : 6px;
+		color                  : rgba(255, 255, 255, 1);
+		-webkit-font-smoothing : anti-aliased;
+		-moz-font-smoothing    : anti-aliased;
+		font-smoothing         : anti-aliased;
+		font                   : bold 8px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+		text-transform         : uppercase;
+		letter-spacing         : 1px;
+	}
+	&.file {
+		&:before {
+			background : #ccc;
+		}
+		&:after {
+			content : "file";
+		}
+	}
+
+	&.pdf {
+		&:before {
+			background : #ff1900;
+		}
+		&:after {
+			content : "PDF";
+		}
+
+	}
+	&.doc {
+		&:before {
+			background : #0088cc;
+		}
+		&:after {
+			content : "DOC";
+		}
+
+	}
+	&.xls {
+		&:before {
+			background : #00b234;
+		}
+		&:after {
+			content : "XLS";
+		}
+
+	}
+	&.zip {
+		&:before {
+			background : #c2ba1d;
+		}
+		&:after {
+			content : "ZIP";
+		}
+
+	}
+	&.vid {
+		&:before {
+			background : #000;
+		}
+		&:after {
+			content : "VID";
+		}
+
+	}
+	&.img {
+		
+		&:before {
+			background : #f1e9d0;
+		}
+		&:after {
+			content : "IMG";
+			color : rgba(0, 0, 0, 1);;
+		}
+
+	}
+
+}
