@@ -56,8 +56,8 @@ class comments {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *
-			FROM nf_comments
+			SELECT nf_comments.*, global_users.fullName
+			FROM nf_comments INNER JOIN global_users ON nf_comments.uID = global_users.ID
 			$where
 			$orderby
 		");
@@ -68,7 +68,55 @@ class comments {
 		return $return;
 	}
 
-	
+	public static function display($data) {
+		$return = array();
+
+		$rows = array();
+
+		foreach ($data as $item) {
+
+
+
+			$item['children'] = array();
+			$rows[$item['ID']] = $item;
+
+		
+		}
+
+		
+
+
+
+		foreach ($rows as $k => &$v) {
+			if ($v['parentID'] == $v['ID']) continue;
+			if (isset($rows[$v['parentID']])) {
+				$rows[$v['parentID']]['children'][] = & $v;
+			}
+		}
+
+		foreach ($rows as $item) {
+			if ($item['parentID']) unset($rows[$item['ID']]);
+		}
+
+		//	array_splice($rows, 2);
+		//test_array($rows);
+
+
+		foreach ($rows as $item) {
+
+
+
+			$return[] = $item;
+
+
+		}
+		
+		
+
+
+
+		return $return;
+	}
 
 	public static function save($ID, $values) {
 		$timer = new timer();

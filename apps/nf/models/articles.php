@@ -20,14 +20,10 @@ class articles {
 		$return = "((((((((((( nf_articles INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN global_users ON nf_articles.authorID = global_users.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN nf_article_newsbook ON nf_articles.ID = nf_article_newsbook.aID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID )";
 
 
-		if ($show_newsbooks){
-			$return = "((((((( nf_articles INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) ON nf_articles.ID = nf_article_newsbook.aID";
-		} else {
-			$return = "((((((( nf_articles INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID)";
-		}
-		
+			$return = "(((((((( nf_articles INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) ON nf_articles.ID = nf_article_newsbook.aID";
 
 		
+		$return = "(((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) ON nf_articles.ID = nf_article_newsbook.aID ) ) ";
 
 		return $return;
 	}
@@ -52,6 +48,12 @@ class articles {
 				nf_stages.ID AS stageID,
 				nf_stages.stage AS stage,
 				nf_stages.labelClass AS stageLabelClass,
+				global_users_1.fullName AS locked_fullName,
+				global_users_3.fullName AS rejected_fullName,
+				nf_priorities.priority AS priority,
+				if(global_users_1.ID,1,0) AS locked,
+				if(nf_stages.ID='2',1,0) AS ready,
+				if(global_dates.ID, 1, 0) AS in_newsbook,
 				(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND stageID ='1' ORDER BY ID DESC  LIMIT 0,1) as draft,
 	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID  ORDER BY ID DESC LIMIT 0,1)  as body
 
@@ -72,7 +74,10 @@ class articles {
 				$f[] = $file;
 			}
 			$return['media'] = files::display($f);
-			$return['comments'] = comments::getAll("aID='" . $return['ID'] . "'", "ID DESC");
+			
+			$comments = comments::getAll("aID='" . $return['ID'] . "'", "ID DESC");
+			$return['commentCount'] = count($comments);
+			$return['comments'] = comments::display($comments);
 			
 			//$return['logs'] = articles::getLogs($return['ID']);
 		} else {
@@ -82,6 +87,29 @@ class articles {
 		);
 
 		return $return;
+	}
+	public static function getNewsbooks($aID,$orderby){
+		$timer = new timer();
+		$f3 = \Base::instance();
+		if ($orderby) {
+			$orderby = "ORDER BY " . $orderby . "";
+		} else {
+			$orderby = " ";
+		}
+
+		$return = $f3->get("DB")->exec("
+			SELECT nf_article_newsbook.*, global_publications.ID AS pID, global_publications.publication, global_dates.ID AS dID, global_dates.publish_date, global_pages.ID AS pageID, FLOOR(global_pages.page) AS page, global_users.fullName
+			FROM (((nf_article_newsbook LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) INNER JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) INNER JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) INNER JOIN global_users ON nf_article_newsbook.uID = global_users.ID
+			WHERE nf_article_newsbook.aID = '$aID'
+			$orderby
+		"
+		);
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
+		);
+
+		return $return;
+		
 	}
 
 	public static function getAll_count($where = "") {
@@ -145,11 +173,11 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","newsbook_used"=>false)) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","usepub"=>"")) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {
-			$where = "HAVING " . $where . "";
+			$where = "WHERE " . $where . "";
 		} else {
 			$where = " ";
 		}
@@ -162,7 +190,7 @@ class articles {
 		if ($select) {
 			$select = " ," . $select;
 		}
-		if ($options['limit']) {
+		if (isset($options['limit'])&&$options['limit']) {
 			if (strpos($options['limit'], "LIMIT") === false) {
 				$limit = " LIMIT " . $options['limit'];
 			} else {
@@ -172,20 +200,17 @@ class articles {
 			$limit = " ";
 		}
 
-
-		$nb = "";
-		if ($options['newsbook_used']){
-			$from = self::_from(true);
-			$nb = " if(global_dates.ID,1,0) as used, GROUP_CONCAT(CONCAT(global_publications.publication,' (', global_dates.publish_date,' | ',FLOOR(global_pages.page),')')) AS newsbooks,";
-
-		} else {
-			$from = self::_from();
+		$usepub_placed = "";
+		if (isset($options['usepub'])&&$options['usepub']) {
+			$usepub_placed = "AND p_nb.pID = '".$options['usepub']."'";
+			
 		}
-		
 
-		//test_array($limit);
+		//test_array($usepub_placed); 
+		$from = self::_from(true);
+
 		$sql = "
-			SELECT
+			SELECT DISTINCT
 			 	nf_articles.*,
 				nf_article_types.type AS type,
 				nf_article_types.icon AS type_icon,
@@ -194,21 +219,32 @@ class articles {
 				global_users.ID AS authorID,
 				nf_stages.ID AS stageID,
 				nf_stages.stage AS stage,
-				nf_stages.labelClass AS stageLabelClass
-				, $nb
+				nf_stages.labelClass AS stageLabelClass,
+				global_users_1.fullName AS locked_fullName,
+				global_users_3.fullName AS rejected_fullName,
+				nf_priorities.priority AS priority,
+				if(global_users_1.ID,1,0) AS locked,
+				if(nf_stages.ID='2',1,0) AS ready,
+				if(global_dates.ID, 1, 0) AS in_newsbook,
+				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $usepub_placed),1,0) as placed,
+				(SELECT TRIM(GROUP_CONCAT(CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, if(g_pages.ID,CONCAT(' | ',FLOOR(g_pages.page)),''),')'))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  AS newsbooks,
 				(SELECT count(ID) FROM nf_comments WHERE nf_comments.aID =  nf_articles.ID) AS commentCount,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='2') AS filesCount
-			$select
+			$select           ,
+			nf_articles.ID as ID
 			FROM ($from )
 
-			GROUP BY nf_articles.ID
+			
 			$where
 			$orderby
 			$limit
 		";
-		//echo $sql;
-		//exit();
+		if (isset($_GET['sql'])){
+			echo $sql;exit();
+		}
+		//
+		//
 		$result = $f3->get("DB")->exec($sql);
 		$return = $result;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
@@ -363,6 +399,10 @@ class articles {
 				$orderby = "COALESCE(nf_categories.category,'zzzzzzzz') $ordering, " . $orderby;
 				$arrange = "nf_categories.category as heading";
 				break;
+			case "priority":
+				$orderby = "COALESCE(nf_priorities.orderby,'99999999') $ordering, " . $orderby;
+				$arrange = "COALESCE(nf_priorities.priority,'') as heading";
+				break;
 
 			case "none":
 				$orderby = "" . $orderby;
@@ -387,6 +427,7 @@ class articles {
 			$a->deleted_user = $user['fullName'];
 			$a->deleted_date = date("Y-m-d H:i:s");
 			$a->deleted_reason = ($reason);
+			$a->dateChanged = date("Y-m-d H:i:s");
 			$a->save();
 			$changes = array(array("k" => "Deleted", "v" => "1", "w" => ""), array("k" => "deleted_user", "v" => $user['fullName'], "w" => ""), array("k" => "deleted_reason", "v" => $reason, "w" => ""));
 			self::logging($a->ID, $changes, "Article Deleted");
@@ -439,15 +480,18 @@ class articles {
 					$words = htmlspecialchars_decode($body);
 					$words = $f3->scrub($words);
 
+					$_body = $words;
+					$_draft = $f3->scrub($details['draft']);
+					$_dbody = $f3->scrub($details['body']);
 
 					$values['words'] = str_word_count($words);
 
-					similar_text($details['draft'], $body, $sim);
+					similar_text($_draft, $_body, $sim);
 					$percent = number_format((float)100 - $sim, 2, '.', '');
 
 					$values['percent_orig'] = $percent;
 
-					similar_text($details['body'], $body, $sim);
+					similar_text($_dbody, $_body, $sim);
 					$percent = number_format((float)100 - $sim, 2, '.', '');
 
 					$values['percent_last'] = $percent;
@@ -512,6 +556,10 @@ class articles {
 				}
 				$a->$key = $value;
 			}
+		}
+		
+		if (count($changes)){
+			$a->dateChanged = date("Y-m-d H:i:s");
 		}
 		if ($opts['dry'] || !$a->dry()) {
 			$a->save();

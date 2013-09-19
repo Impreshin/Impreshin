@@ -9,8 +9,8 @@ $(document).ready(function () {
 	$("#stageID").select2();
 	scrolling(api);
 
-	var type_switch = $.bbq.getState("type_switch");
-	type_switch = (type_switch) ? type_switch : "1";
+	var highlight = $.bbq.getState("highlight");
+	highlight = (highlight) ? highlight : "1";
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
 
@@ -18,9 +18,9 @@ $(document).ready(function () {
 		$("#settings-modal").modal('show');
 	}
 
-	if ($.bbq.getState("type_switch")) {
-		$("#list-type_switch-btns button[data-type_switch].active").removeClass("active");
-		$("#list-type_switch-btns button[data-type_switch='" + type_switch + "']").addClass("active");
+	if ($.bbq.getState("highlight")) {
+		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
+		$("#list-highlight-btns button[data-highlight='" + highlight + "']").addClass("active");
 	}
 	if ($.bbq.getState("filter")) {
 		$("#list-filter-btns button[data-filter].active").removeClass("active");
@@ -114,16 +114,16 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-type_switch-btns button, #list-filter-btns button", function (e) {
+	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
-		var type_switch = $("#list-type_switch-btns button.active").attr("data-type_switch");
-		type_switch = (type_switch) ? type_switch : "checked";
+		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
+		highlight = (highlight) ? highlight : "locked";
 		var filter = $("#list-filter-btns button.active").attr("data-filter");
 		filter = (filter) ? filter : "*";
 
-		$.bbq.pushState({"type_switch": type_switch, "filter":filter});
+		$.bbq.pushState({"highlight": highlight, "filter":filter});
 		getList();
 
 	});
@@ -248,8 +248,8 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder) ? groupOrder : "";
 
-	var type_switch = $("#list-type_switch-btns button.active").attr("data-type_switch");
-	type_switch = (type_switch) ? type_switch : "";
+	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
+	highlight = (highlight) ? highlight : "";
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter) ? filter : "";
 
@@ -266,7 +266,7 @@ function getList(settings) {
 	$("#whole-area .loadingmask").show();
 
 
-	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "type_switch": type_switch, "filter": filter, "order": order, "search": search, "stageID": stageID}, function (data) {
+	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search, "stageID": stageID}, function (data) {
 		var $recordsList = $("#record-list");
 		if (data['list'][0]) {
 			$recordsList.jqotesub($("#template-records"), data['list']);
@@ -277,16 +277,22 @@ function getList(settings) {
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
 		var $scrollpane = $("#whole-area .scroll-pane");
-		if (orderingactive) {
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-		} else {
-			if (settings && settings.maintain_position) {
+
+		setTimeout(function(){
+			if (orderingactive) {
 				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
 			} else {
-				$scrollpane.jScrollPane(jScrollPaneOptions);
-			}
+				if (settings && settings.maintain_position) {
+					$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+				} else {
+					$scrollpane.jScrollPane(jScrollPaneOptions);
+				}
 
-		}
+			}
+		}, 400)
+		
+		
+		
 
 		var order = data['order']['c'];
 		$(".order-btn[data-col='" + order + "'] .indicator", $recordsList).show();
@@ -310,7 +316,10 @@ function getList(settings) {
 			if ($("#record-list .record[data-ID='" + goto + "']").length) {
 				var api = $scrollpane.data("jsp");
 				if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
-					api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
+					setTimeout(function(){
+						api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
+					}, 500)
+					
 				}
 
 			}

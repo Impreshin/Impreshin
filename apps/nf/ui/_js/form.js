@@ -66,7 +66,7 @@ $(document).ready(function () {
 	$(document).on("click", "#btn-stage-checkbox", function () {
 		var $this = $(this);
 		var $checkbox = $this.find("input");
-		$checkbox.prop("checked", !$checkbox.prop("checked"));
+	//	$checkbox.prop("checked", !$checkbox.prop("checked"));
 
 		var $btn = $this.closest("form").find("button[type='submit']");
 		if ($this.find("input").is(":checked")) {
@@ -208,6 +208,7 @@ $(document).ready(function () {
 		$("#form-diff > article").hide();
 		$("#form-diff-" + type).show();
 	});
+
 	
 
 });
@@ -266,20 +267,25 @@ function getData() {
 		var $bookingTypeBtns = $("#booking-type");
 		$bookingTypeBtns.find("button[data-type='" + type + "']").trigger("click");
 
-		$("#slider-text").html(_priority[data.details.priority]);
+		//$("#slider-text").html(_priority[data.details.priority]);
 
 		//console.log(data.details.priority);
 
 		formLoaded(data);
-		resizeform();
-
-		$("#whole-area .loadingmask").fadeOut(transSpeed);
+		resizeform()
+		setTimeout(resizeform, 1000)
+		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}(
+			//
+		));
 	}, "data");
 
 }
 
 
 function formLoaded(data) {
+	
+	var pane = $(".form-body").jScrollPane(jScrollPaneOptionsMP);
+	var api = pane.data("jsp");
 	var $cm = $("#cm-block");
 	var body = "";
 	if ($("#body").length) {
@@ -288,41 +294,69 @@ function formLoaded(data) {
 			var body = e.editor.getData()
 			$cm.html(body).trigger("change");
 		});
+		instance.on('focus', function (e) {
+			
+				api.scrollToElement("#body-area", true, true);
+
+			
+			
+		
+		});
 
 		body = $("#body").val();
 		
 	}
 	$cm.html(body).trigger("change");
 
-
+	
 
 
 	$(".caption_boxes").each(function(){
 		var ID = $(this).attr("id");
-		CKEDITOR.replace(ID, caption_settings);
+		var instance = CKEDITOR.replace(ID, caption_settings);
+		
+		instance.on('focus', function (e) {
+			var parentID = $("#"+ID).closest(".file-record").attr("ID");
+			api.scrollToElement("#"+parentID, true, true);
+
+
+
+
+		});
+		
 	});
 
 	checklistBtn();
 	//getChecklistData();
 
-	$("select").select2();
+	$("select.select2").select2();
 
 
 	$("#rightpane-top").css("bottom", $("#rightpane-bottom").outerHeight());
 
+	var $select = $( "#priorityID");
+	$("#slider-text").html($("option:selected",$select).text())
 
-	$("#slider").slider({
-		value: data.details.priority,
-		min  : 0,
-		max  : 5,
-		step : 1,
-		slide: function (event, ui) {
-
-			$("#slider-text").html(_priority[ui.value]);
-			$("#priority").val(ui.value);
+	
+	var slider = $("#slider").slider({
+		min: 1,
+		max: 6,
+		range: "min",
+		value: $select[ 0 ].selectedIndex + 1,
+		slide: function( event, ui ) {
+			//console.log(ui.value - 1); 
+			$select[ 0 ].selectedIndex = ui.value - 1;
+			$("#slider-text").html($("option:selected",$select).text())
+			$select.trigger("change");
 		}
 	});
-	$("#amount").val("$" + $("#slider").slider("value"));
+	
+	
+	
+	
+	
+	
+	
 
 
 
@@ -416,6 +450,7 @@ function formLoaded(data) {
 
 		}
 	});
+	replace_btn();
 }
 function resizeform() {
 
@@ -472,7 +507,6 @@ function form_submit() {
 	$form = $("#main-form");
 	$(".fielderror", $form).remove();
 
-
 	var type = $("#booking-type button.active").attr("data-type");
 
 	if (!type) {
@@ -502,10 +536,26 @@ function form_submit() {
 		var data = $form.serialize();
 		$.post("/app/nf/save/articles/form?ID=" + var_record_ID + "&type=" + type, data, function (response) {
 
+
+			if (response['error'] && response['error'].length) {
+				var str = "";
+				for (var i in response.error) {
+					$fld = $("#"+response.error[i].field) ;
+					error_msg($fld, response.error[i].msg);
+					
+				}
+				$("#pagecontent .loadingmask").fadeOut(transSpeed);
+				resizeform();
+			} else {
+				
+				getData();
+				$("#pagecontent .loadingmask").fadeOut(transSpeed);
+				$("#modal-form").jqotesub($("#template-modal-form"), response).modal("show");
+			}
+			
+			
 			//$("#record-ID").val(response[0]['ID']);
-			getData();
-			$("#pagecontent .loadingmask").fadeOut(transSpeed);
-			$("#modal-form").jqotesub($("#template-modal-form"), response).modal("show");
+			
 		});
 	}
 
@@ -519,4 +569,96 @@ function error_msg($fld, msg) {
 	$fld.prepend(str);
 	return false;
 
+}
+function replace_btn() {
+	$(".file-replace-btn").each(function () {
+		var $this = $(this);
+
+		var ID = $this.attr("data-id");
+		var filename = $this.attr("data-filename");
+		var folder = $this.attr("data-folder");
+		var $progress = $this.parent().find(".progress");
+
+		var pluploader = new plupload.Uploader({
+			browse_button: this,
+			container    : 'btn-container-' + ID,
+			// General settings
+			runtimes     : 'html5,gears,flash,silverlight',
+			url          : '/app/nf/upload/?folder=' + folder,
+
+			chunk_size         : '1mb',
+			unique_names       : true,
+			multiple_queues    : false,
+			multi_selection    : false,
+
+			// Specify what files to browse for
+			filters            : [
+				{title: "Image files", extensions: _allowedFiles['1'].img.join(",")},
+				{title: "files", extensions: allowedFileExtentions}
+			],
+
+			// Flash settings
+			flash_swf_url      : '/ui/plupload/js/plupload.flash.swf',
+
+			// Silverlight settings
+			silverlight_xap_url: '/ui/plupload/js/plupload.silverlight.xap',
+
+
+			init: {
+				Refresh: function (up) {
+					resizeform();
+				}, 
+				FilesAdded: function (up, files) {
+					if (confirm("Are you sure you want to replace the existing file with:\n " + files[0].name + "?")) {
+						$this.find(".icon-exchange").hide();
+						$progress.show().find(".bar").css("width", "0");
+						
+						up.refresh();
+						up.start();
+						
+					}
+				},
+				UploadProgress: function(up, file){
+					$progress.show().find(".bar").css("width", file.percent + "%");
+				},
+				Error: function (up, err) {
+					//console.log("Error: " + err.code + ", Message: " + err.message + (err.file ? ", File: " + err.file.name : ""));
+				},
+				FileUploaded: function (up, file, response) {
+
+					$progress.hide();
+					$this.find(".icon-exchange").show();
+					//console.log(file);
+
+					var $fileblock = $this.closest("article.row");
+					$fileblock.find(".file-filename_orig-field").val(file.name);
+					$fileblock.find(".file-filename-field").val(file.target_name);
+					
+					
+					var details = filedetails(file.target_name);
+					var $area = $(".file-icon-area", $fileblock);
+					
+					//console.log(details); 
+					if (details['fileType']=='1'){
+						$area.html('<img src="/app/nf/thumb/110/90?file='+ folder+'/'+ file.target_name+'" alt=""/>');
+						
+					} else {
+						$area.html('<div class="file-icon ' + details.icon +'"></div><div class="clearfix"></div>');
+					}
+				}
+				
+			}
+
+
+
+		});
+		pluploader.bind('Init', function (up, params) {
+			//console.log("Current runtime environment: " + params.runtime);
+		});
+		pluploader.init(function () {
+		});
+		
+
+
+	});
 }

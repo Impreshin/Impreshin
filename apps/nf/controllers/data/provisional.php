@@ -41,9 +41,9 @@ class provisional extends data {
 		$ordering_d = $settings['order']['o'];
 
 
-		$type_switch = (isset($_REQUEST['type_switch']) && $_REQUEST['type_switch'] != "") ? $_REQUEST['type_switch'] : $settings['type_switch'];
+		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
-		$stageID = (isset($_REQUEST['stageID']) && $_REQUEST['stageID']!="") ? $_REQUEST['stageID'] : $settings['stageID'];
+	//	$stageID = (isset($_REQUEST['stageID']) && $_REQUEST['stageID']!="") ? $_REQUEST['stageID'] : $settings['stageID'];
 
 
 		$search = (isset($_REQUEST['search']) && $_REQUEST['search']!="") ? $_REQUEST['search'] : "";
@@ -82,11 +82,10 @@ class provisional extends data {
 		$values[$section] = array(
 			"group"=> $grouping,
 			"order"=> $ordering,
-
-			"type_switch"=> $type_switch,
+			"highlight"=> $highlight,
 			"filter"=>$filter,
 			"search"=>$search,
-			"stageID"=>$stageID
+			//"stageID"=>$stageID
 
 		);
 
@@ -105,25 +104,37 @@ class provisional extends data {
 		}
 
 
-		$where = "cID ='".$user['company']['ID']."' ";
-		if ($stageID != "0"){
-			$where .= " AND nf_articles.stageID = '$stageID'";
-		}
+		$where = "nf_articles.cID ='".$user['company']['ID']."' ";
+		
+		
+		
+		
 
 		//$where = "1";
-		$where .= " AND archived = '0'";
-		$records = models\articles::getAll($where, $grouping, $ordering);
+		$where .= " AND archived != '1'";
+		$options = array();
+		if ($highlight=="used"){
+			$options = array("newsbook_used"=>true);
+		}
+		
+		
+		
+		
+		$records = models\articles::getAll($where, $grouping, $ordering,$options);
+		$stats = models\record_stats::stats($records,array("locked","stages","in_newsbook","placed"));
 
-		$stats = array();
-
+		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
+		
+		
 		$return = array();
 		$return['stats'] = $stats;
+		
 		$return['group'] = $grouping;
 		$return['order'] = array(
 			"c"=> $ordering_c,
 			"o"=> $ordering_d
 		);
-		$return['list'] = models\articles::display($records, array("filter" => $filter));
+		$return['list'] = models\articles::display($records, array("highlight"=>$highlight,"filter" => $filter));
 
 
 		

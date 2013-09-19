@@ -12,6 +12,20 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/newsbook',
+	"controller"=>'apps\nf\controllers\newsbook->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/production',
+	"controller"=>'apps\nf\controllers\production->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/form',
 	"controller"=>'apps\nf\controllers\form->page_new',
 	"a"=>true,
@@ -31,6 +45,13 @@ $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/nf/admin/checklists',
 	"controller"=>'apps\nf\controllers\admin\checklists->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/priorities',
+	"controller"=>'apps\nf\controllers\admin\priorities->page',
 	"a"=>true,
 	"l"=>true,
 );

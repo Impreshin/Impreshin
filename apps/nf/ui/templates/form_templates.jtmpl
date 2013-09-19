@@ -57,7 +57,7 @@
 									<article id="form-diff-1">
 
 
-										<div class="span11 control-group" style=" min-height:440px;">
+										<div class="span11 control-group" style=" min-height:440px; padding-top:5px;" id="body-area" >
 											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body"><%= this.details.body||"" %></textarea>
 										</div>
 									</article>
@@ -93,7 +93,7 @@
 								<div id="rightpane-top">
 									<section class="block control-group" style="margin-top:10px;">
 										<h4>Author</h4>
-										<select name="authorID" id="authorID" style="width:100%;">
+										<select name="authorID" id="authorID" style="width:100%;"  class="select2">
 											{% for row in authors %}
 												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
 											{% endfor %}
@@ -102,7 +102,7 @@
 									</section>
 									<section class="block control-group" style="">
 										<h4>Category</h4>
-										<select name="categoryID" id="categoryID" style="width:100%;">
+										<select name="categoryID" id="categoryID" style="width:100%;" class="select2">
 											{% for row in categories %}
 												<option value="{{ row['ID'] }}" data-checklist-count="{{ row['checklistCount'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_category) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
 											{% endfor %}
@@ -112,7 +112,7 @@
 
 									<section class="block control-group" style="">
 										<h4>Meta</h4>
-										<textarea name="meta" id="meta" cols="30" rows="5" style="width:94%;"></textarea>
+										<textarea name="meta" id="meta" cols="30" rows="5" style="width:94%;"><%= this.details.meta||"" %></textarea>
 									</section>
 
 
@@ -135,14 +135,14 @@
 									<section class="block" id="tools-block" style="margin-top:10px;">
 
 										<div class="btn-group" style="margin-left:-4px;">
-											<button type="button" id="btn-tools-comments" class="btn btn-mini span1" rel="tooltip" title="Comments">
+											<button disabled type="button" id="btn-tools-comments" class="btn btn-mini span1" rel="tooltip" title="Comments">
 												<i class="icon-comment-alt"></i>
 											</button>
 											<button type="button" id="btn-tools-checklist" class="btn btn-mini span1" rel="tooltip" title="Check List">
 												<i class="icon-check"></i>
 											</button>
 
-											<button type="button" id="comments" class="btn btn-mini span1 g" rel="tooltip" title="Dictionary/Thesaurus">
+											<button disabled type="button" id="comments" class="btn btn-mini span1 g" rel="tooltip" title="Dictionary/Thesaurus">
 												<i class="icon-circle-blank"></i>
 											</button>
 											<button type="button" id="btn-tools-search" class="btn btn-mini span1" rel="tooltip" title="Use meta to perform a news search">
@@ -181,8 +181,13 @@
 							<div class="span1" style="padding-top:5px;">Priority:</div>
 							<div class="span3" style="padding-top:10px;">
 								<div id="slider"></div>
+								<select name="priorityID" id="priorityID" style="display:none;">
+									{% for row in priorities %}
+										<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.details.priorityID) { %>selected="selected"<% } %>>{{ row['priority'] }}</option>
+									{% endfor %}
+								</select>
 							</div>
-							<div class="span1 s g l" style="padding-top:5px;" id="slider-text">(low)</div>
+							<div class="span1 s g l" style="padding-top:5px;" id="slider-text"></div>
 						</span>
 
 
@@ -209,9 +214,10 @@
 						<div class="btn-group" style="margin-left:10px;">
 
 							<% if (this.stageNext.ID) { %>
-							<button type="button" class="btn span1" title="Tick this checkbox to save and move the record to <%= this.stageNext.stage %>" rel="tooltip" data-placement="top" id="btn-stage-checkbox" data-stage-label="<%= this.stageNext.stage %>">
+							
+							<label class="btn span1" title="Tick this checkbox to save and move the record to <%= this.stageNext.stage %>" rel="tooltip" data-placement="top" id="btn-stage-checkbox" data-stage-label="<%= this.stageNext.stage %>">
 								<input type="checkbox" style="margin:0;" name="stageID" id="stageID" value="<%= this.stageNext.ID %>"/>
-							</button>
+							</label>
 							<% } %>
 							<button class="btn btn-primary span4" style="" type="submit">Save Record</button>
 						</div>
@@ -227,6 +233,7 @@
 
 		<input type="hidden" id="priority" name="priority" value="<%= this.details.priority||"0" %>"/>
 		<input type="hidden" id="checklist" name="checklist" value="<%= this.details.checklist||"" %>"/>
+		<input type="hidden" id="current_stage_ID" name="current_stage_ID" value="<%= this.details.stageID||"1" %>"/>
 		<input type="hidden" id="cm" name="cm" value=""/>
 	</form>
 	]]>
@@ -235,23 +242,29 @@
 	<![CDATA[
 
 
-	<article class="row file-record">
+	<article class="row file-record" id="file-record-<%= this.ID||this.tempID %>" >
 		<input type="hidden" id="file-filename-<%= this.ID||this.tempID %>" name="file-filename-<%= this.ID||this.tempID %>" class="file-filename-field" value="<%= this.filename %>"/>
 		<input type="hidden" id="file-filename_orig-<%= this.ID||this.tempID %>" name="file-filename_orig-<%= this.ID||this.tempID %>" class="file-filename_orig-field" value="<%= this.filename_orig %>"/>
 		<input type="hidden" id="file-ID-<%= this.ID||this.tempID %>" name="file-ID-<%= this.ID||this.tempID %>" value="<%= this.ID %>"/>
 
 
-		<div class="span2">
-			<% if (this.fileType=="1"){ %>
-			<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" alt=""/>
+		<div class="span2"  >
+			
+			
+				
+			<div class="file-icon-area">
+				<% if (this.fileType=="1"){ %>
+				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" alt=""/>
 
-			<% } else { %>
-			<div class="file-icon <%= this.icon %>"></div>
-			<div class="clearfix"></div>
-			<% } %>
+				<% } else { %>
+				<div class="file-icon <%= this.icon %>"></div>
+				<div class="clearfix"></div>
+				<% } %>
+			</div>
+			
+			
 
-
-
+			
 
 
 		</div>
@@ -262,6 +275,16 @@
 			<div class="file-buttons">
 				<div class="btn-group">
 					<button class="btn btn-mini span1 dg" type="button"><i class="icon-bookmark"></i></button>
+					<div class="span1 replace-area" id="btn-container-<%= this.ID||this.tempID %>" title="Replace file">
+						<button class="btn span1 btn-mini file-replace-btn" data-id="<%= this.ID||this.tempID %>" data-filename="<%= this.filename %>" data-folder="<%= this.folder %>" type="button" title="Replace file" style="margin-left: 0;">
+							<i class="icon-exchange"></i>
+
+							<div class="span1 progress">
+								<div class="bar" style="width: 0;"></div>
+							</div>
+						</button>
+
+					</div>
 					<button class="btn btn-mini span1" type="button"><i class="icon-remove"></i></button>
 				</div>
 			</div>

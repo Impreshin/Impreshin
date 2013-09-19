@@ -233,5 +233,123 @@
 
 	}
 
+	#comments-area {
+		padding: 10px 20px;
+		article {
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+			position: relative;
+			border-bottom: 1px dotted #ccc;
+			
+			
+			h4 {
+				ul.actions {
+					margin     : 0;
+					list-style : none;
+					position   : absolute;
+					top        : -5px;
+					right      : 0;
+					.opacity(0);
+					.transition(all 0.5s ease-in-out);
+					li {
+						display : inline-block;
+						padding : 5px;
+						cursor  : pointer;
+						&:hover {
+							background-color : #DEEBFF;
+							color            : #000;
+						}
+					}
+				}
+				margin-bottom:3px;
+				&:hover {
+					ul.actions {
+						.opacity(100);
+					}
+				}
+			}
+			.children {
+				padding-left: 20px;
+				article {
+					border-bottom: none;
+					border-top : 1px dotted #e1e1e1;
+					margin-top : 5px;
+					padding-top : 5px;
+					margin-bottom : 5px;
+					padding-bottom : 5px;
+					padding-left: 20px;
+					h4 {
+						font-size: 11px;
+						color: #999;
+					}
+				}
+			}
+		}
+		
+	}
+	#comment-area {
+		position: absolute;
+		bottom: -3px;
+		left: 0;
+		right: 0;
+		padding-left: 20px;
+		form {
+			display : none;
+		}
+		&.active {
+			
+			height: 140px;
+			input[type="text"] {
+				display: none;
+				
+			}	
+			form {
+				display:block;
+				textarea {
+					width: 515px;
+					height: 90px;
+
+					.box-shadow(0 0 10px rgba(100, 100, 100, 0.3));
+				}
+				.buttons {
+					position: absolute;
+					bottom: 10px;
+					right: 20px;
+					
+				}
+				#comment-heading {
+					position : absolute;
+					bottom   : 15px;
+					left    : 20px;
+					font-style: italic;
+					font-weight: bold;
+					color: #999;
+				}
+			}
+			
+		}
+	}
+	#nf-details-title {
+		max-width: 465px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		position : relative;
+		&:hover {
+			background-color: rgba(250, 250, 250, 0.8);
+			max-width: 100%;
+			overflow: visible;
+			white-space: normal;
+			webkit-box-shadow: 10px rgba(250, 250, 250, 0.8);
+			box-shadow: 10px rgba(250, 250, 250, 0.8);
+			z-index : 999;
+		}
+	}
+	.button-cell {
+		cursor: pointer;
+		&:hover {
+			background-color: #ccc;
+		}
+	}
 }
 

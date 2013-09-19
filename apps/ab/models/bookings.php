@@ -443,6 +443,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$a->deleted_user = $user['fullName'];
 			$a->deleted_date = date("Y-m-d H:i:s");
 			$a->deleted_reason = ($reason);
+			$a->dateChanged = date("Y-m-d H:i:s");
 			$a->save();
 			$changes = array(array("k" => "Deleted", "v" => "1", "w" => ""), array("k" => "deleted_user", "v" => $user['fullName'], "w" => ""), array("k" => "deleted_reason", "v" => $reason, "w" => ""));
 			bookings::logging($a->ID, $changes, "Booking Deleted");
@@ -596,6 +597,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 				$a->$key = $value;
 			}
+		}
+		if (count($changes)){
+			$a->dateChanged = date("Y-m-d H:i:s");
 		}
 		if ($opts['dry'] || !$a->dry()) {
 			$a->save();

@@ -1,0 +1,108 @@
+<section id="maintoolbar">
+    <div class="container">
+        <div class="toolbar clearfix  ">
+            <ul class="nav nav-pills pull-left">
+
+                <li>
+                   
+                </li>
+                <li class="divider-vertical"></li>
+	            <li>
+		            <div id="list-filter-btns" data-toggle="buttons-radio" class="btn-group">
+			            <button style="width:40px;" class="btn  btn-mini btn-icon active" data-filter="*">
+				            <i class="icon-asterisk"></i></button>
+			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="1">
+				            <i class="icon-lock"></i></button>
+			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="0">
+				            <i class="icon-unlock"></i></button>
+		            </div>
+	            </li>
+                
+
+                <li class="divider-vertical"></li>
+            </ul>
+            <div class="pull-right">
+	            <ul id="provisional-stats-bar" class="nav nav-pills pull-left">
+
+
+	            </ul>
+                <ul class="nav nav-pills pull-right ">
+                    <li class="divider-vertical" style="margin-right: 0;"></li>
+
+
+                    <li class="dropdown pull-right">
+                        <a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
+                        <ul class="dropdown-menu" id="record-settings" role="menu">
+                            <li class="nav-header">Group By</li>
+                            {% for row in settings['groupby'] %}
+                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+                                    <a href="#t">{{ row['n'] }}</a>
+                                </li>
+                            {% endfor %}
+                            <li class="nav-header clearfix">Direction</li>
+                            <li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+                                <a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
+                            <li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+                                <a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
+                            <li class="clearfix"></li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="toolbar-end"></div>
+    </div>
+
+</section>
+
+<section role="main" id="pagecontent">
+
+    <div class="container">
+
+
+        <article id="whole-area" class="span16">
+            <div class="content">
+                <div class="scroll-pane">
+
+                    <div data-heading="top" id="scroll-container" style="padding-bottom: 30px;">
+
+                        <table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="loadingmask wide"></div>
+
+
+            <div id="search-box">
+                <button type="button" class="btn btn-mini" style="width: 30px;" id="search-box-toggle">
+                    <i class="icon-search"></i></button>
+                <form class="form-search " style="margin-right: 40px;">
+                    <div class="input-append">
+                        <input type="text" class="span3 search-query glow" placeholder="Search..." id="record-search">
+                        <button type="submit" class="btn glow">Search</button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+        </article>
+    </div>
+</section>
+
+{% include "_record_settings.tmpl" %}

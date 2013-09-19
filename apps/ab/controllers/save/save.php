@@ -34,8 +34,7 @@ class save {
 		$userID = $user['ID'];
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
-		$ab_defaults = $this->f3->get("defaults");
-		$ab_defaults = $ab_defaults['settings'];
+		$ab_defaults = \apps\nf\settings::defaults();
 		$section = (isset($_GET['section'])) ? $_GET['section'] : "";
 
 

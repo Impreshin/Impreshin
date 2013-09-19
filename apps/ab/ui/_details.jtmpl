@@ -38,14 +38,15 @@
 	<li>
 		<a href="#details-pane-details" data-toggle="tab"> Details </a>
 	</li>
+	<% if (this.a.material_pane=='1') { %>
+	<li>
+		<a href="#details-pane-material" data-toggle="tab"> Media</a>
+	</li>
+	<% } %>
 	<li class="tab-icon">
 		<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
 	</li>
-	<% if (this.a.material_pane=='1') { %>
-	<li class="tab-icon">
-		<a href="#details-pane-material" data-toggle="tab"><i class="icon-file icon-grey"></i></a>
-	</li>
-	<% } %>
+	
 
 </ul>
 <div class="tab-content" style="width: 520px;">

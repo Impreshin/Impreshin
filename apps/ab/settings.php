@@ -102,17 +102,12 @@ class settings {
 				"h"=> "Date",
 				"d" => "Date the booking was added",
 				"w" => 60
-			),/*
-			"last_change"                 => array(
-				"h"=> "Last&nbsp;Changed&nbsp;DT",
+			),
+			"dateChanged"                 => array(
+				"h"=> "Date&nbsp;Changed",
 				"d" => "Date the booking was last changed",
 				"m" => 60
 			),
-			"last_change_date"                 => array(
-				"h"=> "Last&nbsp;Changed",
-				"d" => "Date the booking was last changed",
-				"m" => 60
-			),*/
 			"checked"                => array(
 				"h"=> "Checked",
 				"b"=> true

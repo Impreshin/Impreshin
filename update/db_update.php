@@ -86,6 +86,9 @@ $sql = array(
 		"ALTER TABLE `global_pages` ADD INDEX ( `dID` );",
 		"ALTER TABLE `global_pages` ADD INDEX ( `sectionID` );",
 		"ALTER TABLE `global_pages` ADD INDEX ( `colourID` );"
+	),
+	"17"=>array(
+		"ALTER TABLE `ab_bookings` ADD `dateChanged` TIMESTAMP NULL DEFAULT NULL AFTER `datein`;"
 	)
 
 );

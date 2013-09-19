@@ -29,11 +29,13 @@ class save {
 		$userID = $user['ID'];
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
-		$app_defaults = $this->f3->get("defaults");
-		$app_defaults = $app_defaults['settings'];
+		$app_defaults = \apps\nf\settings::defaults();
+		
+		
+		
 		$section = (isset($_GET['section'])) ? $_GET['section'] : "";
 
-
+		
 
 		if (in_array("columns", $reset)){
 			$columns = $app_defaults[$section]['col'];
@@ -60,7 +62,7 @@ class save {
 		$values = array();
 		$values[$section]=$new;
 
-
+		
 
 		models\settings::save($values);
 

@@ -218,3 +218,28 @@ CREATE TABLE IF NOT EXISTS `nf_articles_logs` (`ID` INT(6) NOT NULL AUTO_INCREME
 ALTER TABLE `nf_files` ADD INDEX (`type`);
 
 ALTER TABLE `nf_article_types` CHANGE `labelClass` `icon` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `nf_comments` ADD `parentID` INT(6) NULL DEFAULT NULL AFTER `uID`, ADD INDEX (`parentID`);
+
+CREATE TABLE IF NOT EXISTS `nf_priorities` ( `ID` int(6) NOT NULL AUTO_INCREMENT, `cID` int(6) DEFAULT NULL,	`priority` varchar(30) DEFAULT NULL, `orderby` int(3) DEFAULT NULL,	PRIMARY KEY (`ID`), KEY `cID` (`cID`));
+
+
+INSERT INTO `nf_priorities` (`ID`, `cID`, `priority`, `orderby`) VALUES (1, 1, 'Low', 1), (2, 1, '1', 2),(3, 1, '2', 3),(4, 1, '3', 4),(5, 1, '4', 5),(6, 1, 'high', 6);
+
+UPDATE nf_articles SET priority = '6' WHERE priority ='5';
+UPDATE nf_articles SET priority = '5' WHERE priority ='4';
+UPDATE nf_articles SET priority = '4' WHERE priority ='3';
+UPDATE nf_articles SET priority = '3' WHERE priority ='2';
+UPDATE nf_articles SET priority = '2' WHERE priority ='1';
+UPDATE nf_articles SET priority = '1' WHERE priority ='0';
+
+ALTER TABLE `nf_articles` CHANGE `priority` `priorityID` INT( 6 ) NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` ADD INDEX ( `priorityID` );
+
+ALTER TABLE `nf_articles` ADD `dateChanged` TIMESTAMP NULL DEFAULT NULL AFTER `datein`;
+
+ALTER TABLE `nf_article_newsbook` ADD `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP AFTER `uID`;
+ALTER TABLE `nf_articles` ADD `meta` TINYTEXT NULL DEFAULT NULL AFTER `checklist`;
+ALTER TABLE `nf_article_newsbook_photos` DROP `ID`;
+ALTER TABLE `nf_article_newsbook_photos` ADD INDEX ( `fileID` );
+ALTER TABLE `nf_article_newsbook_photos` DROP `planned`;

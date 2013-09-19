@@ -31,7 +31,10 @@ class settings {
 				"h"=> "Title",
 			),
 			"datein"=>array(
-				"h"=>"Date"
+				"h"=>"Date&nbsp;Created"
+			),
+			"dateChanged"=>array(
+				"h"=>"Date&nbsp;Changed"
 			),
 			"stars"=>array(
 				"h"=>"stars"
@@ -48,18 +51,21 @@ class settings {
 			"words"=>array(
 				"h"=>"Words"
 			),
+			"priority"=>array(
+				"h"=>"Priority"
+			),
 			"percent_last"=>array(
 				"h"=>"% last"
 			),
 			"percent_orig"=>array(
 				"h"=>"% Changed"
 			),
-			/*
+			
 			"newsbooks"=>array(
 				"h"=>"Newsbooks",
 				"o"=>"global_publications.publication, global_dates.publish_date"
 			),
-			*/
+			
 			"category"=>array(
 				"h"=>"Category",
 				"o"=>"nf_categories.category"
@@ -75,6 +81,20 @@ class settings {
 			"filesCount"=>array(
 				"h"=>"Files",
 				"o"=>"filesCount"
+			),
+			"locked_fullName"=>array(
+				"h"=>"Locked&nbsp;By",
+				"o"=>"locked_fullName"
+			),
+			"locked"=>array(
+				"b"=>"locked",
+				"h"=>"Locked",
+				"o"=>"locked"
+			),
+			"placed"=>array(
+				"b"=>"placed",
+				"h"=>"Placed",
+				"o"=>"placed"
 			)
 
 
@@ -115,6 +135,10 @@ class settings {
 			"author"=> array(
 				"n"=> "Authors",
 				"g"=> "author"
+			),
+			"priority"=> array(
+				"n"=> "Priority",
+				"g"=> "priority"
 			)
 		);
 
@@ -122,7 +146,8 @@ class settings {
 
 
 		$sections = array(
-			"provisional"=>array("none","stage","author","category"),
+			"provisional"=>array("none","stage","author","category","priority"),
+			"newsbook"=>array("none","stage","author","category","priority"),
 		
 		);
 
@@ -180,29 +205,63 @@ class settings {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();
+		
+		$defColumns = array(
+			"title",
+			"author",
+			"stage",
+			"cm",
+			"words",
+			"priority"
+		);
+		
 			$settings = array(
 				"provisional"=>array(
-					"col"        => array(
-						"title",
-						"author",
-						"stage",
-						"cm",
-						"newsbooks"
-
-					),
+					"col"        => $defColumns,
 					"group"      => array(
-						"g"=>"author",
+						"g"=>"stage",
 						"o"=>"ASC"
 					),
 					"order"      => array(
 						"c"=> "title",
 						"o"=> "ASC"
 					),
-					"count"      => "5",
-					"type_switch"=> "1",
+					"count"      => count($defColumns),
+					"highlight"=> "locked",
+					"filter"   => "*",
+					"search" => "",
+
+				),
+				"newsbook"=>array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=>"stage",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
 					"filter"   => "*",
 					"search" => "",
 					"stageID"=>"0"
+
+				),
+				"production"=>array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=>"stage",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"type_switch"=> "1",
+					"filter"   => "*",
+					"search" => "",
 
 				),
 				"form"=>array(

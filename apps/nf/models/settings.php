@@ -16,6 +16,7 @@ class settings extends _ {
 
 
 
+		
 		$user_settings = $user['settings'];
 		$permission = $user['permissions'];
 
@@ -23,7 +24,7 @@ class settings extends _ {
 
 		//test_array($user_settings);
 		$return = $user_settings[$section];
-
+		
 
 		if (isset($user_settings[$section]['col']) && count($settings["columns"])) {
 			$columns = array();
@@ -43,6 +44,8 @@ class settings extends _ {
 			$return['groupby'] = $settings_raw['groupby'][$section];
 		}
 //test_array($settings['groupby'][$section]);
+		
+		
 
 		if (isset($return['col'])) {
 			if (isset($return['group']) && isset($settings['groupby'][$section])) {

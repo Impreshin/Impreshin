@@ -5,9 +5,10 @@ var activityRequest = [];
 var transSpeed = '300';
 
 var text_toolbar = [
-	{ name: 'source', items: [ 'Source' ] },
 	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
-	{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+	{ name: 'tools', items: [ 'Find','Replace' ] },
+	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
+	{ name: 'tools', items: [ 'Maximize' ] }
 
 ];
 

@@ -100,10 +100,10 @@ class template {
 			if (isset($this->vars['page']['js'])) {
 				if (is_array($this->vars['page']['js'])){
 					foreach ($this->vars['page']['js'] as $item){
-						$page['js'][] = $item;
+						if ($item) $page['js'][] = $item;
 					}
 				} else {
-					$page['js'][] = $this->vars['page']['js'];
+					if ($this->vars['page']['js']) $page['js'][] = $this->vars['page']['js'];
 				}
 			}
 
@@ -115,10 +115,10 @@ class template {
 			if (isset($this->vars['page']['css'])) {
 				if (is_array($this->vars['page']['css'])) {
 					foreach ($this->vars['page']['css'] as $item) {
-						$page['css'][] = $item;
+						if ($item) $page['css'][] = $item;
 					}
 				} else {
-					$page['css'][] = $this->vars['page']['css'];
+					if ($this->vars['page']['css']) $page['css'][] = $this->vars['page']['css'];
 				}
 			}
 

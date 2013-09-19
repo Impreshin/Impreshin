@@ -4,11 +4,11 @@
             <ul class="nav nav-pills pull-left">
 
                 <li>
-                    <div class="btn-group" data-toggle="buttons-radio" id="list-type_switch-btns">
-                        <button class="btn span1 btn-mini {% if settings['type_switch'] == "1" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-type_switch="1">Articles</button>
-                        <button class="btn span1 btn-mini {% if settings['type_switch'] == "2" %}active{% endif %} " style="width:80px;" data-type_switch="2">Comments</button>
-
-                    </div>
+	                <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+		                <button class="btn span1 btn-mini {% if settings['highlight'] == "locked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="locked">Locked</button>
+		                <button class="btn span1 btn-mini {% if settings['highlight'] == "in_newsbook" %}active{% endif %} " style="width:80px;" data-highlight="in_newsbook">Newsbook</button>
+		                <button class="btn span1 btn-mini {% if settings['highlight'] == "placed" %}active{% endif %} " style="width:80px;" data-highlight="placed">Placed</button>
+	                </div>
                 </li>
                 <li class="divider-vertical"></li>
 	            <li>
@@ -21,18 +21,7 @@
 				            <i class="icon-unlock"></i></button>
 		            </div>
 	            </li>
-                <li class="divider-vertical"></li>
-	            <li>
-		            <select name="stageID" id="stageID" class="span3">
-			            <option value="0">All</option>
-			            <optgroup label="Stages">
-				            {% for row in stages %}
-					            <option value="{{ row['ID'] }}" {% if settings['stageID'] == row['ID'] %}selected="selected"{% endif %}>{{ row['stage'] }}</option>
-				            {% endfor %}
-			            </optgroup>
-
-		            </select>
-	            </li>
+                
 
                 <li class="divider-vertical"></li>
             </ul>

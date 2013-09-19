@@ -56,8 +56,8 @@ class files {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *
-			FROM nf_files
+			SELECT DISTINCT nf_files.*
+			FROM nf_files LEFT JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID
 			$where
 			$orderby
 		");
@@ -93,6 +93,8 @@ class files {
 					}
 				}
 			}
+			
+			
 			$file['fileType'] = $filetype;
 			$file['icon'] = $icon;
 

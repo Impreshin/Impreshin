@@ -18,6 +18,76 @@ class articles extends save {
 
 	}
 
+	function comment() {
+		$user = $this->f3->get("user");
+		$ID = isset($_POST['comment-ID']) ? $_POST['comment-ID'] : "";
+		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
+		
+		
+		$values = array(
+			"aID"=> $aID,
+			"uID"=>$user['ID'],
+			"comment"=>isset($_POST['comment'])? $_POST['comment']:"",
+			"parentID"=>isset($_POST['comment-parentID'])&& $_POST['comment-parentID'] && $_POST['comment-parentID'] != "null" && $_POST['comment-parentID']!= "undefined"? $_POST['comment-parentID']:"",
+		);
+		
+		models\comments::save($ID,$values);
+		test_array(array("ID"=>$ID,"values"=>$values)); 
+		
+	}
+	function newsbook() {
+		$user = $this->f3->get("user");
+		$ID = isset($_POST['newsbook-ID']) ? $_POST['newsbook-ID'] : "";
+		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
+		
+		
+		$values = array(
+			"aID"=> $aID,
+			"pID"=> isset($_POST['newsbook-pID'])&& $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID']!= "undefined"? $_POST['newsbook-pID']:"",
+			"dID"=> isset($_POST['newsbook-dID'])&& $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID']!= "undefined"? $_POST['newsbook-dID']:"",
+			"uID"=>$user['ID'],
+		);
+		
+		// do the insert thing.. get the ID
+		$ID = models\newsbooks::save($ID,$values);
+		
+		
+		$files = array();
+		
+		$file_ids = array();
+		$sql = array();
+		
+		foreach (explode(",",$_POST['files']) as $fileID){
+			$sql[] = "('".$ID."', '".$fileID."')";
+			$files[] = array(
+				"nID"=>$ID,
+				"fileID"=>$fileID
+			);
+			$file_ids[] = $fileID;
+		}
+		
+		if (count($sql)){
+			
+			$sql = "INSERT INTO nf_article_newsbook_photos (`nID`,`fileID`) VALUES ".implode(",",$sql);
+
+			$this->f3->get("DB")->exec("DELETE FROM nf_article_newsbook_photos WHERE nID = '$ID'");
+			$this->f3->get("DB")->exec($sql);
+		}
+		
+		
+		
+		
+		
+		
+		test_array(array("ID"=>$ID,"values"=>$values));
+
+		
+	}
+	function remove_newsbook() {
+	$ID = (isset($_GET['ID']) && $_GET['ID'] && $_GET['ID'] != "undefined") ? $_GET['ID'] : "";
+	models\newsbooks::_delete($ID);
+	test_array("done");
+}
 	function form() {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
@@ -44,7 +114,7 @@ class articles extends save {
 		if (isset($_POST['authorID'])) $values['authorID'] = $_POST['authorID'];
 		if (isset($_POST['categoryID'])) $values['categoryID'] = $_POST['categoryID'];
 		if (isset($_POST['meta'])) $values['meta'] = $_POST['meta'];
-		if (isset($_POST['priority'])) $values['priority'] = $_POST['priority'];
+		if (isset($_POST['priorityID'])) $values['priorityID'] = $_POST['priorityID'];
 		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
 		if (isset($_POST['checklist'])) $values['checklist'] = $_POST['checklist'];
 		if (isset($_POST['stageID'])) $values['stageID'] = $_POST['stageID'];
@@ -76,84 +146,111 @@ class articles extends save {
 		
 		
 		// ------------------------
+		$submit = true;
+		$r = array();
+
+		if (isset($values['title'])&&$values['title']==''){
+			$submit = false;
+			$r['error'][] = array(
+				"field"=>"title",
+				"msg"=>"Need to specify a title"
+			);
+		}
 		
-		$ID = models\articles::save($ID,$values);
+		if ((isset($_POST['current_stage_ID'])&&($_POST['current_stage_ID']!='1' || (isset($_POST['stageID']) &&$_POST['stageID']!='1')))){
+			if (isset($values['meta'])&&$values['meta']==''){
+				$submit = false;
+				$r['error'][] = array(
+					"field"=>"meta",
+					"msg"=>"Need to specify meta"
+				);
+			}
+		}
 		
 		
 		
 		
-		$filetypes = $settings['allowedFileTypes'];
-
-		$files = array();
 		
+		if ($submit){
+			
 		
-		foreach ($_POST as $k=>$v){
-					if (strpos($k,"file-filename-")===0){
-						$file_ID= str_replace("file-filename-", "", $k);
-						$n = $file_ID;
-
-
-						$filename = isset($_POST['file-filename-' . $n]) ? $_POST['file-filename-' . $n] : "";
-
-
-
-
-
-							$icon = "file";
-
-							$file_ext = strtolower($filename);
-							$file_ext = explode(".", $file_ext);
-							$file_ext = $file_ext[count($file_ext) - 1];
-
-							$filetype = "3";
-							foreach ($filetypes as $file_k => $file_v) {
-								foreach ($file_v as $file_key => $file_item) {
-									if (in_array($file_ext, $file_item)) {
-										$icon = $file_key;
-										$filetype = $file_k;
+			$ID = models\articles::save($ID,$values);
+			
+			
+			
+			
+			$filetypes = $settings['allowedFileTypes'];
+	
+			$files = array();
+			
+			
+			foreach ($_POST as $k=>$v){
+						if (strpos($k,"file-filename-")===0){
+							$file_ID= str_replace("file-filename-", "", $k);
+							$n = $file_ID;
+	
+	
+							$filename = isset($_POST['file-filename-' . $n]) ? $_POST['file-filename-' . $n] : "";
+	
+	
+	
+	
+	
+								$icon = "file";
+								$filetype = "0";
+								$file_ext = strtolower($filename);
+								$file_ext = explode(".", $file_ext);
+								$file_ext = $file_ext[count($file_ext) - 1];
+	
+								
+								foreach ($filetypes as $file_k => $file_v) {
+									foreach ($file_v as $file_key => $file_item) {
+										if (in_array($file_ext, $file_item)) {
+											$icon = $file_key;
+											$filetype = $file_k;
+										}
 									}
 								}
-							}
-
-
-
-
-						$fileID = isset($_POST['file-ID-' . $n]) ? $_POST['file-ID-' . $n] : "";
-
-						$file = array(
-							"aID"=> $ID,
-							"filename"=> $filename,
-							"filename_orig"=> isset($_POST['file-filename_orig-' . $n]) ? $_POST['file-filename_orig-' . $n] : "",
-							"caption"=> isset($_POST['file-caption-' . $n]) ? $_POST['file-caption-' . $n] : "",
-							"uID"=> isset($_POST['file-uID-' . $n]) ? $_POST['file-uID-' . $n] : $user['ID'],
-							"type"=> $filetype,
-
-						);
-						
-						models\files::save($fileID,$file);
-						
-						//$files[] = $file;
-
+	
+	
+	
+	
+							$fileID = isset($_POST['file-ID-' . $n]) ? $_POST['file-ID-' . $n] : "";
+	
+							$file = array(
+								"aID"=> $ID,
+								"filename"=> $filename,
+								"filename_orig"=> isset($_POST['file-filename_orig-' . $n]) ? $_POST['file-filename_orig-' . $n] : "",
+								"caption"=> isset($_POST['file-caption-' . $n]) ? $_POST['file-caption-' . $n] : "",
+								"uID"=> isset($_POST['file-uID-' . $n]) ? $_POST['file-uID-' . $n] : $user['ID'],
+								"type"=> $filetype,
+	
+							);
+							
+							models\files::save($fileID,$file);
+							
+							//$files[] = $file;
+	
+						}
 					}
-				}
-
-
-		foreach ($files as $file){
+	
+	
+			foreach ($files as $file){
+				
+			}
+		
 			
-		}
+	
+			
 	
 		
-
-		
-
-		$r = array();
-		$r['ID'] = $ID;
-		$r['values'] = $values;
-		//$r['post'] = $_POST;
+			$r['ID'] = $ID;
+			$r['values'] = $values;
+			//$r['post'] = $_POST;
+			
+		}
 		test_array($r);
 		exit();
-
-
 	}
 
 

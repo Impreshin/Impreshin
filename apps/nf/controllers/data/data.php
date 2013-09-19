@@ -69,6 +69,8 @@ class data {
 			//test_array(array("o"=>$orig,"l"=>$latest));
 
 			if ($orig!= $latest){
+				$orig = htmlspecialchars_decode($orig);
+				$latest = htmlspecialchars_decode($latest);
 				$diff = \FineDiff::getDiffOpcodes($orig, $latest, \FineDiff::characterDelimiters);
 				$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($orig, $diff);
 				$diffHTML = htmlspecialchars_decode($diffHTML);
@@ -79,9 +81,32 @@ class data {
 
 		}
 
+		
+		$newsbooks = models\articles::getNewsbooks($return['ID'],"publish_date DESC");
 
+		$n = array();
+		
+		foreach ($newsbooks as $item){
+			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$item['ID']."'");
+			$f = array();
+			foreach ($media as $file) {
+				$file['folder'] = $return['cID'] . "/" . date("Y", strtotime($file['datein'])) . "/";;
+				$f[] = $file;
+			}
+			$media = models\files::display($f);
+			
+			
+			$item['media']= $media;
+			$n[] = $item;
+		}
+		$newsbooks = $n;
+		
+		//test_array($newsbooks);
+		$return['used'] = $newsbooks;
 
 		
+		
+//		test_array($return['newsbooks']); 
 
 		$return['historyShow'] = $compare;
 		$return['history'] = $history;
@@ -90,6 +115,101 @@ class data {
 
 		$return['a'] = $allow;
 
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function comments() {
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+
+		$data = models\comments::getAll("aID='" . $ID . "'", "ID DESC");
+		
+		$return['count'] = count($data);
+		$return['comments'] = models\comments::display($data);
+
+		
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function newsbooks(){
+		$user = $this->f3->get("user");
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$aID = (isset($_REQUEST['aID'])) ? $_REQUEST['aID'] : "";
+		
+		
+		$article = new models\articles();
+		$article = $article->get($aID);
+		
+		
+		$record = new models\newsbooks();
+		$record = $record->get($ID);
+		$in_newsbook = array();
+		if ($record['ID']){
+			$pID = $record['pID'];
+			$curFiles = models\files::getAll("nf_article_newsbook_photos.nID='".$record['ID']."'");
+			foreach ($curFiles as $item){
+				$in_newsbook[] = $item['ID'];
+			}
+		} else {
+			$pID = $user['publication']['ID'];
+		}
+		
+
+		$pID = (isset($_REQUEST['pID'])) ? $_REQUEST['pID'] : $pID;
+		
+
+		$currentDate = \models\dates::getCurrent($pID);
+		
+		$dID = (isset($_REQUEST['dID'])) ? $_REQUEST['dID'] : $currentDate['ID'];
+		
+		$newsbooks = \models\publications::getAll("cID='".$article['cID']."'");
+
+		//test_array($newsbooks); 
+		$n = array();
+		foreach ($newsbooks as $item){
+			
+			$n[] = array(
+				"ID"=>$item['ID'],
+				"label"=>$item['publication'],
+				"selected"=>($pID==$item['ID'])?1:0,
+			);
+		}
+		$newsbooks = $n;
+		
+		
+
+		$dates = \models\dates::getAll("pID='".$pID."' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
+		$n = array();
+		foreach ($dates as $item){
+
+			$n[] = array(
+				"ID"=>$item['ID'],
+				"label"=>$item['publish_date_display'],
+				"selected"=>($dID==$item['ID'])?1:0,
+			);
+		}
+		$dates = $n;
+		
+		$media = $article['media'];
+
+		
+		
+		$n = array();
+		foreach ($media as $item){
+			$item['checked']=(in_array($item['ID'],$in_newsbook))?1:0;
+
+			$item['folder'] = $article['cID'] . "/" . date("Y", strtotime($item['datein'])) . "/";;
+			
+			$n[] = $item;
+		}
+		$media = $n;
+		
+		$return['details'] = $record;
+		$return['publications'] = $newsbooks;
+		$return['dates'] = $dates;
+		$return['media'] = $media;
+		
+		//test_array($return); 
+		
+		
 		return $GLOBALS["output"]['data'] = $return;
 	}
 

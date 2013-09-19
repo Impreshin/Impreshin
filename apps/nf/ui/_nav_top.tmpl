@@ -23,16 +23,16 @@
 		<a href="/app/nf/">Articles</a>
 
 	</li>
-	<li class="{% if page['section'] == "planning" %} active {% endif %}">
-		<a href="/app/nf/">Newsbook</a>
+	<li class="{% if page['section'] == "newsbook" %} active {% endif %}">
+		<a href="/app/nf/newsbook">Newsbook</a>
 
 	</li>
-	<li class="{% if page['section'] == "planning" %} active {% endif %}">
-		<a href="/app/nf/">Layout</a>
+	<li class="{% if page['section'] == "layout" %} active {% endif %}">
+		<a href="/app/nf/layout">Layout</a>
 
 	</li>
-	<li class="{% if page['section'] == "planning" %} active {% endif %}">
-		<a href="/app/nf/">Production</a>
+	<li class="{% if page['section'] == "production" %} active {% endif %}">
+		<a href="/app/nf/production">Production</a>
 
 	</li>
 
@@ -89,14 +89,32 @@
 
 
 				<ul class="dropdown-menu">
+					{% set lastCompany = "" %}
 					{% for row in _user['publications'] %}
+						{% if lastCompany != row['company'] %}
+							<li class="heading">{{ row['company'] }}</li>
+						{% endif %}
+						{% set lastCompany = row['company'] %}
 						<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}">
 							<a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
 					{% endfor %}
+					
+					
+					
+					
 				</ul>
 			{% else %}
 				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+					{% set lastCompany = "" %}
 					{% for row in _user['publications'] %}
+						{% if lastCompany != row['company'] %}
+						<optgroup label="{{ row['company'] }}">
+						{% else %}
+							{% if lastCompany  %}
+								</optgroup>
+							{% endif %}
+						{% endif %}
+						{% set lastCompany = row['company'] %}
 						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
 					{% endfor %}
 
@@ -139,9 +157,23 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="nav-header">Application</li>
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "checklists" %} active {% endif %}">
+					
+				
+				<li class="{% if page['section']=="admin" and page['sub_section'] == "checklists" %} active {% endif %}">
 						<a href="/app/nf/admin/checklists">Checklist Items</a>
 					</li>
+				<li class="{% if page['section']=="admin" and page['sub_section'] == "priorities" %} active {% endif %}">
+						<a href="/app/nf/admin/priorities">Priorities</a>
+					</li>
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
 						<a href="/app/ab/admin/accounts/status" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Account {% endif %}Status</a>

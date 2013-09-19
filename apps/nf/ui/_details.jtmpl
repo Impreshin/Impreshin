@@ -4,21 +4,22 @@
 <section class="modal-header">
 	<a class="close" data-dismiss="modal">×</a>
 
-	<h3>
+	<h3 id="nf-details-title" ><% if (this.type_icon){ %>
+		<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
+		<% } %>
 		<% if (this.stageID != '2') { %>
 		<span class="label <%= this.stageLabelClass %>" style="margin-right: 10px; margin-top:-8px;"> <%= this.stage %> </span>
 		<% } %>
 
-		<% if (this.type_icon){ %>
-		<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
-		<% } %>
+		
 
 		<%= this.title %>
 	</h3>
 
-	<div id="modal-header-btns">
-		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
-		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-book icon-d-grey"></i></a>
+	<div id="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
+		
+		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
+		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>"  rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% if (this.a.print=='1') { %>
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>
 		<% } %>
@@ -55,12 +56,16 @@
 		</li>
 		<% } %>
 		<li class="">
-			<a href="#details-pane-newsbooks" data-toggle="tab"> Newsbooks</a>
+			<a href="#details-pane-newsbooks" data-toggle="tab"> Newsbooks
+				<% if (this.used.length){ %>
+				<span class="badge"><%= this.used.length %></span>
+				<% } %>
+			</a>
 		</li>
 		<li class="">
 			<a href="#details-pane-comments" data-toggle="tab"> Comments
 				<% if (this.comments.length){ %>
-				<span class="badge"><%= this.comments.length %></span>
+				<span class="badge"><%= this.commentCount %></span>
 				<% } %>
 				
 			</a>
@@ -84,7 +89,7 @@
 						<button type="button" class="close">&times;</button>
 						<p>
 							Showing changes made by <em><%= this.historyShow.fullName %></em> on the
-							<em><%= this.historyShow.datein %></em>
+							<em> <%= this.historyShow.datein %></em>
 
 						</p>
 
@@ -187,7 +192,7 @@
 						<tr class="record log-record" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-filename="<%= this.media[f].filename_orig %>" data-log-id="<%= this.media[f].ID %>">
 							<td>
 								<% if (this.media[f].fileType=="1"){ %>
-								<img src="/app/nf/thumb/24/18?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>"  style="margin-left:10px;"/>
+								<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>"  style="margin-left:10px;"/>
 
 								<% } else { %>
 								<div class="file-icon <%= this.media[f].icon %>"></div>
@@ -240,24 +245,94 @@
 		</div>
 		<div id="details-pane-newsbooks" class="tab-pane">
 			<div class="scroll-pane">
+				<div style="padding:10px;">
+				<table class="table table-condensed s records">
+					<thead>
+					<tr  class="colheading">
+						<th>
+							Publication
+						</th>
+						<th>Newsbook</th>
+						<th>Page</th>
+						<th>User</th>
+						<th>Date</th>
+						<th class="span1"></th>
+					</tr>
+					</thead>
+					<tbody>
+					<% for(var i in this.used) { %>
+					<tr class="f12">
+						<td><%= this.used[i].publication %></td>
+						<td><%= this.used[i].publish_date %></td>
+						<td><%= this.used[i].page||"" %></td>
+						<td class="g s "><%= this.used[i].fullName||"" %></td>
+						<td class="g s"><%= this.used[i].datein||"" %></td>
+						<td class="c edit-newsbook button-cell" data-pID="<%= this.used[i].pID %>" data-ID="<%= this.used[i].ID %>"  data-dID="<%= this.used[i].dID %>" ><i class="icon-pencil"></i></td>
+					</tr>
+					<% if (this.used[i].media.length) { %>
+					<tr>
+						<td colspan="6">
+							<% for(var f in this.used[i].media) { %>
+							<% if (this.used[i].media[f].fileType=="1"){ %>
 
-				Newsbooks
+							<div class="span2" style="margin-bottom:10px;">
+								<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" class="glow"/>
+							</div>
 
 
+
+							<% } %>
+							<% } %>
+							
+						</td>
+					</tr>
+					<% } %>
+					<% } %>
+					</tbody>
+
+				</table>
+
+
+				</div>
 			</div>
 		</div>
-		<div id="details-pane-comments" class="tab-pane">
-			<div class="scroll-pane">
+		<div id="details-pane-comments" class="tab-pane" style="overflow:hidden">
+			<div class="scroll-pane" style="bottom:40px;">
 
-				Comments
+				<section id="comments-area" >
+					
+				</section>
+				
 
 
 			</div>
+			<div id="comment-area">
+				<input type="text" class="span9" placeholder="Leave a comment"/>
+
+				<form action="">
+					<textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
+					<div class="buttons">
+						<button class="btn  span2 btn-mini" type="reset">Cancel</button>
+						<button type="submit" class="btn span2 btn-primary btn-mini">Comment</button>
+					</div>
+					
+					<div id="comment-heading" ></div>
+					<input type="hidden" id="comment-parentID" name="comment-parentID" value=""/>
+					<input type="hidden" id="comment-ID" name="comment-ID" value=""/>
+
+					<div class="loadingmask round"></div>
+				</form>
+				
+			</div>
+			
 		</div>
 	</div>
 </div>
 
 <div id="details-info-pane">
+	
+	
+	
 
 	<div class="row photo-slider" style="margin-right:0px; margin-left:0px;">
 		<div id="myCarousel" class="carousel slide">
@@ -285,21 +360,30 @@
 		</div>
 	</div>
 	<div style="margin-bottom:7px; border-top:1px solid #ccc;">
+		
 		<table class="table table-condensed">
 			<tr>
-				<th>Cm</th>
-				<td><%= this.cm %></td>
+				<th class="r span1">Words</th>
+				<td><%= this.words||"" %></td>
+				<th class="r span1">Cm</th>
+				<td><%= this.cm||"" %></td>
 
-				<th>Words</th>
-				<td><%= this.words %></td>
+				
 
-				<th>%</th>
-				<td><%= this.percent_orig %></td>
+				
 
+			</tr>
+			<tr>
+				<th class="r">Priority</th>
+				<td><%= this.priority||"" %></td>
+				<th class="r">%</th>
+				<td><%= this.percent_orig||"" %></td>
 			</tr>
 
 
 		</table>
+		
+
 	</div>
 </div>
 
@@ -314,7 +398,7 @@
 				<i class="icon-edit "></i>
 			</button>
 			<% } %>
-			<% if (this.history){ %>
+			<% if (this.history.length){ %>
 			<div class="dropup">
 				<button class="btn dropdown-toggle span1" data-toggle="dropdown" style="margin-left:0;">
 					<i class="icon-edit "></i>
@@ -380,12 +464,284 @@
 	</div>
 
 </section>
-<div class="loadingmask wide"></div>
+<div class="popup" id="popup-newsbook" style="height: 270px; ">
+	<form class="form form-horizontal" id="form-newsbook">
+		
+	</form>
+	<div class="loadingmask wide"></div>
+</div>
+
 ]]>
+</script>
+<script type="text/x-jqote-template" id="template-details-comments">
+	<![CDATA[
+	<article data-name="<%= this.fullName %>" data-ID="<%= this.ID %>" data-parentID="<%= this.parentID %>">
+		<h4>
+			<%= this.fullName %> &nbsp;
+			<small><%= this.datein %></small>
+			<ul class="actions">
+				<% if (this.uID=="{{ _user['ID'] }}") { %>
+				<li class="edit"><i class="icon-pencil"></i></li>
+				<% } %>
+				<li class="reply"><i class="icon-reply"></i></li>
+
+			</ul>
+		</h4>
+		
+		<div class="comment">
+			<%= this.comment %>
+		</div>
+
+		<div class="children">
+			<% for(var i in this.children) { %>
+			<article>
+				<h4><%= this.children[i].fullName %> &nbsp;
+					<small><%= this.children[i].datein %></small></h4>
+
+				<div class="comment">
+					<%= this.children[i].comment %>
+				</div>
+			</article>
+			<% } %>
+		</div>
+	</article>
+
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details-newsbooks-form">
+	<![CDATA[
+	<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+
+		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add to<% } %> Newsbook</h3>
+		<select name="newsbook-pID" id="newsbook-pID" style="margin-left:12px;">
+			<% for (var i in this.publications) { %>
+			<option value="<%= this.publications[i].ID %>" <% if (this.publications[i].selected == '1') { %>selected="selected"<% } %> ><%= this.publications[i].label %></option>
+			<% } %>
+		</select>
+		<select name="newsbook-dID" id="newsbook-dID" style="margin-left:10px;">
+				<% for (var d in this.dates) { %>
+				<option value="<%= this.dates[d].ID %>" <% if (this.dates[d].selected == '1') { %>selected="selected"<% } %> ><%= this.dates[d].label %></option>
+			<% } %>
+		</select>
+	</div>
+	<div class='popup-body' style="height: 126px;">
+
+
+		<table class="table table-condensed records s">
+
+			<tbody>
+
+
+
+			<% for(var f in this.media) { %>
+
+
+			<% if (this.media[f].fileType=="1"){ %>
+
+			<tr class="record log-record" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-filename="<%= this.media[f].filename_orig %>" data-log-id="<%= this.media[f].ID %>">
+				<td class="r span1">
+					<input type="checkbox" value="<%= this.media[f].ID %>" <% if (this.media[f].checked=='1') { %>checked="checked"<% } %> />
+				</td>
+				<td class="span1">
+					<% if (this.media[f].fileType=="1"){ %>
+					<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>"  style="margin-left:10px;"/>
+
+					<% } else { %>
+					<div class="file-icon <%= this.media[f].icon %>"></div>
+					<% } %>
+
+
+				</td>
+				<td>
+					<%= this.media[f].filename_orig %>
+				</td>
+
+
+				<td class="c span1">
+					<i class="icon-zoom-in f13"></i>
+				</td>
+
+
+			</tr>
+
+
+
+
+			<% } %>
+
+			<% } %>
+
+			</tbody>
+		</table>
+
+
+	</div>
+	<div class='popup-footer '>
+		<div class="row">
+			<% if (this.details.ID) { %>
+			<button class="btn btn-danger span1" type="button" id="form-newsbook-delete-btn" data-id="<%= this.details.ID %>"  rel="tooltip" title="Remove this article from the newsbook" ><i class="icon-trash"></i></button>
+			<% } %>
+
+			<div style="float:right;">
+				
+
+							<button class="btn btn-link span2" data-dismiss="popup" type="button" >Cancel</button>
+
+						
+							<button class="btn btn-primary span2">Save</button>
+						
+
+
+			</div>
+
+		</div>
+	</div>
+	<input type="hidden" id="newsbook-ID" name="newsbook-ID" value="<%= this.details.ID %>" />
+
+
+	]]>
 </script>
 <script type="text/javascript">
 
+	function comment_active(){
+		var $comments_area = $("#comments-area");
+		var $comment_area = $("#comment-area");
 
+		$comment_area.addClass("active");
+
+		
+
+		$comments_area.closest(".scroll-pane").css("bottom", "140px");
+		$comment_area.find("textarea").trigger("focus")
+
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+	}
+	function comment_inactive(){
+		var $comments_area = $("#comments-area");
+		var $comment_area = $("#comment-area");
+
+		$comment_area.removeClass("active");
+
+		$comment_area.find(".loadingmask").hide();
+
+		$comments_area.closest(".scroll-pane").css("bottom", "40px");
+
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+	}
+	
+	
+	
+	
+	
+	
+	$(document).on("click","#popup-newsbook table.records tr.record",function(event) {
+
+
+			if (event.target.type !== 'checkbox') {
+
+				$(':checkbox', this).trigger('click');
+
+			}
+
+
+	});
+	$(document).on("click",".edit-newsbook",function(event) {
+		event.preventDefault();
+		var $this = $(this);
+		var ID = $this.attr("data-ID");
+		var aID = $.bbq.getState("ID");
+		var pID = $this.attr("data-pID");
+		var dID = $this.attr("data-dID");
+		$.bbq.pushState({"n_ID":ID,"n_pID":pID,"n_dID":dID});
+		
+		newsbook_form();
+		
+		
+		
+		return false;
+
+	});
+	$(document).on("click",".add-newsbook",function(event) {
+		$("#popup-newsbook").show();
+		event.preventDefault();
+
+		$.bbq.removeState("n_ID");
+		$.bbq.removeState("n_pID");
+		$.bbq.removeState("n_dID");
+		newsbook_form();
+		
+		
+		return false;
+
+	});
+	$(document).on("change", '#newsbook-pID', function () {
+		var aID = $.bbq.getState("ID");
+		var pID = $(this).val();
+		$.bbq.pushState({"n_pID":pID});
+		newsbook_form();
+	});
+	
+	
+	
+	
+	
+	
+	$(document).on("focus", '#comment-area input[type="text"]', function () {
+		var $this = $(this);
+		$("#comment-heading").html("Leave a comment");
+		$("#comment-ID").val("");
+		$("#comment-parentID").val("");
+		comment_active();
+	});
+	$(document).on("reset", '#comment-area form', function (e) {
+		var $this = $(this);
+		$("#comment-heading").html("")
+		comment_inactive();
+	});
+	
+	$(document).on("submit", '#comment-area form', function (e) {
+		e.preventDefault();
+		
+		var $this = $(this);
+		
+		$this.find(".loadingmask").show();
+		
+
+		var data = $this.serialize();
+		$.post("/app/nf/save/articles/comment/?aID=" + $.bbq.getState("ID"), data, function (response) {
+			$this.trigger("reset");
+			getcomments();
+		});
+		return false;
+		
+	});
+	$(document).on("click", '#comments-area .reply', function () {
+		var $this = $(this);
+		var $comment = $this.closest("article");
+		$("#comment-heading").html("Reply to: "+ $comment.attr("data-name"));
+		//var $textarea = $("#comment-area").find("textarea").val("");
+		$("#comment-ID").val("");
+		$("#comment-parentID").val($comment.attr("data-ID"));
+		
+		comment_active();
+	});
+	$(document).on("click", '#comments-area .edit', function () {
+		var $this = $(this);
+		var $comment = $this.closest("article");
+		
+		
+		var $textarea = $("#comment-area").find("textarea").val($comment.find(".comment").html());
+		
+		$("#comment-heading").html("Edit Comment");
+		
+		$("#comment-ID").val($comment.attr("data-ID"));
+		$("#comment-parentID").val($comment.attr("data-parentID"));
+		comment_active();
+	});
+	
+	
+	
 	$(document).on("shown", '#nf-details-modal', function () {
 		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 		if (!tab) {
@@ -480,6 +836,54 @@
 
 
 
+	$(document).on('submit', '#form-newsbook', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+
+		
+		var files = $("#form-newsbook .popup-body .records input:checkbox:checked").map(function(){
+			return $(this).val();
+		}).get().join(",");
+
+		var av_files = $("#form-newsbook .popup-body .records input:checkbox").map(function(){
+			return $(this).val();
+		}).get().join(",");
+
+		
+		
+		data = data + "&files="+files+"&av_files="+av_files;
+
+		$("#popup-newsbook").show().find(".loadingmask").show();
+			$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
+				getDetails();
+			});
+
+	});
+	$(document).on('click', '#form-newsbook-delete-btn', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var ID = $this.attr("data-id");
+
+		$("#popup-newsbook").show().find(".loadingmask").show();
+			$.post("/app/nf/save/articles/remove_newsbook/?ID=" + ID, {}, function (response) {
+				getDetails();
+			});
+
+	});
+	function newsbook_form(){
+		var ID = $.bbq.getState("n_ID");
+		var aID = $.bbq.getState("ID");
+		var pID = $.bbq.getState("n_pID");
+		var dID = $.bbq.getState("n_dID");
+		$("#popup-newsbook").show().find(".loadingmask").show();
+		$.getData("/app/nf/data/newsbooks?r=" + Math.random(), {"ID": ID, "pID": pID, "dID": dID, "aID": aID}, function (data) {
+			$("#form-newsbook").jqotesub($("#template-details-newsbooks-form"),data);
+			$("#popup-newsbook").find(".loadingmask").hide();
+		}, "newsbooks");
+
+	}
+
 	function nextRecord() {
 		var ID = $.bbq.getState("ID");
 		var $item = $("#record-list .record[data-ID='" + ID + "']");
@@ -522,6 +926,14 @@
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
 			$('#nf-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+			
+			
+			if (data['comments'].length){
+				$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
+			} else {
+				$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
+			}
+			
 
 			if ($("#record-list:visible").length) {
 
@@ -536,11 +948,37 @@
 
 				}
 			}
+			
 
 			$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 		}, "details");
 
 	}
+	function getcomments() {
+		var ID = $.bbq.getState("ID");
+		
+
+		
+		$.getData("/app/nf/data/comments?r=" + Math.random(), {"ID": ID}, function (data) {
+			
+			
+			$('a[href="#details-pane-comments"] .badge').html(data.count);
+			
+		//	$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
+
+			if (data['comments'].length){
+				$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
+			} else {
+				$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
+			}
+			
+			
+
+			$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		}, "comments");
+
+	}
+	
 </script>
 <div class="modal hide fade" id="nf-details-modal" data-show="false">
 </div>
