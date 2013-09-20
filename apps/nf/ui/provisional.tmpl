@@ -4,23 +4,17 @@
             <ul class="nav nav-pills pull-left">
 
                 <li>
-	                <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-		                <button class="btn span1 btn-mini {% if settings['highlight'] == "locked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="locked">Locked</button>
-		                <button class="btn span1 btn-mini {% if settings['highlight'] == "in_newsbook" %}active{% endif %} " style="width:80px;" data-highlight="in_newsbook">Newsbook</button>
-		                <button class="btn span1 btn-mini {% if settings['highlight'] == "placed" %}active{% endif %} " style="width:80px;" data-highlight="placed">Placed</button>
+	                <div class="btn-group" data-toggle="buttons-radio" id="list-stage-btns">
+		                <button class="btn span1 btn-mini {% if settings['stage'] == '*' %}active{% endif %}" style="margin-left: 10px;" data-stage="*">All</button>
+		                
+		                {% for row in stages %}
+		                <button class="btn span1 btn-mini {% if settings['stage'] == row['ID'] %}active{% endif %} " style="width:80px; " data-stage="{{ row['ID'] }}">{{ row['stage'] }}</button>
+		                {% endfor %}
+		               
 	                </div>
                 </li>
-                <li class="divider-vertical"></li>
-	            <li>
-		            <div id="list-filter-btns" data-toggle="buttons-radio" class="btn-group">
-			            <button style="width:40px;" class="btn  btn-mini btn-icon active" data-filter="*">
-				            <i class="icon-asterisk"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="1">
-				            <i class="icon-lock"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="0">
-				            <i class="icon-unlock"></i></button>
-		            </div>
-	            </li>
+                
+	           
                 
 
                 <li class="divider-vertical"></li>

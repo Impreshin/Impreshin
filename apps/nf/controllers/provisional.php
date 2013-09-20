@@ -23,7 +23,7 @@ class provisional extends \apps\nf\controllers\_ {
 
 		$userID = $user['ID'];
 		$pID = $user['pID'];
-		$currentDate = $user['publication']['current_date'];
+		
 		//test_array($user);
 		$app_settings = \apps\nf\settings::_available();
 		$stages = models\stages::getAll("cID='". $user['company']['ID']."' OR cID='0'","orderby ASC");

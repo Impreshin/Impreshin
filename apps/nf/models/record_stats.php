@@ -35,16 +35,30 @@ class record_stats {
 		$maxPages = 0;
 
 		$dIDArray = array();
+		$stages = array();
 		foreach ($data as $record) {
 			
 
 			if (in_array("locked", $columns)) if ($record['locked_fullName']) $totals['locked'] = $totals['locked'] + 1;
 			if (in_array("stages", $columns)) {
-				if ($record['stage']) {
-					if (!isset($totals['stages'][$record['stage']])){
-						$totals['stages'][$record['stage']] = 0;
+				if ($record['stageID']) {
+					if (!in_array($record['stageID'],$stages)) $stages[$record['stageID']]=$record['stage'];
+					
+					
+					if (!isset($totals['stages'][$record['stageID']])){
+						$totals['stages'][$record['stageID']]['count'] = 0;
+						$totals['stages'][$record['stageID']]['locked'] = 0;
 					}
-					$totals['stages'][$record['stage']] = $totals['stages'][$record['stage']] + 1;
+					$totals['stages'][$record['stageID']]['count'] = $totals['stages'][$record['stageID']]['count'] + 1;
+
+					
+					if (in_array("locked", $columns)) {
+						if (!isset($totals['stages'][$record['stageID']]['locked'])){
+							$totals['stages'][$record['stageID']]['locked'] = 0;
+						}
+						if ($record['locked_fullName']) $totals['stages'][$record['stageID']]['locked'] = $totals['stages'][$record['stageID']]['locked'] + 1;
+					
+					}
 				}
 			}
 			if (in_array("in_newsbook", $columns)) if (isset($record['in_newsbook'])&&$record['in_newsbook']) $totals['in_newsbook'] = $totals['in_newsbook'] + 1;
@@ -97,9 +111,10 @@ class record_stats {
 			$return['records']['stages'] = array();
 			foreach ($totals['stages'] as $k=>$value){
 				$return['records']['stages'][$k] = array(
-					"k" => $k,
-					"r" => $totals['stages'][$k],
-					"p" => ($totals['stages'][$k]) ? number_format((($totals['stages'][$k] / $totals["records"]) * 100), 2) : 0
+					"k" => $stages[$k],
+					"r" => $totals['stages'][$k]['count'],
+					"p" => ($totals['stages'][$k]['count']) ? number_format((($totals['stages'][$k]['count'] / $totals["records"]) * 100), 2) : 0,
+					"l"=>$totals['stages'][$k]['locked'],
 				);
 			}
 		}

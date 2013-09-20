@@ -243,3 +243,6 @@ ALTER TABLE `nf_articles` ADD `meta` TINYTEXT NULL DEFAULT NULL AFTER `checklist
 ALTER TABLE `nf_article_newsbook_photos` DROP `ID`;
 ALTER TABLE `nf_article_newsbook_photos` ADD INDEX ( `fileID` );
 ALTER TABLE `nf_article_newsbook_photos` DROP `planned`;
+
+#------
+

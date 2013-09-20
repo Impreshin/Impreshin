@@ -33,8 +33,8 @@ class articles {
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-		$currentDate = $user['publication']['current_date'];
-		$currentDate = $currentDate['publish_date'];
+		//$currentDate = $user['publication']['current_date'];
+		//$currentDate = $currentDate['publish_date'];
 		//test_array($currentDate);
 		$from = self::_from();
 		$result = $f3->get("DB")->exec("
@@ -283,10 +283,17 @@ class articles {
 
 	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
 		$f3 = \Base::instance();
-		if (!isset($options['highlight'])) $options['highlight'] = "";
-		if (!isset($options['filter'])) $options['filter'] = "";
+		if (!isset($options['highlight'])) $options['highlight'] = array("","");
+		if (!isset($options['filter'])) $options['filter'] = array("","");
 		
-		//test_array($data);
+		if (!is_array($options['highlight'])){
+			$options['highlight'] = array($options['highlight'],'1');
+		}
+		if (!is_array($options['filter'])){
+			$options['filter'] = array($options['highlight'][0],$options['filter']);
+		}
+		
+	//	test_array($options);
 
 		$timer = new timer();
 		$user = $f3->get("user");
@@ -317,9 +324,29 @@ class articles {
 				}
 			}
 			$showrecord = true;
-			if (isset($options["highlight"]) && $options["highlight"]) {
-				$record['highlight'] = $record[$options["highlight"]];
+			
+			if ((isset($options["highlight"][0]))&&(isset($options["highlight"][1]))) {
+				$record['highlight'] = 0;
+				if ($record[$options["highlight"][0]]==$options["highlight"][1] && $options["highlight"][1]!="*"){
+					$record['highlight'] = 1;
+				}
 			}
+			if ((isset($options["filter"][0]))&&(isset($options["filter"][1]))&&($options["filter"][0]!="" && $options["filter"][1]!="")) {
+				if ($options["filter"][1]=="*"){
+					$showrecord = true;
+				} else {
+					if ($record[$options["filter"][0]]==$options["filter"][1]){
+
+					} else {
+						$showrecord = false;
+					}
+				}
+				
+			}
+
+			//$record['show']=$showrecord;
+			//test_array($record); 
+			/*
 			if (isset($options["filter"])) {
 				if ($options["filter"] == "*") {
 					$showrecord = true;
@@ -330,7 +357,7 @@ class articles {
 						$showrecord = false;
 					}
 				}
-			}
+			}*/
 			//	test_array($permissions);
 //echo $record[$options["highlight"]] . " | " . $showrecord . " | " . $options["filter"]. "<br>";
 			if ($showrecord) {

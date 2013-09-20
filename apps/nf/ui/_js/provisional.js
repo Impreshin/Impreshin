@@ -9,8 +9,8 @@ $(document).ready(function () {
 	$("#stageID").select2();
 	scrolling(api);
 
-	var highlight = $.bbq.getState("highlight");
-	highlight = (highlight) ? highlight : "1";
+	var stage = $.bbq.getState("stage");
+	stage = (stage) ? stage : "*";
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
 
@@ -18,9 +18,9 @@ $(document).ready(function () {
 		$("#settings-modal").modal('show');
 	}
 
-	if ($.bbq.getState("highlight")) {
-		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
-		$("#list-highlight-btns button[data-highlight='" + highlight + "']").addClass("active");
+	if ($.bbq.getState("stage")) {
+		$("#list-stage-btns button[data-stage].active").removeClass("active");
+		$("#list-stage-btns button[data-stage='" + stage + "']").addClass("active");
 	}
 	if ($.bbq.getState("filter")) {
 		$("#list-filter-btns button[data-filter].active").removeClass("active");
@@ -114,16 +114,16 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button", function (e) {
+	$(document).on("click", "#list-stage-btns button, #list-filter-btns button", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
-		var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-		highlight = (highlight) ? highlight : "locked";
+		var stage = $("#list-stage-btns button.active").attr("data-stage");
+		stage = (stage) ? stage : "*";
 		var filter = $("#list-filter-btns button.active").attr("data-filter");
 		filter = (filter) ? filter : "*";
 
-		$.bbq.pushState({"highlight": highlight, "filter":filter});
+		$.bbq.pushState({"stage": stage, "filter":filter});
 		getList();
 
 	});
@@ -248,8 +248,8 @@ function getList(settings) {
 	var groupOrder = $.bbq.getState("orderBy");
 	groupOrder = (groupOrder) ? groupOrder : "";
 
-	var highlight = $("#list-highlight-btns button.active").attr("data-highlight");
-	highlight = (highlight) ? highlight : "";
+	var stage = $("#list-stage-btns button.active").attr("data-stage");
+	stage = (stage) ? stage : "";
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter) ? filter : "";
 
@@ -266,7 +266,7 @@ function getList(settings) {
 	$("#whole-area .loadingmask").show();
 
 
-	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search, "stageID": stageID}, function (data) {
+	$.getData("/app/nf/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "stage": stage, "filter": filter, "order": order, "search": search, "stageID": stageID}, function (data) {
 		var $recordsList = $("#record-list");
 		if (data['list'][0]) {
 			$recordsList.jqotesub($("#template-records"), data['list']);

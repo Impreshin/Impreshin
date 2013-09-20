@@ -28,8 +28,8 @@ class provisional extends data {
 
 
 
-		$currentDate = $user['publication']['current_date'];
-		$dID = $currentDate['ID'];
+		//$currentDate = $user['publication']['current_date'];
+		//$dID = $currentDate['ID'];
 
 		$section = 'provisional';
 		$settings = models\settings::_read($section);
@@ -42,6 +42,7 @@ class provisional extends data {
 
 
 		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
+		$stage = (isset($_REQUEST['stage']) && $_REQUEST['stage'] != "") ? $_REQUEST['stage'] : $settings['stage'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 	//	$stageID = (isset($_REQUEST['stageID']) && $_REQUEST['stageID']!="") ? $_REQUEST['stageID'] : $settings['stageID'];
 
@@ -83,6 +84,7 @@ class provisional extends data {
 			"group"=> $grouping,
 			"order"=> $ordering,
 			"highlight"=> $highlight,
+			"stage"=> $stage,
 			"filter"=>$filter,
 			"search"=>$search,
 			//"stageID"=>$stageID
@@ -111,7 +113,7 @@ class provisional extends data {
 		
 
 		//$where = "1";
-		$where .= " AND archived != '1'";
+		$where .= " AND archived != '1' || stageID !='2'";
 		$options = array();
 		if ($highlight=="used"){
 			$options = array("newsbook_used"=>true);
@@ -123,8 +125,23 @@ class provisional extends data {
 		$records = models\articles::getAll($where, $grouping, $ordering,$options);
 		$stats = models\record_stats::stats($records,array("locked","stages","in_newsbook","placed"));
 
-		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
-		
+		//
+		$highlight = array("locked","1");
+		if ($stage=="*"){
+			
+			$filter = array("","");
+			
+			$stats['main'] = array(
+				"k"=>"",
+				"r"=> $stats['records']['total'],
+				"p"=>"",
+				"l"=>$stats['records']['locked']['r']
+			);
+		} else {
+			
+			$filter = array("stageID",$stage);;
+			$stats['main'] = $stats['records']['stages'][$stage];
+		}
 		
 		$return = array();
 		$return['stats'] = $stats;
@@ -134,6 +151,8 @@ class provisional extends data {
 			"c"=> $ordering_c,
 			"o"=> $ordering_d
 		);
+		
+		
 		$return['list'] = models\articles::display($records, array("highlight"=>$highlight,"filter" => $filter));
 
 

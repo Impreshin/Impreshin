@@ -58,7 +58,7 @@ class settings {
 				"h"=>"% last"
 			),
 			"percent_orig"=>array(
-				"h"=>"% Changed"
+				"h"=>"%&nbs;Chan."
 			),
 			
 			"newsbooks"=>array(
@@ -228,6 +228,7 @@ class settings {
 					),
 					"count"      => count($defColumns),
 					"highlight"=> "locked",
+					"stage"=> "*",
 					"filter"   => "*",
 					"search" => "",
 
@@ -243,6 +244,7 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => count($defColumns),
+					"highlight"=> "ready",
 					"filter"   => "*",
 					"search" => "",
 					"stageID"=>"0"
