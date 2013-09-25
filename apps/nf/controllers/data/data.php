@@ -22,6 +22,9 @@ class data {
 	function details() {
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 		$historyID = (isset($_REQUEST['historyID'])) ? $_REQUEST['historyID'] : "";
+		$pID = (isset($_REQUEST['pID'])) ? $_REQUEST['pID'] : "";
+		$dID = (isset($_REQUEST['dID'])) ? $_REQUEST['dID'] : "";
+		$newsbook = (isset($_REQUEST['newsbook'])) ? true : false;
 		$user = $this->f3->get("user");
 
 
@@ -85,19 +88,25 @@ class data {
 		$newsbooks = models\articles::getNewsbooks($return['ID'],"publish_date DESC");
 
 		$n = array();
+		$media_show = array();
+		
+			
 		
 		foreach ($newsbooks as $item){
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$item['ID']."'");
-			$f = array();
-			foreach ($media as $file) {
-				$file['folder'] = $return['cID'] . "/" . date("Y", strtotime($file['datein'])) . "/";;
-				$f[] = $file;
+			
+			$media = models\files::display($media);
+			if ($newsbook){
+				if ($item['pID']==$pID&&$item['dID']==$dID){
+					$media_show = $media;
+				}
 			}
-			$media = models\files::display($f);
-			
-			
 			$item['media']= $media;
 			$n[] = $item;
+		}
+
+		if ($newsbook){
+			$return['media'] = $media_show;
 		}
 		$newsbooks = $n;
 		
@@ -196,7 +205,6 @@ class data {
 		foreach ($media as $item){
 			$item['checked']=(in_array($item['ID'],$in_newsbook))?1:0;
 
-			$item['folder'] = $article['cID'] . "/" . date("Y", strtotime($item['datein'])) . "/";;
 			
 			$n[] = $item;
 		}

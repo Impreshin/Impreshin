@@ -1,0 +1,63 @@
+#nf-details-modal-area-newsbook {
+	
+	
+	
+
+	
+
+	#right-side-pane {
+		height        : 500px;
+		position      : absolute;
+		right         : 0;
+		top           : 0;
+		width         : 220px;
+		bottom        : 0;
+		padding-top   : 10px;
+		padding-right : 10px;
+		border-left: 1px solid #DDD;
+
+		.photo-jump {
+			margin-bottom:10px;
+		}
+		
+		fieldset {
+			padding: 0 10px;
+			legend {
+				padding: 0 10px;
+				margin: 10px -10px 5px -10px;
+				font-size: 14px;
+				line-height: 24px;
+				color: #999;
+			}
+		}
+		
+	}
+	#left-side-pane {
+		position   : absolute;
+		left       : 0;
+		top        : 0;
+		right      : 230px;
+		bottom     : 0;
+		overflow-y : auto;
+		padding    : 0 10px;
+		.jspVerticalBar {
+			.opacity(0);
+			.transition();
+		}
+		&:hover .jspVerticalBar {
+			.opacity(100);
+
+		}
+		.scroll-pane {
+			position : absolute;
+			left     : 0;
+			top      : 0;
+			right    : 0;
+			bottom   : 0;
+		}
+		
+	}
+
+	
+}
+

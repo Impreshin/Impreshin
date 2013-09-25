@@ -107,6 +107,20 @@
 						<textarea name="remark" id="remark" cols="30" rows="3" class="span7"><% if (this.details.account) { %><%= this.details.remark %><% } %></textarea>
 					</div>
 				</div>
+				<div class="control-group">
+					<label for="email" class="control-label">Email</label>
+
+					<div class="controls">
+						<input type="text" id="email" name="email" class="input-xlarge" value="<% if (this.details.email) { %><%= this.details.email %><% } %>">
+					</div>
+				</div>
+				<div class="control-group">
+					<label for="phone" class="control-label">Phone Number</label>
+
+					<div class="controls">
+						<input type="text" id="phone" name="phone" class="input-xlarge" value="<% if (this.details.phone) { %><%= this.details.phone %><% } %>">
+					</div>
+				</div>
 
 
 							<% if (this.details.ID) { %>

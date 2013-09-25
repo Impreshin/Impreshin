@@ -89,6 +89,9 @@ $sql = array(
 	),
 	"17"=>array(
 		"ALTER TABLE `ab_bookings` ADD `dateChanged` TIMESTAMP NULL DEFAULT NULL AFTER `datein`;"
+	),
+	"18"=>array(
+		"ALTER TABLE `ab_accounts` ADD `email` VARCHAR( 250 ) NULL DEFAULT NULL , ADD `phone` VARCHAR( 250 ) NULL DEFAULT NULL;"
 	)
 
 );

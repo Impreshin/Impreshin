@@ -70,6 +70,12 @@ class settings {
 			"account"                => array(
 				"h"=> "Account"
 			),
+			"account_email"                => array(
+				"h"=> "Account&nbsp;Email"
+			),
+			"account_phone"                => array(
+				"h"=> "Account&nbsp;Phone"
+			),
 
 			"invoiceNum"               => array(
 				"h"=> "Invoice&nbsp;Num"

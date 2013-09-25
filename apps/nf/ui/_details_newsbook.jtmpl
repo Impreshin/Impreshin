@@ -1,0 +1,175 @@
+<script type="text/x-jqote-template" id="template-details-newsbook">
+	<![CDATA[
+<div id="nf-details-modal-area-newsbook" >
+	
+
+	<section class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3><% if (this.type_icon){ %>
+			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
+			<% } %>
+			<% if (this.stageID != '2') { %>
+			<span class="label <%= this.stageLabelClass %>" style="margin-right: 10px; margin-top:-8px;"> <%= this.stage %> </span>
+			<% } %>
+
+
+
+			<%= this.title %>
+		</h3>
+
+		<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1; right:30px;">
+
+			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+			<a href="#" class="view_full_details" rel="tooltip" data-placement="bottom" title="View the full details pane"><i class="icon-desktop icon-d-grey"></i></a>
+			
+			<a href="#" class="view_comments_details" rel="tooltip" data-placement="bottom" title="View and make comments"><i class="<% if (this.commentCount > 0) { %>icon-comments<% } else { %>icon-comment-alt <% } %> icon-d-grey"></i></a>
+
+		</div>
+
+
+	
+	</section>
+	<section class="modal-body">
+
+		<div id="left-side-pane" >
+			<div class="scroll-pane">
+				<div style="padding:10px 20px;">
+					<% if (this.typeID =='1') { %>
+					<%= this.body||"" %>
+					<hr>
+					<% } %>
+					<% for(var f in this.media) { %>
+
+					<article class="row article-photo">
+						<div class="span2">
+							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
+						</div>
+						<div class="span6"><%= this.media[f].caption %></div>
+					</article>
+				
+
+					<% } %>
+				</div>
+			</div>
+		</div>
+		<div id="right-side-pane" >
+			<fieldset>
+				<legend style="margin-top:0;">Date Created</legend>
+				<%= this.datein %>
+			</fieldset>
+			<fieldset>
+				<legend>Author</legend>
+				<%= this.author %>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Photos</legend>
+				<% for(var f in this.media) { %>
+
+				<div class="span1 photo-jump">
+					<img src="/app/nf/thumb/50/40?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
+				</div>
+					
+				<% } %>
+			</fieldset>
+			
+			
+		</div>
+			
+		
+		
+
+	</section>
+
+	<section class="modal-footer">
+		<div class="row">
+
+			<div class="span9 l">
+				<table class="table table-condensed" style="margin:0;">
+					<tr>
+						<th class="r span1">Size</th>
+						<td class="span3"><%= this.cm||"" %> <span class="g"> cm | <%= this.words||"" %> words</span></td>
+						<th class="r span1">Photos</th>
+						<td class="span1"><%= this.media.length %></td>
+						<th class="r span1">Priority</th>
+						<td class="span2"><%= this.priority||"" %></td>
+						<td></td>
+
+
+
+					</tr>
+					
+
+
+				</table>
+
+
+			</div>
+
+			<div style="padding-left: 5px; margin-right: -5px;" class="offset9 list-next-prev-btns">
+				<div class="btn-group">
+					<button class="btn span2 details-record-prev">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button class="btn span2 details-record-next"> Next <i class="icon-step-forward"></i></button>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+	<div class="popup" id="popup-newsbook" style="height: 270px; ">
+		<form class="form form-horizontal" id="form-newsbook">
+
+		</form>
+		<div class="loadingmask wide"></div>
+	</div>
+</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details-comments">
+	<![CDATA[
+	<article data-name="<%= this.fullName %>" data-ID="<%= this.ID %>" data-parentID="<%= this.parentID %>">
+		<h4>
+			<%= this.fullName %> &nbsp;
+			<small><%= this.datein %></small>
+			<ul class="actions">
+				<% if (this.uID=="{{ _user['ID'] }}") { %>
+				<li class="edit"><i class="icon-pencil"></i></li>
+				<% } %>
+				<li class="reply"><i class="icon-reply"></i></li>
+
+			</ul>
+		</h4>
+
+		<div class="comment">
+			<%= this.comment %>
+		</div>
+
+		<div class="children">
+			<% for(var i in this.children) { %>
+			<article>
+				<h4><%= this.children[i].fullName %> &nbsp;
+					<small><%= this.children[i].datein %></small>
+				</h4>
+
+				<div class="comment">
+					<%= this.children[i].comment %>
+				</div>
+			</article>
+			<% } %>
+		</div>
+	</article>
+
+
+	]]>
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+	})
+	
+
+</script>

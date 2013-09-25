@@ -41,6 +41,7 @@ class production extends data {
 
 
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight']!="") ? $_REQUEST['highlight'] : $settings['highlight'];
 	//	$stageID = (isset($_REQUEST['stageID']) && $_REQUEST['stageID']!="") ? $_REQUEST['stageID'] : $settings['stageID'];
 
 
@@ -82,6 +83,7 @@ class production extends data {
 			"order"=> $ordering,
 
 			"filter"=>$filter,
+			"highlight"=>$highlight,
 			"search"=>$search,
 			//"stageID"=>$stageID
 
@@ -102,11 +104,11 @@ class production extends data {
 		}
 
 
-		$where = "cID ='".$user['company']['ID']."' ";
+		$where = "nf_articles.cID ='".$user['company']['ID']."' AND stageID ='2' ";
 		
 
 		//$where = "1";
-		$where .= " AND archived = '0'";
+		$where .= " AND nf_article_newsbook.dID='".$currentDate['ID']."'";
 		$records = models\articles::getAll($where, $grouping, $ordering,array("newsbook_used"=>true));
 		$stats = models\record_stats::stats($records,array("locked","stages"));
 
@@ -114,6 +116,7 @@ class production extends data {
 
 		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
 		$return['dID'] = $currentDate['ID'];
+		$return['pID'] = $pID;
 		
 		
 		$return['stats'] = $stats;
@@ -122,7 +125,7 @@ class production extends data {
 			"c"=> $ordering_c,
 			"o"=> $ordering_d
 		);
-		$return['list'] = models\articles::display($records, array("filter" => $filter));
+		$return['list'] = models\articles::display($records, array("filter" => $filter,"highlight" => $filter));
 
 
 		

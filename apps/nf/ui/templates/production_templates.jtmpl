@@ -1,6 +1,6 @@
 {% include '_records.jtmpl' %}
 {% include '_details.jtmpl' %}
-
+{% include "_details_newsbook.jtmpl" %}
 <script type="text/x-jqote-template" id="template-provisional-stats-bar">
 	<![CDATA[
 	<li>

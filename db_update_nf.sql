@@ -246,3 +246,5 @@ ALTER TABLE `nf_article_newsbook_photos` DROP `planned`;
 
 #------
 
+ALTER TABLE `nf_files` ADD `folder` VARCHAR( 40 ) NULL DEFAULT NULL AFTER `aID`;
+UPDATE nf_files SET folder = '1/old';

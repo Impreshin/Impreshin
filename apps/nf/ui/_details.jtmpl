@@ -1,6 +1,6 @@
 <script type="text/x-jqote-template" id="template-details">
 <![CDATA[
-
+<div id="nf-details-modal-area" >
 <section class="modal-header">
 	<a class="close" data-dismiss="modal">×</a>
 
@@ -16,7 +16,7 @@
 		<%= this.title %>
 	</h3>
 
-	<div id="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
+	<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
 		
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
 		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>"  rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
@@ -452,12 +452,12 @@
 
 		</div>
 
-		<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+		<div style="padding-left: 5px; margin-right: -5px;" class="offset9 list-next-prev-btns">
 			<div class="btn-group">
-				<button id="details-record-prev" class="btn span2">
+				<button id="" class="btn span2 details-record-prev">
 					<i class="icon-step-backward"></i> Previous
 				</button>
-				<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+				<button id="" class="btn span2 details-record-next"> Next <i class="icon-step-forward"></i></button>
 			</div>
 		</div>
 
@@ -469,6 +469,7 @@
 		
 	</form>
 	<div class="loadingmask wide"></div>
+</div>
 </div>
 
 ]]>
@@ -768,9 +769,10 @@
 
 	});
 	$(document).on('hide', '#nf-details-modal', function () {
-		$.bbq.removeState("ID");
-		$.bbq.removeState("historyID");
-		$("#record-list .record.active").removeClass("active");
+			$.bbq.removeState("ID");
+			$.bbq.removeState("historyID");
+			$("#record-list .record.active").removeClass("active");
+		
 	});
 
 
@@ -827,10 +829,10 @@
 
 	});
 
-	$(document).on('click', '#details-record-prev', function () {
+	$(document).on('click', '.details-record-prev', function () {
 		prevRecord();
 	});
-	$(document).on('click', '#details-record-next', function () {
+	$(document).on('click', '.details-record-next', function () {
 		nextRecord();
 	});
 
@@ -902,14 +904,14 @@
 	function showContent_state() {
 		var ID = $.bbq.getState("ID");
 		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
-			$("#details-record-prev").attr("disabled", "disabled");
+			$(".details-record-prev").attr("disabled", "disabled");
 		} else {
-			$("#details-record-prev").removeAttr("disabled");
+			$(".details-record-prev").removeAttr("disabled");
 		}
 		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
-			$("#details-record-next").attr("disabled", "disabled");
+			$(".details-record-next").attr("disabled", "disabled");
 		} else {
-			$("#details-record-next").removeAttr("disabled");
+			$(".details-record-next").removeAttr("disabled");
 		}
 		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 		if (!tab) tab = "details-pane-details";
@@ -920,8 +922,17 @@
 	function getDetails() {
 		var ID = $.bbq.getState("ID");
 		var historyID = $.bbq.getState("historyID");
-
+		var show_full_details = $.bbq.getState("show_full_details");
+		$(".tooltip").removeClass("in")
+	//	
 		$("#nf-details-modal").addClass("loading");
+		if (typeof(getDetails_custom) === "function" && !show_full_details) {
+			getDetails_custom();
+			return false;
+		}
+
+		//$.bbq.removeState("keepID");
+		
 		$.getData("/app/nf/data/details?r=" + Math.random(), {"ID": ID, "historyID": historyID}, function (data) {
 			$("#record-list .record.active").removeClass("active");
 			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
@@ -940,7 +951,7 @@
 				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
 
 					showContent_state();
-					$("#list-next-prev-btns").show();
+					$(".list-next-prev-btns").show();
 					var api = $("#whole-area .scroll-pane").data("jsp");
 					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
 						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
@@ -948,9 +959,9 @@
 
 				}
 			}
-			
-
-			$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+			setTimeout(function(){
+				$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+			},500);
 		}, "details");
 
 	}

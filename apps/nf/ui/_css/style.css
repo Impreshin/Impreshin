@@ -38,70 +38,14 @@
 #nf-details-modal .modal-header {
   position: relative;
 }
-#nf-details-modal .nav-tabs {
-  height: 500px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 220px;
-  bottom: 0;
-  padding-top: 10px;
-  padding-right: 10px;
+#nf-details-modal .list-next-prev-btns {
+  display: none;
 }
-#nf-details-modal .nav-tabs a {
-  padding-left: 7px;
-  padding-right: 7px;
+#nf-details-modal .button-cell {
+  cursor: pointer;
 }
-#nf-details-modal .nav-tabs a .badge {
+#nf-details-modal .button-cell:hover {
   background-color: #ccc;
-  float: right;
-}
-#nf-details-modal .nav-tabs a .badge.badge-info {
-  background-color: #3A87AD;
-}
-#nf-details-modal .tab-pane {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 230px;
-  bottom: 0;
-  overflow-y: auto;
-  padding: 0 10px;
-}
-#nf-details-modal .tab-pane .jspVerticalBar {
-  opacity: 0;
-  filter: alpha(opacity=0);
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  -webkit-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-#nf-details-modal .tab-pane:hover .jspVerticalBar {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-#nf-details-modal .tab-pane .scroll-pane {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-#nf-details-modal .tab-pane table:first-child tr:first-child td,
-#nf-details-modal .tab-pane table:first-child tr:first-child th {
-  border-top: none;
-}
-#nf-details-modal li.tab-icon {
-  height: 36px;
-}
-#nf-details-modal li.tab-icon .badge {
-  background-color: #ccc;
-}
-#nf-details-modal .tab-icon a {
-  width: 15px;
-  min-width: 15px;
-  display: inline-block;
 }
 #nf-details-modal .active .icon-grey {
   color: #666;
@@ -125,52 +69,141 @@
   top: 8px;
   right: 30px;
 }
-#nf-details-modal .log-changes-table th {
+#nf-details-modal .details-bottom-right-btns {
+  position: absolute;
+  right: 10px;
+  bottom: 3px;
+  width: 210px;
+  text-align: right;
+}
+#nf-details-modal .modal-header-btns {
+  position: absolute;
+  top: 12px;
+  right: 230px;
+}
+#nf-details-modal .modal-header-btns a {
+  text-align: center;
+  padding: 15px 8px 5px 8px;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+#nf-details-modal .modal-header-btns a:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+#nf-details-modal-area .nav-tabs {
+  height: 500px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 220px;
+  bottom: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+}
+#nf-details-modal-area .nav-tabs a {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+#nf-details-modal-area .nav-tabs a .badge {
+  background-color: #ccc;
+  float: right;
+}
+#nf-details-modal-area .nav-tabs a .badge.badge-info {
+  background-color: #3A87AD;
+}
+#nf-details-modal-area .tab-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 230px;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+#nf-details-modal-area .tab-pane .jspVerticalBar {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+#nf-details-modal-area .tab-pane:hover .jspVerticalBar {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+#nf-details-modal-area .tab-pane .scroll-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+#nf-details-modal-area .tab-pane table:first-child tr:first-child td,
+#nf-details-modal-area .tab-pane table:first-child tr:first-child th {
+  border-top: none;
+}
+#nf-details-modal-area li.tab-icon {
+  height: 36px;
+}
+#nf-details-modal-area li.tab-icon .badge {
+  background-color: #ccc;
+}
+#nf-details-modal-area .tab-icon a {
+  width: 15px;
+  min-width: 15px;
+  display: inline-block;
+}
+#nf-details-modal-area .log-changes-table th {
   text-align: left !important;
 }
-#nf-details-modal #details-pane-logs .record.active {
+#nf-details-modal-area #details-pane-logs .record.active {
   background-color: #f1f1f1 !important;
   text-shadow: none;
 }
-#nf-details-modal #details-pane-logs .record:hover {
+#nf-details-modal-area #details-pane-logs .record:hover {
   text-shadow: none;
 }
-#nf-details-modal #list-next-prev-btns {
-  display: none;
-}
-#nf-details-modal #details-pane-details ins,
-#nf-details-modal #details-pane-details ins p {
+#nf-details-modal-area #details-pane-details ins,
+#nf-details-modal-area #details-pane-details ins p {
   color: green;
   background: #dfd;
   text-decoration: none;
 }
-#nf-details-modal #details-pane-details del,
-#nf-details-modal #details-pane-details del p {
+#nf-details-modal-area #details-pane-details del,
+#nf-details-modal-area #details-pane-details del p {
   color: red;
   background: #fdd;
   text-decoration: none;
 }
-#nf-details-modal #details-info-pane {
+#nf-details-modal-area #details-info-pane {
   position: absolute;
   right: 5px;
   bottom: 0px;
   width: 220px;
 }
-#nf-details-modal #details-info-pane .table {
+#nf-details-modal-area #details-info-pane .table {
   margin-bottom: 0;
 }
-#nf-details-modal #details-info-pane .photo-slider {
+#nf-details-modal-area #details-info-pane .photo-slider {
   position: relative;
   z-index: 0;
   width: 220px;
 }
-#nf-details-modal #details-info-pane .photo-slider .item {
+#nf-details-modal-area #details-info-pane .photo-slider .item {
   width: 170px;
   height: 140px;
   background-color: #f1f1f1;
   margin-left: 25px;
 }
-#nf-details-modal #details-info-pane .photo-slider .carousel-control {
+#nf-details-modal-area #details-info-pane .photo-slider .carousel-control {
   border: 1px solid #FFFFFF;
   border-radius: 23px;
   font-size: 20px;
@@ -188,60 +221,33 @@
   -ms-transition: opacity 0.5s linear;
   transition: opacity 0.5s linear;
 }
-#nf-details-modal #details-info-pane .photo-slider .carousel-control.right {
+#nf-details-modal-area #details-info-pane .photo-slider .carousel-control.right {
   left: auto;
   right: 0;
 }
-#nf-details-modal #details-info-pane .photo-slider .carousel-control.left {
+#nf-details-modal-area #details-info-pane .photo-slider .carousel-control.left {
   left: 0;
   right: auto;
 }
-#nf-details-modal #details-info-pane .photo-slider:hover .carousel-control {
+#nf-details-modal-area #details-info-pane .photo-slider:hover .carousel-control {
   opacity: 0.2;
 }
-#nf-details-modal #details-pane-media table.records tbody tr td {
+#nf-details-modal-area #details-pane-media table.records tbody tr td {
   line-height: 24px;
 }
-#nf-details-modal #details-bottom-right-btns {
-  position: absolute;
-  right: 10px;
-  bottom: 3px;
-  width: 210px;
-  text-align: right;
-}
-#nf-details-modal #modal-header-btns {
-  position: absolute;
-  top: 10px;
-  right: 230px;
-}
-#nf-details-modal #modal-header-btns a {
-  text-align: center;
-  padding: 15px 8px 5px 8px;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  -webkit-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-#nf-details-modal #modal-header-btns a:hover {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-#nf-details-modal #comments-area {
+#nf-details-modal-area #comments-area {
   padding: 10px 20px;
 }
-#nf-details-modal #comments-area article {
+#nf-details-modal-area #comments-area article {
   padding-bottom: 10px;
   margin-bottom: 10px;
   position: relative;
   border-bottom: 1px dotted #ccc;
 }
-#nf-details-modal #comments-area article h4 {
+#nf-details-modal-area #comments-area article h4 {
   margin-bottom: 3px;
 }
-#nf-details-modal #comments-area article h4 ul.actions {
+#nf-details-modal-area #comments-area article h4 ul.actions {
   margin: 0;
   list-style: none;
   position: absolute;
@@ -255,23 +261,23 @@
   -ms-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
-#nf-details-modal #comments-area article h4 ul.actions li {
+#nf-details-modal-area #comments-area article h4 ul.actions li {
   display: inline-block;
   padding: 5px;
   cursor: pointer;
 }
-#nf-details-modal #comments-area article h4 ul.actions li:hover {
+#nf-details-modal-area #comments-area article h4 ul.actions li:hover {
   background-color: #DEEBFF;
   color: #000;
 }
-#nf-details-modal #comments-area article h4:hover ul.actions {
+#nf-details-modal-area #comments-area article h4:hover ul.actions {
   opacity: 1;
   filter: alpha(opacity=100);
 }
-#nf-details-modal #comments-area article .children {
+#nf-details-modal-area #comments-area article .children {
   padding-left: 20px;
 }
-#nf-details-modal #comments-area article .children article {
+#nf-details-modal-area #comments-area article .children article {
   border-bottom: none;
   border-top: 1px dotted #e1e1e1;
   margin-top: 5px;
@@ -280,42 +286,42 @@
   padding-bottom: 5px;
   padding-left: 20px;
 }
-#nf-details-modal #comments-area article .children article h4 {
+#nf-details-modal-area #comments-area article .children article h4 {
   font-size: 11px;
   color: #999;
 }
-#nf-details-modal #comment-area {
+#nf-details-modal-area #comment-area {
   position: absolute;
   bottom: -3px;
   left: 0;
   right: 0;
   padding-left: 20px;
 }
-#nf-details-modal #comment-area form {
+#nf-details-modal-area #comment-area form {
   display: none;
 }
-#nf-details-modal #comment-area.active {
+#nf-details-modal-area #comment-area.active {
   height: 140px;
 }
-#nf-details-modal #comment-area.active input[type="text"] {
+#nf-details-modal-area #comment-area.active input[type="text"] {
   display: none;
 }
-#nf-details-modal #comment-area.active form {
+#nf-details-modal-area #comment-area.active form {
   display: block;
 }
-#nf-details-modal #comment-area.active form textarea {
+#nf-details-modal-area #comment-area.active form textarea {
   width: 515px;
   height: 90px;
   -webkit-box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
   -moz-box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
   box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
 }
-#nf-details-modal #comment-area.active form .buttons {
+#nf-details-modal-area #comment-area.active form .buttons {
   position: absolute;
   bottom: 10px;
   right: 20px;
 }
-#nf-details-modal #comment-area.active form #comment-heading {
+#nf-details-modal-area #comment-area.active form #comment-heading {
   position: absolute;
   bottom: 15px;
   left: 20px;
@@ -323,14 +329,14 @@
   font-weight: bold;
   color: #999;
 }
-#nf-details-modal #nf-details-title {
+#nf-details-modal-area #nf-details-title {
   max-width: 465px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
 }
-#nf-details-modal #nf-details-title:hover {
+#nf-details-modal-area #nf-details-title:hover {
   background-color: rgba(250, 250, 250, 0.8);
   max-width: 100%;
   overflow: visible;
@@ -339,11 +345,58 @@
   box-shadow: 10px rgba(250, 250, 250, 0.8);
   z-index: 999;
 }
-#nf-details-modal .button-cell {
-  cursor: pointer;
+#nf-details-modal-area-newsbook #right-side-pane {
+  height: 500px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 220px;
+  bottom: 0;
+  padding-top: 10px;
+  padding-right: 10px;
+  border-left: 1px solid #DDD;
 }
-#nf-details-modal .button-cell:hover {
-  background-color: #ccc;
+#nf-details-modal-area-newsbook #right-side-pane .photo-jump {
+  margin-bottom: 10px;
+}
+#nf-details-modal-area-newsbook #right-side-pane fieldset {
+  padding: 0 10px;
+}
+#nf-details-modal-area-newsbook #right-side-pane fieldset legend {
+  padding: 0 10px;
+  margin: 10px -10px 5px -10px;
+  font-size: 14px;
+  line-height: 24px;
+  color: #999;
+}
+#nf-details-modal-area-newsbook #left-side-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 230px;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+#nf-details-modal-area-newsbook #left-side-pane .jspVerticalBar {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+#nf-details-modal-area-newsbook #left-side-pane:hover .jspVerticalBar {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+#nf-details-modal-area-newsbook #left-side-pane .scroll-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 #settings-modal #available-columns div {
   opacity: 0.8;

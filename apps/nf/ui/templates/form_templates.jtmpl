@@ -124,8 +124,7 @@
 										<ul class="nav nav-list">
 											<li class="nav-header">Resources</li>
 											<li><a href="#">How to write <i class="icon-external-link s "></i></a></li>
-											<li><a href="#">How to write part 2 <i class="icon-external-link s"></i></a>
-											</li>
+											<li><a href="#">How to write part 2 <i class="icon-external-link s"></i></a></li>
 											<li><a href="#">Style Guide<i class="icon-file-alt"></i></a></li>
 											<li><a href="#">Important Numbers<i class="icon-file-alt"></i></a></li>
 										</ul>
@@ -246,6 +245,7 @@
 		<input type="hidden" id="file-filename-<%= this.ID||this.tempID %>" name="file-filename-<%= this.ID||this.tempID %>" class="file-filename-field" value="<%= this.filename %>"/>
 		<input type="hidden" id="file-filename_orig-<%= this.ID||this.tempID %>" name="file-filename_orig-<%= this.ID||this.tempID %>" class="file-filename_orig-field" value="<%= this.filename_orig %>"/>
 		<input type="hidden" id="file-ID-<%= this.ID||this.tempID %>" name="file-ID-<%= this.ID||this.tempID %>" value="<%= this.ID %>"/>
+		<input type="hidden" id="file-folder-<%= this.ID||this.tempID %>" name="file-folder-<%= this.ID||this.tempID %>" value="<%= this.folder %>"/>
 
 
 		<div class="span2"  >

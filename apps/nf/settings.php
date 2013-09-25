@@ -263,6 +263,7 @@ class settings {
 					"count"      => count($defColumns),
 					"type_switch"=> "1",
 					"filter"   => "*",
+					"highlight"   => "ready",
 					"search" => "",
 
 				),

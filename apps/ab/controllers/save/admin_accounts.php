@@ -31,6 +31,8 @@ class admin_accounts extends save {
 		$accNum = isset($_POST['accNum']) ? $_POST['accNum'] : "";
 		$statusID= isset($_POST['statusID']) ? $_POST['statusID'] : "";
 		$remark = isset($_POST['remark']) ? $_POST['remark'] : "";
+		$email = isset($_POST['email']) ? $_POST['email'] : "";
+		$phone = isset($_POST['phone']) ? $_POST['phone'] : "";
 		$publications= isset($_POST['publications']) ? $_POST['publications'] : array();
 
 
@@ -73,6 +75,8 @@ class admin_accounts extends save {
 			"accNum"=> $accNum,
 			"statusID"=> $statusID,
 			"remark"=> $remark,
+			"phone"=> $phone,
+			"email"=> $email,
 			"publications"     => $publications,
 			"cID"=> $cID
 		);

@@ -58,6 +58,7 @@ class articles {
 	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID  ORDER BY ID DESC LIMIT 0,1)  as body
 
 
+
 			FROM $from
 
 
@@ -70,7 +71,6 @@ class articles {
 			$files = files::getAll("aID='" . $return['ID'] . "'", "ID DESC");
 			$f = array();
 			foreach ($files as $file) {
-				$file['folder'] = $return['cID'] . "/" . date("Y", strtotime($file['datein'])) . "/";;
 				$f[] = $file;
 			}
 			$return['media'] = files::display($f);
@@ -327,7 +327,7 @@ class articles {
 			
 			if ((isset($options["highlight"][0]))&&(isset($options["highlight"][1]))) {
 				$record['highlight'] = 0;
-				if ($record[$options["highlight"][0]]==$options["highlight"][1] && $options["highlight"][1]!="*"){
+				if (isset($record[$options["highlight"][0]]) && $record[$options["highlight"][0]]==$options["highlight"][1] && $options["highlight"][1]!="*"){
 					$record['highlight'] = 1;
 				}
 			}
@@ -479,6 +479,7 @@ class articles {
 		$lookupColumns["categoryID"] = array("sql" => "(SELECT category FROM nf_categories WHERE ID = '{val}')", "col" => "category", "val" => "");
 		$lookupColumns["typeID"] = array("sql" => "(SELECT type FROM nf_article_types WHERE ID = '{val}')", "col" => "type", "val" => "");
 		$lookupColumns["stageID"] = array("sql" => "(SELECT stage FROM nf_stages WHERE ID = '{val}')", "col" => "stage", "val" => "");
+		$lookupColumns["priorityID"] = array("sql" => "(SELECT priority FROM nf_priorities WHERE ID = '{val}')", "col" => "priority", "val" => "");
 		$lookupColumns["locked_uID"] = array("sql" => "(SELECT fullName FROM global_users WHERE ID = '{val}')", "col" => "locked_user", "val" => "");
 		$lookupColumns["rejected_uID"] = array("sql" => "(SELECT fullName FROM global_users WHERE ID = '{val}')", "col" => "rejected_user", "val" => "");
 		$lookupColumns["deleted_userID"] = array("sql" => "(SELECT fullName FROM global_users WHERE ID = '{val}')", "col" => "deleted_user", "val" => "");

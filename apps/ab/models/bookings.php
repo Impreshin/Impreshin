@@ -202,7 +202,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
 			global_dates.publish_date AS publishDate,
 			ab_placing_sub.label AS sub_placing,
-				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
+				ab_accounts.account AS account, ab_accounts.accNum AS accNum, ab_accounts.email AS account_email, ab_accounts.phone AS account_phone, ab_accounts_status.blocked AS accountBlocked, ab_accounts_status.status AS accountStatus, ab_accounts_status.labelClass,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				material_status AS material,
 				CASE material_source WHEN 1 THEN 'Production' WHEN 2 THEN 'Supplied' END AS material_source,

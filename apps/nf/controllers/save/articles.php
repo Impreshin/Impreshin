@@ -222,6 +222,7 @@ class articles extends save {
 								"filename"=> $filename,
 								"filename_orig"=> isset($_POST['file-filename_orig-' . $n]) ? $_POST['file-filename_orig-' . $n] : "",
 								"caption"=> isset($_POST['file-caption-' . $n]) ? $_POST['file-caption-' . $n] : "",
+								"folder"=> isset($_POST['file-folder-' . $n]) ? $_POST['file-folder-' . $n] : "",
 								"uID"=> isset($_POST['file-uID-' . $n]) ? $_POST['file-uID-' . $n] : $user['ID'],
 								"type"=> $filetype,
 	
