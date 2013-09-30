@@ -11,24 +11,20 @@ class articles {
 		$this->dbStructure = $classname::dbStructure();
 	}
 
-	private static function _from($show_newsbooks=false) {
-		$return = "(((((( nf_articles INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) LEFT JOIN global_users AS locked_users ON nf_articles.locked_uID = locked_users.ID) LEFT JOIN global_users AS rejected_users ON nf_articles.rejected_uID = rejected_users.ID) LEFT JOIN global_users AS deleted_users ON nf_articles.deleted_userID = deleted_users.ID";
+	private static function _from($options=array()) {
 
-		$return = "(((((((((( nf_articles INNER JOIN global_users
-		ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN nf_article_newsbook ON nf_articles.ID = nf_article_newsbook.aID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID";
+		$newsbook_sql = "";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (nf_article_newsbook.pID = '".$options['pID']."' AND nf_article_newsbook.dID = '".$options['dID']."')";
 
-		$return = "((((((((((( nf_articles INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN global_users ON nf_articles.authorID = global_users.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN nf_article_newsbook ON nf_articles.ID = nf_article_newsbook.aID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID )";
-
-
-			$return = "(((((((( nf_articles INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) ON nf_articles.ID = nf_article_newsbook.aID";
-
+		}
 		
-		$return = "(((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) ON nf_articles.ID = nf_article_newsbook.aID ) ) ";
+		$return = "(((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID $newsbook_sql) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID $newsbook_sql) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID $newsbook_sql) ON nf_articles.ID = nf_article_newsbook.aID ) ) ";
 
 		return $return;
 	}
 
-	function get($ID) {
+	function get($ID,$options=array()) {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
@@ -36,7 +32,15 @@ class articles {
 		//$currentDate = $user['publication']['current_date'];
 		//$currentDate = $currentDate['publish_date'];
 		//test_array($currentDate);
-		$from = self::_from();
+		$from = self::_from($options);
+		$newsbook_sql = $newsbook_select = "";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."')";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, ";
+
+		}
+		
+		
 		$result = $f3->get("DB")->exec("
 			SELECT
 				nf_articles.*,
@@ -54,6 +58,8 @@ class articles {
 				if(global_users_1.ID,1,0) AS locked,
 				if(nf_stages.ID='2',1,0) AS ready,
 				if(global_dates.ID, 1, 0) AS in_newsbook,
+				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
+				$newsbook_select
 				(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND stageID ='1' ORDER BY ID DESC  LIMIT 0,1) as draft,
 	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID  ORDER BY ID DESC LIMIT 0,1)  as body
 
@@ -173,7 +179,7 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","usepub"=>"")) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"" )) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {
@@ -181,6 +187,13 @@ class articles {
 		} else {
 			$where = " ";
 		}
+		if (!$grouping){
+			$grouping = array("g" => "none", "o" => "ASC");
+		}
+		if (!$ordering){
+			$ordering = array("c" => "datein", "o" => "DESC");
+		}
+		
 		$order = articles::order($grouping, $ordering);
 		$orderby = $order['order'];
 		$select = $order['select'];
@@ -200,14 +213,17 @@ class articles {
 			$limit = " ";
 		}
 
-		$usepub_placed = "";
-		if (isset($options['usepub'])&&$options['usepub']) {
-			$usepub_placed = "AND p_nb.pID = '".$options['usepub']."'";
+		$newsbook_sql = "";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."')";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, ";
 			
+		} else {
+			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  as page, ";
 		}
 
 		//test_array($usepub_placed); 
-		$from = self::_from(true);
+		$from = self::_from($options);
 
 		$sql = "
 			SELECT DISTINCT
@@ -226,8 +242,9 @@ class articles {
 				if(global_users_1.ID,1,0) AS locked,
 				if(nf_stages.ID='2',1,0) AS ready,
 				if(global_dates.ID, 1, 0) AS in_newsbook,
-				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $usepub_placed),1,0) as placed,
+				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
 				(SELECT TRIM(GROUP_CONCAT(CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, if(g_pages.ID,CONCAT(' | ',FLOOR(g_pages.page)),''),')'))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  AS newsbooks,
+				$newsbook_select
 				(SELECT count(ID) FROM nf_comments WHERE nf_comments.aID =  nf_articles.ID) AS commentCount,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='2') AS filesCount
@@ -427,8 +444,12 @@ class articles {
 				$arrange = "nf_categories.category as heading";
 				break;
 			case "priority":
-				$orderby = "COALESCE(nf_priorities.orderby,'99999999') $ordering, " . $orderby;
+				$orderby = "COALESCE(nf_priorities.orderby,99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(nf_priorities.priority,'') as heading";
+				break;
+			case "page":
+				$orderby = "COALESCE(FLOOR(global_pages.page),99999) $ordering, " . $orderby;
+				$arrange = "COALESCE(CONCAT('Page ',FLOOR(global_pages.page)),'Not placed') as heading";
 				break;
 
 			case "none":

@@ -198,7 +198,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$limit = " ";
 		}
 		$from = self::_from();
-		$result = $f3->get("DB")->exec("
+		
+		
+		$sql = "
 			SELECT ab_bookings.*, ab_placing.placing, ab_bookings_types.type, ab_marketers.marketer,
 			global_dates.publish_date AS publishDate,
 			ab_placing_sub.label AS sub_placing,
@@ -221,8 +223,13 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$where
 			$orderby
 			$limit
-		"
-		);
+		";
+		if (isset($_GET['sql'])){
+			echo $sql;
+			exit();
+		}
+		
+		$result = $f3->get("DB")->exec($sql);
 		$return = $result;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 

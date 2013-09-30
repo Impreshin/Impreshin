@@ -224,6 +224,7 @@ class app {
 		$permissions = $DefaultPermissionsClass::defaults();
 		$permissions = $permissions["p"];
 
+		
 		/*** find company specific settings for the user like permissions and access to the various apps **/
 
 		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' ORDER BY if((SELECT global_publications.cID FROM global_publications WHERE global_publications.ID = '$lastpID')=global_users_company.cID,1,0) DESC, ID DESC LIMIT 0,1");
@@ -243,11 +244,12 @@ class app {
 
 
 
-			$permissions = self::permissions_read($appstuff[$app . '_permissions']);
+			$permissions = self::permissions_read($appstuff[$app . '_permissions'],$permissions);
 
 
 
 
+			
 
 
 
@@ -371,12 +373,13 @@ class app {
 	}
 
 
-	public static function permissions_read($data){
+	public static function permissions_read($data,$defaults){
 		$timer = new timer();
 
 
-		$permissions = \apps\ab\permissions::defaults();
-		$permissions = $permissions["p"];
+		
+
+		$permissions = $defaults;
 
 
 		if (count($data)) {

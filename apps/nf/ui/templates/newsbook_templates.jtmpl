@@ -13,7 +13,7 @@
 		<div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
 			<div class="span2"><span class="s dg">Articles:</span><strong> <%= this.stats.records.total %> </strong></div>
 			
-			<div class="span2"><span class="s dg">Ready:</span> <strong><% if (this.stats.records.stages.Ready){ %><%= this.stats.records.stages.Ready.r||"" %><% } %></strong></div>
+			<div class="span2"><span class="s dg">Ready:</span> <strong><% if (this.stats.records.ready){ %><%= this.stats.records.ready.r||"" %><% } %></strong></div>
 			<div class="span2"><span class="s dg">Placed:</span> <strong><%= this.stats.records.placed.r %></strong></div>
 		</div>
 		<div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong><%= this.stats.records.total %></strong>

@@ -19,6 +19,13 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/layout',
+	"controller"=>'apps\nf\controllers\layout->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/production',
 	"controller"=>'apps\nf\controllers\production->page',
 	"a"=>true,

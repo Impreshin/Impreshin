@@ -1,0 +1,140 @@
+
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Layout</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				{% if _user['permissions']['layout']['pagecount'] %}
+				<li>
+					<select name="force_pages" id="force_pages" class="span2" style="margin-top: 2px; margin-bottom: 0; margin-right: 10px;" rel="tooltip" title="Select Automatic for the pages to be based on loading" data-placement="bottom">
+						<option value="auto">Automatic</option>
+						{% for row in page_loading %}
+						<option value="{{ row['pages'] }}">{{ row['pages'] }} Pages</option>
+						{% endfor %}
+					</select>
+				</li>
+				<li>
+					<div class="btn-group" id="force_pages_btns">
+						<button class="btn btn-mini btn-icon" style="padding-left: 10px; padding-right: 10px;" data-direction="down"><i class="icon-minus-sign icon-d-grey"></i></button>
+
+						<button class="btn btn-mini btn-icon" style="padding-left: 10px; padding-right: 10px;" data-direction="up"><i class="icon-plus-sign icon-d-grey"></i></button>
+					</div>
+
+				</li>
+				<li class="divider-vertical"></li>
+				{% endif %}
+			</ul>
+			<div class="pull-right">
+				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+
+				</ul>
+				<ul class="nav nav-pills pull-right ">
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a id="reload-btn" href="javascript:void(0);" style="width:15px;"><i class="icon-refresh"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container">
+
+
+		<div class="row">
+			<article id="left-area" class="span11">
+				<div class="content">
+					<div class="scroll-pane scrolly" id="dummy-area">
+
+						<div data-heading="top" class="scroll-container" style="padding-left: 15px;" id="pages-area">
+
+
+
+						</div>
+
+					</div>
+
+				</div>
+				<div id="dummy-bottom" class="highlighthovered">
+
+				</div>
+				<div class="loadingmask wide"></div>
+
+			</article>
+			<article id="right-area" class="span5 offset11">
+				<div>
+					<select class="span5" name="placingID" id="placingID" style="margin-bottom: 0; margin-left: -1px;">
+						{% for row in placing %}
+						<option value="{{ row['ID'] }}" {% if row['ID']==settings['placingID'][_user['publication']['ID']] %}selected="selected"{% endif %}>{{ row['placing'] }}</option>
+						{% endfor %}
+					</select>
+					<table class="table table-condensed  s records">
+						<thead>
+						<tr>
+							<th class="span1">Size</th>
+							<th class="span1">Photos</th>
+							<th>Title</th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<div class="content">
+					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 50px;">
+
+						<div data-heading="top" class="">
+							<table style="" id="record-list" class="table table-condensed  s records" >
+								<tbody style="border-left:none;">
+
+
+								</tbody>
+							</table>
+
+
+						</div>
+
+
+					</div>
+
+
+				</div>
+				<div id="record-details-bottom">
+
+				</div>
+				<section id="rightsideOver">
+
+				</section>
+				<div class="loadingmask round"></div>
+
+
+			</article>
+		</div>
+
+
+
+	</div>
+
+</section>
+
+<script type="text/javascript">
+	var pageSize = "0";
+	var cmSize = "0";
+	var colSize = "0";
+	var colcmAv = "0";
+	{% if _user['publication']['pagewidth'] and _user['publication']['cmav'] %}
+		pageSize ="{{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}";
+		cmSize ="{{ ((((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10)) / _user['publication']['cmav'] }}";
+		colSize ="{{ 143 / _user['publication']['columnsav'] }}";
+		colcmAv = "{{  _user['publication']['cmav'] * _user['publication']['columnsav'] }}";
+	{% endif %}
+
+</script>

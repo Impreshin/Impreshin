@@ -18,7 +18,19 @@ class articles extends save {
 
 	}
 
-	function comment() {
+	function placed() {
+		$user = $this->f3->get("user");
+		$pID = isset($_POST['pID']) ? $_POST['pID'] : "";
+		$dID = isset($_POST['dID']) ? $_POST['dID'] : "";
+		$placed = isset($_POST['placed']) ? $_POST['placed'] : "0";
+		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
+		
+		//test_array(array( "aID"=>$aID,					   "pID"=>$pID,					   "dID"=>$dID,					   "placed"=>$placed,				   )); 
+		
+		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+		test_array("done"); 
+		
+	}function comment() {
 		$user = $this->f3->get("user");
 		$ID = isset($_POST['comment-ID']) ? $_POST['comment-ID'] : "";
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
@@ -46,6 +58,7 @@ class articles extends save {
 			"pID"=> isset($_POST['newsbook-pID'])&& $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID']!= "undefined"? $_POST['newsbook-pID']:"",
 			"dID"=> isset($_POST['newsbook-dID'])&& $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID']!= "undefined"? $_POST['newsbook-dID']:"",
 			"uID"=>$user['ID'],
+			"placed"=>0
 		);
 		
 		// do the insert thing.. get the ID

@@ -109,7 +109,7 @@ class newsbook extends data {
 
 		//$where = "1";
 		$where .= " AND global_dates.ID = '$dID'";
-		$records = models\articles::getAll($where, $grouping, $ordering,array("usepub"=>$pID));
+		$records = models\articles::getAll($where, $grouping, $ordering,array("pID"=>$pID,"dID"=>$dID));
 		$stats = models\record_stats::stats($records,array("placed","ready","stages"));
 
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";

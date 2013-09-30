@@ -16,7 +16,11 @@ class permissions {
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
-
+			"layout"         => array(
+				"page"      => 1,
+				"pagecount" => 1,
+				"editpage"  => 1
+			),
 			"administration" => array(
 				"application" => array(
 

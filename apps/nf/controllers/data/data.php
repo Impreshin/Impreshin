@@ -22,9 +22,6 @@ class data {
 	function details() {
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 		$historyID = (isset($_REQUEST['historyID'])) ? $_REQUEST['historyID'] : "";
-		$pID = (isset($_REQUEST['pID'])) ? $_REQUEST['pID'] : "";
-		$dID = (isset($_REQUEST['dID'])) ? $_REQUEST['dID'] : "";
-		$newsbook = (isset($_REQUEST['newsbook'])) ? true : false;
 		$user = $this->f3->get("user");
 
 
@@ -96,18 +93,12 @@ class data {
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$item['ID']."'");
 			
 			$media = models\files::display($media);
-			if ($newsbook){
-				if ($item['pID']==$pID&&$item['dID']==$dID){
-					$media_show = $media;
-				}
-			}
+			
 			$item['media']= $media;
 			$n[] = $item;
 		}
 
-		if ($newsbook){
-			$return['media'] = $media_show;
-		}
+		
 		$newsbooks = $n;
 		
 		//test_array($newsbooks);
@@ -119,6 +110,53 @@ class data {
 
 		$return['historyShow'] = $compare;
 		$return['history'] = $history;
+		$return['logs'] = models\articles::getLogs($return['ID']);
+
+
+		$return['a'] = $allow;
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function details_newsbook() {
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$historyID = (isset($_REQUEST['historyID'])) ? $_REQUEST['historyID'] : "";
+		$pID = (isset($_REQUEST['pID'])) ? $_REQUEST['pID'] : "";
+		$dID = (isset($_REQUEST['dID'])) ? $_REQUEST['dID'] : "";
+		$newsbook = (isset($_REQUEST['newsbook'])) ? true : false;
+		$user = $this->f3->get("user");
+
+
+		$record = new models\articles();
+		$return = $record->get($ID,array("pID"=>$pID,"dID"=>$dID));
+		$allow = array("print" => "1",);
+
+		$permissions = $user['permissions'];
+
+
+		
+		
+		
+		$history = array();
+
+	
+
+
+
+		
+		$newsbook = models\newsbooks::getAll("aID='".$return['ID']."' AND pID = '$pID' AND dID = '$dID'","ID DESC");
+
+		if (count($newsbook)) $newsbook = $newsbook[0];
+		$media = array();
+		if (isset($newsbook['ID'])){
+			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$newsbook['ID']."'");
+
+			$media = models\files::display($media);
+		}
+	
+
+		$return['media'] = $media;
+
+
 		$return['logs'] = models\articles::getLogs($return['ID']);
 
 

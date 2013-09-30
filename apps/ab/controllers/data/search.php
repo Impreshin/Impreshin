@@ -73,6 +73,12 @@ class search extends data {
 
 		models\settings::save($values);
 
+		$DefaultSettings = \apps\ab\settings::_available();
+		if (isset($DefaultSettings['columns'][$ordering['c']])) {
+			$ordering['c'] = isset($DefaultSettings['columns'][$ordering['c']]['o']) ? $DefaultSettings['columns'][$ordering['c']]['o'] : $ordering['c'];
+		} else {
+			$ordering['c'] = "client";
+		}
 
 		//print_r($values);
 		//exit();
@@ -126,6 +132,7 @@ class search extends data {
 
 		}
 
+		//test_array($ordering); 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering, $limits);
 

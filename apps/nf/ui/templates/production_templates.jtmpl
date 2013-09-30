@@ -8,33 +8,14 @@
 	</li>
 	<li id="toolbar-stats-link" style="position: relative;" class="span6">
 		<div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
-			<div id="list-stats-progress-bar" style="width: <% if (this.stats.records.stages.Draft){ %><%= this.stats.records.stages.Draft.p||0 %><% } %>%;" class="bar"></div>
+			<div id="list-stats-progress-bar" style="width: <% if (this.stats.records.placed.p){ %><%= this.stats.records.placed.p||0 %><% } %>%;" class="bar"></div>
 		</div>
 		<div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
 			<div class="span2"><span class="s dg">Articles:</span><strong> <%= this.stats.records.total %> </strong></div>
-			<div class="span2"><span class="s dg">Locked:</span> <strong><%= this.stats.records.locked.r %></strong></div>
-			<div class="span2"><span class="s dg">Drafts:</span> <strong><% if (this.stats.records.stages.Draft){ %><%= this.stats.records.stages.Draft.r||"" %><% } %></strong></div>
+			<div class="span2"><span class="s dg">Placed:</span> <strong><%= this.stats.records.placed.r %></strong></div>
+			<div class="span2"><span class="s dg"></span> <strong></strong></div>
 		</div>
-		<div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong><%= this.stats.records.total %></strong>
-			<table style="margin-bottom:0; margin-top:10px;" class="table">
-				<tbody>
-				<% for (var i in this.stats.records.stages) { %>
-				<tr>
-					<th class="r span1"><%= this.stats.records.stages[i].k %>:</th>
-					<td>
-						<div class="progress">
-							<div style="width: <%= this.stats.records.stages[i].p %>%;" class="bar"></div>
-							<div class="text"><strong><%= this.stats.records.stages[i].r %> &nbsp;
-									<small> &nbsp; <%= this.stats.records.stages[i].p %>%</small>
-								</strong></div>
-						</div>
-					</td>
-				</tr>
-				<% } %>
-				
-				</tbody>
-			</table>
-		</div>
+		
 	</li>
 
 	]]>

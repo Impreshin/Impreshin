@@ -18,6 +18,7 @@
 
 	<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
 		
+		<a href="#" class="back-btn-details-pane" rel="tooltip" data-placement="bottom" title="Back"><i class=" icon-circle-arrow-left icon-d-grey"></i></a>
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
 		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>"  rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% if (this.a.print=='1') { %>
@@ -828,6 +829,13 @@
 
 
 	});
+	$(document).on('click', '.back-btn-details-pane', function (e) {
+		e.preventDefault();
+		getDetails();
+		return false;
+
+
+	});
 
 	$(document).on('click', '.details-record-prev', function () {
 		prevRecord();
@@ -946,6 +954,13 @@
 			}
 			
 
+			var title_width = 465;
+			if (show_full_details) {
+				title_width = 450;
+				$(".back-btn-details-pane").show();
+				
+			}
+			$("#nf-details-title").css("width",title_width);
 			if ($("#record-list:visible").length) {
 
 				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {

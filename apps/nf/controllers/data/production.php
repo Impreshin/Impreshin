@@ -109,14 +109,16 @@ class production extends data {
 
 		//$where = "1";
 		$where .= " AND nf_article_newsbook.dID='".$currentDate['ID']."'";
-		$records = models\articles::getAll($where, $grouping, $ordering,array("newsbook_used"=>true));
-		$stats = models\record_stats::stats($records,array("locked","stages"));
+		$records = models\articles::getAll($where, $grouping, $ordering,array("pID"=>$pID,"dID"=>$dID));
+		$stats = models\record_stats::stats($records,array("placed"));
 
 		$return = array();
 
 		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
-		$return['dID'] = $currentDate['ID'];
+		$return['dID'] = $dID;
 		$return['pID'] = $pID;
+		
+		
 		
 		
 		$return['stats'] = $stats;
@@ -125,7 +127,9 @@ class production extends data {
 			"c"=> $ordering_c,
 			"o"=> $ordering_d
 		);
-		$return['list'] = models\articles::display($records, array("filter" => $filter,"highlight" => $filter));
+
+		$highlight = "placed";
+		$return['list'] = models\articles::display($records, array("filter" => $filter,"highlight" => $highlight));
 
 
 		

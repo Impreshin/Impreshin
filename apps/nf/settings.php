@@ -55,15 +55,19 @@ class settings {
 				"h"=>"Priority"
 			),
 			"percent_last"=>array(
-				"h"=>"% last"
+				"h"=>"%&nbsp;last"
 			),
 			"percent_orig"=>array(
-				"h"=>"%&nbs;Chan."
+				"h"=>"%&nbsp;Chan."
 			),
 			
 			"newsbooks"=>array(
 				"h"=>"Newsbooks",
 				"o"=>"global_publications.publication, global_dates.publish_date"
+			),
+			"page"=>array(
+				"h"=>"Page",
+				"o"=>"global_pages.page"
 			),
 			
 			"category"=>array(
@@ -139,6 +143,10 @@ class settings {
 			"priority"=> array(
 				"n"=> "Priority",
 				"g"=> "priority"
+			),
+			"page"=> array(
+				"n"=> "Page",
+				"g"=> "page"
 			)
 		);
 
@@ -146,8 +154,9 @@ class settings {
 
 
 		$sections = array(
-			"provisional"=>array("none","stage","author","category","priority"),
-			"newsbook"=>array("none","stage","author","category","priority"),
+			"provisional"=>array("none","stage","author","category","priority","page"),
+			"newsbook"=>array("none","stage","author","category","priority","page"),
+			"production"=>array("none","author","category","priority","page"),
 		
 		);
 
@@ -249,6 +258,9 @@ class settings {
 					"search" => "",
 					"stageID"=>"0"
 
+				),
+				"layout"=>array(
+					"placingID"=>array()
 				),
 				"production"=>array(
 					"col"        => $defColumns,

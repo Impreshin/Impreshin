@@ -34,18 +34,21 @@
 
 		<div id="left-side-pane" >
 			<div class="scroll-pane">
-				<div style="padding:10px 20px;">
+				<div style="padding:10px 0 10px 20px;">
 					<% if (this.typeID =='1') { %>
-					<%= this.body||"" %>
+					<div class="selectable" id="article-body" >
+						<%= this.body||"" %>
+					</div>
+					
 					<hr>
 					<% } %>
 					<% for(var f in this.media) { %>
 
-					<article class="row article-photo">
-						<div class="span2">
+					<article class="row article-photo" id="file-id-<%= this.media[f].ID %>" >
+						<div class="span2" style="height: 90px;">
 							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
 						</div>
-						<div class="span6"><%= this.media[f].caption %></div>
+						<div class="span6 selectable"><%= this.media[f].caption %></div>
 					</article>
 				
 
@@ -62,16 +65,31 @@
 				<legend>Author</legend>
 				<%= this.author %>
 			</fieldset>
-			
+			<% if (this.page) { %>
 			<fieldset>
-				<legend>Photos</legend>
-				<% for(var f in this.media) { %>
-
-				<div class="span1 photo-jump">
-					<img src="/app/nf/thumb/50/40?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
-				</div>
-					
+				<legend>Actions</legend>
+				<% if (this.page) { %>
+				<button class="btn <% if (this.placed=='1') { %>btn-success<% } %>" id="btn-action-placed" data-value="<% if (this.placed=='1') { %>0<% } else { %>1<% } %>"  type="button" style="width:100%">Placed</button>
 				<% } %>
+			</fieldset>
+			<% } %>
+			<fieldset style="margin-top:20px;">
+				<legend>Navigation</legend>
+				<div class="row">
+					<% if (this.typeID =='1') { %>
+					<div class="span1 photo-jump" style="height: 33px; width:50px; text-align:center; padding-top: 7px;  overflow:hidden" data-target="article-body">
+						<i class="icon-font" style=" font-size: 20px;"></i>
+					</div>
+					<% } %>
+					<% for(var f in this.media) { %>
+
+					<div class="span1 photo-jump" data-target="file-id-<%= this.media[f].ID %>">
+						<img src="/app/nf/thumb/50/40?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
+					</div>
+
+					<% } %>
+				</div>
+				
 			</fieldset>
 			
 			
@@ -89,9 +107,13 @@
 				<table class="table table-condensed" style="margin:0;">
 					<tr>
 						<th class="r span1">Size</th>
-						<td class="span3"><%= this.cm||"" %> <span class="g"> cm | <%= this.words||"" %> words</span></td>
+						<td class="span3"><%= this.cm||"" %> <span class="g"> cm | </span><%= this.words||"" %><span class="g"> words</span></td>
 						<th class="r span1">Photos</th>
 						<td class="span1"><%= this.media.length %></td>
+						<% if (this.page) { %>
+						<th class="r span1">Page</th>
+						<td class="span1"><%= this.page||"" %></td>
+						<% } %>
 						<th class="r span1">Priority</th>
 						<td class="span2"><%= this.priority||"" %></td>
 						<td></td>
@@ -168,7 +190,19 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		
+	
+		$(document).on("click","#btn-action-placed",function(){
+			var ID = $.bbq.getState("ID");
+			var placed = $(this).attr("data-value");
+			var pID = $("#use-pID").val();
+			var dID = $("#use-dID").val();
+			var data = "pID="+pID+"&dID="+dID+"&placed="+placed;
+
+			$.post("/app/nf/save/articles/placed/?aID=" + ID, data, function (response) {
+				getDetails();
+			});
+			//console.log("ID: "+ ID +" | pID: "+pID+" | dID: "+ dID+" | placed: "+ placed); 
+		})
 	})
 	
 
