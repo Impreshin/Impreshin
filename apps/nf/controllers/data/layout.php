@@ -25,7 +25,7 @@ class layout extends data {
 
 		$settings = models\settings::_read("layout");
 
-		$placingID = (isset($_REQUEST['placingID']) && $_REQUEST['placingID'] != "") ? $_REQUEST['placingID'] : $settings['placingID'];
+		$categoryID = (isset($_REQUEST['categoryID']) && $_REQUEST['categoryID'] != "") ? $_REQUEST['categoryID'] : $settings['categoryID'];
 
 	
 
@@ -37,8 +37,8 @@ class layout extends data {
 		//test_array($maxPage); 
 		$values = array();
 		$values["layout"] = array(
-			"placingID" => array(
-				$pID=>$placingID,
+			"categoryID" => array(
+				$pID=>$categoryID,
 			)
 		);
 
@@ -52,6 +52,10 @@ class layout extends data {
 		$rawBookings= $records;
 		$records = models\articles::display($records);
 
+
+		
+		
+		
 
 	//	test_array($records); 
 		if (count($records)) $records = $records[0]['records'];
@@ -77,6 +81,14 @@ class layout extends data {
 
 
 		$r = array();
+		$cats = array();
+		foreach ( models\categories::getAll("cID='". $user['company']['ID']."'","orderby ASC") as $item){
+			$item['recordCount']=0;
+			$cats[$item['ID']]=$item;
+		}
+		
+		
+		$remainingRecords = 0;
 		
 		foreach ($records as $record){
 			$b = array();
@@ -84,14 +96,24 @@ class layout extends data {
 				$b[$col] = $record[$col];
 			}
 			if (!$b['page'] || $b['page']>$maxPage){
-				$r[] = $b;
+				if ($record['categoryID']==$categoryID){
+					$r[] = $b;
+				}
+				$remainingRecords++;
+				$cats[$record['categoryID']]['recordCount']=$cats[$record['categoryID']]['recordCount'] + 1;
 			}
 			
 		}
+		
+
+		$return['category'] =$cats;
+		
+		
+		//test_array($return); 
 		$records = $r;
 
 		$return['records'] = $records;
-		//$return['placingID'] = $placingID;
+		$return['categoryID'] = $categoryID;
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
 
@@ -109,7 +131,7 @@ class layout extends data {
 		
 		$totals = array(
 			"records"=>count($rawBookings),
-			"placed"=>count($rawBookings) - count($records)
+			"placed"=>count($rawBookings) - $remainingRecords
 		);
 		
 		$stats=array();
@@ -136,7 +158,7 @@ class layout extends data {
 		return $GLOBALS["output"]['data'] = $return;
 	}
 
-	function _pages() {
+	function _pages($page="") {
 
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
@@ -144,12 +166,22 @@ class layout extends data {
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
-		$bookingsRaw = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null ", "title ASC");
+
+		$pageSelected = ($page)?$page: isset($_REQUEST['page'])?$_REQUEST['page']:"";
+		$pageID = "";
+
+		$recordsRaw = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null", "title ASC", "",array("pID"=>$pID,"dID"=>$dID));
 
 
+		//	test_array($records); 
+		
+		
+		
+
+		//test_array($bookingsRaw); 
 		
 		$stats = $this->_stats();
-
+		$maxPage = $stats['loading']['pages'];
 
 		$editionPages = $stats['loading']['pages'];
 
@@ -169,7 +201,27 @@ class layout extends data {
 
 
 
-		$bookings = array();
+		$r = array();
+		$placedCount = 0;
+		foreach ($recordsRaw as $record){
+			if ($record['pageID']) {
+				$a = array();
+				$a['ID'] = $record['ID'];
+				$a['title'] = $record['title'];
+				$a['cm'] = $record['cm'];
+				$a['pageID'] = $record['pageID'];
+				$a['page'] = $record['page'];
+				$a['type'] = $record['type'];
+				$a['type_icon'] = $record['type_icon'];
+
+				
+				$r[$record['pageID']][] = $a;
+			}
+			
+		}
+		$records = $r;
+		
+		//test_array($records); 
 		
 		$colourGroups = array();
 		foreach ($user['publication']['colours_group'] as $g){
@@ -185,7 +237,10 @@ class layout extends data {
 
 		$r = array();
 		$lockedPages = 0;
+		$recordCount = 0;
 		foreach ($pagesReal as $page){
+			
+			if ($pageSelected==$page['page']) $pageID = $page['ID'];
 
 			$colour = array(
 				"heading"=>"",
@@ -218,18 +273,19 @@ class layout extends data {
 					"c"=> ($page['section_colour']) ? $page['section_colour'] : ""
 				),
 				"colour" => $colour,
-				"percent"=> $page['percent'],
-				"cm"     => $page['cm'],
-				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
+				"records"=>isset($records[$page['ID']])?$records[$page['ID']]:array()
 			);
+			
 		}
 
+		
 		$pages = array();
 		for ($i = 1; $i <= $editionPages; $i++) {
 			$p = $blank;
 			$p['page'] = $i;
 			if (isset($r[$i])){
 				$pages[] = $r[$i];
+				$recordCount = $recordCount + count($r[$i]['records']);
 			} else {
 				$pages[] = $p;
 			}
@@ -240,6 +296,7 @@ class layout extends data {
 
 
 
+		
 
 
 		$pagesCount = count($pages);
@@ -294,14 +351,37 @@ class layout extends data {
 		$pages["spreads"] = $spread;
 		$pages["count"] = $pagesCount;
 
+		$totals = array(
+			"records"=>count($recordsRaw),
+			"placed"=>$recordCount
+		);
+		$loading = $stats['loading'];
+		$stats=array();
+		
+		$stats['loading'] = $loading;
+		$stats['records'] = array(
+			"total"=>$totals["records"],
+			"placed"=>array(
+				"r"=>$totals["placed"],
+				"p"=>($totals['placed']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
+			)
+		);
+
 		$stats['records']['locked'] = array(
-			"r"=>$lockedPages,
-			"p"=> number_format($lockedPages? ($lockedPages / $pagesCount)*100:0,2)
+			"r" => $lockedPages,
+			"p" => number_format($lockedPages ? ($lockedPages / count($pagesReal)) * 100 : 0, 2)
 		);
 
 
 
-		$return = $pages;
+		
+
+		if ($pageID){
+			$return['records'] = isset($records[$pageID])?$records[$pageID]:array();
+		} else {
+			$return = $pages;
+		}
+		
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
 		$return['stats'] = $stats;
@@ -314,7 +394,86 @@ class layout extends data {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
+		$page = ($page)?$page: isset($_REQUEST['page'])?$_REQUEST['page']:"";
+		$currentDate = $user['publication']['current_date'];
+		$dID = $currentDate['ID'];
+		
+		
+		$colourGroups = array();
+		foreach ($user['publication']['colours_group'] as $g) {
+			$colourGroups[$g['ID']] = $g;
+		}
 
+
+		$pagesReal = models\pages::getAll("page='$page' AND global_pages.pID='$pID' AND global_pages.dID = '$dID'", "page ASC, ID DESC");
+
+		if (count($pagesReal)){
+			$page = $pagesReal[0];
+		
+
+			$colour = array(
+				"heading"=>"",
+				"limit"=>"",
+				"icons"=>"",
+			);
+			if ($page['colourID']){
+				if (isset($colourGroups[$page['colourID']])){
+					$colour = array(
+						"heading"=> $colourGroups[$page['colourID']]['label'],
+						"icons"=> strtolower(str_replace(array(" ","&","_"),"",$colourGroups[$page['colourID']]['label'])),
+						"limit"=> $colourGroups[$page['colourID']]['colour_string'],
+					);
+				}
+	
+	
+			}
+			$return = array(
+				"page"   => $page['page'],
+				"locked"   => $page['locked'],
+				"section"=> array(
+					"i"=> $page['sectionID'],
+					"n"=> $page['section'],
+					"c"=> $page['section_colour']
+				),
+				"colour" => $colour,
+			);
+			$return = $return +  $this->_pages($page['ID']);
+		} else {
+			$return = array(
+				"page"   => 0,
+				"locked"   => 0,
+				"section"=> array(
+					"n"=> "",
+					"c"=> "",
+
+				),
+				"colour" => "",
+				"colour_l" => "",
+
+			);
+			$r =  $this->_pages($page['ID']);
+			
+			$return = $return + array(
+					"records"=>array(),
+					"stats"=>$r['stats']
+				);
+			
+		}
+		
+
+		
+		
+
+		
+
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function _pageOld($page=""){
+
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+		$pID = $user['pID'];
 		$page = ($page)?$page: isset($_REQUEST['page'])?$_REQUEST['page']:"";
 
 		$currentDate = $user['publication']['current_date'];
@@ -331,8 +490,6 @@ class layout extends data {
 			),
 			"colour" => "",
 			"colour_l" => "",
-			"percent"=>0,
-			"cm"=>0
 
 		);
 
@@ -375,30 +532,28 @@ class layout extends data {
 					"c"=> $page['section_colour']
 				),
 				"colour" => $colour,
-				"percent"=> $page['percent'],
-				"cm"     => $page['cm']
 			);
 
 
 		$pageID = $page['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
-		$bookings = array();
-		foreach ($bookingsRaw as $booking) {
-			if ($booking['pageID'] == $pageID) {
+		//$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
+		
+		$recordsRaw = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null AND pageID = '$pageID'", "title ASC", "",array("pID"=>$pID,"dID"=>$dID));
+		
+		
+		$records = array();
+		foreach ($recordsRaw as $record) {
+			if ($record['pageID']) {
 				$a = array();
-				$a['ID'] = $booking['ID'];
-				$a['client'] = $booking['client'];
-				$a['colourID'] = $booking['colourID'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
-				$a['totalspace'] = $booking['totalspace'];
-				$a['pageID'] = $booking['pageID'];
-				$a['page'] = $booking['page'];
-				$a['material'] = $booking['material'];
-				$a['material_approved'] = $booking['material_approved'];
-				$a['material_status'] = $booking['material_status'];
+				$a['ID'] = $record['ID'];
+				$a['title'] = $record['title'];
+				$a['cm'] = $record['cm'];
+				$a['pageID'] = $record['pageID'];
+				$a['page'] = $record['page'];
+				$a['type'] = $record['type'];
+				$a['type_icon'] = $record['type_icon'];
 
-				$bookings[] = $a;
+				$records[$record['pageID']][] = $a;
 			}
 		}
 
@@ -409,7 +564,7 @@ class layout extends data {
 			if ($page['locked'] == '1') $lockedPages++;
 		}
 
-		$r['records'] = $bookings;
+		$r['records'] = $records;
 		$stats = $this->_stats();
 		$stats['records']['locked'] = array(
 			"r" => $lockedPages,
@@ -480,48 +635,40 @@ class layout extends data {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
 		}
+		//test_array($page); 
 		$pageID = $page['ID'];
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;
 
-
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1' AND pageID='$pageID'", "client ASC");
-		$bookings = array();
-		$cm = 0;
-		$records = 0;
-		foreach ($bookingsRaw as $booking) {
+		$recordsRaw = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null AND pageID = '$pageID'", "title ASC", "",array("pID"=>$pID,"dID"=>$dID));
+		
+		
+		//test_array($recordsRaw);
+		$records = array();
+		$recordCount = 0;
+		foreach ($recordsRaw as $record) {
 				$a = array();
-				$a['ID'] = $booking['ID'];
-				$a['client'] = $booking['client'];
-				$a['colour'] = $booking['colour'];
-				$a['colourLabel'] = $booking['colourLabel'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
-				$a['totalspace'] = $booking['totalspace'];
-				$a['pageID'] = $booking['pageID'];
-				$a['page'] = $booking['page'];
-				$a['material'] = $booking['material'];
-				$a['material_approved'] = $booking['material_approved'];
-				$a['material_status'] = $booking['material_status'];
+				$a['ID'] = $record['ID'];
+				$a['title'] = $record['title'];
+				$a['cm'] = $record['cm'];
+				$a['pageID'] = $record['pageID'];
+				$a['page'] = $record['page'];
+				$a['type'] = $record['type'];
+				$a['type_icon'] = $record['type_icon'];
+				$a['photosCount'] = $record['photosCount'];
 
-				$bookings[] = $a;
-			if ($a['cm']) $cm = $cm + $a['totalspace'];
-			$records++;
+			$records[] = $a;
+			$recordCount++;
 		}
 
-		$page['records']= $bookings;
+		$page['records']= $records;
 
 
-		$pageSize = $user['publication']['cmav'] * $user['publication']['columnsav'];
-		$totalAVspace = $pageSize;
-		$loading = ($cm) ? ($cm / $totalAVspace) * 100 : 0;
-		$loading = number_format($loading, 2);
+		
 
 
 
 		$page['stats'] = array(
-			"cm"=>$cm,
-			"records" => $records,
-			"loading" => $loading
+			"records" => $recordCount,
 		);
 		$GLOBALS["output"]['data'] = $page;
 	}
@@ -549,9 +696,6 @@ class layout extends data {
 		$n = array();
 		$pageSize = $user['publication']['cmav'] * $user['publication']['columnsav'];
 		foreach ($pages as $page){
-			if ($page['cm']) $cm = $cm+$page['cm'];
-			if ($page['records']) $records = $records+$page['records'];
-			$page['loading'] = number_format(($page['cm']) ? ($page['cm'] / $pageSize) * 100 : 0, 2);
 
 			$n[] = $page;
 		}

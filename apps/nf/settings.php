@@ -260,7 +260,7 @@ class settings {
 
 				),
 				"layout"=>array(
-					"placingID"=>array()
+					"categoryID"=>array()
 				),
 				"production"=>array(
 					"col"        => $defColumns,

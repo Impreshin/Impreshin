@@ -147,7 +147,9 @@
 		</form>
 		<div class="loadingmask wide"></div>
 	</div>
+	
 </div>
+	<div class="loadingmask"></div>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-comments">

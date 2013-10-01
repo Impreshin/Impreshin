@@ -106,16 +106,13 @@ class layout extends save {
 			"pageID"=> $pageID
 		);
 
-		$record = new models\bookings();
-		$record = $record->get($ID);
-		if ($record['checked']=='1' and $record['ID']){
-			models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET pageID ='$pageID' WHERE aID='$ID' AND pID='$pID' AND dID='$dID'");
 
-		}
+		
 
 		$data = array("ID" => $ID);
 		if ($page && ($page != "remove")) {
-			$data = new \apps\ab\controllers\data\layout();
+			$data = new \apps\nf\controllers\data\layout();
 			$data = $data->_page($page);
 		}
 

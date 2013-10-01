@@ -17,23 +17,24 @@ class form extends \apps\nf\controllers\_{
 		if ($this->user['permissions']['form']['new']) {
 			$this->page();
 		} else {
-		//	$this->f3->error(404);
+			$this->f3->error(404);
 		}
 		
 		//test_array($this->user);
 
-		$this->page();
+		//$this->page();
 	}
 	function page_edit(){
 		if ($this->user['permissions']['form']['edit'] || $this->user['permissions']['form']['edit_master'] || $this->user['permissions']['form']['delete']) {
 			$this->page();
 		} else {
-		//	$this->f3->error(404);
+			$this->f3->error(404);
 		}
-		$this->page();
+		//$this->page();
 	}
 
 	function page(){
+		$timer = new timer();
 		$ID = $this->f3->get('PARAMS["ID"]');
 		$user = $this->user;
 		$pID = $user['publication']['ID'];
@@ -102,7 +103,7 @@ class form extends \apps\nf\controllers\_{
 		//$tmpl->stages = $stages;
 		
 		$tmpl->output();
-
+		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}
 
 

@@ -16,6 +16,12 @@ class permissions {
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
+			"form"           => array(
+				"new"         => 1,
+				"edit"        => 1,
+				"delete"      => 1,
+				"edit_master" => 1
+			),
 			"layout"         => array(
 				"page"      => 1,
 				"pagecount" => 1,

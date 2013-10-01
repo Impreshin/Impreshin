@@ -472,7 +472,7 @@
 	<div class="loadingmask wide"></div>
 </div>
 </div>
-
+<div class="loadingmask"></div>
 ]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-comments">
@@ -601,7 +601,7 @@
 	</div>
 	<input type="hidden" id="newsbook-ID" name="newsbook-ID" value="<%= this.details.ID %>" />
 
-
+	
 	]]>
 </script>
 <script type="text/javascript">
@@ -960,7 +960,7 @@
 				$(".back-btn-details-pane").show();
 				
 			}
-			$("#nf-details-title").css("width",title_width);
+			$("#nf-details-title").css("max-width",title_width).hover(function(){$(this).css("max-width",'100%')},function(){$(this).css("max-width",title_width)});
 			if ($("#record-list:visible").length) {
 
 				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
@@ -974,9 +974,9 @@
 
 				}
 			}
-			setTimeout(function(){
+			/*setTimeout(function(){
 				$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-			},500);
+			},500);*/
 		}, "details");
 
 	}

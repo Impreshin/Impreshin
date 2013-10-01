@@ -53,13 +53,7 @@
 		</div>
 	</form>
 </div>
-<input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
-<script type="text/javascript">
-	var var_record_ID = '{{ ID }}';
-	var _allowedFiles = {{ settings['allowedFileTypes']|json_encode()|raw }};
-	var _uploadPath = '{{ uploadPath }}';
 
-</script>
 <div id="account-search-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="account-search-modal" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -118,3 +112,10 @@
 <style type="text/css">
 	{{ cm_calc_css }}
 </style>
+<input id="record-ID" type="hidden" name="record-ID" value="{{ ID }}"/>
+<script type="text/javascript">
+	var var_record_ID = '{{ ID }}';
+	var _allowedFiles = {{ settings['allowedFileTypes']|json_encode()|raw }};
+	var _uploadPath = '{{ uploadPath }}';
+
+</script>

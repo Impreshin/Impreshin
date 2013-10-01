@@ -1,7 +1,7 @@
 /*
  * Date: 2013/02/19 - 2:31 PM
  */
-
+console.log("page"); 
 var allowedFileExtentions = [];
 
 $.each(_allowedFiles, function (kk,vv) {
@@ -14,14 +14,10 @@ $.each(_allowedFiles, function (kk,vv) {
 allowedFileExtentions = allowedFileExtentions.join(",");
 
 
-//console.log(_allowedFiles); 
+
 //console.log(allowedFileExtentions); 
 
 var max_height = $(window).height() - 190;
-
-var _priority = [
-	"low", "1", "2", "3", "4", "high"
-];
 
 
 
@@ -51,7 +47,7 @@ var caption_settings = {
 	}
 };
 $(document).ready(function () {
-	getData();
+	getFormData();
 
 	$(document).on("click", ".view-record-btn", function () {
 		var id = $(this).attr("data-id");
@@ -153,7 +149,7 @@ $(document).ready(function () {
 	$(document).on("reset", "#main-form", function (e) {
 		e.preventDefault();
 
-		getData();
+		getFormData();
 		return false;
 
 	});
@@ -226,12 +222,14 @@ function checklistBtn() {
 
 }
 
-function getData() {
+function getFormData() {
 	var ID = var_record_ID;
+	console.log("getFormData"); 
 
 	$("#left-area .loadingmask").show();
 
 	$("#whole-area .loadingmask").show();
+	
 	$.getData("/app/nf/data/form/_details", {"ID": ID}, function (data) {
 
 		var title = "";
@@ -273,11 +271,9 @@ function getData() {
 
 		formLoaded(data);
 		resizeform()
-		setTimeout(resizeform, 1000)
-		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}(
-			//
-		));
-	}, "data");
+		//setTimeout(resizeform, 1000)
+		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}());
+	}, "form_data");
 
 }
 
@@ -547,8 +543,8 @@ function form_submit() {
 				$("#pagecontent .loadingmask").fadeOut(transSpeed);
 				resizeform();
 			} else {
-				
-				getData();
+
+				getFormData();
 				$("#pagecontent .loadingmask").fadeOut(transSpeed);
 				$("#modal-form").jqotesub($("#template-modal-form"), response).modal("show");
 			}

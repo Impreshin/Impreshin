@@ -1,10 +1,10 @@
 {% include '_details.jtmpl' %}
-
+{% include "_details_newsbook.jtmpl" %}
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
 	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>">
-		<td class="span1 r" style="padding-left: 0;">
+		<td class="span1 r" style="padding-left: 0;" data-drag-handler="<%= this.title %>">
 			<% if (this.type_icon){ %>
 			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
 			<% } else { %>
@@ -36,12 +36,17 @@
 			<table class="s">
 				<% for(var g in this.records) { %>
 
-				<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-col="<%= this.records[g].col %>" data-colour="<%= this.records[g].colourID %>" data-page="<%= this.records[g].page %>" data-material="<% if(this.records[g].material=='1') { %><% if(this.records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/app/ab/thumb/material/<%= this.records[g].ID %>/<%= this.records[g].material_file_filename %>?s=<%= this.records[g].material_file_store %>">
-					<td class="span1 s g" style="padding-left: 0;">
-						<span class="size"><%= this.records[g].cm %>&nbsp;x&nbsp;<%= this.records[g].col %></span>
+				<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-drag-handler="<%= this.records[g].title %>"  data-page="<%= this.records[g].page %>" >
+					<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
+						<% if (this.records[g].type_icon){ %>
+						<i class="<%= this.records[g].type_icon %> g" ></i>
+						<% } else { %>
+						<%= this.records[g].cm %>
+						<% } %>
+						
 					</td>
 
-					<td><%= this.records[g].client %>
+					<td><%= this.records[g].title %>
 					</td>
 
 				</tr>
@@ -50,14 +55,7 @@
 				<% } %>
 			</table>
 		</div>
-		<% if (this.percent && this.cm) { %>
-		<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
-			<div class="bar" style="width: <%= this.percent %>%;"></div>
-			<div class="text"><%= this.percent %>% with a total of <%= this.cm %>cm</div>
-
-		</footer>
-
-		<% } %>
+		
 		<div class="msgs"></div>
 		<% if(this.colour.icons) { %>
 		<div class="page_colour">
@@ -95,12 +93,20 @@
 					<table class="s">
 						<% for(var g in this.pages[i].records) { %>
 
-						<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-col="<%= this.pages[i].records[g].col %>" data-colour="<%= this.pages[i].records[g].colourID %>" data-page="<%= this.pages[i].records[g].page %>" data-material="<% if(this.pages[i].records[g].material=='1') { %><% if(this.pages[i].records[g].material_approved=='1') { %>2<% } else { %>1<% } %><% } else { %>0<% } %>" data-image="/app/ab/thumb/material/<%= this.pages[i].records[g].ID %>/<%= this.pages[i].records[g].material_file_filename %>?s=<%= this.pages[i].records[g].material_file_store %>">
-							<td class="span1 s g c" style="padding-left: 0;">
-								<span class="size"><%= this.pages[i].records[g].cm %>&nbsp;x&nbsp;<%= this.pages[i].records[g].col %></span>
+						<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-drag-handler="<%= this.pages[i].records[g].title %>"  data-page="<%= this.pages[i].records[g].page %>" >
+							<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
+
+								<% if ( this.pages[i].records[g].type_icon){ %>
+								<i class="<%=  this.pages[i].records[g].type_icon %> g"></i>
+								<% } else { %>
+								<%=  this.pages[i].records[g].cm %>
+
+								<% } %>
+								
+								
 							</td>
 
-							<td><%= this.pages[i].records[g].client %>
+							<td><%= this.pages[i].records[g].title %>
 							</td>
 
 						</tr>
@@ -110,14 +116,8 @@
 					</table>
 
 				</div>
-				<% if (this.pages[i].percent && this.pages[i].cm) { %>
-				<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
-					<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
-					<div class="text"><%= this.pages[i].percent %>% with a total of <%= this.pages[i].cm %>cm</div>
-
-				</footer>
-				<% } %>
-				<div class="msgs">Not enough space</div>
+				
+				<div class="msgs"></div>
 				<% if(this.pages[i].colour.icons) { %>
 				<div class="page_colour">
 					<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
@@ -144,9 +144,7 @@
 		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
 
 			<div>
-				<%= this.pages[i].page %> <% if (this.pages[i].percent) { %>
-				<div class="bar" style="width: <%= this.pages[i].percent %>%; <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
-				<% } %>
+				<%= this.pages[i].page %> 
 			</div>
 
 
@@ -161,9 +159,7 @@
 
 
 	<div>
-		<%= this.page %> <% if (this.percent) { %>
-		<div class="bar" style="width: <%= this.percent %>%; <% if (this.percent > 60){ %><% if (this.percent > 80){ %>background-color: red; <% } else { %>background-color: orange; <% } %> <% } %>"></div>
-		<% } %>
+		<%= this.page %> 
 	</div>
 
 
@@ -198,22 +194,10 @@
 <script type="text/x-jqote-template" id="template-details-bottom">
 	<![CDATA[
 	<article data-id='<%= this.ID %>'>
-		<h4><%= this.client %></h4>
+		<h4><%= this.title %></h4>
 
 
-		<% if (this.remark){ %>
-		<fieldset style="margin-top: -5px;">
-			<legend> <% if (this.remark) { %> <% if (this.remarkTypeLabelClass){ %>
-				<span class="label <%= this.remarkTypeLabelClass %>" title="<%= this.remarkType %>"><%= this.remarkType %>: </span> <% } else { %> Remark <% } %> <% } %>
-			</legend>
-			<%= this.remark %>
-		</fieldset>
-		<% } %> <% if (this.sub_placing){ %>
-		<fieldset style="margin-top: -5px;">
-			<legend>Sub Placing</legend>
-			<%= this.sub_placing %>
-		</fieldset>
-		<% } %>
+		
 
 	</article>
 
@@ -223,7 +207,7 @@
 	<![CDATA[
 	<header class="header">
 		<h3>Page: <%= this.page %>
-			<small style="margin-left:20px;"><%= this.stats.cm %>cm - <%= this.stats.loading %>%</small>
+			<small style="margin-left:20px;"><%= this.stats.records %> records</small>
 		</h3>
 		<button class="btn close-right-over"><i class="icon-list-alt icon-d-grey "></i></button>
 		<div style="background-color:<%= this.section_colour %>; height:3px;"></div>
@@ -234,9 +218,8 @@
 				<thead>
 				<tr>
 					<th class="span1">Size</th>
-					<th class="span1">Colour</th>
-					<th>Client</th>
-					<th style="width: 40px;">Material</th>
+					<th class="span1">Photos</th>
+					<th>Title</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -323,38 +306,18 @@
 						<td> <%= this.stats.pages %></td>
 
 					</tr>
-					<tr>
-						<th>Cm:</th>
-						<td><%= this.stats.cm %> &nbsp; (<%= this.stats.loading %>%)</td>
-					</tr>
-					<tr>
-						<th>Records:</th>
-						<td><%= this.stats.records %></td>
-					</tr>
+					
+					
 				</table>
 			</div>
 			<hr>
-			<table class="table table-condensed s " id="section-page-list" >
-				<thead>
-				<tr>
-					<th>Page</th>
-					<th>Cm</th>
-					<th>#</th>
-					<th>%</th>
-				</tr>
-
-				</thead>
-				<tbody>
+			<div class="page-jump-list">
 				<% for(var i in this.pages) { %>
-				<tr class="pagenr record" data-page="<%= this.pages[i].page||'' %>">
-					<td><%= this.pages[i].page||"" %></td>
-					<td><%= this.pages[i].cm||"" %></td>
-					<td><%= this.pages[i].records||"" %></td>
-					<td><%= this.pages[i].loading||"0" %>%</td>
-				</tr>
+				<span class="page" data-page_nr="<%= this.pages[i].page %>"><%= this.pages[i].page %></span>
 				<% } %>
-				</tbody>
-			</table>
+			</div>
+			
+			
 
 
 
