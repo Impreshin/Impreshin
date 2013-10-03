@@ -36,9 +36,7 @@ class settings {
 			"dateChanged"=>array(
 				"h"=>"Date&nbsp;Changed"
 			),
-			"stars"=>array(
-				"h"=>"stars"
-			),
+			
 			"stage"=>array(
 				"h"=>"Stage"
 			),
@@ -99,9 +97,21 @@ class settings {
 				"b"=>"placed",
 				"h"=>"Placed",
 				"o"=>"placed"
-			)
+			),
 
-
+			"deleted"               => array(
+				"h"=> "Deleted",
+				"b"=> true
+			),
+				"deleted_fullName"               => array(
+				"h"=> "Deleted&nbsp;By",
+			),
+				"deleted_date"               => array(
+				"h"=> "Deleted&nbsp;Date",
+			),
+				"deleted_reason"               => array(
+				"h"=> "Deleted&nbsp;Reason",
+			),
 
 		);
 		$c = array();
@@ -281,6 +291,48 @@ class settings {
 				),
 				"form"=>array(
 					"last_type"=>"1",
+
+				),
+				"search"=> array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=> "author",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"search"=> array(
+						"search"=> "",
+						"dates" => ""
+					)
+
+				),
+				"deleted"=> array(
+					"col"        => array(
+						"client",
+						"size",
+						"colour",
+						"deleted_user",
+						"deleted_date",
+						"deleted_reason"
+					),
+					"group"      => array(
+						"g"=> "date",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "6",
+					"search"=>array(
+						"search"=>"",
+						"dates"=>""
+					)
+
 
 				),
 				"admin_users"=>array(

@@ -1,7 +1,7 @@
 /*
  * Date: 2013/02/19 - 2:31 PM
  */
-console.log("page"); 
+//console.log("page"); 
 var allowedFileExtentions = [];
 
 $.each(_allowedFiles, function (kk,vv) {
@@ -48,7 +48,23 @@ var caption_settings = {
 };
 $(document).ready(function () {
 	getFormData();
+	$(document).on("submit", "#modal-delete form", function (e) {
+		e.preventDefault();
 
+		var data = $(this).serialize();
+
+		if ($("#delete_reason").val() == "") {
+			alert("You must specify a reason");
+		} else {
+			$("input", $(this)).attr("disabled", "disabled");
+			$.post("/app/nf/save/articles/_delete/?ID=" + var_record_ID, data, function (r) {
+				alert("Record deleted");
+				document.location = "/app/nf/";
+			});
+
+		}
+
+	});
 	$(document).on("click", ".view-record-btn", function () {
 		var id = $(this).attr("data-id");
 		if (id) {
@@ -81,7 +97,7 @@ $(document).ready(function () {
 		var w = 800;
 		var h = $(window).height();
 		var url = 'https://www.google.com/search?q=' + meta;
-		console.log(meta);
+		//console.log(meta);
 		window.open(url, '_blank', 'width=' + w + ',height=' + h);
 		return false;
 
@@ -224,7 +240,7 @@ function checklistBtn() {
 
 function getFormData() {
 	var ID = var_record_ID;
-	console.log("getFormData"); 
+	//console.log("getFormData"); 
 
 	$("#left-area .loadingmask").show();
 
@@ -506,7 +522,7 @@ function form_submit() {
 	var type = $("#booking-type button.active").attr("data-type");
 
 	if (!type) {
-		alert("Something went wrong, please select a booking type");
+		alert("Something went wrong, please select a record type");
 		return false;
 	}
 

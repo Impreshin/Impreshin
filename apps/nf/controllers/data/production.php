@@ -104,7 +104,7 @@ class production extends data {
 		}
 
 
-		$where = "nf_articles.cID ='".$user['company']['ID']."' AND stageID ='2' ";
+		$where = "nf_articles.cID ='".$user['company']['ID']."' AND stageID ='2'  AND nf_articles.deleted is null ";
 		
 
 		//$where = "1";

@@ -4,7 +4,10 @@
 <section class="modal-header">
 	<a class="close" data-dismiss="modal">×</a>
 
-	<h3 id="nf-details-title" ><% if (this.type_icon){ %>
+	<h3 id="nf-details-title" >
+		<% if (this.deleted) { %>
+		<span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span> <% } %>
+		<% if (this.type_icon){ %>
 		<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
 		<% } %>
 		<% if (this.stageID != '2') { %>
@@ -19,12 +22,12 @@
 	<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
 		
 		<a href="#" class="back-btn-details-pane" rel="tooltip" data-placement="bottom" title="Back"><i class=" icon-circle-arrow-left icon-d-grey"></i></a>
+		
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
 		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>"  rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% if (this.a.print=='1') { %>
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>
 		<% } %>
-
 	</div>
 
 
@@ -113,7 +116,7 @@
 					<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
 						<tr>
 							<th width="120" style="width: 120px;">Deleted By</th>
-							<td><%= this.deleted_user %></td>
+							<td><%= this.deleted_fullName %></td>
 							<td width="120" style="width: 120px;"><%= this.deleted_date || "" %></td>
 						</tr>
 					</table>
@@ -435,14 +438,27 @@
 			</div>
 
 			<% } %>
+			
+			
+			<button class="btn span1" type="button"><i class="icon-level-down"></i></button>
+			<button class="btn span1" type="button"><i class="icon-archive"></i></button>
 
-			<% if (this.a.checked=='1') { %>
-			<% if (this.checked=='1') { %>
-			<button class="btn btn-success span2" type="button" id="booking-checked" data-checked="0">Checked</button>
-			<% } else { %>
-			<button class="btn  span2" type="button" id="booking-checked" data-checked="1">Checked</button>
-			<% } %>
-			<% } %>
+			<div class="btn-group dropup" style="margin-left:10px;">
+				<% if (this.stageNext.ID){ %>
+				<button class="btn" style="padding-left:12px;padding-right:12px;"><%= this.stage %> <i class="icon-double-angle-right "></i> <%= this.stageNext.stage %></button>
+				<% } else { %>
+				<button class="btn" style="padding-left:12px;padding-right:12px;" disabled="disabled"><%= this.stage %></button>
+				<% } %>
+				<button class="btn dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<!-- dropdown menu links -->
+				</ul>
+				
+			</div>
+			
+			
 
 			<% if (this.a.invoice=='1') { %> <% if (this.invoiceNum) { %>
 			<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>

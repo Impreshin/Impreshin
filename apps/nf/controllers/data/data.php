@@ -29,6 +29,8 @@ class data {
 		$return = $record->get($ID);
 		$allow = array("print" => "1",);
 
+		$return['stageNext'] = models\stages::getNext($return['stageID']);
+
 		$permissions = $user['permissions'];
 
 

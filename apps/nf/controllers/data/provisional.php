@@ -106,14 +106,14 @@ class provisional extends data {
 		}
 
 
-		$where = "nf_articles.cID ='".$user['company']['ID']."' ";
+		$where = "nf_articles.cID ='".$user['company']['ID']."'  AND nf_articles.deleted is null ";
 		
 		
 		
 		
 
 		//$where = "1";
-		$where .= " AND archived != '1' || stageID !='2'";
+		$where .= " AND (archived != '1' || stageID !='2')";
 		$options = array();
 		if ($highlight=="used"){
 			$options = array("newsbook_used"=>true);

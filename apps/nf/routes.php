@@ -46,6 +46,35 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/records/search',
+	"controller"=>'apps\nf\controllers\search->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/records/search/print',
+	"controller"=>'apps\nf\controllers\search->_print',
+	"a"=>true,
+	"l"=>false,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/records/deleted',
+	"controller"=>'apps\nf\controllers\deleted->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/records/deleted/print',
+	"controller"=>'apps\nf\controllers\deleted->_print',
+	"a"=>true,
+	"l"=>false,
+);
 // administration
 
 $routes[] =	array(
@@ -70,19 +99,20 @@ $routes[] =	array(
 	"l"=>true,
 );
 
-$routes[] =	array(
-	"method"=>'GET',
-	"path"=>'/app/nf/admin/users',
-	"controller"=>'apps\nf\controllers\admin_users->page',
-	"a"=>true,
-	"l"=>true,
-);
+
 
 
 $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/nf/admin/publications',
 	"controller"=>'apps\nf\controllers\admin_publications->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/users',
+	"controller"=>'apps\nf\controllers\admin\users->page',
 	"a"=>true,
 	"l"=>true,
 );

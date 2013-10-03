@@ -91,6 +91,7 @@
 						<td class="span4 form-super-narrow">
 							<div id="rightpane">
 								<div id="rightpane-top">
+									{% if _user['permissions']['form']['author_dropdown'] %}
 									<section class="block control-group" style="margin-top:10px;">
 										<h4>Author</h4>
 										<select name="authorID" id="authorID" style="width:100%;"  class="select2">
@@ -100,6 +101,9 @@
 
 										</select>
 									</section>
+									{% else %}
+										<input id="authorID" type="hidden" name="authorID" value="<%= this.details.authorID||"{{ _user['ID'] }}" %>" />
+									{% endif %}
 									<section class="block control-group" style="">
 										<h4>Category</h4>
 										<select name="categoryID" id="categoryID" style="width:100%;" class="select2">

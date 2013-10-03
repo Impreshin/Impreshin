@@ -175,15 +175,15 @@
 	</li>
 	<li class="span6" style="position: relative;" id="toolbar-stats-link">
 		<div class="progress glow" style="margin-top: 6px; margin-bottom: -5px;">
-			<div class="bar" style="width: <%= this.stats.records.placed.p %>%;" id="list-stats-progress-bar"></div>
+			<div class="bar" style="width: <%= this.stats.records.planned.p %>%;" id="list-stats-progress-bar"></div>
 		</div>
 		<div class="row" style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;">
 
 			<div class="span2"><span class="s dg">Pages:</span>
 				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %> > <%= this.stats.loading.pages %> <% if (this.stats.loading.forced) { %>*<% } %>                </strong>
 			</div>
-			<div class="span2"><span class="s dg">Placed:</span> <strong> <%= this.stats.records.placed.r %> </strong> of <strong> <%= this.stats.records.total %></strong></div>
-			<div class="span2"><span class="s dg">Remaining:</span> <strong> <%= this.stats.records.total - this.stats.records.placed.r %> </strong></div>
+			<div class="span2"><span class="s dg">Planned:</span> <strong> <%= this.stats.records.planned.r %> </strong> of <strong> <%= this.stats.records.total %></strong></div>
+			<div class="span2"><span class="s dg">Remaining:</span> <strong> <%= this.stats.records.total - this.stats.records.planned.r %> </strong></div>
 			</div>
 
 		</div>

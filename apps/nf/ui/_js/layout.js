@@ -11,37 +11,7 @@ $(document).ready(function () {
 	}
 
 	scrolling(left_pane);
-	/***************/
-	$(document).on("click", ".view_full_details", function (e) {
-		e.preventDefault();
-		$.bbq.pushState({"show_full_details":true});
-
-		//	$("#nf-details-modal-newsbook").modal("hide")
-		getDetails();
-		$.bbq.removeState("show_full_details");
-
-		return false;
-	});
-	$(document).on("click", ".view_comments_details", function (e) {
-		e.preventDefault();
-		$.bbq.pushState({"show_full_details":true,"details-tab":"details-pane-comments"});
-		getDetails();
-		$.bbq.removeState("show_full_details");
-
-		return false;
-	});
-
-	$(document).on("click",".photo-jump",function(e){
-		e.preventDefault();
-		var api = $("#left-side-pane .scroll-pane").data("jsp");
-		var $target = $("#"+$(this).attr("data-target"));
-		if ($target.length) {
-			api.scrollToElement("#"+$(this).attr("data-target"), false, true);
-		}
-		$(".article-photo.highlight").removeClass("highlight")
-		$target.addClass("highlight")
-	});
-	/***************/
+	
 
 	$(document).on("click", "#toolbar-stats-link", function (e) {
 		if (!$(e.target).closest("#toolbar-stats-pane").get(0)) {
@@ -628,56 +598,3 @@ function remove(ID, $dragged) {
 	}));
 }
 
-function getDetails_custom() {
-	var ID = $.bbq.getState("ID");
-	var historyID = $.bbq.getState("historyID");
-
-	var pID = $("#use-pID").val();
-	var dID = $("#use-dID").val();
-
-
-
-	if (!pID || !dID) {
-		getDetails();
-		return false;
-	}
-
-
-	$("#nf-details-modal").addClass("loading");
-	$.getData("/app/nf/data/details_newsbook?r=" + Math.random(), {"ID": ID, "pID": pID,"dID":dID}, function (data) {
-		$("#record-list .record.active").removeClass("active");
-		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-
-
-		$('#nf-details-modal').data("data", data).jqotesub($("#template-details-newsbook"), data).modal('show').removeClass("loading").trigger("shown");
-
-
-		if (data['comments'].length){
-			$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
-		} else {
-			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
-		}
-
-
-		if ($("#record-list:visible").length) {
-
-			if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
-
-				showContent_state();
-				$(".list-next-prev-btns").show();
-				var api = $("#whole-area .scroll-pane").data("jsp");
-				if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
-					api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
-				}
-
-			}
-		}
-
-
-		setTimeout(function(){
-			$("#nf-details-modal .scroll-pane").jScrollPane(jScrollPaneOptions);
-		},500)
-
-	}, "details");
-
-}

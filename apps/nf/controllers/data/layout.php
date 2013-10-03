@@ -127,20 +127,20 @@ class layout extends data {
 		}
 		
 		$loading = $stats['loading'];
-		//$stats = models\record_stats::stats($rawBookings,array("placed"));
+		//$stats = models\record_stats::stats($rawBookings,array("planned"));
 		
 		$totals = array(
 			"records"=>count($rawBookings),
-			"placed"=>count($rawBookings) - $remainingRecords
+			"planned"=>count($rawBookings) - $remainingRecords
 		);
 		
 		$stats=array();
 		$stats['loading'] = $loading;
 		$stats['records'] = array(
 			"total"=>$totals["records"],
-			"placed"=>array(
-				"r"=>$totals["placed"],
-				"p"=>($totals['placed']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
+			"planned"=>array(
+				"r"=>$totals["planned"],
+				"p"=>($totals['planned']) ? number_format((($totals["planned"] / $totals["records"]) * 100), 2) : 0
 			)
 		);
 		
@@ -353,7 +353,7 @@ class layout extends data {
 
 		$totals = array(
 			"records"=>count($recordsRaw),
-			"placed"=>$recordCount
+			"planned"=>$recordCount
 		);
 		$loading = $stats['loading'];
 		$stats=array();
@@ -361,9 +361,9 @@ class layout extends data {
 		$stats['loading'] = $loading;
 		$stats['records'] = array(
 			"total"=>$totals["records"],
-			"placed"=>array(
-				"r"=>$totals["placed"],
-				"p"=>($totals['placed']) ? number_format((($totals["placed"] / $totals["records"]) * 100), 2) : 0
+			"planned"=>array(
+				"r"=>$totals["planned"],
+				"p"=>($totals['planned']) ? number_format((($totals["planned"] / $totals["records"]) * 100), 2) : 0
 			)
 		);
 

@@ -17,15 +17,29 @@ class permissions {
 		$return = array();
 		$return['p'] = array(
 			"form"           => array(
-				"new"         => 1,
-				"edit"        => 1,
-				"delete"      => 1,
-				"edit_master" => 1
+				"new"         => 0,
+				"edit"        => 0,
+				"delete"      => 0,
+				"edit_master" => 0,
+				"author_dropdown"=>0
+			),
+			"details"           => array(
+				"overwrite_locked"         => 0,
+				"placed"         => 0,
+				
 			),
 			"layout"         => array(
-				"page"      => 1,
-				"pagecount" => 1,
-				"editpage"  => 1
+				"page"      => 0,
+				"pagecount" => 0,
+				"editpage"  => 0
+			),
+			"records"        => array(
+				"deleted" => array(
+					"page" => 0,
+				),
+				"search"  => array(
+					"page" => 0
+				)
 			),
 			"administration" => array(
 				"application" => array(

@@ -7072,6 +7072,9 @@ body {
   right: 15px;
   top: 10px;
 }
+#pageheader .nav a:hover #nav-pub-list {
+  color: #fff;
+}
 #pageheader .divider-vertical {
   margin: 0;
 }
@@ -7811,7 +7814,7 @@ form #form-bottom .form-actions {
   padding-right: 12px !important;
 }
 .nav-icon-btn:hover .icon-d-grey {
-  color: #ccc!important;
+  color: #FFF!important;
 }
 #pageheader {
   max-height: 40px;

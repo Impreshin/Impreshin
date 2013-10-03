@@ -268,5 +268,16 @@ class articles extends save {
 	}
 
 
+	function _delete() {
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
 
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$delete_reason = (isset($_POST['delete_reason'])) ? $_POST['delete_reason'] : "";
+
+		$result = models\articles::_delete($ID, $delete_reason);
+
+		echo json_encode(array("result"=> $result));
+		exit();
+	}
 }

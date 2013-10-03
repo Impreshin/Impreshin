@@ -149,34 +149,31 @@ class app {
 			$companies = \models\company::getAll("", "company ASC");
 		} else {
 			$companies = \models\company::getAll_user("global_users_company.uID='" . $user['ID'] . "' and [access]", "company ASC");
-
 			$compstr = array();
 			foreach ($companies AS $item) {
 				$compstr[] = $item["ID"];
 			}
-
-			
-			if (in_array($lastcID, $compstr)) {
-				$cID = $lastcID;
-			} else {
-				$lastcID = "";
-				$cID = (count($companies)) ? $companies[0]['ID'] : "";
-			}
-
-
-
-
-
 			$publications = models\publications::getAll_user("global_users_company.uID='" . $user['ID'] . "' and global_users_company.cID in (" . implode(",",$compstr) . ") and [access] = '1'", "company ASC, publication ASC");
 
 
 		}
-		
 
 
+		$compstr = array();
+		foreach ($companies AS $item) {
+			$compstr[] = $item["ID"];
+		}
 
 
+		if (in_array($lastcID, $compstr)) {
+			$cID = $lastcID;
+		} else {
+			$lastcID = "";
+			$cID = (count($companies)) ? $companies[0]['ID'] : "";
+		}
 
+
+//test_array($companies); 
 
 		//$cID = $cID ? $cID: (count($companies)) ? $companies[0]['ID'] : "";
 
@@ -218,6 +215,7 @@ class app {
 		$return['publications'] = $publications;
 		$return['publication'] = $publication;
 
+	//	test_array($return); 
 
 
 		$DefaultPermissionsClass = $this->namespace . "\\permissions";

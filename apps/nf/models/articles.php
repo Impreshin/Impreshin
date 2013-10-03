@@ -53,6 +53,7 @@ class articles {
 				nf_stages.stage AS stage,
 				nf_stages.labelClass AS stageLabelClass,
 				global_users_1.fullName AS locked_fullName,
+				global_users_2.fullName AS deleted_fullName,
 				global_users_3.fullName AS rejected_fullName,
 				nf_priorities.priority AS priority,
 				if(global_users_1.ID,1,0) AS locked,
@@ -237,6 +238,7 @@ class articles {
 				nf_stages.stage AS stage,
 				nf_stages.labelClass AS stageLabelClass,
 				global_users_1.fullName AS locked_fullName,
+				global_users_2.fullName AS deleted_fullName,
 				global_users_3.fullName AS rejected_fullName,
 				nf_priorities.priority AS priority,
 				if(global_users_1.ID,1,0) AS locked,
@@ -449,7 +451,7 @@ class articles {
 				break;
 			case "page":
 				$orderby = "COALESCE(FLOOR(global_pages.page),99999) $ordering, " . $orderby;
-				$arrange = "COALESCE(CONCAT('Page ',FLOOR(global_pages.page)),'Not placed') as heading";
+				$arrange = "COALESCE(CONCAT('Page ',FLOOR(global_pages.page)),'Not planned') as heading";
 				break;
 
 			case "none":

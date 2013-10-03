@@ -3,122 +3,43 @@
  * Date: 2011/10/31
  * Time: 5:06 PM
  */
-namespace apps\ab\controllers\admin;
+namespace apps\nf\controllers\admin;
+
 use \timer as timer;
 use \apps\nf\models as models;
-use \models\user as user;
-use \models\dates as dates;
 class users extends \apps\nf\controllers\_ {
 	function __construct() {
 		parent::__construct();
 	}
 	function page() {
-
-		$timer = new timer();
-		$user = $this->user;
-		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
-
-
-//test_array($user);
-
+		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['pID'];
-		$currentDate = $user['publication']['current_date'];
-		//test_array($user);
-		$ab_settings = \apps\ab\settings::_available();
+		$cID = $user['publication']['cID'];
 
 
 
 
+//test_array($pages);
 
-		//test_array($user);
-
-
-		$settings = models\settings::_read("provisional",$user['permissions']);
-
-
-		//test_array($settings);
-
-		//test_array($settings);
-
+		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","apps/nf/ui/");
 		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
-			"print"=> "/app/nf/provisional/print",
+			"section"=> "admin",
+			"sub_section"=> "users",
+			"template"=> "admin_users",
 			"meta"    => array(
-				"title"=> "AB - Provisional",
+				"title"=> "NF - Admin - Users",
 			),
-			"help"=> "/apps/nf/help/bookings"
+			"help"=> "/apps/nf/help/admin/users"
 		);
 
-
-		$a = array();
-		$b = array();
-
-		foreach ($settings['col'] as $col){
-			$a[] = $col;
-			$b[] = $col['c'];
-
-		}
-
-
-
-		$selected = $a;
-		$available = array();
-			foreach ($ab_settings["columns"] as $col){
-				if ( !in_array($col['c'],$b)){
-					$available[] = $col;
-				}
-
-			}
-
-
-
-		$tmpl->production = models\production::getAll("pID='$pID'","production ASC");
-		$tmpl->repeat_dates = dates::getAll("pID='$pID' AND publish_date >= '" . $currentDate['publish_date'] . "'", "publish_date ASC", "");
-
-		$tmpl->settings = $settings;
-
-		$tmpl->settings_columns = array(
-			"selected"=> $selected,
-			"available"=> $available
-		);
+		$permissions = \apps\nf\permissions::_available();
+		$tmpl->use_pub = true;
+		$tmpl->permissions = $permissions['p'];
+		$tmpl->permissions_desc = $permissions['d'];
 		$tmpl->output();
-		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
+
 	}
-
-	function _print() {
-		$timer = new timer();
-		$user = $this->f3->get("user");
-
-		$settings = models\settings::_read("provisional", $user['permissions']);
-
-
-		$dataO = new \apps\ab\controllers\data\provisional();
-		$data = $dataO->_list();
-
-		//test_array($data);
-
-		$tmpl = new \template("template.tmpl","apps/nf/ui/print/",true);
-		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
-			"meta"    => array(
-				"title"=> "AB - Print - Provisional",
-			)
-		);
-
-		$tmpl->settings=$settings;
-		$tmpl->data=$data;
-
-		//test_array($data);
-
-		$tmpl->output();
-		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
-	}
-
 
 }
