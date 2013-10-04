@@ -53,10 +53,12 @@ class settings {
 				"h"=>"Priority"
 			),
 			"percent_last"=>array(
-				"h"=>"%&nbsp;last"
+				"h"=>"%&nbsp;last",
+				"d"=>"The percentage the body was changed since the edit before the current"
 			),
 			"percent_orig"=>array(
-				"h"=>"%&nbsp;Chan."
+				"h"=>"%&nbsp;Chan.",
+				"d"=>"The percentage the body was changed since the article was sent from 'Draft'"
 			),
 			
 			"newsbooks"=>array(

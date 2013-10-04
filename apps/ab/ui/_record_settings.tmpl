@@ -69,12 +69,12 @@
                     </small>
                 </h4>
                 <div class="btn-group square" data-toggle="buttons-radio" id="settings-records-order">
-                    <button type="button" style="width: 202px;" data-order-records-by="ASC" class="btn {% if settings['group']['o']|default("ASC") == "ASC" %}active{% endif %}">
-                        <i class="icon-sort-by-attributes icon-grey"></i> ASC
-                    </button>
-                    <button type="button" style="width: 202px;" data-order-records-by="DESC" class="btn  {% if settings['group']['o'] == "DESC" %}active{% endif %}">
-                        <i class="icon-sort-by-attributes-alt icon-grey"></i> DESC
-                    </button>
+	                <button type="button" style="width: 202px;" data-order-records-by="ASC" class="btn {% if settings['group']['o']|default("ASC") == "ASC" %}active{% endif %}">
+		                <i class="icon-sort-by-attributes icon-grey"  style="margin-left:-10px; margin-right:10px;"></i> ASC <span class="s g">(A - Z | 0 - 9)</span>
+	                </button>
+	                <button type="button" style="width: 202px;" data-order-records-by="DESC" class="btn  {% if settings['group']['o'] == "DESC" %}active{% endif %}">
+		                <i class="icon-sort-by-attributes-alt icon-grey" style="margin-left:-10px; margin-right:10px;"></i> DESC <span class="s g">(Z - A | 9 - 0)</span>
+	                </button>
 
                 </div>
                 <div class="clearfix"></div>
