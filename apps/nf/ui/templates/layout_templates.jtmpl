@@ -3,7 +3,7 @@
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>">
+	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
 		<td class="span1 r" style="padding-left: 0;" data-drag-handler="<%= this.title %>">
 			<% if (this.type_icon){ %>
 			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>

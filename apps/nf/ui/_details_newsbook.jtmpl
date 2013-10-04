@@ -48,7 +48,7 @@
 
 					<article class="row article-photo" id="file-id-<%= this.media[f].ID %>" >
 						<div class="span2" style="height: 90px;">
-							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
+							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt="" style="width:110px; height:90px;"/>
 						</div>
 						<div class="span6 selectable"><%= this.media[f].caption %></div>
 					</article>
@@ -67,8 +67,12 @@
 				<legend>Author</legend>
 				<%= this.author %>
 			</fieldset>
-			<% if (this.page) { %>
 			<fieldset>
+				<legend>Category</legend>
+				<%= this.category %>
+			</fieldset>
+			<% if (this.page) { %>
+			<fieldset style="margin-top: 30px;">
 				<legend>Actions</legend>
 				<% if (this.page) { %>
 				<button class="btn <% if (this.placed=='1') { %>btn-success<% } %>" id="btn-action-placed" data-value="<% if (this.placed=='1') { %>0<% } else { %>1<% } %>"  type="button" style="width:100%">Placed</button>
