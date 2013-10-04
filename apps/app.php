@@ -122,7 +122,7 @@ class app {
 		$lastcID = $data['cID'];
 
 		$publicationObject = new models\publications();
-		if ((isset($_GET['apID']) && $_GET['apID']) && $_GET['apID'] != $lastpID) {
+		if ((isset($_GET['apID']) && ($_GET['apID'] != "")) && $_GET['apID'] != $lastpID) {
 			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
 			$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
 			$lastpID = $_GET['apID'];
