@@ -18,6 +18,30 @@ class articles extends save {
 
 	}
 
+	function reject() {
+		$user = $this->f3->get("user");
+		$reason = isset($_POST['reject_reason']) ? $_POST['reject_reason'] : "";
+		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
+		
+		$values = array(
+			"rejected"=>"1",
+			"rejected_uID"=>$user['ID'],
+			"rejected_reason"=>$reason
+		);
+
+
+		$submit = true;
+		if (!$reason) $submit = false;
+		if ($submit){
+
+
+			$ID = models\articles::save($aID,$values);
+			
+		}
+		
+		test_array("done"); 
+		
+	}
 	function placed() {
 		$user = $this->f3->get("user");
 		$pID = isset($_POST['pID']) ? $_POST['pID'] : "";
@@ -30,7 +54,8 @@ class articles extends save {
 		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
 		test_array("done"); 
 		
-	}function comment() {
+	}
+	function comment() {
 		$user = $this->f3->get("user");
 		$ID = isset($_POST['comment-ID']) ? $_POST['comment-ID'] : "";
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";

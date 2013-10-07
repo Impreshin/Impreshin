@@ -113,7 +113,7 @@ class provisional extends data {
 		
 
 		//$where = "1";
-		$where .= " AND (archived != '1' || stageID !='2')";
+		$where .= " AND (archived != '1' || stageID !='2') AND (nf_articles.rejected !='1' || authorID='$userID')";
 		$options = array();
 		if ($highlight=="used"){
 			$options = array("newsbook_used"=>true);

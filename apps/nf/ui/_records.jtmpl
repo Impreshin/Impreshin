@@ -73,6 +73,12 @@
 						<% } %>
 
 					{% elseif col['c'] == 'title' %}
+						<% if (this.records[i].rejected=='1'){ %>
+						<span class="badge"  style="margin-right:7px;">Rejected</span>
+						<% } %>
+						<% if (this.records[i].locked=='1'){ %>
+						<i class="icon-lock" style="margin-right:7px;"></i>
+						<% } %>
 						<% if (this.records[i].type_icon){ %>
 						<i class="<%= this.records[i].type_icon %>" style="margin-right:7px;"></i>
 						<% } %><%= this.records[i].title %>

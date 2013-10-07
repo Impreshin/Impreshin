@@ -250,3 +250,5 @@ ALTER TABLE `nf_files` ADD `folder` VARCHAR( 40 ) NULL DEFAULT NULL AFTER `aID`;
 UPDATE nf_files SET folder = '1/old';
 #------
 
+ALTER TABLE `nf_articles` ADD `rejected_reason` TEXT NULL DEFAULT NULL AFTER `rejected_uID`;
+

@@ -1,10 +1,10 @@
 <script type="text/x-jqote-template" id="template-details">
 <![CDATA[
-<div id="nf-details-modal-area" >
+<div id="nf-details-modal-area">
 <section class="modal-header">
 	<a class="close" data-dismiss="modal">×</a>
 
-	<h3 id="nf-details-title" >
+	<h3 id="nf-details-title">
 		<% if (this.deleted) { %>
 		<span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span> <% } %>
 		<% if (this.type_icon){ %>
@@ -14,17 +14,17 @@
 		<span class="label <%= this.stageLabelClass %>" style="margin-right: 10px; margin-top:-8px;"> <%= this.stage %> </span>
 		<% } %>
 
-		
+
 
 		<%= this.title %>
 	</h3>
 
 	<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
-		
+
 		<a href="#" class="back-btn-details-pane" rel="tooltip" data-placement="bottom" title="Back"><i class=" icon-circle-arrow-left icon-d-grey"></i></a>
-		
+
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
-		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>"  rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
 		<% if (this.a.print=='1') { %>
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>
 		<% } %>
@@ -43,300 +43,311 @@
 
 
 <div class="tabbable tabs-right">
-	<ul class="nav nav-tabs">
-		<% if (this.typeID=="1") { %>
-		<li>
-			<a href="#details-pane-details" data-toggle="tab"> Article
-			</a>
-		</li>
-		<% } %>
-		<% if (this.media.length){ %>
-		<li class="">
-			<a href="#details-pane-media" data-toggle="tab"> Media
-				
-				<span class="badge"><%= this.media.length %></span>
-				
-			</a>
-		</li>
-		<% } %>
-		<li class="">
-			<a href="#details-pane-newsbooks" data-toggle="tab"> Newsbooks
-				<% if (this.used.length){ %>
-				<span class="badge"><%= this.used.length %></span>
-				<% } %>
-			</a>
-		</li>
-		<li class="">
-			<a href="#details-pane-comments" data-toggle="tab"> Comments
-				<% if (this.comments.length){ %>
-				<span class="badge"><%= this.commentCount %></span>
-				<% } %>
-				
-			</a>
-		</li>
-		<li class="tab-icon">
-			<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
-		</li>
+<ul class="nav nav-tabs">
+	<% if (this.typeID=="1") { %>
+	<li>
+		<a href="#details-pane-details" data-toggle="tab"> Article
+		</a>
+	</li>
+	<% } %>
+	<% if (this.media.length){ %>
+	<li class="">
+		<a href="#details-pane-media" data-toggle="tab"> Media
+
+			<span class="badge"><%= this.media.length %></span>
+
+		</a>
+	</li>
+	<% } %>
+	<li class="">
+		<a href="#details-pane-newsbooks" data-toggle="tab"> Newsbooks
+			<% if (this.used.length){ %>
+			<span class="badge"><%= this.used.length %></span>
+			<% } %>
+		</a>
+	</li>
+	<li class="">
+		<a href="#details-pane-comments" data-toggle="tab"> Comments
+			<% if (this.comments.length){ %>
+			<span class="badge"><%= this.commentCount %></span>
+			<% } %>
+
+		</a>
+	</li>
+	<li class="tab-icon">
+		<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+	</li>
 
 
 
 
-	</ul>
-	<div class="tab-content" style="width: 520px;">
-		<% if (this.typeID=="1") { %>
-		<div id="details-pane-details" class="tab-pane ">
+</ul>
+<div class="tab-content" style="width: 520px;">
+<% if (this.typeID=="1") { %>
+<div id="details-pane-details" class="tab-pane ">
 
-			<div class="scroll-pane">
-				<div style="padding:10px 20px;">
-					<% if (this.historyShow.body) { %>
-					<div class="alert">
-						<button type="button" class="close">&times;</button>
-						<p>
-							Showing changes made by <em><%= this.historyShow.fullName %></em> on the
-							<em> <%= this.historyShow.datein %></em>
-
-						</p>
+	<div class="scroll-pane">
+		<div style="padding:10px 20px;">
+			<% if (this.rejected=='1') { %>
+			<div class="alert alert-error">
+				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
+				<%= this.rejected_reason||"" %>
 
 
-					</div>
-					<%= this.historyShow.body||"<em class='g'>no article body</em>" %>
-					<% } else { %>
-					<%= this.body||"<em class='g'>no article body</em>" %>
-					<% } %>
+			</div>
+
+			<% } %>
+			<% if (this.historyShow.body) { %>
+			<div class="alert">
+				<button type="button" class="close">&times;</button>
+				<p>
+					Showing changes made by <em><%= this.historyShow.fullName %></em> on the
+					<em> <%= this.historyShow.datein %></em>
+
+				</p>
+
+
+			</div>
+			<%= this.historyShow.body||"<em class='g'>no article body</em>" %>
+			<% } else { %>
+			<%= this.body||"<em class='g'>no article body</em>" %>
+			<% } %>
+		</div>
+	</div>
+
+
+</div>
+<% } %>
+<div id="details-pane-logs" class="tab-pane">
+	<div class="scroll-pane">
+		<div style="padding-right:1px;">
+			<% if (this.deleted) { %>
+			<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
+				<tr>
+					<th width="120" style="width: 120px;">Deleted By</th>
+					<td><%= this.deleted_fullName %></td>
+					<td width="120" style="width: 120px;"><%= this.deleted_date || "" %></td>
+				</tr>
+			</table>
+			<div style="padding-left:15px;">
+				<div class="alert alert-block"><strong>Reason:</strong> <%= this.deleted_reason || "" %>
 				</div>
 			</div>
 
+			<% } %>
+			<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
 
-		</div>
-		<% } %>
-		<div id="details-pane-logs" class="tab-pane">
-			<div class="scroll-pane">
-				<div style="padding-right:1px;">
-					<% if (this.deleted) { %>
-					<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
-						<tr>
-							<th width="120" style="width: 120px;">Deleted By</th>
-							<td><%= this.deleted_fullName %></td>
-							<td width="120" style="width: 120px;"><%= this.deleted_date || "" %></td>
-						</tr>
-					</table>
-					<div style="padding-left:15px;">
-						<div class="alert alert-block"><strong>Reason:</strong> <%= this.deleted_reason || "" %>
-						</div>
-					</div>
-
-					<% } %>
-					<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
-
-						<tr>
-							<td colspan="3"><h5>Logs</h5></td>
-						</tr>
-						<% for(var i in this.logs) { %>
-						<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
-							<th class="s"><%= this.logs[i].datein %></th>
-							<td><%= this.logs[i].label %></td>
-							<td class="s g"><%= this.logs[i].fullName || "" %></td>
-						</tr>
-						<tr>
-							<td colspan="3" class="log-record-details " data-log-id="<%= this.logs[i].ID %>" style="padding:0;">
-								<table class="table s log-changes-table">
-									<thead>
-									<tr class="headingrow" style="border-right:none;">
-										<th class="l" style="width: 24%;text-align: right;"></th>
-										<th class="l" style="width: 38%;">From</th>
-										<th class="l" style="width: 38%;">To</th>
-									</tr>
-									</thead>
-									<tbody>
-									<% for(var g in this.logs[i].log) { %>
-									<tr>
-										<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
+				<tr>
+					<td colspan="3"><h5>Logs</h5></td>
+				</tr>
+				<% for(var i in this.logs) { %>
+				<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
+					<th class="s"><%= this.logs[i].datein %></th>
+					<td><%= this.logs[i].label %></td>
+					<td class="s g"><%= this.logs[i].fullName || "" %></td>
+				</tr>
+				<tr>
+					<td colspan="3" class="log-record-details " data-log-id="<%= this.logs[i].ID %>" style="padding:0;">
+						<table class="table s log-changes-table">
+							<thead>
+							<tr class="headingrow" style="border-right:none;">
+								<th class="l" style="width: 24%;text-align: right;"></th>
+								<th class="l" style="width: 38%;">From</th>
+								<th class="l" style="width: 38%;">To</th>
+							</tr>
+							</thead>
+							<tbody>
+							<% for(var g in this.logs[i].log) { %>
+							<tr>
+								<td class="g r" style="text-align: right;"><%= this.logs[i].log[g].k %></td>
 
 
-										<% if (this.logs[i].log[g].w!="-"){ %>
-										<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
-										<% } %>
-										<td
-										<% if (this.logs[i].log[g].w=="-"){ %>colspan='2'<% } %>><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
-									</tr>
-									<% } %>
-									</tbody>
-								</table>
-
-
-							</td>
-						</tr>
-						<% } %>
-
-					</table>
-
-				</div>
-			</div>
-		</div>
-
-		<div id="details-pane-media" class="tab-pane">
-			<div class="scroll-pane">
-				<div style="padding:10px;">
-					
-					<table class="table table-condensed records s">
-						<thead>
-						<tr class="colheading">
-							<th style="width:50px;">Icon</th>
-							<th>Filename</th>
-							<th style="width:110px;">Date</th>
-							<th class="span1"></th>
-							<th class="span1"></th>
-						</tr>
-						</thead>
-						<tbody>
-						
-						
-						<% for(var f in this.media) { %>
-						
-						<tr class="record log-record" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-filename="<%= this.media[f].filename_orig %>" data-log-id="<%= this.media[f].ID %>">
-							<td>
-								<% if (this.media[f].fileType=="1"){ %>
-								<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>"  style="margin-left:10px;"/>
-
-								<% } else { %>
-								<div class="file-icon <%= this.media[f].icon %>"></div>
+								<% if (this.logs[i].log[g].w!="-"){ %>
+								<td><% if ( this.logs[i].log[g].w) { %><%= this.logs[i].log[g].w %><% } %></td>
 								<% } %>
-								
-								
-							</td>
-							<td>
-								<%= this.media[f].filename_orig %>
-							</td>
-							<td>
-								<%= this.media[f].datein %>
-							</td>
-							<% if (this.media[f].fileType=="1"){ %>
-							<td class="c" >
-								<i class="icon-zoom-in f13"></i>
-							</td>
-							<% } else { %>
-							<td></td>
+								<td
+								<% if (this.logs[i].log[g].w=="-"){ %>colspan='2'<% } %>><% if ( this.logs[i].log[g].v) { %><%= this.logs[i].log[g].v %><% } %></td>
+							</tr>
 							<% } %>
-							<td class="c">
-								<i class="icon-download f13"></i>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="5" class="log-record-details " data-log-id="<%= this.media[f].ID %>" style="padding:0;">
-								
-
-								<div style="background-color:#F5F5F5; padding:10px; border-top:1px solid #ccc;border-bottom:1px dotted #ccc; line-height:1.2;"><%= this.media[f].caption %></div>
-
-								<% if (this.media[f].fileType=="1"){ %>
-
-								<div style="padding:20px 20px 30px 20px; text-align:center;border-bottom:1px solid #ccc; ">
-									<img src="/app/nf/thumb/250/250?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&crop=false" class="glow"/>
-								</div>
+							</tbody>
+						</table>
 
 
+					</td>
+				</tr>
+				<% } %>
 
-								<% } %>
-							</td>
-						</tr>
-						
-						<% } %>
-						</tbody>
-					</table>
+			</table>
 
-
-				</div>
-			</div>
-		</div>
-		<div id="details-pane-newsbooks" class="tab-pane">
-			<div class="scroll-pane">
-				<div style="padding:10px;">
-				<table class="table table-condensed s records">
-					<thead>
-					<tr  class="colheading">
-						<th>
-							Publication
-						</th>
-						<th>Newsbook</th>
-						<th>Page</th>
-						<th>User</th>
-						<th>Date</th>
-						<th class="span1"></th>
-					</tr>
-					</thead>
-					<tbody>
-					<% for(var i in this.used) { %>
-					<tr class="f12">
-						<td><%= this.used[i].publication %></td>
-						<td><%= this.used[i].publish_date %></td>
-						<td><%= this.used[i].page||"" %></td>
-						<td class="g s "><%= this.used[i].fullName||"" %></td>
-						<td class="g s"><%= this.used[i].datein||"" %></td>
-						<td class="c edit-newsbook button-cell" data-pID="<%= this.used[i].pID %>" data-ID="<%= this.used[i].ID %>"  data-dID="<%= this.used[i].dID %>" ><i class="icon-pencil"></i></td>
-					</tr>
-					<% if (this.used[i].media.length) { %>
-					<tr>
-						<td colspan="6">
-							<% for(var f in this.used[i].media) { %>
-							<% if (this.used[i].media[f].fileType=="1"){ %>
-
-							<div class="span2" style="margin-bottom:10px;">
-								<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" class="glow"/>
-							</div>
-
-
-
-							<% } %>
-							<% } %>
-							
-						</td>
-					</tr>
-					<% } %>
-					<% } %>
-					</tbody>
-
-				</table>
-
-
-				</div>
-			</div>
-		</div>
-		<div id="details-pane-comments" class="tab-pane" style="overflow:hidden">
-			<div class="scroll-pane" style="bottom:40px;">
-
-				<section id="comments-area" >
-					
-				</section>
-				
-
-
-			</div>
-			<div id="comment-area">
-				<input type="text" class="span9" placeholder="Leave a comment"/>
-
-				<form action="">
-					<textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
-					<div class="buttons">
-						<button class="btn  span2 btn-mini" type="reset">Cancel</button>
-						<button type="submit" class="btn span2 btn-primary btn-mini">Comment</button>
-					</div>
-					
-					<div id="comment-heading" ></div>
-					<input type="hidden" id="comment-parentID" name="comment-parentID" value=""/>
-					<input type="hidden" id="comment-ID" name="comment-ID" value=""/>
-
-					<div class="loadingmask round"></div>
-				</form>
-				
-			</div>
-			
 		</div>
 	</div>
 </div>
 
+<div id="details-pane-media" class="tab-pane">
+	<div class="scroll-pane">
+		<div style="padding:10px;">
+
+			<table class="table table-condensed records s">
+				<thead>
+				<tr class="colheading">
+					<th style="width:50px;">Icon</th>
+					<th>Filename</th>
+					<th style="width:110px;">Date</th>
+					<th class="span1"></th>
+					<th class="span1"></th>
+				</tr>
+				</thead>
+				<tbody>
+
+
+				<% for(var f in this.media) { %>
+
+				<tr class="record log-record" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-filename="<%= this.media[f].filename_orig %>" data-log-id="<%= this.media[f].ID %>">
+					<td>
+						<% if (this.media[f].fileType=="1"){ %>
+						<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
+
+						<% } else { %>
+						<div class="file-icon <%= this.media[f].icon %>"></div>
+						<% } %>
+
+
+					</td>
+					<td>
+						<%= this.media[f].filename_orig %>
+					</td>
+					<td>
+						<%= this.media[f].datein %>
+					</td>
+					<% if (this.media[f].fileType=="1"){ %>
+					<td class="c">
+						<i class="icon-zoom-in f13"></i>
+					</td>
+					<% } else { %>
+					<td></td>
+					<% } %>
+					<td class="c">
+						<i class="icon-download f13"></i>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5" class="log-record-details " data-log-id="<%= this.media[f].ID %>" style="padding:0;">
+
+
+						<div style="background-color:#F5F5F5; padding:10px; border-top:1px solid #ccc;border-bottom:1px dotted #ccc; line-height:1.2;"><%= this.media[f].caption %></div>
+
+						<% if (this.media[f].fileType=="1"){ %>
+
+						<div style="padding:20px 20px 30px 20px; text-align:center;border-bottom:1px solid #ccc; ">
+							<img src="/app/nf/thumb/250/250?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&crop=false" class="glow"/>
+						</div>
+
+
+
+						<% } %>
+					</td>
+				</tr>
+
+				<% } %>
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+</div>
+<div id="details-pane-newsbooks" class="tab-pane">
+	<div class="scroll-pane">
+		<div style="padding:10px;">
+			<table class="table table-condensed s records">
+				<thead>
+				<tr class="colheading">
+					<th>
+						Publication
+					</th>
+					<th>Newsbook</th>
+					<th>Page</th>
+					<th>User</th>
+					<th>Date</th>
+					<th class="span1"></th>
+				</tr>
+				</thead>
+				<tbody>
+				<% for(var i in this.used) { %>
+				<tr class="f12">
+					<td><%= this.used[i].publication %></td>
+					<td><%= this.used[i].publish_date %></td>
+					<td><%= this.used[i].page||"" %></td>
+					<td class="g s "><%= this.used[i].fullName||"" %></td>
+					<td class="g s"><%= this.used[i].datein||"" %></td>
+					<td class="c edit-newsbook button-cell" data-pID="<%= this.used[i].pID %>" data-ID="<%= this.used[i].ID %>" data-dID="<%= this.used[i].dID %>">
+						<i class="icon-pencil"></i></td>
+				</tr>
+				<% if (this.used[i].media.length) { %>
+				<tr>
+					<td colspan="6">
+						<% for(var f in this.used[i].media) { %>
+						<% if (this.used[i].media[f].fileType=="1"){ %>
+
+						<div class="span2" style="margin-bottom:10px;">
+							<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" class="glow"/>
+						</div>
+
+
+
+						<% } %>
+						<% } %>
+
+					</td>
+				</tr>
+				<% } %>
+				<% } %>
+				</tbody>
+
+			</table>
+
+
+		</div>
+	</div>
+</div>
+<div id="details-pane-comments" class="tab-pane" style="overflow:hidden">
+	<div class="scroll-pane" style="bottom:40px;">
+
+		<section id="comments-area">
+
+		</section>
+
+
+
+	</div>
+	<div id="comment-area">
+		<input type="text" class="span9" placeholder="Leave a comment"/>
+
+		<form action="">
+			<textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
+
+			<div class="buttons">
+				<button class="btn  span2 btn-mini" type="reset">Cancel</button>
+				<button type="submit" class="btn span2 btn-primary btn-mini">Comment</button>
+			</div>
+
+			<div id="comment-heading"></div>
+			<input type="hidden" id="comment-parentID" name="comment-parentID" value=""/>
+			<input type="hidden" id="comment-ID" name="comment-ID" value=""/>
+
+			<div class="loadingmask round"></div>
+		</form>
+
+	</div>
+
+</div>
+</div>
+</div>
+
 <div id="details-info-pane">
-	
-	
-	
+
+
+
 
 	<div class="row photo-slider" style="margin-right:0px; margin-left:0px;">
 		<div id="myCarousel" class="carousel slide">
@@ -346,7 +357,7 @@
 				<% var photo = 0; %>
 				<% for(var f in this.media) { %>
 				<% if (this.media[f].type=='1') { %>
-				
+
 				<div class="<% if (photo==0) { %>active<% } %> item">
 					<img src="/app/nf/thumb/170/140?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
 				</div>
@@ -364,7 +375,7 @@
 		</div>
 	</div>
 	<div style="margin-bottom:7px; border-top:1px solid #ccc;">
-		
+
 		<table class="table table-condensed">
 			<tr>
 				<th class="r span1">Words</th>
@@ -372,9 +383,9 @@
 				<th class="r span1">Cm</th>
 				<td><%= this.cm||"" %></td>
 
-				
 
-				
+
+
 
 			</tr>
 			<tr>
@@ -386,7 +397,7 @@
 
 
 		</table>
-		
+
 
 	</div>
 </div>
@@ -438,14 +449,18 @@
 			</div>
 
 			<% } %>
-			
-			
-			<button class="btn span1" type="button"><i class="icon-level-down"></i></button>
+			<!-- popup-reject -->
+			<button class="btn span1 btn-reject" type="button" rel="tooltip" title="Reject this article">
+				<i class="icon-level-down"></i></button>
 			<button class="btn span1" type="button"><i class="icon-archive"></i></button>
-
+			<% if (this.locked=='1'){ %>
+			<button class="btn span1" type="button"><i class="icon-unlock"></i></button>
+			<% } %>
 			<div class="btn-group dropup" style="margin-left:10px;">
 				<% if (this.stageNext.ID){ %>
-				<button class="btn" style="padding-left:12px;padding-right:12px;"><%= this.stage %> <i class="icon-double-angle-right "></i> <%= this.stageNext.stage %></button>
+				<button class="btn" style="padding-left:12px;padding-right:12px;"><%= this.stage %>
+					&nbsp;<i class="icon-double-angle-right g"></i>&nbsp;<%= this.stageNext.stage %>
+				</button>
 				<% } else { %>
 				<button class="btn" style="padding-left:12px;padding-right:12px;" disabled="disabled"><%= this.stage %></button>
 				<% } %>
@@ -455,16 +470,13 @@
 				<ul class="dropdown-menu">
 					<!-- dropdown menu links -->
 				</ul>
-				
-			</div>
-			
-			
 
-			<% if (this.a.invoice=='1') { %> <% if (this.invoiceNum) { %>
-			<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
-			<% } else { %>
-			<button class="btn  span2" type="button" id="booking-invoiced" data-invoice="">Invoiced</button>
-			<% } %> <% } %>
+			</div>
+
+
+
+
+
 
 
 		</div>
@@ -483,12 +495,34 @@
 </section>
 <div class="popup" id="popup-newsbook" style="height: 270px; ">
 	<form class="form form-horizontal" id="form-newsbook">
-		
+
 	</form>
 	<div class="loadingmask wide"></div>
 </div>
+
+
+<div class="popup" id="popup-reject" style="height:250px;">
+	<form style="margin: 0; position:relative; " id="form-reject" >
+		<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+			<h3>Reject Reason:</h3>
+		</div>
+		<div class='modal-body' style="height:110px;">
+			<article class="c">
+				<textarea name="reject_reason" id="reject_reason" cols="30" rows="10" style="width: 98%; height: 100px;" placeholder="You need to give a reason why you are rejecting this record"></textarea>
+
+
+			</article>
+		</div>
+		<div class='modal-footer'>
+			<div class="btn-group c" style="margin-left: 7px;">
+				<button class="btn btn-danger span2" style="float:right;" type="submit">Reject</button>
+
+			</div>
+		</div><div class="loadingmask"></div>
+	</form>
 </div>
-<div class="loadingmask"></div>
+
 ]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-comments">
@@ -505,7 +539,7 @@
 
 			</ul>
 		</h4>
-		
+
 		<div class="comment">
 			<%= this.comment %>
 		</div>
@@ -514,7 +548,8 @@
 			<% for(var i in this.children) { %>
 			<article>
 				<h4><%= this.children[i].fullName %> &nbsp;
-					<small><%= this.children[i].datein %></small></h4>
+					<small><%= this.children[i].datein %></small>
+				</h4>
 
 				<div class="comment">
 					<%= this.children[i].comment %>
@@ -534,12 +569,14 @@
 		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add to<% } %> Newsbook</h3>
 		<select name="newsbook-pID" id="newsbook-pID" style="margin-left:12px;">
 			<% for (var i in this.publications) { %>
-			<option value="<%= this.publications[i].ID %>" <% if (this.publications[i].selected == '1') { %>selected="selected"<% } %> ><%= this.publications[i].label %></option>
+			<option value="<%= this.publications[i].ID %>"
+			<% if (this.publications[i].selected == '1') { %>selected="selected"<% } %> ><%= this.publications[i].label %></option>
 			<% } %>
 		</select>
 		<select name="newsbook-dID" id="newsbook-dID" style="margin-left:10px;">
-				<% for (var d in this.dates) { %>
-				<option value="<%= this.dates[d].ID %>" <% if (this.dates[d].selected == '1') { %>selected="selected"<% } %> ><%= this.dates[d].label %></option>
+			<% for (var d in this.dates) { %>
+			<option value="<%= this.dates[d].ID %>"
+			<% if (this.dates[d].selected == '1') { %>selected="selected"<% } %> ><%= this.dates[d].label %></option>
 			<% } %>
 		</select>
 	</div>
@@ -563,7 +600,7 @@
 				</td>
 				<td class="span1">
 					<% if (this.media[f].fileType=="1"){ %>
-					<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>"  style="margin-left:10px;"/>
+					<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
 
 					<% } else { %>
 					<div class="file-icon <%= this.media[f].icon %>"></div>
@@ -598,429 +635,460 @@
 	<div class='popup-footer '>
 		<div class="row">
 			<% if (this.details.ID) { %>
-			<button class="btn btn-danger span1" type="button" id="form-newsbook-delete-btn" data-id="<%= this.details.ID %>"  rel="tooltip" title="Remove this article from the newsbook" ><i class="icon-trash"></i></button>
+			<button class="btn btn-danger span1" type="button" id="form-newsbook-delete-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="Remove this article from the newsbook">
+				<i class="icon-trash"></i></button>
 			<% } %>
 
 			<div style="float:right;">
-				
 
-							<button class="btn btn-link span2" data-dismiss="popup" type="button" >Cancel</button>
 
-						
-							<button class="btn btn-primary span2">Save</button>
-						
+				<button class="btn btn-link span2" data-dismiss="popup" type="button">Cancel</button>
+
+
+				<button class="btn btn-primary span2">Save</button>
+
 
 
 			</div>
 
 		</div>
 	</div>
-	<input type="hidden" id="newsbook-ID" name="newsbook-ID" value="<%= this.details.ID %>" />
+	<input type="hidden" id="newsbook-ID" name="newsbook-ID" value="<%= this.details.ID %>"/>
 
-	
+
 	]]>
 </script>
 <script type="text/javascript">
 
-	function comment_active(){
-		var $comments_area = $("#comments-area");
-		var $comment_area = $("#comment-area");
+function comment_active() {
+	var $comments_area = $("#comments-area");
+	var $comment_area = $("#comment-area");
 
-		$comment_area.addClass("active");
+	$comment_area.addClass("active");
 
-		
 
-		$comments_area.closest(".scroll-pane").css("bottom", "140px");
-		$comment_area.find("textarea").trigger("focus")
 
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+	$comments_area.closest(".scroll-pane").css("bottom", "140px");
+	$comment_area.find("textarea").trigger("focus")
+
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+}
+function comment_inactive() {
+	var $comments_area = $("#comments-area");
+	var $comment_area = $("#comment-area");
+
+	$comment_area.removeClass("active");
+
+	$comment_area.find(".loadingmask").hide();
+
+	$comments_area.closest(".scroll-pane").css("bottom", "40px");
+
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+}
+
+
+
+
+
+
+$(document).on("click", "#popup-newsbook table.records tr.record", function (event) {
+
+
+	if (event.target.type !== 'checkbox') {
+
+		$(':checkbox', this).trigger('click');
+
 	}
-	function comment_inactive(){
-		var $comments_area = $("#comments-area");
-		var $comment_area = $("#comment-area");
-
-		$comment_area.removeClass("active");
-
-		$comment_area.find(".loadingmask").hide();
-
-		$comments_area.closest(".scroll-pane").css("bottom", "40px");
-
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
-	}
-	
-	
-	
-	
-	
-	
-	$(document).on("click","#popup-newsbook table.records tr.record",function(event) {
 
 
-			if (event.target.type !== 'checkbox') {
+});
+$(document).on("click", ".edit-newsbook", function (event) {
+	event.preventDefault();
+	var $this = $(this);
+	var ID = $this.attr("data-ID");
+	var aID = $.bbq.getState("ID");
+	var pID = $this.attr("data-pID");
+	var dID = $this.attr("data-dID");
+	$.bbq.pushState({"n_ID": ID, "n_pID": pID, "n_dID": dID});
 
-				$(':checkbox', this).trigger('click');
-
-			}
+	newsbook_form();
 
 
+
+	return false;
+
+});
+$(document).on("click", ".add-newsbook", function (event) {
+	$("#popup-newsbook").show();
+	event.preventDefault();
+
+	$.bbq.removeState("n_ID");
+	$.bbq.removeState("n_pID");
+	$.bbq.removeState("n_dID");
+	newsbook_form();
+
+
+	return false;
+
+});
+$(document).on("click", ".btn-reject", function (event) {
+	$("#popup-reject").show();
+	event.preventDefault();
+
+
+	return false;
+
+});
+
+$(document).on("submit", '#form-reject', function (e) {
+	e.preventDefault();
+
+	var $this = $(this);
+
+	$this.find(".loadingmask").show();
+
+
+	var data = $this.serialize();
+	$.post("/app/nf/save/articles/reject/?aID=" + $.bbq.getState("ID"), data, function (response) {
+		
+		$.bbq.removeState("ID");
+		getList();
 	});
-	$(document).on("click",".edit-newsbook",function(event) {
-		event.preventDefault();
-		var $this = $(this);
-		var ID = $this.attr("data-ID");
-		var aID = $.bbq.getState("ID");
-		var pID = $this.attr("data-pID");
-		var dID = $this.attr("data-dID");
-		$.bbq.pushState({"n_ID":ID,"n_pID":pID,"n_dID":dID});
-		
-		newsbook_form();
-		
-		
-		
-		return false;
+	return false;
 
-	});
-	$(document).on("click",".add-newsbook",function(event) {
-		$("#popup-newsbook").show();
-		event.preventDefault();
+});
+$(document).on("change", '#newsbook-pID', function () {
+	var aID = $.bbq.getState("ID");
+	var pID = $(this).val();
+	$.bbq.pushState({"n_pID": pID});
+	newsbook_form();
+});
 
-		$.bbq.removeState("n_ID");
-		$.bbq.removeState("n_pID");
-		$.bbq.removeState("n_dID");
-		newsbook_form();
-		
-		
-		return false;
 
-	});
-	$(document).on("change", '#newsbook-pID', function () {
-		var aID = $.bbq.getState("ID");
-		var pID = $(this).val();
-		$.bbq.pushState({"n_pID":pID});
-		newsbook_form();
-	});
-	
-	
-	
-	
-	
-	
-	$(document).on("focus", '#comment-area input[type="text"]', function () {
-		var $this = $(this);
-		$("#comment-heading").html("Leave a comment");
-		$("#comment-ID").val("");
-		$("#comment-parentID").val("");
-		comment_active();
-	});
-	$(document).on("reset", '#comment-area form', function (e) {
-		var $this = $(this);
-		$("#comment-heading").html("")
-		comment_inactive();
-	});
-	
-	$(document).on("submit", '#comment-area form', function (e) {
-		e.preventDefault();
-		
-		var $this = $(this);
-		
-		$this.find(".loadingmask").show();
-		
 
-		var data = $this.serialize();
-		$.post("/app/nf/save/articles/comment/?aID=" + $.bbq.getState("ID"), data, function (response) {
-			$this.trigger("reset");
-			getcomments();
-		});
-		return false;
-		
+
+
+
+$(document).on("focus", '#comment-area input[type="text"]', function () {
+	var $this = $(this);
+	$("#comment-heading").html("Leave a comment");
+	$("#comment-ID").val("");
+	$("#comment-parentID").val("");
+	comment_active();
+});
+$(document).on("reset", '#comment-area form', function (e) {
+	var $this = $(this);
+	$("#comment-heading").html("")
+	comment_inactive();
+});
+
+$(document).on("submit", '#comment-area form', function (e) {
+	e.preventDefault();
+
+	var $this = $(this);
+
+	$this.find(".loadingmask").show();
+
+
+	var data = $this.serialize();
+	$.post("/app/nf/save/articles/comment/?aID=" + $.bbq.getState("ID"), data, function (response) {
+		$this.trigger("reset");
+		getcomments();
 	});
-	$(document).on("click", '#comments-area .reply', function () {
-		var $this = $(this);
-		var $comment = $this.closest("article");
-		$("#comment-heading").html("Reply to: "+ $comment.attr("data-name"));
-		//var $textarea = $("#comment-area").find("textarea").val("");
-		$("#comment-ID").val("");
-		$("#comment-parentID").val($comment.attr("data-ID"));
-		
-		comment_active();
-	});
-	$(document).on("click", '#comments-area .edit', function () {
-		var $this = $(this);
-		var $comment = $this.closest("article");
-		
-		
-		var $textarea = $("#comment-area").find("textarea").val($comment.find(".comment").html());
-		
-		$("#comment-heading").html("Edit Comment");
-		
-		$("#comment-ID").val($comment.attr("data-ID"));
-		$("#comment-parentID").val($comment.attr("data-parentID"));
-		comment_active();
-	});
-	
-	
-	
-	$(document).on("shown", '#nf-details-modal', function () {
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
-		if (!tab) {
-			tab = "details-pane-details";
-			if (!$("#" + tab).length) {
-				tab = "details-pane-media";
-			}
+	return false;
+
+});
+$(document).on("click", '#comments-area .reply', function () {
+	var $this = $(this);
+	var $comment = $this.closest("article");
+	$("#comment-heading").html("Reply to: " + $comment.attr("data-name"));
+	//var $textarea = $("#comment-area").find("textarea").val("");
+	$("#comment-ID").val("");
+	$("#comment-parentID").val($comment.attr("data-ID"));
+
+	comment_active();
+});
+$(document).on("click", '#comments-area .edit', function () {
+	var $this = $(this);
+	var $comment = $this.closest("article");
+
+
+	var $textarea = $("#comment-area").find("textarea").val($comment.find(".comment").html());
+
+	$("#comment-heading").html("Edit Comment");
+
+	$("#comment-ID").val($comment.attr("data-ID"));
+	$("#comment-parentID").val($comment.attr("data-parentID"));
+	comment_active();
+});
+
+
+
+$(document).on("shown", '#nf-details-modal', function () {
+	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
+	if (!tab) {
+		tab = "details-pane-details";
+		if (!$("#" + tab).length) {
+			tab = "details-pane-media";
 		}
-		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-		$('#' + tab + '', $details_modal).addClass("active");
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	}
+	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	$('#' + tab + '', $details_modal).addClass("active");
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-	});
-	$(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
-		var target = e.target; // activated tab
-		var previous = e.relatedTarget; // previous tab
-		$("#nf-details-modal .nav-tabs li.active").removeClass("active");
-		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+});
+$(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
+	var target = e.target; // activated tab
+	var previous = e.relatedTarget; // previous tab
+	$("#nf-details-modal .nav-tabs li.active").removeClass("active");
+	var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 
-		$("#nf-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
+	$("#nf-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
 
-		$.bbq.pushState({"details-tab": pane});
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	$.bbq.pushState({"details-tab": pane});
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-	});
-	$(document).on('hide', '#nf-details-modal', function () {
-			$.bbq.removeState("ID");
-			$.bbq.removeState("historyID");
-			$("#record-list .record.active").removeClass("active");
-		
-	});
+});
+$(document).on('hide', '#nf-details-modal', function () {
+	$.bbq.removeState("ID");
+	$.bbq.removeState("historyID");
+	$("#record-list .record.active").removeClass("active");
 
-
-	$(document).on('click', '#details-pane-logs .record', function (e) {
-		var $this = $(this);
-		var $clicked = $(e.target).closest("tr.record");
-		var active = true;
-
-		if ($this.hasClass("active") && $clicked) active = false;
-
-		$("#details-pane-logs .record.active").removeClass("active");
-		if (active) {
-			$this.addClass("active");
-		}
-
-		var show = $("#details-pane-logs .record.active").attr("data-log-id");
-
-		$("#details-pane-logs .log-record-details").hide();
-		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
-
-	});
-	$(document).on('click', '#details-pane-media .record', function (e) {
-		var $this = $(this);
-		var $clicked = $(e.target).closest("tr.record");
-		var active = true;
-
-		if ($this.hasClass("active") && $clicked) active = false;
-
-		$("#details-pane-media .record.active").removeClass("active");
-		if (active) {
-			$this.addClass("active");
-		}
-
-		var show = $("#details-pane-media .record.active").attr("data-log-id");
-
-		$("#details-pane-media .log-record-details").hide();
-		$("#details-pane-media .log-record-details[data-log-id='" + show + "']").show();
-		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
-
-	});
-	$(document).on('click', '#details-history-table tr.record', function () {
-		var ID = $(this).attr("data-id");
-		$.bbq.pushState({historyID: ID});
-		getDetails();
+});
 
 
-	});
-	$(document).on('click', '#details-pane-details .alert .close', function () {
-		var ID = $(this).attr("data-id");
-		$.bbq.removeState("historyID");
-		getDetails();
+$(document).on('click', '#details-pane-logs .record', function (e) {
+	var $this = $(this);
+	var $clicked = $(e.target).closest("tr.record");
+	var active = true;
 
+	if ($this.hasClass("active") && $clicked) active = false;
 
-	});
-	$(document).on('click', '.back-btn-details-pane', function (e) {
-		e.preventDefault();
-		getDetails();
-		return false;
-
-
-	});
-
-	$(document).on('click', '.details-record-prev', function () {
-		prevRecord();
-	});
-	$(document).on('click', '.details-record-next', function () {
-		nextRecord();
-	});
-
-
-
-	$(document).on('submit', '#form-newsbook', function (e) {
-		e.preventDefault();
-		var $this = $(this);
-		var data = $this.serialize();
-
-		
-		var files = $("#form-newsbook .popup-body .records input:checkbox:checked").map(function(){
-			return $(this).val();
-		}).get().join(",");
-
-		var av_files = $("#form-newsbook .popup-body .records input:checkbox").map(function(){
-			return $(this).val();
-		}).get().join(",");
-
-		
-		
-		data = data + "&files="+files+"&av_files="+av_files;
-
-		$("#popup-newsbook").show().find(".loadingmask").show();
-			$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
-				getDetails();
-			});
-
-	});
-	$(document).on('click', '#form-newsbook-delete-btn', function (e) {
-		e.preventDefault();
-		var $this = $(this);
-		var ID = $this.attr("data-id");
-
-		$("#popup-newsbook").show().find(".loadingmask").show();
-			$.post("/app/nf/save/articles/remove_newsbook/?ID=" + ID, {}, function (response) {
-				getDetails();
-			});
-
-	});
-	function newsbook_form(){
-		var ID = $.bbq.getState("n_ID");
-		var aID = $.bbq.getState("ID");
-		var pID = $.bbq.getState("n_pID");
-		var dID = $.bbq.getState("n_dID");
-		$("#popup-newsbook").show().find(".loadingmask").show();
-		$.getData("/app/nf/data/newsbooks?r=" + Math.random(), {"ID": ID, "pID": pID, "dID": dID, "aID": aID}, function (data) {
-			$("#form-newsbook").jqotesub($("#template-details-newsbooks-form"),data);
-			$("#popup-newsbook").find(".loadingmask").hide();
-		}, "newsbooks");
-
+	$("#details-pane-logs .record.active").removeClass("active");
+	if (active) {
+		$this.addClass("active");
 	}
 
-	function nextRecord() {
-		var ID = $.bbq.getState("ID");
-		var $item = $("#record-list .record[data-ID='" + ID + "']");
-		var $new = $item.nextAll("tr.record:first");
-		$.bbq.pushState({ID: $new.attr("data-ID")});
-		getDetails();
-	}
-	function prevRecord() {
-		var ID = $.bbq.getState("ID");
-		var $item = $("#record-list .record[data-ID='" + ID + "']");
-		var $new = $item.prevAll("tr.record:first");
-		$.bbq.pushState({ID: $new.attr("data-ID")});
-		getDetails();
+	var show = $("#details-pane-logs .record.active").attr("data-log-id");
+
+	$("#details-pane-logs .log-record-details").hide();
+	$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+});
+$(document).on('click', '#details-pane-media .record', function (e) {
+	var $this = $(this);
+	var $clicked = $(e.target).closest("tr.record");
+	var active = true;
+
+	if ($this.hasClass("active") && $clicked) active = false;
+
+	$("#details-pane-media .record.active").removeClass("active");
+	if (active) {
+		$this.addClass("active");
 	}
 
-	function showContent_state() {
-		var ID = $.bbq.getState("ID");
-		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
-			$(".details-record-prev").attr("disabled", "disabled");
-		} else {
-			$(".details-record-prev").removeAttr("disabled");
-		}
-		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
-			$(".details-record-next").attr("disabled", "disabled");
-		} else {
-			$(".details-record-next").removeAttr("disabled");
-		}
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
-		if (!tab) tab = "details-pane-details";
-		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-		$('#' + tab + '', $details_modal).addClass("active");
+	var show = $("#details-pane-media .record.active").attr("data-log-id");
 
+	$("#details-pane-media .log-record-details").hide();
+	$("#details-pane-media .log-record-details[data-log-id='" + show + "']").show();
+	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+});
+$(document).on('click', '#details-history-table tr.record', function () {
+	var ID = $(this).attr("data-id");
+	$.bbq.pushState({historyID: ID});
+	getDetails();
+
+
+});
+$(document).on('click', '#details-pane-details .alert .close', function () {
+	var ID = $(this).attr("data-id");
+	$.bbq.removeState("historyID");
+	getDetails();
+
+
+});
+$(document).on('click', '.back-btn-details-pane', function (e) {
+	e.preventDefault();
+	getDetails();
+	return false;
+
+
+});
+
+$(document).on('click', '.details-record-prev', function () {
+	prevRecord();
+});
+$(document).on('click', '.details-record-next', function () {
+	nextRecord();
+});
+
+
+
+$(document).on('submit', '#form-newsbook', function (e) {
+	e.preventDefault();
+	var $this = $(this);
+	var data = $this.serialize();
+
+
+	var files = $("#form-newsbook .popup-body .records input:checkbox:checked").map(function () {
+		return $(this).val();
+	}).get().join(",");
+
+	var av_files = $("#form-newsbook .popup-body .records input:checkbox").map(function () {
+		return $(this).val();
+	}).get().join(",");
+
+
+
+	data = data + "&files=" + files + "&av_files=" + av_files;
+
+	$("#popup-newsbook").show().find(".loadingmask").show();
+	$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
+		getDetails();
+	});
+
+});
+$(document).on('click', '#form-newsbook-delete-btn', function (e) {
+	e.preventDefault();
+	var $this = $(this);
+	var ID = $this.attr("data-id");
+
+	$("#popup-newsbook").show().find(".loadingmask").show();
+	$.post("/app/nf/save/articles/remove_newsbook/?ID=" + ID, {}, function (response) {
+		getDetails();
+	});
+
+});
+function newsbook_form() {
+	var ID = $.bbq.getState("n_ID");
+	var aID = $.bbq.getState("ID");
+	var pID = $.bbq.getState("n_pID");
+	var dID = $.bbq.getState("n_dID");
+	$("#popup-newsbook").show().find(".loadingmask").show();
+	$.getData("/app/nf/data/newsbooks?r=" + Math.random(), {"ID": ID, "pID": pID, "dID": dID, "aID": aID}, function (data) {
+		$("#form-newsbook").jqotesub($("#template-details-newsbooks-form"), data);
+		$("#popup-newsbook").find(".loadingmask").hide();
+	}, "newsbooks");
+
+}
+
+function nextRecord() {
+	var ID = $.bbq.getState("ID");
+	var $item = $("#record-list .record[data-ID='" + ID + "']");
+	var $new = $item.nextAll("tr.record:first");
+	$.bbq.pushState({ID: $new.attr("data-ID")});
+	getDetails();
+}
+function prevRecord() {
+	var ID = $.bbq.getState("ID");
+	var $item = $("#record-list .record[data-ID='" + ID + "']");
+	var $new = $item.prevAll("tr.record:first");
+	$.bbq.pushState({ID: $new.attr("data-ID")});
+	getDetails();
+}
+
+function showContent_state() {
+	var ID = $.bbq.getState("ID");
+	if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+		$(".details-record-prev").attr("disabled", "disabled");
+	} else {
+		$(".details-record-prev").removeAttr("disabled");
 	}
-	function getDetails() {
-		var ID = $.bbq.getState("ID");
-		var historyID = $.bbq.getState("historyID");
-		var show_full_details = $.bbq.getState("show_full_details");
-		$(".tooltip").removeClass("in")
+	if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+		$(".details-record-next").attr("disabled", "disabled");
+	} else {
+		$(".details-record-next").removeAttr("disabled");
+	}
+	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
+	if (!tab) tab = "details-pane-details";
+	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	$('#' + tab + '', $details_modal).addClass("active");
+
+}
+function getDetails() {
+	var ID = $.bbq.getState("ID");
+	var historyID = $.bbq.getState("historyID");
+	var show_full_details = $.bbq.getState("show_full_details");
+	$(".tooltip").removeClass("in")
 	//	
-		$("#nf-details-modal").addClass("loading");
-		if (typeof(getDetails_custom) === "function" && !show_full_details) {
-			getDetails_custom();
-			return false;
+	$("#nf-details-modal").addClass("loading");
+	if (typeof(getDetails_custom) === "function" && !show_full_details) {
+		getDetails_custom();
+		return false;
+	}
+
+	//$.bbq.removeState("keepID");
+
+	$.getData("/app/nf/data/details?r=" + Math.random(), {"ID": ID, "historyID": historyID}, function (data) {
+		$("#record-list .record.active").removeClass("active");
+		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+		$('#nf-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
+
+
+		if (data['comments'].length) {
+			$("#comments-area").jqotesub($("#template-details-comments"), data['comments']);
+		} else {
+			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
 		}
 
-		//$.bbq.removeState("keepID");
-		
-		$.getData("/app/nf/data/details?r=" + Math.random(), {"ID": ID, "historyID": historyID}, function (data) {
-			$("#record-list .record.active").removeClass("active");
-			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
-			$('#nf-details-modal').data("data", data).jqotesub($("#template-details"), data).modal('show').removeClass("loading").trigger("shown");
-			
-			
-			if (data['comments'].length){
-				$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
-			} else {
-				$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
-			}
-			
 
-			var title_width = 465;
-			if (show_full_details) {
-				title_width = 450;
-				$(".back-btn-details-pane").show();
-				
-			}
-			$("#nf-details-title").css("max-width",title_width).hover(function(){$(this).css("max-width",'100%')},function(){$(this).css("max-width",title_width)});
-			if ($("#record-list:visible").length) {
+		var title_width = 465;
+		if (show_full_details) {
+			title_width = 450;
+			$(".back-btn-details-pane").show();
 
-				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+		}
+		$("#nf-details-title").css("max-width", title_width).hover(function () {
+			$(this).css("max-width", '100%')
+		}, function () {
+			$(this).css("max-width", title_width)
+		});
+		if ($("#record-list:visible").length) {
 
-					showContent_state();
-					$(".list-next-prev-btns").show();
-					var api = $("#whole-area .scroll-pane").data("jsp");
-					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
-						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
-					}
+			if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
 
+				showContent_state();
+				$(".list-next-prev-btns").show();
+				var api = $("#whole-area .scroll-pane").data("jsp");
+				if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+					api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
 				}
+
 			}
-			/*setTimeout(function(){
-				$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-			},500);*/
-		}, "details");
+		}
+		/*setTimeout(function(){
+		 $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		 },500);*/
+	}, "details");
 
-	}
-	function getcomments() {
-		var ID = $.bbq.getState("ID");
-		
+}
+function getcomments() {
+	var ID = $.bbq.getState("ID");
 
-		
-		$.getData("/app/nf/data/comments?r=" + Math.random(), {"ID": ID}, function (data) {
-			
-			
-			$('a[href="#details-pane-comments"] .badge').html(data.count);
-			
+
+
+	$.getData("/app/nf/data/comments?r=" + Math.random(), {"ID": ID}, function (data) {
+
+
+		$('a[href="#details-pane-comments"] .badge').html(data.count);
+
 		//	$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
 
-			if (data['comments'].length){
-				$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
-			} else {
-				$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
-			}
-			
-			
+		if (data['comments'].length) {
+			$("#comments-area").jqotesub($("#template-details-comments"), data['comments']);
+		} else {
+			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
+		}
 
-			$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-		}, "comments");
 
-	}
-	
+
+		$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	}, "comments");
+
+}
+
 </script>
 <div class="modal hide fade" id="nf-details-modal" data-show="false">
 </div>
