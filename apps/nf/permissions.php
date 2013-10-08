@@ -26,6 +26,7 @@ class permissions {
 				"overwrite_locked"         => 0,
 				"placed"         => 0,
 				"archive"         => 0,
+				"stage_jump_list"=>0
 				
 			),
 			"newsbook"         => array(

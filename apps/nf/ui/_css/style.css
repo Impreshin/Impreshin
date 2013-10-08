@@ -350,7 +350,7 @@
 }
 #nf-details-modal-area #change-stages li {
   cursor: pointer;
-  padding: 7px 10px;
+  padding: 5px 10px;
 }
 #nf-details-modal-area #change-stages li.active {
   background-color: #0088CC;

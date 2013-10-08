@@ -483,17 +483,26 @@
 			<button class="btn span1 btn-unlock" type="button"><i class="icon-unlock"></i></button>
 			<% } %>
 			<div class="btn-group dropup" style="margin-left:10px;">
+				<% if (this.stagePrev.ID && this.a.stagePrev=='1'){ %>
+				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stagePrev.ID %>" data-label="<%= this.stagePrev.stage %>" title="<%= this.stagePrev.stage %>">
+					<i class="icon-double-angle-left g"></i>
+				</button>
+				<% } %>
+				
+				<% if (this.stages.length > 0 && this.a.stage_jump_list=='1') { %>
+				<button style="padding-left:12px;padding-right:12px;" class="btn dropdown-toggle" data-toggle="dropdown"><%= this.stage %></button>
+				<% } else { %>
+				<button style="padding-left:12px;padding-right:12px;" class="btn" disabled="disabled"><%= this.stage %></button>
+				<% } %>
+				
 				<% if (this.stageNext.ID && this.a.stageNext=='1'){ %>
-				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stageNext.ID %>" data-label="<%= this.stageNext.stage %>"><%= this.stage %>
-					&nbsp;<i class="icon-double-angle-right g"></i>&nbsp;<%= this.stageNext.stage %>
+				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stageNext.ID %>" data-label="<%= this.stageNext.stage %>"  title="<%= this.stageNext.stage %>"><i class="icon-double-angle-right g"></i>
 				</button>
 				<% } else { %>
 				<button class="btn" style="padding-left:12px;padding-right:12px;" disabled="disabled"><%= this.stage %></button>
 				<% } %>
-				<% if (this.stages.length > 0) { %>
-				<button class="btn dropdown-toggle" data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
+				<% if (this.stages.length > 0 && this.a.stage_jump_list=='1') { %>
+				
 				<ul class="dropdown-menu pull-right" role="menu" id="change-stages"  >
 					<% for(var i in this.stages) { %>
 					

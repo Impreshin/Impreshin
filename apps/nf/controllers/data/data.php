@@ -35,7 +35,9 @@ class data {
 			"archive"=>"0",
 			"edit"=>"0",
 			"print" => "1",
-			"stageNext"=>"0"
+			"stageNext"=>"0",
+			"stagePrev"=>"0",
+			"stage_jump_list"=>"0"
 		);
 
 
@@ -66,6 +68,9 @@ class data {
 		if ($permissions['details']['archive']=="1"){
 			$allow['archive']='1';
 		}
+		if ($permissions['details']['stage_jump_list']=="1"){
+			$allow['stage_jump_list']='1';
+		}
 		if ($permissions['form']['edit_master']=="1"){
 			$allow['edit']='1';
 		}
@@ -73,14 +78,21 @@ class data {
 		
 
 		$return['stageNext'] = models\stages::getNext($return['stageID']);
+		$return['stagePrev'] = models\stages::getPrev($return['stageID']);
 
 		if (isset($return['stageNext']['ID']) && isset($permissions['stages'][$return['stageNext']['ID']]['to'])){
 			if ($permissions['stages'][$return['stageNext']['ID']]['to']=='1'){
 				$allow['stageNext']='1';
 			}
 		}
+
+		if (isset($return['stagePrev']['ID']) && isset($permissions['stages'][$return['stagePrev']['ID']]['to'])){
+			if ($permissions['stages'][$return['stagePrev']['ID']]['to']=='1' && $allow['edit']=='1'){
+				$allow['stagePrev']='1';
+			}
+		}
 		
-		
+	
 		
 
 		$stages = $permissions['stages'];
