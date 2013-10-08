@@ -59,12 +59,12 @@ class form extends data {
 		$return['stageNext'] = models\stages::getNext($record['stageID']);
 
 		$permissions = $user['permissions'];
-		$stage_permissions = $permissions['stages'][$record['stageID']];
+		$stage_permissions = isset($permissions['stages'][$record['stageID']])?$permissions['stages'][$record['stageID']]:array();
 
 		$allow = array(
 			'delete'=>'0'
 		);
-		if ($stage_permissions['delete']=='1'){
+		if (isset($stage_permissions['delete']) && $stage_permissions['delete']=='1'){
 			$allow['delete']='1';
 		}
 		$return['a'] = $allow;
