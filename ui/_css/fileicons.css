@@ -1,0 +1,102 @@
+.file-icon {
+	height             : 24px;
+	width              : 18px;
+	background         : #fff;
+	background         : -moz-linear-gradient(45deg, #fff 77%, #fff 80%, #f2f2f2 84%);
+	background         : -webkit-gradient(linear, left bottom, right top, color-stop(77%, #fff), color-stop(80%, #fff), color-stop(84%, #f2f2f2));
+	background         : -webkit-linear-gradient(45deg, #fff 77%, #fff 80%, #f2f2f2 84%);
+	background         : -o-linear-gradient(45deg, #fff 77%, #fff 80%, #f2f2f2 84%);
+	background         : -ms-linear-gradient(45deg, #fff 77%, #fff 80%, #f2f2f2 84%);
+	background         : linear-gradient(45deg, #fff 77%, #fff 80%, #f2f2f2 84%);
+	filter             : progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f2f2f2', GradientType=1);
+	margin             : 0 10px;
+	position           : relative;
+	-webkit-box-shadow : 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 0 1px #fff;
+	-moz-box-shadow    : 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 0 1px #fff;
+	box-shadow         : 0 1px 3px rgba(0, 0, 0, 0.5), inset 0 0 0 1px #fff;
+	float              : left
+}
+
+.file-icon:before {
+	content            : "";
+	position           : absolute;
+	height             : 10px;
+	width              : 24px;
+	top                : 9px;
+	left               : 4px;
+	-webkit-box-shadow : 0 1px 1px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow    : 0 1px 1px rgba(0, 0, 0, 0.3);
+	box-shadow         : 0 1px 1px rgba(0, 0, 0, 0.3)
+}
+
+.file-icon:after {
+	position               : absolute;
+	height                 : 6px;
+	width                  : 18px;
+	top                    : 9px;
+	left                   : 6px;
+	color                  : #fff;
+	-webkit-font-smoothing : anti-aliased;
+	-moz-font-smoothing    : anti-aliased;
+	font-smoothing         : anti-aliased;
+	font                   : bold 8px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-transform         : uppercase;
+	letter-spacing         : 1px
+}
+
+.file-icon.file:before {
+	background : #ccc
+}
+
+.file-icon.file:after {
+	content : "file"
+}
+
+.file-icon.pdf:before {
+	background : #ff1900
+}
+
+.file-icon.pdf:after {
+	content : "PDF"
+}
+
+.file-icon.doc:before {
+	background : #08c
+}
+
+.file-icon.doc:after {
+	content : "DOC"
+}
+
+.file-icon.xls:before {
+	background : #00b234
+}
+
+.file-icon.xls:after {
+	content : "XLS"
+}
+
+.file-icon.zip:before {
+	background : #c2ba1d
+}
+
+.file-icon.zip:after {
+	content : "ZIP"
+}
+
+.file-icon.vid:before {
+	background : #000
+}
+
+.file-icon.vid:after {
+	content : "VID"
+}
+
+.file-icon.img:before {
+	background : #f1e9d0
+}
+
+.file-icon.img:after {
+	content : "IMG";
+	color   : #000
+}

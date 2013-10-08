@@ -3,7 +3,7 @@
  * Date: 2011/10/31
  * Time: 5:06 PM
  */
-namespace apps\nf\controllers;
+namespace  apps\nf\controllers;
 
 use \timer as timer;
 use \apps\nf\models as models;
@@ -25,12 +25,27 @@ class form extends \apps\nf\controllers\_{
 		//$this->page();
 	}
 	function page_edit(){
-		if ($this->user['permissions']['form']['edit'] || $this->user['permissions']['form']['edit_master'] || $this->user['permissions']['form']['delete']) {
+		//if ($this->user['permissions']['form']['edit'] || $this->user['permissions']['form']['edit_master'] || $this->user['permissions']['form']['delete']) {
+			$user = $this->user;
+			$uID = $this->user['ID'];
+			$aID = $this->f3->get('PARAMS["ID"]');
+
+		$b = new \DB\SQL\Mapper($this->f3->get("DB"), "nf_articles");
+		$b->load("ID='$aID'");
+		
+		
+		$stage = $b->stageID;
+		if ($user['permissions']['stages'][$stage]['edit']){
+		
+			
+			if (!$b->dry()){
+				$b->locked_uID = $uID;
+				$b->save();
+			}
 			$this->page();
 		} else {
 			$this->f3->error(404);
 		}
-		//$this->page();
 	}
 
 	function page(){

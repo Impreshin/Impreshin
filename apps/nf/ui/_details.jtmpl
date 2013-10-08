@@ -5,6 +5,9 @@
 	<a class="close" data-dismiss="modal">×</a>
 
 	<h3 id="nf-details-title">
+		<% if (this.locked=='1'){ %>
+		<i class="icon-lock" style="margin-right:10px;" title="Locked By: <%= this.locked_fullName %>"></i>
+		<% } %>
 		<% if (this.deleted) { %>
 		<span class="label label-important" style="margin-right: 10px; margin-top:-8px;"> Deleted </span> <% } %>
 		<% if (this.type_icon){ %>
@@ -22,9 +25,12 @@
 	<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1;">
 
 		<a href="#" class="back-btn-details-pane" rel="tooltip" data-placement="bottom" title="Back"><i class=" icon-circle-arrow-left icon-d-grey"></i></a>
-
+		<% if (this.a.newsbook=='1') { %>
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
+		<% } %>
+		<% if (this.a.edit=='1') { %>
 		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+		<% } %>
 		<% if (this.a.print=='1') { %>
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>
 		<% } %>
@@ -92,10 +98,7 @@
 			<div class="alert alert-error">
 				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
 				<%= this.rejected_reason||"" %>
-
-
 			</div>
-
 			<% } %>
 			<% if (this.historyShow.body) { %>
 			<div class="alert">
@@ -120,7 +123,13 @@
 <% } %>
 <div id="details-pane-logs" class="tab-pane">
 	<div class="scroll-pane">
-		<div style="padding-right:1px;">
+		<div style="padding:10px;">
+			<% if (this.rejected=='1') { %>
+			<div class="alert alert-error">
+				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
+				<%= this.rejected_reason||"" %>
+			</div>
+			<% } %>
 			<% if (this.deleted) { %>
 			<table class="table" style="margin-top: 10px; margin-bottom: 8px; ">
 				<tr>
@@ -186,7 +195,12 @@
 <div id="details-pane-media" class="tab-pane">
 	<div class="scroll-pane">
 		<div style="padding:10px;">
-
+			<% if (this.rejected=='1') { %>
+			<div class="alert alert-error">
+				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
+				<%= this.rejected_reason||"" %>
+			</div>
+			<% } %>
 			<table class="table table-condensed records s">
 				<thead>
 				<tr class="colheading">
@@ -259,6 +273,12 @@
 <div id="details-pane-newsbooks" class="tab-pane">
 	<div class="scroll-pane">
 		<div style="padding:10px;">
+			<% if (this.rejected=='1') { %>
+			<div class="alert alert-error">
+				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
+				<%= this.rejected_reason||"" %>
+			</div>
+			<% } %>
 			<table class="table table-condensed s records">
 				<thead>
 				<tr class="colheading">
@@ -312,7 +332,14 @@
 </div>
 <div id="details-pane-comments" class="tab-pane" style="overflow:hidden">
 	<div class="scroll-pane" style="bottom:40px;">
-
+		<% if (this.rejected=='1') { %>
+		<div style="padding:10px;">
+			<div class="alert alert-error">
+				<strong>Rejected </strong> By: <%= this.rejected_fullName %><br>
+				<%= this.rejected_reason||"" %>
+			</div>
+		</div>
+		<% } %>
 		<section id="comments-area">
 
 		</section>
@@ -327,7 +354,7 @@
 			<textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
 
 			<div class="buttons">
-				<button class="btn  span2 btn-mini" type="reset">Cancel</button>
+				<button class="btn btn-link span2 btn-mini" type="reset">Cancel</button>
 				<button type="submit" class="btn span2 btn-primary btn-mini">Comment</button>
 			</div>
 
@@ -345,10 +372,6 @@
 </div>
 
 <div id="details-info-pane">
-
-
-
-
 	<div class="row photo-slider" style="margin-right:0px; margin-left:0px;">
 		<div id="myCarousel" class="carousel slide">
 
@@ -449,27 +472,34 @@
 			</div>
 
 			<% } %>
-			<!-- popup-reject -->
+			<% if (this.rejected!='1' && this.a.reject=='1'){ %>
 			<button class="btn span1 btn-reject" type="button" rel="tooltip" title="Reject this article">
 				<i class="icon-level-down"></i></button>
-			<button class="btn span1" type="button"><i class="icon-archive"></i></button>
-			<% if (this.locked=='1'){ %>
-			<button class="btn span1" type="button"><i class="icon-unlock"></i></button>
+			<% } %>
+			<button class="btn span1 btn-archive <% if (this.archived=='1') { %>btn-danger<% } %>" type="button" data-value="<% if (this.archived=='1') { %>0<% } else { %>1<% } %>" title="<% if (this.archived=='1') { %>De-Archive<% } else { %>Archive<% } %>" rel="tooltip"><i class="icon-archive"></i></button>
+			<% if (this.locked=='1' && this.a.locked=='1'){ %>
+			<button class="btn span1 btn-unlock" type="button"><i class="icon-unlock"></i></button>
 			<% } %>
 			<div class="btn-group dropup" style="margin-left:10px;">
-				<% if (this.stageNext.ID){ %>
-				<button class="btn" style="padding-left:12px;padding-right:12px;"><%= this.stage %>
+				<% if (this.stageNext.ID && this.a.stageNext=='1'){ %>
+				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stageNext.ID %>" data-label="<%= this.stageNext.stage %>"><%= this.stage %>
 					&nbsp;<i class="icon-double-angle-right g"></i>&nbsp;<%= this.stageNext.stage %>
 				</button>
 				<% } else { %>
 				<button class="btn" style="padding-left:12px;padding-right:12px;" disabled="disabled"><%= this.stage %></button>
 				<% } %>
+				<% if (this.stages.length > 0) { %>
 				<button class="btn dropdown-toggle" data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu pull-right" role="menu" id="change-stages"  >
+					<% for(var i in this.stages) { %>
+					
+					<li data-value="<%= this.stages[i].ID %>" class="btn-stage-change <% if (this.stageID==this.stages[i].ID) { %>active<% } %>"><%= this.stages[i].label %></li>
+					<% } %>
 					<!-- dropdown menu links -->
 				</ul>
+				<% } %>
 
 			</div>
 
@@ -503,7 +533,7 @@
 
 <div class="popup" id="popup-reject" style="height:250px;">
 	<form style="margin: 0; position:relative; " id="form-reject" >
-		<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+		<div class='modal-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
 			<h3>Reject Reason:</h3>
 		</div>
@@ -516,13 +546,14 @@
 		</div>
 		<div class='modal-footer'>
 			<div class="btn-group c" style="margin-left: 7px;">
+				<button class="btn btn-link span2" data-dismiss="popup" type="button">Cancel</button>
 				<button class="btn btn-danger span2" style="float:right;" type="submit">Reject</button>
 
 			</div>
 		</div><div class="loadingmask"></div>
 	</form>
 </div>
-
+<div class="loadingmask wide"></div>
 ]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-comments">
@@ -629,7 +660,9 @@
 
 			</tbody>
 		</table>
-
+<% if (this.media.length==0) { %>
+		<div class="c g">No photos</div>
+		<% } %>
 
 	</div>
 	<div class='popup-footer '>
@@ -740,6 +773,26 @@ $(document).on("click", ".btn-reject", function (event) {
 
 });
 
+$(document).on("click", '.btn-stage-change', function (e) {
+	e.preventDefault();
+
+	var $this = $(this);
+	var label = $this.attr("data-label");
+		label = label ? label : $this.text();
+
+	if(confirm("Are you sure you want to move this record to: "+label+"?")) {
+		$this.find(".loadingmask").show();
+	
+	
+		var data = "stageID="+$this.attr("data-value");
+		$.post("/app/nf/save/articles/stage/?aID=" + $.bbq.getState("ID"), data, function (response) {
+			
+			getDetails();
+		});
+	}
+	return false;
+
+});
 $(document).on("submit", '#form-reject', function (e) {
 	e.preventDefault();
 
@@ -752,8 +805,51 @@ $(document).on("submit", '#form-reject', function (e) {
 	$.post("/app/nf/save/articles/reject/?aID=" + $.bbq.getState("ID"), data, function (response) {
 		
 		$.bbq.removeState("ID");
-		getList();
+		$("#nf-details-modal").modal("hide")
 	});
+	return false;
+
+});
+$(document).on("click", '.btn-archive', function (e) {
+	e.preventDefault();
+	var $this = $(this);
+	
+
+
+	var data = "archived="+$this.attr("data-value");
+	//console.log($this.attr("data-value")); 
+	var msg = "Are you sure you want to archive this record?";
+	if ($this.attr("data-value")=='0'){
+		msg = "Are you sure you want to de-archive this record?";
+	} 
+	if(confirm(msg)) {
+		$("#nf-details-modal .loadingmask").show();
+		$.post("/app/nf/save/articles/archive/?aID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+
+	}
+	
+	return false;
+
+});
+$(document).on("click", '.btn-unlock', function (e) {
+	e.preventDefault();
+	var $this = $(this);
+	
+
+
+	var data = "locked=0";
+	//console.log($this.attr("data-value")); 
+	var msg = "Are you sure you want to unlock this record?";
+	if(confirm(msg)) {
+		$("#nf-details-modal .loadingmask").show();
+		$.post("/app/nf/save/articles/unlock/?aID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+
+	}
+	
 	return false;
 
 });

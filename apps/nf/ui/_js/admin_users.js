@@ -126,9 +126,22 @@ $(document).ready(function () {
 		$.bbq.removeState("order");
 
 	});
+	$(document).on("change", "#permissions input:checkbox", function (e) {
+		show_permission_help();
+		
+	})
 
 });
-
+function show_permission_help(){
+	$("#permissions .help-block").hide();
+	$("#permissions input:checkbox").each(function(){
+		var $this = $(this);
+		if ($this.is(":checked")){
+			$this.closest("label").find(".help-block").show();
+		}
+	});
+	$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+}
 function getList() {
 	var ID = $.bbq.getState("ID");
 
@@ -169,8 +182,9 @@ function getDetails() {
 
 		$("#form-area").jqotesub($("#template-details"), data);
 
-		
 
+
+		show_permission_help();
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 

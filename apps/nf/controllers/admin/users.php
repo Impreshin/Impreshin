@@ -34,7 +34,7 @@ class users extends \apps\nf\controllers\_ {
 			"help"=> "/apps/nf/help/admin/users"
 		);
 
-		$permissions = \apps\nf\permissions::_available();
+		$permissions = \apps\nf\permissions::_available($cID);
 		$tmpl->use_pub = true;
 		$tmpl->permissions = $permissions['p'];
 		$tmpl->permissions_desc = $permissions['d'];

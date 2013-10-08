@@ -490,7 +490,7 @@ class articles {
 
 	
 
-	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "booking")) {
+	public static function save($ID = "", $values = array(), $opts = array("dry" => true, "section" => "article")) {
 		//test_array($values);
 		$timer = new timer();
 		$f3 = \Base::instance();
@@ -621,6 +621,30 @@ class articles {
 		} else {
 			$label = "Article Edited";
 		}
+		
+		
+		SWITCH($opts['section']){
+			CASE 'stage':
+				$label = "Article Stage Changed";
+				break;
+			CASE 'rejected':
+				$label = "Article Rejected";
+				break;
+			CASE 'unlocked':
+				$label = "Article Un-Locked";
+				break;
+			CASE 'archived':
+				if (($values['archived'])=='1'){
+					$label = "Article Archived";
+				} else {
+					$label = "Article De-Archived";
+				}
+				break;
+		}
+		
+	
+		
+		
 		$sql = "SELECT 1 ";
 		
 		

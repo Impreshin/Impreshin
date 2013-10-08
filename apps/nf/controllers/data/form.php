@@ -58,8 +58,16 @@ class form extends data {
 		$return['settings'] = $settings;
 		$return['stageNext'] = models\stages::getNext($record['stageID']);
 
+		$permissions = $user['permissions'];
+		$stage_permissions = $permissions['stages'][$record['stageID']];
 
-
+		$allow = array(
+			'delete'=>'0'
+		);
+		if ($stage_permissions['delete']=='1'){
+			$allow['delete']='1';
+		}
+		$return['a'] = $allow;
 		$timer->stop("Controller - _details", array("ID" => $record['ID'], "title" => $record['title']));
 		if ($directreturn) {
 			return $return;

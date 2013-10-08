@@ -219,7 +219,7 @@ class app {
 
 
 		$DefaultPermissionsClass = $this->namespace . "\\permissions";
-		$permissions = $DefaultPermissionsClass::defaults();
+		$permissions = $DefaultPermissionsClass::defaults($cID);
 		$permissions = $permissions["p"];
 
 		
@@ -294,7 +294,11 @@ class app {
 		if ($user['su'] == '1') {
 			//$applications = $applications_list;
 			array_walk_recursive($permissions, function (& $item, $key) {
-					$item = "1";
+				//test_array($item); 
+					if ($key!='label'){
+						$item = "1";
+					}
+					
 				}
 			);
 
@@ -304,7 +308,7 @@ class app {
 
 
 		$return['applications'] = $applications;
-		//test_array($return);
+		//test_array($permissions);
 
 
 

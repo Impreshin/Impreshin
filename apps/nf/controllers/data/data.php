@@ -27,13 +27,76 @@ class data {
 
 		$record = new models\articles();
 		$return = $record->get($ID);
-		$allow = array("print" => "1",);
+		$allow = array(
+			"newsbook"=>"0",
+			"locked"=>"0",
+			"reject"=>"0",
+			"delete"=>"0",
+			"edit"=>"0",
+			"print" => "1",
+			"stageNext"=>"0"
+		);
+
+
+		$permissions = $user['permissions'];
+		$stage_permissions = $permissions['stages'][$return['stageID']];
+		
+		if ($stage_permissions['edit']=='1'){
+			if ($return['locked_uID']){
+				if ($return['locked_uID']==$user['ID']){
+					$allow['edit'] = '1';
+				}
+			} else {
+				$allow['edit'] = '1';
+			}
+		}
+		if ($stage_permissions['delete']=='1'){
+			$allow['delete']='1';
+		}
+		if ($stage_permissions['newsbook']=='1'){
+			$allow['newsbook']='1';
+		}
+		if ($stage_permissions['reject']=='1'){
+			$allow['reject']='1';
+		}
+		if ($permissions['details']['overwrite_locked']=="1"){
+			$allow['locked']='1';
+		}
+		if ($permissions['form']['edit_master']=="1"){
+			$allow['edit']='1';
+		}
+		
+		
 
 		$return['stageNext'] = models\stages::getNext($return['stageID']);
 
-		$permissions = $user['permissions'];
+		if ($permissions['stages'][$return['stageNext']['ID']]['to']=='1'){
+			$allow['stageNext']='1';
+		}
+		
+		
 
+		$stages = $permissions['stages'];
+		$n = array();
+		foreach ($stages as $key=>$item){
+			if ($item['to']=='1'){
+				$n[] = array(
+					"ID"=>$key,
+					"label"=>$item['label'],
+				);
+			}
+			
+		}
+		$stages = $n;
+	
+		$return['stages'] = $stages;
+		
 
+		/*
+		if ((isset($return['authorID']) && $return['authorID']==$user['ID']) || (!$return['locked_uID'] && $permissions['form']['edit']=='1')){
+			// stage stuff
+			$allow['edit'] = '1';
+		}*/
 		
 		
 		

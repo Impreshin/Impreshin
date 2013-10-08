@@ -252,3 +252,6 @@ UPDATE nf_files SET folder = '1/old';
 
 ALTER TABLE `nf_articles` ADD `rejected_reason` TEXT NULL DEFAULT NULL AFTER `rejected_uID`;
 
+#-----
+
+ALTER TABLE `nf_articles` CHANGE `archivedDate` `archived_date` DATETIME NULL DEFAULT NULL;

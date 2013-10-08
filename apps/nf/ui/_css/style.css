@@ -348,6 +348,21 @@
   box-shadow: 10px rgba(250, 250, 250, 0.8);
   z-index: 999;
 }
+#nf-details-modal-area #change-stages li {
+  cursor: pointer;
+  padding: 7px 10px;
+}
+#nf-details-modal-area #change-stages li.active {
+  background-color: #0088CC;
+  color: #FFFFFF;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+#nf-details-modal-area #change-stages li:hover {
+  background-color: #e3e3e3;
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  color: #005580;
+}
 #nf-details-modal-area-newsbook #left-side-pane {
   position: absolute;
   left: 0;

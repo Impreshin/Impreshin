@@ -11,15 +11,14 @@ class permissions {
 
 	}
 
-	public static function _available() {
+	public static function _available($cID="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
+			"stages"=>array(),
 			"form"           => array(
 				"new"         => 0,
-				"edit"        => 0,
-				"delete"      => 0,
 				"edit_master" => 0,
 				"author_dropdown"=>0
 			),
@@ -78,15 +77,47 @@ class permissions {
 				)
 			)
 		);
+		
+		if ($cID){
+			$stages = models\stages::getAll("cID='". $cID."' OR cID='0'","orderby ASC");
+
+			$perms = array();
+			$perms_desc = array();
+
+			foreach ($stages as $item){
+				$perms[$item['ID']] = array(
+					"label"=>$item['stage'],
+					"edit"=>"0",
+					"to"=>"0",
+					"reject"=>"0",
+					"delete"=>"0",
+					"newsbook"=>"0"
+				);
+				$perms_desc[$item['ID']] = array(
+					"edit"=>"Allows the user to edit the record whilst the booking is in the ".$item['stage']." stage.",
+					"to"=>"Allows the user to move a record into the ".$item['stage']." stage.",
+					"reject"=>"Allows the user to reject the record in this stage",
+					"delete"=>"Allows the user to delete the record whilst the booking is in the ".$item['stage']." stage.",
+					"newsbook"=>"Allows the user to add the booking to a newsbook while in this stage",
+				);
+			}
+
+
+			//test_array($stage_permissions); 
+			$return['p']['stages']=$perms;
+			$return['d']['stages']=$perms_desc;
+		}
+
+		
 
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
-	public static function defaults() {
+	public static function defaults($cID="") {
 		$timer = new timer();
 
-		$return = self::_available();;
+		$return = self::_available($cID);;
 
 
 

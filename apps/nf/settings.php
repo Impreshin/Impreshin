@@ -105,14 +105,21 @@ class settings {
 				"h"=> "Deleted",
 				"b"=> true
 			),
-				"deleted_fullName"               => array(
+			"deleted_fullName"               => array(
 				"h"=> "Deleted&nbsp;By",
 			),
-				"deleted_date"               => array(
+			"deleted_date"               => array(
 				"h"=> "Deleted&nbsp;Date",
 			),
-				"deleted_reason"               => array(
+			"deleted_reason"               => array(
 				"h"=> "Deleted&nbsp;Reason",
+			),
+			"archived"               => array(
+				"h"=> "Archived",
+				"b"=> true
+			),
+			"archived_date"               => array(
+				"h"=> "Archived&nbsp;Date",
 			),
 
 		);

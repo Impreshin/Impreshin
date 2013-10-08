@@ -11,12 +11,17 @@ class app extends \apps\app{
 		$this->namespace = __NAMESPACE__;
 	}
 	function app(){
-
-		$this->user = parent::user();
+		$user =parent::user();
+		
+		//test_array($user); 
+		$this->user = $user;
+		
+		
 		$this->f3->set("user", $this->user);
 		//test_array($settings);
 
 
 
 	}
+	
 }

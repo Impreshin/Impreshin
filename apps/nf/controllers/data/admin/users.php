@@ -137,18 +137,34 @@ class users extends \apps\nf\controllers\data\data {
 
 
 		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
-		$permissions = \apps\nf\permissions::defaults();
+		$permissions = \apps\nf\permissions::defaults($user['company']['ID']);
 		$permissions = $permissions["p"];
+
+
+		
 		if (count($extra)) {
 			$extra = $extra[0];
 			if ($extra['nf_permissions']){
 				$user_permissions = @unserialize($extra['nf_permissions']);
 				$permissions = array_replace_recursive((array)$permissions, (array)($user_permissions) ? $user_permissions : array());
+				
 			}
 
-		}
+		} 
+		
 
 
+		
+
+		
+
+		
+
+		
+
+		//test_array($stage_permissions); 
+		
+		
 
 
 
