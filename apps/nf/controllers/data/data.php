@@ -70,9 +70,12 @@ class data {
 
 		$return['stageNext'] = models\stages::getNext($return['stageID']);
 
-		if ($permissions['stages'][$return['stageNext']['ID']]['to']=='1'){
-			$allow['stageNext']='1';
+		if (isset($return['stageNext']['ID']) && isset($permissions['stages'][$return['stageNext']['ID']]['to'])){
+			if ($permissions['stages'][$return['stageNext']['ID']]['to']=='1'){
+				$allow['stageNext']='1';
+			}
 		}
+		
 		
 		
 
