@@ -10,45 +10,56 @@
 
 <div id="app-nav-bar">
 <ul class="nav" id="app-nav">
-
+	{% if _user['permissions']['form']['new'] %}
 		<li class="divider-vertical"></li>
 		<li class="icon-btn {% if page['section'] == "form" %} active {% endif %}">
 			<a href="/app/nf/form/" class="nav-icon-btn">
 					<i class="icon-plus icon-d-grey"></i>
 			</a>
 		</li>
+	{% endif %}
 	<li class="divider-vertical"></li>
 
 	<li class="{% if page['section'] == "bookings" %} active {% endif %}">
 		<a href="/app/nf/">Articles</a>
 
 	</li>
+	{% if _user['permissions']['newsbook']['page'] %}
 	<li class="{% if page['section'] == "newsbook" %} active {% endif %}">
 		<a href="/app/nf/newsbook">Newsbook</a>
 
 	</li>
+	{% endif %}
+	{% if _user['permissions']['layout']['page'] %}
 	<li class="{% if page['section'] == "layout" %} active {% endif %}">
 		<a href="/app/nf/layout">Layout</a>
 
 	</li>
+	{% endif %}
+	{% if _user['permissions']['production']['page'] %}
 	<li class="{% if page['section'] == "production" %} active {% endif %}">
 		<a href="/app/nf/production">Production</a>
 
 	</li>
-
+	{% endif %}
+	{% if _user['permissions']['records']['_nav'] %}
 	<li class="dropdown {% if page['section'] == "records" %} active {% endif %}">
 		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Records <b class="caret"></b></a>
 		<ul class="dropdown-menu">
+			{% if _user['permissions']['records']['deleted']['page'] %}
 			<li class=" {% if page['sub_section'] == "deleted" %} active {% endif %}">
 				<a href="/app/nf/records/deleted/"><i class="icon-trash menu-icon"></i>Deleted Records</a>
 			</li>
+			{% endif %}
+			{% if _user['permissions']['records']['search']['page'] %}
 			<li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
 				<a href="/app/nf/records/search/"><i class="icon-search menu-icon"></i>Search</a>
 			</li>
 
+			{% endif %}
 		</ul>
 	</li>
-
+	{% endif %}
 	<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
 		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
 		<ul class="dropdown-menu">

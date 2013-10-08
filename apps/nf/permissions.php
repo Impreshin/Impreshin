@@ -28,10 +28,16 @@ class permissions {
 				"archive"         => 0,
 				
 			),
+			"newsbook"         => array(
+				"page"      => 0,
+			),
 			"layout"         => array(
 				"page"      => 0,
 				"pagecount" => 0,
 				"editpage"  => 0
+			),
+			"production"         => array(
+				"page"      => 0,
 			),
 			"records"        => array(
 				"deleted" => array(

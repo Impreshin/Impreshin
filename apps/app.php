@@ -362,6 +362,13 @@ class app {
 			}
 		}
 
+		if ($app == "nf") {
+			$permissions['records']['_nav'] = '0';
+			foreach ($permissions['records'] as $p) {
+				if ($p['page']) $permissions['records']['_nav'] = '1';
+			}
+			
+		}
 
 		//test_array($permissions);
 		$return['permissions'] = $permissions;
