@@ -476,7 +476,9 @@
 			<button class="btn span1 btn-reject" type="button" rel="tooltip" title="Reject this article">
 				<i class="icon-level-down"></i></button>
 			<% } %>
+			<% if (this.a.archive=='1') { %>
 			<button class="btn span1 btn-archive <% if (this.archived=='1') { %>btn-danger<% } %>" type="button" data-value="<% if (this.archived=='1') { %>0<% } else { %>1<% } %>" title="<% if (this.archived=='1') { %>De-Archive<% } else { %>Archive<% } %>" rel="tooltip"><i class="icon-archive"></i></button>
+			<% } %>
 			<% if (this.locked=='1' && this.a.locked=='1'){ %>
 			<button class="btn span1 btn-unlock" type="button"><i class="icon-unlock"></i></button>
 			<% } %>

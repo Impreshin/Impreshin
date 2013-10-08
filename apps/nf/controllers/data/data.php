@@ -32,6 +32,7 @@ class data {
 			"locked"=>"0",
 			"reject"=>"0",
 			"delete"=>"0",
+			"archive"=>"0",
 			"edit"=>"0",
 			"print" => "1",
 			"stageNext"=>"0"
@@ -61,6 +62,9 @@ class data {
 		}
 		if ($permissions['details']['overwrite_locked']=="1"){
 			$allow['locked']='1';
+		}
+		if ($permissions['details']['archive']=="1"){
+			$allow['archive']='1';
 		}
 		if ($permissions['form']['edit_master']=="1"){
 			$allow['edit']='1';

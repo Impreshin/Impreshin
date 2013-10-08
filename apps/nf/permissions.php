@@ -25,6 +25,7 @@ class permissions {
 			"details"           => array(
 				"overwrite_locked"         => 0,
 				"placed"         => 0,
+				"archive"         => 0,
 				
 			),
 			"layout"         => array(
