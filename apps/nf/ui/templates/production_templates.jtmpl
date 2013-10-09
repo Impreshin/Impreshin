@@ -1,0 +1,22 @@
+{% include '_records.jtmpl' %}
+{% include '_details.jtmpl' %}
+{% include "_details_newsbook.jtmpl" %}
+<script type="text/x-jqote-template" id="template-provisional-stats-bar">
+	<![CDATA[
+	<li>
+		<div id="maintoolbar-date" class="dg b"><%= this.date %></div>
+	</li>
+	<li id="toolbar-stats-link" style="position: relative;" class="span6">
+		<div style="margin-top: 6px; margin-bottom: -5px;" class="progress glow">
+			<div id="list-stats-progress-bar" style="width: <% if (this.stats.records.placed.p){ %><%= this.stats.records.placed.p||0 %><% } %>%;" class="bar"></div>
+		</div>
+		<div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
+			<div class="span2"><span class="s dg">Articles:</span><strong> <%= this.stats.records.total %> </strong></div>
+			<div class="span2"><span class="s dg">Placed:</span> <strong><%= this.stats.records.placed.r %></strong></div>
+			<div class="span2"><span class="s dg"></span> <strong></strong></div>
+		</div>
+		
+	</li>
+
+	]]>
+</script>

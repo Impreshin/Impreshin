@@ -1,0 +1,46 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+
+			<ul class="nav nav-pills pull-left">
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Application Access</h2>
+				</li>
+
+				<li class="divider-vertical"></li>
+				<li>
+					<h2>
+
+					</h2>
+				</li>
+
+			</ul>
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<section role="main" id="pagecontent">
+	<div class="container">
+
+		<article id="whole-area" class="span16" style="">
+
+
+
+			applications you have access to:<hr>
+			{% for app,row in user["applications"] %}
+				<div>
+					<a href="/app/{{ app }}" class="btn span3">{{ row['name'] }}</a>
+					<span style="line-height: 32px; margin-left: 20px;">{{ row['description'] }}</span>
+
+				</div>
+
+			{% endfor %}
+
+
+		</article>
+	</div>
+
+
+
+</section>

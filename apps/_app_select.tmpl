@@ -1,0 +1,22 @@
+<div id="select-app" class='modal hide fade'>
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+		<h3>Switch Application</h3></div>
+	<div class='modal-body'>
+
+		<div id="apps-select">
+			<ul>
+				{% for app,row in _user['applications'] %}
+						<li class='{% if _folder =='apps/'~app~'/ui/' %}active{% endif %}'>
+							<a href="{{ row['last_page'] }}">{{ row['name'] }}</a>
+						</li>
+				{% endfor %}
+
+			</ul>
+		</div>
+	</div>
+	<div class='modal-footer'>
+
+	</div>
+
+</div>

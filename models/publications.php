@@ -20,7 +20,7 @@ class publications {
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 		$app = $f3->get("app");
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 
 
 		$result = $f3->get("DB")->exec("
@@ -36,6 +36,8 @@ class publications {
 				$return['current_date'] = $currentDate = dates::getCurrent($return['ID']);
 			}
 			$colours = $cfg['default_colours'];
+			
+
 
 			if ($return['colours']){
 				$colours = explode(",", $return['colours']);
@@ -70,7 +72,7 @@ class publications {
 		}
 
 
-		$where = str_replace("[access]", "COALESCE(global_users_company.ab,0)", $where);
+		$where = str_replace("[access]", "COALESCE(global_users_company.". $app.",0)", $where);
 
 		$app_users_pub = $app."_users_pub";
 
@@ -107,7 +109,7 @@ class publications {
 		$app_users_pub_sql = "";
 		if ($app!="setup"){
 			$app_users_pub = $app . "_users_pub";
-			$app_users_pub_sql = ", if ((SELECT count(ID) FROM $app_users_pub WHERE ab_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
+			$app_users_pub_sql = ", if ((SELECT count($app_users_pub.ID) FROM $app_users_pub WHERE $app_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
 		}
 
 
@@ -190,7 +192,7 @@ class publications {
 
 	private static function dbStructure() {
 		$f3 = \Base::instance();
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 		$table = $f3->get("DB")->exec("EXPLAIN global_publications;");
 		$result = array();
 		foreach ($table as $key => $value) {

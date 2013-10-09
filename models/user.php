@@ -5,8 +5,8 @@
  */
 namespace models;
 
-use \F3 as F3;
-use \Axon as Axon;
+
+
 use \timer as timer;
 
 class user {
@@ -103,7 +103,7 @@ class user {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		$app = $f3->get("app");
-		$cfg = $f3->get("cfg");
+		$cfg = $f3->get("CFG");
 		$result = array();
 
 		if (!is_array($user)) {
@@ -387,7 +387,7 @@ class user {
 			$limit = " LIMIT " . $limit;
 
 		}
-		$apps = $f3->get("cfg");
+		$apps = $f3->get("CFG");
 		$apps = $apps['apps'];
 		$app = (isset($_REQUEST['app'])&&in_array($_REQUEST['app'], $apps))? $_REQUEST['app']: $f3->get("app");
 

@@ -1,0 +1,358 @@
+{% include '_details.jtmpl' %}
+
+<script type="text/x-jqote-template" id="template-toolbar">
+	<![CDATA[
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav pull-left">
+				<li>
+					<h2 style="padding-left: 30px;" id="booking-heading"><%= this.heading %>
+						<small style="margin-left:20px;"></small>
+					</h2>
+				</li>
+			</ul>
+			<ul class="nav nav-pills pull-right">
+				<li style="padding-top: 6px; margin-right: 10px;">Booking Type:</li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
+
+
+						{% for row in types %}
+						<button class="btn span1 btn-mini <% if(this.data.settings.last_type == '{{ row['ID'] }}'){ %> active <% } %>" style="width:80px;" data-type="{{ row['ID'] }}">{{ row['type'] }}</button>
+						{% endfor %}
+
+					</div>
+				</li>
+
+				<li class="divider-vertical"></li>
+			</ul>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template-form">
+	<![CDATA[
+	<form class="form-horizontal form-fill" id="main-form">
+		<fieldset>
+			<div class="form-header">
+
+			</div>
+			<section class="form-body" style="padding-top: 10px; bottom: 37px;">
+				<table>
+					<tr>
+						<td class="span12" style="">
+							<div style="padding:10px;">
+								<div class="span11 control-group">
+									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<% if (this.details.title) { %><%= this.details.title %><% } %>">
+								</div>
+
+
+
+								<section id="form-diff">
+									<article id="form-diff-1">
+
+
+										<div class="span11 control-group" style=" min-height:440px; padding-top:5px;" id="body-area" >
+											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body"><%= this.details.body||"" %></textarea>
+										</div>
+									</article>
+									<article id="form-diff-2">
+									</article>
+								</section>
+
+
+								<div class="span11 control-group" style="height:280px; ">
+									<div id="uploader" style="">Loading...</div>
+								</div>
+
+								<div class="span11">
+									<section id="new-file-area" style="margin-bottom: 30px;">
+
+										<div class="clearfix"></div>
+									</section>
+									<section id="file-area" style="margin-bottom: 30px;">
+
+
+
+										<div class="clearfix"></div>
+									</section>
+								</div>
+
+
+
+
+							</div>
+						</td>
+						<td class="span4 form-super-narrow">
+							<div id="rightpane">
+								<div id="rightpane-top">
+									{% if _user['permissions']['form']['author_dropdown'] %}
+									<section class="block control-group" style="margin-top:10px;">
+										<h4>Author</h4>
+										<select name="authorID" id="authorID" style="width:100%;"  class="select2">
+											{% for row in authors %}
+												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
+											{% endfor %}
+
+										</select>
+									</section>
+									{% else %}
+										<input id="authorID" type="hidden" name="authorID" value="<%= this.details.authorID||"{{ _user['ID'] }}" %>" />
+									{% endif %}
+									<section class="block control-group" style="">
+										<h4>Category</h4>
+										<select name="categoryID" id="categoryID" style="width:100%;" class="select2">
+											{% for row in categories %}
+												<option value="{{ row['ID'] }}" data-checklist-count="{{ row['checklistCount'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_category) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
+											{% endfor %}
+										</select>
+									</section>
+
+
+									<section class="block control-group" style="">
+										<h4>Meta</h4>
+										<textarea name="meta" id="meta" cols="30" rows="5" style="width:94%;"><%= this.details.meta||"" %></textarea>
+									</section>
+
+
+
+								</div>
+
+								<div id="rightpane-bottom">
+									<section id="block-resources" class="block">
+										<ul class="nav nav-list">
+											<li class="nav-header">Resources</li>
+											<li><a href="#">How to write <i class="icon-external-link s "></i></a></li>
+											<li><a href="#">How to write part 2 <i class="icon-external-link s"></i></a></li>
+											<li><a href="#">Style Guide<i class="icon-file-alt"></i></a></li>
+											<li><a href="#">Important Numbers<i class="icon-file-alt"></i></a></li>
+										</ul>
+									</section>
+
+
+									<section class="block" id="tools-block" style="margin-top:10px;">
+
+										<div class="btn-group" style="margin-left:-4px;">
+											<button disabled type="button" id="btn-tools-comments" class="btn btn-mini span1" rel="tooltip" title="Comments">
+												<i class="icon-comment-alt"></i>
+											</button>
+											<button type="button" id="btn-tools-checklist" class="btn btn-mini span1" rel="tooltip" title="Check List">
+												<i class="icon-check"></i>
+											</button>
+
+											<button disabled type="button" id="comments" class="btn btn-mini span1 g" rel="tooltip" title="Dictionary/Thesaurus">
+												<i class="icon-circle-blank"></i>
+											</button>
+											<button type="button" id="btn-tools-search" class="btn btn-mini span1" rel="tooltip" title="Use meta to perform a news search">
+												<i class="icon-check-sign"></i>
+											</button>
+										</div>
+
+
+									</section>
+								</div>
+
+							</div>
+
+
+
+						</td>
+					</tr>
+				</table>
+
+
+
+			</section>
+
+
+			<div class="form-actions form-footer">
+				<div class="row r">
+
+					<div style="float:left; margin-left:10px; padding-top: 3px;">
+						<% if (this.details.ID) { %>
+						<% if (this.a.delete=='1') { %> %}
+						<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="margin-right:20px" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+						<% } %>
+						<% } %>
+
+
+
+						<span>
+							<div class="span1" style="padding-top:5px;">Priority:</div>
+							<div class="span3" style="padding-top:10px;">
+								<div id="slider"></div>
+								<select name="priorityID" id="priorityID" style="display:none;">
+									{% for row in priorities %}
+										<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.details.priorityID) { %>selected="selected"<% } %>>{{ row['priority'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="span1 s g l" style="padding-top:5px;" id="slider-text"></div>
+						</span>
+
+
+					</div>
+
+
+
+
+
+					<div style="float:right; margin-right: 10px;">
+						<% if (this.details.ID) { %>
+
+						<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="View this booking" data-position="above">
+							<i class="icon-fullscreen icon-d-grey"></i></button>
+						<a href="/app/nf/#scrollTo=<%= this.details.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Article List" data-position="above">
+							<i class="icon-list-alt icon-d-grey"></i></a>
+						<a href="/app/nf/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
+							<i class="icon-plus"></i></a> <% } %>
+
+
+
+
+
+						<div class="btn-group" style="margin-left:10px;">
+
+							<% if (this.stageNext.ID) { %>
+							
+							<label class="btn span1" title="Tick this checkbox to save and move the record to <%= this.stageNext.stage %>" rel="tooltip" data-placement="top" id="btn-stage-checkbox" data-stage-label="<%= this.stageNext.stage %>">
+								<input type="checkbox" style="margin:0;" name="stageID" id="stageID" value="<%= this.stageNext.ID %>"/>
+							</label>
+							<% } %>
+							<button class="btn btn-primary span4" style="" type="submit">Save Record</button>
+						</div>
+
+
+					</div>
+				</div>
+
+			</div>
+
+
+		</fieldset>
+
+		<input type="hidden" id="priority" name="priority" value="<%= this.details.priority||"0" %>"/>
+		<input type="hidden" id="checklist" name="checklist" value="<%= this.details.checklist||"" %>"/>
+		<input type="hidden" id="current_stage_ID" name="current_stage_ID" value="<%= this.details.stageID||"1" %>"/>
+		<input type="hidden" id="cm" name="cm" value=""/>
+	</form>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-files">
+	<![CDATA[
+
+
+	<article class="row file-record" id="file-record-<%= this.ID||this.tempID %>" >
+		<input type="hidden" id="file-filename-<%= this.ID||this.tempID %>" name="file-filename-<%= this.ID||this.tempID %>" class="file-filename-field" value="<%= this.filename %>"/>
+		<input type="hidden" id="file-filename_orig-<%= this.ID||this.tempID %>" name="file-filename_orig-<%= this.ID||this.tempID %>" class="file-filename_orig-field" value="<%= this.filename_orig %>"/>
+		<input type="hidden" id="file-ID-<%= this.ID||this.tempID %>" name="file-ID-<%= this.ID||this.tempID %>" value="<%= this.ID %>"/>
+		<input type="hidden" id="file-folder-<%= this.ID||this.tempID %>" name="file-folder-<%= this.ID||this.tempID %>" value="<%= this.folder %>"/>
+
+
+		<div class="span2"  >
+			
+			
+				
+			<div class="file-icon-area">
+				<% if (this.fileType=="1"){ %>
+				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" alt=""/>
+
+				<% } else { %>
+				<div class="file-icon <%= this.icon %>"></div>
+				<div class="clearfix"></div>
+				<% } %>
+			</div>
+			
+			
+
+			
+
+
+		</div>
+		<div class="span9 file-caption-area">
+
+
+
+			<div class="file-buttons">
+				<div class="btn-group">
+					<button class="btn btn-mini span1 dg" type="button"><i class="icon-bookmark"></i></button>
+					<div class="span1 replace-area" id="btn-container-<%= this.ID||this.tempID %>" title="Replace file">
+						<button class="btn span1 btn-mini file-replace-btn" data-id="<%= this.ID||this.tempID %>" data-filename="<%= this.filename %>" data-folder="<%= this.folder %>" type="button" title="Replace file" style="margin-left: 0;">
+							<i class="icon-exchange"></i>
+
+							<div class="span1 progress">
+								<div class="bar" style="width: 0;"></div>
+							</div>
+						</button>
+
+					</div>
+					<button class="btn btn-mini span1" type="button"><i class="icon-remove"></i></button>
+				</div>
+			</div>
+
+			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px;"><%= this.caption||"" %></textarea>
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="clearfix"></div>
+	</article>
+
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-modal-form">
+	<![CDATA[
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+		<h3>Completed</h3></div>
+	<div class='modal-body'>
+		<article class="c">
+			<img src="/ui/_images/success.png" alt="Success">
+
+
+		</article>
+	</div>
+	<div class='modal-footer'>
+		<div class="btn-group c" style="margin-left: 7px;">
+			<a href="/app/nf/form/" class="btn span3" id="modal-btn-new">New Record</a>
+			<a data-id="<%= this.ID %>" class="btn span3 view-record-btn">View Record</a>
+			<a href="/app/nf/#scrollTo=<%= this.ID %>" class="btn span3">Go to list</a>
+
+		</div>
+	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-checklist">
+	<![CDATA[
+	<li>
+
+		<% if (this.description) { %>
+		<div class="label"><i class="icon-question"></i></div>
+		<% } %>
+
+		<label class="checkbox">
+			<input type="checkbox" value="<%= this.ID %>" name="checkedlist-items[]" id="checkbox-<%=this.ID %>" <% if (this.selected=="1"){ %>checked="checked"<% } %>>
+			<%= this.label %>
+		</label>
+
+
+
+		<div class="help-block s dg">
+			<%= this.description||"" %>
+		</div>
+	</li>
+	]]>
+</script>

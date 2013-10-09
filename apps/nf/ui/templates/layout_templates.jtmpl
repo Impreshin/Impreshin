@@ -1,0 +1,332 @@
+{% include '_details.jtmpl' %}
+{% include "_details_newsbook.jtmpl" %}
+<script type="text/x-jqote-template" id="template-records-list">
+	<![CDATA[
+
+	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
+		<td class="span1 r" style="padding-left: 0;" data-drag-handler="<%= this.title %>">
+			<% if (this.type_icon){ %>
+			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
+			<% } else { %>
+			<%= this.cm %><span class="s g"> cm</span>
+
+			<% } %>
+			
+			</td>
+		<td class="span1 c"><%= this.photosCount %></td>
+		<td>
+			 <%= this.title %>
+		</td>
+	</tr>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-page">
+	<![CDATA[
+	<article style="<% if (this.colour.icons) { %>background: url('/ui/_images/ab/<%= this.colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>" data-limit="<%= this.colour.limit %>">
+
+		<% if(this.section.c) { %>
+		<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
+		<% } %>
+		<div class="pagenr" data-page="<%= this.page %>"
+		<% if(this.locked=='1') { %>style="color:#ccc;"<% } %>><%= this.page %></div>
+		<header>
+
+		</header>
+		<div>
+			<table class="s">
+				<% for(var g in this.records) { %>
+
+				<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-drag-handler="<%= this.records[g].title %>"  data-page="<%= this.records[g].page %>" >
+					<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
+						<% if (this.records[g].type_icon){ %>
+						<i class="<%= this.records[g].type_icon %> g" ></i>
+						<% } else { %>
+						<%= this.records[g].cm %>
+						<% } %>
+						
+					</td>
+
+					<td><%= this.records[g].title %>
+					</td>
+
+				</tr>
+
+
+				<% } %>
+			</table>
+		</div>
+		
+		<div class="msgs"></div>
+		<% if(this.colour.icons) { %>
+		<div class="page_colour">
+			<img src="/ui/_images/ab/<%= this.colour.icons %>.png" alt="" width="20">
+
+		</div>
+		<% } %> <% if(this.locked=='1') { %>
+		<div class="page_locked">
+			<i class="icon-lock icon-white"></i>
+
+		</div>
+		<% } %>
+	</article>
+
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template-spreads">
+	<![CDATA[
+
+	<section class="spread <%= this.side %>">
+		<% for(var i in this.pages) { %>
+		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked=='1') { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
+			<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-limit="<%= this.pages[i].colour.limit %>">
+
+				<% if(this.pages[i].section.c) { %>
+				<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
+				<% } %>
+				<div class="pagenr" data-page="<%= this.pages[i].page %>"><%= this.pages[i].page %></div>
+				<header>
+
+				</header>
+				<div>
+					<table class="s">
+						<% for(var g in this.pages[i].records) { %>
+
+						<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-drag-handler="<%= this.pages[i].records[g].title %>"  data-page="<%= this.pages[i].records[g].page %>" >
+							<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
+
+								<% if ( this.pages[i].records[g].type_icon){ %>
+								<i class="<%=  this.pages[i].records[g].type_icon %> g"></i>
+								<% } else { %>
+								<%=  this.pages[i].records[g].cm %>
+
+								<% } %>
+								
+								
+							</td>
+
+							<td><%= this.pages[i].records[g].title %>
+							</td>
+
+						</tr>
+
+
+						<% } %>
+					</table>
+
+				</div>
+				
+				<div class="msgs"></div>
+				<% if(this.pages[i].colour.icons) { %>
+				<div class="page_colour">
+					<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
+
+				</div>
+				<% } %> <% if(this.pages[i].locked=='1') { %>
+				<div class="page_locked">
+					<i class="icon-lock icon-d-grey"></i>
+
+				</div>
+				<% } %>
+			</article>
+		</div>
+
+		<% } %>
+	</section>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom">
+	<![CDATA[
+
+	<div class="spread">
+		<% for(var i in this.pages) { %>
+		<div data-page_nr="<%= this.pages[i].page %>" class="page" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
+
+			<div>
+				<%= this.pages[i].page %> 
+			</div>
+
+
+		</div>
+		<% } %>
+	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom-page">
+	<![CDATA[
+
+
+	<div>
+		<%= this.page %> 
+	</div>
+
+
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-provisional-stats-bar">
+	<![CDATA[
+
+
+	<li>
+		<div id="maintoolbar-date" class="dg b"><%= this.date %></div>
+	</li>
+	<li class="span6" style="position: relative;" id="toolbar-stats-link">
+		<div class="progress glow" style="margin-top: 6px; margin-bottom: -5px;">
+			<div class="bar" style="width: <%= this.stats.records.planned.p %>%;" id="list-stats-progress-bar"></div>
+		</div>
+		<div class="row" style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;">
+
+			<div class="span2"><span class="s dg">Pages:</span>
+				<strong <% if (this.stats.loading.forced || this.stats.loading.error) { %>rel="tooltip" <% if (this.stats.loading.error) { %> class="alert alert-error" title="<%= this.stats.loading.error %>" <% } else { %>title="Pages have been set" <% } %>data-placement="bottom"<% } %> > <%= this.stats.loading.pages %> <% if (this.stats.loading.forced) { %>*<% } %>                </strong>
+			</div>
+			<div class="span2"><span class="s dg">Planned:</span> <strong> <%= this.stats.records.planned.r %> </strong> of <strong> <%= this.stats.records.total %></strong></div>
+			<div class="span2"><span class="s dg">Remaining:</span> <strong> <%= this.stats.records.total - this.stats.records.planned.r %> </strong></div>
+			</div>
+
+		</div>
+	</li>
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-details-bottom">
+	<![CDATA[
+	<article data-id='<%= this.ID %>'>
+		<h4><%= this.title %></h4>
+
+
+		
+
+	</article>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right-page">
+	<![CDATA[
+	<header class="header">
+		<h3>Page: <%= this.page %>
+			<small style="margin-left:20px;"><%= this.stats.records %> records</small>
+		</h3>
+		<button class="btn close-right-over"><i class="icon-list-alt icon-d-grey "></i></button>
+		<div style="background-color:<%= this.section_colour %>; height:3px;"></div>
+	</header>
+	<article class="body">
+		<div class="scroll-pane scrolly" id="page-record-list-middle">
+			<table class="table table-condensed  s records <% if (this.locked=='1') { %>g<% } %>" id="page-booking-list">
+				<thead>
+				<tr>
+					<th class="span1">Size</th>
+					<th class="span1">Photos</th>
+					<th>Title</th>
+				</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+
+
+		</div>
+	</article>
+	<footer class="footer">
+		<button class="btn btn-mini span5 close-right-over " style="margin-left:0; " type="button">&gt; Back to list &lt;</button>
+		<div class="clearfix"></div>
+		<% if (this.a.edit){ %>
+		<form action="" style="margin:0;" id="pages_settings_form">
+			<table>
+				<tr>
+					<td>
+						<select class="" id="sectionID" name="sectionID" style="margin: 5px 0; width: 225px;" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
+						<option value="0">No Section</option>
+						<optgroup label="Sections">
+							{% for row in sections %}
+								<option value="{{ row['ID'] }}"
+								<% if (this.sectionID=='{{ row['ID'] }}') { %>selected="selected"<% } %>> {{ row['section'] }}                        </option>                        {% endfor %}
+						</optgroup>
+
+						</select>
+
+					</td>
+					<td><% if (this.locked=='1') { %>
+						<button class="btn span1 btn-mini btn-danger" style="margin-top: 5px; margin-left: -15px" data-value="0" type="button" id="lock-btn" title="Click to un-lock this page">
+
+							<i class="icon-lock icon-white"></i>
+
+
+						</button>
+						<% } else { %>
+
+						<button class="btn span1 btn-mini" style="margin-top: 5px; margin-left: -15px" data-value="1" type="button" id="lock-btn" title="Click to lock this page">
+
+							<i class="icon-lock icon-grey"></i>
+
+						</button>
+
+						<% } %>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						{% if _user['publication']['colours_group']|length %}
+							<select name="colourID" id="colourID" class="span5" <% if (this.locked=='1') { %>disabled="disabled"<% } %>>
+							<option value="">No Limit</option>
+							<optgroup label="Filters">
+								{% for row in _user['publication']['colours_group'] %}
+									<option value="{{ row['ID'] }}" <% if (this.colourID=='{{ row['ID'] }}') { %>selected="selected"<% } %>>{{ row['label'] }}</option>
+								{% endfor %}
+							</optgroup>
+							</select>
+						{% endif %}
+
+					</td>
+				</tr>
+			</table>
+
+
+		</form>
+		<% } %>
+	</footer>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-right-section">
+	<![CDATA[
+	<header class="header"><h3>Section: <%= this.section %></h3>
+		<button class="btn close-right-over"><i class="icon-list-alt icon-d-grey "></i></button>
+		<div style="background-color:<%= this.section_colour %>; height:3px;"></div>
+	</header>
+	<article class="body">
+		<div class="scroll-pane scrolly" id="page-record-list-middle">
+			<div class="">
+				<table class="table stats-table">
+					<tr>
+						<th class="span2">Pages:</th>
+						<td> <%= this.stats.pages %></td>
+
+					</tr>
+					
+					
+				</table>
+			</div>
+			<hr>
+			<div class="page-jump-list">
+				<% for(var i in this.pages) { %>
+				<span class="page" data-page_nr="<%= this.pages[i].page %>"><%= this.pages[i].page %></span>
+				<% } %>
+			</div>
+			
+			
+
+
+
+		</div>
+	</article>
+	<footer class="footer">
+		<button class="btn btn-mini span5 close-right-over " style="margin-left:0; " type="button">&gt; Back to list &lt;</button>
+		<div class="clearfix"></div>
+	</footer>
+
+	]]>
+</script>

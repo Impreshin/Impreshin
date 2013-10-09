@@ -1,0 +1,57 @@
+.label,
+.badge {
+	// Important (red)
+	&-red {
+		background-color : @errorText;
+		&.heatmap-1 {
+			background-color : lighten(@errorText, 30%);
+		}
+		&.heatmap-2 {
+			background-color : lighten(@errorText, 15%);
+		}
+		&.heatmap-3 {
+			background-color : @errorText;
+		}
+
+	}
+	&-red[href] {
+		background-color : darken(@errorText, 10%);
+	}
+	// Warnings (orange)
+	&-orange {
+		background-color : @orange;
+	}
+	&-orange[href] {
+		background-color : darken(@orange, 10%);
+	}
+	// yellow
+	&-yellow {
+		background-color : #FFFF00;
+	}
+	&-yellow[href] {
+		background-color : darken(#FFFF00, 10%);
+	}
+	// Success (green)
+	&-green {
+		background-color : @successText;
+	}
+	&-green[href] {
+		background-color : darken(@successText, 10%);
+	}
+	// Info (turquoise)
+	&-turquoise {
+		background-color : @infoText;
+	}
+	&-turquoise[href] {
+		background-color : darken(@infoText, 10%);
+	}
+	// Inverse (black)
+	&-black {
+		background-color : @grayDark;
+	}
+	&-black[href] {
+		background-color : darken(@grayDark, 10%);
+	}
+
+
+}

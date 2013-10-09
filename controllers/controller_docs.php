@@ -5,7 +5,7 @@
  */
 
 namespace controllers;
-use \F3 as F3;
+
 use \Jig as Jig;
 use \FileDB as FileDB;
 class controller_docs {

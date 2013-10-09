@@ -4,7 +4,7 @@
  * Time: 5:06 PM
  */
 namespace controllers\nf;
-use \F3 as F3;
+
 use \timer as timer;
 use models\nf as models;
 

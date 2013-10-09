@@ -1,0 +1,290 @@
+<script type="text/x-jqote-template" id="template-details-newsbook">
+	<![CDATA[
+<div id="nf-details-modal-area-newsbook" >
+	
+
+	<section class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3><% if (this.type_icon){ %>
+			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
+			<% } %>
+			<% if (this.stageID != '2') { %>
+			<span class="label <%= this.stageLabelClass %>" style="margin-right: 10px; margin-top:-8px;"> <%= this.stage %> </span>
+			<% } %>
+
+<span class="selectable">
+	<%= this.title %>
+</span>
+
+			
+		</h3>
+
+		<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1; right:30px;">
+
+			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+			<a href="#" class="view_full_details" rel="tooltip" data-placement="bottom" title="View the full details pane"><i class="icon-desktop icon-d-grey"></i></a>
+			
+			<a href="#" class="view_comments_details" rel="tooltip" data-placement="bottom" title="View and make comments"><i class="<% if (this.commentCount > 0) { %>icon-comments<% } else { %>icon-comment-alt <% } %> icon-d-grey"></i></a>
+
+		</div>
+
+
+	
+	</section>
+	<section class="modal-body">
+
+		<div id="left-side-pane" >
+			<div class="scroll-pane">
+				<div style="padding:10px 0 10px 20px;">
+					<% if (this.typeID =='1') { %>
+					<div class="selectable" id="article-body" >
+						<%= this.body||"" %>
+					</div>
+					
+					<hr>
+					<% } %>
+					<% for(var f in this.media) { %>
+
+					<article class="row article-photo" id="file-id-<%= this.media[f].ID %>" >
+						<div class="span2" style="height: 90px;">
+							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt="" style="width:110px; height:90px;"/>
+						</div>
+						<div class="span6 selectable"><%= this.media[f].caption %></div>
+					</article>
+				
+
+					<% } %>
+				</div>
+			</div>
+		</div>
+		<div id="right-side-pane" >
+			<fieldset>
+				<legend style="margin-top:0;">Date Created</legend>
+				<%= this.datein %>
+			</fieldset>
+			<fieldset>
+				<legend>Author</legend>
+				<%= this.author %>
+			</fieldset>
+			<fieldset>
+				<legend>Category</legend>
+				<%= this.category %>
+			</fieldset>
+			<% if (this.page) { %>
+			<fieldset style="margin-top: 30px;">
+				<legend>Actions</legend>
+				<% if (this.page) { %>
+				<button class="btn <% if (this.placed=='1') { %>btn-success<% } %>" id="btn-action-placed" data-value="<% if (this.placed=='1') { %>0<% } else { %>1<% } %>"  type="button" style="width:100%">Placed</button>
+				<% } %>
+			</fieldset>
+			<% } %>
+			<fieldset style="margin-top:20px;">
+				<legend>Navigation</legend>
+				<div class="row">
+					<% if (this.typeID =='1') { %>
+					<div class="span1 photo-jump" style="height: 33px; width:50px; text-align:center; padding-top: 7px;  overflow:hidden" data-target="article-body">
+						<i class="icon-font" style=" font-size: 20px;"></i>
+					</div>
+					<% } %>
+					<% for(var f in this.media) { %>
+
+					<div class="span1 photo-jump" data-target="file-id-<%= this.media[f].ID %>">
+						<img src="/app/nf/thumb/50/40?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
+					</div>
+
+					<% } %>
+				</div>
+				
+			</fieldset>
+		
+			
+		</div>
+			
+		
+		
+
+	</section>
+
+	<section class="modal-footer">
+		<div class="row">
+
+			<div class="span9 l">
+				<table class="table table-condensed" style="margin:0;">
+					<tr>
+						<th class="r span1">Size</th>
+						<td class="span3"><%= this.cm||"" %> <span class="g"> cm | </span><%= this.words||"" %><span class="g"> words</span></td>
+						<th class="r span1">Photos</th>
+						<td class="span1"><%= this.media.length %></td>
+						<% if (this.page) { %>
+						<th class="r span1">Page</th>
+						<td class="span1"><%= this.page||"" %></td>
+						<% } %>
+						<th class="r span1">Priority</th>
+						<td class="span2"><%= this.priority||"" %></td>
+						<td></td>
+
+
+
+					</tr>
+					
+
+
+				</table>
+
+
+			</div>
+
+			<div style="padding-left: 5px; margin-right: -5px;" class="offset9 list-next-prev-btns">
+				<div class="btn-group">
+					<button class="btn span2 details-record-prev">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button class="btn span2 details-record-next"> Next <i class="icon-step-forward"></i></button>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+	<div class="popup" id="popup-newsbook" style="height: 270px; ">
+		<form class="form form-horizontal" id="form-newsbook">
+
+		</form>
+		<div class="loadingmask wide"></div>
+	</div>
+	
+</div>
+	<div class="loadingmask"></div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details-comments">
+	<![CDATA[
+	<article data-name="<%= this.fullName %>" data-ID="<%= this.ID %>" data-parentID="<%= this.parentID %>">
+		<h4>
+			<%= this.fullName %> &nbsp;
+			<small><%= this.datein %></small>
+			<ul class="actions">
+				<% if (this.uID=="{{ _user['ID'] }}") { %>
+				<li class="edit"><i class="icon-pencil"></i></li>
+				<% } %>
+				<li class="reply"><i class="icon-reply"></i></li>
+
+			</ul>
+		</h4>
+
+		<div class="comment">
+			<%= this.comment %>
+		</div>
+
+		<div class="children">
+			<% for(var i in this.children) { %>
+			<article>
+				<h4><%= this.children[i].fullName %> &nbsp;
+					<small><%= this.children[i].datein %></small>
+				</h4>
+
+				<div class="comment">
+					<%= this.children[i].comment %>
+				</div>
+			</article>
+			<% } %>
+		</div>
+	</article>
+
+
+	]]>
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+		$(document).on("click","#btn-action-placed",function(){
+			var ID = $.bbq.getState("ID");
+			var placed = $(this).attr("data-value");
+			var pID = $("#use-pID").val();
+			var dID = $("#use-dID").val();
+			var data = "pID="+pID+"&dID="+dID+"&placed="+placed;
+
+			$.post("/app/nf/save/articles/placed/?aID=" + ID, data, function (response) {
+				getDetails();
+			});
+			//console.log("ID: "+ ID +" | pID: "+pID+" | dID: "+ dID+" | placed: "+ placed); 
+		});
+		$(document).on("click", ".view_full_details", function (e) {
+			e.preventDefault();
+			$.bbq.pushState({"show_full_details":true});
+
+			//	$("#nf-details-modal-newsbook").modal("hide")
+			getDetails();
+			$.bbq.removeState("show_full_details");
+
+			return false;
+		});
+		$(document).on("click", ".view_comments_details", function (e) {
+			e.preventDefault();
+			$.bbq.pushState({"show_full_details":true,"details-tab":"details-pane-comments"});
+			getDetails();
+			$.bbq.removeState("show_full_details");
+
+			return false;
+		});
+
+		$(document).on("click",".photo-jump",function(e){
+			e.preventDefault();
+			var api = $("#left-side-pane .scroll-pane").data("jsp");
+			var $target = $("#"+$(this).attr("data-target"));
+			if ($target.length) {
+				api.scrollToElement("#"+$(this).attr("data-target"), false, true);
+			}
+			$(".article-photo.highlight").removeClass("highlight")
+			$target.addClass("highlight")
+		});
+	});
+
+	function getDetails_custom() {
+//		console.log("aa"); 
+		var ID = $.bbq.getState("ID");
+		var historyID = $.bbq.getState("historyID");
+
+		var pID = $("#use-pID").val();
+		var dID = $("#use-dID").val();
+
+		if (!pID || !dID) {
+			getDetails();
+			return false;
+		}
+
+		$("#nf-details-modal").addClass("loading");
+		$.getData("/app/nf/data/details_newsbook?r=" + Math.random(), {"ID": ID, "pID": pID,"dID":dID}, function (data) {
+			$("#record-list .record.active").removeClass("active");
+			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+
+			$('#nf-details-modal').data("data", data).jqotesub($("#template-details-newsbook"), data).modal('show').removeClass("loading").trigger("shown");
+
+			if (data['comments'].length){
+				$("#comments-area").jqotesub($("#template-details-comments"),data['comments']);
+			} else {
+				$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
+			}
+
+			if ($("#record-list:visible").length) {
+				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+					showContent_state();
+					$(".list-next-prev-btns").show();
+					var api = $("#whole-area .scroll-pane").data("jsp");
+					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+					}
+				}
+			}
+
+			setTimeout(function(){
+				$("#nf-details-modal .scroll-pane").jScrollPane(jScrollPaneOptions);
+			},500)
+
+			
+		}, "details");
+
+	}
+</script>

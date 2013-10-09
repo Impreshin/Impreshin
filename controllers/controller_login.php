@@ -4,7 +4,7 @@
  * Time: 11:16 AM
  */
 namespace controllers;
-use \F3 as F3;
+
 class controller_login {
 	function __construct(){
 		$this->f3 = \base::instance();
@@ -18,7 +18,9 @@ class controller_login {
 			"template"   => "page_login",
 			"meta"       => array(
 				"title"=> "Login",
-			)
+			),
+			"css"=>"/ui/_css/plugins/ticker-style.css",
+			"js"=>"/ui/_js/plugins/jquery.ticker.js"
 		);
 
 

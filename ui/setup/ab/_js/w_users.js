@@ -90,7 +90,7 @@ $(document).ready(function () {
 			r = r['data'];
 			if (r['exists']) {
 				if (confirm("This user already exists. do you want to add them to the application / company?")) {
-					$.post("/ab/save/admin_users/add_company/?ID=" + r['exists'] + "&pID=" + pID + "&cID=" + cID + "&app=ab", function () {
+					$.post("/apps/ab/save/admin_users/add_company/?ID=" + r['exists'] + "&pID=" + pID + "&cID=" + cID + "&app=ab", function () {
 						$.bbq.pushState({"ID":r['exists']});
 						getList();
 						getDetails();

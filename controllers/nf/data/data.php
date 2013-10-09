@@ -1,6 +1,6 @@
 <?php
 namespace controllers\nf\data;
-use \F3 as F3;
+
 use \timer as timer;
 use \models\nf as models;
 use \models\user as user;
@@ -28,7 +28,7 @@ class data {
 
 		$user = $this->f3->get("user");
 
-		$cfg = $this->f3->get("cfg");
+		$cfg = $this->f3->get("CFG");
 		$record = new models\articles();
 		$return = $record->get($ID);
 

@@ -1,0 +1,48 @@
+<script type="text/x-jqote-template" id="template-notifications">
+    <![CDATA[
+<div></div>
+    <% if (this.checked) { %>
+		<span class="nbar" title="Checked - <%= this.checked.done %> of <%= this.checked.total %>" data-content='<div class="progress <% if (this.checked.percent>100 || this.checked.percent==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%;"></div></div>'>
+
+			<span>Checked -
+			&nbsp; <%= this.checked.done %> of <%= this.checked.total %> &nbsp;
+			</span>
+			<% if (this.checked.percent) { %>
+				<div style=" width: <% if (this.checked.percent>100) { %>100<% } else { %><%= this.checked.percent %><% } %>%; "></div>
+			<% } %>
+		</span> <% } %>
+    <% if (this.placed) { %>
+		<span class="nbar" title="Placed - <%= this.placed.done %> of <%= this.placed.total %>" data-content='<div class="progress <% if (this.placed.percent>100 || this.placed.percent==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.placed.percent>100) { %>100<% } else { %><%= this.placed.percent %><% } %>%;"></div></div>'>
+			<span>Placed -
+			&nbsp; <%= this.placed.done %> of <%= this.placed.total %> &nbsp;
+			</span>
+			<% if (this.placed.percent) { %>
+				<div style=" width: <% if (this.placed.percent>100) { %>100<% } else { %><%= this.placed.percent %><% } %>%; "></div>
+			<% } %>
+		</span>
+    <% } %>
+
+    <% if (this.marketer && this.marketer.next_targets && this.marketer.next_targets.target) { %>
+        <span class="nbar"  <% if (this.marketer.next_targets) { %>title="From: <%= this.marketer.next_targets.date_from %> | To: <%= this.marketer.next_targets.date_to %>" <% } %> data-content='<div class="progress <% if (this.marketer.next_targets.percent>100 || this.marketer.next_targets.percent==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.marketer.next_targets.percent>100) { %>100<% } else { %><%= this.marketer.next_targets.percent %><% } %>%;"></div></div>'> Marketer -
+			<span>&nbsp;Total: <%= this.marketer.next_targets.done %> [<%= this.marketer.next_targets.records %>]
+				<% if (this.marketer.next_targets.target) { %>&nbsp; &nbsp; Target: <%= this.marketer.next_targets.target %><% } %>
+			</span>
+        <% if (this.marketer.next_targets.target) { %>
+            <div style="width: <% if (this.marketer.next_targets.percent>100) { %>100<% } else { %><%= this.marketer.next_targets.percent %><% } %>%;"></div>
+        <% } %>
+        </span>
+    <% } %>
+    <% if (this.production) { %>
+		<span class="nbar" title="Production - <%= this.production.assigned.done %> of <%= this.production.assigned.total %> (<%= this.production.records.done %> of <%= this.production.records.total %>)" data-content='<div class="progress <% if (this.production.assigned.percent>100 || this.production.assigned.percent==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.production.assigned.percent>100) { %>100<% } else { %><%= this.production.assigned.percent %><% } %>%;"></div></div>'>
+			Production -
+			<span>&nbsp;Total Done: <%= this.production.records.done %> of <%= this.production.records.total %>&nbsp; &nbsp; Assigned Done: <%= this.production.assigned.done %> of <%= this.production.assigned.total %>
+			</span>
+			<% if (this.production.records.percent) { %>
+				<div style="width: <% if (this.production.records.percent>100) { %>100<% } else { %><%= this.production.records.percent %><% } %>%;"></div>
+			<% } %>
+		</span>
+    <% } %>
+
+
+    ]]>
+</script>

@@ -3,7 +3,7 @@
 
 
 namespace controllers\nf\save;
-use \F3 as F3;
+
 use \timer as timer;
 use models\nf as models;
 use models\user as user;
@@ -61,7 +61,7 @@ class save {
 
 
 
-		models\user_settings::save_setting($values);
+		models\settings::save($values);
 
 
 

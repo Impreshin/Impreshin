@@ -16,7 +16,8 @@ class controller_activity {
 			"template"    => "page_activity",
 			"meta"        => array(
 				"title" => "Activity",
-			)
+			),
+			"js"=>"/ui/_js/plugins/jquery.FeedEk.js"
 		);
 		$tmpl->output();
 

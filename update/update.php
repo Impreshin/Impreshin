@@ -20,7 +20,7 @@ class update {
 		if (!file_exists($root_folder."\\.git")) {
 			shell_exec('git init');
 		} else {
-			//shell_exec('git reset --hard HEAD');
+			shell_exec('git reset --hard HEAD');
 			shell_exec('git stash');
 		}
 
@@ -57,7 +57,7 @@ class update {
 
 			} else {
 				chdir("docs");
-			//	shell_exec('git reset --hard HEAD');
+				shell_exec('git reset --hard HEAD');
 				shell_exec('git stash');
 			}
 
@@ -180,7 +180,7 @@ class update {
 			$gzip = "";
 		}
 
-		passthru("mysqldump --opt --host=$dbhost --user=$dbuser --password=$dbpwd $dbname $gzip > $filename");
+		passthru("mysqldump --opt --single-transaction --host=$dbhost --user=$dbuser --password=$dbpwd $dbname $gzip > $filename");
 
 
 		return "$filename";// passthru("tail -1 $filename");

@@ -1,0 +1,5 @@
+NameError: .box-shadow is undefined in D:\Web\Impreshin\apps\nf\ui\_css\general\nf_details.less:38:3
+37 		tbody, thead {
+38 			.box-shadow(none);
+39 		}
+
