@@ -20,9 +20,8 @@ class admin_accounts extends data {
 
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		$pID = $user['pID'];
-
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		$section = "admin_accounts";
 
@@ -99,7 +98,7 @@ class admin_accounts extends data {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 

@@ -21,7 +21,7 @@ class admin_sections extends save {
 	function _save() {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 
@@ -101,7 +101,7 @@ class admin_sections extends save {
 
 	function _copyfrom() {
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 		$pID = (isset($_GET['new_pID']))? $_GET['new_pID']: $user['publication']['ID'];
 		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
 

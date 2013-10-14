@@ -103,7 +103,7 @@ class categories {
 
 		$cID = $values['cID'];
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"ab_category_pub");

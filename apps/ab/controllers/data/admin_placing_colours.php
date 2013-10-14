@@ -21,7 +21,7 @@ class admin_placing_colours extends data {
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$placingID = (isset($_REQUEST['placingID']))?$_REQUEST['placingID']:"";
 
@@ -46,7 +46,7 @@ class admin_placing_colours extends data {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 

@@ -21,7 +21,7 @@ class users extends \apps\nf\controllers\save\save {
 	function _save() {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 		//test_array($user); 
@@ -126,8 +126,8 @@ class users extends \apps\nf\controllers\save\save {
 	}
 	function add_company(){
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
-
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 
@@ -136,7 +136,8 @@ class users extends \apps\nf\controllers\save\save {
 	}
 	function add_app(){
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
@@ -147,7 +148,8 @@ class users extends \apps\nf\controllers\save\save {
 	}
 	function remove_app(){
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
@@ -158,7 +160,8 @@ class users extends \apps\nf\controllers\save\save {
 	}
 	function _delete(){
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
 		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_users_company");

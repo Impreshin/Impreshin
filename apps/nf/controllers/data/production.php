@@ -111,7 +111,11 @@ class production extends data {
 		$where .= " AND nf_article_newsbook.dID='".$currentDate['ID']."'";
 		$records = models\articles::getAll($where, $grouping, $ordering,array("pID"=>$pID,"dID"=>$dID));
 		$stats = models\record_stats::stats($records,array("placed"));
-
+		if ($search){
+			$searchsql = " AND (title like '%$search%' OR nf_categories.category like '%$search%' OR global_users.fullName like '%$search%' OR nf_article_types.type like '%$search%' OR meta like '%$search%') ";
+			$where .= $searchsql;
+			$records = models\articles::getAll($where, $grouping, $ordering);
+		}
 		$return = array();
 
 		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));

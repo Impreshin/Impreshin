@@ -38,7 +38,10 @@
 							</div>
 						</div>
 
-						<div class="form-actions ">
+						<div class="form-actions " style="padding-left: 0;">
+							{% if _user['ID'] %}
+								<a class="btn span2" href="/app/" style="float:left;">Last App</a>
+							{% endif %}
 							<button class="btn {% if _cfg['git']['branch'] != 'master' %}btn-warning {% else %}btn-primary {% endif %} span3" type="submit" style="float:right;">Sign in</button>
 						</div>
                         {% if _cfg['git']['branch'] != 'master' %}

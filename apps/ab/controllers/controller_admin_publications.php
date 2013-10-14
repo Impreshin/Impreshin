@@ -14,8 +14,8 @@ class controller_admin_publications extends \apps\ab\controllers\_ {
 	function page() {
 		$user = $this->f3->get("user");
 		$uID = $user['ID'];
-		$pID = $user['pID'];
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		//test_array($user);
 

@@ -136,7 +136,7 @@ class controller_app_form extends \apps\ab\controllers\_{
 		if (!$user['permissions']['form']['new']&& !$user['permissions']['form']['edit']&&!$user['permissions']['form']['edit_master']&& !$user['permissions']['form']['delete']) $this->f3->error(404);
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];

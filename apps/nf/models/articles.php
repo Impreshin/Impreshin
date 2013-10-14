@@ -19,7 +19,8 @@ class articles {
 
 		}
 		
-		$return = "(((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID $newsbook_sql) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID $newsbook_sql) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID $newsbook_sql) ON nf_articles.ID = nf_article_newsbook.aID ) ) ";
+		
+		$return = "((((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID $newsbook_sql) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID $newsbook_sql) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID $newsbook_sql) ON nf_articles.ID = nf_article_newsbook.aID ) ) ) ";
 
 		return $return;
 	}
@@ -119,7 +120,7 @@ class articles {
 		
 	}
 
-	public static function getAll_count($where = "") {
+	public static function getAll_count($where = "",$options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {
@@ -127,13 +128,27 @@ class articles {
 		} else {
 			$where = " ";
 		}
-		$from = self::_from();
-		$return = $f3->get("DB")->exec("
+		if (isset($options['body_search'])&&$options['body_search']) {
+			$search_str = $options['body_search'];
+			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
+			if (count($body_id)){
+				$n = array();
+				foreach($body_id as $item){
+					$n[] = $item['aID'];
+				}
+				$body_id = implode(",",$n);
+				$where = $where . " OR nf_articles.ID in ($body_id) ";
+			}
+
+		}
+		$from = self::_from($options);
+		$sql = "
 			SELECT count(nf_articles.ID) AS records
 			FROM $from
 			$where
-		"
-		);
+		";
+		
+		$return = $f3->get("DB")->exec($sql);
 		if (count($return)) {
 			$return = $return[0]['records'];
 		}
@@ -180,7 +195,7 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"" )) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {
@@ -225,6 +240,22 @@ class articles {
 
 		//test_array($usepub_placed); 
 		$from = self::_from($options);
+		
+		
+		$body_id = "";
+		if (isset($options['body_search'])&&$options['body_search']) {
+			$search_str = $options['body_search'];
+			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
+			if (count($body_id)){
+				$n = array();
+				foreach($body_id as $item){
+					$n[] = $item['aID'];
+				}
+				$body_id = implode(",",$n);
+				$where = $where . " OR nf_articles.ID in ($body_id) ";
+			}
+			
+		}
 
 		$sql = "
 			SELECT DISTINCT

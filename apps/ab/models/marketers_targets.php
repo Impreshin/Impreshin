@@ -280,7 +280,7 @@ class marketers_targets {
 
 		$cID = isset($values['cID']) ? $values['cID'] : "";
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 
 		$publications = \models\publications::getAll("cID='$cID'", "publication ASC");

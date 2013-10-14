@@ -140,7 +140,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")) {
 			$("#settings-modal").addClass("loading");
-			$.post("/app/ab/save/list_settings/?section=search&reset=columns,group,order", function () {
+			$.post("/app/nf/save/list_settings/?section=search&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy", "groupBy");
 				window.location.reload();
 			});
@@ -164,7 +164,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/app/ab/save/list_settings/?section=search", {"columns":columns, "group":group, "groupOrder":order}, function () {
+		$.post("/app/nf/save/list_settings/?section=search", {"columns":columns, "group":group, "groupOrder":order}, function () {
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")) {
 				$.bbq.removeState("modal");
@@ -294,7 +294,7 @@ function getList(settings) {
 
 	var $search_stats = $("#search-stats").html("Searching");
 
-	$.getData("/app/ab/data/search/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search, "dates":dates, "page":page}, function (data) {
+	$.getData("/app/nf/data/search/_list", {"group":group, "groupOrder":groupOrder, "highlight":highlight, "filter":filter, "order":order, "search":search, "dates":dates, "page":page}, function (data) {
 
 
 		var $recordsList = $("#record-list");

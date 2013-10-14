@@ -14,8 +14,8 @@ class controller_admin_marketers extends \apps\ab\controllers\_ {
 	function page() {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		$pID = $user['pID'];
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 
 		$users = \models\user::getAll("cID='$cID'", "fullName ASC");

@@ -21,7 +21,7 @@ class admin_categories extends save {
 	function _save() {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
@@ -95,7 +95,7 @@ class admin_categories extends save {
 
 	function _sort() {
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
 

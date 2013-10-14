@@ -252,7 +252,7 @@ class settings {
 				"g"=> "payment_method"
 			),
 			"none"=> array(
-				"n"=> "No Ordering",
+				"n"=> "No Grouping",
 				"g"=> "none"
 			)
 		);

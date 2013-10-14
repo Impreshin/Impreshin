@@ -22,7 +22,7 @@ class admin_publications extends data {
 		$userID = $user['ID'];
 
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 
@@ -46,7 +46,7 @@ class admin_publications extends data {
 		$cfg = $this->f3->get("CFG");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 

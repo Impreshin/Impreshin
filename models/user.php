@@ -434,7 +434,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$cID = $values['cID'];
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 
 
@@ -511,7 +511,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 		$user = $f3->get("user");
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 		$app = $f3->get("app");
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
@@ -537,7 +537,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 		$app = $f3->get("app");
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
@@ -563,7 +563,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 		if (!$app) {
 			$app = $f3->get("app");
@@ -592,7 +592,7 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		if (!$cID) {
-			$cID = $user['publication']['cID'];
+			$cID = $user['company']['ID'];
 		}
 		$app = $f3->get("app");
 		$p = new \DB\SQL\Mapper($f3->get("DB"),"global_users_company");
