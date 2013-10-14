@@ -16,6 +16,9 @@ class permissions {
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
+			"view"=> array(
+				"only_my_records"=>0
+			),
 			"stages"=>array(),
 			"form"           => array(
 				"new"         => 0,
@@ -69,7 +72,9 @@ class permissions {
 
 
 		$return['d'] = array(
-
+			"view"=>array(
+				'only_my_records'=>"If this is checked checked then the user will ONLY see their own records (author ID)."
+			),
 			"administration" => array(
 
 				"system"      => array(

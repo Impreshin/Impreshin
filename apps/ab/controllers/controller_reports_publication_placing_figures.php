@@ -14,8 +14,8 @@ class controller_reports_publication_placing_figures extends \apps\ab\controller
 	function page() {
 		$user = $this->f3->get("user");
 		$uID = $user['ID'];
-		$pID = $user['pID'];
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		$section = "reports_publication_placing";
 		$settings = models\settings::_read($section);

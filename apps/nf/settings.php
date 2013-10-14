@@ -143,21 +143,17 @@ class settings {
 		 */
 		$groupByoptions = array(
 
-			"none"=> array(
-				"n"=> "No Ordering",
-				"g"=> "none"
-			),
-			"stage"=> array(
-				"n"=> "Stage",
-				"g"=> "stage"
+			"author"=> array(
+				"n"=> "Authors",
+				"g"=> "author"
 			),
 			"category"=> array(
 				"n"=> "Category",
 				"g"=> "category"
 			),
-			"author"=> array(
-				"n"=> "Authors",
-				"g"=> "author"
+			"stage"=> array(
+				"n"=> "Stage",
+				"g"=> "stage"
 			),
 			"priority"=> array(
 				"n"=> "Priority",
@@ -166,16 +162,21 @@ class settings {
 			"page"=> array(
 				"n"=> "Page",
 				"g"=> "page"
-			)
+			),
+			"none"=> array(
+				"n"=> "No Grouping",
+				"g"=> "none"
+			),
 		);
 
 
 
 
 		$sections = array(
-			"provisional"=>array("none","stage","author","category","priority","page"),
-			"newsbook"=>array("none","stage","author","category","priority","page"),
-			"production"=>array("none","author","category","priority","page"),
+			"provisional"=>array("author","category","stage","priority","none"),
+			"newsbook"=>array("author","category","stage","priority","page","none"),
+			"production"=>array("author","category","priority","page","none"),
+			"search"=>array("author","category","stage","priority","none"),
 		
 		);
 
@@ -305,7 +306,7 @@ class settings {
 				"search"=> array(
 					"col"        => $defColumns,
 					"group"      => array(
-						"g"=> "author",
+						"g"=> "none",
 						"o"=> "ASC"
 					),
 					"order"      => array(
@@ -315,7 +316,7 @@ class settings {
 					"count"      => count($defColumns),
 					"search"=> array(
 						"search"=> "",
-						"dates" => ""
+						"dates" => date("Y-m-d",strtotime(date("Y")."-".date('m')."-".'1')) . " to " . date("Y-m-d",strtotime(date("Y")."-".date('m')."-".date('t')))
 					)
 
 				),

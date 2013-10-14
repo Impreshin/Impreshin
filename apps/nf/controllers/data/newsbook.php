@@ -111,7 +111,11 @@ class newsbook extends data {
 		$where .= " AND global_dates.ID = '$dID'";
 		$records = models\articles::getAll($where, $grouping, $ordering,array("pID"=>$pID,"dID"=>$dID));
 		$stats = models\record_stats::stats($records,array("placed","ready","stages"));
-
+		if ($search){
+			$searchsql = " AND (title like '%$search%' OR nf_categories.category like '%$search%' OR global_users.fullName like '%$search%' OR nf_article_types.type like '%$search%' OR meta like '%$search%') ";
+			$where .= $searchsql;
+			$records = models\articles::getAll($where, $grouping, $ordering);
+		}
 		$stats['percent_highlight'] = ($highlight)?$stats['records'][$highlight]['p']:"0";
 		
 		

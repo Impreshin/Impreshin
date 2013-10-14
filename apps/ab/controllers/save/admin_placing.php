@@ -21,7 +21,7 @@ class admin_placing extends save {
 	function _save() {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
@@ -142,8 +142,8 @@ class admin_placing extends save {
 
 	function _sort() {
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
 		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
 
@@ -161,7 +161,7 @@ class admin_placing extends save {
 
 	function _copyfrom() {
 		$user = $this->f3->get("user");
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 		$pID = (isset($_GET['new_pID'])) ? $_GET['new_pID'] : $user['publication']['ID'];
 		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
 

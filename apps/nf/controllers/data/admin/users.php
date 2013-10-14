@@ -18,8 +18,8 @@ class users extends \apps\nf\controllers\data\data {
 	function _list() {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		$pID = $user['pID'];
-		$cID = $user['publication']['cID'];
+		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 		$section = "admin_users";
 
@@ -97,7 +97,7 @@ class users extends \apps\nf\controllers\data\data {
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
@@ -136,7 +136,7 @@ class users extends \apps\nf\controllers\data\data {
 		$return['publications'] = $publications;
 
 
-		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $user['publication']['cID'] . "'");
+		$extra = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID='" . $details['ID'] . "' AND cID='" . $cID . "'");
 		$permissions = \apps\nf\permissions::defaults($user['company']['ID']);
 		$permissions = $permissions["p"];
 

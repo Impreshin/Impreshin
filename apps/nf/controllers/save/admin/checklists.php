@@ -21,7 +21,7 @@ class checklists extends \apps\nf\controllers\save\save {
 	function _save() {
 		$user = $this->f3->get("user");
 		$pID = $user['publication']['ID'];
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";

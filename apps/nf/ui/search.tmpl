@@ -105,11 +105,7 @@
 <script type="text/javascript">
 
 	var editions = [
-		{heading:'Editions'}
-		{% for row in dates %}
-		,
-		{text:'{{ row['publish_date_display'] }}', date:'{{ row['publish_date'] }}'}
-		{% endfor %}
+		
 
 	];
 	var date_range = {{ date_range|raw }};

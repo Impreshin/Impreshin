@@ -23,8 +23,8 @@ class publication_section_figures extends data {
 		$userID = $user['ID'];
 
 
-		$cID = $user['publication']['cID'];
 		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
 
 		$section = "reports_publication_section";

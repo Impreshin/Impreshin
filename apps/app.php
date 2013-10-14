@@ -84,6 +84,7 @@ class app {
 
 		$data = $this->f3->get("DB")->exec("SELECT * FROM $table WHERE uID = '$uID'");
 
+	
 
 		$DefaultsettingsClass = $this->namespace . "\\settings";
 		$settings = $DefaultsettingsClass::defaults();
@@ -122,7 +123,7 @@ class app {
 		$lastcID = $data['cID'];
 
 		$publicationObject = new models\publications();
-		if ((isset($_GET['apID']) && ($_GET['apID'] != "")) && $_GET['apID'] != $lastpID) {
+		if ((isset($_GET['apID']) && $_GET['apID'] != "") && $_GET['apID'] != $lastpID) {
 			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
 			$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
 			$lastpID = $_GET['apID'];
@@ -130,7 +131,7 @@ class app {
 			$lastcID = $lastcIDV['cID'];
 		}
 
-		if ((isset($_GET['acID']) && $_GET['acID']) && $_GET['acID'] != $lastcID) {
+		if ((isset($_GET['acID']) && $_GET['acID'] !="") && $_GET['acID'] != $lastcID) {
 			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
 			$this->f3->get("DB")->exec("UPDATE $table SET cID = '" . $_GET['acID'] . "' WHERE uID = '$uID'");
 			$lastcID = $_GET['acID'];
@@ -173,7 +174,7 @@ class app {
 		}
 
 
-//test_array($companies); 
+
 
 		//$cID = $cID ? $cID: (count($companies)) ? $companies[0]['ID'] : "";
 
@@ -198,15 +199,17 @@ class app {
 
 
 
+	
 
 		$publication = $publicationObject->get($pID);
 
 
+		
 
 		$companyObject = new models\company();
 		$company = $companyObject->get($cID);
 
-		//test_array(array("company"=>$company,"publication"=>$publication));
+		
 
 		$return['pID'] = $pID;
 		$return['companies'] = $companies;
@@ -225,12 +228,13 @@ class app {
 		
 		/*** find company specific settings for the user like permissions and access to the various apps **/
 
-		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' ORDER BY if((SELECT global_publications.cID FROM global_publications WHERE global_publications.ID = '$lastpID')=global_users_company.cID,1,0) DESC, ID DESC LIMIT 0,1");
+		$appstuff = $this->f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID' AND cID = '$cID' ORDER BY ID DESC LIMIT 0,1");
 
 		$return['access'] = false;
 		$applications_list = $this->f3->get("applications");
 
 
+		//test_array($appstuff); 
 		$applications = array();
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
@@ -308,7 +312,7 @@ class app {
 
 
 		$return['applications'] = $applications;
-		//test_array($permissions);
+		
 
 
 
@@ -373,8 +377,9 @@ class app {
 		//test_array($permissions);
 		$return['permissions'] = $permissions;
 
+	//	test_array(array("uID"=>$return['ID'],"company"=>$return['company'],"publication"=>$return['publication'],"permissions"=>$return['permissions'])); 
 
-	//	test_array($return);
+		//test_array($return);
 		$this->user = $return;
 
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());

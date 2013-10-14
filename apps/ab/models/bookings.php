@@ -560,7 +560,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$cfg = $cfg['upload'];
 		//test_array($cfg);
 		$user = $f3->get("user");
-		$cID = $user['publication']['cID'];
+		$cID = $user['company']['ID'];
 		if (($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') && !$a->dry()) {
 			if ($a->material_file_store) {
 				$oldFolder = $cfg['folder'] . "ab/" . $cID . "/" . $a->pID . "/" . $a->dID . "/material/";
