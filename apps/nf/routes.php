@@ -93,8 +93,49 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/admin/categories',
+	"controller"=>'apps\nf\controllers\admin\categories->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/stages',
+	"controller"=>'apps\nf\controllers\admin\stages->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/sections',
+	"controller"=>'apps\nf\controllers\admin\sections->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/cmstylesheet',
+	"controller"=>'apps\nf\controllers\admin\cmstylesheet->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/loading',
+	"controller"=>'apps\nf\controllers\admin\loading->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+
+
+
+
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/admin/dates',
-	"controller"=>'apps\nf\controllers\admin_dates->page',
+	"controller"=>'apps\nf\controllers\admin\dates->page',
 	"a"=>true,
 	"l"=>true,
 );
@@ -105,7 +146,7 @@ $routes[] =	array(
 $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/nf/admin/publications',
-	"controller"=>'apps\nf\controllers\admin_publications->page',
+	"controller"=>'apps\nf\controllers\admin\publications->page',
 	"a"=>true,
 	"l"=>true,
 );

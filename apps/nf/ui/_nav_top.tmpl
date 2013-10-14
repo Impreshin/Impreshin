@@ -168,94 +168,49 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li class="nav-header">Application</li>
-					
-				
+
+				{% if _user['permissions']['administration']['application']['checklists']['page'] %}
 				<li class="{% if page['section']=="admin" and page['sub_section'] == "checklists" %} active {% endif %}">
 						<a href="/app/nf/admin/checklists">Checklist Items</a>
 					</li>
+				{% endif %}
+				{% if _user['permissions']['administration']['application']['priorities']['page'] %}
 				<li class="{% if page['section']=="admin" and page['sub_section'] == "priorities" %} active {% endif %}">
 						<a href="/app/nf/admin/priorities">Priorities</a>
 					</li>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				{% if _user['permissions']['administration']['application']['accounts']['status']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_status" %} active {% endif %}">
-						<a href="/app/nf/admin/accounts/status" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Account {% endif %}Status</a>
-					</li>
 				{% endif %}
-				{% if _user['permissions']['administration']['application']['accounts']['import']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "accounts_import" %} active {% endif %}">
-						<a href="/app/nf/admin/accounts/import" {% if _user['permissions']['administration']['application']['accounts']['page'] %}style="padding-left: 30px;">{% else %}>Accounts {% endif %}Import</a>
-					</li>
-				{% endif %}
-
+				
 				{% if _user['permissions']['administration']['application']['categories']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "categories" %} active {% endif %}">
 						<a href="/app/nf/admin/categories">Categories</a>
 					</li>
 				{% endif %}
-
-				{% if _user['permissions']['administration']['application']['marketers']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "marketers" %} active {% endif %}">
-						<a href="/app/nf/admin/marketers">Marketers</a>
+				{% if _user['permissions']['administration']['application']['stages']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "stages" %} active {% endif %}">
+						<a href="/app/nf/admin/stages">Stages</a>
 					</li>
 				{% endif %}
-				{% if _user['permissions']['administration']['application']['marketers']['targets']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "marketers_targets" %} active {% endif %}">
-						<a href="/app/nf/admin/marketers/targets" {% if _user['permissions']['administration']['application']['marketers']['page'] %}style="padding-left: 30px;">{% else %}>Marketers {% endif %}Targets</a>
-					</li>
-				{% endif %}
-
-
-				{% if _user['permissions']['administration']['application']['production']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "production" %} active {% endif %}">
-						<a href="/app/nf/admin/production">Production</a>
-					</li>
-				{% endif %}
-
-
-
-
-
-
+				
 				{% if _user['permissions']['administration']['application']['sections']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "sections" %} active {% endif %}">
 						<a href="/app/nf/admin/sections">Sections</a>
 					</li>
 				{% endif %}
 
+				
+				
 
-				{% if _user['permissions']['administration']['application']['placing']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "placing" %} active {% endif %}">
-						<a href="/app/nf/admin/placing">Placing</a>
+				{% if _user['permissions']['administration']['application']['cm_style_sheet']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "cm_style_sheet" %} active {% endif %}">
+						<a href="/app/nf/admin/cmstylesheet">Cm Style Sheet</a>
 					</li>
 				{% endif %}
-				<!--
-				{% if _user['permissions']['administration']['application']['placing']['colours']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "placing_colours" %} active {% endif %}">
-						<a href="/app/nf/admin/placing/colours" {% if _user['permissions']['administration']['application']['placing']['page'] %}style="padding-left: 30px;">{% else %}>Placing {% endif %}Colours</a>
-					</li>
-				{% endif %}-->
-
-
 				{% if _user['permissions']['administration']['application']['loading']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "loading" %} active {% endif %}">
 						<a href="/app/nf/admin/loading">Loading</a>
 					</li>
 				{% endif %}
 
-				{% if _user['permissions']['administration']['application']['inserts_types']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "inserts_types" %} active {% endif %}">
-						<a href="/app/nf/admin/inserts_types">Inserts Type</a>
-					</li>
-				{% endif %}
 
 
 				<li class="nav-header">System</li>
@@ -265,7 +220,7 @@
 					</li>
 				{% endif %}{% if _user['permissions']['administration']['system']['users']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
-						<a href="/app/nf/admin/users"><i class="icon-user menu-icon"></i> Users</a>
+						<a href="/app/nf/admin/users"><i class="icon-user menu-icon" style="margin-right: 7px;"></i> Users</a>
 					</li>
 				{% endif %}
 				{% if _user['permissions']['administration']['system']['publications']['page'] %}

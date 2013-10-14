@@ -1,13 +1,10 @@
 <?php
-/*
- * Date: 2011/10/31
- * Time: 5:06 PM
- */
-namespace apps\ab\controllers;
+
+namespace apps\nf\controllers\admin;
 
 use \timer as timer;
-use \apps\ab\models as models;
-class controller_admin_publications extends \apps\ab\controllers\_ {
+use \apps\nf\models as models;
+class publications extends \apps\nf\controllers\_ {
 	function __construct() {
 		parent::__construct();
 	}
@@ -21,13 +18,13 @@ class controller_admin_publications extends \apps\ab\controllers\_ {
 
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","apps/ab/ui/");
+		$tmpl = new \template("template.tmpl","apps/nf/ui/");
 		$tmpl->page = array(
 			"section"=> "admin",
 			"sub_section"=> "publications",
-			"template"=> "page_admin_publications",
+			"template"=> "admin_publications",
 			"meta"    => array(
-				"title"=> "AB - Admin - Publications",
+				"title"=> "NF - Admin - Publications",
 			)
 		);
 
