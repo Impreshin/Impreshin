@@ -147,7 +147,7 @@ class provisional extends data {
 		} else {
 			
 			$filter = array("stageID",$stage);;
-			$stats['main'] = $stats['records']['stages'][$stage];
+			$stats['main'] = isset($stats['records']['stages'][$stage])?$stats['records']['stages'][$stage]:array();
 		}
 		
 		$return = array();
