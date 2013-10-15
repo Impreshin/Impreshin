@@ -54,6 +54,15 @@
 				<legend><% if (this.details.ID) { %>Edit<% } else { %>New<% } %></legend>
 				<div id="errorArea"></div>
 
+				<% if (this.details.ID) { %>
+				{% if _user['su']=='1' %}
+					<div class="alert">
+						<a href="/app/nf/?auID=<%= this.details.ID %>">To impersonate this user and see what they see click here
+						</a>
+
+					</div>
+				{% endif %}
+				<% } %>
 				<div class="control-group">
 					<label for="fullName" class="control-label">Full Name</label>
 

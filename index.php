@@ -88,6 +88,11 @@ if ($username && $password) {
 	}
 }
 $user = $userO->get($uID);
+if (isset($_GET['auID']) && $user['su']=='1'){
+	$_SESSION['uID'] = $_GET['auID'];
+	$user = $userO->get($_GET['auID']);
+}
+
 
 
 
