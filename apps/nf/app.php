@@ -12,7 +12,16 @@ class app extends \apps\app{
 	}
 	function app(){
 		$user =parent::user();
-		
+
+		$permissions = $user['permissions'];
+		$permissions['records']['_nav'] = '0';
+		foreach ($permissions['records'] as $p) {
+			if ($p['page']) {
+				$permissions['records']['_nav'] = '1';
+			}
+		}
+
+		$user['permissions'] = $permissions;
 		//test_array($user); 
 		$this->user = $user;
 		

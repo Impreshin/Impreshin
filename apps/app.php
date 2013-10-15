@@ -88,7 +88,7 @@ class app {
 
 		$DefaultsettingsClass = $this->namespace . "\\settings";
 		$settings = $DefaultsettingsClass::defaults();
-
+		
 		if (count($data)) {
 			$data = $data[0];
 			$user_settings = @unserialize($data['settings']);
@@ -99,7 +99,7 @@ class app {
 			foreach ($tableS as $key => $value) {
 				$result[$value["Field"]] = "";
 			}
-
+			
 			$data =  $result;
 		}
 
@@ -123,18 +123,28 @@ class app {
 		$lastcID = $data['cID'];
 
 		$publicationObject = new models\publications();
-		if ((isset($_GET['apID']) && $_GET['apID'] != "") && $_GET['apID'] != $lastpID) {
-			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
-			$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
-			$lastpID = $_GET['apID'];
-			$lastcIDV = $publicationObject->get($lastpID);
-			$lastcID = $lastcIDV['cID'];
+		if (isset($_GET['apID']) && $_GET['apID']) {
+			if ($_GET['apID'] != $lastpID || $lastpID ==""){
+				
+				//$settingsClass::save($uID,array("pID" => $_GET['apID']));
+				//test_array("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'"); 
+				$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
+				$lastpID = $_GET['apID'];
+				$lastcIDV = $publicationObject->get($lastpID);
+				$lastcID = $lastcIDV['cID'];
+			}
+			if ($lastcID==""){
+				$this->f3->get("DB")->exec("UPDATE $table SET cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
+			}
+			
 		}
 
-		if ((isset($_GET['acID']) && $_GET['acID'] !="") && $_GET['acID'] != $lastcID) {
-			//$settingsClass::save($uID,array("pID" => $_GET['apID']));
-			$this->f3->get("DB")->exec("UPDATE $table SET cID = '" . $_GET['acID'] . "' WHERE uID = '$uID'");
-			$lastcID = $_GET['acID'];
+		if (isset($_GET['acID']) && $_GET['acID']) {
+			if ($_GET['acID'] != $lastcID || $lastcID ==""){
+				//$settingsClass::save($uID,array("pID" => $_GET['apID']));
+				$this->f3->get("DB")->exec("UPDATE $table SET cID = '" . $_GET['acID'] . "' WHERE uID = '$uID'");
+				$lastcID = $_GET['acID'];
+			}
 		}
 
 
@@ -218,7 +228,7 @@ class app {
 		$return['publications'] = $publications;
 		$return['publication'] = $publication;
 
-	//	test_array($return); 
+		
 
 
 		$DefaultPermissionsClass = $this->namespace . "\\permissions";
@@ -343,43 +353,15 @@ class app {
 
 		//test_array($return);
 
-		if ($app == "ab") {
+		
 
-			if ($user['su'] == '1') {
-				$permissions['view']['only_my_records'] = '0';
-			}
-
-
-			$permissions['records']['_nav'] = '0';
-			foreach ($permissions['records'] as $p) {
-				if ($p['page']) $permissions['records']['_nav'] = '1';
-			}
-
-			if (isset($result['marketer']['ID']) && $result['marketer']['ID']) {
-				$permissions['reports']['_nav'] = '1';
-				$permissions['reports']['marketer']['_nav'] = '1';
-				foreach ($permissions['reports']['marketer'] as $k => $p) {
-					$permissions['reports']['marketer'][$k]['spage'] = '1';
-
-				}
-
-			}
-		}
-
-		if ($app == "nf") {
-			$permissions['records']['_nav'] = '0';
-			foreach ($permissions['records'] as $p) {
-				if ($p['page']) $permissions['records']['_nav'] = '1';
-			}
-			
-		}
 
 		//test_array($permissions);
 		$return['permissions'] = $permissions;
 
 	//	test_array(array("uID"=>$return['ID'],"company"=>$return['company'],"publication"=>$return['publication'],"permissions"=>$return['permissions'])); 
 
-		//test_array($return);
+		
 		$this->user = $return;
 
 		$timer->stop(array("App" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
