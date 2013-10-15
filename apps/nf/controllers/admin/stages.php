@@ -3,36 +3,36 @@
  * Date: 2011/10/31
  * Time: 5:06 PM
  */
-namespace apps\ab\controllers;
+namespace apps\nf\controllers\admin;
 
 use \timer as timer;
-use \apps\ab\models as models;
-class controller_admin_publications extends \apps\ab\controllers\_ {
+use \apps\nf\models as models;
+class stages extends \apps\nf\controllers\_  {
 	function __construct() {
 		parent::__construct();
 	}
 	function page() {
 		$user = $this->f3->get("user");
-		$uID = $user['ID'];
+		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
 
-		//test_array($user);
 
+
+
+//test_array($pages);
 
 		//test_array($ab_settings);
-		$tmpl = new \template("template.tmpl","apps/ab/ui/");
+		$tmpl = new \template("template.tmpl","apps/nf/ui/");
 		$tmpl->page = array(
 			"section"=> "admin",
-			"sub_section"=> "publications",
-			"template"=> "page_admin_publications",
+			"sub_section"=> "stages",
+			"template"=> "admin_stages",
 			"meta"    => array(
-				"title"=> "AB - Admin - Publications",
+				"title"=> "NF - Admin - Stages",
 			)
 		);
 
-
-		$tmpl->use_pub=false;
 
 		$tmpl->output();
 

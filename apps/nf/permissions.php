@@ -53,7 +53,28 @@ class permissions {
 			),
 			"administration" => array(
 				"application" => array(
-
+					"checklists"=>array(
+						"page"=>0
+					),
+					"priorities"=>array(
+						"page"=>0
+					),
+					"categories"=>array(
+						"page"=>0
+					),
+					"stages"=>array(
+						"page"=>0
+					),
+					"sections"=>array(
+						"page"=>0
+					),
+					"cm_style_sheet"=>array(
+						"page"=>0
+					),
+					"loading"=>array(
+						"page"=>0
+					),
+					
 				),
 				"system"      => array(
 					"dates"        => array(
