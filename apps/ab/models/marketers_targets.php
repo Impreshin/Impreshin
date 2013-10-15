@@ -54,8 +54,10 @@ class marketers_targets {
 
 		$marketer = new marketers();
 		$return = $marketer->get($mID);
+		
 		if ($return['ID']) {
 
+			
 
 			$result = $f3->get("DB")->exec("
 				SELECT ab_marketers_targets.*, DATEDIFF(current_date(),date_to)
@@ -67,6 +69,7 @@ class marketers_targets {
 
 			$done = 0;
 
+		
 
 			if (count($result)) {
 				$next = $result[0];
@@ -169,6 +172,7 @@ class marketers_targets {
 			$return = "";
 		}
 
+		
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
