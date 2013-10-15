@@ -25,22 +25,24 @@ class notifications {
 
 		if ($user['ID'] && isset($user['publication']['ID']) && isset($user['publication']['current_date']['ID'])) {
 
+			
 			if (isset($user['extra']['ab_marketerID']) && $user['extra']['ab_marketerID']) {
 				$marketer = \apps\ab\models\marketers_targets::_current($user['extra']['ab_marketerID'], $user['publication']['ID']);
 			} else {
 				$marketer = array();
+				if (isset($user['marketer'])) {
+					$marketer = $user['marketer'];
+				}
 			}
 
-			//test_array($marketer);
+			
 			if (count($marketer)) {
 				$return['marketer'] = $marketer;
 			}
 
 
 
-			if (isset($user['marketer'])) {
-				$return['marketer'] = $user['marketer'];
-			}
+			
 
 			if ((isset($user['ab_productionID']) && $user['ab_productionID']) || $user['permissions']['details']['actions']['check'] || $user['permissions']['layout']['page']) {
 				$records = bookings::getAll("ab_bookings.pID = '" . $user['publication']['ID'] . "' AND ab_bookings.dID = '" . $user['publication']['current_date']['ID'] . "' AND ab_bookings.deleted is null");
