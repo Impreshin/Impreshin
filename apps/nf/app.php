@@ -30,6 +30,10 @@ class app extends \apps\app{
 		//test_array($settings);
 
 
+		if (isset($_GET['debug']) && $_GET['debug']=="user"){
+			test_array($user); 
+		}
+		return $user;
 
 	}
 	

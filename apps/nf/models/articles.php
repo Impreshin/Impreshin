@@ -290,6 +290,12 @@ class articles {
 			$orderby
 			$limit
 		";
+
+		if (isset($_GET['debug']) && $_GET['debug']=="articles_getAll_sql"){
+			echo $sql;exit();
+		}
+		
+		
 		if (isset($_GET['sql'])){
 			echo $sql;exit();
 		}
