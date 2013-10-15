@@ -123,15 +123,19 @@ class app {
 		$lastcID = $data['cID'];
 
 		$publicationObject = new models\publications();
+		
 		if (isset($_GET['apID']) && $_GET['apID']) {
 			if ($_GET['apID'] != $lastpID || $lastpID ==""){
 				
 				//$settingsClass::save($uID,array("pID" => $_GET['apID']));
 				//test_array("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'"); 
+				
+				
 				$this->f3->get("DB")->exec("UPDATE $table SET pID = '". $_GET['apID']."', cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
 				$lastpID = $_GET['apID'];
 				$lastcIDV = $publicationObject->get($lastpID);
 				$lastcID = $lastcIDV['cID'];
+				$update_last_activity = false;
 			}
 			if ($lastcID==""){
 				$this->f3->get("DB")->exec("UPDATE $table SET cID = (SELECT cID FROM global_publications WHERE ID = '" . $_GET['apID'] . "')  WHERE uID = '$uID'");
@@ -148,6 +152,8 @@ class app {
 		}
 
 
+
+		$this->f3->get("DB")->exec("UPDATE $table SET last_activity=now() WHERE uID = '$uID'");
 
 
 		//test_array(array($lastcID, $lastpID));
