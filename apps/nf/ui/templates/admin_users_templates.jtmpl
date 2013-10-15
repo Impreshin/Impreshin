@@ -57,7 +57,7 @@
 				<% if (this.details.ID) { %>
 				{% if _user['su']=='1' %}
 					<div class="alert">
-						<a href="/app/nf/?auID=<%= this.details.ID %>">To impersonate this user and see what they see click here
+						<a href="/app/?auID=<%= this.details.ID %>">To impersonate this user and see what they see click here
 						</a>
 
 					</div>
