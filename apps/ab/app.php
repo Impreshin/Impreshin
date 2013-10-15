@@ -44,8 +44,10 @@ class app extends \apps\app{
 		$user['permissions'] = $permissions;
 		$this->user = $user;
 
-		
-		$this->f3->set("user", $this->user);
+		if (isset($_GET['debug']) && $_GET['debug']=="user"){
+			test_array($user);
+		}
+		$this->f3->set("user", $user);
 		return $user;
 
 

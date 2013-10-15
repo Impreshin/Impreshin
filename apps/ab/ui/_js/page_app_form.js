@@ -165,7 +165,7 @@ function account_search() {
 	var $loadingmask = $("#account-search-modal .loadingmask").show();
 	if (search){
 
-		$.getJSON("/app/ab/data/form/_accounts", {"search": search}, function (data) {
+		$.getData("/app/ab/data/form/_accounts", {"search": search}, function (data) {
 
 
 			$count.html(data['count'] + " Record(s) found");
