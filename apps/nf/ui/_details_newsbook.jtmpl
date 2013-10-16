@@ -51,6 +51,15 @@
 							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt="" style="width:110px; height:90px;"/>
 						</div>
 						<div class="span6 selectable"><%= this.media[f].caption %></div>
+						
+						<div class="clearfix"></div>
+						<div class="well well-small">
+							filename: <a href="/app/nf/download?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&filename=<%= this.media[f].filename_orig %>"><%= this.media[f].filename_orig %></a>
+
+							<a class="btn span1 btn-mini" title="Download"  href="/app/nf/download?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&filename=<%= this.media[f].filename_orig %>"><i class="icon-download-alt"></i></a>
+							<a class="btn span1 btn-mini" title="View"  href="/app/nf/download?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&filename=<%= this.media[f].filename_orig %>"><i class="icon-zoom-in"></i></a>
+						</div>
+						
 					</article>
 				
 

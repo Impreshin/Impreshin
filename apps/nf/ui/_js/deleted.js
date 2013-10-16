@@ -147,7 +147,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")){
 			$("#settings-modal").addClass("loading");
-			$.post("/app/ab/save/list_settings/?section=deleted&reset=columns,group,order", function () {
+			$.post("/app/nf/save/list_settings/?section=deleted&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy","groupBy");
 				window.location.reload();
 			});
@@ -172,7 +172,7 @@ $(document).ready(function () {
 		//console.log(columns);
 
 		$("#settings-modal").addClass("loading");
-		$.post("/app/ab/save/list_settings/?section=deleted",{"columns":columns,"group":group,"groupOrder":order},function(){
+		$.post("/app/nf/save/list_settings/?section=deleted",{"columns":columns,"group":group,"groupOrder":order},function(){
 			$("#settings-modal").removeClass("loading");
 			if (confirm("Settings Saved\n\nReload new settings now?")){
 				$.bbq.removeState("modal");
@@ -303,7 +303,7 @@ function getList(settings) {
 	$("#whole-area .loadingmask").show();
 	var $search_stats = $("#search-stats").html("Searching");
 
-	$.getData("/app/ab/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates,"page":page},function(data){
+	$.getData("/app/nf/data/deleted/_list",{"group": group,"groupOrder":groupOrder, "highlight": highlight, "filter": filter, "order": order,"search":search,"dates":dates,"page":page},function(data){
 
 
 

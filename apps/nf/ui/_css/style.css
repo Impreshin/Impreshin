@@ -394,8 +394,7 @@
 }
 #nf-details-modal-area-newsbook #left-side-pane .article-photo {
   border-bottom: 1px dotted #ccc;
-  padding-top: 10px;
-  padding-bottom: 15px;
+  padding-top: 15px;
 }
 #nf-details-modal-area-newsbook #left-side-pane .article-photo .span6 {
   width: 390px;
@@ -404,6 +403,29 @@
   -webkit-box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
   -moz-box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
   box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
+}
+#nf-details-modal-area-newsbook #left-side-pane .article-photo .well {
+  border: none;
+  border-top: 1px dotted #f1f1f1;
+  padding: 4px;
+  font-size: 10px;
+  margin-bottom: 0;
+}
+#nf-details-modal-area-newsbook #left-side-pane .article-photo .well .btn {
+  float: right;
+  margin-top: -3px;
+  margin-bottom: -4px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+#nf-details-modal-area-newsbook #left-side-pane .article-photo:hover .well .btn {
+  opacity: 1;
+  filter: alpha(opacity=100);
 }
 #nf-details-modal-area-newsbook #right-side-pane {
   height: 500px;

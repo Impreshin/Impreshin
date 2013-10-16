@@ -210,6 +210,11 @@
 						<a href="/app/nf/admin/loading">Loading</a>
 					</li>
 				{% endif %}
+				{% if _user['permissions']['administration']['application']['resources']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "resources" %} active {% endif %}">
+						<a href="/app/nf/admin/resources">Resources</a>
+					</li>
+				{% endif %}
 
 
 

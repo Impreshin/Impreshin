@@ -255,3 +255,20 @@ ALTER TABLE `nf_articles` ADD `rejected_reason` TEXT NULL DEFAULT NULL AFTER `re
 #-----
 
 ALTER TABLE `nf_articles` CHANGE `archivedDate` `archived_date` DATETIME NULL DEFAULT NULL;
+
+#-----
+
+CREATE TABLE IF NOT EXISTS `nf_resources` (
+	`ID` int(6) NOT NULL AUTO_INCREMENT,
+	`cID` int(6) DEFAULT NULL,
+	`type` tinyint(1) DEFAULT NULL,
+	`label` varchar(100) DEFAULT NULL,
+	`path` varchar(200) DEFAULT NULL,
+	`filename` varchar(30) DEFAULT NULL,
+	`orderby` int(4) DEFAULT NULL,
+	PRIMARY KEY (`ID`),
+	KEY `cID` (`cID`),
+	KEY `type`(`type`)
+)
+	
+	#---

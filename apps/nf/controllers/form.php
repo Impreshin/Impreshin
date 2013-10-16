@@ -113,6 +113,7 @@ class form extends \apps\nf\controllers\_{
 		$tmpl->types = models\types::getAll("","orderby ASC");
 		$tmpl->categories = models\categories::getAll("cID='". $cID."'","orderby ASC");
 		$tmpl->priorities = models\priorities::getAll("cID='". $cID."'","orderby ASC");
+		$tmpl->resources = models\resources::getAll("cID='". $cID."'","orderby ASC");
 		$tmpl->authors = $users;
 		$tmpl->cm_calc_css = $cfg['nf']['default_cm_calc_css'] . $user['company']['nf_cm_css'];
 		//$tmpl->stages = $stages;

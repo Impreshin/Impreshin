@@ -31,15 +31,38 @@
 		}
 		.article-photo {
 			border-bottom:  1px dotted #ccc;
-			padding-top: 10px;
-			padding-bottom:15px;
+			padding-top: 15px;
+			
 			.span6 {
 				width:  390px;
 			}
 			&.highlight {
 				.box-shadow(0 0 10px rgba(100, 100, 100, 0.3));
 			}
+			.well {
+				 .btn {
+					 float:right;
+					 margin-top: -3px;
+					 margin-bottom: -4px;
+					 .opacity(0);
+					 .transition();
+				 }
+				border:none;
+				border-top: 1px dotted #f1f1f1;
+				padding: 4px; 
+				font-size: 10px;
+				margin-bottom: 0;
+				
+			 }
+			&:hover {
+				.well {
+					.btn {
+						.opacity(100);
+					}
+				}
+			}
 		}
+		
 	}
 	#right-side-pane {
 		height        : 500px;

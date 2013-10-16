@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class stages extends \apps\nf\controllers\save\save {
+class resources extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,8 +26,10 @@ class stages extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$stage = isset($_POST['stage']) ? $_POST['stage'] : "";
-		$labelClass = isset($_POST['labelClass']) ? $_POST['labelClass'] : "";
+		$label = isset($_POST['label']) ? $_POST['label'] : "";
+		$type = isset($_POST['type']) ? $_POST['type'] : "";
+		$path = isset($_REQUEST['path']) ? $_REQUEST['path'] : array();
+		$filename = isset($_REQUEST['filename']) ? $_REQUEST['filename'] : array();
 
 
 		$return = array(
@@ -42,9 +44,9 @@ class stages extends \apps\nf\controllers\save\save {
 
 
 
-		if ($stage==""){
+		if ($label==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a Stage Name";
+			$return['error'][] = "Need to specify a label";
 		}
 
 
@@ -56,9 +58,11 @@ class stages extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"stage"         => $stage,
-			"labelClass"         => $labelClass,
-			"cID"=> $cID
+			"label"         => $label,
+			"type"     => $type,
+			"path"=> $path,
+			"cID"=> $cID,
+			"filename"=> $filename
 		);
 
 
@@ -70,7 +74,7 @@ class stages extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\stages::save($ID, $values);
+			$ID = models\resources::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -88,21 +92,20 @@ class stages extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\stages::_delete($ID);
+		models\resources::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
 	function _sort() {
 		$user = $this->f3->get("user");
-		$cID = $user['company']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
 
 
-		$i = 1;
+		$i = 0;
 		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE nf_stages SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			$this->f3->get("DB")->exec("UPDATE nf_resources SET orderby = '$i' WHERE ID = '$id'");
 			$i++;
 		}
 

@@ -124,17 +124,26 @@
 								</div>
 
 								<div id="rightpane-bottom">
+									{% if resources %}
 									<section id="block-resources" class="block">
+										
 										<ul class="nav nav-list">
 											<li class="nav-header">Resources</li>
-											<li><a href="#">How to write <i class="icon-external-link s "></i></a></li>
-											<li><a href="#">How to write part 2 <i class="icon-external-link s"></i></a></li>
-											<li><a href="#">Style Guide<i class="icon-file-alt"></i></a></li>
-											<li><a href="#">Important Numbers<i class="icon-file-alt"></i></a></li>
+											{% for row in resources %}
+											{% if row["type"]=='1' %}
+												<li><a href="{{ row['path'] }}" target="_blank">{{ row['label'] }} <i class="icon-external-link s "></i></a></li>
+											
+											
+											{% else %}
+											<li><a href="/app/nf/download?file=/{{ row['cID'] }}/resources/{{ row['path'] }}&filename={{ row['filename'] }}">{{ row['label'] }} <i class="icon-file-alt"></i></a></li>
+											
+											{% endif %}
+											{% endfor %}
+											
+											
 										</ul>
 									</section>
-
-
+									{% endif %}
 									<section class="block" id="tools-block" style="margin-top:10px;">
 
 										<div class="btn-group" style="margin-left:-4px;">

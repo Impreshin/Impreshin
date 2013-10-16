@@ -42,7 +42,12 @@ class data {
 
 
 		$permissions = $user['permissions'];
-		$stage_permissions = $permissions['stages'][$return['stageID']];
+		$stage_permissions = isset($permissions['stages'][$return['stageID']])?$permissions['stages'][$return['stageID']]:array("label"=>"-none-",
+			"edit"=>"0",
+			"to"=>"0",
+			"reject"=>"0",
+			"delete"=>"0",
+			"newsbook"=>"0");
 		
 		if ($stage_permissions['edit']=='1'){
 			if ($return['locked_uID']){

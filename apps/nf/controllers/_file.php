@@ -8,7 +8,7 @@ use \timer as timer;
 use \apps\ab\models as models;
 
 
-class _image extends \apps\nf\controllers\_ {
+class _file extends \apps\nf\controllers\_ {
 
 
 
@@ -117,6 +117,43 @@ class _image extends \apps\nf\controllers\_ {
 
 
 		imagepng($newimg, $thumb);
+	}
+	function download(){
+		$f3 = \base::instance();
+		$cfg = $f3->get("CFG");
+		$f3->set("json",False);
+
+		$cfg = $this->f3->get("CFG");
+
+
+		$user = $this->f3->get("user");
+		$app = $this->f3->get('PARAMS.app');
+		$folder = ($cfg['upload']['folder'] . $app . "/");
+		
+		
+		
+		$file = isset($_GET['file'])?$_GET['file']:"";
+		$filename = isset($_GET['filename'])?$_GET['filename']:basename($file);
+
+		$path = $folder . "nf/".$file;
+		$path = $f3->fixslashes($path);
+		$path = str_replace("//","/",$path);
+		
+		$o = new \Web();
+		
+
+		header('Content-Type: '.$o->mime($file));
+		header('Content-Disposition: attachment; '.
+				   'filename='.basename($filename));
+		header('Accept-Ranges: bytes');
+		header('Content-Length: '.$size=filesize($path));
+
+		echo readfile($path);
+		
+		
+		exit();
+		
+		
 	}
 
 

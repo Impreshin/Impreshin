@@ -127,6 +127,13 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/admin/resources',
+	"controller"=>'apps\nf\controllers\admin\resources->page',
+	"a"=>true,
+	"l"=>true,
+);
 
 
 
@@ -159,13 +166,18 @@ $routes[] =	array(
 );
 
 $app->route("GET|POST /app/nf/thumb", function ($app, $params) {
-		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_image->thumbnail");
+		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_file->thumbnail");
 
 	}
 );
 
 $app->route("GET|POST /app/nf/thumb/@w/@h", function ($app, $params) {
-		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_image->thumbnail");
+		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_file->thumbnail");
+
+	}
+);
+$app->route("GET|POST /app/nf/download", function ($app, $params) {
+		$app->chain("apps\\nf\\app->app; apps\\nf\\controllers\\_file->download");
 
 	}
 );

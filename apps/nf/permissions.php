@@ -74,6 +74,9 @@ class permissions {
 					"loading"=>array(
 						"page"=>0
 					),
+					"resources"=>array(
+						"page"=>0
+					),
 					
 				),
 				"system"      => array(
