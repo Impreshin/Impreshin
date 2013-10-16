@@ -61,8 +61,9 @@
 						<label for="path" class="control-label">Path</label>
 
 						<div class="controls">
-							<input type="text" id="path" name="path" class="span7" value="<% if (this.details.path) { %><%= this.details.path %><% } %>">
+							<input type="text" id="path" name="path" class="span7" value="<% if (this.details.path) { %><%= this.details.path %><% } %>"><div class="help-block">Please include the http:// prefix for any urls </div>
 						</div>
+						
 					</div>
 					
 				</div>
