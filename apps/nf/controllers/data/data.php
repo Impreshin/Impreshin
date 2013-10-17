@@ -67,7 +67,7 @@ class data {
 		if ($stage_permissions['reject']=='1'){
 			$allow['reject']='1';
 		}
-		if ($permissions['details']['overwrite_locked']=="1" || $return['locked_uID']==$user['ID']){
+		if ($permissions['details']['overwrite_locked']=="1" || ($return['locked_uID']==$user['ID'] && $return['stageID']!='1')){
 			$allow['locked']='1';
 		}
 		if ($permissions['details']['archive']=="1"){
