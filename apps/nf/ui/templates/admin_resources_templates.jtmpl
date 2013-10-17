@@ -81,7 +81,7 @@
 							</span>
 							
 							<div class="clearfix"></div>
-							<div class="help-block" id="btn-container-file-wait"  >Uploading.. please wait</div>
+							<div class="help-block" id="btn-container-file-wait"  >Uploading.. please wait - <span id="btn-container-file-wait-progress" ></span></div>
 						</div>
 						
 					</div>

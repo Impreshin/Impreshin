@@ -262,6 +262,7 @@ function replace_btn() {
 					if (doing){
 						up.refresh();
 						up.start();
+						$("#btn-container-file-wait-progress").html("starting...");
 						$("#btn-container-file-wait").show();
 						$("#filename").attr("disabled","disabled");
 					}
@@ -269,7 +270,8 @@ function replace_btn() {
 					
 				},
 				UploadProgress: function(up, file){
-					
+					//$progress.show().find(".bar").css("width", file.percent + "%");
+					$("#btn-container-file-wait-progress").html(file.percent + "%")
 				},
 				Error: function (up, err) {
 					//console.log("Error: " + err.code + ", Message: " + err.message + (err.file ? ", File: " + err.file.name : ""));
@@ -278,7 +280,7 @@ function replace_btn() {
 
 
 					$("#btn-container-file-wait").hide();
-					
+					$("#btn-container-file-wait-progress").html("");
 					$("#filename").val(file.name).removeAttr("disabled");
 					$("#path").val(file.target_name);
 					
