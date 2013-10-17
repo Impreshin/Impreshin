@@ -32,7 +32,7 @@ $table_changes = array(
 				"create_if_doesnt_exist"=>true
 			),
 		),
-		"cID"=>array(
+		"catID"=>array(
 			"rename"=>"categoryID",
 			"type"=>"INT(6)"
 		),

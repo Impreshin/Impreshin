@@ -1,26 +1,22 @@
 
 
-UPDATE `impreshin`.`_global_publications` SET `publication` = 'Limpopo Mirror' WHERE `_global_publications`.`ID` = 2;
+UPDATE `_global_publications` SET `publication` = 'Limpopo Mirror' WHERE `_global_publications`.`ID` = 2;
 
 SET @companyID := "1";
-#ALTER TABLE `nf_articles` ADD `article_orig2` TEXT NULL DEFAULT NULL AFTER `article`;
 
-#UPDATE nf_articles SET article_orig2 = CONVERT(article_orig USING utf8);
-#ALTER TABLE `nf_articles` DROP `article_orig`;
-#ALTER TABLE `nf_articles` CHANGE `article_orig2` `article_orig` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
 
 CREATE TABLE IF NOT EXISTS `nf_articles_body` (`ID` INT(6) NOT NULL AUTO_INCREMENT, `aID` INT(6) DEFAULT NULL, `uID` INT(6) DEFAULT NULL, `body` TEXT, `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`ID`), KEY `aID` (`aID`, `uID`));
 
-INSERT INTO nf_articles_body (aID,uID,body) SELECT ID, authorID, COALESCE(article_orig,article) FROM nf_articles WHERE articleType = 'article' AND COALESCE(article_orig,article) is not null;
-INSERT INTO nf_articles_body (aID,uID,body) SELECT ID, locked_uID,article FROM nf_articles WHERE articleType = 'article' AND article_orig is not null;
+INSERT INTO nf_articles_body (aID,uID,body) SELECT ID, authorID, article FROM nf_articles WHERE articleType = 'article' AND article is not null;
+
 
 ALTER TABLE `nf_articles` DROP `article`, DROP `article_orig`;
-
 ALTER TABLE `nf_articles_body` ADD `stageID` INT(6) NULL DEFAULT NULL;
 
 
-## SELECT ID, (SELECT DateIN FROM _global_datelist WHERE ID = nf_article_newsbook.dID_old LIMIT 0,1) as orig, (SELECT publish_date FROM global_dates WHERE ID = nf_article_newsbook.dID  LIMIT 0,1) as latest FROM  nf_article_newsbook ORDER BY ID DESC;
 
+
+ALTER TABLE `nf_articles` CHANGE `cID` `catID` INT( 5 ) NULL DEFAULT NULL;
 
 
 ALTER TABLE `nf_articles` ADD `cID` INT(6) NULL DEFAULT NULL AFTER `ID`, ADD INDEX (`cID`);
@@ -39,12 +35,14 @@ DROP TABLE nf_errors;
 
 
 
-# Run /fix_db_charset.php now
+# Run /old_to_new/nf.php
+
+# Run /fix_db_charset.php
 
 
 
 
-
+SET @companyID := "1";
 
 
 
@@ -59,6 +57,11 @@ ALTER TABLE `nf_article_newsbook` ADD INDEX (`aID`);
 ALTER TABLE `nf_article_newsbook` ADD INDEX (`pID`);
 ALTER TABLE `nf_article_newsbook` ADD INDEX (`dID`);
 ALTER TABLE `nf_article_newsbook` ADD INDEX (`uID`);
+
+
+# Run /old_to_new/nf_pages.php
+
+
 
 
 ALTER TABLE `nf_article_newsbook_photos` CHANGE `nID` `nID` INT(6) NULL DEFAULT NULL;
@@ -247,7 +250,7 @@ ALTER TABLE `nf_article_newsbook_photos` DROP `planned`;
 #------
 
 ALTER TABLE `nf_files` ADD `folder` VARCHAR( 40 ) NULL DEFAULT NULL AFTER `aID`;
-UPDATE nf_files SET folder = '1/old';
+UPDATE nf_files SET folder = CONCAT(@companyID,'/old');
 #------
 
 ALTER TABLE `nf_articles` ADD `rejected_reason` TEXT NULL DEFAULT NULL AFTER `rejected_uID`;
@@ -269,6 +272,8 @@ CREATE TABLE IF NOT EXISTS `nf_resources` (
 	PRIMARY KEY (`ID`),
 	KEY `cID` (`cID`),
 	KEY `type`(`type`)
-)
+);
 	
 	#---
+
+#DROP TABLE nf_revisions;
