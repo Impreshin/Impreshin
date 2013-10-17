@@ -29,7 +29,7 @@
 		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.edit=='1') { %>
-		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this Record"><i class="icon-pencil icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.print=='1') { %>
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>

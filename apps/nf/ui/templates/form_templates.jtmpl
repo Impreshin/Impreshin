@@ -214,7 +214,7 @@
 					<div style="float:right; margin-right: 10px;">
 						<% if (this.details.ID) { %>
 
-						<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="View this booking" data-position="above">
+						<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="View this record" data-position="above">
 							<i class="icon-fullscreen icon-d-grey"></i></button>
 						<a href="/app/nf/#scrollTo=<%= this.details.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Article List" data-position="above">
 							<i class="icon-list-alt icon-d-grey"></i></a>

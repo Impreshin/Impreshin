@@ -22,7 +22,7 @@
 
 		<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1; right:30px;">
 
-			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
 			<a href="#" class="view_full_details" rel="tooltip" data-placement="bottom" title="View the full details pane"><i class="icon-desktop icon-d-grey"></i></a>
 			
 			<a href="#" class="view_comments_details" rel="tooltip" data-placement="bottom" title="View and make comments"><i class="<% if (this.commentCount > 0) { %>icon-comments<% } else { %>icon-comment-alt <% } %> icon-d-grey"></i></a>

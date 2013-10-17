@@ -77,7 +77,7 @@
 						<span class="badge"  style="margin-right:7px;">Rejected</span>
 						<% } %>
 						<% if (this.records[i].locked=='1'){ %>
-						<i class="icon-lock" style="margin-right:7px;"></i>
+						<i class="icon-lock" style="margin-right:7px;" title="Locked by: <%= this.records[i].locked_fullName %>"></i>
 						<% } %>
 						<% if (this.records[i].type_icon){ %>
 						<i class="<%= this.records[i].type_icon %>" style="margin-right:7px;"></i>
