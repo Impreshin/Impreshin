@@ -57,6 +57,8 @@ class form extends data {
 		$return['details'] = $record;
 		$return['settings'] = $settings;
 		$return['stageNext'] = models\stages::getNext($record['stageID']);
+		$permissions = $user['permissions'];
+		
 		if (isset($permissions['stages'][$return['stageNext']['ID']])){
 			if ($permissions['stages'][$return['stageNext']['ID']]['to']!='1'){
 				$return['stageNext'] = array();
@@ -64,7 +66,7 @@ class form extends data {
 		} else {
 			$return['stageNext'] = array();
 		} 
-		$permissions = $user['permissions'];
+		
 		$stage_permissions = isset($permissions['stages'][$record['stageID']])?$permissions['stages'][$record['stageID']]:array();
 
 		$allow = array(
