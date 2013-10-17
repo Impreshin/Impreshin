@@ -9,7 +9,7 @@ mysql_select_db($cfg['DB']['database'], $link);
 
 
 
-$sql = "SELECT GROUP_CONCAT(ID) AS ID FROM `global_users` WHERE email is null;";
+$sql = "SELECT (ID) AS ID FROM `global_users` WHERE email is null;";
 $result = mysql_query($sql, $link) or die(mysql_error());
 
 
@@ -19,7 +19,11 @@ $s = array();
 
 
 	while ($row = mysql_fetch_assoc($result)) {
+		$uID = $row['ID'];
+		$s[] = "INSERT INTO `global_users_company` (`ID` , `cID` ,`uID` ,`allow_setup` ,`ab` ,`nf` ,`ab_permissions` ,`nf_permissions` ,`ab_marketerID` ,`ab_productionID` ,`nf_author`) VALUES (NULL , '1', '$uID', '0', '0', '1', NULL , NULL , NULL , NULL , '0');";
 		$r[] = $row['ID'];		
 	}
 
-test_array($r); 
+echo implode("\n",$s);
+exit();
+test_array($s); 
