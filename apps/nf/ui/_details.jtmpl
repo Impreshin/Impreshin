@@ -1197,8 +1197,8 @@ $(document).on("click",".btn-view-photo",function (e) {
 	w = w - 100;
 	h = h - 100;
 
-	w = w > 1000 ? 1000 : w;
-	h = h > 1000 ? 1000 : h;
+	w = w > 930 ? 930 : w;
+	h = h > 930 ? 930 : h;
 
 	
 		
