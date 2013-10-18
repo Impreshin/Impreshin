@@ -252,7 +252,7 @@
 
 						<% if (this.media[f].fileType=="1"){ %>
 
-						<div style="padding:20px 20px 30px 20px; text-align:center;border-bottom:1px solid #ccc; ">
+						<div style="padding:20px 20px 30px 20px; text-align:center;border-bottom:1px solid #ccc; " class="btn-view-photo" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-id="<%= this.media[f].ID %>" data-caption="<%= this.media[f].caption %>">
 							<img src="/app/nf/thumb/250/250?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&crop=false" class="glow"/>
 						</div>
 

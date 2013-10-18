@@ -96,6 +96,9 @@
   opacity: 1;
   filter: alpha(opacity=100);
 }
+#nf-details-modal .btn-view-photo {
+  cursor: pointer;
+}
 #nf-details-modal-area .back-btn-details-pane {
   display: none;
 }
