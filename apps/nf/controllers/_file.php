@@ -12,6 +12,8 @@ class _file extends \apps\nf\controllers\_ {
 
 
 
+	
+
 	public function thumbnail() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");

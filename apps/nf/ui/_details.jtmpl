@@ -234,7 +234,7 @@
 						<%= this.media[f].datein %>
 					</td>
 					<% if (this.media[f].fileType=="1"){ %>
-					<td class="c">
+					<td class="c btn-view-photo" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-id="<%= this.media[f].ID %>" data-caption="<%= this.media[f].caption %>">
 						<i class="icon-zoom-in f13"></i>
 					</td>
 					<% } else { %>
@@ -707,6 +707,87 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-photo-caption">
+	<![CDATA[
+
+	<ul class="nav nav-tabs" id="photo-viewer-tabs" >
+		<li class="active"><a href="#photo-viewer-caption" data-toggle="tab">Caption</a></li>
+		<li><a href="#photo-viewer-exif" data-toggle="tab" data-id="<%= this.ID %>">Exif</a></li>
+	</ul>
+
+
+	<div class="tab-content">
+		<div id="photo-viewer-caption" class="tab-pane active">
+			<%= this.caption %>
+		</div>
+		<div id="photo-viewer-exif" class="tab-pane">
+			<div style="text-align:center;">
+				<img src="/ui/_images/loading-wide.gif" alt="" style=" margin:10px;"/>
+			</div>
+			
+		</div>
+	</div>
+	
+	
+	
+	
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-photo-exif">
+	<![CDATA[
+
+	
+		<% if (this.exif){ %>
+		<table class="table table-condensed table-bordered s" style="margin:0;">
+			<tbody><tr>
+				<td width="13%" class="h">Width</td>
+				<td width="20%"><%= this.exif.width %></td>
+				<td width="13%" class="h">ImageDescription</td>
+				<td width="20%"><%= this.exif.description %></td>
+				<td width="13%" class="h">Make</td>
+				<td width="20%"><%= this.exif.camera.make %></td>
+			</tr>
+			<tr>
+				<td class="h">Height</td>
+				<td><%= this.exif.height %></td>
+				<td class="h">UserComment</td>
+				<td><%= this.exif.comment %></td>
+				<td class="h">Model</td>
+				<td><%= this.exif.camera.model %></td>
+			</tr>
+			<tr>
+				<td class="h">Size</td>
+				<td><%= this.exif.size %></td>
+				<td class="h">DateTime</td>
+				<td><%= this.exif.date %></td>
+				<td class="h">ShutterSpeedValue</td>
+				<td><%= this.exif.camera.shutter %></td>
+			</tr>
+			<tr>
+				<td class="h">DPI</td>
+				<td><%= this.exif.dpi %></td>
+				<td class="h">DateTimeOriginal</td>
+				<td><%= this.exif.date_orig %></td>
+				<td class="h">ApertureValue</td>
+				<td><%= this.exif.camera.aperture %></td>
+			</tr>
+			<tr>
+				<td class="h">Software</td>
+				<td><%= this.exif.software %></td>
+				<td class="h">Copyright</td>
+				<td><%= this.exif.copyright %></td>
+				<td class="h">FocalLength</td>
+				<td><%= this.exif.camera.focal %></td>
+			</tr>
+			</tbody></table>
+		<% } %>
+
+	
+	
+	
+	
+	]]>
+</script>
 <script type="text/javascript">
 
 function comment_active() {
@@ -1082,12 +1163,84 @@ $(document).on('click', '#form-newsbook-delete-btn', function (e) {
 	var $this = $(this);
 	var ID = $this.attr("data-id");
 
+	
+	
 	$("#popup-newsbook").show().find(".loadingmask").show();
 	$.post("/app/nf/save/articles/remove_newsbook/?ID=" + ID, {}, function (response) {
 		getDetails();
 	});
 
 });
+
+$(document).on("click","a[href='#photo-viewer-exif']",function(){
+	var ID = $(this).attr("data-id");
+	$("#photo-viewer-exif").html('<div style="text-align:center;"><img src="/ui/_images/loading-wide.gif" alt="" style=" margin:10px;"/></div>');
+	$.getData("/app/nf/data/file_details",{'ID':ID},function(r){
+		$("#photo-viewer-exif").jqotesub($("#template-photo-exif"), r);
+	});
+});
+$(document).on("click",".btn-view-photo",function (e) {
+	e.stopPropagation();
+	var path = $(this).attr("data-file");
+	var ID = $(this).attr("data-id");
+	var caption = $(this).attr("data-caption");
+
+	var p = {
+		"ID":ID,
+		"caption":caption,
+		"path":path
+	};
+	
+	var w = $(window).width();
+	var h = $(window).height();
+
+	w = w - 100;
+	h = h - 100;
+
+	w = w > 1000 ? 1000 : w;
+	h = h > 1000 ? 1000 : h;
+
+	
+		
+		$.fancybox.open({
+			href : '/app/nf/thumb/'+w+'/'+h+'?file='+path+'&crop=false',
+			title: "test"
+		}, {
+			padding: 10,
+			type:'image',
+			openEffect: 'fade',
+			beforeLoad:function () {
+	
+				this.title = $("#template-photo-caption").jqote(p);
+				
+	
+			},
+			afterLoad:function () {
+
+
+				
+				
+				
+	
+			},
+			helpers:{
+				overlay:{
+					speedIn   :500,
+					speedOut  :500,
+					opacity   :0.4
+	
+				},
+				title  :{
+					type:'over'
+				}
+	
+			}
+		});
+
+
+});
+
+
 function newsbook_form() {
 	var ID = $.bbq.getState("n_ID");
 	var aID = $.bbq.getState("ID");
@@ -1160,6 +1313,7 @@ function getDetails() {
 			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
 		}
 
+		$(".btn-view-photo").first().trigger("click")
 
 		var title_width = 465;
 		if (show_full_details) {
