@@ -381,7 +381,7 @@
 				<% for(var f in this.media) { %>
 				<% if (this.media[f].type=='1') { %>
 
-				<div class="<% if (photo==0) { %>active<% } %> item">
+				<div class="btn-view-photo <% if (photo==0) { %>active<% } %> item" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-id="<%= this.media[f].ID %>" data-caption="<%= this.media[f].caption %>">
 					<img src="/app/nf/thumb/170/140?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt=""/>
 				</div>
 				<% photo = photo+1; %>
@@ -1313,7 +1313,7 @@ function getDetails() {
 			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
 		}
 
-		$(".btn-view-photo").first().trigger("click")
+		
 
 		var title_width = 465;
 		if (show_full_details) {
