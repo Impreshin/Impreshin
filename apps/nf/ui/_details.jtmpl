@@ -89,7 +89,7 @@
 
 </ul>
 <div class="tab-content" style="width: 520px;">
-<% if (this.typeID=="1") { %>
+
 <div id="details-pane-details" class="tab-pane ">
 
 	<div class="scroll-pane">
@@ -104,14 +104,14 @@
 			<div class="alert">
 				<button type="button" class="close">&times;</button>
 				<p>
-					Showing changes made by <em><%= this.historyShow.fullName %></em> on the
-					<em> <%= this.historyShow.datein %></em>
+					Showing changes made by <em><%= this.historyShow.data.fullName %></em> on the
+					<em> <%= this.historyShow.data.datein %></em>
 
 				</p>
 
 
 			</div>
-			<%= this.historyShow.body||"<em class='g'>no article body</em>" %>
+			<%= this.historyShow.data.body||"<em class='g'>no article body</em>" %>
 			<% } else if(this.historyShow.type=='media') { %>
 
 			<div class="alert">
@@ -146,7 +146,7 @@
 
 
 </div>
-<% } %>
+
 <div id="details-pane-logs" class="tab-pane">
 	<div class="scroll-pane">
 		<div style="padding:10px;">
@@ -511,7 +511,7 @@
 					<a class="btn dropdown-toggle span1" data-toggle="dropdown" href="#" title="History: File Captions" rel="tooltip" data-placement="top">
 						<i class="icon-file "></i>
 					</a>
-					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-113px;">
+					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-<% if (this.history.length){ %>113<% } else { %>62<% } %>px;">
 						<table class="table table-condensed s records" style="width:400px; margin-bottom:0;" id="details-history-media-table">
 							<thead>
 							<tr>
@@ -1157,6 +1157,7 @@ $(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
 });
 $(document).on('hide', '#nf-details-modal', function () {
 	$.bbq.removeState("ID");
+	$.bbq.removeState("history");
 	$.bbq.removeState("historyID");
 	$("#record-list .record.active").removeClass("active");
 
@@ -1203,14 +1204,14 @@ $(document).on('click', '#details-pane-media .record', function (e) {
 });
 $(document).on('click', '#details-history-table tr.record', function () {
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({historyID: ID,history:"body"});
+	$.bbq.pushState({historyID: ID,history:"body",'details-tab':'details-pane-details'});
 	getDetails();
 
 
 });
 $(document).on('click', '#details-history-media-table tr.record', function () {
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({historyID: ID,history:"media"});
+	$.bbq.pushState({historyID: ID,history:"media",'details-tab':'details-pane-details'});
 	getDetails();
 
 
