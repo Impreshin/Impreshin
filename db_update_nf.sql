@@ -277,3 +277,16 @@ CREATE TABLE IF NOT EXISTS `nf_resources` (
 	#---
 
 #DROP TABLE nf_revisions;
+
+CREATE TABLE IF NOT EXISTS `nf_files_body` (
+	`ID` int(6) NOT NULL AUTO_INCREMENT,
+	`fileID` int(6) DEFAULT NULL,
+	`uID` int(6) DEFAULT NULL,
+	`body` text,
+	`datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`ID`),
+	KEY `fileID` (`fileID`),
+	KEY `uID` (`uID`)
+);
+INSERT INTO nf_files_body (fileID,uID,body) SELECT ID, uID, caption FROM nf_files WHERE caption is not null;
+ALTER TABLE `nf_files` DROP `caption`;

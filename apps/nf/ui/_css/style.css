@@ -99,6 +99,31 @@
 #nf-details-modal .btn-view-photo {
   cursor: pointer;
 }
+#nf-details-modal .history-area .history-label {
+  background: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#nf-details-modal .history-area .btn-group.btn {
+  border: 0;
+  padding: 0;
+}
+#nf-details-modal .history-area .btn-group.btn > .btn {
+  border-radius: 0;
+}
+#nf-details-modal .history-area .btn-group.btn > .dropdown-menu {
+  text-align: left;
+}
+#nf-details-modal .history-area .btn-group.btn:first-child > .btn {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+#nf-details-modal .history-area .btn-group.btn:last-child > .btn {
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
 #nf-details-modal-area .back-btn-details-pane {
   display: none;
 }

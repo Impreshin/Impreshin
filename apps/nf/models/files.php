@@ -24,7 +24,9 @@ class files {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *
+			SELECT nf_files.*,
+			 	(SELECT body FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS caption, 
+				(SELECT COUNT(ID) FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS edits
 			FROM nf_files
 			WHERE ID = '$ID';
 
@@ -56,9 +58,34 @@ class files {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT DISTINCT nf_files.*
+			SELECT DISTINCT nf_files.*, 
+				(SELECT body FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS caption, 
+				(SELECT COUNT(ID) FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS edits
 			FROM nf_files LEFT JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID
 			$where
+			$orderby
+		");
+
+
+		$return = $result;
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+	public static function getHistory($fileID = "", $orderby = "") {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+
+
+		$result = $f3->get("DB")->exec("
+			SELECT DISTINCT nf_files_body.*, nf_files_body.body AS caption, global_users.fullName
+			FROM nf_files_body LEFT JOIN global_users ON nf_files_body.uID = global_users.ID
+			WHERE fileID = '$fileID'
 			$orderby
 		");
 
@@ -139,6 +166,28 @@ class files {
 
 
 		$ID = $a->ID;
+		
+		if (isset($values['caption'])){
+
+			$b = new \DB\SQL\Mapper($f3->get("DB"),"nf_files_body");
+			$b->load("fileID='$ID'",
+					 array(
+						'order'=>'ID DESC',
+						'limit'=>1
+    				)
+			);
+			if ($values['caption']!=$b->body){
+				$old['caption'] = $b->body;
+				$b->reset();
+				$b->fileID = $ID;
+				$b->uID = $user['ID'];
+				$b->body = $values['caption'];
+				$b->save();
+			}
+			
+			
+			
+		}
 
 		
 

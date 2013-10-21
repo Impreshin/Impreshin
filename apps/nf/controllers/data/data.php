@@ -22,6 +22,7 @@ class data {
 	function details() {
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 		$historyID = (isset($_REQUEST['historyID'])) ? $_REQUEST['historyID'] : "";
+		$history_type = (isset($_REQUEST['history'])) ? $_REQUEST['history'] : "";
 		$user = $this->f3->get("user");
 
 
@@ -134,7 +135,7 @@ class data {
 		$i=0;
 		foreach ($historyData as $item){
 
-			if ($historyID== $item['ID']) {
+			if ($historyID== $item['ID'] &&$history_type=='body' ) {
 				$compare = $item;
 				$previous = $prev;
 			}
@@ -192,12 +193,31 @@ class data {
 		
 		//test_array($newsbooks);
 		$return['used'] = $newsbooks;
+		$history_data = "";
+		
+		SWITCH($history_type){
+			CASE 'body':
+				$history_data = $compare;
+				break;
+			CASE 'media':
 
+				$fileO = new models\files();
+				$file =  $fileO->get($historyID);
+				$file = models\files::display(array($file));
+				$history_data = $file[0];
+				$history_data['history'] =	models\files::getHistory($historyID,"ID DESC");
+				break;
+		}
 		
 		
 //		test_array($return['newsbooks']); 
 
-		$return['historyShow'] = $compare;
+		$return['historyShow'] = array(
+			"ID"=>$historyID,
+			"type"=>$history_type,
+			"data"=>$history_data
+		);
+		
 		$return['history'] = $history;
 		$return['logs'] = models\articles::getLogs($return['ID']);
 
