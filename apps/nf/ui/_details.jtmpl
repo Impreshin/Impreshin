@@ -90,6 +90,55 @@
 </ul>
 <div class="tab-content" style="width: 520px;">
 
+
+
+
+	<% if (this.historyShow.type=='body') { %>
+	<div id="history-area">
+	<div class="alert">
+		<button type="button" class="close">&times;</button>
+		<p>
+			Showing changes made by <em><%= this.historyShow.data.fullName %></em> on the
+			<em> <%= this.historyShow.data.datein %></em>
+
+		</p>
+
+
+	</div>
+	</div>
+	<%= this.historyShow.data.body||"<em class='g'>no article body</em>" %>
+	<% } else if(this.historyShow.type=='media') { %>
+	<div id="history-area">
+	<div class="alert">
+		<button type="button" class="close">&times;</button>
+		<p>
+			Showing changes made to the file's body<br>
+			<% if (this.historyShow.data.fileType=="1"){ %>
+			<img src="/app/nf/thumb/24/24?file=<%= this.historyShow.data.folder %>/<%= this.historyShow.data.filename %>" style="margin-right:10px;"/>
+
+			<% } else { %>
+
+		<div class="file-icon <%= this.historyShow.data.icon %>"></div>
+		<% } %>
+		<%= this.historyShow.data.filename_orig %>
+
+		</p>
+
+
+	</div>
+	<% for(var i in this.historyShow.data.history) { %>
+	<div class="well">
+		<%= this.historyShow.data.history[i].body %>
+		<div class="pull-right s g">By: <%= this.historyShow.data.history[i].fullName %> | <%= this.historyShow.data.history[i].datein %></div>
+	</div>
+	<% } %>
+</div>
+
+<% } else { %>
+
+
+
+
 <div id="details-pane-details" class="tab-pane ">
 
 	<div class="scroll-pane">
@@ -100,47 +149,7 @@
 				<%= this.rejected_reason||"" %>
 			</div>
 			<% } %>
-			<% if (this.historyShow.type=='body') { %>
-			<div class="alert">
-				<button type="button" class="close">&times;</button>
-				<p>
-					Showing changes made by <em><%= this.historyShow.data.fullName %></em> on the
-					<em> <%= this.historyShow.data.datein %></em>
-
-				</p>
-
-
-			</div>
-			<%= this.historyShow.data.body||"<em class='g'>no article body</em>" %>
-			<% } else if(this.historyShow.type=='media') { %>
-
-			<div class="alert">
-				<button type="button" class="close">&times;</button>
-				<p>
-					Showing changes made to the file's body<br>
-					<% if (this.historyShow.data.fileType=="1"){ %>
-					<img src="/app/nf/thumb/24/24?file=<%= this.historyShow.data.folder %>/<%= this.historyShow.data.filename %>" style="margin-right:10px;"/>
-
-					<% } else { %>
-				<div class="file-icon <%= this.historyShow.data.icon %>"></div>
-				<% } %>
-				<%= this.historyShow.data.filename_orig %>
-
-				</p>
-
-
-			</div>
-			<% for(var i in this.historyShow.data.history) { %>
-				<div class="well">
-					<%= this.historyShow.data.history[i].body %>
-					<div class="pull-right s g">By: <%= this.historyShow.data.history[i].fullName %> | <%= this.historyShow.data.history[i].datein %></div>
-				</div>
-			<% } %>
-			
-			
-			<% } else { %>
 			<%= this.body||"<em class='g'>no article body</em>" %>
-			<% } %>
 		</div>
 	</div>
 
@@ -276,8 +285,8 @@
 
 						<div style="background-color:#F5F5F5; padding:10px; border-top:1px solid #ccc;border-bottom:1px dotted #ccc; line-height:1.2;">
 							<%= this.media[f].caption %>
-							
-							
+
+
 						</div>
 
 						<% if (this.media[f].fileType=="1"){ %>
@@ -330,8 +339,12 @@
 					<td><%= this.used[i].page||"" %></td>
 					<td class="g s "><%= this.used[i].fullName||"" %></td>
 					<td class="g s"><%= this.used[i].datein||"" %></td>
+					<% if (this.used[i].active=='1') { %>
 					<td class="c edit-newsbook button-cell" data-pID="<%= this.used[i].pID %>" data-ID="<%= this.used[i].ID %>" data-dID="<%= this.used[i].dID %>">
 						<i class="icon-pencil"></i></td>
+					<% } else { %>
+					<td></td>
+					<% } %>
 				</tr>
 				<% if (this.used[i].media.length) { %>
 				<tr>
@@ -398,6 +411,7 @@
 	</div>
 
 </div>
+<% } %>
 </div>
 </div>
 
@@ -476,8 +490,8 @@
 					<a class="btn dropdown-toggle span1" data-toggle="dropdown" href="#" title="History: Article Body" rel="tooltip" data-placement="top">
 						<i class="icon-align-justify "></i>
 					</a>
-					
-				
+
+
 					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-62px;">
 						<table class="table table-condensed s records" style="width:400px; margin-bottom:0;" id="details-history-table">
 							<thead>
@@ -490,8 +504,8 @@
 							</tr>
 							</thead>
 							<tbody>
-	
-	
+
+
 							<% for(var i in this.history) { %>
 							<tr class="record <% if (this.history[i].ID==this.historyShow.ID && this.historyShow.type=='body') { %>active<% } %>" data-id="<%= this.history[i].ID %>">
 								<td><%= this.history[i].datein %></td>
@@ -511,20 +525,21 @@
 					<a class="btn dropdown-toggle span1" data-toggle="dropdown" href="#" title="History: File Captions" rel="tooltip" data-placement="top">
 						<i class="icon-file "></i>
 					</a>
+
 					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-<% if (this.history.length){ %>113<% } else { %>62<% } %>px;">
 						<table class="table table-condensed s records" style="width:400px; margin-bottom:0;" id="details-history-media-table">
 							<thead>
 							<tr>
 								<th class="l">File</th>
 								<th class="l"># Edits</th>
-								
+
 							</tr>
 							</thead>
 							<tbody>
 
 
 							<% for(var i in this.media) { %>
-							
+
 							<tr class="record <% if (this.media[i].ID==this.historyShow.ID && this.historyShow.type=='media') { %>active<% } %>" data-id="<%= this.media[i].ID %>">
 								<td>
 									<% if (this.media[i].fileType=="1"){ %>
@@ -533,9 +548,10 @@
 									<% } else { %>
 									<div class="file-icon <%= this.media[i].icon %>"></div>
 									<% } %>
-									<%= this.media[i].filename_orig %></td>
+									<%= this.media[i].filename_orig %>
+								</td>
 								<td><% if (this.media[i].edits > 1) { %><%= this.media[i].edits -1 %><% } %></td>
-								
+
 							</tr>
 							<% } %>
 							</tbody>
@@ -546,30 +562,30 @@
 			</div>
 
 			<% } %>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			<% if (this.archived!='1') { %>
 			<% if (this.rejected!='1' && this.a.reject=='1'){ %>
 			<button class="btn span1 btn-reject" type="button" rel="tooltip" title="Reject this article">
@@ -577,7 +593,8 @@
 			<% } %>
 			<% } %>
 			<% if (this.a.archive=='1') { %>
-			<button class="btn span1 btn-archive <% if (this.archived=='1') { %>btn-danger<% } %>" type="button" data-value="<% if (this.archived=='1') { %>0<% } else { %>1<% } %>" title="<% if (this.archived=='1') { %>De-Archive<% } else { %>Archive<% } %>" rel="tooltip"><i class="icon-archive"></i></button>
+			<button class="btn span1 btn-archive <% if (this.archived=='1') { %>btn-danger<% } %>" type="button" data-value="<% if (this.archived=='1') { %>0<% } else { %>1<% } %>" title="<% if (this.archived=='1') { %>De-Archive<% } else { %>Archive<% } %>" rel="tooltip">
+				<i class="icon-archive"></i></button>
 			<% } %>
 			<% if (this.archived!='1') { %>
 			<% if (this.locked=='1' && this.a.locked=='1'){ %>
@@ -591,24 +608,25 @@
 					<i class="icon-double-angle-left g"></i>
 				</button>
 				<% } %>
-				
+
 				<% if (this.stages.length > 0 && this.a.stage_jump_list=='1') { %>
 				<button style="padding-left:12px;padding-right:12px;" class="btn dropdown-toggle" data-toggle="dropdown"><%= this.stage %></button>
 				<% } else { %>
 				<button style="padding-left:12px;padding-right:12px;" class="btn" disabled="disabled"><%= this.stage %></button>
 				<% } %>
-				
+
 				<% if (this.stageNext.ID && this.a.stageNext=='1'){ %>
-				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stageNext.ID %>" data-label="<%= this.stageNext.stage %>"  title="<%= this.stageNext.stage %>"><i class="icon-double-angle-right g"></i>
+				<button class="btn btn-stage-change" style="padding-left:12px;padding-right:12px;" data-value="<%= this.stageNext.ID %>" data-label="<%= this.stageNext.stage %>" title="<%= this.stageNext.stage %>">
+					<i class="icon-double-angle-right g"></i>
 				</button>
 				<% } else { %>
 				<button class="btn" style="padding-left:12px;padding-right:12px;" disabled="disabled"><%= this.stage %></button>
 				<% } %>
 				<% if (this.stages.length > 0 && this.a.stage_jump_list=='1') { %>
-				
-				<ul class="dropdown-menu pull-right" role="menu" id="change-stages"  >
+
+				<ul class="dropdown-menu pull-right" role="menu" id="change-stages">
 					<% for(var i in this.stages) { %>
-					
+
 					<li data-value="<%= this.stages[i].ID %>" class="btn-stage-change <% if (this.stageID==this.stages[i].ID) { %>active<% } %>"><%= this.stages[i].label %></li>
 					<% } %>
 					<!-- dropdown menu links -->
@@ -646,7 +664,7 @@
 
 
 <div class="popup" id="popup-reject" style="height:250px;">
-	<form style="margin: 0; position:relative; " id="form-reject" >
+	<form style="margin: 0; position:relative; " id="form-reject">
 		<div class='modal-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
 			<h3>Reject Reason:</h3>
@@ -664,7 +682,8 @@
 				<button class="btn btn-danger span2" style="float:right;" type="submit">Reject</button>
 
 			</div>
-		</div><div class="loadingmask"></div>
+		</div>
+		<div class="loadingmask"></div>
 	</form>
 </div>
 <div class="loadingmask wide"></div>
@@ -774,7 +793,7 @@
 
 			</tbody>
 		</table>
-<% if (this.media.length==0) { %>
+		<% if (this.media.length==0) { %>
 		<div class="c g">No photos</div>
 		<% } %>
 
@@ -808,7 +827,7 @@
 <script type="text/x-jqote-template" id="template-photo-caption">
 	<![CDATA[
 
-	<ul class="nav nav-tabs" id="photo-viewer-tabs" >
+	<ul class="nav nav-tabs" id="photo-viewer-tabs">
 		<li class="active"><a href="#photo-viewer-caption" data-toggle="tab">Caption</a></li>
 		<li><a href="#photo-viewer-exif" data-toggle="tab" data-id="<%= this.ID %>">Exif</a></li>
 	</ul>
@@ -822,68 +841,70 @@
 			<div style="text-align:center;">
 				<img src="/ui/_images/loading-wide.gif" alt="" style=" margin:10px;"/>
 			</div>
-			
+
 		</div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-photo-exif">
 	<![CDATA[
 
-	
-		<% if (this.exif){ %>
-		<table class="table table-condensed table-bordered s" style="margin:0;">
-			<tbody><tr>
-				<td width="13%" class="h">Width</td>
-				<td width="20%"><%= this.exif.width %></td>
-				<td width="13%" class="h">ImageDescription</td>
-				<td width="20%"><%= this.exif.description %></td>
-				<td width="13%" class="h">Make</td>
-				<td width="20%"><%= this.exif.camera.make %></td>
-			</tr>
-			<tr>
-				<td class="h">Height</td>
-				<td><%= this.exif.height %></td>
-				<td class="h">UserComment</td>
-				<td><%= this.exif.comment %></td>
-				<td class="h">Model</td>
-				<td><%= this.exif.camera.model %></td>
-			</tr>
-			<tr>
-				<td class="h">Size</td>
-				<td><%= this.exif.size %></td>
-				<td class="h">DateTime</td>
-				<td><%= this.exif.date %></td>
-				<td class="h">ShutterSpeedValue</td>
-				<td><%= this.exif.camera.shutter %></td>
-			</tr>
-			<tr>
-				<td class="h">DPI</td>
-				<td><%= this.exif.dpi %></td>
-				<td class="h">DateTimeOriginal</td>
-				<td><%= this.exif.date_orig %></td>
-				<td class="h">ApertureValue</td>
-				<td><%= this.exif.camera.aperture %></td>
-			</tr>
-			<tr>
-				<td class="h">Software</td>
-				<td><%= this.exif.software %></td>
-				<td class="h">Copyright</td>
-				<td><%= this.exif.copyright %></td>
-				<td class="h">FocalLength</td>
-				<td><%= this.exif.camera.focal %></td>
-			</tr>
-			</tbody></table>
-		<% } %>
 
-	
-	
-	
-	
+	<% if (this.exif){ %>
+	<table class="table table-condensed table-bordered s" style="margin:0;">
+		<tbody>
+		<tr>
+			<td width="13%" class="h">Width</td>
+			<td width="20%"><%= this.exif.width %></td>
+			<td width="13%" class="h">ImageDescription</td>
+			<td width="20%"><%= this.exif.description %></td>
+			<td width="13%" class="h">Make</td>
+			<td width="20%"><%= this.exif.camera.make %></td>
+		</tr>
+		<tr>
+			<td class="h">Height</td>
+			<td><%= this.exif.height %></td>
+			<td class="h">UserComment</td>
+			<td><%= this.exif.comment %></td>
+			<td class="h">Model</td>
+			<td><%= this.exif.camera.model %></td>
+		</tr>
+		<tr>
+			<td class="h">Size</td>
+			<td><%= this.exif.size %></td>
+			<td class="h">DateTime</td>
+			<td><%= this.exif.date %></td>
+			<td class="h">ShutterSpeedValue</td>
+			<td><%= this.exif.camera.shutter %></td>
+		</tr>
+		<tr>
+			<td class="h">DPI</td>
+			<td><%= this.exif.dpi %></td>
+			<td class="h">DateTimeOriginal</td>
+			<td><%= this.exif.date_orig %></td>
+			<td class="h">ApertureValue</td>
+			<td><%= this.exif.camera.aperture %></td>
+		</tr>
+		<tr>
+			<td class="h">Software</td>
+			<td><%= this.exif.software %></td>
+			<td class="h">Copyright</td>
+			<td><%= this.exif.copyright %></td>
+			<td class="h">FocalLength</td>
+			<td><%= this.exif.camera.focal %></td>
+		</tr>
+		</tbody>
+	</table>
+	<% } %>
+
+
+
+
+
 	]]>
 </script>
 <script type="text/javascript">
@@ -934,10 +955,10 @@ $(document).on("click", ".btn-download-file", function (event) {
 	var file = $(this).attr("data-file");
 	var filename = $(this).attr("data-filename");
 
-	var str = "/app/nf/download?file="+file;
-	
-	if (filename){
-		str = str + "&filename="+filename;
+	var str = "/app/nf/download?file=" + file;
+
+	if (filename) {
+		str = str + "&filename=" + filename;
 	}
 
 	window.location = str;
@@ -988,15 +1009,15 @@ $(document).on("click", '.btn-stage-change', function (e) {
 
 	var $this = $(this);
 	var label = $this.attr("data-label");
-		label = label ? label : $this.text();
+	label = label ? label : $this.text();
 
-	if(confirm("Are you sure you want to move this record to: "+label+"?")) {
+	if (confirm("Are you sure you want to move this record to: " + label + "?")) {
 		$this.find(".loadingmask").show();
-	
-	
-		var data = "stageID="+$this.attr("data-value");
+
+
+		var data = "stageID=" + $this.attr("data-value");
 		$.post("/app/nf/save/articles/stage/?aID=" + $.bbq.getState("ID"), data, function (response) {
-			
+
 			getDetails();
 		});
 	}
@@ -1013,7 +1034,7 @@ $(document).on("submit", '#form-reject', function (e) {
 
 	var data = $this.serialize();
 	$.post("/app/nf/save/articles/reject/?aID=" + $.bbq.getState("ID"), data, function (response) {
-		
+
 		$.bbq.removeState("ID");
 		$("#nf-details-modal").modal("hide")
 	});
@@ -1023,43 +1044,43 @@ $(document).on("submit", '#form-reject', function (e) {
 $(document).on("click", '.btn-archive', function (e) {
 	e.preventDefault();
 	var $this = $(this);
-	
 
 
-	var data = "archived="+$this.attr("data-value");
+
+	var data = "archived=" + $this.attr("data-value");
 	//console.log($this.attr("data-value")); 
 	var msg = "Are you sure you want to archive this record?";
-	if ($this.attr("data-value")=='0'){
+	if ($this.attr("data-value") == '0') {
 		msg = "Are you sure you want to de-archive this record?";
-	} 
-	if(confirm(msg)) {
+	}
+	if (confirm(msg)) {
 		$("#nf-details-modal .loadingmask").show();
 		$.post("/app/nf/save/articles/archive/?aID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 		});
 
 	}
-	
+
 	return false;
 
 });
 $(document).on("click", '.btn-unlock', function (e) {
 	e.preventDefault();
 	var $this = $(this);
-	
+
 
 
 	var data = "locked=0";
 	//console.log($this.attr("data-value")); 
 	var msg = "Are you sure you want to unlock this record?";
-	if(confirm(msg)) {
+	if (confirm(msg)) {
 		$("#nf-details-modal .loadingmask").show();
 		$.post("/app/nf/save/articles/unlock/?aID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 		});
 
 	}
-	
+
 	return false;
 
 });
@@ -1133,10 +1154,13 @@ $(document).on("click", '#comments-area .edit', function () {
 $(document).on("shown", '#nf-details-modal', function () {
 	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 	if (!tab) {
-		tab = "details-pane-details";
-		if (!$("#" + tab).length) {
-			tab = "details-pane-media";
-		}
+		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
+		tab = tab.replace("#", "");
+	}
+	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent()
+	if (t.length < 1) {
+		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
+		tab = tab.replace("#", "");
 	}
 	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 	$('#' + tab + '', $details_modal).addClass("active");
@@ -1204,19 +1228,19 @@ $(document).on('click', '#details-pane-media .record', function (e) {
 });
 $(document).on('click', '#details-history-table tr.record', function () {
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({historyID: ID,history:"body",'details-tab':'details-pane-details'});
+	$.bbq.pushState({historyID: ID, history: "body", 'details-tab': 'details-pane-details'});
 	getDetails();
 
 
 });
 $(document).on('click', '#details-history-media-table tr.record', function () {
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({historyID: ID,history:"media",'details-tab':'details-pane-details'});
+	$.bbq.pushState({historyID: ID, history: "media", 'details-tab': 'details-pane-details'});
 	getDetails();
 
 
 });
-$(document).on('click', '#details-pane-details .alert .close', function () {
+$(document).on('click', '#history-area .alert .close', function () {
 	var ID = $(this).attr("data-id");
 	$.bbq.removeState("historyID");
 	$.bbq.removeState("history");
@@ -1270,8 +1294,8 @@ $(document).on('click', '#form-newsbook-delete-btn', function (e) {
 	var $this = $(this);
 	var ID = $this.attr("data-id");
 
-	
-	
+
+
 	$("#popup-newsbook").show().find(".loadingmask").show();
 	$.post("/app/nf/save/articles/remove_newsbook/?ID=" + ID, {}, function (response) {
 		getDetails();
@@ -1279,25 +1303,25 @@ $(document).on('click', '#form-newsbook-delete-btn', function (e) {
 
 });
 
-$(document).on("click","a[href='#photo-viewer-exif']",function(){
+$(document).on("click", "a[href='#photo-viewer-exif']", function () {
 	var ID = $(this).attr("data-id");
 	$("#photo-viewer-exif").html('<div style="text-align:center;"><img src="/ui/_images/loading-wide.gif" alt="" style=" margin:10px;"/></div>');
-	$.getData("/app/nf/data/file_details",{'ID':ID},function(r){
+	$.getData("/app/nf/data/file_details", {'ID': ID}, function (r) {
 		$("#photo-viewer-exif").jqotesub($("#template-photo-exif"), r);
 	});
 });
-$(document).on("click",".btn-view-photo",function (e) {
+$(document).on("click", ".btn-view-photo", function (e) {
 	e.stopPropagation();
 	var path = $(this).attr("data-file");
 	var ID = $(this).attr("data-id");
 	var caption = $(this).attr("data-caption");
 
 	var p = {
-		"ID":ID,
-		"caption":caption,
-		"path":path
+		"ID"     : ID,
+		"caption": caption,
+		"path"   : path
 	};
-	
+
 	var w = $(window).width();
 	var h = $(window).height();
 
@@ -1307,42 +1331,42 @@ $(document).on("click",".btn-view-photo",function (e) {
 	w = w > 930 ? 930 : w;
 	h = h > 930 ? 930 : h;
 
-	
-		
-		$.fancybox.open({
-			href : '/app/nf/thumb/'+w+'/'+h+'?file='+path+'&crop=false',
-			title: "test"
-		}, {
-			padding: 10,
-			type:'image',
-			openEffect: 'fade',
-			beforeLoad:function () {
-	
-				this.title = $("#template-photo-caption").jqote(p);
-				
-	
-			},
-			afterLoad:function () {
 
 
-				
-				
-				
-	
+	$.fancybox.open({
+		href : '/app/nf/thumb/' + w + '/' + h + '?file=' + path + '&crop=false',
+		title: "test"
+	}, {
+		padding   : 10,
+		type      : 'image',
+		openEffect: 'fade',
+		beforeLoad: function () {
+
+			this.title = $("#template-photo-caption").jqote(p);
+
+
+		},
+		afterLoad : function () {
+
+
+
+
+
+
+		},
+		helpers   : {
+			overlay: {
+				speedIn : 500,
+				speedOut: 500,
+				opacity : 0.4
+
 			},
-			helpers:{
-				overlay:{
-					speedIn   :500,
-					speedOut  :500,
-					opacity   :0.4
-	
-				},
-				title  :{
-					type:'over'
-				}
-	
+			title  : {
+				type: 'over'
 			}
-		});
+
+		}
+	});
 
 
 });
@@ -1398,7 +1422,7 @@ function getDetails() {
 	var ID = $.bbq.getState("ID");
 	var historyID = $.bbq.getState("historyID");
 	var history = $.bbq.getState("history");
-	
+
 	var show_full_details = $.bbq.getState("show_full_details");
 	$(".tooltip").removeClass("in")
 	//	
@@ -1422,7 +1446,7 @@ function getDetails() {
 			$("#comments-area").html('<div class="c g no-records">No Records Found</div>');
 		}
 
-		
+
 
 		var title_width = 465;
 		if (show_full_details) {

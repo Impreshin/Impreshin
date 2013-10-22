@@ -173,13 +173,27 @@ class data {
 
 		
 		$newsbooks = models\articles::getNewsbooks($return['ID'],"publish_date DESC");
-
+		$publications = \models\publications::getAll("cID='".$user['company']['ID']."'");
+		
+		$currentDates = array();
+		foreach ($publications AS $item){
+			$currentDates[$item['ID']] = $item['currentDate'];
+		}
+		
+		
+		
+		
 		$n = array();
 		$media_show = array();
 		
 			
 		
 		foreach ($newsbooks as $item){
+			$active = "0";
+			if ($item['publish_date']>=$currentDates[$item['pID']]) $active = '1';
+			
+			$item['active'] = $active;
+			
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$item['ID']."'");
 			
 			$media = models\files::display($media);
