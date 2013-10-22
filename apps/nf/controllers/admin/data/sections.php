@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\data\admin;
+namespace apps\nf\controllers\admin\data;
 
 use \timer as timer;
 use \apps\nf\models as models;

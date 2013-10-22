@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class priorities extends \apps\nf\controllers\save\save {
+class loading extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,7 +26,10 @@ class priorities extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$priority = isset($_POST['priority']) ? $_POST['priority'] : "";
+		$pages = isset($_POST['pages']) ? $_POST['pages'] : "";
+		$percent = isset($_POST['percent']) ? $_POST['percent'] : "";
+
+
 
 
 		$return = array(
@@ -41,9 +44,24 @@ class priorities extends \apps\nf\controllers\save\save {
 
 
 
-		if ($priority==""){
+		if ($pages==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a label";
+			$return['error'][] = "Pages is Required";
+		} else {
+			if (!is_numeric($pages)){
+				$submit = false;
+				$return['error'][] = "Pages must be a number";
+			}
+		}
+
+		if ($percent==""){
+			$submit = false;
+			$return['error'][] = "Loading % is required";
+		} else {
+			if (!is_numeric($percent)) {
+				$submit = false;
+				$return['error'][] = "Loading % must be a number";
+			}
 		}
 
 
@@ -55,8 +73,9 @@ class priorities extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"priority"         => $priority,
-			"cID"=> $cID,
+			"pages"         => $pages,
+			"pID"         => $pID,
+			"percent"     => $percent,
 		);
 
 
@@ -68,7 +87,7 @@ class priorities extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\priorities::save($ID, $values);
+			$ID = models\loading::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -86,28 +105,25 @@ class priorities extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\priorities::_delete($ID);
+		models\loading::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
-	function _sort() {
+	function _copyfrom() {
 		$user = $this->f3->get("user");
 		$cID = $user['company']['ID'];
-		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
-		$order = explode(",", $order);
+		$pID = (isset($_GET['new_pID'])) ? $_GET['new_pID'] : $user['publication']['ID'];
+		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
 
 
-		$i = 0;
-		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE nf_priorities SET orderby = '$i' WHERE ID = '$id' AND cID ='$cID'");
-			$i++;
-		}
+		models\loading::copyfrom($pID, $oldpID);
 
 
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
-	
+
+
 }

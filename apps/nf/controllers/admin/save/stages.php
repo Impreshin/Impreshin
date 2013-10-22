@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class categories extends \apps\nf\controllers\save\save {
+class stages extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,7 +26,8 @@ class categories extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$category = isset($_POST['category']) ? $_POST['category'] : "";
+		$stage = isset($_POST['stage']) ? $_POST['stage'] : "";
+		$labelClass = isset($_POST['labelClass']) ? $_POST['labelClass'] : "";
 
 
 		$return = array(
@@ -41,9 +42,9 @@ class categories extends \apps\nf\controllers\save\save {
 
 
 
-		if ($category==""){
+		if ($stage==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a Category Name";
+			$return['error'][] = "Need to specify a Stage Name";
 		}
 
 
@@ -55,7 +56,8 @@ class categories extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"category"         => $category,
+			"stage"         => $stage,
+			"labelClass"         => $labelClass,
 			"cID"=> $cID
 		);
 
@@ -68,7 +70,7 @@ class categories extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\categories::save($ID, $values);
+			$ID = models\stages::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -86,7 +88,7 @@ class categories extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\categories::_delete($ID);
+		models\stages::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
@@ -98,9 +100,9 @@ class categories extends \apps\nf\controllers\save\save {
 		$order = explode(",", $order);
 
 
-		$i = 0;
+		$i = 1;
 		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE nf_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			$this->f3->get("DB")->exec("UPDATE nf_stages SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
 			$i++;
 		}
 

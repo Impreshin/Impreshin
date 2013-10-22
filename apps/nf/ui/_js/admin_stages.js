@@ -19,7 +19,7 @@ $(document).ready(function () {
 		var $cur_pub = $(e.target).closest(".cur-pub");
 		$.bbq.pushState({"ID":ID});
 		if ($cur_pub.length) {
-			$.post("/app/nf/save/admin/stages/_pub/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/stages/_pub/?ID=" + ID, function (r) {
 				getList();
 				getDetails();
 			});
@@ -50,7 +50,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to delete this record?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/stages/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/stages/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -67,7 +67,7 @@ $(document).ready(function () {
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/save/admin/stages/_save/?ID=" + ID, data, function (r) {
+		$.post("/app/nf/admin/save/stages/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length) {
 				var str = "";
@@ -126,7 +126,7 @@ function getList() {
 	order = (order) ? order : "";
 
 	$("#right-area .loadingmask").show();
-	$.getData("/app/nf/data/admin/stages/_list", {"order":order}, function (data) {
+	$.getData("/app/nf/admin/data/stages/_list", {"order":order}, function (data) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -149,7 +149,7 @@ function getList() {
 				});
 				rec = rec.join(",");
 
-				$.post("/app/nf/save/admin/stages/_sort/", {"order":rec}, function (t) {
+				$.post("/app/nf/admin/save/stages/_sort/", {"order":rec}, function (t) {
 
 				});
 			}
@@ -170,7 +170,7 @@ function getDetails() {
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
 
-	$.getData("/app/nf/data/admin/stages/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/stages/_details", {"ID":ID}, function (data) {
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 

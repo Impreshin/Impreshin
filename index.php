@@ -209,6 +209,7 @@ foreach ($router as $key=> $routes) {
 		);
 
 	}
+	// - /app/data
 	$app->route("GET|POST /app/$key/data/@function", function ($f3,$params) use ($app,$key) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\data\\data->" . $params['function']);
 		}
@@ -223,7 +224,26 @@ foreach ($router as $key=> $routes) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
+	// - /app/@folder/data
+	$app->route("GET|POST /app/$key/@parent_folder/data/@function", function ($f3,$params) use ($app,$key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\data\\data->" . $params['function']);
+		}
+	);
+	$app->route("GET|POST /app/$key/@parent_folder/data/@class/@function", function ($f3, $params) use ($app, $key) {
+//test_array( "apps\\$key\\controllers\\".$params['parent_folder']."\\data\\" . $params['class'] . "->" . $params['function']); 
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\data\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
 
+	$app->route("GET|POST /app/$key/@parent_folder/data/@folder/@class/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\data\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
+
+	
+	
+	
+	
 	$app->route("GET|POST /app/$key/save/@function", function ($f3, $params) use ($app, $key) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\save\\save->" . $params['function']);
 		}
@@ -236,6 +256,22 @@ foreach ($router as $key=> $routes) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
+	$app->route("GET|POST /app/$key/@parent_folder/save/@function", function ($f3,$params) use ($app,$key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\save\\save->" . $params['function']);
+		}
+	);
+	$app->route("GET|POST /app/$key/@parent_folder/save/@class/@function", function ($f3, $params) use ($app, $key) {
+//test_array( "apps\\$key\\controllers\\".$params['parent_folder']."\\data\\" . $params['class'] . "->" . $params['function']); 
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\save\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
+
+	$app->route("GET|POST /app/$key/@parent_folder/save/@folder/@class/@function", function ($f3, $params) use ($app, $key) {
+			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
+		}
+	);
+	
+	
 	$app->route("GET /app/$key/access", function ($f3, $params) use ($app, $key) {
 			$ap = "\\apps\\$key\\app";
 			$a = new $ap();

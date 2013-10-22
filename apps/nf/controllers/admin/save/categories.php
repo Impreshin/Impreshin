@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class stages extends \apps\nf\controllers\save\save {
+class categories extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,8 +26,7 @@ class stages extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$stage = isset($_POST['stage']) ? $_POST['stage'] : "";
-		$labelClass = isset($_POST['labelClass']) ? $_POST['labelClass'] : "";
+		$category = isset($_POST['category']) ? $_POST['category'] : "";
 
 
 		$return = array(
@@ -42,9 +41,9 @@ class stages extends \apps\nf\controllers\save\save {
 
 
 
-		if ($stage==""){
+		if ($category==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a Stage Name";
+			$return['error'][] = "Need to specify a Category Name";
 		}
 
 
@@ -56,8 +55,7 @@ class stages extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"stage"         => $stage,
-			"labelClass"         => $labelClass,
+			"category"         => $category,
 			"cID"=> $cID
 		);
 
@@ -70,7 +68,7 @@ class stages extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\stages::save($ID, $values);
+			$ID = models\categories::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -88,7 +86,7 @@ class stages extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\stages::_delete($ID);
+		models\categories::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
@@ -100,9 +98,9 @@ class stages extends \apps\nf\controllers\save\save {
 		$order = explode(",", $order);
 
 
-		$i = 1;
+		$i = 0;
 		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE nf_stages SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
+			$this->f3->get("DB")->exec("UPDATE nf_categories SET orderby = '$i' WHERE ID = '$id' AND cID = '$cID'");
 			$i++;
 		}
 

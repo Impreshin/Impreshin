@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class resources extends \apps\nf\controllers\save\save {
+class priorities extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,10 +26,7 @@ class resources extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$label = isset($_POST['label']) ? $_POST['label'] : "";
-		$type = isset($_POST['type']) ? $_POST['type'] : "";
-		$path = isset($_REQUEST['path']) ? $_REQUEST['path'] : array();
-		$filename = isset($_REQUEST['filename']) ? $_REQUEST['filename'] : array();
+		$priority = isset($_POST['priority']) ? $_POST['priority'] : "";
 
 
 		$return = array(
@@ -44,7 +41,7 @@ class resources extends \apps\nf\controllers\save\save {
 
 
 
-		if ($label==""){
+		if ($priority==""){
 			$submit = false;
 			$return['error'][] = "Need to specify a label";
 		}
@@ -58,11 +55,8 @@ class resources extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"label"         => $label,
-			"type"     => $type,
-			"path"=> $path,
+			"priority"         => $priority,
 			"cID"=> $cID,
-			"filename"=> $filename
 		);
 
 
@@ -74,7 +68,7 @@ class resources extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\resources::save($ID, $values);
+			$ID = models\priorities::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -92,20 +86,21 @@ class resources extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\resources::_delete($ID);
+		models\priorities::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
 	function _sort() {
 		$user = $this->f3->get("user");
+		$cID = $user['company']['ID'];
 		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
 		$order = explode(",", $order);
 
 
 		$i = 0;
 		foreach ($order as $id) {
-			$this->f3->get("DB")->exec("UPDATE nf_resources SET orderby = '$i' WHERE ID = '$id'");
+			$this->f3->get("DB")->exec("UPDATE nf_priorities SET orderby = '$i' WHERE ID = '$id' AND cID ='$cID'");
 			$i++;
 		}
 

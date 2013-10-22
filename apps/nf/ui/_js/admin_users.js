@@ -13,7 +13,7 @@ $(document).ready(function () {
 		var $cur_pub = $(e.target).closest(".cur-pub");
 		$.bbq.pushState({"ID":ID});
 		if ($cur_pub.length) {
-			$.post("/app/nf/save/admin/users/_pub/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/users/_pub/?ID=" + ID, function (r) {
 				getList();
 				getDetails();
 			});
@@ -35,7 +35,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to remove this user from the company?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/users/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/users/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -47,7 +47,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to allow access to this Application?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/users/add_app/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/users/add_app/?ID=" + ID, function (r) {
 				getList();
 				getDetails();
 			});
@@ -58,7 +58,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to remove access to this Application?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/users/remove_app/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/users/remove_app/?ID=" + ID, function (r) {
 				getList();
 				getDetails();
 			});
@@ -80,11 +80,11 @@ $(document).ready(function () {
 			ID = "";
 		}
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/save/admin/users/_save/?ID=" + ID, data, function (r) {
+		$.post("/app/nf/admin/save/users/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['exists']) {
 				if (confirm("This user already exists. do you want to add them to the application / company?")) {
-					$.post("/app/nf/save/admin/users/add_company/?ID=" + r['exists'], function () {
+					$.post("/app/nf/admin/save/users/add_company/?ID=" + r['exists'], function () {
 						$.bbq.pushState({"ID":r['exists']});
 						getList();
 						getDetails();
@@ -150,7 +150,7 @@ function getList() {
 
 	$("#right-area .loadingmask").show();
 
-	$.getData("/app/nf/data/admin/users/_list", {"order":order}, function (data) {
+	$.getData("/app/nf/admin/data/users/_list", {"order":order}, function (data) {
 
 
 		var $recordsList = $("#record-list");
@@ -178,7 +178,7 @@ function getDetails() {
 	$("#left-area .loadingmask").show();
 
 
-	$.getData("/app/nf/data/admin/users/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/users/_details", {"ID":ID}, function (data) {
 
 		$("#form-area").jqotesub($("#template-details"), data);
 

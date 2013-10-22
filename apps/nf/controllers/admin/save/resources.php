@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class loading extends \apps\nf\controllers\save\save {
+class resources extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -26,10 +26,10 @@ class loading extends \apps\nf\controllers\save\save {
 
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$pages = isset($_POST['pages']) ? $_POST['pages'] : "";
-		$percent = isset($_POST['percent']) ? $_POST['percent'] : "";
-
-
+		$label = isset($_POST['label']) ? $_POST['label'] : "";
+		$type = isset($_POST['type']) ? $_POST['type'] : "";
+		$path = isset($_REQUEST['path']) ? $_REQUEST['path'] : array();
+		$filename = isset($_REQUEST['filename']) ? $_REQUEST['filename'] : array();
 
 
 		$return = array(
@@ -44,24 +44,9 @@ class loading extends \apps\nf\controllers\save\save {
 
 
 
-		if ($pages==""){
+		if ($label==""){
 			$submit = false;
-			$return['error'][] = "Pages is Required";
-		} else {
-			if (!is_numeric($pages)){
-				$submit = false;
-				$return['error'][] = "Pages must be a number";
-			}
-		}
-
-		if ($percent==""){
-			$submit = false;
-			$return['error'][] = "Loading % is required";
-		} else {
-			if (!is_numeric($percent)) {
-				$submit = false;
-				$return['error'][] = "Loading % must be a number";
-			}
+			$return['error'][] = "Need to specify a label";
 		}
 
 
@@ -73,9 +58,11 @@ class loading extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"pages"         => $pages,
-			"pID"         => $pID,
-			"percent"     => $percent,
+			"label"         => $label,
+			"type"     => $type,
+			"path"=> $path,
+			"cID"=> $cID,
+			"filename"=> $filename
 		);
 
 
@@ -87,7 +74,7 @@ class loading extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\loading::save($ID, $values);
+			$ID = models\resources::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -105,25 +92,27 @@ class loading extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\loading::_delete($ID);
+		models\resources::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
-	function _copyfrom() {
+	function _sort() {
 		$user = $this->f3->get("user");
-		$cID = $user['company']['ID'];
-		$pID = (isset($_GET['new_pID'])) ? $_GET['new_pID'] : $user['publication']['ID'];
-		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
+		$order = explode(",", $order);
 
 
-		models\loading::copyfrom($pID, $oldpID);
+		$i = 0;
+		foreach ($order as $id) {
+			$this->f3->get("DB")->exec("UPDATE nf_resources SET orderby = '$i' WHERE ID = '$id'");
+			$i++;
+		}
 
 
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
-
-
+	
 }

@@ -49,7 +49,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to delete this record?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/checklists/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/checklists/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/save/admin/checklists/_save/?ID=" + ID+"&categoryID="+ categoryID, data, function (r) {
+		$.post("/app/nf/admin/save/checklists/_save/?ID=" + ID+"&categoryID="+ categoryID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length) {
 				var str = "";
@@ -127,7 +127,7 @@ function getList() {
 	var categoryID = $("#categoryID").val();
 
 	$("#right-area .loadingmask").show();
-	$.getData("/app/nf/data/admin/checklists/_list", {"order":order,"categoryID":categoryID}, function (data) {
+	$.getData("/app/nf/admin/data/checklists/_list", {"order":order,"categoryID":categoryID}, function (data) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -150,7 +150,7 @@ function getList() {
 				});
 				rec = rec.join(",");
 
-				$.post("/app/nf/save/admin/checklists/_sort/", {"order":rec,"categoryID":categoryID}, function (t) {
+				$.post("/app/nf/admin/save/checklists/_sort/", {"order":rec,"categoryID":categoryID}, function (t) {
 
 				});
 			}
@@ -171,7 +171,7 @@ function getDetails() {
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
 
-	$.getData("/app/nf/data/admin/checklists/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/checklists/_details", {"ID":ID}, function (data) {
 		$("#form-area").jqotesub($("#template-details"), data);
 		
 

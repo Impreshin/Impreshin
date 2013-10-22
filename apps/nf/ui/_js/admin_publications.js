@@ -19,7 +19,7 @@ $(document).ready(function () {
 		var $cur_pub = $(e.target).closest(".cur-pub");
 		$.bbq.pushState({"ID":ID});
 		if ($cur_pub.length) {
-			$.post("/app/nf/save/admin/publications/_pub/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/publications/_pub/?ID=" + ID, function (r) {
 				getList();
 				getDetails();
 			});
@@ -50,7 +50,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to delete this record?\n\rThis will delete this publication for ALL applications aswell")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/publications/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/publications/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -75,7 +75,7 @@ $(document).ready(function () {
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/save/admin/publications/_save/?ID=" + ID, data, function (r) {
+		$.post("/app/nf/admin/save/publications/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length) {
 				var str = "";
@@ -137,7 +137,7 @@ function getList() {
 
 	$("#right-area .loadingmask").show();
 
-	$.getData("/app/nf/data/admin/publications/_list", {"order":order}, function (data) {
+	$.getData("/app/nf/admin/data/publications/_list", {"order":order}, function (data) {
 
 
 		var $recordsList = $("#record-list");
@@ -166,7 +166,7 @@ function getDetails() {
 	$("#left-area .loadingmask").show();
 
 
-	$.getData("/app/nf/data/admin/publications/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/publications/_details", {"ID":ID}, function (data) {
 
 		$("#form-area").jqotesub($("#template-details"), data);
 
