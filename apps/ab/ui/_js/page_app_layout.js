@@ -37,13 +37,13 @@ $(document).ready(function () {
 	$(document).on("click", ".page_section", function () {
 		var $this = $(this);
 		$.bbq.removeState("details");
-		$.bbq.pushState({details:"section-" + $this.attr("data-id")});
+		$.bbq.pushState({details: "section-" + $this.attr("data-id")});
 		getDetails_right();
 	});
 	$(document).on("click", ".pagenr", function () {
 		var $this = $(this);
 		$.bbq.removeState("details");
-		$.bbq.pushState({details:"page-" + $this.attr("data-page")});
+		$.bbq.pushState({details: "page-" + $this.attr("data-page")});
 
 		var page = "#dummy-area .pages[data-page='" + $this.attr("data-page") + "']";
 		if ($("#dummy-area .pages[data-page='" + $this.attr("data-page") + "']").length) {
@@ -70,13 +70,13 @@ $(document).ready(function () {
 		var $this = $(this);
 
 		$.bbq.removeState("details");
-		$.bbq.pushState({details:"page-" + $this.attr("data-page_nr")});
+		$.bbq.pushState({details: "page-" + $this.attr("data-page_nr")});
 		getDetails_right();
 
 	});
 	$(document).on("click", "#record-details-bottom > article", function () {
 		var $this = $(this);
-		$.bbq.pushState({"ID":$this.attr("data-id")});
+		$.bbq.pushState({"ID": $this.attr("data-id")});
 		getDetails();
 	});
 
@@ -88,7 +88,7 @@ $(document).ready(function () {
 	$(document).on("dblclick", ".pages .record, .details_record", function (e) {
 		e.stopPropagation();
 		var $this = $(this);
-		$.bbq.pushState({"ID":$this.attr("data-id")});
+		$.bbq.pushState({"ID": $this.attr("data-id")});
 		getDetails();
 	});
 
@@ -99,7 +99,7 @@ $(document).ready(function () {
 
 	$(document).on('hide', '#ab-details-modal', function () {
 		var s = {
-			maintain_position:true
+			maintain_position: true
 		};
 		//getList(s);
 	});
@@ -115,14 +115,14 @@ $(document).ready(function () {
 		var colour = $("#colourID", $this).val();
 
 		var data = {
-			"page"     :page,
-			"sectionID":section,
-			"colourID"   :colour
+			"page"     : page,
+			"sectionID": section,
+			"colourID" : colour
 		};
 		for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
 		activityRequest.push($.post("/app/ab/save/layout/_page", data, function (response) {
 			var s = {
-				maintain_position:true
+				maintain_position: true
 			};
 			load_pages(s);
 			getDetails_right();
@@ -148,13 +148,13 @@ $(document).ready(function () {
 		page = (page.match(/\d+/));
 		page = page.join("");
 		var data = {
-			"page"  :page,
-			"locked":lockState
+			"page"  : page,
+			"locked": lockState
 		};
 		for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
 		activityRequest.push($.post("/app/ab/save/layout/_page", data, function (response) {
 			var s = {
-				maintain_position:true
+				maintain_position: true
 			};
 			load_pages(s);
 			getDetails_right();
@@ -165,22 +165,22 @@ $(document).ready(function () {
 	});
 
 	$("#record-list-middle").droppable({
-		accept   :".pages tr.record",
-		greedy   :true,
-		tolerance:"pointer",
-		over     :function (event, ui) {
+		accept   : ".pages tr.record",
+		greedy   : true,
+		tolerance: "pointer",
+		over     : function (event, ui) {
 			var $this = $(this);
 
 			$this.addClass("droppablehover");
 
 		},
-		out      :function (event, ui) {
+		out      : function (event, ui) {
 			var $this = $(this);
 
 			$this.removeClass("pagefull droppablehover");
 
 		},
-		drop     :function (event, ui) {
+		drop     : function (event, ui) {
 			var $this = $(this);
 			var $page = $(this).parent();
 			var $dragged = $(ui.draggable);
@@ -223,7 +223,7 @@ function save_forced_pages() {
 
 	$("#left-area .loadingmask").show();
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.post("/app/ab/save/layout/_force/", {"pages":pages}, function (data) {
+	listRequest.push($.post("/app/ab/save/layout/_force/", {"pages": pages}, function (data) {
 		load_pages();
 		getList();
 	}));
@@ -244,11 +244,11 @@ function records_list_resize() {
 	var bottomHeight = $("#record-details-bottom").outerHeight();
 	$("#record-list-middle").css("bottom", bottomHeight);
 	var $rightsideOver = $("#rightsideOver");
-	if ($rightsideOver.length){
+	if ($rightsideOver.length) {
 		var b = $("#rightsideOver .footer").outerHeight();
 
 		//$("#record-list-middle").
-		$rightsideOver.css({"bottom": bottomHeight}).find(".scroll-pane").css("bottom",b-42).jScrollPane(jScrollPaneOptions);
+		$rightsideOver.css({"bottom": bottomHeight}).find(".scroll-pane").css("bottom", b - 42).jScrollPane(jScrollPaneOptions);
 	}
 
 	right_pane.reinitialise();
@@ -269,7 +269,7 @@ function getList() {
 	var placingID = $("#placingID").val();
 
 	$("#right-area .loadingmask").show();
-	$.getData("/app/ab/data/layout/_list", {"placingID":placingID}, function (data) {
+	$.getData("/app/ab/data/layout/_list", {"placingID": placingID}, function (data) {
 
 
 		var placings = $.map(data['placing'], function (record) {
@@ -321,8 +321,8 @@ function getList() {
 function tr_draggable($parent) {
 
 	$("tr.record.dragable", $parent).draggable({
-		opacity    :0.5,
-		helper: function(e){
+		opacity    : 0.5,
+		helper     : function (e) {
 			var $target = $(e.target).closest("tr.record");
 			var cm = $target.attr("data-cm");
 			var col = $target.attr("data-col");
@@ -340,25 +340,25 @@ function tr_draggable($parent) {
 
 			return str;
 		},
-		cursorAt   :{left:0, top:0},
-		containment:false,
-		zIndex     :2710,
-		appendTo   :'body',
+		cursorAt   : {left: 0, top: 0},
+		containment: false,
+		zIndex     : 2710,
+		appendTo   : 'body',
 		//snap:true,
 		//snapMode:"outer",
 		//revert: 'invalid',
-		stop       :function (event, ui) {
+		stop       : function (event, ui) {
 
 		},
-		revert     :'invalid'
+		revert     : 'invalid'
 	});
 }
 function page_droppable($element) {
 	$element.droppable({
-		accept   :"tr.record",
-		greedy   :true,
-		tolerance:"pointer",
-		over     :function (event, ui) {
+		accept   : "tr.record",
+		greedy   : true,
+		tolerance: "pointer",
+		over     : function (event, ui) {
 			var $this = $(this);
 			var $page = $this.find("article");
 			var $dragged = ui.draggable;
@@ -382,12 +382,16 @@ function page_droppable($element) {
 
 
 
-				if (limit && limit != "undefined"  && limit != "null") {
+				if (limit && limit != "undefined" && limit != "null") {
 					limit = limit.split(",");
-					if (limit.indexOf(draggedColour) < 0){
-						allowDrop = false;
-						reason.push("Booking colour");
+					if (draggedColour == 'null' || draggedColour == 'undefined') {
 
+					} else {
+						if (limit.indexOf(draggedColour) < 0) {
+							allowDrop = false;
+							reason.push("Booking colour");
+
+						}
 					}
 
 				}
@@ -416,12 +420,12 @@ function page_droppable($element) {
 			}
 
 		},
-		out      :function (event, ui) {
+		out      : function (event, ui) {
 			var $this = $(this);
 			$this.removeClass("pagefull pagehover ").find(".msgs").html("").stop(true, true).fadeOut();
 
 		},
-		drop     :function (event, ui) {
+		drop     : function (event, ui) {
 			var $this = $(this);
 			var $page = $this.find("article");
 			var $dragged = $(ui.draggable);
@@ -436,17 +440,25 @@ function page_droppable($element) {
 			var limit = $page.attr("data-limit");
 			var draggedColour = $dragged.attr("data-colour");
 
-			if (limit && limit != "undefined"  && limit != "null") {
-				limit = limit.split(",");
-				if (limit.indexOf(draggedColour) < 0) {
-					allowDrop = false;
 
+			if (limit && limit != "undefined" && limit != "null") {
+				limit = limit.split(",");
+				if (draggedColour == 'null' || draggedColour == 'undefined') {
+
+				} else {
+					console.log("hmm");
+					if (limit.indexOf(draggedColour) < 0) {
+						allowDrop = false;
+
+					}
 				}
+
 
 			}
 			if ($this.hasClass("locked")) {
 				allowDrop = false;
 			}
+
 
 			if (allowDrop) {
 				if ($dragged.attr("data-page") != $this.attr("data-page")) {
@@ -463,7 +475,7 @@ function load_pages(settings) {
 	var placingID = $("#placingID").val();
 
 	$("#left-area .loadingmask").show();
-	$.getData("/app/ab/data/layout/_pages", {"placingID":placingID}, function (data) {
+	$.getData("/app/ab/data/layout/_pages", {"placingID": placingID}, function (data) {
 
 
 		var $recordsList = $("#pages-area");
@@ -514,14 +526,14 @@ function isScrolledIntoView(elem) {
 }
 function getDetails_small(ID) {
 	$('#record-details-bottom').stop(true, true).fadeTo(transSpeed, 0.5);
-	$.getData("/app/ab/data/details?r=" + Math.random(), {"ID":ID}, function (data) {
+	$.getData("/app/ab/data/details?r=" + Math.random(), {"ID": ID}, function (data) {
 
 		$(".record.active").removeClass("active");
 		$(".record[data-ID='" + ID + "']").addClass("active");
 		$('#record-details-bottom').jqotesub($("#template-details-bottom"), data).stop(true, true).fadeTo(transSpeed, 1);
 
 		records_list_resize();
-	},"details");
+	}, "details");
 }
 function getDetails_right() {
 	var section = $.bbq.getState("details");
@@ -536,7 +548,7 @@ function getDetails_right() {
 		$rightsideOver.html("").stop(true, true).fadeIn(transSpeed);
 		$("#right-area .loadingmask").show();
 
-		$.getJSON("/app/ab/data/layout/_details_" + section + "?r=" + Math.random(), {"val":ID}, function (data) {
+		$.getJSON("/app/ab/data/layout/_details_" + section + "?r=" + Math.random(), {"val": ID}, function (data) {
 
 			data = data['data'];
 			switch (section) {
@@ -580,7 +592,7 @@ function drop(ID, page, $dragged) {
 	oldPage = oldPage != "undefined" ? oldPage : "";
 
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.post("/app/ab/save/layout/_drop?ID=" + ID, {"page":page}, function (data) {
+	listRequest.push($.post("/app/ab/save/layout/_drop?ID=" + ID, {"page": page}, function (data) {
 		data = data['data'];
 
 		$dragged.remove();
@@ -591,7 +603,7 @@ function drop(ID, page, $dragged) {
 		tr_draggable($("#page-" + page));
 
 		if (oldPage) {
-			$.getJSON("/app/ab/data/layout/_page?r=" + Math.random(), {"page":oldPage}, function (data) {
+			$.getJSON("/app/ab/data/layout/_page?r=" + Math.random(), {"page": oldPage}, function (data) {
 				data = data['data'];
 
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
@@ -607,14 +619,14 @@ function drop(ID, page, $dragged) {
 function remove(ID, $dragged) {
 	var oldPage = $($dragged).attr("data-page");
 	for (var i = 0; i < listRequest.length; i++) listRequest[i].abort();
-	listRequest.push($.post("/app/ab/save/layout/_drop?ID=" + ID, {"page":"remove"}, function (data) {
+	listRequest.push($.post("/app/ab/save/layout/_drop?ID=" + ID, {"page": "remove"}, function (data) {
 		data = data['data'];
 		$dragged.remove();
 
 		getList();
 
 		if (oldPage) {
-			$.getJSON("/app/ab/data/layout/_page?r=" + Math.random(), {"page":oldPage}, function (data) {
+			$.getJSON("/app/ab/data/layout/_page?r=" + Math.random(), {"page": oldPage}, function (data) {
 				data = data['data'];
 
 				$("#page-" + oldPage).jqotesub($("#template-spreads-page"), data);
