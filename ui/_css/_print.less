@@ -1,3 +1,12 @@
+.opacity(@opacity) {
+	opacity: @opacity / 100;
+	filter: ~"alpha(opacity=@{opacity})";
+}
+.box-shadow(@shadow) {
+	-webkit-box-shadow: @shadow;
+	-moz-box-shadow: @shadow;
+	box-shadow: @shadow;
+}
 @import "general/functions";
 @import "general/general";
 
@@ -8,5 +17,8 @@ table.records {
 	tbody {
 		.box-shadow(none);
 		background-color: #fff;
+	}
+	.size {
+		margin-left:15px;
 	}
 }

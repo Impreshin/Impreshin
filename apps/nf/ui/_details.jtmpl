@@ -112,7 +112,7 @@
 	<div class="alert">
 		<button type="button" class="close">&times;</button>
 		<p>
-			Showing changes made to the file's body<br>
+			Showing changes made to the file's caption<br>
 			<% if (this.historyShow.data.fileType=="1"){ %>
 			<img src="/app/nf/thumb/24/24?file=<%= this.historyShow.data.folder %>/<%= this.historyShow.data.filename %>" style="margin-right:10px;"/>
 
@@ -1155,12 +1155,12 @@ $(document).on("shown", '#nf-details-modal', function () {
 	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 	if (!tab) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
-		tab = tab.replace("#", "");
+		if (tab) tab = tab.replace("#", "");
 	}
 	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent()
 	if (t.length < 1) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
-		tab = tab.replace("#", "");
+		if (tab) tab = tab.replace("#", "");
 	}
 	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 	$('#' + tab + '', $details_modal).addClass("active");

@@ -20,6 +20,11 @@ class app extends \apps\app{
 				$permissions['records']['_nav'] = '1';
 			}
 		}
+		foreach ($permissions['reports'] as $p) {
+			if ($p['page']) {
+				$permissions['reports']['_nav'] = '1';
+			}
+		}
 		if ($user['su'] == '1') {
 			$permissions['view']['only_my_records'] = '0';
 		}

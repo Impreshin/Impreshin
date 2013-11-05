@@ -184,9 +184,9 @@
 
 					<div style="float:left; margin-left:10px; padding-top: 3px;">
 						<% if (this.details.ID) { %>
-						<% if (this.a.delete=='1') { %> %}
-						<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="margin-right:20px" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
-						<% } %>
+							<% if (this.a.delete=='1') { %>
+							<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="margin-right:20px" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+							<% } %>
 						<% } %>
 
 

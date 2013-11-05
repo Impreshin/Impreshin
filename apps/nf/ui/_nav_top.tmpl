@@ -60,6 +60,7 @@
 		</ul>
 	</li>
 	{% endif %}
+	{% if _user['permissions']['reports']['_nav'] %}
 	<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
 		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
 		<ul class="dropdown-menu">
@@ -72,12 +73,12 @@
 				<a href="/app/nf/reports/authors/progress">Progress</a>
 			</li>
 			<li class="nav-header">Other</li>
-			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
-				<a href="/app/nf/reports/authors/progress">Publications</a>
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "publications" %} active {% endif %}">
+				<a href="/app/nf/reports/publications">Publications</a>
 			</li>
 		</ul>
 	</li>
-
+	{% endif %}
 
 	<li class="divider-vertical" style="margin-right: 0;"></li>
 

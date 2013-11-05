@@ -17,7 +17,7 @@ class cmstylesheet extends \apps\nf\controllers\_ {
 
 		$cID = $user['company']['ID'];
 
-
+		$cfg = $this->f3->get("CFG");
 
 //test_array($pages);
 
@@ -29,11 +29,24 @@ class cmstylesheet extends \apps\nf\controllers\_ {
 			"template"=> "admin_cmstylesheet",
 			"meta"    => array(
 				"title"=> "NF - Admin - Cm Style SHeet",
-			), 
-			"js" => array(),
-			"css" => array(),
+			),
+			"js"=>array("/ui/ckeditor/ckeditor.js"),
+			"css"=>array(),
 		);
+		
+		$cmstyle = $cfg['nf']['default_cm_calc_css'] . $user['company']['nf_cm_css'];
 
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+		
+		$cmstyle = str_replace(";",";&#10;    ",$cmstyle);
+		$cmstyle = str_replace("}","}&#10;&#10;",$cmstyle);
+		$cmstyle = str_replace("{","{&#10;    ",$cmstyle);
+		$cmstyle = str_replace("&#10;    }","&#10;}",$cmstyle);
+		$cmstyle = str_replace("     ","    ",$cmstyle);
+
+		
+		$tmpl->cm_calc_css = $cmstyle;
+		
 		
 		$tmpl->output();
 

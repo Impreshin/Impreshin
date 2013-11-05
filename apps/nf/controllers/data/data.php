@@ -190,7 +190,7 @@ class data {
 		
 		foreach ($newsbooks as $item){
 			$active = "0";
-			if ($item['publish_date']>=$currentDates[$item['pID']]) $active = '1';
+			if ((isset($item['publish_date']) && isset($currentDates[$item['pID']])) && $item['publish_date']>=$currentDates[$item['pID']]) $active = '1';
 			
 			$item['active'] = $active;
 			

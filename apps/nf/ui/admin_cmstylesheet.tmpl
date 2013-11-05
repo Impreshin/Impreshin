@@ -10,7 +10,7 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<h2 style=" margin-bottom: -5px;"><small>Cm Style Sheet</small></h2>
+					<h2 style=" margin-bottom: -5px;" id="page-heading"><small>Cm Style Sheet</small></h2>
 				</li>
 			</ul>
 			<div class="pull-right">
@@ -38,61 +38,51 @@
 
 		<div class="row">
 			<article id="left-area" class="span11">
-				<form class="form-horizontal" id="capture-form">
-				<div class="content" id="form-area">
+				<div id="article-area">
+					<form action="#">
+<textarea name="body" id="body" cols="30" rows="10">
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt sem nec vulputate vestibulum. Sed ut interdum nunc. Quisque rhoncus tempus volutpat. Ut nisi ante, consequat et sapien ac, tempor elementum lacus. Donec feugiat neque elit, et scelerisque metus laoreet vel. Nullam sit amet tempus ante. Curabitur ut ante a nisi elementum viverra et at purus. Curabitur eget libero neque. Cras dapibus, orci a congue posuere, libero nibh vehicula erat, eget tincidunt libero quam eget ligula. Curabitur vitae imperdiet mauris. Vivamus eget enim aliquam, vestibulum ligula at, placerat odio. Mauris vitae quam egestas, placerat ipsum ac, facilisis purus.</p>
 
+	<p>Quisque rutrum risus non vestibulum porttitor. Nunc purus metus, feugiat ac pulvinar sit amet, rhoncus quis turpis. Vestibulum congue urna vel placerat fringilla. Proin ut lacus ultricies, scelerisque lacus volutpat, tempus augue. Nulla elit sapien, accumsan ac mollis in, luctus nec purus. Quisque vitae orci eleifend, fringilla enim eu, condimentum diam. Integer vitae dignissim nulla.</p>
+
+	<p>Etiam vulputate, massa sed condimentum mollis, tellus nibh convallis sapien, sed scelerisque libero ipsum et ligula. Pellentesque imperdiet est vehicula purus mattis, eget mattis tortor venenatis. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec eu leo nec risus auctor convallis pharetra at dui. Phasellus a egestas orci, in mattis diam. Vestibulum egestas massa ut nunc auctor, eget viverra dolor consequat. Praesent nisi massa, venenatis at libero a, vehicula lacinia sapien. Pellentesque nec eros lectus. Aenean rhoncus euismod orci eget vulputate. Nullam semper est quis arcu dignissim, tristique iaculis nunc sollicitudin. In hac habitasse platea dictumst. Cras egestas nulla at elit eleifend, accumsan cursus dui varius.</p>
+
+	<p>Etiam turpis nulla, volutpat ac elit et, venenatis tempus enim. Fusce venenatis auctor urna in aliquam. Aenean laoreet, diam quis euismod pretium, tellus libero vestibulum erat, vel consectetur lacus tortor ut nisl. Nullam mollis volutpat purus et malesuada. Etiam sit amet convallis diam, in consectetur urna. Maecenas dapibus lorem ut tortor ultrices tincidunt. Morbi consequat, ligula ac sodales lacinia, tortor tellus facilisis leo, at hendrerit nisi nisl sed elit.</p>
+
+	<p>Nam placerat vel velit a sagittis. Nullam ullamcorper posuere placerat. Etiam vehicula odio eleifend suscipit tincidunt. Ut tincidunt rhoncus ligula eu pulvinar. In hac habitasse platea dictumst. Maecenas vehicula ornare adipiscing. Praesent elementum mauris eget turpis blandit placerat. Morbi auctor massa ut tortor malesuada, quis mattis neque sagittis. In vel ultrices est, sit amet condimentum dolor. Nunc quis dui vulputate odio posuere vulputate. Proin nec nulla eget diam facilisis tincidunt sed ac felis. Vestibulum non mi eu magna sollicitudin elementum. Donec ut ipsum ac enim tempus pulvinar.</p>
+</textarea>
+					</form>
 				</div>
+				<div class="content" ><div class="scroll-pane scrolly">
+						<div id="render-area" style="float:right; "></div>
+						
+					</div>
+				</div>
+				
+					
 				<div class="loadingmask wide"></div>
-			</form>
 			</article>
 			<article id="right-area" class="span5 offset11">
-				<div>
-					<form action="" style="margin: 0;" id="searchform">
-						<select class="span5" name="categoryID" id="categoryID" style="margin-bottom: 0;">
-
-							{% for row in categories %}
-								<option value="{{ row['ID'] }}">{{ row['category'] }}</option>
-							{% endfor %}
-
-						</select>
-
-					</form>
-
-					<table class="table table-condensed  s records">
-						<thead>
-						<tr>
-							<th>Label</th>
-
-
-						</tr>
-						</thead>
-					</table>
-				</div>
-				<div class="content">
-					<div class="scroll-pane scrolly" id="record-list-middle" style="top: 55px; bottom: 42px;">
+				
+				<div class="content" style="display: none;">
+					
 
 						<div data-heading="top" class="">
-							<table style="margin:0;" id="record-list" class="table table-condensed  s records" >
-								<tbody style="border-left:none;">
-
-
-								</tbody>
-							</table>
+							<form action="#">
+								<textarea name="cm-block-form" id="cm-block-form" cols="30" rows="10" class="span5" style="margin-left: 0px; height: 500px">{{ cm_calc_css|raw }}</textarea>
+								<button class="btn span5" style="margin-left: 0px;">Save</button>
+							</form>
+							
 
 
 						</div>
 
 
-					</div>
+				
 
 
 				</div>
-				<div id="record-details-bottom">
-					<div id="pagination" class="pagination"></div>
-				</div>
-				<section id="rightsideOver">
-
-				</section>
+			
 				<div class="loadingmask round"></div>
 
 
