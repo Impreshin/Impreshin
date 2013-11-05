@@ -124,17 +124,26 @@
 								</div>
 
 								<div id="rightpane-bottom">
+									{% if resources %}
 									<section id="block-resources" class="block">
+										
 										<ul class="nav nav-list">
 											<li class="nav-header">Resources</li>
-											<li><a href="#">How to write <i class="icon-external-link s "></i></a></li>
-											<li><a href="#">How to write part 2 <i class="icon-external-link s"></i></a></li>
-											<li><a href="#">Style Guide<i class="icon-file-alt"></i></a></li>
-											<li><a href="#">Important Numbers<i class="icon-file-alt"></i></a></li>
+											{% for row in resources %}
+											{% if row["type"]=='1' %}
+												<li><a href="{{ row['path'] }}" target="_blank">{{ row['label'] }} <i class="icon-external-link s "></i></a></li>
+											
+											
+											{% else %}
+											<li><a href="/app/nf/download?file=/{{ row['cID'] }}/resources/{{ row['path'] }}&filename={{ row['filename'] }}">{{ row['label'] }} <i class="icon-file-alt"></i></a></li>
+											
+											{% endif %}
+											{% endfor %}
+											
+											
 										</ul>
 									</section>
-
-
+									{% endif %}
 									<section class="block" id="tools-block" style="margin-top:10px;">
 
 										<div class="btn-group" style="margin-left:-4px;">
@@ -205,7 +214,7 @@
 					<div style="float:right; margin-right: 10px;">
 						<% if (this.details.ID) { %>
 
-						<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="View this booking" data-position="above">
+						<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.ID %>" rel="tooltip" title="View this record" data-position="above">
 							<i class="icon-fullscreen icon-d-grey"></i></button>
 						<a href="/app/nf/#scrollTo=<%= this.details.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Article List" data-position="above">
 							<i class="icon-list-alt icon-d-grey"></i></a>

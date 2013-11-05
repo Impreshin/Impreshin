@@ -58,17 +58,17 @@ class search extends \apps\nf\controllers\_ {
 
 			}
 
-		$dates = \models\dates::getAll("pID='$pID' AND publish_date <= '" . $user['publication']['current_date']['publish_date'] . "'", "publish_date DESC", "0,5");
+	
 
 	//test_array($dates);
 
 
 
-		$tmpl->dates = $dates;
+	
 
 
 
-		$date_range = $this->f3->get("DB")->exec("SELECT min(publish_date) as earliestDate, max(publish_date) as latestDate FROM global_dates WHERE pID = '$pID'");
+		$date_range = $this->f3->get("DB")->exec("SELECT min(datein) as earliestDate, max(datein) as latestDate FROM nf_articles");
 		if (count($date_range)){
 			$date_range = $date_range[0];
 		}

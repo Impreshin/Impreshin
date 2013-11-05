@@ -20,7 +20,7 @@ class articles {
 		}
 		
 		
-		$return = "((((((((((( nf_articles  INNER JOIN global_users ON nf_articles.authorID = global_users.ID) INNER JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) INNER JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) INNER JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) INNER JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID $newsbook_sql) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID $newsbook_sql) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID $newsbook_sql) ON nf_articles.ID = nf_article_newsbook.aID ) ) ) ";
+		$return = "((((((((((( nf_articles  LEFT JOIN global_users ON nf_articles.authorID = global_users.ID) LEFT JOIN nf_categories ON nf_articles.categoryID = nf_categories.ID) LEFT JOIN nf_article_types ON nf_articles.typeID = nf_article_types.ID) LEFT JOIN nf_stages ON nf_articles.stageID = nf_stages.ID) LEFT JOIN nf_priorities ON nf_articles.priorityID = nf_priorities.ID) LEFT JOIN global_users AS global_users_1 ON nf_articles.locked_uID = global_users_1.ID) LEFT JOIN global_users AS global_users_3 ON nf_articles.rejected_uID = global_users_3.ID) LEFT JOIN global_users AS global_users_2 ON nf_articles.deleted_userID = global_users_2.ID) LEFT JOIN (((nf_article_newsbook LEFT JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID $newsbook_sql) LEFT JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID $newsbook_sql) LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID $newsbook_sql) ON nf_articles.ID = nf_article_newsbook.aID ) ) ) ";
 
 		return $return;
 	}
@@ -143,10 +143,14 @@ class articles {
 		}
 		$from = self::_from($options);
 		$sql = "
-			SELECT count(nf_articles.ID) AS records
+			SELECT COUNT(DISTINCT(nf_articles.ID)) AS records
 			FROM $from
 			$where
 		";
+		if (isset($_GET['debug']) && $_GET['debug']=="articles_getAll_count_sql"){
+			echo $sql;exit();
+		}
+		
 		
 		$return = $f3->get("DB")->exec($sql);
 		if (count($return)) {

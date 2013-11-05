@@ -49,7 +49,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to delete this loading?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/save/admin/loading/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/loading/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/save/admin/loading/_save/?ID=" + ID, data, function (r) {
+		$.post("/app/nf/admin/save/loading/_save/?ID=" + ID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length) {
 				var str = "";
@@ -118,7 +118,7 @@ $(document).ready(function () {
 		var copyfromID = $("#copyfrom").val();
 		if (confirm("Clicking ok will copy all the records from the selected publication into the current publication?")) {
 		$("#right-area .loadingmask").show();
-		$.post("/app/nf/save/admin/loading/_copyfrom/?pID=" + copyfromID, "", function (r) {
+		$.post("/app/nf/admin/save/loading/_copyfrom/?pID=" + copyfromID, "", function (r) {
 
 			getList();
 		});
@@ -136,7 +136,7 @@ function getList() {
 	order = (order) ? order : "";
 
 	$("#right-area .loadingmask").show();
-	$.getData("/app/nf/data/admin/loading/_list", {"order":order}, function (data) {
+	$.getData("/app/nf/admin/data/loading/_list", {"order":order}, function (data) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -165,7 +165,7 @@ function getDetails() {
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
 
-	$.getData("/app/nf/data/admin/loading/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/loading/_details", {"ID":ID}, function (data) {
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#uID").select2({});

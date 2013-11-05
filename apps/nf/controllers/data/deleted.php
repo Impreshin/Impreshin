@@ -10,7 +10,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class search extends data {
+class deleted extends data {
 	function __construct() {
 		parent::__construct();
 
@@ -24,7 +24,7 @@ class search extends data {
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-		$section = 'search';
+		$section = 'deleted';
 		$settings = models\settings::_read($section);
 
 		$grouping_g = (isset($_REQUEST['group']) && $_REQUEST['group'] != "") ? $_REQUEST['group'] : $settings['group']['g'];
@@ -97,15 +97,15 @@ class search extends data {
 			$search_dates = explode("to",$search_dates);
 
 			if (count($search_dates)==1){
-				$searchsql .= " AND nf_articles.datein = '".trim($search_dates[0])."'";
+				$searchsql .= " AND (nf_articles.datein = '".trim($search_dates[0])."' OR deleted_date = '".trim($search_dates[0])."') ";
 			} else {
-				$searchsql .= " AND (nf_articles.datein >= '" . trim($search_dates[0])."' AND nf_articles.datein <= '" . trim($search_dates[1])."')";
+				$searchsql .= " AND ((nf_articles.datein >= '" . trim($search_dates[0])."' AND nf_articles.datein <= '" . trim($search_dates[1])."') OR (nf_articles.deleted_date >= '" . trim($search_dates[0])."' AND nf_articles.deleted_date <= '" . trim($search_dates[1])."')) ";
 			}
 
 		}
 
 
-		$where = "(nf_articles.cID = '$cID') AND deleted is null $searchsql";
+		$where = "(nf_articles.cID = '$cID') AND deleted ='1' $searchsql";
 		if (($user['permissions']['view']['only_my_records'] == '1')) {
 			$where = $where . " AND authorID = '" . $user['ID'] . "'";
 		}
@@ -116,13 +116,13 @@ class search extends data {
 
 		$recordsFound = models\articles::getAll_count($where,$options);
 
-		
+
 		//$selectedpage = 2;
 		//$recordsFound = 55;
 
 		$limits = array();;
 		if ($nolimits==true) {
-			
+
 			$pagination = array();
 		} else {
 			$limit = 100;
@@ -137,10 +137,10 @@ class search extends data {
 		}
 
 		//test_array($ordering); 
-		
-		
+
+
 		$options['limit']=$limits;
-		
+
 
 		$records = models\articles::getAll($where, $grouping, $ordering, $options);
 

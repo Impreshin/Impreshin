@@ -107,7 +107,9 @@ class provisional extends data {
 
 
 		$where = "nf_articles.cID ='".$user['company']['ID']."'  AND nf_articles.deleted is null ";
-		
+		if (($user['permissions']['view']['only_my_records'] == '1')) {
+			$where = $where . " AND authorID = '" . $user['ID'] . "'";
+		}
 		
 		
 		

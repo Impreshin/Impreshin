@@ -105,7 +105,9 @@ class production extends data {
 
 
 		$where = "nf_articles.cID ='".$user['company']['ID']."' AND stageID ='2'  AND nf_articles.deleted is null ";
-		
+		if (($user['permissions']['view']['only_my_records'] == '1')) {
+			$where = $where . " AND authorID = '" . $user['ID'] . "'";
+		}
 
 		//$where = "1";
 		$where .= " AND nf_article_newsbook.dID='".$currentDate['ID']."'";

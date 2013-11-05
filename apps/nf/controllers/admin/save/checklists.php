@@ -3,7 +3,7 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\save\admin;
+namespace apps\nf\controllers\admin\save;
 
 
 use \timer as timer;
@@ -11,7 +11,7 @@ use \apps\nf\models as models;
 use \models\user as user;
 
 
-class sections extends \apps\nf\controllers\save\save {
+class checklists extends \apps\nf\controllers\save\save {
 	function __construct() {
 		parent::__construct();
 
@@ -24,12 +24,11 @@ class sections extends \apps\nf\controllers\save\save {
 		$cID = $user['company']['ID'];
 
 
-
-
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$section = isset($_POST['section']) ? $_POST['section'] : "";
-		$section_colour = isset($_POST['section_colour']) ? $_POST['section_colour'] : "";
+		$label = isset($_POST['label']) ? $_POST['label'] : "";
+		$description = isset($_POST['description']) ? $_POST['description'] : array();
+		$categoryID = isset($_REQUEST['categoryID']) ? $_REQUEST['categoryID'] : array();
 
 
 		$return = array(
@@ -44,14 +43,11 @@ class sections extends \apps\nf\controllers\save\save {
 
 
 
-		if ($section==""){
+		if ($label==""){
 			$submit = false;
-			$return['error'][] = "Need to specify a Section Name";
+			$return['error'][] = "Need to specify a label";
 		}
-		if ($section_colour==""){
-			$submit = false;
-			$return['error'][] = "Need to specify a Colour";
-		}
+
 
 
 
@@ -61,10 +57,10 @@ class sections extends \apps\nf\controllers\save\save {
 
 
 		$values = array(
-			"section"         => $section,
-			"section_colour"=> $section_colour,
-			"pID"=> $pID,
-			"cID"=> $cID
+			"label"         => $label,
+			"description"     => $description,
+			"cID"=> $cID,
+			"categoryID"=> $categoryID
 		);
 
 
@@ -76,7 +72,7 @@ class sections extends \apps\nf\controllers\save\save {
 
 		if ($submit){
 			$passed_ID = $ID;
-			$ID = models\sections::save($ID, $values);
+			$ID = models\checklists::save($ID, $values);
 
 			$return['ID'] = $ID;
 		}
@@ -94,22 +90,28 @@ class sections extends \apps\nf\controllers\save\save {
 	function _delete(){
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
-		models\sections::_delete($ID);
+		models\checklists::_delete($ID);
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
 
-	function _copyfrom() {
+	function _sort() {
 		$user = $this->f3->get("user");
-		$cID = $user['company']['ID'];
-		$pID = (isset($_GET['new_pID']))? $_GET['new_pID']: $user['publication']['ID'];
-		$oldpID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+		$categoryID = isset($_REQUEST['categoryID']) ? $_REQUEST['categoryID'] : "";
+		$order = isset($_REQUEST['order']) ? $_REQUEST['order'] : "";
+		$order = explode(",", $order);
 
 
-		models\sections::copyfrom($pID, $oldpID);
+		$i = 0;
+		foreach ($order as $id) {
+			$this->f3->get("DB")->exec("UPDATE nf_checklists SET orderby = '$i' WHERE ID = '$id' AND categoryID = '$categoryID'");
+			$i++;
+		}
 
 
 		return $GLOBALS["output"]['data'] = "done";
 
 	}
+
+	
 }

@@ -10,7 +10,6 @@ require_once('../config.inc.php');
 
 require_once('../inc/functions.php');
 require_once('../update/update.php');
-include '../lib/finediff2.php';
 
 $f3 = include_once("../lib/f3/base.php");
 

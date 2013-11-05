@@ -22,6 +22,7 @@ class data {
 	function details() {
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 		$historyID = (isset($_REQUEST['historyID'])) ? $_REQUEST['historyID'] : "";
+		$history_type = (isset($_REQUEST['history'])) ? $_REQUEST['history'] : "";
 		$user = $this->f3->get("user");
 
 
@@ -42,7 +43,12 @@ class data {
 
 
 		$permissions = $user['permissions'];
-		$stage_permissions = $permissions['stages'][$return['stageID']];
+		$stage_permissions = isset($permissions['stages'][$return['stageID']])?$permissions['stages'][$return['stageID']]:array("label"=>"-none-",
+			"edit"=>"0",
+			"to"=>"0",
+			"reject"=>"0",
+			"delete"=>"0",
+			"newsbook"=>"0");
 		
 		if ($stage_permissions['edit']=='1'){
 			if ($return['locked_uID']){
@@ -62,7 +68,7 @@ class data {
 		if ($stage_permissions['reject']=='1'){
 			$allow['reject']='1';
 		}
-		if ($permissions['details']['overwrite_locked']=="1"){
+		if ($permissions['details']['overwrite_locked']=="1" || ($return['locked_uID']==$user['ID'] && $return['stageID']!='1')){
 			$allow['locked']='1';
 		}
 		if ($permissions['details']['archive']=="1"){
@@ -129,7 +135,7 @@ class data {
 		$i=0;
 		foreach ($historyData as $item){
 
-			if ($historyID== $item['ID']) {
+			if ($historyID== $item['ID'] &&$history_type=='body' ) {
 				$compare = $item;
 				$previous = $prev;
 			}
@@ -167,13 +173,27 @@ class data {
 
 		
 		$newsbooks = models\articles::getNewsbooks($return['ID'],"publish_date DESC");
-
+		$publications = \models\publications::getAll("cID='".$user['company']['ID']."'");
+		
+		$currentDates = array();
+		foreach ($publications AS $item){
+			$currentDates[$item['ID']] = $item['currentDate'];
+		}
+		
+		
+		
+		
 		$n = array();
 		$media_show = array();
 		
 			
 		
 		foreach ($newsbooks as $item){
+			$active = "0";
+			if ($item['publish_date']>=$currentDates[$item['pID']]) $active = '1';
+			
+			$item['active'] = $active;
+			
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$item['ID']."'");
 			
 			$media = models\files::display($media);
@@ -187,12 +207,31 @@ class data {
 		
 		//test_array($newsbooks);
 		$return['used'] = $newsbooks;
+		$history_data = "";
+		
+		SWITCH($history_type){
+			CASE 'body':
+				$history_data = $compare;
+				break;
+			CASE 'media':
 
+				$fileO = new models\files();
+				$file =  $fileO->get($historyID);
+				$file = models\files::display(array($file));
+				$history_data = $file[0];
+				$history_data['history'] =	models\files::getHistory($historyID,"ID DESC");
+				break;
+		}
 		
 		
 //		test_array($return['newsbooks']); 
 
-		$return['historyShow'] = $compare;
+		$return['historyShow'] = array(
+			"ID"=>$historyID,
+			"type"=>$history_type,
+			"data"=>$history_data
+		);
+		
 		$return['history'] = $history;
 		$return['logs'] = models\articles::getLogs($return['ID']);
 
@@ -338,6 +377,112 @@ class data {
 		$return['media'] = $media;
 		
 		//test_array($return); 
+		
+		
+		return $GLOBALS["output"]['data'] = $return;
+	}
+
+function file_details(){
+		$user = $this->f3->get("user");
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+
+	$cfg = $this->f3->get("CFG");
+
+
+	$fileO = new models\files();
+	$return = $fileO->get($ID);
+
+	$file = ($cfg['upload']['folder'] . "nf/") .$return['folder'] . "/" . $return['filename'] ;
+
+	
+	$path = $this->f3->fixslashes($file);
+	$path = str_replace("//","/",$path);
+
+	$exif = array(
+		"width"=>"",
+		"height"=>"",
+		"size"=>"",
+		"dpi"=>"",
+		"date"=>"",
+		"date_orig"=>"",
+		"description"=>"",
+		"comment"=>"",
+		"software"=>"",
+		"copyright"=>"",
+		"camera"=>array(
+			"make"=>"",
+			"model"=>"",
+			"shutter"=>"",
+			"aperture"=>"",
+			"focal"=>"",
+		)
+		
+	);
+	
+	
+	if (is_file($path)){
+		$exif_raw = @exif_read_data($path, 0, true);
+		
+		if (isset($_GET['raw'])){
+			test_array($exif_raw);
+		}
+		
+		if ($exif_raw){
+			$a = fopen($path,'r');
+			$string = fread($a,20);
+			fclose($a);
+
+			$data = bin2hex(substr($string,14,4));
+			$x = hexdec(substr($data,0,4));
+			$y = hexdec(substr($data,0,4));
+
+			if ($x == $y){
+				$dpi = $x."DPI";
+			} else {
+				$dpi = "X:".$x."DPI | Y:".$y."DPI";
+			}
+			$exif['dpi'] = $dpi;
+		
+		
+			if (isset($exif_raw['COMPUTED']['Width'])) $exif['width'] = $exif_raw['COMPUTED']['Width'];
+			if (isset($exif_raw['COMPUTED']['Height'])) $exif['height'] = $exif_raw['COMPUTED']['Height'];
+			if (isset($exif_raw['COMPUTED']['UserComment'])) $exif['comment'] = $exif_raw['COMPUTED']['UserComment'];
+			if (isset($exif_raw['COMPUTED']['Copyright'])) $exif['copyright'] = $exif_raw['COMPUTED']['Copyright'];
+			
+			
+			if (isset($exif_raw['FILE']['FileSize'])) $exif['size'] = file_size($exif_raw['FILE']['FileSize']);
+			
+			
+			if (isset($exif_raw['IFD0']['ImageDescription'])) $exif['description'] = $exif_raw['IFD0']['ImageDescription'];
+			if (isset($exif_raw['IFD0']['DateTime'])) $exif['date'] = $exif_raw['IFD0']['DateTime'];
+			if (isset($exif_raw['IFD0']['Software'])) $exif['software'] = $exif_raw['IFD0']['Software'];
+			
+			if (isset($exif_raw['IFD0']['Make'])) $exif['camera']['make'] = $exif_raw['IFD0']['Make'];
+			if (isset($exif_raw['IFD0']['Model'])) $exif['camera']['model'] = $exif_raw['IFD0']['Model'];
+			if (isset($exif_raw['EXIF']['ShutterSpeedValue'])) $exif['camera']['shutter'] = $exif_raw['EXIF']['ShutterSpeedValue'];
+			if (isset($exif_raw['EXIF']['ApertureValue'])) $exif['camera']['aperture'] = $exif_raw['EXIF']['ApertureValue'];
+			if (isset($exif_raw['EXIF']['FocalLength'])) $exif['camera']['focal'] = $exif_raw['EXIF']['FocalLength'];
+			
+			
+			
+			if (isset($exif_raw['EXIF']['DateTimeOriginal'])) $exif['date_orig'] = $exif_raw['EXIF']['DateTimeOriginal'];
+			
+			$calc = array("shutter","aperture", "focal");
+			foreach ($calc as $item){
+				if (strpos($exif['camera'][$item],"/")){
+					$v = explode("/",$exif['camera'][$item]);
+					$v = $v[0] / $v[1];
+					$exif['camera'][$item] = $v;
+				}
+			}
+			$return['exif'] = $exif;
+		} 
+		
+	}
+	
+	
+		
+		
 		
 		
 		return $GLOBALS["output"]['data'] = $return;

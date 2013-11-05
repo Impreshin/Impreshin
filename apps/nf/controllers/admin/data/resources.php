@@ -3,14 +3,13 @@
  * User: William
  * Date: 2012/05/31 - 4:01 PM
  */
-namespace apps\nf\controllers\data\admin;
-
+namespace apps\nf\controllers\admin\data;
 use \timer as timer;
 use \apps\nf\models as models;
 use \models\user as user;
 
 
-class checklists extends \apps\nf\controllers\data\data {
+class resources extends \apps\nf\controllers\data\data {
 	function __construct() {
 		parent::__construct();
 
@@ -27,13 +26,12 @@ class checklists extends \apps\nf\controllers\data\data {
 
 
 
-		$categoryID = isset($_REQUEST['categoryID'])? $_REQUEST['categoryID']:"";
 
-		$where = "categoryID='$categoryID'";
-
+		$where = "";
 
 
-		$records = models\checklists::getAll($where, "orderby ASC");
+
+		$records = models\resources::getAll($where, "orderby ASC");
 
 		$return = array();
 
@@ -50,7 +48,7 @@ class checklists extends \apps\nf\controllers\data\data {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\checklists();
+		$o = new models\resources();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];

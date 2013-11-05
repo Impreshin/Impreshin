@@ -330,17 +330,17 @@ class settings {
 						"deleted_reason"
 					),
 					"group"      => array(
-						"g"=> "date",
+						"g"=> "none",
 						"o"=> "ASC"
 					),
 					"order"      => array(
-						"c"=> "client",
-						"o"=> "ASC"
+						"c"=> "datein",
+						"o"=> "DESC"
 					),
 					"count"      => "6",
 					"search"=>array(
 						"search"=>"",
-						"dates"=>""
+						"dates" => date("Y-m-d",strtotime(date("Y")."-".date('m')."-".'1')) . " to " . date("Y-m-d",strtotime(date("Y")."-".date('m')."-".date('t')))
 					)
 
 

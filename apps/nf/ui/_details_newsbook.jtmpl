@@ -22,7 +22,7 @@
 
 		<div class="modal-header-btns" style="border-left:1px dotted #e1e1e1; right:30px;">
 
-			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this booking"><i class="icon-pencil icon-d-grey"></i></a>
+			<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
 			<a href="#" class="view_full_details" rel="tooltip" data-placement="bottom" title="View the full details pane"><i class="icon-desktop icon-d-grey"></i></a>
 			
 			<a href="#" class="view_comments_details" rel="tooltip" data-placement="bottom" title="View and make comments"><i class="<% if (this.commentCount > 0) { %>icon-comments<% } else { %>icon-comment-alt <% } %> icon-d-grey"></i></a>
@@ -47,10 +47,19 @@
 					<% for(var f in this.media) { %>
 
 					<article class="row article-photo" id="file-id-<%= this.media[f].ID %>" >
-						<div class="span2" style="height: 90px;">
+						<div class="span2 btn-view-photo" style="height: 90px;" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-id="<%= this.media[f].ID %>" data-caption="<%= this.media[f].caption %>">
 							<img src="/app/nf/thumb/110/90?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" alt="" style="width:110px; height:90px;"/>
 						</div>
 						<div class="span6 selectable"><%= this.media[f].caption %></div>
+						
+						<div class="clearfix"></div>
+						<div class="well well-small">
+							filename: <a href="/app/nf/download?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&filename=<%= this.media[f].filename_orig %>"><%= this.media[f].filename_orig %></a>
+
+							<a class="btn span1 btn-mini" title="Download"  href="/app/nf/download?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>&filename=<%= this.media[f].filename_orig %>"><i class="icon-download-alt"></i></a>
+							<button class="btn span1 btn-mini btn-view-photo" type="button" title="View" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-id="<%= this.media[f].ID %>" data-caption="<%= this.media[f].caption %>"><i class="icon-zoom-in"></i></button>
+						</div>
+						
 					</article>
 				
 

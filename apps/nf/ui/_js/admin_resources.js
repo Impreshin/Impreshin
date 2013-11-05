@@ -1,40 +1,56 @@
 /*
  * Date: 2012/06/20 - 8:49 AM
  */
+var allowedFileExtentions = [];
+
+$.each(_allowedFiles, function (kk,vv) {
+	$.each(vv, function (k, v) {
+		$.each(v, function (sk, sv) {
+			allowedFileExtentions.push(sv)
+		});
+	});
+});
+allowedFileExtentions = allowedFileExtentions.join(",");
+
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
+var max_height = $(window).height() - 190;
+var text_settings = {
+	uiColor           : '#FFFFFF',
+	height            : '190px',
+	toolbar           : text_toolbar,
+	resize_enabled    : false
+	
+};
+
 $(document).ready(function () {
 	getList();
 	getDetails();
-	$(document).on("click", ".pagination a", function (e) {
-		e.preventDefault();
-		var $this = $(this).parent();
-		$.bbq.pushState({"page":$this.attr("data-page")});
-		getList();
-	});
 
+	$(document).on("change", "input:radio[name='type']", function () {
+		section();
+	});
 	$(document).on("click", "#record-list .record", function (e) {
 		var $this = $(this), ID = $this.attr("data-id");
 
 		var $cur_pub = $(e.target).closest(".cur-pub");
 		$.bbq.pushState({"ID":ID});
-		if ($cur_pub.length) {
-			$.post("/app/nf/admin/save/categories/_pub/?ID=" + ID, function (r) {
-				getList();
-				getDetails();
-			});
-		} else {
+		
 			getDetails();
-		}
 
 	});
 
 	$(document).on("change", "#searchform select", function () {
 		$("#searchform").trigger("submit")
 	});
+	$(document).on("change", "#searchform select", function () {
+		$("#searchform").trigger("submit")
+	});
 	$(document).on("submit", "#searchform", function (e) {
 		e.preventDefault();
+		$.bbq.removeState("ID");
 		getList();
+		getDetails();
 		return false;
 	});
 
@@ -50,7 +66,7 @@ $(document).ready(function () {
 		var ID = $.bbq.getState("ID");
 		if (confirm("Are you sure you want to delete this record?")) {
 			$("#left-area .loadingmask").show();
-			$.post("/app/nf/admin/save/categories/_delete/?ID=" + ID, function (r) {
+			$.post("/app/nf/admin/save/resources/_delete/?ID=" + ID, function (r) {
 				$.bbq.removeState("ID");
 				getList();
 				getDetails();
@@ -62,12 +78,12 @@ $(document).ready(function () {
 		e.preventDefault();
 		var $this = $(this);
 		var data = $this.serialize();
-
+		var categoryID = $("#categoryID").val();
 		var $errorArea = $("#errorArea").html("");
 
 		var ID = $.bbq.getState("ID");
 		$("#left-area .loadingmask").show();
-		$.post("/app/nf/admin/save/categories/_save/?ID=" + ID, data, function (r) {
+		$.post("/app/nf/admin/save/resources/_save/?ID=" + ID+"&categoryID="+ categoryID, data, function (r) {
 			r = r['data'];
 			if (r['error'].length) {
 				var str = "";
@@ -104,7 +120,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		var $this = $(this);
 
-		$.getData("/app/nf/logs/categories", {}, function (data) {
+		$.getData("/app/nf/logs/resources", {}, function (data) {
 			$logarea = $("#view-log table").html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>');
 			if (data[0]) {
 				$logarea.jqotesub($("#template-admin-logs"), data);
@@ -125,8 +141,10 @@ function getList() {
 	var order = $.bbq.getState("order");
 	order = (order) ? order : "";
 
+	var categoryID = $("#categoryID").val();
+
 	$("#right-area .loadingmask").show();
-	$.getData("/app/nf/admin/data/categories/_list", {"order":order}, function (data) {
+	$.getData("/app/nf/admin/data/resources/_list", {"order":order,"categoryID":categoryID}, function (data) {
 
 		var $recordsList = $("#record-list");
 		var $pagenation = $("#pagination");
@@ -149,7 +167,7 @@ function getList() {
 				});
 				rec = rec.join(",");
 
-				$.post("/app/nf/admin/save/categories/_sort/", {"order":rec}, function (t) {
+				$.post("/app/nf/admin/save/resources/_sort/", {"order":rec,"categoryID":categoryID}, function (t) {
 
 				});
 			}
@@ -170,11 +188,117 @@ function getDetails() {
 	$("#record-list tr[data-id='" + ID + "']").addClass("active");
 	$("#left-area .loadingmask").show();
 
-	$.getData("/app/nf/admin/data/categories/_details", {"ID":ID}, function (data) {
+	$.getData("/app/nf/admin/data/resources/_details", {"ID":ID}, function (data) {
 		$("#form-area").jqotesub($("#template-details"), data);
-		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 
+
+		section();
+		replace_btn();
+		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
+		
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	},"details");
+}
+function resizeform() {
+	var pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+	var api = pane.data("jsp");
+	//api.reinitialise();
+
+	scrolling(api);
+}
+
+function section(){
+	var sec = $("input:radio[name='type']:checked").val();
+	$(".diff-types").hide();
+	$("#type-"+sec).show();
+}
+function replace_btn() {
+
+		
+
+		var pluploader = new plupload.Uploader({
+			browse_button: 'btn-container-file-button',
+			container    : 'btn-container-file',
+			// General settings
+			runtimes     : 'html5,gears,flash,silverlight',
+			url          : '/app/nf/upload/?folder=' + folder,
+
+			chunk_size         : '1mb',
+			unique_names       : true,
+			multiple_queues    : false,
+			multi_selection    : false,
+
+			// Specify what files to browse for
+			filters            : [
+				{title: "Image files", extensions: _allowedFiles['1'].img.join(",")},
+				{title: "files", extensions: allowedFileExtentions}
+			],
+
+			// Flash settings
+			flash_swf_url      : '/ui/plupload/js/plupload.flash.swf',
+
+			// Silverlight settings
+			silverlight_xap_url: '/ui/plupload/js/plupload.silverlight.xap',
+
+
+			init: {
+				Refresh: function (up) {
+					
+				},
+				FilesAdded: function (up, files) {
+					var doing = false;
+					if ($("#filename").val()){
+						if (confirm("Are you sure you want to replace the existing file with:\n " + files[0].name + "?")) {
+
+
+							doing = true;
+							
+						}
+					} else {
+						doing = true;
+					}
+					
+					if (doing){
+						up.refresh();
+						up.start();
+						$("#btn-container-file-wait-progress").html("starting...");
+						$("#btn-container-file-wait").show();
+						$("#filename").attr("disabled","disabled");
+					}
+					
+					
+				},
+				UploadProgress: function(up, file){
+					//$progress.show().find(".bar").css("width", file.percent + "%");
+					$("#btn-container-file-wait-progress").html(file.percent + "%")
+				},
+				Error: function (up, err) {
+					//console.log("Error: " + err.code + ", Message: " + err.message + (err.file ? ", File: " + err.file.name : ""));
+				},
+				FileUploaded: function (up, file, response) {
+
+
+					$("#btn-container-file-wait").hide();
+					$("#btn-container-file-wait-progress").html("");
+					$("#filename").val(file.name).removeAttr("disabled");
+					$("#path").val(file.target_name);
+					
+				}
+
+			}
+
+
+
+		});
+		pluploader.bind('Init', function (up, params) {
+			//console.log("Current runtime environment: " + params.runtime);
+		});
+		pluploader.init(function () {
+			//console.log("woof"); 
+		});
+
+
+
+	
 }
