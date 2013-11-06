@@ -3,13 +3,16 @@ var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).dat
 
 $(document).ready(function(){
 	
-	var textarea_height = $("#right-area").innerHeight() - 90;
+	var textarea_height = $("#right-area").innerHeight() - 100;
 	
 	$("#right-area").find(".loadingmask").hide();
 	$("#right-area").find(".content").show();
-	$("textarea#cm-block-form").css("height",textarea_height);
-	$("textarea#cm-block-form").keyup(function(){
+	$("#style-textarea").css("height",textarea_height);
+	$(document).on("keyup","textarea#cm-block-form",function(){
 		render()
+	});
+	$(document).on("change","#categoryID",function(){
+		getDetails()
 	});
 	
 
@@ -87,14 +90,45 @@ $(document).ready(function(){
 		return false;
 
 	});
+
+	getDetails();
 	
-	render();
-	
-	$("form").submit(function(){
-		$(".loadingmask").show();
+	$("form").submit(function(e){
+		e.preventDefault();
+		var $this = $(this);
+		var data = $this.serialize();
+		var categoryID = $("#categoryID").val();
+		
+
+		var ID = $.bbq.getState("ID");
+		$("#right-area .loadingmask").show();
+		$.post("/app/nf/admin/save/cmstylesheet/_save/?categoryID="+ categoryID, data, function (r) {
+			r = r['data'];
+
+			getDetails();
+				
+			
+
+		});
+		return false;
 	})
 	
 });
+function getDetails(){
+	var ID = $("#categoryID").val();
+	$("#right-area .loadingmask").show();
+
+	$.getData("/app/nf/admin/data/cmstylesheet/_details", {"categoryID":ID}, function (data) {
+		$("#style-textarea").jqotesub($("#template-details"), data);
+
+		var textarea_height = $("#style-textarea").innerHeight();
+		$("#style-textarea").css("height",textarea_height);
+		$("#right-area .loadingmask").hide();
+
+		render()
+	},"details");
+	
+}
 function render(){
 	
 	$("#left-area .loadingmask").show();

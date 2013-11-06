@@ -290,3 +290,6 @@ CREATE TABLE IF NOT EXISTS `nf_files_body` (
 );
 INSERT INTO nf_files_body (fileID,uID,body) SELECT ID, uID, caption FROM nf_files WHERE caption is not null;
 ALTER TABLE `nf_files` DROP `caption`;
+
+ALTER TABLE `nf_categories` ADD `nf_cm_css` TEXT NULL DEFAULT NULL AFTER `category` ;
+ 

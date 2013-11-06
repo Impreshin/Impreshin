@@ -17,7 +17,7 @@ class cmstylesheet extends \apps\nf\controllers\_ {
 
 		$cID = $user['company']['ID'];
 		$cfg = $this->f3->get("CFG");
-		$cmstyle =  $user['company']['nf_cm_css'];
+		
 		
 		
 
@@ -25,17 +25,14 @@ class cmstylesheet extends \apps\nf\controllers\_ {
 		
 		
 		if (count($_POST)){
-			$values = array(
-				"nf_cm_css"=>clean_style((isset($_POST['cm-block-form'])?$_POST['cm-block-form']:NULL),true)
-			);
-			\models\company::save($cID,$values);
-			$cmstyle = $values['nf_cm_css'];
+			
+			
+			
+			
 			
 		}
 
-		if ($cmstyle=='' || $cmstyle ==NULL){
-			$cmstyle = $cfg['nf']['default_cm_calc_css'];
-		}
+		
 
 //test_array($cmstyle);
 
@@ -51,16 +48,12 @@ class cmstylesheet extends \apps\nf\controllers\_ {
 			"js"=>array("/ui/ckeditor/ckeditor.js"),
 			"css"=>array(),
 		);
-		
-		
-	
 
-		
 
-		
-		$tmpl->cm_calc_css = clean_style($cmstyle);
-		
-		
+
+
+
+		$tmpl->categories = models\categories::getAll("cID='" . $cID . "'", "orderby ASC");
 		$tmpl->output();
 
 	}
