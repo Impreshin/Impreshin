@@ -3,7 +3,7 @@ var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).dat
 
 $(document).ready(function(){
 	
-	var textarea_height = $("#right-area").innerHeight() - 50;
+	var textarea_height = $("#right-area").innerHeight() - 90;
 	
 	$("#right-area").find(".loadingmask").hide();
 	$("#right-area").find(".content").show();
@@ -88,6 +88,10 @@ $(document).ready(function(){
 	});
 	
 	render();
+	
+	$("form").submit(function(){
+		$(".loadingmask").show();
+	})
 	
 });
 

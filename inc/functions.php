@@ -129,10 +129,15 @@ function currency($number){
 
 }
 
-function test_array($array,$splitter=","){
+function test_array($array,$splitter=''){
 
-	if (!is_array($array)){
+	if (!is_array($array) && $splitter){
 		$array = explode($splitter,$array);
+	} 
+	
+	if (!is_array($array)){
+		echo ($array);
+		exit();
 	}
 
 	header("Content-Type: application/json");
@@ -170,4 +175,34 @@ function sortBy($key="order") {
 	};
 
 
+}
+
+function clean_style($cmstyle,$clearspaces=false){
+	if ($cmstyle){
+		$cmstyle = trim(preg_replace('/\s+/', ' ', $cmstyle));
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = trim(preg_replace('/\s+/', ' ', $cmstyle));
+		$cmstyle = str_replace("} ","}",$cmstyle);
+		
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+
+		$cmstyle = str_replace(";",";&#10;    ",$cmstyle);
+		$cmstyle = str_replace("}","}&#10;&#10;",$cmstyle);
+		$cmstyle = str_replace("{","{&#10;    ",$cmstyle);
+		$cmstyle = str_replace("&#10;    }","&#10;}",$cmstyle);
+		$cmstyle = str_replace("     ","    ",$cmstyle);
+		$cmstyle = str_replace("    }","}",$cmstyle);
+		
+	}
+	
+	if ($clearspaces){
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+	}
+	
+	//$cmstyle = str_replace(" ",".",$cmstyle);
+	return $cmstyle;
 }

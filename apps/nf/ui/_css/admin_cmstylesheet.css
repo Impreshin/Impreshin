@@ -1,3 +1,6 @@
+#cm-block {
+  display: block;
+}
 textarea#cm-block-form {
   border: none;
 }
@@ -6,8 +9,8 @@ textarea#cm-block-form {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  margin: 10px;
-  padding: 10px;
+  margin: 15px;
+  padding: 5px;
 }
 #article-area {
   position: absolute;

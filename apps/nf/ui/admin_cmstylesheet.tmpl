@@ -68,8 +68,12 @@
 					
 
 						<div data-heading="top" class="">
-							<form action="#">
+							<form action="/app/nf/admin/cmstylesheet" method="POST">
 								<textarea name="cm-block-form" id="cm-block-form" cols="30" rows="10" class="span5" style="margin-left: 0px; height: 500px">{{ cm_calc_css|raw }}</textarea>
+								<div class="s g">
+									Start all styles with #cm-block<br>
+									Clear the block and click save to use the default style 
+								</div>
 								<button class="btn span5" style="margin-left: 0px;">Save</button>
 							</form>
 							

@@ -113,7 +113,7 @@ $routes[] =	array(
 	"l"=>true,
 );
 $routes[] =	array(
-	"method"=>'GET',
+	"method"=>'GET|POST',
 	"path"=>'/app/nf/admin/cmstylesheet',
 	"controller"=>'apps\nf\controllers\admin\cmstylesheet->page',
 	"a"=>true,
