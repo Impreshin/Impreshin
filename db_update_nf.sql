@@ -1,6 +1,6 @@
 
 
-UPDATE `_global_publications` SET `publication` = 'Limpopo Mirror' WHERE `_global_publications`.`ID` = 2;
+UPDATE `_global_publications` SET `publication` = 'Limpopo Mirror' WHERE `_global_publications`.`publication` = 'Mirror';
 
 SET @companyID := "1";
 

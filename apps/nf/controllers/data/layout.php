@@ -33,22 +33,49 @@ class layout extends data {
 	
 		$stats = $this->_stats();
 		$maxPage = $stats['loading']['pages'];
+
+
+
+		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
+		$ordering_d = $settings['order']['o'];
+
+		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
+			if ($settings['order']['c'] == $_REQUEST['order']) {
+				if ($ordering_d == "ASC") {
+					$ordering_d = "DESC";
+				} else {
+					$ordering_d = "ASC";
+				}
+
+			}
+
+		}
+
+
+		
+		
+		
+		
 		
 		//test_array($maxPage); 
 		$values = array();
 		$values["layout"] = array(
 			"categoryID" => array(
 				$pID=>$categoryID,
-			)
+			),
+			"order"      => array(
+				"c"=> $ordering_c,
+				"o"=> $ordering_d
+			),
 		);
 
 
+		
 		models\settings::save($values);
 
 
 	//	test_array(array($pID,$dID)); 
-		$records = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null",
-			"", "",array("pID"=>$pID,"dID"=>$dID));
+		$records = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null", "", array("c" => $ordering_c, "o" => $ordering_d) , array("pID"=>$pID,"dID"=>$dID));
 		$rawBookings= $records;
 		$records = models\articles::display($records);
 

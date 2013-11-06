@@ -280,7 +280,11 @@ class settings {
 
 				),
 				"layout"=>array(
-					"categoryID"=>array()
+					"categoryID"=>array(),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
 				),
 				"production"=>array(
 					"col"        => $defColumns,
