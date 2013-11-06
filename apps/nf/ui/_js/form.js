@@ -28,6 +28,8 @@ var text_settings = {
 	resize_enabled    : false,
 	extraPlugins      : 'autogrow,onchange',
 	autoGrow_maxHeight: max_height,
+	htmlEncodeOutput : false,
+	entities : false,
 	autoGrow_minHeight: 390 > max_height ? 390 : max_height,
 	autoGrow_fn       : function () {
 		resizeform();
@@ -39,6 +41,8 @@ var caption_settings = {
 	toolbar           : text_toolbar,
 	removePlugins     : 'elementspath',
 	resize_enabled    : false,
+	htmlEncodeOutput : false,
+	entities : false,
 	extraPlugins      : 'autogrow',
 	autoGrow_minHeight: 110,
 	autoGrow_maxHeight: 110 > max_height ? 110 : max_height,

@@ -48,7 +48,7 @@
 						<td class="span12" style="">
 							<div style="padding:10px;">
 								<div class="span11 control-group">
-									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<% if (this.details.title) { %><%= this.details.title %><% } %>">
+									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<%= this.details.title||"" %>">
 								</div>
 
 
