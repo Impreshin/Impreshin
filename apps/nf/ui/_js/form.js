@@ -113,8 +113,17 @@ $(document).ready(function () {
 	$(document).on("change", "#categoryID", function () {
 
 		checklistBtn();
+		
+		$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$(this).val(),function(){
+			$("#cm-block").trigger("change");
+		})
 
 	});
+	$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$("#categoryID").val(),function(){
+		$("#cm-block").trigger("change");
+	});
+	
+	
 	$(document).on("click", "#checklist-container li .label", function () {
 		var $this = $(this);
 		var $help = $this.parent().find(".help-block");
