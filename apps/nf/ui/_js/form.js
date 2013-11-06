@@ -119,9 +119,7 @@ $(document).ready(function () {
 		})
 
 	});
-	$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$("#categoryID").val(),function(){
-		$("#cm-block").trigger("change");
-	});
+	
 	
 	
 	$(document).on("click", "#checklist-container li .label", function () {
@@ -326,7 +324,10 @@ function formLoaded(data) {
 		body = $("#body").val();
 		
 	}
-	$cm.html(body).trigger("change");
+	$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$("#categoryID").val(),function(){
+		$("#cm-block").trigger("change");
+	});
+	$cm.html(body);
 
 	
 
