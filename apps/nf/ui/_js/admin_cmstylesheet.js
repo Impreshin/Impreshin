@@ -46,16 +46,17 @@ $(document).ready(function(){
 		e.preventDefault();
 
 		
-
+		
+		var dpi = document.getElementById("dpi").offsetHeight;
 		var artcm = $(this).height();
 
-
-
 		if (artcm > 0) {
-			artcm = artcm / 38.461538;
+			artcm = (artcm/dpi) *2.54;
 			artcm = Math.ceil(artcm);
 		}
 
+		
+		
 		var heading = "Cm Style Sheet";
 		if (artcm){
 			$("#cm").val(artcm);
@@ -94,7 +95,6 @@ $(document).ready(function(){
 	})
 	
 });
-
 function render(){
 	
 	$("#left-area .loadingmask").show();
@@ -115,7 +115,7 @@ function render(){
 }
 function resize_left(){
 	var w = $("#render-area").outerWidth() + 40;
-	$("#article-area").animate({"right":w},500);
+	$("#article-area").stop().animate({"right":w},500);
 	
 	
 }

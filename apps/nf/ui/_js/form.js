@@ -174,12 +174,11 @@ $(document).ready(function () {
 			
 		///console.log("changed");
 
+		var dpi = document.getElementById("dpi").offsetHeight;
 		var artcm = $(this).height();
 
-
-
 		if (artcm > 0) {
-			artcm = artcm / 38.461538;
+			artcm = (artcm/dpi) *2.54;
 			artcm = Math.ceil(artcm);
 		}
 
