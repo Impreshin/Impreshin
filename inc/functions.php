@@ -185,6 +185,7 @@ function form_display(&$value) {
 }
 function form_write(&$value) {
 	if ($value){
+		iconv(mb_detect_encoding($value, mb_detect_order(), true), "UTF-8", $value);
 		$value = html_entity_decode($value);
 	}
 	
