@@ -212,14 +212,14 @@
 #nf-details-modal-area #details-pane-logs .record:hover {
   text-shadow: none;
 }
-#nf-details-modal-area #details-pane-details ins,
-#nf-details-modal-area #details-pane-details ins p {
+#nf-details-modal-area #history-area ins,
+#nf-details-modal-area #history-area ins p {
   color: green;
   background: #dfd;
   text-decoration: none;
 }
-#nf-details-modal-area #details-pane-details del,
-#nf-details-modal-area #details-pane-details del p {
+#nf-details-modal-area #history-area del,
+#nf-details-modal-area #history-area del p {
   color: red;
   background: #fdd;
   text-decoration: none;
