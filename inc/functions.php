@@ -177,10 +177,16 @@ function sortBy($key="order") {
 
 }
 function form_display(&$value) {
-	$value = htmlentities($value);
+	if ($value){
+		$value = htmlentities($value);
+	}
+	
 }
 function form_write(&$value) {
-	$value = html_entity_decode($value);
+	if ($value){
+		$value = html_entity_decode($value);
+	}
+	
 }
 
 function clean_style($cmstyle,$clearspaces=false){
