@@ -95,10 +95,20 @@
 									<section class="block control-group" style="margin-top:10px;">
 										<h4>Author</h4>
 										<select name="authorID" id="authorID" style="width:100%;"  class="select2">
+										<% if (this.details.ID){ %>
+											<optgroup label="Selected">
+											<option value="<%= this.details.authorID %>" selected="selected"><%= this.details.author %></option>
+											</optgroup>
+										<optgroup label="Authors">
 											{% for row in authors %}
 												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
 											{% endfor %}
-
+										</optgroup>
+										<% } else { %>
+											{% for row in authors %}
+												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
+											{% endfor %}
+										<% } %>
 										</select>
 									</section>
 									{% else %}

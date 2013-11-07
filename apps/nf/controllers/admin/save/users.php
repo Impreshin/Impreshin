@@ -106,6 +106,7 @@ class users extends \apps\nf\controllers\save\save {
 
 
 
+			//test_array($nf_author); 
 
 			\apps\ab\app::permissions_save($ID, $cID, $permissions);
 			$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_users_company");

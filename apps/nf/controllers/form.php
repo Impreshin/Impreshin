@@ -90,6 +90,7 @@ class form extends \apps\nf\controllers\_{
 		$users = $u;
 		
 
+		//test_array($users);
 	
 
 		$tmpl = new \template("template.tmpl", "apps/nf/ui/");
