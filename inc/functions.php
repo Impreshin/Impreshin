@@ -140,7 +140,7 @@ function test_array($array,$splitter=''){
 		exit();
 	}
 
-	header("Content-Type: application/json");
+	header("Content-type: application/json; charset=UTF-8n");
 	echo json_encode($array);
 	exit();
 }
