@@ -178,6 +178,7 @@ function sortBy($key="order") {
 }
 function form_display(&$value) {
 	if ($value){
+		iconv('', 'UTF-8', $value);
 		$value = htmlentities($value);
 	}
 	
