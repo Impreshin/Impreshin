@@ -33,7 +33,7 @@ class form extends data {
 		if ($record['ID'] && ($record['cID'] != $cID)) {
 			$record = $recordO->dbStructure();
 		}
-		$record = json_decode(json_encode($record), true);
+		//$record = json_decode(json_encode($record), true);
 		array_walk_recursive($record, "form_display");
 		
 
