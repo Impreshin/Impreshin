@@ -80,14 +80,14 @@
 				<legend>Category</legend>
 				<%= this.category %>
 			</fieldset>
-			
+			<% if (this.a.placed=='1') { %>
 			<fieldset style="margin-top: 30px;">
 				<legend>Actions</legend>
-				
+				<% if (this.a.placed=='1') { %>
 				<button class="btn <% if (this.placed=='1') { %>btn-success<% } %>" id="btn-action-placed" data-value="<% if (this.placed=='1') { %>0<% } else { %>1<% } %>"  type="button" style="width:100%">Placed</button>
-				
+				<% } %>
 			</fieldset>
-			
+			<% } %>
 			<fieldset style="margin-top:20px;">
 				<legend>Navigation</legend>
 				<div class="row">

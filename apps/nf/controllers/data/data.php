@@ -38,7 +38,8 @@ class data {
 			"print" => "1",
 			"stageNext"=>"0",
 			"stagePrev"=>"0",
-			"stage_jump_list"=>"0"
+			"stage_jump_list"=>"0",
+			"placed"=>"0"
 		);
 
 
@@ -251,12 +252,17 @@ class data {
 
 		$record = new models\articles();
 		$return = $record->get($ID,array("pID"=>$pID,"dID"=>$dID));
-		$allow = array("print" => "1",);
+		$allow = array(
+			"print" => "1",
+			"placed" => "0",
+		);
 
 		$permissions = $user['permissions'];
 
 
-		
+		if ($permissions['details']['placed']=='1'){
+			$allow['placed'] ='1';
+		}
 		
 		
 		$history = array();
@@ -274,8 +280,10 @@ class data {
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$newsbook['ID']."'");
 
 			$media = models\files::display($media);
+			$return['placed']=$newsbook['placed'];
 		}
 	
+		
 
 		$return['media'] = $media;
 
