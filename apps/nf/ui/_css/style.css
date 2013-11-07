@@ -134,6 +134,18 @@
   right: 230px;
   top: 0;
 }
+#nf-details-modal .history-wrapper ins,
+#nf-details-modal .history-wrapper ins p {
+  color: green;
+  background: #dfd;
+  text-decoration: none;
+}
+#nf-details-modal .history-wrapper del,
+#nf-details-modal .history-wrapper del p {
+  color: red;
+  background: #fdd;
+  text-decoration: none;
+}
 #nf-details-modal-area .back-btn-details-pane {
   display: none;
 }
@@ -211,18 +223,6 @@
 }
 #nf-details-modal-area #details-pane-logs .record:hover {
   text-shadow: none;
-}
-#nf-details-modal-area #history-area ins,
-#nf-details-modal-area #history-area ins p {
-  color: green;
-  background: #dfd;
-  text-decoration: none;
-}
-#nf-details-modal-area #history-area del,
-#nf-details-modal-area #history-area del p {
-  color: red;
-  background: #fdd;
-  text-decoration: none;
 }
 #nf-details-modal-area #details-info-pane {
   position: absolute;
