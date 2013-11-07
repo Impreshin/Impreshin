@@ -58,6 +58,7 @@ class logging {
 
 		//test_array($changes);
 		if (count($changes)) {
+			iconv(mb_detect_encoding($changes, mb_detect_order(), true), "UTF-8", $changes);
 			$log = mysql_escape_string(json_encode($changes));
 
 			$f3->get("DB")->exec("INSERT INTO global_logs (`cID`, `app`,`section`, `log`, `label`, `uID`) VALUES ('$cID', '$app','$section','$log','$label','$userID')");
