@@ -23,6 +23,7 @@ class articles extends save {
 		$value = isset($_POST['stageID']) ? $_POST['stageID'] : "";
 		$values = array(
 			"stageID" => $value,
+			"locked_uID" => NULL,
 		);
 		$r = array();
 
