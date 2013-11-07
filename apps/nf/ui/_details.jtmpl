@@ -94,6 +94,11 @@
 
 
 	<% if (this.historyShow.type=='body') { %>
+	<div class="history-wrapper tab-pane active">
+		
+	<div class="scroll-pane">
+		<div style="padding:10px 20px;">
+	
 	<div id="history-area">
 	<div class="alert">
 		<button type="button" class="close">&times;</button>
@@ -107,7 +112,15 @@
 	</div>
 	</div>
 	<%= this.historyShow.data.body||"<em class='g'>no article body</em>" %>
+	</div>
+	</div>
+	</div>
 	<% } else if(this.historyShow.type=='media') { %>
+	<div class="history-wrapper tab-pane active">
+
+	<div class="scroll-pane">
+	<div style="padding:10px 20px;">
+
 	<div id="history-area">
 	<div class="alert">
 		<button type="button" class="close">&times;</button>
@@ -133,7 +146,9 @@
 	</div>
 	<% } %>
 </div>
-
+	</div>
+	</div>
+	</div>
 <% } else { %>
 
 
