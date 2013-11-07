@@ -119,7 +119,7 @@ class app {
 			$timersbottom = '
 					<script type="text/javascript">
 						if (typeof(updatetimerlist) != "undefined") {
-				            updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
+				            updatetimerlist(' . json_encode(($GLOBALS["output"])) . ');
 				        }
 					</script>
 				';

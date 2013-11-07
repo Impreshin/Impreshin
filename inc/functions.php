@@ -186,7 +186,7 @@ function form_display(&$value) {
 }
 function form_write(&$value) {
 	if ($value){
-		$value = utf8_encode(html_entity_decode( $value));
+		//$value = utf8_encode(html_entity_decode( $value));
 	
 	}
 	
