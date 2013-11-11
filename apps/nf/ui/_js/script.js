@@ -14,6 +14,12 @@ var text_toolbar = [
 
 
 $(function () {
+	/*$(window).bind( "hashchange", function(e) {
+		var ID = $.bbq.getState( "ID" );
+		if (ID){
+			getDetails();
+		}
+	});*/
 
 	$('body').tooltip({
 		selector : '*[rel=tooltip]',

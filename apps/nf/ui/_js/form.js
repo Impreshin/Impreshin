@@ -230,6 +230,19 @@ $(document).ready(function () {
 		$("#form-diff-" + type).show();
 	});
 
+	$(document).on("click", ".btn-delete-file", function () {
+		var ID = $(this).attr("data-ID");
+		if (confirm("Are you sure you want to delete this file?")) {
+			$("#pagecontent .loadingmask").show();
+			
+			$.post("/app/nf/save/articles/file_delete?ID=" + ID, {}, function (response) {
+				$("#pagecontent .loadingmask").fadeOut(transSpeed);
+				resizeform();
+			});
+		}
+
+	});
+
 	
 
 });

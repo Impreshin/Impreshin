@@ -279,7 +279,8 @@
 				
 			<div class="file-icon-area">
 				<% if (this.fileType=="1"){ %>
-				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" alt=""/>
+			
+				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" class="btn-view-photo" data-file="<%= this.folder %>/<%= this.filename %>" alt=""/>
 
 				<% } else { %>
 				<div class="file-icon <%= this.icon %>"></div>
@@ -298,8 +299,15 @@
 
 
 			<div class="file-buttons">
+				<% if (this.ID) { %>
 				<div class="btn-group">
-					<button class="btn btn-mini span1 dg" type="button"><i class="icon-bookmark"></i></button>
+					
+					<button class="btn btn-mini span1 btn-download-file" data-file="<%= this.folder %>/<%= this.filename %>" data-filename="<%= this.filename_orig %>" type="button"><i class="icon-download-alt"></i></button>
+
+				
+						
+						
+					
 					<div class="span1 replace-area" id="btn-container-<%= this.ID||this.tempID %>" title="Replace file">
 						<button class="btn span1 btn-mini file-replace-btn" data-id="<%= this.ID||this.tempID %>" data-filename="<%= this.filename %>" data-folder="<%= this.folder %>" type="button" title="Replace file" style="margin-left: 0;">
 							<i class="icon-exchange"></i>
@@ -310,8 +318,9 @@
 						</button>
 
 					</div>
-					<button class="btn btn-mini span1" type="button"><i class="icon-remove"></i></button>
+					<button class="btn btn-mini span1 btn-delete-file" data-ID="<%= this.ID %>" type="button"><i class="icon-remove"></i></button>
 				</div>
+				<% } %>
 			</div>
 
 			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px;"><%= this.caption||"" %></textarea>
