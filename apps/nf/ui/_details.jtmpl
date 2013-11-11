@@ -1333,7 +1333,7 @@ $(document).on("click", ".btn-view-photo", function (e) {
 
 	var p = {
 		"ID"     : ID,
-		"caption": caption,
+		"caption": caption?caption:'',
 		"path"   : path
 	};
 
