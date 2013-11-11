@@ -27,3 +27,4 @@ $s = array();
 echo implode("\n",$s);
 exit();
 test_array($s); 
+

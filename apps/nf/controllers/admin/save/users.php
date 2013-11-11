@@ -179,18 +179,17 @@ class users extends \apps\nf\controllers\save\save {
 		$user = $this->f3->get("user");
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 
-		$pID = $user['publication']['ID'];
+		$cID = $user['company']['ID'];
 
+		
 
-		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"nf_users_pub");
-		$p->load("uID='$ID' and pID='$pID'");
-		if (!$p->ID) {
-			$p->uID = $ID;
-			$p->pID = $pID;
+		$p = new \DB\SQL\Mapper($this->f3->get("DB"),"global_users_company");
+		$p->load("uID='$ID' and cID='$cID'");
+		
+		
+		if ($p->ID) {
+			$p->nf_author = ($p->nf_author==1)?0:1;
 			$p->save();
-		} else {
-			$p->erase();
-
 		}
 
 
