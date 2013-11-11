@@ -81,6 +81,9 @@
 #new-file-area article:hover .file-buttons {
   opacity: 1;
 }
+.plupload_button.btn.plupload_start {
+  display: none;
+}
 .form-super-narrow h4 {
   border-bottom: 1px dotted #CCCCCC;
   margin-bottom: 15px;

@@ -231,14 +231,16 @@ $(document).ready(function () {
 	});
 
 	$(document).on("click", ".btn-delete-file", function () {
-		var ID = $(this).attr("data-ID");
+		var $this = $(this);
+		var ID = $this.attr("data-ID");
 		if (confirm("Are you sure you want to delete this file?")) {
 			$("#pagecontent .loadingmask").show();
-			
 			$.post("/app/nf/save/articles/file_delete?ID=" + ID, {}, function (response) {
+				$this.closest(".file-record").remove();
 				$("#pagecontent .loadingmask").fadeOut(transSpeed);
 				resizeform();
 			});
+			
 		}
 
 	});
@@ -438,6 +440,7 @@ function formLoaded(data) {
 				plupload.each(files, function (file) {
 
 				});
+				up.start();
 			},
 			FilesRemoved  : function (up, files) {
 

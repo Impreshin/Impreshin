@@ -379,4 +379,16 @@ class articles extends save {
 		echo json_encode(array("result" => $result));
 		exit();
 	}
+	function file_delete() {
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		
+
+		$result = models\files::_delete($ID);
+
+		echo json_encode(array("result" => $result));
+		exit();
+	}
 }
