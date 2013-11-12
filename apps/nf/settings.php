@@ -31,10 +31,12 @@ class settings {
 				"h"=> "Title",
 			),
 			"datein"=>array(
-				"h"=>"Date&nbsp;Created"
+				"h"=>"Date&nbsp;Created",
+				"m"=>60
 			),
 			"dateChanged"=>array(
-				"h"=>"Date&nbsp;Changed"
+				"h"=>"Date&nbsp;Changed",
+				"m"=>60
 			),
 			
 			"stage"=>array(
@@ -44,10 +46,12 @@ class settings {
 				"h"=>"Author"
 			),
 			"cm"=>array(
-				"h"=>"Cm"
+				"h"=>"Cm",
+				"w"=>40
 			),
 			"words"=>array(
-				"h"=>"Words"
+				"h"=>"Words",
+				"w"=>40
 			),
 			"priority"=>array(
 				"h"=>"Priority"
@@ -67,7 +71,8 @@ class settings {
 			),
 			"page"=>array(
 				"h"=>"Page",
-				"o"=>"global_pages.page"
+				"o"=>"global_pages.page",
+				"w"=>40
 			),
 			
 			"category"=>array(
@@ -76,15 +81,18 @@ class settings {
 			),
 			"commentCount"=>array(
 				"h"=>"Comments",
-				"o"=>"commentCount"
+				"o"=>"commentCount",
+				"w"=>40
 			),
 			"photosCount"=>array(
 				"h"=>"Photos",
-				"o"=>"photosCount"
+				"o"=>"photosCount",
+				"w"=>40
 			),
 			"filesCount"=>array(
 				"h"=>"Files",
-				"o"=>"filesCount"
+				"o"=>"filesCount",
+				"w"=>40
 			),
 			"locked_fullName"=>array(
 				"h"=>"Locked&nbsp;By",
@@ -93,12 +101,14 @@ class settings {
 			"locked"=>array(
 				"b"=>"locked",
 				"h"=>"Locked",
-				"o"=>"locked"
+				"o"=>"locked",
+				"w"=>30
 			),
 			"placed"=>array(
 				"b"=>"placed",
 				"h"=>"Placed",
-				"o"=>"placed"
+				"o"=>"placed",
+				"w"=>30
 			),
 
 			"deleted"               => array(
@@ -116,10 +126,13 @@ class settings {
 			),
 			"archived"               => array(
 				"h"=> "Archived",
-				"b"=> true
+				"b"=> true,
+				"w"=>30
+				
 			),
 			"archived_date"               => array(
 				"h"=> "Archived&nbsp;Date",
+				"m"=>60
 			),
 
 		);
