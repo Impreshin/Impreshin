@@ -139,7 +139,7 @@ class files {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-
+		$cfg = $f3->get("CFG");
 
 		$old = array();
 
@@ -147,6 +147,11 @@ class files {
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_files");
 		$a->load("ID='$ID'");
 
+		if (isset($values['body']) && $values['body']) {
+			$values['body'] = $f3->scrub( $values['body'], $cfg['nf']['whitelist_tags']);
+		}
+		
+		
 		foreach ($values as $key => $value) {
 			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)) {
