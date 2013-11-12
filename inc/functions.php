@@ -178,8 +178,9 @@ function sortBy($key="order") {
 }
 function form_display(&$value) {
 	if ($value){
-		$value = utf8_encode($value);
+		//$value = utf8_encode($value);
 		$value = str_replace('"',"&quot;",$value);
+		//$value = str_replace('Ã«',"ë",$value);
 		//$value = htmlentities($value,'','UTF-8');
 	}
 	
