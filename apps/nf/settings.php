@@ -72,7 +72,7 @@ class settings {
 			"page"=>array(
 				"h"=>"Page",
 				"o"=>"global_pages.page",
-				"w"=>40
+				
 			),
 			
 			"category"=>array(
@@ -362,6 +362,30 @@ class settings {
 
 
 				),
+				"reports_author_summary"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"ID"=>array(),
+					"col" => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"marketer"
+					),
+					"group"      => array(
+						"g"=>"placing",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "5",
+					"tolerance"=>25
+				),
+				
 				"admin_users"=>array(
 					"order"=>array(
 						"c"=>"fullName",

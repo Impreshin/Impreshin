@@ -51,6 +51,11 @@ class permissions {
 					"page" => 0
 				)
 			),
+			"reports"=>array(
+				"author_summary"  => array(
+					"page" => 0
+				)	
+			),
 			"administration" => array(
 				"application" => array(
 					"checklists"=>array(

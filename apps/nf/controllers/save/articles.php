@@ -291,6 +291,11 @@ class articles extends save {
 			if (isset($values['stageID']) && $values['stageID']) {
 				$values['locked_uID'] = NULL;
 			}
+			
+			if ($type!='1'){
+				if (isset($values['cm']))$values['cm']=NULL;
+				if (isset($values['words']))$values['words']=NULL;
+			}
 
 			array_walk_recursive($values, "form_write");
 			$ID = models\articles::save($ID, $values);

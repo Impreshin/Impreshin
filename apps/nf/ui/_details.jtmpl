@@ -1164,22 +1164,25 @@ $(document).on("click", '#comments-area .edit', function () {
 	comment_active();
 });
 
-
-
-$(document).on("shown", '#nf-details-modal', function () {
+function open_tab_pabe(){
 	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 	if (!tab) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
 		if (tab) tab = tab.replace("#", "");
 	}
-	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent()
+	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent();
 	if (t.length < 1) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
 		if (tab) tab = tab.replace("#", "");
-	}
-	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	}$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 	$('#' + tab + '', $details_modal).addClass("active");
 	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+}
+
+
+$(document).on("shown", '#nf-details-modal', function () {
+
+	open_tab_pabe();
 
 });
 $(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
@@ -1427,10 +1430,7 @@ function showContent_state() {
 	} else {
 		$(".details-record-next").removeAttr("disabled");
 	}
-	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
-	if (!tab) tab = "details-pane-details";
-	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-	$('#' + tab + '', $details_modal).addClass("active");
+	open_tab_pabe()
 
 }
 function getDetails() {

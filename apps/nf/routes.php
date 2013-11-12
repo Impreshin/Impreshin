@@ -75,6 +75,14 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>false,
 );
+// reports
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/author/summary',
+	"controller"=>'apps\nf\controllers\reports\author_summary->page',
+	"a"=>true,
+	"l"=>false,
+);
 // administration
 
 $routes[] =	array(

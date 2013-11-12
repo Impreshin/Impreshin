@@ -590,11 +590,13 @@ class articles {
 
 
 					$changes[] = array("k" => "body", "v" =>"Change", "w" => "<div class='r'>". $values['percent_last']."%</div>");
+
+				
 					
 				}
 
 
-			}
+			} 
 			
 			
 		} else {
