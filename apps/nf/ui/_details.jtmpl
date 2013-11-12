@@ -1350,7 +1350,7 @@ $(document).on("click", ".btn-view-photo", function (e) {
 
 	$.fancybox.open({
 		href : '/app/nf/thumb/' + w + '/' + h + '?file=' + path + '&crop=false',
-		title: "test"
+		title: ""
 	}, {
 		padding   : 10,
 		type      : 'image',
