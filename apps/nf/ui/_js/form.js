@@ -17,7 +17,7 @@ allowedFileExtentions = allowedFileExtentions.join(",");
 
 //console.log(allowedFileExtentions); 
 
-var max_height = $(window).height() - 190;
+var max_height = $(window).height() - 200;
 
 
 
