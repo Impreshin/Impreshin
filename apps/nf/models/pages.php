@@ -57,7 +57,7 @@ class pages {
 
 		$timer2 = new timer();
 		$result = $f3->get("DB")->exec("
-			SELECT global_pages.*, section, section_colour
+			SELECT global_pages.*, section, section_colour, global_pages.nf_locked as locked
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby

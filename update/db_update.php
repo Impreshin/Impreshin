@@ -92,6 +92,9 @@ $sql = array(
 	),
 	"18"=>array(
 		"ALTER TABLE `ab_accounts` ADD `email` VARCHAR( 250 ) NULL DEFAULT NULL , ADD `phone` VARCHAR( 250 ) NULL DEFAULT NULL;"
+	),
+	"19"=>array(
+		"ALTER TABLE `global_pages` ADD `ab_locked` TINYINT( 0 ) NULL DEFAULT NULL , ADD `nf_locked` TINYINT( 0 ) NULL DEFAULT NULL , ADD INDEX ( `ab_locked` , `nf_locked` )"
 	)
 
 );

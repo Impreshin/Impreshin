@@ -57,7 +57,7 @@ class pages {
 
 		$timer2 = new timer();
 		$result = $f3->get("DB")->exec("
-			SELECT global_pages.*, section, section_colour,
+			SELECT global_pages.*, section, section_colour,  global_pages.ab_locked as locked, 
 				(SELECT SUM(totalspace) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as cm,
 				(SELECT count(ID) FROM ab_bookings WHERE pageID = global_pages.ID AND ab_bookings.deleted is null  AND ab_bookings.checked='1') as records
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
