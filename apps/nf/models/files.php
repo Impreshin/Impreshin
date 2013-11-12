@@ -142,14 +142,12 @@ class files {
 		$cfg = $f3->get("CFG");
 
 		$old = array();
-
+		
 
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_files");
 		$a->load("ID='$ID'");
 
-		if (isset($values['body']) && $values['body']) {
-			$values['body'] = $f3->scrub( $values['body'], $cfg['nf']['whitelist_tags']);
-		}
+		
 		
 		
 		foreach ($values as $key => $value) {
@@ -173,7 +171,9 @@ class files {
 		$ID = $a->ID;
 		
 		if (isset($values['caption'])){
-
+			$body = $f3->scrub( $values['caption'], $cfg['nf']['whitelist_tags']);
+			$values['caption'] = $body;
+			
 			$b = new \DB\SQL\Mapper($f3->get("DB"),"nf_files_body");
 			$b->load("fileID='$ID'",
 					 array(
