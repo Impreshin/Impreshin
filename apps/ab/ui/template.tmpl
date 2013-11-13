@@ -132,7 +132,9 @@
 
 <script type="text/javascript">
 var highlightfrom = {{ _cfg['debug']['highlightfrom'] }};
-
+{% if _user['disable_transitions']=='1' %}
+jQuery.fx.off = true;
+{% endif %}
 </script>
 <script src='/apps/ab/ui/_js/script.{{ _v }}.js'></script>
 {% for row in page['js'] %}
