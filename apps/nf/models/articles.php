@@ -43,6 +43,7 @@ class articles {
 		
 		$sql = "
 			SELECT
+				DISTINCT (nf_articles.ID),	
 				nf_articles.*,
 				nf_article_types.type AS type,
 				nf_article_types.icon AS type_icon,
