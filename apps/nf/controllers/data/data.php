@@ -276,6 +276,7 @@ class data {
 
 
 
+		test_array($return);
 		
 		$newsbook = models\newsbooks::getAll("aID='".$return['ID']."' AND pID = '$pID' AND dID = '$dID'","ID DESC");
 

@@ -238,7 +238,16 @@ class articles extends save {
 		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
 		if (isset($_POST['checklist'])) $values['checklist'] = $_POST['checklist'];
 		if (isset($_POST['stageID'])) $values['stageID'] = $_POST['stageID'];
+		
+		if ($_GET['locked']=='0'){
+			$values['locked_uID'] = NULL;
+		} else {
+			$values['locked_uID'] = $user['ID'];
+		}
 
+		
+		
+		//test_array($values);
 
 
 		$values['deleted'] = NULL;

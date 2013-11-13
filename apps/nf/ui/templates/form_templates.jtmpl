@@ -254,6 +254,12 @@
 							</label>
 							<% } %>
 							<button class="btn btn-primary span4" style="" type="submit">Save Record</button>
+							<% if (this.details.ID && this.details.stageID != '1') { %>
+							<label class="btn span1" title="" id="btn-lock-checkbox">
+								<input type="checkbox" style="margin:0;" name="locked_record" id="locked_record" value="<%= this.details.locked %>" <% if (this.details.locked=='1'){ %>checked="checked"<% } %>/>
+								<i class="icon-lock"></i>
+							</label>
+							<% } %>
 						</div>
 
 

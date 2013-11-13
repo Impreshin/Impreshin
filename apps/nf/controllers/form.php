@@ -35,16 +35,25 @@ class form extends \apps\nf\controllers\_{
 		
 		
 		$stage = $b->stageID;
-		if ($user['permissions']['stages'][$stage]['edit']){
-		
-			
+		if ($user['permissions']['stages'][$stage]['edit'] || $this->user['permissions']['form']['edit_master']){
 			if (!$b->dry()){
 				$b->locked_uID = $uID;
 				$b->save();
 			}
 			$this->page();
 		} else {
-			$this->f3->error(404);
+			
+			if ($b->authorID == $user['ID']){
+				echo "you do not have permission to edit this article any more";
+			} else {
+				echo "you dont have permission to view this page";
+			}
+			echo "<hr>";
+			echo "<a href='/app/nf'>Click here to go back to the main list</a>";
+			
+			
+			exit();
+			
 		}
 	}
 

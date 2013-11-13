@@ -194,6 +194,8 @@ var $noticeareaIdle = $("#notice-area-idle");
 
 $("#displaylogout").autoLogout({
 	LogoutTime: 600,
+	//LogoutTime: 30,
+	keepAliveSelector: '.keep-me-logged-in',
 
 	onResetTimer : function (e) {
 		this.css("background-color", "rgba(250, 250, 250, 0.8)");
@@ -201,12 +203,25 @@ $("#displaylogout").autoLogout({
 
 	},
 	onLogout     : function (timer) {
-
+		var $this = this;
+		var settings = $this.data("settings");
 		
-		window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		
+		
+		
+		if ($(settings.keepAliveSelector).length){
+			$.getJSON("/app/keepalive?keepalive=true", function (result) {
+				$("#displaylogout").autoLogout('resetTimer');
+			});
+		} else {
+			window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		}
+		
+		
 	},
 	keepAlive    : function () {
-		$.getJSON("/app/keepalive/?keepalive=true", function (result) {
+		$.getJSON("/app/keepalive?keepalive=true", function (result) {
+			//this.autoLogout('reset')
 		});
 
 	},
@@ -216,42 +231,60 @@ $("#displaylogout").autoLogout({
 		var LogoutTime = settings.LogoutTime;
 		var parts = LogoutTime / 10;
 
-		if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime - 3) {
-			for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
-			autologoutRequest.push($.getJSON("/app/keepalive", function (result) {
-				var real_idle = result.idle;
-				$this.data("timer", real_idle);
-				idle = real_idle;
-				if (idle >= LogoutTime) {
-					window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		
+			
+		
+			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime - 3) {
+				if ($(".keep-me-logged-in").length){
+					url = '/app/keepalive?keepalive=true'
+				} else {
+					url = '/app/keepalive'
 				}
-			}));
-		}
+				
+				for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
+				autologoutRequest.push($.getJSON(url, function (result) {
+					var real_idle = result.idle;
+					$this.data("timer", real_idle);
+					idle = real_idle;
+					if (idle >= LogoutTime) {
+						$this.autoLogout('logout')
+					}
+				}));
+			}
+	
+			if ($(settings.keepAliveSelector).length){
+				
+			} else {
+				
+					if (idle >= (parts * 8) + 2) {
+						remaining = LogoutTime - idle;
+						$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in " + (remaining) + " seconds").fadeIn(1000)
+					} else {
+						$noticeareaIdle.stop(true, true).fadeOut(1000)
+					}
 
-		if (idle >= (parts * 8) + 2) {
-			remaining = LogoutTime - idle;
-			$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in " + (remaining) + " seconds").fadeIn(1000)
-		} else {
-			$noticeareaIdle.stop(true, true).fadeOut(1000)
-		}
+					if (idle >= (parts * 9) + 2) {
+						remaining = LogoutTime - idle;
+						$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automatically logged out in " + (remaining) + " seconds");
+					} else {
+						$this.stop(true, true).fadeOut(1000);
+					}
 
-		if (idle >= (parts * 9) + 2) {
-			remaining = LogoutTime - idle;
-			$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automatically logged out in " + (remaining) + " seconds");
-		} else {
-			$this.stop(true, true).fadeOut(1000);
-		}
+					var remaining = (LogoutTime - idle);
+					var remain_p = (remaining / LogoutTime) * 100
 
-		var remaining = (LogoutTime - idle);
-		var remain_p = (remaining / LogoutTime) * 100
+					if (remain_p < 30) {
 
-		if (remain_p < 30) {
+						var new_p = (remain_p / 30)
+						new_p = 1 - new_p;
 
-			var new_p = (remain_p / 30)
-			new_p = 1 - new_p;
-
-			if (new_p > 0.8)    this.css("background-color", "rgba(250, 250, 250, " + new_p + ")");
-		}
+						if (new_p > 0.8)    this.css("background-color", "rgba(250, 250, 250, " + new_p + ")");
+					}
+				
+				
+			}
+			
+		
 
 	}
 });

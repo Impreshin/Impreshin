@@ -91,7 +91,13 @@ $(document).ready(function () {
 		}
 
 	});
+	
+	$(document).on("change", "#locked_record",function(){
+		lock_unlock();
+	});
+	
 
+	
 
 	$(document).on("click", "#btn-tools-search", function () {
 		var meta = $("form #meta").val();
@@ -248,6 +254,21 @@ $(document).ready(function () {
 	
 
 });
+function lock_unlock(){
+	var $this = $("#locked_record");
+	var $parent = $this.parent();
+	var $icon = $parent.find("i");
+	$icon.removeClass('icon-lock');
+	$icon.removeClass('icon-unlock');
+	if ($this.is(":checked")) {
+		$parent.attr("title","Record will remain locked");
+		$icon.addClass('icon-lock')
+	} else {
+		$parent.attr("title","Record will be unlocked");
+		$icon.addClass('icon-unlock')
+	}
+	//console.log($this.is(":checked"))
+}
 function checklistBtn() {
 	var $this = $("#categoryID");
 	var count = $this.find(':selected').attr('data-checklist-count');
@@ -310,7 +331,8 @@ function getFormData() {
 		//console.log(data.details.priority);
 
 		formLoaded(data);
-		resizeform()
+		resizeform();
+		lock_unlock();
 		//setTimeout(resizeform, 1000)
 		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}());
 	}, "form_data");
@@ -548,6 +570,9 @@ function form_submit() {
 	$(".fielderror", $form).remove();
 
 	var type = $("#booking-type button.active").attr("data-type");
+	var locked = $("#locked_record").is(":checked");
+	locked=locked?"1":"0";
+	//console.log(locked)
 
 	if (!type) {
 		alert("Something went wrong, please select a record type");
@@ -574,7 +599,7 @@ function form_submit() {
 	if (submit) {
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
-		$.post("/app/nf/save/articles/form?ID=" + var_record_ID + "&type=" + type, data, function (response) {
+		$.post("/app/nf/save/articles/form?ID=" + var_record_ID + "&type=" + type + "&locked="+locked, data, function (response) {
 
 
 			if (response['error'] && response['error'].length) {

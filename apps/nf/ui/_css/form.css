@@ -177,3 +177,12 @@
   top: -100%;
   width: 1in;
 }
+#btn-lock-checkbox {
+  position: relative;
+  overflow: hidden;
+}
+#btn-lock-checkbox input[type='checkbox'] {
+  visibility: hidden;
+  position: absolute;
+  right: -100px;
+}
