@@ -62,6 +62,16 @@
 										</div>
 									</article>
 									<article id="form-diff-2">
+										<div class="clearfix"></div>
+										
+										<div class="span11">
+											<div class="alert" >
+												You have this record selected as a standalone photo
+											</div>
+										</div>
+										
+										
+										<div class="clearfix"></div>
 									</article>
 								</section>
 
