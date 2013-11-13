@@ -41,8 +41,7 @@ class articles {
 
 		}
 		
-		
-		$result = $f3->get("DB")->exec("
+		$sql = "
 			SELECT
 				nf_articles.*,
 				nf_article_types.type AS type,
@@ -72,8 +71,13 @@ class articles {
 
 			WHERE nf_articles.ID = '$ID';
 
-		"
-		);
+		";
+
+		if (isset($_GET['debug']) && $_GET['debug']=="articles_get_sql"){
+			echo $sql;exit();
+		}
+		
+		$result = $f3->get("DB")->exec($sql);
 		if (count($result)) {
 			$return = $result[0];
 			$files = files::getAll("aID='" . $return['ID'] . "'", "ID DESC");
