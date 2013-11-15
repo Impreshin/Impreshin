@@ -273,7 +273,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				$item['size'] = "";
 				switch ($item['typeID']) {
 					case 1:
-						$item['size'] = $item['totalspace'] . "<span class='size'>" . $item['cm'] . "&nbsp;x&nbsp;" . $item['col'] . "</span>";
+						$item['size'] = $item['totalspace'] . "&nbsp;<span class='size'>" . $item['cm'] . "&nbsp;x&nbsp;" . $item['col'] . "</span>";
 						break;
 					case 2:
 						$item['size'] = $item["InsertPO"];
