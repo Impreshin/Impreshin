@@ -78,10 +78,10 @@ $routes[] =	array(
 // reports
 $routes[] =	array(
 	"method"=>'GET',
-	"path"=>'/app/nf/reports/author/summary',
-	"controller"=>'apps\nf\controllers\reports\author_summary->page',
+	"path"=>'/app/nf/reports/author/submitted',
+	"controller"=>'apps\nf\controllers\reports\author_submitted->page',
 	"a"=>true,
-	"l"=>false,
+	"l"=>true,
 );
 // administration
 

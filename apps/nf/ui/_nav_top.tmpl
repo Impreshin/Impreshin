@@ -66,9 +66,9 @@
 		<ul class="dropdown-menu">
 
 			<li class="nav-header">Authors</li>
-			{% if _user['permissions']['reports']['author_summary']['page'] %}
-			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
-				<a href="/app/nf/reports/author/summary">Summary</a>
+			{% if _user['permissions']['reports']['author_submitted']['page'] %}
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_submitted" %} active {% endif %}">
+				<a href="/app/nf/reports/author/submitted">Submitted</a>
 			</li>
 			{% endif %}
 			<!--

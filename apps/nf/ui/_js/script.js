@@ -232,6 +232,7 @@ $("#displaylogout").autoLogout({
 		var parts = LogoutTime / 10;
 
 		
+		
 			
 		
 			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime - 3) {
@@ -249,6 +250,7 @@ $("#displaylogout").autoLogout({
 					if (idle >= LogoutTime) {
 						$this.autoLogout('logout')
 					}
+					
 				}));
 			}
 	

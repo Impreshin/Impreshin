@@ -367,22 +367,16 @@ class settings {
 					"timeframe"=>"",
 					"combined"=>"0",
 					"ID"=>array(),
-					"col" => array(
-						"client",
-						"size",
-						"colour",
-						"remark",
-						"marketer"
-					),
+					"col" => $defColumns,
 					"group"      => array(
-						"g"=>"placing",
+						"g"=>"type",
 						"o"=>"ASC"
 					),
 					"order"      => array(
-						"c"=> "client",
+						"c"=> "title",
 						"o"=> "ASC"
 					),
-					"count"      => "5",
+					"count"      => count($defColumns),
 					"tolerance"=>25
 				),
 				

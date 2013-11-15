@@ -293,3 +293,5 @@ ALTER TABLE `nf_files` DROP `caption`;
 
 ALTER TABLE `nf_categories` ADD `nf_cm_css` TEXT NULL DEFAULT NULL AFTER `category` ;
  
+
+UPDATE nf_articles SET locked_uID = NULL;

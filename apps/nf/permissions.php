@@ -52,7 +52,7 @@ class permissions {
 				)
 			),
 			"reports"=>array(
-				"author_summary"  => array(
+				"author_submitted"  => array(
 					"page" => 0
 				)	
 			),
