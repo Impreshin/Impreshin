@@ -193,7 +193,7 @@ var $noticeareaIdle = $("#notice-area-idle");
 // show idle 2 minutes
 
 $("#displaylogout").autoLogout({
-	LogoutTime: 600,
+	LogoutTime: 900,
 	//LogoutTime: 30,
 	keepAliveSelector: '.keep-me-logged-in',
 
