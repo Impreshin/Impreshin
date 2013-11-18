@@ -171,8 +171,8 @@ class author_submitted extends data {
 				$daterange_s[1] = date($daterange_s[0], strtotime('-1 month'));
 			}
 			sort($daterange_s);
-			$return['lines'] = array();
-			//$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))));
+			
+			$return['lines'] = models\report_figures::lines($where,array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))));
 		}
 		
 		

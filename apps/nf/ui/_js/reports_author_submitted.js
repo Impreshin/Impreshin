@@ -110,12 +110,16 @@ function getData() {
 
 		//console.log(data['combined']);
 
-		if (data['tab'] == 'charts' && data['lines'].length) {
+		if (data['tab'] == 'charts') {
 
-			drawChart('chart-income', data);
-			drawChart('chart-cm', data);
+			
 			drawChart('chart-records', data);
-
+			drawChart('chart-articles', data);
+			drawChart('chart-cm', data);
+			drawChart('chart-photos', data);
+			
+			
+			
 			var minDate_ = Date.parse(data['date_min']);
 			var maxDate_ = Date.parse(data['date_max']);
 
@@ -216,12 +220,15 @@ function getData() {
 
 }
 function drawChart(element, data) {
-	//console.log(label.length)
+	
 
 	var col = "";
 	switch (element) {
-		case 'chart-income':
-			col = "totals";
+		case 'chart-articles':
+			col = "articlesCount";
+			break;
+		case 'chart-photos':
+			col = "photosCount";
 			break;
 		case 'chart-cm':
 			col = "cm";
@@ -230,23 +237,16 @@ function drawChart(element, data) {
 			col = "records";
 			break;
 	}
+	
+	
 	var label = data['lines']['labels'];
 	var label_d = data['lines']['labels_d'];
 
-	if (data['combined'] == '1' || data['pubs'] == '1') {
+	
 		data = data['lines'][col];
 		legends = "";
 		data = [data];
-	} else {
-		data = data['lines']['pubs'];
-		var d = [];
-		var legends = [];
-		for (var i in data) {
-			d.push(data[i][col]);
-			legends.push(data[i]['pub']);
-		}
-		data = d;
-	}
+	
 	var tangle = 0;
 	if (label.length >= 20) {
 		tangle = -30;

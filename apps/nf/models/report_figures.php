@@ -338,19 +338,15 @@ class report_figures {
 		return $return;
 	}
 
-	public static function lines($where, $dates = array("from" => "", "to" => ""), $publications) {
+	public static function lines($where, $dates = array("from" => "", "to" => "")) {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();
-		if (is_array($publications)) {
-			$publications_where = implode(",", $publications);
-
-		} else {
-			$publications_where = $publications;
-			$publications = explode(",", $publications);
-		}
-
-
+		
+		$user = $f3->get("user");
+		$cID = $user['company']['ID'];
+		
+		
 		$date1 = strtotime($dates['from']);
 		$date2 = strtotime($dates['to']);
 
@@ -360,28 +356,28 @@ class report_figures {
 		if ($where) {
 			$where = $where . " AND ";
 		}
-		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
+		$where = $where . "(nf_articles.cID = '$cID'  AND (nf_articles.datein>='$from' AND nf_articles.datein<='$to'))";
 
 
-		$select = "global_dates.publish_date as publishDate, totalCost, totalspace, ab_bookings.pID as pID";
+	
 
 
-		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		
 
-		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
+		$d = articles::getAll($where, "nf_articles.ID ASC");
+		
+	
 
 
-		$publications = \models\publications::getAll("global_publications.ID in ($publications_where)");
+		$data = self::line_build_data($d, $date1, $date2);
 
-
-		$data = self::line_build_data($d, $date1, $date2, $publications);
-
+		//$data = array();
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $data;
 	}
 
-	private static function line_build_data($records, $date1, $date2, $publications) {
+	private static function line_build_data($records, $date1, $date2) {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();
@@ -389,7 +385,8 @@ class report_figures {
 		$blank = array(
 			"label"   => "",
 			"label_d" => "",
-			"totals"  => 0,
+			"articlesCount"  => 0,
+			"photosCount"  => 0,
 			"cm"      => 0,
 			"records" => 0
 		);
@@ -408,64 +405,53 @@ class report_figures {
 			$data[$k]['label'] = $h;
 			$data[$k]['label_d'] = $tooltip_label;
 
-			foreach ($publications as $pub) {
-				$data[$k]['pubs'][$pub['ID']] = $blank;
-				$data[$k]['pubs'][$pub['ID']]['label'] = $pub['publication'];
-
-			}
-
-
+			
 			$date1 = strtotime('+1 month', $date1);
 		}
 
+		
+	
 
 		$labels = array();
 
 		foreach ($records as $record) {
 
-			$k = date("mY", strtotime($record['publishDate']));
+			$k = date("mY", strtotime($record['datein']));
 
 
-			$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
-			$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
-			$data[$k]['records'] = $data[$k]['records'] + $record['records'];
+			if ($record['typeID']=='1') {
+				$data[$k]['articlesCount'] = $data[$k]['articlesCount'] + 1;
+			}
+			$data[$k]['photosCount'] = $data[$k]['photosCount'] + $record['photosCount'];
+			$data[$k]['cm'] = $data[$k]['cm'] + $record['cm'];
+			$data[$k]['records'] = $data[$k]['records'] + 1;
 
-			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
-			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
-			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + $record['records'];
+			
 
 		}
+		
+		
 
 		$p = array();
 		$data_ret = array(
 			"labels"   => array(),
 			"labels_d" => array(),
-			"totals"   => array(),
+			"articlesCount"   => array(),
+			"photosCount"   => array(),
 			"cm"       => array(),
 			"records"  => array(),
-			"pubs"     => array()
+			
 		);
 		foreach ($data as $d) {
 			$data_ret['labels'][] = $d['label'];
 			$data_ret['labels_d'][] = $d['label_d'];
-			$data_ret['totals'][] = ($d['totals']) ? $d['totals'] : 0;
+			$data_ret['articlesCount'][] = ($d['articlesCount']) ? $d['articlesCount'] : 0;
+			$data_ret['photosCount'][] = ($d['photosCount']) ? $d['photosCount'] : 0;
 			$data_ret['cm'][] = $d['cm'];
 			$data_ret['records'][] = $d['records'];
-			foreach ($publications as $pub) {
-
-				$data_ret['pubs'][$pub['ID']]['pub'] = $pub['publication'];
-				$data_ret['pubs'][$pub['ID']]['totals'][] = ($d['pubs'][$pub['ID']]['totals']) ? $d['pubs'][$pub['ID']]['totals'] : null;
-				$data_ret['pubs'][$pub['ID']]['cm'][] = ($d['pubs'][$pub['ID']]['cm']) ? $d['pubs'][$pub['ID']]['cm'] : null;
-				$data_ret['pubs'][$pub['ID']]['records'][] = ($d['pubs'][$pub['ID']]['records']) ? $d['pubs'][$pub['ID']]['records'] : null;
-
-
-			}
+			
 		}
-		$p = array();
-		foreach ($data_ret['pubs'] as $record) {
-			$p[] = $record;
-		}
-		$data_ret['pubs'] = $p;
+		
 
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());

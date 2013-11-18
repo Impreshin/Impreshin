@@ -128,15 +128,18 @@
 	<% if (this.tab=="charts") { %>
 	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
 	<div class="clearfix"></div>
-	<h3>Income</h3>
-
-	<div id="chart-income" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
-	<h3>Cm</h3>
-
-	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 	<h3>Records</h3>
 
 	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
+	<h3>Articles</h3>
+	<div id="chart-articles" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	<h3>Cm</h3>
+	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
+	<h3>Photos</h3>
+	<div id="chart-photos" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
 
 	<% } else if (this.tab=="records") { %>
 	<div class="clearfix"></div>

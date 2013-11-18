@@ -239,6 +239,8 @@ class articles {
 		}
 
 		$newsbook_sql = "";
+		
+		$photoCount_sql = "(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,";
 		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
 			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
 			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
@@ -290,7 +292,7 @@ class articles {
 				$newsbook_select
 				
 				(SELECT count(ID) FROM nf_comments WHERE nf_comments.aID =  nf_articles.ID) AS commentCount,
-				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,
+				$photoCount_sql
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='2') AS filesCount
 			$select           ,
 			nf_articles.ID as ID
