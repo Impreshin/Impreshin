@@ -63,7 +63,9 @@
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.filesCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
-					.
+					<% if (this.comp.data[d].data[i].percentChanged) { %>
+					<%= this.comp.data[d].data[i].percentChanged %>%
+					<% } %>
 				</span>
 		</td>
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.photosCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">

@@ -49,6 +49,9 @@ class permissions {
 				),
 				"search"  => array(
 					"page" => 0
+				),
+				"newsbook"  => array(
+					"page" => 0
 				)
 			),
 			"reports"=>array(

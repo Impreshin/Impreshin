@@ -62,6 +62,14 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/records/newsbook',
+	"controller"=>'apps\nf\controllers\records_newsbook->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/records/deleted',
 	"controller"=>'apps\nf\controllers\deleted->page',
 	"a"=>true,

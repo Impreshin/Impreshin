@@ -88,7 +88,7 @@ $(document).ready(function () {
 		$("#list-settings").removeClass("active");
 	});
 
-	$(document).on('hide', '#ab-details-modal', function () {
+	$(document).on('hide', '#nf-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
@@ -343,7 +343,7 @@ function getList(settings) {
 				api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, false);
 			}
 
-			if (!$("#ab-details-modal").is(":visible")) {
+			if (!$("#nf-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

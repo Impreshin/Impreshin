@@ -79,6 +79,7 @@ class report_figures {
 			"articlesCount"=>0,
 			"photosCount"=>0,
 			"filesCount"=>0,
+			"percentChanged"=>0,
 			"records" => 0,
 			"types"=>array(
 				
@@ -105,6 +106,7 @@ class report_figures {
 
 			if ($record['typeID']=='1') {
 				$data[$year][$month]['articlesCount'] = $data[$year][$month]['articlesCount'] + 1;
+				$data[$year][$month]['percentChanged'] = $data[$year][$month]['percentChanged'] + $record['percent_orig'];
 			}
 			
 			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['cm'];
@@ -137,6 +139,7 @@ class report_figures {
 			$i_articlesCount = 0;
 			$i_photosCount = 0;
 			$i_filesCount = 0;
+			$i_percentChanged = 0;
 			$totals = $blank;
 			$editions = array();
 
@@ -149,10 +152,15 @@ class report_figures {
 				$records = isset($data[$year][$month['k']]['records']) ? ($data[$year][$month['k']]['records']) : 0;
 				$photosCount = isset($data[$year][$month['k']]['photosCount']) ? ($data[$year][$month['k']]['photosCount']) : 0;
 				$filesCount = isset($data[$year][$month['k']]['filesCount']) ? ($data[$year][$month['k']]['filesCount']) : 0;
+			
+				
+				
 				$articlesCount = isset($data[$year][$month['k']]['articlesCount']) ? ($data[$year][$month['k']]['articlesCount']) : 0;
 
+				$percentChanged = isset($data[$year][$month['k']]['percentChanged']) ? ($data[$year][$month['k']]['percentChanged']) : 0;
 
-			
+
+				if ($articlesCount > 0 && $percentChanged > 0) $percentChanged = $articlesCount / $percentChanged;
 
 
 				$totals['cm'] = $totals['cm'] + $cm;
@@ -160,6 +168,7 @@ class report_figures {
 				$totals['photosCount'] = $totals['photosCount'] + $photosCount;
 				$totals['filesCount'] = $totals['filesCount'] + $filesCount;
 				$totals['articlesCount'] = $totals['articlesCount'] + $articlesCount;
+				$totals['percentChanged'] = $totals['percentChanged'] + $percentChanged;
 
 				if (isset($data[$year][$month['k']]['articlesCount'])) {
 					$i_articlesCount++;
@@ -176,6 +185,9 @@ class report_figures {
 				if (isset($data[$year][$month['k']]['records'])) {
 					$i_records++;
 				}
+				if (isset($data[$year][$month['k']]['percentChanged'])) {
+					$i_percentChanged++;
+				}
 
 
 				//	test_array($totals);
@@ -188,6 +200,7 @@ class report_figures {
 					"photosCount"      => ($photosCount) ? $photosCount : "",
 					"filesCount"      => ($filesCount) ? $filesCount : "",
 					"articlesCount"      => ($articlesCount) ? $articlesCount : "",
+					"percentChanged"      => ($percentChanged) ? $percentChanged : "",
 					
 					"records" => ($records) ? $records : "",
 					"d"       => array(
@@ -220,7 +233,9 @@ class report_figures {
 			$r['averages']['records'] = ($i_records) ? $totals['records'] / $i_records : $totals['records'];
 			$r['averages']['photosCount'] = ($i_photosCount) ? $totals['photosCount'] / $i_photosCount : $totals['photosCount'];
 			$r['averages']['filesCount'] = ($i_filesCount) ? $totals['filesCount'] / $i_filesCount : $totals['filesCount'];
-			$r['averages']['articlesCount'] = ($i_articlesCount) ? $totals['articlesCount'] / $i_filesCount : $totals['articlesCount'];
+			$r['averages']['articlesCount'] = ($i_articlesCount) ? $totals['articlesCount'] / $i_articlesCount : $totals['articlesCount'];
+			
+			$r['averages']['percentChanged'] = ($i_percentChanged) ? $totals['percentChanged'] / $i_percentChanged : $totals['percentChanged'];
 
 
 			
@@ -280,6 +295,16 @@ class report_figures {
 				}
 
 				$col = "articlesCount";
+				$figs_c_totals = array(
+					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
+					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),
+				);
+				if ($rec[$col] > $figs_c_totals[0]) {
+					$rec['d'][$col] = "u";
+				} else if ($rec[$col] < $figs_c_totals[1] && $rec[$col]) {
+					$rec['d'][$col] = "d";
+				}
+				$col = "percentChanged";
 				$figs_c_totals = array(
 					$r['averages'][$col] + ($r['averages'][$col] * ($margin / 100)),
 					$r['averages'][$col] - ($r['averages'][$col] * ($margin / 100)),

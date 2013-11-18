@@ -57,6 +57,12 @@
 			</li>
 
 			{% endif %}
+			{% if _user['permissions']['records']['newsbook']['page'] %}
+			<li class=" {% if page['sub_section'] == "records_newsbook" %} active {% endif %}">
+				<a href="/app/nf/records/newsbook/"><i class="icon-book menu-icon"></i>Newsbook</a>
+			</li>
+
+			{% endif %}
 		</ul>
 	</li>
 	{% endif %}

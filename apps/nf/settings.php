@@ -337,6 +337,20 @@ class settings {
 					)
 
 				),
+				"records_newsbook"=> array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=> "author",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"dID"=> array()
+
+				),
 				"deleted"=> array(
 					"col"        => array(
 						"client",
