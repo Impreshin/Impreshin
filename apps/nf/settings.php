@@ -190,6 +190,7 @@ class settings {
 			"newsbook"=>array("author","category","stage","priority","page","none"),
 			"production"=>array("author","category","priority","page","none"),
 			"search"=>array("author","category","stage","priority","none"),
+			"records_newsbook"=>array("author","category","stage","priority","none"),
 		
 		);
 

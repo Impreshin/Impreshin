@@ -62,7 +62,7 @@ class records_newsbook extends \apps\nf\controllers\_ {
 
 	
 
-		$selected = isset($settings['dID']["p_".$pID]) && $settings['dID']["p_".$pID] ? $settings['dID']["p_".$pID] : $user['publication']['current_date']['ID'];
+		$selected_date = isset($settings['dID']["p_".$pID]) && $settings['dID']["p_".$pID] ? $settings['dID']["p_".$pID] : $user['publication']['current_date']['ID'];
 
 	//test_array($selected);
 
@@ -73,11 +73,11 @@ class records_newsbook extends \apps\nf\controllers\_ {
 
 		$tmpl->settings = $settings;
 		
-		
+	
 		
 
 		$tmpl->date_list = $date_list;
-		$tmpl->selected = $selected;
+		$tmpl->selected = $selected_date;
 
 
 		$tmpl->use_pub = true;
