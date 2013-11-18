@@ -16,19 +16,7 @@ $(document).ready(function () {
 		getData();
 		$.bbq.removeState("order");
 	});
-	$(document).on("click", "tr.figure-month-details.record", function () {
-		var $this = $(this);
-		var ID = $this.attr("data-id");
-		if ($this.hasClass("active")) {
-			$("tr.figure-month-details.record.active").removeClass("active");
-			$.bbq.removeState("dID");
-		} else {
-			$("tr.figure-month-details.record.active").removeClass("active");
-			$this.addClass("active");
-			$.bbq.pushState({"dID":ID});
-		}
-		getData();
-	});
+	
 
 	$("#pub-select input:checkbox").change(function () {
 		var str = $("#pub-select input:checkbox:checked").map(function () {
@@ -54,7 +42,8 @@ $(document).ready(function () {
 		getData();
 	});
 	$(document).on("click", ".report-bottom-tabs button.back", function () {
-		$.bbq.removeState("dID");
+		$.bbq.removeState("ym");
+		
 	});
 	$(document).on("click", ".report-bottom-tabs button", function () {
 		getData();
@@ -88,6 +77,8 @@ function getData() {
 	years = $.makeArray(years);
 	years = years.join(",");
 
+	var ym = $.bbq.getState("ym");
+
 	var ID = $("#selectID").val();
 
 	var $combined = $("#combine-btn");
@@ -103,7 +94,7 @@ function getData() {
 	var tolerance = $("#tolerance").val();
 
 
-	$.getData("/app/nf/reports/data/author_submitted/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance}, function (data) {
+	$.getData("/app/nf/reports/data/author_submitted/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance,"ym":ym}, function (data) {
 
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);
@@ -208,7 +199,7 @@ function getData() {
 
 		}
 
-		var ym = $.bbq.getState("ym");
+		
 		if (ym) {
 			$(".figure-month-details[data-key='" + ym + "']").show();
 			$("#figures-table tbody tr td[data-record='" + ym + "']").addClass("active");

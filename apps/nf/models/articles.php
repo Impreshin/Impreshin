@@ -219,9 +219,16 @@ class articles {
 			$ordering = array("c" => "datein", "o" => "DESC");
 		}
 		
+		
+		
 		$order = articles::order($grouping, $ordering);
 		$orderby = $order['order'];
 		$select = $order['select'];
+
+
+
+		
+		
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
@@ -268,6 +275,7 @@ class articles {
 			
 		}
 
+		
 		$sql = "
 			SELECT DISTINCT
 			 	nf_articles.*,
@@ -502,6 +510,10 @@ class articles {
 			case "page":
 				$orderby = "COALESCE(FLOOR(global_pages.page),99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(CONCAT('Page ',FLOOR(global_pages.page)),'Not planned') as heading";
+				break;
+			case "type":
+				$orderby = "COALESCE(FLOOR(nf_article_types.orderby),99999) $ordering, " . $orderby;
+				$arrange = "COALESCE(nf_article_types.type,'None') as heading";
 				break;
 
 			case "none":

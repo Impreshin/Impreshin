@@ -34,6 +34,7 @@ class author_submitted extends data {
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
 		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
+		$ym = isset($_REQUEST['ym']) ? $_REQUEST['ym'] : "";
 		$tolerance = isset($_REQUEST['tolerance']) ? $_REQUEST['tolerance'] : $settings['tolerance'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
@@ -67,13 +68,12 @@ class author_submitted extends data {
 		}
 
 		$tab = "charts";
-		if ($dID){
+		if ($ym){
 			$tab = "records";
 		}
 
 
 		$return['tab']=$tab;
-		$return['dID']=$dID;
 		$return['tolerance']=$tolerance;
 		if (!$daterange){
 			$daterange = $settings['timeframe'];
@@ -179,11 +179,23 @@ class author_submitted extends data {
 		
 		
 		if ($tab=="records"){
-					$orderby = " client ASC";
+			
+			$ym_data = explode("|",$ym);
+			
+			$ym_sql = "AND (year(nf_articles.datein)='".$ym_data[0]."' AND month(nf_articles.datein)='".$ym_data[1]."')";
+			
+			//test_array($ym_sql);
+			
+					$orderby = " title ASC";
 					$arrange = "";
-					$where = "$where_general";
+					$where = "$where_general $ym_sql ";
+			
+			//test_array(array($where, $grouping, $ordering));
 					$records = models\articles::getAll($where, $grouping, $ordering);
+		
 			$return['records'] = models\articles::display($records);
+			
+		//	test_array($return['records']);
 
 		}
 		$return['comp']['years']=$years;

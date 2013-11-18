@@ -192,6 +192,7 @@
 		//$row.after('<tr class="figure-month-details"><td colspan="' + columns + '">hahaha</td></tr>');
 
 
+		getData();
 
 		});
 
