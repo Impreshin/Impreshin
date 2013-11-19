@@ -165,7 +165,16 @@ class data {
 				if ($orig!= $latest){
 					$orig = htmlspecialchars_decode($orig);
 					$latest = htmlspecialchars_decode($latest);
-					$diff = \FineDiff::getDiffOpcodes($orig, $latest, \FineDiff::characterDelimiters);
+
+					$myStack = array(
+						\FineDiff::paragraphDelimiters,
+						//\FineDiff::sentenceDelimiters,
+						\FineDiff::wordDelimiters,
+						\FineDiff::characterDelimiters
+					);
+					
+					
+					$diff = \FineDiff::getDiffOpcodes($orig, $latest, $myStack);
 					$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($orig, $diff);
 					$diffHTML = htmlspecialchars_decode($diffHTML);
 					$diffHTML = str_replace("\\r\\n","",$diffHTML);

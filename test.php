@@ -3,28 +3,30 @@ require_once('config.default.inc.php');
 require_once('config.inc.php');
 
 require_once('inc/functions.php');
-
-$link = mysql_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password']);
-mysql_select_db($cfg['DB']['database'], $link);
+require_once('lib/finediff_orig.php');
 
 
+$old = "<p>Daisy maak haar o&euml; oop en soek <strong>dadelik </strong>na &lsquo;n Panado. Sy weet nog nie wat haar naam is of watter jaar dit is nie, maar sy is alreeds kwaad. Vanoggend is daar g&rsquo;n teken van haar spirituele beginsel om elke dag met groot dankbaarheid te begin nie.</p>
 
-$sql = "SELECT (ID) AS ID FROM `global_users` WHERE email is null;";
-$result = mysql_query($sql, $link) or die(mysql_error());
+<p>Die Bosbewoner sit op &lsquo;n leunstoel langs Daisy en drink sy koffie. Hy loer bekommerd na haar en verkies om die woorde waarmee sy wakker word te ignoreer.</p>";
+
+$new = "<p>Daisy maak haar o&euml; oop en soek <strong>dadelik </strong>na &lsquo;n Panado. Sy weet nog nie wat haar naam is of watter jaar dit is nie, maar sy is alreeds kwaad.</p>
+
+<p>Vanoggend is daar g&rsquo;n teken van haar spirituele beginsel om elke dag met groot dankbaarheid te begin nie.Die Bosbewoner sit op &lsquo;n leunstoel langs Daisy en drink sy koffie. Hy loer bekommerd na haar en verkies om die woorde waarmee sy wakker word te ignoreer.</p>";
 
 
+$old = htmlspecialchars_decode($old);
+$new = htmlspecialchars_decode($new);
 
-$r = array();
-$s = array();
+$myStack = array(
+	\FineDiff::wordDelimiters,
+	\FineDiff::characterDelimiters,
+);
 
 
-	while ($row = mysql_fetch_assoc($result)) {
-		$uID = $row['ID'];
-		$s[] = "INSERT INTO `global_users_company` (`ID` , `cID` ,`uID` ,`allow_setup` ,`ab` ,`nf` ,`ab_permissions` ,`nf_permissions` ,`ab_marketerID` ,`ab_productionID` ,`nf_author`) VALUES (NULL , '1', '$uID', '0', '0', '1', NULL , NULL , NULL , NULL , '0');";
-		$r[] = $row['ID'];		
-	}
+$diff = \FineDiff::getDiffOpcodes($old, $new, $myStack);
+$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($old, $diff);
 
-echo implode("\n",$s);
-exit();
-test_array($s); 
-
+echo '<style>ins {background: none repeat scroll 0 0 #DDFFDD; color: #008000; text-decoration: none;};</style>';
+echo '<style>del {background: none repeat scroll 0 0 #FFDDDD; color: #FF0000; text-decoration: none;};</style>';
+echo $diffHTML;

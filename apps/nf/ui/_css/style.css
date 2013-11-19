@@ -135,16 +135,21 @@
   top: 0;
 }
 #nf-details-modal .history-wrapper ins,
+#nf-details-modal .history-wrapper del {
+  text-decoration: none;
+  min-height: 13px;
+  min-width: 13px;
+  display: inline-block;
+}
+#nf-details-modal .history-wrapper ins,
 #nf-details-modal .history-wrapper ins p {
   color: green;
   background: #dfd;
-  text-decoration: none;
 }
 #nf-details-modal .history-wrapper del,
 #nf-details-modal .history-wrapper del p {
   color: red;
   background: #fdd;
-  text-decoration: none;
 }
 #nf-details-modal-area .back-btn-details-pane {
   display: none;
