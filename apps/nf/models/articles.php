@@ -597,6 +597,10 @@ class articles {
 					$_draft = $f3->scrub($details['draft']);
 					$_dbody = $f3->scrub($details['body']);
 
+
+					$_draft = preg_replace("/\s+/", " ", $_draft);
+					$_dbody = preg_replace("/\s+/", " ", $_dbody);
+
 					$values['words'] = str_word_count($words);
 
 					similar_text($_draft, $_body, $sim);

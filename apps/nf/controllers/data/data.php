@@ -168,6 +168,7 @@ class data {
 					$diff = \FineDiff::getDiffOpcodes($orig, $latest, \FineDiff::characterDelimiters);
 					$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($orig, $diff);
 					$diffHTML = htmlspecialchars_decode($diffHTML);
+					$diffHTML = str_replace("\\r\\n","",$diffHTML);
 					$compare['body'] = $diffHTML;
 				}
 
