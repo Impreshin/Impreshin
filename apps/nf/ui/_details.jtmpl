@@ -508,11 +508,13 @@
 
 
 					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-62px;">
-						<table class="table table-condensed s records" style="width:400px; margin-bottom:0;" id="details-history-table">
+						<table class="table table-condensed s records" style="width:538px; margin-bottom:0;" id="details-history-table">
 							<thead>
 							<tr>
 								<th class="l">Date/Time</th>
 								<th class="l">User</th>
+								<th class="l">Cm</th>
+								<th class="l">Words</th>
 								<th class="l">Stage</th>
 								<th class="l" style="width:40px;">% Chan</th>
 								<th class="l" style="width:40px;">% Orig</th>
@@ -525,7 +527,9 @@
 							<tr class="record <% if (this.history[i].ID==this.historyShow.ID && this.historyShow.type=='body') { %>active<% } %>" data-id="<%= this.history[i].ID %>">
 								<td><%= this.history[i].datein %></td>
 								<td><%= this.history[i].fullName %></td>
-								<td><%= this.history[i].stage %></td>
+								<td><%= this.history[i].cm||"" %></td>
+								<td><%= this.history[i].words||"" %></td>
+								<td><%= this.history[i].stage||"" %></td>
 								<td><%= this.history[i].percent_last||"" %></td>
 								<td><% if (this.history[i].stageID != '1') { %><%= this.history[i].percent_orig||"" %><% } %></td>
 							</tr>

@@ -646,7 +646,6 @@ class articles {
 		
 		
 		
-		
 		$a = new \DB\SQL\Mapper($f3->get("DB"), "nf_articles");
 		$a->load("ID='$ID'");
 		$cfg = $f3->get("CFG");
@@ -735,6 +734,7 @@ class articles {
 			$b->aID = $ID;
 			$b->uID = $user['ID'];
 			$b->body = $values['body'];
+			$b->cm = $values['cm'];
 			$b->words = $values['words'];
 			if ($values['percent_last']) $b->percent_last = $values['percent_last'];
 			if ($values['percent_orig']) $b->percent_orig = $values['percent_orig'];

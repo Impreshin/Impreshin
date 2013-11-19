@@ -295,3 +295,5 @@ ALTER TABLE `nf_categories` ADD `nf_cm_css` TEXT NULL DEFAULT NULL AFTER `catego
  
 
 UPDATE nf_articles SET locked_uID = NULL;
+ALTER TABLE `nf_articles_body` ADD `cm` INT( 4 ) NULL DEFAULT NULL AFTER `datein`;
+ALTER TABLE `nf_articles` CHANGE `cm` `cm` INT( 4 ) NULL DEFAULT NULL;
