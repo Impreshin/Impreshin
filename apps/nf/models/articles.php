@@ -588,6 +588,7 @@ class articles {
 
 
 				$body = $f3->scrub($body, $cfg['nf']['whitelist_tags']);
+				$body = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $body);
 
 				if ($body != $details['body']) {
 					$writeBody = true;
