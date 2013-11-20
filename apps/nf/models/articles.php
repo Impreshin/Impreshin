@@ -573,7 +573,9 @@ class articles {
 		
 		$cfg = $f3->get("CFG");
 		$writeBody = false;
-		$currentStage = '1';
+		$currentStage = isset($values['stageID'])?$values['stageID']:'1';
+		
+		
 		if ($ID){
 			$details = new articles();
 			$details = $details->get($ID);
@@ -626,7 +628,7 @@ class articles {
 			
 		} else {
 			$values['cID']=$user['company']['ID'];
-			$values['stageID']= $currentStage = "1";
+			$values['stageID']= $currentStage;
 			$writeBody = true;
 
 			$body = $values['body'];
@@ -646,6 +648,7 @@ class articles {
 		
 
 
+		
 		
 		
 		

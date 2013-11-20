@@ -247,7 +247,7 @@ class articles extends save {
 
 		
 		
-		//test_array($values);
+		
 
 
 		$values['deleted'] = NULL;
