@@ -394,6 +394,23 @@ class settings {
 					"count"      => count($defColumns),
 					"tolerance"=>25
 				),
+				"reports_author_newsbook"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"ID"=>array(),
+					"col" => $defColumns,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"tolerance"=>25
+				),
 				
 				"admin_users"=>array(
 					"order"=>array(

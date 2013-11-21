@@ -77,6 +77,11 @@
 				<a href="/app/nf/reports/author/submitted">Submitted</a>
 			</li>
 			{% endif %}
+			{% if _user['permissions']['reports']['author_newsbook']['page'] %}
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_newsbook" %} active {% endif %}">
+				<a href="/app/nf/reports/author/newsbook">Newsbook</a>
+			</li>
+			{% endif %}
 			<!--
 			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
 				<a href="/app/nf/reports/authors/progress">Progress</a>

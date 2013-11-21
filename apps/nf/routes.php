@@ -91,6 +91,13 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/author/newsbook',
+	"controller"=>'apps\nf\controllers\reports\author_newsbook->page',
+	"a"=>true,
+	"l"=>true,
+);
 // administration
 
 $routes[] =	array(

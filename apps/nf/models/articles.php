@@ -204,7 +204,7 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"","distinct"=>"nf_articles.ID","select"=>"" )) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {
@@ -219,6 +219,8 @@ class articles {
 			$ordering = array("c" => "datein", "o" => "DESC");
 		}
 		
+		$distinct = isset($options['distinct'])&&$options['distinct']?$options['distinct']:"nf_articles.ID";
+		$select_opt = isset($options['select'])&&$options['select']?$options['select']:"";
 		
 		
 		$order = articles::order($grouping, $ordering);
@@ -235,6 +237,12 @@ class articles {
 		if ($select) {
 			$select = " ," . $select;
 		}
+		if ($select_opt) {
+			$select = $select . " ," . $select_opt;
+		}
+		
+		
+		
 		if (isset($options['limit'])&&$options['limit']) {
 			if (strpos($options['limit'], "LIMIT") === false) {
 				$limit = " LIMIT " . $options['limit'];
@@ -245,18 +253,24 @@ class articles {
 			$limit = " ";
 		}
 
-		$newsbook_sql = "";
+		$newsbook_sql = $newsbook_select = "";
 		
 		$photoCount_sql = "(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,";
 		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
 			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
 			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
 			
+		} elseif (isset($options['pID'])&&$options['pID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
 		} else {
 			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID LIMIT 0,1)  as page, ";
 		}
 
-		//test_array($usepub_placed); 
+		
 		$from = self::_from($options);
 		
 		
@@ -277,7 +291,8 @@ class articles {
 
 		
 		$sql = "
-			SELECT DISTINCT
+			SELECT DISTINCT 
+				$distinct,
 			 	nf_articles.*,
 				nf_article_types.type AS type,
 				nf_article_types.icon AS type_icon,

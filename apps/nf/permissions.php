@@ -57,6 +57,9 @@ class permissions {
 			"reports"=>array(
 				"author_submitted"  => array(
 					"page" => 0
+				),
+				"author_newsbook"  => array(
+					"page" => 0
 				)	
 			),
 			"administration" => array(
