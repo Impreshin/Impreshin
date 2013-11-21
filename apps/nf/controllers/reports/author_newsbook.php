@@ -21,6 +21,9 @@ class author_newsbook extends \apps\nf\controllers\_ {
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
+		$app_settings = \apps\nf\settings::_available();
+		
+
 
 
 		$users = \models\user::getAll("cID = '$cID' AND nf_author ='1'", "fullName ASC");
@@ -39,6 +42,36 @@ class author_newsbook extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Reports - Author Newsbook",
 			)
+		);
+
+		$a = array();
+		$b = array();
+
+		foreach ($settings['col'] as $col){
+			$a[] = $col;
+			$b[] = $col['c'];
+
+		}
+
+
+
+		$selected = $a;
+		$available = array();
+		foreach ($app_settings["columns"] as $col){
+			if ( !in_array($col['c'],$b)){
+				$available[] = $col;
+			}
+
+		}
+
+
+
+
+		$tmpl->settings = $settings;
+
+		$tmpl->settings_columns = array(
+			"selected"=> $selected,
+			"available"=> $available
 		);
 
 		$tmpl->selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";;

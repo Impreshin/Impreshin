@@ -367,8 +367,8 @@
 						<% for(var f in this.used[i].media) { %>
 						<% if (this.used[i].media[f].fileType=="1"){ %>
 
-						<div class="span2" style="margin-bottom:10px;">
-							<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" class="glow"/>
+						<div class="span2 glow" style="margin-bottom:10px; min-height: 90px;">
+							<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" />
 						</div>
 
 

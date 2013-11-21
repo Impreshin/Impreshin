@@ -191,6 +191,7 @@ class settings {
 			"production"=>array("author","category","priority","page","none"),
 			"search"=>array("author","category","stage","priority","none"),
 			"records_newsbook"=>array("author","category","stage","priority","none"),
+			"reports_author_newsbook"=>array("author","category","stage","priority","none"),
 		
 		);
 
@@ -256,6 +257,14 @@ class settings {
 			"cm",
 			"words",
 			"priority"
+		);
+		$defColumns_reports_author = array(
+			"title",
+			"stage",
+			"cm",
+			"words",
+			"priority",
+			"photosCount"
 		);
 		
 			$settings = array(
@@ -399,7 +408,7 @@ class settings {
 					"timeframe"=>"",
 					"combined"=>"0",
 					"ID"=>array(),
-					"col" => $defColumns,
+					"col" => $defColumns_reports_author,
 					"group"      => array(
 						"g"=>"type",
 						"o"=>"ASC"
@@ -408,7 +417,7 @@ class settings {
 						"c"=> "title",
 						"o"=> "ASC"
 					),
-					"count"      => count($defColumns),
+					"count"      => count($defColumns_reports_author),
 					"tolerance"=>25
 				),
 				

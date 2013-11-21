@@ -7,6 +7,128 @@ $(document).ready(function () {
 
 	scrolling(api);
 
+	if ($.bbq.getState("groupBy")) {
+		$("#record-settings li[data-group-records-by].active").removeClass("active");
+		$("#record-settings li[data-group-records-by='" + $.bbq.getState("groupBy") + "']").addClass("active");
+	}
+	if ($.bbq.getState("orderBy")) {
+		$("#record-settings li[data-order-records-by].active").removeClass("active");
+		$("#record-settings li[data-order-records-by='" + $.bbq.getState("orderBy") + "']").addClass("active");
+	}
+
+
+	$(document).on("click", "#record-settings li", function () {
+		$("#log").append("clicked " + $(this).attr("data-group-records-by") + "<br>");
+	});
+
+	$(document).on("click", "#record-settings li[data-group-records-by]", function (e) {
+
+		e.preventDefault();
+		var $this = $(this);
+		$("#record-settings li[data-group-records-by].active").removeClass("active");
+		$this.addClass("active");
+		$.bbq.pushState({"groupBy":$this.attr("data-group-records-by")});
+		getData();
+
+	});
+	$(document).on("click", "#record-settings li[data-order-records-by]", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		$("#record-settings li[data-order-records-by].active").removeClass("active");
+		$this.addClass("active");
+		$.bbq.pushState({"orderBy":$this.attr("data-order-records-by")});
+		getData();
+
+	});
+	$(document).on("click", "#list-settings", function (e) {
+		//console.log($("#list-settings").length);
+		e.preventDefault();
+		var $this = $(this);
+
+		//console.log("settings clicked");
+		$this.addClass("active");
+		$.bbq.pushState({"modal":"settings"});
+		$("#settings-modal").modal('show');
+
+	});
+	$(document).on('hide', '#settings-modal', function () {
+		$.bbq.removeState("modal");
+		$("#list-settings").removeClass("active");
+	});
+	$(document).on('shown', '#settings-modal', function () {
+		$("#settings-modal .modal-body .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+		if ($.bbq.getState("groupBy")) {
+			$("#settings-records-group button[data-group-records-by].active").removeClass("active");
+			$("#settings-records-group button[data-group-records-by='" + $.bbq.getState("groupBy") + "']").addClass("active");
+		}
+		if ($.bbq.getState("orderBy")) {
+			$("#settings-records-order button[data-order-records-by].active").removeClass("active");
+			$("#settings-records-order button[data-order-records-by='" + $.bbq.getState("orderBy") + "']").addClass("active");
+		}
+
+	});
+
+	$(document).on("reset", "#settings-modal form", function (e) {
+		e.preventDefault();
+		if (confirm("Are you sure you want to reset all these settings?")) {
+			$("#settings-modal").addClass("loading");
+			$.post("/app/nf/save/list_settings/?section=provisional&reset=columns,group,order", function () {
+				$.bbq.removeState("orderBy", "groupBy");
+				window.location.reload();
+			});
+		}
+
+	});
+	$(document).on("submit", "#settings-modal form", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		var columns = [];
+		$("#selected-columns li").each(function () {
+			var $thisC = $(this);
+
+			columns.push($thisC.attr("data-column"));
+
+		});
+		columns = columns.join(",");
+		var group = $("#settings-records-group button.active").attr("data-group-records-by");
+		var order = $("#settings-records-order button.active").attr("data-order-records-by");
+		//console.log(columns);
+
+		$("#settings-modal").addClass("loading");
+		$.post("/app/nf/save/list_settings/?section=reports_author_newsbook", {"columns":columns, "group":group, "groupOrder":order}, function () {
+			$("#settings-modal").removeClass("loading");
+			if (confirm("Settings Saved\n\nReload new settings now?")) {
+				$.bbq.removeState("modal");
+				$.bbq.pushState({groupBy:group, orderBy:order});
+				window.location.reload();
+			}
+		});
+
+	});
+
+	$("#selected-columns, #available-columns").sortable({
+		connectWith:".connectedSortable",
+		containment:".scroll-pane",
+		zIndex     :99999,
+		update     :function (event, ui) {
+			$(this).closest(".scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+		}
+	}).disableSelection();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// --------------------
+
 	$(document).on("click", ".order-btn", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -77,6 +199,13 @@ function getData() {
 	pubs = $.makeArray(pubs);
 	pubs = pubs.join(",");
 
+	var group = $.bbq.getState("groupBy");
+	group = (group) ? group : "";
+	var order = $.bbq.getState("order");
+	order = (order) ? order : "";
+	var groupOrder = $.bbq.getState("orderBy");
+	groupOrder = (groupOrder) ? groupOrder : "";
+
 	var years = $("#year-select button.active").map(function () {
 		return $(this).attr("data-val");
 	});
@@ -98,7 +227,7 @@ function getData() {
 	var tolerance = $("#tolerance").val();
 
 
-	$.getData("/app/nf/reports/data/author_newsbook/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance}, function (data) {
+	$.getData("/app/nf/reports/data/author_newsbook/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "group": group, "groupOrder": groupOrder }, function (data) {
 
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);

@@ -39,8 +39,8 @@ class author_newsbook extends data {
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
-		$grouping_g = $settings['group']['g'];
-		$grouping_d = $settings['group']['o'];
+		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
+		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
 		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
 		$ordering_d = $settings['order']['o'];
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")) {
@@ -52,8 +52,7 @@ class author_newsbook extends data {
 				}
 			}
 		}
-		$grouping = array("g" => $grouping_g, "o" => $grouping_d);
-		$ordering = array("c" => $ordering_c, "o" => $ordering_d);
+
 		if ($combined == 'none') {
 			$combined = $settings['combined'];
 		}
@@ -111,15 +110,32 @@ class author_newsbook extends data {
 		}
 
 
+		$grouping = array(
+			"g"=> $grouping_g,
+			"o"=> $grouping_d
+		);
+		$ordering = array(
+			"c"=> $ordering_c,
+			"o"=> $ordering_d
+		);
+
+		
 
 
 		$values = array();
-		$values[$section] = array("years" => $years, "timeframe" => $daterange, "combined" => $combined, "order" => $ordering, "tolerance" => $tolerance,);
+		$values[$section] = array(
+			"years" => $years, 
+			"timeframe" => $daterange, 
+			"combined" => $combined,
+			"group"=> $grouping,
+			"order" => $ordering, 
+			"tolerance" => $tolerance,
+		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 
 
 
-		//test_array($values);
+	//	test_array($values);
 
 
 
@@ -169,6 +185,8 @@ class author_newsbook extends data {
 			$orderby = " title ASC";
 			$arrange = "";
 			$where = "$where_general AND global_dates.ID = '$dID' ";
+			
+		//	test_array($grouping);
 
 		//	test_array(array($where, $grouping, $ordering));
 			$records = models\articles::getAll($where, $grouping, $ordering);

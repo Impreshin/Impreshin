@@ -132,7 +132,30 @@
 				<% } else if (this.tab=="records") { %>
 				<div class="btn-group report-bottom-tabs" data-toggle="buttons-radio" >
 									<button class="btn btn-mini span2 back" data-tab="charts"><i class="icon-arrow-left icon-d-grey" style="margin-top:-2px;"></i> Back to charts</button>
-								</div>
+
+				</div>
+				<div class="dropdown pull-right">
+					<a data-toggle="dropdown" class="dropdown-toggle c btn btn-mini span1" href="#" ><i class="icon-wrench"></i></a>
+					<ul class="dropdown-menu f12" id="record-settings" role="menu">
+						<li class="nav-header">Group By</li>
+                            {% for row in settings['groupby'] %}
+                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+						<a href="#t">{{ row['n'] }}</a>
+					</li>
+                            {% endfor %}
+                            <li class="nav-header clearfix">Direction</li>
+						<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+							<a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
+						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+							<a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
+						<li class="clearfix"></li>
+						<li class="divider"></li>
+
+						<li>
+							<a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+						</li>
+					</ul>
+				</div>
 				<% } %>
 
 			</div>
