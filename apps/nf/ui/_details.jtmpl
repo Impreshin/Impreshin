@@ -1307,7 +1307,13 @@ $(document).on('submit', '#form-newsbook', function (e) {
 
 	$("#popup-newsbook").show().find(".loadingmask").show();
 	$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
-		getDetails();
+		if (response.error){
+			$("#popup-newsbook").show().find(".loadingmask").hide();
+			alert(response.error);
+		} else {
+			getDetails();
+		}
+		
 	});
 
 });

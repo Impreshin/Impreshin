@@ -160,6 +160,8 @@ class articles extends save {
 		test_array(array("ID" => $ID, "values" => $values));
 
 	}
+	
+	
 
 	function newsbook() {
 		$user = $this->f3->get("user");
@@ -167,37 +169,55 @@ class articles extends save {
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
 
-		$values = array("aID" => $aID, "pID" => isset($_POST['newsbook-pID']) && $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID'] != "undefined" ? $_POST['newsbook-pID'] : "", "dID" => isset($_POST['newsbook-dID']) && $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID'] != "undefined" ? $_POST['newsbook-dID'] : "", "uID" => $user['ID'], "placed" => 0);
+		$values = array(
+			"aID" => $aID, 
+			"pID" => isset($_POST['newsbook-pID']) && $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID'] != "undefined" ? $_POST['newsbook-pID'] : "", 
+			"dID" => isset($_POST['newsbook-dID']) && $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID'] != "undefined" ? $_POST['newsbook-dID'] : "", 
+			"uID" => $user['ID'], "placed" => 0);
 
 		// do the insert thing.. get the ID
-		$ID = models\newsbooks::save($ID, $values);
+		
+		
+		$exists = models\newsbooks::exists($values['aID'],$values['dID']);
+		$error = "";
+		if ($exists=='0'){
+
+			$ID = models\newsbooks::save($ID, $values);
 
 
-		$files = array();
+			$files = array();
 
-		$file_ids = array();
-		$sql = array();
+			$file_ids = array();
+			$sql = array();
 
-		foreach (explode(",", $_POST['files']) as $fileID) {
-			$sql[] = "('" . $ID . "', '" . $fileID . "')";
-			$files[] = array("nID" => $ID, "fileID" => $fileID);
-			$file_ids[] = $fileID;
+			foreach (explode(",", $_POST['files']) as $fileID) {
+				$sql[] = "('" . $ID . "', '" . $fileID . "')";
+				$files[] = array("nID" => $ID, "fileID" => $fileID);
+				$file_ids[] = $fileID;
+			}
+
+			if (count($sql)) {
+
+				$sql = "INSERT INTO nf_article_newsbook_photos (`nID`,`fileID`) VALUES " . implode(",", $sql);
+
+				$this->f3->get("DB")->exec("DELETE FROM nf_article_newsbook_photos WHERE nID = '$ID'");
+				$this->f3->get("DB")->exec($sql);
+			}
+
+		} else {
+
+			$error = "The article already exists in this newsbook";
 		}
-
-		if (count($sql)) {
-
-			$sql = "INSERT INTO nf_article_newsbook_photos (`nID`,`fileID`) VALUES " . implode(",", $sql);
-
-			$this->f3->get("DB")->exec("DELETE FROM nf_article_newsbook_photos WHERE nID = '$ID'");
-			$this->f3->get("DB")->exec($sql);
-		}
+		
+		
 
 
 
 
+		$return = array("ID" => $ID, "values" => $values);
 
-
-		test_array(array("ID" => $ID, "values" => $values));
+		if ($error) $return['error'] = $error;
+		test_array($return);
 
 
 	}
