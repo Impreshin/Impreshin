@@ -176,6 +176,10 @@ class settings {
 				"n"=> "Page",
 				"g"=> "page"
 			),
+			"type"=> array(
+				"n"=> "Type",
+				"g"=> "type"
+			),
 			"none"=> array(
 				"n"=> "No Grouping",
 				"g"=> "none"
@@ -186,12 +190,13 @@ class settings {
 
 
 		$sections = array(
-			"provisional"=>array("author","category","stage","priority","none"),
-			"newsbook"=>array("author","category","stage","priority","page","none"),
-			"production"=>array("author","category","priority","page","none"),
-			"search"=>array("author","category","stage","priority","none"),
-			"records_newsbook"=>array("author","category","stage","priority","none"),
-			"reports_author_newsbook"=>array("author","category","stage","priority","none"),
+			"provisional"=>array("author","category","stage","priority","type","none"),
+			"newsbook"=>array("author","category","stage","priority","page","type","none"),
+			"production"=>array("author","category","priority","page","type","none"),
+			"search"=>array("author","category","stage","priority","type","none"),
+			"records_newsbook"=>array("author","category","stage","priority","type","none"),
+			"reports_author_newsbook"=>array("category","stage","priority","type","none"),
+			"reports_author_submitted"=>array("category","stage","priority","type","none"),
 		
 		);
 
@@ -386,12 +391,12 @@ class settings {
 
 
 				),
-				"reports_author_summary"=>array(
+				"reports_author_submitted"=>array(
 					"years"=>"",
 					"timeframe"=>"",
 					"combined"=>"0",
 					"ID"=>array(),
-					"col" => $defColumns,
+					"col" => $defColumns_reports_author,
 					"group"      => array(
 						"g"=>"type",
 						"o"=>"ASC"
@@ -400,7 +405,7 @@ class settings {
 						"c"=> "title",
 						"o"=> "ASC"
 					),
-					"count"      => count($defColumns),
+					"count"      => count($defColumns_reports_author),
 					"tolerance"=>25
 				),
 				"reports_author_newsbook"=>array(

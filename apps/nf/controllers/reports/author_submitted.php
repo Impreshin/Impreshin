@@ -17,7 +17,8 @@ class author_submitted extends \apps\nf\controllers\_ {
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
 
-		$section = "reports_author_summary";
+		$app_settings = \apps\nf\settings::_available();
+		$section = "reports_author_submitted";
 		$settings = models\settings::_read($section);
 		$settings_pub = isset($settings["pub_$pID"])?$settings["pub_$pID"]:array("pubs"=>"");
 
@@ -40,7 +41,36 @@ class author_submitted extends \apps\nf\controllers\_ {
 				"title"=> "NF - Reports - Author Submitted",
 			)
 		);
+		$a = array();
+		$b = array();
 
+		foreach ($settings['col'] as $col){
+			$a[] = $col;
+			$b[] = $col['c'];
+
+		}
+
+
+
+		$selected = $a;
+		$available = array();
+		foreach ($app_settings["columns"] as $col){
+			if ( !in_array($col['c'],$b)){
+				$available[] = $col;
+			}
+
+		}
+
+
+
+
+		$tmpl->settings = $settings;
+
+		$tmpl->settings_columns = array(
+			"selected"=> $selected,
+			"available"=> $available
+		);
+		
 		$tmpl->selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";;
 
 		$tmpl->users = $users;

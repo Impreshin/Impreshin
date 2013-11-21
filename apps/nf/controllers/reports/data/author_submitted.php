@@ -23,7 +23,7 @@ class author_submitted extends data {
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
-		$section = "reports_author_summary";
+		$section = "reports_author_submitted";
 		$return = array();
 
 		$settings = models\settings::_read($section);
@@ -39,8 +39,8 @@ class author_submitted extends data {
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
 
-		$grouping_g =  $settings['group']['g'];
-		$grouping_d =  $settings['group']['o'];
+		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
+		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
 		$ordering_c = (isset($_REQUEST['order']) && $_REQUEST['order'] != "") ? $_REQUEST['order'] : $settings['order']['c'];
 		$ordering_d = $settings['order']['o'];
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
@@ -124,8 +124,9 @@ class author_submitted extends data {
 			"years"=> $years,
 			"timeframe"=> $daterange,
 			"combined"=> $combined,
-					"order"=> $ordering,
-					"tolerance"=> $tolerance,
+			"group"=> $grouping,
+			"order" => $ordering,
+			"tolerance"=> $tolerance,
 		);
 		$values[$section]['ID']["cID_$cID"] = $ID;
 

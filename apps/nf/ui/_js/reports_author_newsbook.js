@@ -73,7 +73,7 @@ $(document).ready(function () {
 		e.preventDefault();
 		if (confirm("Are you sure you want to reset all these settings?")) {
 			$("#settings-modal").addClass("loading");
-			$.post("/app/nf/save/list_settings/?section=provisional&reset=columns,group,order", function () {
+			$.post("/app/nf/save/list_settings/?section=reports_author_newsbook&reset=columns,group,order", function () {
 				$.bbq.removeState("orderBy", "groupBy");
 				window.location.reload();
 			});
