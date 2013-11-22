@@ -396,23 +396,27 @@ function formLoaded(data) {
 	$("#rightpane-top").css("bottom", $("#rightpane-bottom").outerHeight());
 
 	var $select = $( "#priorityID");
-	$("#slider-text").html($("option:selected",$select).text())
+	
+	if ($select.length){
+		$("#slider-text").html($("option:selected",$select).text())
 
-	
-	var slider = $("#slider").slider({
-		min: 1,
-		max: 6,
-		range: "min",
-		value: $select[ 0 ].selectedIndex + 1,
-		slide: function( event, ui ) {
-			//console.log(ui.value - 1); 
-			$select[ 0 ].selectedIndex = ui.value - 1;
-			$("#slider-text").html($("option:selected",$select).text())
-			$select.trigger("change");
-		}
-	});
-	
-	
+
+		var slider = $("#slider").slider({
+			min: 1,
+			max: $select[ 0 ].length,
+			range: "min",
+			value: $select[ 0 ].selectedIndex + 1,
+			slide: function( event, ui ) {
+				//console.log(ui.value - 1); 
+				$select[ 0 ].selectedIndex = ui.value - 1;
+				$("#slider-text").html($("option:selected",$select).text())
+				$select.trigger("change");
+			}
+		});
+
+
+
+	}
 	
 	
 	

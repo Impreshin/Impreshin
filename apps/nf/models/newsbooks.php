@@ -79,9 +79,14 @@ class newsbooks {
 			WHERE aID ='$aID' AND dID = '$dID'
 			
 		");
+		
+		$return = array();
+		foreach ($result as $item){
+			$return[] = $item['ID'];
+		}
 
 
-		$return = count($result);
+		//$return = count($result);
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}

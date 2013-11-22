@@ -180,7 +180,10 @@ class articles extends save {
 		
 		$exists = models\newsbooks::exists($values['aID'],$values['dID']);
 		$error = "";
-		if ($exists=='0'){
+	
+		//test_array(array("c"=>count($exists),"in"=>in_array($ID,$exists),"ex"=>$exists));
+		
+		if (count($exists)==0 || $ID!=""){
 
 			$ID = models\newsbooks::save($ID, $values);
 

@@ -23,7 +23,8 @@ class permissions {
 			"form"           => array(
 				"new"         => 0,
 				"edit_master" => 0,
-				"author_dropdown"=>0
+				"author_dropdown"=>0,
+				"priority"=>0
 			),
 			"details"           => array(
 				"overwrite_locked"         => 0,
@@ -109,6 +110,9 @@ class permissions {
 		$return['d'] = array(
 			"view"=>array(
 				'only_my_records'=>"If this is checked checked then the user will ONLY see their own records (author ID)."
+			),
+			"form"=>array(
+				"priority"=>"This user will be able to use the priority slider on the form to set the articles priority"	
 			),
 			"administration" => array(
 
