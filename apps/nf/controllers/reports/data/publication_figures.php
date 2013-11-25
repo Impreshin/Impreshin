@@ -157,7 +157,7 @@ class publication_figures extends data {
 		$yearsSend_str = implode(",", $yearsSend);
 
 
-
+		if ($yearsSend_str=='')$yearsSend_str = date("Y");
 
 
 		$years = ($y);;
