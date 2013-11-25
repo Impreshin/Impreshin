@@ -399,8 +399,6 @@ function formLoaded(data) {
 	
 	if ($select.length){
 		$("#slider-text").html($("option:selected",$select).text())
-
-
 		var slider = $("#slider").slider({
 			min: 1,
 			max: $select[ 0 ].length,
@@ -413,9 +411,6 @@ function formLoaded(data) {
 				$select.trigger("change");
 			}
 		});
-
-
-
 	}
 	
 	

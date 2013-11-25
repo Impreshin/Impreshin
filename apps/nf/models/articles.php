@@ -37,7 +37,9 @@ class articles {
 		$newsbook_sql = $newsbook_select = "";
 		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
 			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
-			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, ";
+			
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page,";
+			$newsbook_select = $newsbook_select . "(SELECT fullName FROM nf_article_newsbook p_nb INNER JOIN global_users ON p_nb.placed_uID = global_users.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as placed_fullName,";
 
 		}
 		
@@ -791,7 +793,7 @@ class articles {
 		return $a;
 	}
 
-	private static function logging($ID, $log = array(), $label = "Log") {
+	public static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");

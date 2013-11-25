@@ -98,6 +98,20 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/publication/figures',
+	"controller"=>'apps\nf\controllers\reports\publication_figures->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/category/figures',
+	"controller"=>'apps\nf\controllers\reports\category_figures->page',
+	"a"=>true,
+	"l"=>true,
+);
 // administration
 
 $routes[] =	array(

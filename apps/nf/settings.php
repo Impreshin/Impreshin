@@ -425,6 +425,40 @@ class settings {
 					"count"      => count($defColumns_reports_author),
 					"tolerance"=>25
 				),
+				"reports_publication_figures"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
+				"reports_category_figures"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
 				
 				"admin_users"=>array(
 					"order"=>array(

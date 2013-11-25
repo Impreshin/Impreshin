@@ -141,9 +141,32 @@ class articles extends save {
 		$placed = isset($_POST['placed']) ? $_POST['placed'] : "0";
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
+		$uID = $placed=='1'? $user['ID']:"";
+
 		//test_array(array( "aID"=>$aID,					   "pID"=>$pID,					   "dID"=>$dID,					   "placed"=>$placed,				   )); 
 
-		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+		//$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed', placed_uID = '$uID' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+
+		$b = new \DB\SQL\Mapper( $this->f3->get("DB"), "nf_article_newsbook");
+		$b->load("pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+		
+		$label = $placed=='1'? "Placed":"Un-Placed";
+		$log = array();
+		$log[] = array(
+			"k"=>"placed",
+			"v"=>$placed,
+			"w"=>$b->placed=='1'?'1':'0'
+		);
+		
+		if (!$b->dry()){
+			$b->placed=$placed;
+			$b->placed_uID=$uID;
+			$b->save();
+
+		}
+
+		//$log = array($log);
+		models\articles::logging($aID,$log,$label);
 		test_array("done");
 
 	}

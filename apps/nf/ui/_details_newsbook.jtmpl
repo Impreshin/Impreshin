@@ -86,6 +86,9 @@
 				<legend>Actions</legend>
 				<% if (this.a.placed=='1') { %>
 				<button class="btn <% if (this.placed=='1') { %>btn-success<% } %>" id="btn-action-placed" data-value="<% if (this.placed=='1') { %>0<% } else { %>1<% } %>"  type="button" style="width:100%">Placed</button>
+				<% if (this.placed_fullName){ %>
+				<div class="s g">By: <%= this.placed_fullName %></div>
+				<% } %>
 				<% } %>
 			</fieldset>
 			<% } %>

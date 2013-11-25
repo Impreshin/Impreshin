@@ -56,12 +56,24 @@ class permissions {
 				)
 			),
 			"reports"=>array(
-				"author_submitted"  => array(
-					"page" => 0
+				"author"=> array(
+					"submitted"  => array(
+						"page" => 0
+					),
+					"newsbook"  => array(
+						"page" => 0
+					)	
 				),
-				"author_newsbook"  => array(
-					"page" => 0
-				)	
+				"category" => array(
+					"figures"   => array(
+						"page" => 0
+					),
+				),
+				"publication" => array(
+					"figures"   => array(
+						"page" => 0
+					),
+				)
 			),
 			"administration" => array(
 				"application" => array(

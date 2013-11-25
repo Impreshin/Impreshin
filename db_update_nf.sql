@@ -308,3 +308,7 @@ UPDATE `nf_articles_body` SET stageID='1' WHERE stageID is null;
 
 
 INSERT INTO global_users_company (cID,uID,nf,nf_author) SELECT '6', ID, '1', '1' FROM global_users WHERE email is null AND fullName is not null;
+
+
+ALTER TABLE `nf_article_newsbook` CHANGE `placedBy` `placed_uID` INT( 6 ) NULL DEFAULT NULL;
+

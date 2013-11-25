@@ -129,7 +129,27 @@ $app->route('GET|POST /app', function ($app) use ($user) {
 			} else {
 				$last_app = $user['last_page'] ? $user['last_page'] : "";
 				if (!$last_app) {
-					$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/ab/";
+					$uID = $user['ID'];
+					$f3 = \base::instance();
+					$applications_list = $f3->get("applications");
+
+
+					$appstuff = $f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID'  ORDER BY ID DESC LIMIT 0,1");
+					//$appstuff = 
+					
+					$use = "";
+					foreach ($appstuff as $item){
+						foreach ($applications_list as $k=>$ap){
+							if (isset($item[$k])&&$item[$k]=='1'){
+								$use = $k;
+								break;
+							}
+						}
+						
+					}
+					
+				
+					$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/app/$use/";
 				}
 			}
 

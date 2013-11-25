@@ -1,0 +1,67 @@
+
+<section id="maintoolbar" class="section_reports">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Reports
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;"><small>Category Figures</small></h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+
+				<ul class="nav nav-pills pull-right ">
+					<li>
+						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select an Author">
+
+
+							{% for row in list %}
+								<option value="{{ row['ID'] }}"  {% if row['ID'] == selected %} selected="selected"{% endif %}>{{ row['category'] }}</option>                            {% endfor %}
+
+						</select>
+					</li>
+					
+
+
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a href="#" style="width:15px;"><i class="icon-print icon-grey"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<section role="main" id="pagecontent" class="section_reports">
+	<div class="container">
+
+
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane" >
+
+					<div data-heading="top" id="scroll-container">
+
+
+					</div>
+
+
+				</div>
+			</div>
+			<div class="loadingmask wide"></div>
+		</article>
+	</div>
+</section>
+{% include "_record_settings.tmpl" %}
+<script type="text/javascript">
+	var currency_sign = '{{ _cfg['currency']['sign'] }}';
+</script>
