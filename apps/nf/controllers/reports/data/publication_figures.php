@@ -92,7 +92,7 @@ class publication_figures extends data {
 		$daterange_s = explode(" to ", $daterange_s);
 
 
-		$years_d = $this->f3->get("DB")->exec("SELECT DISTINCT year(datein) AS record_year FROM nf_articles WHERE authorID = '$ID' ORDER BY year(datein) DESC");
+		$years_d = $this->f3->get("DB")->exec("SELECT DISTINCT year(datein) AS record_year FROM nf_articles INNER JOIN global_publications ON nf_articles.cID = global_publications.cID WHERE global_publications.ID = '$pID' ORDER BY year(datein) DESC");
 
 
 		//($settings['years'])? $settings['years']:$years_d[0]['record_year'];
