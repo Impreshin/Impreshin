@@ -30,13 +30,20 @@
 </head>
 <body>
 <div>
-	<img src="/app/nf/thumb/100/100?file=1/2013//p1854t779411gis3u34b1mvrfdgj.png&crop=true" alt="" class="view"/>
-	<img src="/app/nf/thumb/100/100?file=1/2013//p18759iss01pr21lpi16lf1vsd1b405.jpg&crop=true" alt="" class="view"/>
-	<img src="/app/nf/thumb/100/100?file=1/2013//trtopgr7_1310172056300.jpg&crop=true" alt="" class="view"/>
+	<form action="#">
+		<input type="text" id="word" name="word" value="test"/>
+	</form>
+	
+	<button id="lookup" type="button">lookup</button>
+	
+	
+	<h1>Dictionary</h1>
+	<div id="dic"></div>
+	<h1>Thesaurus</h1>
+	<div id="the"></div>
 	
 </div>
 
-<button id='exif-toggle' class='btn span1'><i class='icon-tag'></i></button>
 
 <script src="/ui/_js/libs/jquery.js"></script>
 <script src="/ui/_js/plugins/jquery.getData.js"></script>
@@ -44,149 +51,31 @@
 <script src="/ui/fancybox/jquery.fancybox.pack.js"></script>
 
 <style type="text/css">
-	.photo-viewer-pane  {
-		display: none;;
-	}
-	#photo-viewer-caption {
-		display: block;
-	}
-	.exif-toggle {
-		
-		min-height: 30px;;
-		min-width: 30px;
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-	.fancybox-title-over-wrap {
-		right: 0;;	
-	}
+	
 	
 </style>
 <script type="text/javascript">
+	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=peace&language=en_US&key=test_only&output=json";
+	var dic_key = "da88aa48-f888-42b6-8bc3-9afa52fe6446";
+	var the_key = "Sz7PEKNfLSij0USINSaA";
 	$(document).ready(function () {
+		var $dic= $("#dic");
 
-		$(document).on("click",".exif-toggle",function(){
-		
-			if ($("#photo-viewer-exif").is(":visible")){
-				$(".photo-viewer-pane").hide();
-				$("#photo-viewer-caption").show();
-			} else {
-				$(".photo-viewer-pane").hide();
-				$("#photo-viewer-exif").show();
-			}
-		});
-		
-		$(".view").click(function () {
-
-			var path = $(this).attr("src");
-			path = path.split('file=');
-			path = path[1];
-			path = path.split("&");
-			path = path[0];
-			
-			var w = $(window).width();
-			var h = $(window).height();
-			
-			w = w - 100;
-			h = h - 100;
-			
-			w = w > 1000 ? 1000 : w
-			h = h > 1000 ? 1000 : h
-			
-			$.fancybox.open({
-				href : '/app/nf/thumb/'+w+'/'+h+'?file='+path+'&crop=false',
-				title: "test"
-			}, {
-				padding: 10,
-				type:'image',
-				openEffect: 'fade',
-				beforeLoad:function () {
-					this.title = "<div id='photo-viewer-caption' class='photo-viewer-pane'>woof<button class='btn span1 exif-toggle'><i class='icon-tag'></i></button></div><div id='photo-viewer-exif' class='photo-viewer-pane'></div>";
-					
-
-					
-				},
-				afterLoad:function () {
-					$.getData("/app/nf/exif",{'file':path},function(r){
-						if (r.FILE){
-							$("#exif-toggle").css("opacity",100);
-							$('#photo-viewer-exif').jqotesub($("#template-photo-exif"), r);
-							
-						}
-					
-					})
-
-				},
-				helpers:{
-					overlay:{
-						speedIn   :500,
-						speedOut  :500,
-						opacity   :0.4
-
-					},
-					title  :{
-						type:'over'
-					}
-
-				}
+		$("#lookup").click(function(){
+			var word = $("#word").val();
+			$.get("/test.php?word="+word,function(d){
+				console.log(d);
 			});
 			
 			
+		
 		})
+		
 
 	});
 	function updatetimerlist(){
 		
 	}
-</script>
-<script type="text/x-jqote-template" id="template-photo-exif">
-	<![CDATA[
-	<button class='btn span1 exif-toggle'><i class='icon-tag'></i></button>
-	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="borderTable">
-		<tbody><tr>
-			<td width="13%" class="h">Width</td>
-			<td width="20%"><%= this.COMPUTED.Width||"" %></td>
-			<td width="13%" class="h">ImageDescription</td>
-			<td width="20%"><%= this.IFD0.ImageDescription||"" %></td>
-			<td width="13%" class="h">Make</td>
-			<td width="20%"><%= this.IFD0.Make||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Height</td>
-			<td><%= this.COMPUTED.Height||"" %></td>
-			<td class="h">UserComment</td>
-			<td><%= this.COMPUTED.UserComment||"" %></td>
-			<td class="h">Model</td>
-			<td><%= this.IFD0.Model||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Size</td>
-			<td><%= this.FILE.FileSize||"" %></td>
-			<td class="h">DateTime</td>
-			<td><%= this.IFD0.DateTime||"" %></td>
-			<td class="h">ShutterSpeedValue</td>
-			<td><%= this.EXIF.ShutterSpeedValue||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">DPI</td>
-			<td>-no decent way to get it yet-</td>
-			<td class="h">DateTimeOriginal</td>
-			<td><%= this.EXIF.DateTimeOriginal||"" %></td>
-			<td class="h">ApertureValue</td>
-			<td><%= this.EXIF.ApertureValue||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Software</td>
-			<td><%= this.IFD0.Software||"" %></td>
-
-			<td class="h">Copyright</td>
-			<td><%= this.COMPUTED.Copyright||"" %></td>
-			<td class="h">FocalLength</td>
-			<td><%= this.EXIF.FocalLength||"" %></td>
-		</tr>
-		</tbody></table>
-	]]>
 </script>
 </body>
 </html>
