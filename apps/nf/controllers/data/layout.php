@@ -240,6 +240,7 @@ class layout extends data {
 				$a['page'] = $record['page'];
 				$a['type'] = $record['type'];
 				$a['type_icon'] = $record['type_icon'];
+				$a['placed'] = $record['placed'];
 
 				
 				$r[$record['pageID']][] = $a;
@@ -579,6 +580,7 @@ class layout extends data {
 				$a['page'] = $record['page'];
 				$a['type'] = $record['type'];
 				$a['type_icon'] = $record['type_icon'];
+				$a['placed'] = $record['placed'];
 
 				$records[$record['pageID']][] = $a;
 			}
@@ -682,6 +684,7 @@ class layout extends data {
 				$a['type'] = $record['type'];
 				$a['type_icon'] = $record['type_icon'];
 				$a['photosCount'] = $record['photosCount'];
+				$a['placed'] = $record['placed'];
 
 			$records[] = $a;
 			$recordCount++;
