@@ -101,7 +101,7 @@ $(document).ready(function () {
 
 
 
-	//$("#modal-dictionary").modal('show');
+	
 	$(document).on("click", "#btn-tools-dictionary", function () {
 
 		var ck_instance_name = false;
