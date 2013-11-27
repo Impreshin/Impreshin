@@ -28,13 +28,16 @@
 	<style type="text/css">
 		article {
 			border-bottom: 1px dotted #ccc;
-			padding: 10px;
+			padding: 10px 20px ;
 		}
 		.well {
 			margin: 5px 0 5px 0;			
 		}
 		footer {
 			margin-top:5px;
+		}
+		.lookups {
+			color: #8a8a8a;
 		}
 		.lookups span {
 			cursor: pointer;
@@ -56,7 +59,7 @@
 	<form action="#">
 		<input type="text" id="word" name="word" />	<button id="lookup" class="btn" type="submit">lookup</button>
 		<div class="help-block">
-			Powerd By: <a href="http://www.abbreviations.com" target="_blank"> http://www.abbreviations.com</a>
+			Powered By: <a href="http://www.abbreviations.com" target="_blank"> http://www.abbreviations.com</a>
 		</div>
 	</form>
 
@@ -90,7 +93,7 @@
 	
 	$(document).on("click",".lookups span",function(){
 		var word = $(this).text();
-		console.log(word);
+		//console.log(word);
 		lookup(word);
 		
 	});
@@ -139,6 +142,7 @@
 
 				var data = {
 					"term":word,
+					"result":"0",
 					"results":[]
 				};
 				$('result', returnedXMLResponse).each(function(){
@@ -146,10 +150,10 @@
 					var syn = $('synonyms', this).text()
 
 					var d = {
-						"heading":$('term', this).text(),
-						"heading_small":$('partofspeech', this).text(),
-						"body":$('definition', this).text(),
-						"footer":$('example', this).text(),
+						"term":$('term', this).text(),
+						"partofspeech":$('partofspeech', this).text(),
+						"definition":$('definition', this).text(),
+						"example":$('example', this).text(),
 						"synonyms": wrapify($('synonyms', this).text()),
 						"antonyms": wrapify($('antonyms', this).text())
 						
@@ -160,7 +164,14 @@
 					//variables, e.g. put them in some place in your html document
 					//or store them in an associative array
 				});
-				$result.jqotesub($("#template-dic"), data);
+				var template = "#template-result"
+				if (data.results.length){
+					
+				} else {
+					template = "#template-no-result"
+				}
+				
+				$result.jqotesub($(template), data);
 
 
 				//getChannelMessages(channel);
@@ -177,37 +188,46 @@
 		
 	}
 </script>
-<script type="text/x-jqote-template" id="template-dic">
+<script type="text/x-jqote-template" id="template-result">
 	<![CDATA[
 	<h1>Result <small><%= this.term %></small></h1>
-	<% for(var i in this.results) { %>
-	<article>
-		<header>
-			<h3><%= this.results[i].heading %> <small>(<%= this.results[i].heading_small %>)</small></h3>
-		</header>
-		<div class="well well-small">
-		<%= this.results[i].body %>
-		</div>
-		<% if (this.results[i].footer) { %>
+			
+		<% for(var i in this.results) { %>
+		<article>
+			<header>
+				<h3><%= this.results[i].term %> <small>(<%= this.results[i].partofspeech %>)</small></h3>
+			</header>
+			<div class="well well-small">
+			<%= this.results[i].definition %>
+			</div>
+			<% if (this.results[i].example) { %>
+			
+			<em><%= this.results[i].example %></em>
+				
+			<% } %>
+			<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
+			<footer>
+				<% if (this.results[i].synonyms) { %>
+				<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+				<% } %>
+				<% if (this.results[i].antonyms) { %>
+				<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+				<% } %>
+				
+			</footer>
+			<% } %>
+			
+		</article>
 		
-		<em><%= this.results[i].footer %></em>
 			
-		<% } %>
-		<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
-		<footer>
-			<% if (this.results[i].synonyms) { %>
-			<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
-			<% } %>
-			<% if (this.results[i].antonyms) { %>
-			<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
-			<% } %>
-			
-		</footer>
-		<% } %>
-	</article>
-			
-			<% } %>
+	<% } %>
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-no-result">
+	<![CDATA[
+	<h1>No Result <small><%= this.term %></small></h1>
+			No Matches Found
+	]]>
+</script>		
 </body>
 </html>
