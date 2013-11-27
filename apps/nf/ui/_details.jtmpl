@@ -749,7 +749,7 @@
 	<![CDATA[
 	<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add to<% } %> Newsbook</h3>
+		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add record to<% } %> Newsbook</h3>
 		<select name="newsbook-pID" id="newsbook-pID" style="margin-left:12px;">
 			<% for (var i in this.publications) { %>
 			<option value="<%= this.publications[i].ID %>"
@@ -1309,7 +1309,18 @@ $(document).on('submit', '#form-newsbook', function (e) {
 	$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
 		if (response.error){
 			$("#popup-newsbook").show().find(".loadingmask").hide();
-			alert(response.error);
+			if(confirm(response.error)){
+
+				var ID = response.values.exists;
+				var aID = response.values.aID;
+				var pID = response.values.pID;
+				var dID = response.values.dID;
+				$.bbq.pushState({"n_ID": ID, "n_pID": pID, "n_dID": dID});
+
+				newsbook_form();
+				
+				
+			};
 		} else {
 			getDetails();
 		}

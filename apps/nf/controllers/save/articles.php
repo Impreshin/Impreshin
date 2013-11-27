@@ -231,8 +231,9 @@ class articles extends save {
 			}
 
 		} else {
+			$values['exists'] = $exists[0];
 
-			$error = "The article already exists in this newsbook";
+			$error = "The article already exists in this newsbook\n\rClick 'Ok' to edit the newsbook or 'Cancel' to cancel";
 		}
 		
 		
