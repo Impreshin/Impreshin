@@ -405,8 +405,10 @@
 
 <script type="text/x-jqote-template" id="template-dictionary-result">
 	<![CDATA[
-	
 
+	<div class='modal-body'>
+
+	
 	<% for(var i in this.results) { %>
 	<article>
 		<header>
@@ -436,11 +438,23 @@
 
 
 	<% } %>
+
+	</div>
+	<div class='modal-footer s' style="padding: 4px;">
+		<a href="http://www.definitions.net/definition/<%= this.term %>" target="_blank"> More definitions for "<%= this.term %>" on Definitions.net</a>
+	</div>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-dictionary-no-result">
 	<![CDATA[
-	
+	<div class='modal-body'>
 	No Matches Found
+
+	</div>
+	<div class='modal-footer s' style="padding: 4px;">
+		<a href="http://www.definitions.net/definition/<%= this.term %>" target="_blank"> More definitions for "<%= this.term %>" on Definitions.net</a>
+	</div>
+
+			
 	]]>
 </script>	

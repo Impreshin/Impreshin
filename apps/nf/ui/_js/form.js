@@ -318,61 +318,67 @@ function lookup(word){
 		word = $("#word").val();
 	}
 
-	if (word){
+	
 		def(word);
-	}
+	
 
 
 }
 function def(word){
-	$result = $("#modal-dictionary .modal-body");
-	$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
-	jQuery.support.cors = true;
-	$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
-		cache : true,
-		type : "get",
-		global : false,
-		dataType : "xml",
-		//jsonp : false,
-		success : function (returnedXMLResponse) {
+	$result = $("#modal-dictionary-result");
+	if (word){
+		
+		$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
+		jQuery.support.cors = true;
+		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
+			cache : true,
+			type : "get",
+			global : false,
+			dataType : "xml",
+			//jsonp : false,
+			success : function (returnedXMLResponse) {
 
-			var data = {
-				"term":word,
-				"result":"0",
-				"results":[]
-			};
-			$('result', returnedXMLResponse).each(function(){
-
-				var syn = $('synonyms', this).text()
-
-				var d = {
-					"term":$('term', this).text(),
-					"partofspeech":$('partofspeech', this).text(),
-					"definition":$('definition', this).text(),
-					"example":$('example', this).text(),
-					"synonyms": wrapify($('synonyms', this).text()),
-					"antonyms": wrapify($('antonyms', this).text())
-
+				var data = {
+					"term":word,
+					"result":"0",
+					"results":[]
 				};
-				data.results.push(d);
+				$('result', returnedXMLResponse).each(function(){
 
-				//Here you can do anything you want with those temporary
-				//variables, e.g. put them in some place in your html document
-				//or store them in an associative array
-			});
-			var template = "#template-dictionary-result"
-			if (data.results.length){
+					var syn = $('synonyms', this).text()
 
-			} else {
-				template = "#template-dictionary-no-result"
+					var d = {
+						"term":$('term', this).text(),
+						"partofspeech":$('partofspeech', this).text(),
+						"definition":$('definition', this).text(),
+						"example":$('example', this).text(),
+						"synonyms": wrapify($('synonyms', this).text()),
+						"antonyms": wrapify($('antonyms', this).text())
+
+					};
+					data.results.push(d);
+
+					//Here you can do anything you want with those temporary
+					//variables, e.g. put them in some place in your html document
+					//or store them in an associative array
+				});
+				var template = "#template-dictionary-result"
+				if (data.results.length){
+
+				} else {
+					template = "#template-dictionary-no-result"
+				}
+
+				$result.jqotesub($(template), data);
+
+
+				//getChannelMessages(channel);
 			}
-
-			$result.jqotesub($(template), data);
-
-
-			//getChannelMessages(channel);
-		}
-	});
+		});
+	} else {
+		$result.html("")
+	}
+	
 }
 
 function lock_unlock(){
