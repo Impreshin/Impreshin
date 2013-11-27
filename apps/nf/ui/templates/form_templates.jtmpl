@@ -174,8 +174,8 @@
 												<i class="icon-check"></i>
 											</button>
 
-											<button disabled type="button" id="comments" class="btn btn-mini span1 g" rel="tooltip" title="Dictionary/Thesaurus">
-												<i class="icon-circle-blank"></i>
+											<button type="button" id="btn-tools-dictionary" class="btn btn-mini span1" rel="tooltip" title="Dictionary/Thesaurus">
+												<i class="icon-search"></i>
 											</button>
 											<button type="button" id="btn-tools-search" class="btn btn-mini span1" rel="tooltip" title="Use meta to perform a news search">
 												<i class="icon-check-sign"></i>
@@ -402,3 +402,45 @@
 	</li>
 	]]>
 </script>
+
+<script type="text/x-jqote-template" id="template-dictionary-result">
+	<![CDATA[
+	
+
+	<% for(var i in this.results) { %>
+	<article>
+		<header>
+			<h3><%= this.results[i].term %> <small>(<%= this.results[i].partofspeech %>)</small></h3>
+		</header>
+		<div class="well well-small">
+			<%= this.results[i].definition %>
+		</div>
+		<% if (this.results[i].example) { %>
+
+		<em><%= this.results[i].example %></em>
+
+		<% } %>
+		<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
+		<footer>
+			<% if (this.results[i].synonyms) { %>
+			<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+			<% } %>
+			<% if (this.results[i].antonyms) { %>
+			<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+			<% } %>
+
+		</footer>
+		<% } %>
+
+	</article>
+
+
+	<% } %>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-dictionary-no-result">
+	<![CDATA[
+	
+	No Matches Found
+	]]>
+</script>	

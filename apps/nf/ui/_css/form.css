@@ -186,3 +186,36 @@
   position: absolute;
   right: -100px;
 }
+#modal-dictionary .modal-body {
+  padding-top: 0;
+}
+#modal-dictionary article {
+  border-bottom: 1px dotted #ccc;
+  padding: 10px 0 ;
+}
+#modal-dictionary article footer {
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
+}
+#modal-dictionary article footer p {
+  margin: 3px 0;
+}
+#modal-dictionary .well {
+  margin: 5px 0 5px 0;
+}
+#modal-dictionary footer {
+  margin-top: 5px;
+}
+#modal-dictionary .lookups {
+  color: #8a8a8a;
+}
+#modal-dictionary .lookups span {
+  cursor: pointer;
+}
+#modal-dictionary .lookups span:hover {
+  background-color: #e1e1e1;
+}
+#modal-dictionary .loading {
+  text-align: center;
+  margin: 30px;
+}

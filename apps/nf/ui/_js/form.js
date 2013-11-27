@@ -95,9 +95,32 @@ $(document).ready(function () {
 	$(document).on("change", "#locked_record",function(){
 		lock_unlock();
 	});
+
+
+
+
+
+
+	//$("#modal-dictionary").modal('show');
+	$(document).on("click", "#btn-tools-dictionary", function () {
+
+		var ck_instance_name = false;
+		var selectedText = "";
+		for ( var ck_instance in CKEDITOR.instances ){
+			t = CKEDITOR.instances[ck_instance].getSelection().getSelectedText();
+			if (t){
+				selectedText = t;
+			}
+			
+		}
+
+		$("#modal-dictionary").modal('show');
+		lookup(selectedText);
+			
+		
 	
 
-	
+	});
 
 	$(document).on("click", "#btn-tools-search", function () {
 		var meta = $("form #meta").val();
@@ -251,9 +274,107 @@ $(document).ready(function () {
 
 	});
 
+
+
+	$("#dictionary-form").submit(function(e){
+		e.preventDefault();
+		lookup();
+	});
+
+	$(document).on("click",".lookups span",function(){
+		var word = $(this).text();
+		//console.log(word);
+		lookup(word);
+
+	});
+
+	
+
 	
 
 });
+
+function wrapify(str){
+	var ret = str;
+	if (str){
+		var newHtml = str.split(","),
+			spans = $.map(newHtml,function(v){
+				v = v.trim();
+				return '<span>' + v + '</span>';
+			});
+
+
+		ret = spans.join(', ');
+	}
+
+	return ret;
+}
+
+
+function lookup(word){
+	if (word){
+		$("#word").val(word);
+	} else {
+		word = $("#word").val();
+	}
+
+	if (word){
+		def(word);
+	}
+
+
+}
+function def(word){
+	$result = $("#modal-dictionary .modal-body");
+	$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
+	jQuery.support.cors = true;
+	$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
+		cache : true,
+		type : "get",
+		global : false,
+		dataType : "xml",
+		//jsonp : false,
+		success : function (returnedXMLResponse) {
+
+			var data = {
+				"term":word,
+				"result":"0",
+				"results":[]
+			};
+			$('result', returnedXMLResponse).each(function(){
+
+				var syn = $('synonyms', this).text()
+
+				var d = {
+					"term":$('term', this).text(),
+					"partofspeech":$('partofspeech', this).text(),
+					"definition":$('definition', this).text(),
+					"example":$('example', this).text(),
+					"synonyms": wrapify($('synonyms', this).text()),
+					"antonyms": wrapify($('antonyms', this).text())
+
+				};
+				data.results.push(d);
+
+				//Here you can do anything you want with those temporary
+				//variables, e.g. put them in some place in your html document
+				//or store them in an associative array
+			});
+			var template = "#template-dictionary-result"
+			if (data.results.length){
+
+			} else {
+				template = "#template-dictionary-no-result"
+			}
+
+			$result.jqotesub($(template), data);
+
+
+			//getChannelMessages(channel);
+		}
+	});
+}
+
 function lock_unlock(){
 	var $this = $("#locked_record");
 	var $parent = $this.parent();
