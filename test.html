@@ -11,7 +11,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>ScreenShots</title>
+	<title>Test Dictionary</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -21,9 +21,22 @@
 
 
 
+	<link rel="stylesheet" href="/ui/_css/bootstrap.css">
 	<link rel="stylesheet" href="/ui/fancybox/jquery.fancybox.css">
 
 
+	<style type="text/css">
+		article {
+			border-bottom: 1px dotted #ccc;
+			padding: 10px;
+		}
+		.well {
+			margin: 5px 0 5px 0;			
+		}
+		footer {
+			margin-top:5px;
+		}
+	</style>
 	
 
 
@@ -31,16 +44,14 @@
 <body>
 <div>
 	<form action="#">
-		<input type="text" id="word" name="word" value="test"/>
+		<input type="text" id="word" name="word" />	<button id="lookup" class="btn" type="submit">lookup</button>
 	</form>
+
+	<h1>Result</h1>
+	<div id="result"></div>
 	
-	<button id="lookup" type="button">lookup</button>
 	
 	
-	<h1>Dictionary</h1>
-	<div id="dic"></div>
-	<h1>Thesaurus</h1>
-	<div id="the"></div>
 	
 </div>
 
@@ -55,27 +66,96 @@
 	
 </style>
 <script type="text/javascript">
-	var url = "http://thesaurus.altervista.org/thesaurus/v1?word=peace&language=en_US&key=test_only&output=json";
-	var dic_key = "da88aa48-f888-42b6-8bc3-9afa52fe6446";
-	var the_key = "Sz7PEKNfLSij0USINSaA";
-	$(document).ready(function () {
-		var $dic= $("#dic");
-
-		$("#lookup").click(function(){
-			var word = $("#word").val();
-			$.get("/test.php?word="+word,function(d){
-				console.log(d);
-			});
-			
-			
-		
-		})
-		
-
+	
+	$("form").submit(function(e){
+		e.preventDefault();
+		lookup();
 	});
+	
+	
+	function lookup(word){
+		if (!word) word = $("#word").val();
+		def(word);
+		
+	}
+	function def(word){
+		jQuery.support.cors = true;
+		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
+			cache : true,
+			type : "get",
+			global : false,
+			dataType : "xml",
+			//jsonp : false,
+			success : function (returnedXMLResponse) {
+
+				var data = {
+					"term":word,
+					"results":[]
+				};
+				$('result', returnedXMLResponse).each(function(){
+
+					var d = {
+						"heading":$('term', this).text(),
+						"heading_small":$('partofspeech', this).text(),
+						"body":$('definition', this).text(),
+						"footer":$('example', this).text(),
+						"synonyms": $('synonyms', this).text(),
+						"antonyms": $('antonyms', this).text()
+						
+					};
+					data.results.push(d);
+
+					//Here you can do anything you want with those temporary
+					//variables, e.g. put them in some place in your html document
+					//or store them in an associative array
+				});
+				$("#result").jqotesub($("#template-dic"), data);
+
+
+				//getChannelMessages(channel);
+			}
+		});
+	}
+	
+	
+	if ($("#word").val()){
+		lookup();
+	}
+	
 	function updatetimerlist(){
 		
 	}
+</script>
+<script type="text/x-jqote-template" id="template-dic">
+	<![CDATA[
+	<% for(var i in this.results) { %>
+	<article>
+		<header>
+			<h3><%= this.results[i].heading %> <small>(<%= this.results[i].heading_small %>)</small></h3>
+		</header>
+		<div class="well well-small">
+		<%= this.results[i].body %>
+		</div>
+		<% if (this.results[i].footer) { %>
+		
+		<em><%= this.results[i].footer %></em>
+			
+		<% } %>
+		<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
+		<footer>
+			<% if (this.results[i].synonyms) { %>
+			<p><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+			<% } %>
+			<% if (this.results[i].antonyms) { %>
+			<p><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+			<% } %>
+			
+		</footer>
+		<% } %>
+	</article>
+			
+			<% } %>
+	]]>
 </script>
 </body>
 </html>
