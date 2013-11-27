@@ -36,6 +36,16 @@
 		footer {
 			margin-top:5px;
 		}
+		.lookups span {
+			cursor: pointer;
+		}
+		.lookups span:hover {
+			background-color: #e1e1e1;
+		}
+		.loading {
+			text-align: center;
+			margin:30px;
+		}
 	</style>
 	
 
@@ -45,10 +55,16 @@
 <div>
 	<form action="#">
 		<input type="text" id="word" name="word" />	<button id="lookup" class="btn" type="submit">lookup</button>
+		<div class="help-block">
+			Powerd By: <a href="http://www.abbreviations.com" target="_blank"> http://www.abbreviations.com</a>
+		</div>
 	</form>
 
-	<h1>Result</h1>
-	<div id="result"></div>
+	
+	<div id="result">
+
+		
+	</div>
 	
 	
 	
@@ -72,13 +88,46 @@
 		lookup();
 	});
 	
+	$(document).on("click",".lookups span",function(){
+		var word = $(this).text();
+		console.log(word);
+		lookup(word);
+		
+	});
+	
+	function wrapify(str){
+		var ret = str;
+		if (str){
+			var newHtml = str.split(","),
+					spans = $.map(newHtml,function(v){
+						v = v.trim();
+						return '<span>' + v + '</span>';
+					});
+
+
+			ret = spans.join(', ');
+		}
+		
+		return ret;
+	}
+	
 	
 	function lookup(word){
-		if (!word) word = $("#word").val();
-		def(word);
+		if (word){
+			$("#word").val(word);
+		} else {
+			word = $("#word").val();
+		}
+	
+		if (word){
+			def(word);
+		}
+		
 		
 	}
 	function def(word){
+		$result = $("#result");
+		$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
 		jQuery.support.cors = true;
 		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
 			cache : true,
@@ -93,14 +142,16 @@
 					"results":[]
 				};
 				$('result', returnedXMLResponse).each(function(){
+					
+					var syn = $('synonyms', this).text()
 
 					var d = {
 						"heading":$('term', this).text(),
 						"heading_small":$('partofspeech', this).text(),
 						"body":$('definition', this).text(),
 						"footer":$('example', this).text(),
-						"synonyms": $('synonyms', this).text(),
-						"antonyms": $('antonyms', this).text()
+						"synonyms": wrapify($('synonyms', this).text()),
+						"antonyms": wrapify($('antonyms', this).text())
 						
 					};
 					data.results.push(d);
@@ -109,7 +160,7 @@
 					//variables, e.g. put them in some place in your html document
 					//or store them in an associative array
 				});
-				$("#result").jqotesub($("#template-dic"), data);
+				$result.jqotesub($("#template-dic"), data);
 
 
 				//getChannelMessages(channel);
@@ -128,6 +179,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-dic">
 	<![CDATA[
+	<h1>Result <small><%= this.term %></small></h1>
 	<% for(var i in this.results) { %>
 	<article>
 		<header>
@@ -144,10 +196,10 @@
 		<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
 		<footer>
 			<% if (this.results[i].synonyms) { %>
-			<p><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+			<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
 			<% } %>
 			<% if (this.results[i].antonyms) { %>
-			<p><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+			<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
 			<% } %>
 			
 		</footer>
