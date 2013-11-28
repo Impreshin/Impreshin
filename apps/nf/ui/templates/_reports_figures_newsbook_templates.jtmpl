@@ -20,17 +20,17 @@
 		<tr>
 			<td></td>
 			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
-			<td colspan="4" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
+			<td colspan="5" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
 			<% } %> <% } %>
 		</tr>
 		<tr class="colheading">
 			<th></th>
 			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
-			<th style="width: 30px;border-left: 1px solid #999;">#</th>
-			<th style="width: 40px;">Articles</th>
-			<th style="width: 40px;">Cm</th>
-			<!--<th style="width: 40px;">%</th>-->
-			<th style="width: 30px;">Photos</th>
+			<th style="width: 25px;border-left: 1px solid #999;">#</th>
+			<th style="width: 25px;">Article</th>
+			<th style="width: 25px;">Cm</th>
+			<th style="width: 25px;">%</th>
+			<th style="width: 25px;">Photo</th>
 			
 			<% } %> <% } %>
 		</tr>
@@ -61,7 +61,7 @@
 					<%= this.comp.data[d].data[i].cm %>
 				</span>
 			</td>
-			<!--
+			
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.filesCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
@@ -70,7 +70,7 @@
 					<% } %>
 				</span>
 		</td>
-		-->
+	
 			<td class="figure-dir-<%= this.comp.data[d].data[i].d.photosCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
 
 				<span>
@@ -90,6 +90,7 @@
 			<td><%= this.comp.data[d].editions[e].data[i].records||"" %></td>
 			<td><%= this.comp.data[d].editions[e].data[i].articlesCount||"" %></td>
 			<td><%= this.comp.data[d].editions[e].data[i].cm||"" %></td>
+			<td><% if (this.comp.data[d].editions[e].data[i].percentChanged) { %><%= this.comp.data[d].editions[e].data[i].percentChanged||"" %>%<% } %></td>
 			<td><%= this.comp.data[d].editions[e].data[i].photosCount||"" %></td>
 			<% } %>
 		</tr>

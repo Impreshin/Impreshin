@@ -184,7 +184,11 @@ class report_figures_newsbook {
 				$percentChanged = isset($data[$year][$month['k']]['percentChanged']) ? ($data[$year][$month['k']]['percentChanged']) : 0;
 
 
-				if ($articlesCount > 0 && $percentChanged > 0) $percentChanged = $articlesCount / $percentChanged;
+				if ($articlesCount > 0 && $percentChanged > 0) {
+					$percentChanged = $percentChanged / $articlesCount;
+					
+					if ($percentChanged) $percentChanged = number_format($percentChanged, 2);
+				}
 
 
 				$totals['cm'] = $totals['cm'] + $cm;
