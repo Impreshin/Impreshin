@@ -461,7 +461,13 @@ class articles {
 			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
-					$arr = array("heading" => $record['heading'], "count" => "");
+					$arr = array(
+						"heading" => $record['heading'], 
+						"count" => "",
+						"articles"=>"",
+						"photos"=>"",
+						"cm"=>""
+					);
 					$arr['groups'] = "";
 					$arr['records'] = "";
 					$a[$record['heading']] = $arr;
@@ -477,6 +483,9 @@ class articles {
 					}
 				}
 				$a[$record['heading']]["records"][] = $record;
+				if ($record['typeID']=='1')	$a[$record['heading']]["articles"] = $a[$record['heading']]["articles"] + 1;
+				$a[$record['heading']]["photos"] = $a[$record['heading']]["photos"] + $record['photosCount'];
+				$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['cm'];
 			}
 		}
 		$return = array();
