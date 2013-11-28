@@ -5,6 +5,24 @@ var pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 var api = pane.data("jsp");
 $(document).ready(function () {
 
+	var filter = $.bbq.getState("filter");
+	filter = (filter) ? filter : "*";
+
+	$(document).on("click", "#list-filter-btns button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		
+		var filter = $("#list-filter-btns button.active").attr("data-filter");
+		filter = (filter) ? filter : "*";
+
+		$.bbq.pushState({"filter":filter});
+		getData();
+
+	});
+	
+	
+
 	scrolling(api);
 
 	if ($.bbq.getState("groupBy")) {
@@ -226,8 +244,11 @@ function getData() {
 	$("#whole-area .loadingmask").show();
 	var tolerance = $("#tolerance").val();
 
+	var filter = $("#list-filter-btns button.active").attr("data-filter");
+	filter = (filter) ? filter : "";
 
-	$.getData("/app/nf/reports/data/author_newsbook/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "group": group, "groupOrder": groupOrder }, function (data) {
+
+	$.getData("/app/nf/reports/data/author_newsbook/_data", {"pubs":pubs, "years":years, "daterange":daterange, "combined":combined, "ID":ID, "dID":dID, "order":order, "tolerance":tolerance, "group": group, "groupOrder": groupOrder, "filter": filter }, function (data) {
 
 
 		$("#scroll-container").jqotesub($("#template-report-figures"), data);

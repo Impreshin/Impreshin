@@ -33,8 +33,7 @@ class author_newsbook extends data {
 
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
-		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$ym = isset($_REQUEST['ym']) ? $_REQUEST['ym'] : "";
+		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 		$tolerance = isset($_REQUEST['tolerance']) ? $_REQUEST['tolerance'] : $settings['tolerance'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
@@ -53,9 +52,7 @@ class author_newsbook extends data {
 			}
 		}
 
-		if ($combined == 'none') {
-			$combined = $settings['combined'];
-		}
+		
 		if ($ID == '') {
 			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
 		}
@@ -125,8 +122,8 @@ class author_newsbook extends data {
 		$values = array();
 		$values[$section] = array(
 			"years" => $years, 
-			"timeframe" => $daterange, 
-			"combined" => $combined,
+			"timeframe" => $daterange,
+			"filter"=>$filter,
 			"group"=> $grouping,
 			"order" => $ordering, 
 			"tolerance" => $tolerance,
@@ -157,13 +154,24 @@ class author_newsbook extends data {
 		$yearsSend_str = implode(",", $yearsSend);
 
 
+		$placed_sql = "";
+		
+		SWITCH ($filter){
+			CASE '1':
+				$placed_sql = " AND nf_article_newsbook.placed='1' ";
+				break;
+			CASE '0':
+				$placed_sql = " AND nf_article_newsbook.placed='0' ";
+				break;
+		}
+		
 
-
+		
 
 		$years = ($y);;
 
 		$where_general_gen = "authorID = '$ID' AND deleted is null";
-		$where_general = $where_general_gen . " AND nf_articles.rejected !='1' AND (SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1') > 0 AND global_publications.ID = '$pID'";
+		$where_general = $where_general_gen . $placed_sql . " AND nf_articles.rejected !='1' AND global_publications.ID = '$pID'";
 		//test_array(array("where"=>$where_general,"range"=>array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), "pubs"=>$publications));
 		if ($tab == "charts") {
 			$where = $where_general;
@@ -178,18 +186,18 @@ class author_newsbook extends data {
 			$return['lines'] = models\report_figures_newsbook::lines($where, array("from" => date("Y-m-d", strtotime($daterange_s[0])), "to" => date("Y-m-d", strtotime($daterange_s[1]))));
 		}
 
+		
 
 
 
 		if ($tab == "records") {
-			$orderby = " title ASC";
-			$arrange = "";
+			
 			$where = "$where_general AND global_dates.ID = '$dID' ";
 			
 		//	test_array($grouping);
 
 		//	test_array(array($where, $grouping, $ordering));
-			$records = models\articles::getAll($where, $grouping, $ordering);
+			$records = models\articles::getAll($where, $grouping, $ordering, array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.ID AS newsbookID, nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication, nf_article_newsbook.placed AS placed"));
 			//$d = articles::getAll($where, "","",array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication"));
 			
 			
@@ -203,6 +211,7 @@ class author_newsbook extends data {
 		$return['comp']['data'] = models\report_figures_newsbook::figures($where, $yearsSend, $pID, $tolerance);
 
 
+		//test_array($return['comp']['data']); 
 
 
 		$date_range = $this->f3->get("DB")->exec("SELECT min(datein) AS earliestDate, max(datein) AS latestDate FROM nf_articles WHERE $where_general_gen");
@@ -214,7 +223,7 @@ class author_newsbook extends data {
 
 
 		$return['daterange'] = $daterange;
-		$return['combined'] = $combined;
+		$return['filter'] = $filter;
 		$return['date_min'] = $date_range['earliestDate'];
 		$return['date_max'] = $date_range['latestDate'];
 

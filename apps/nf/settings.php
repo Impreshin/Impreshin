@@ -411,7 +411,7 @@ class settings {
 				"reports_author_newsbook"=>array(
 					"years"=>"",
 					"timeframe"=>"",
-					"combined"=>"0",
+					"filter"=>"*",
 					"ID"=>array(),
 					"col" => $defColumns_reports_author,
 					"group"      => array(
@@ -428,7 +428,7 @@ class settings {
 				"reports_publication_figures"=>array(
 					"years"=>"",
 					"timeframe"=>"",
-					"combined"=>"0",
+					"filter"=>"*",
 					"ID"=>array(),
 					"col" => $defColumns_reports_author,
 					"group"      => array(
@@ -445,7 +445,7 @@ class settings {
 				"reports_category_figures"=>array(
 					"years"=>"",
 					"timeframe"=>"",
-					"combined"=>"0",
+					"filter"=>"*",
 					"ID"=>array(),
 					"col" => $defColumns_reports_author,
 					"group"      => array(

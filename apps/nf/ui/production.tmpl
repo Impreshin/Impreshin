@@ -8,13 +8,13 @@
                 </li>
                 <li class="divider-vertical"></li>
 	            <li>
-		            <div id="list-filter-btns" data-toggle="buttons-radio" class="btn-group">
-			            <button style="width:40px;" class="btn  btn-mini btn-icon active" data-filter="*">
+		            <div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+			            <button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
 				            <i class="icon-asterisk"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="1">
-				            <i class="icon-lock"></i></button>
-			            <button style="width:40px;" class="btn  btn-mini btn-icon " data-filter="0">
-				            <i class="icon-unlock"></i></button>
+			            <button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+				            <i class="icon-ok"></i></button>
+			            <button data-filter="0" class="btn  btn-mini btn-icon {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
+				            <i class="icon-remove"></i></button>
 		            </div>
 	            </li>
                 

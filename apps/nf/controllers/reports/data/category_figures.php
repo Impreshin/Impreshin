@@ -33,8 +33,7 @@ class category_figures extends data {
 
 		$years = isset($_REQUEST['years']) ? $_REQUEST['years'] : "";
 		$daterange = isset($_REQUEST['daterange']) ? $_REQUEST['daterange'] : "";
-		$combined = isset($_REQUEST['combined']) ? $_REQUEST['combined'] : $settings['combined'];
-		$ym = isset($_REQUEST['ym']) ? $_REQUEST['ym'] : "";
+		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 		$tolerance = isset($_REQUEST['tolerance']) ? $_REQUEST['tolerance'] : $settings['tolerance'];
 		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
 		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
@@ -53,9 +52,7 @@ class category_figures extends data {
 			}
 		}
 
-		if ($combined == 'none') {
-			$combined = $settings['combined'];
-		}
+		
 		if ($ID == '') {
 			$ID = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";
 		}
@@ -125,8 +122,8 @@ class category_figures extends data {
 		$values = array();
 		$values[$section] = array(
 			"years" => $years, 
-			"timeframe" => $daterange, 
-			"combined" => $combined,
+			"timeframe" => $daterange,
+			"filter"=>$filter,
 			"group"=> $grouping,
 			"order" => $ordering, 
 			"tolerance" => $tolerance,
@@ -164,8 +161,18 @@ class category_figures extends data {
 
 		$years = ($y);;
 
+		$placed_sql = "";
+		SWITCH ($filter){
+			CASE '1':
+				$placed_sql = " AND nf_article_newsbook.placed='1' ";
+				break;
+			CASE '0':
+				$placed_sql = " AND nf_article_newsbook.placed='0' ";
+				break;
+		}
+
 		$where_general_gen = "categoryID = '$ID' AND deleted is null";
-		$where_general = $where_general_gen . " AND nf_articles.rejected !='1' AND (SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1') > 0 AND global_publications.ID = '$pID'";
+		$where_general = $where_general_gen . $placed_sql . " AND nf_articles.rejected !='1' AND (SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1') > 0 AND global_publications.ID = '$pID'";
 		//test_array(array("where"=>$where_general,"range"=>array("from"=>date("Y-m-d",strtotime($daterange_s[0])),"to"=> date("Y-m-d",strtotime($daterange_s[1]))), "pubs"=>$publications));
 		if ($tab == "charts") {
 			$where = $where_general;
@@ -216,7 +223,7 @@ class category_figures extends data {
 
 
 		$return['daterange'] = $daterange;
-		$return['combined'] = $combined;
+		$return['filter'] = $filter;
 		$return['date_min'] = $date_range['earliestDate'];
 		$return['date_max'] = $date_range['latestDate'];
 

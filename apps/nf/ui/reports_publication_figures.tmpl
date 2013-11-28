@@ -14,7 +14,16 @@
 				</li>
 			</ul>
 			<div class="pull-right">
-
+				
+					<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns" style="margin-right:20px;">
+						<button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
+							<i class="icon-asterisk"></i></button>
+						<button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+							<i class="icon-ok"></i></button>
+						<button data-filter="0" class="btn  btn-mini btn-icon {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
+							<i class="icon-remove"></i></button>
+					</div>
+				
 				
 			</div>
 

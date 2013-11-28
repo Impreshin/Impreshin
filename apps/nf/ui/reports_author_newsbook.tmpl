@@ -17,6 +17,17 @@
 
 				<ul class="nav nav-pills pull-right ">
 					<li>
+						<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+							<button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;">
+								<i class="icon-asterisk"></i></button>
+							<button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;">
+								<i class="icon-ok"></i></button>
+							<button data-filter="0" class="btn  btn-mini btn-icon {% if settings['filter'] == "0" %}active{% endif %}" style="width:40px;">
+								<i class="icon-remove"></i></button>
+						</div>
+					</li>
+					<li class="divider-vertical"></li>
+					<li>
 						<select id="selectID" name="selectID" tabindex="8" class="" style="width: 300px;" placeholder="Select an Author">
 
 

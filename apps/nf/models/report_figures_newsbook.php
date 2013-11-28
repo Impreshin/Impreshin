@@ -67,7 +67,7 @@ class report_figures_newsbook {
 
 		//$where = $where . " AND nf_articles.ID='17491'";
 
-		$d = articles::getAll($where, "","",array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.ID AS newsbookID, nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication"));
+		$d = articles::getAll($where, "","",array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.ID AS newsbookID, nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication, nf_article_newsbook.placed AS placed"));
 
 
 	//test_array($d);
@@ -421,6 +421,7 @@ class report_figures_newsbook {
 		//$d = articles::getAll($where, "nf_articles.ID ASC");
 
 
+	//	test_array($d); 
 
 
 		$data = self::line_build_data($d, $date1, $date2);
