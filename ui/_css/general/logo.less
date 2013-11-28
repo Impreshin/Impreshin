@@ -1,4 +1,4 @@
-@keyframes resize {
+@keyframes fade {
 	0% {
 		opacity:1
 	}
@@ -11,9 +11,22 @@
 		opacity:0.7;
 	}
 }
+@-webkit-keyframes fade {
+	0% {
+		opacity:1
+	}
+	50% {
+
+		opacity:0.4
+	}
+	100% {
+
+		opacity:0.7;
+	}
+}
 
 #impreshin-logo {
-	animation-name: resize;
+	animation-name: fade;
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
