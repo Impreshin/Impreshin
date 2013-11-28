@@ -112,6 +112,7 @@ $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /', 'controllers\controller_login->page');
 
 $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
+$app->route('GET /screenshots/@app', 'controllers\controller_screenshots->page');
 $app->route('GET /news', 'controllers\controller_news->page');
 $app->route('GET /news/@item', 'controllers\controller_news->page');
 $app->route('GET /history', 'controllers\controller_history->page');

@@ -26,11 +26,11 @@
 		<tr class="colheading">
 			<th></th>
 			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
-			<th style="width: 25px;border-left: 1px solid #999;">#</th>
-			<th style="width: 25px;">Article</th>
-			<th style="width: 25px;">Cm</th>
-			<th style="width: 25px;">%</th>
-			<th style="width: 25px;">Photo</th>
+			<th style="width: 30px;border-left: 1px solid #999;">#</th>
+			<th style="width: 30px;">Article</th>
+			<th style="width: 30px;">Cm</th>
+			<th style="width: 30px;">%</th>
+			<th style="width: 30px;">Photo</th>
 			
 			<% } %> <% } %>
 		</tr>

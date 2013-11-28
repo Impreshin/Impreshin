@@ -8610,4 +8610,22 @@ body.help_pages {
 [class*=" icon-"].icon-d-grey {
   color: #666 !important;
 }
+@keyframes resize {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+#impreshin-logo {
+  animation-name: resize;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
 /* </general> */
