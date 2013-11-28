@@ -258,6 +258,11 @@ class report_figures_newsbook {
 						"dID"  => $e['dID'],
 
 					);
+					if ($e['percentChanged']){
+						$e['percentChanged'] = $e['percentChanged'] / $e['articlesCount'];
+						//test_array($e);
+					}
+					
 
 					unset($e['pub']);
 					unset($e['dID']);
