@@ -196,7 +196,7 @@ class publication_figures extends data {
 		//	test_array($grouping);
 
 		//	test_array(array($where, $grouping, $ordering));
-			$records = models\articles::getAll($where, $grouping, $ordering);
+			$records = models\articles::getAll($where, $grouping, $ordering, array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.ID AS newsbookID, nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication, nf_article_newsbook.placed AS placed"));
 			//$d = articles::getAll($where, "","",array("pID"=>$pID,"distinct"=>"nf_articles.ID, nf_article_newsbook.pID, nf_article_newsbook.dID","select"=>" nf_article_newsbook.pID, global_dates.publish_date, global_publications.publication"));
 			
 			

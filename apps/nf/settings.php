@@ -196,7 +196,9 @@ class settings {
 			"search"=>array("author","category","stage","priority","type","none"),
 			"records_newsbook"=>array("author","category","stage","priority","type","none"),
 			"reports_author_newsbook"=>array("category","stage","priority","type","none"),
+			"reports_category_figures"=>array("category","stage","priority","type","none"),
 			"reports_author_submitted"=>array("category","stage","priority","type","none"),
+			"reports_publication_figures"=>array("category","stage","priority","type","none"),
 		
 		);
 
