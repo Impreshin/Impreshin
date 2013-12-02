@@ -68,7 +68,7 @@ class template {
 		$this->vars['_nav_top'] = $this->vars['folder'] . "_nav_top.tmpl";
 
 
-		//test_array($user);
+		
 
 		$this->vars['_uri'] = $_SERVER['REQUEST_URI'];
 		$this->vars['_folder'] = $this->vars['folder'];
@@ -144,6 +144,20 @@ class template {
 			}
 
 
+			if (!isset($page['help']) || !$page['help']){
+				$app = $this->f3->get("app");
+				$sub_section = $page['sub_section'];
+				if (strpos($sub_section,"_")){
+					$sub_section = explode("_", $page['sub_section']);
+					$sub_section = implode("/", $sub_section);
+					$page['help'] = "/app/$app/documentation/" . $page['section'] . "/" . $sub_section;
+				} else {
+					$page['help'] = "/app/$app/documentation/" . $page['section'] . "/" . $page['sub_section'];
+				}
+
+			}
+			
+
 
 
 			//test_array($page);
@@ -203,12 +217,20 @@ class template {
 
 			$this->vars['page'] = $page;
 
-			//test_array($page);
+			//
 			*/
+			
+			
+			//test_array($page);
 			$this->vars['page'] = $page;
 			return $this->render_template();
 		} else {
-			return $this->render_string();
+			if (isset($this->vars['docs']['file'])){
+				return $this->render_template();
+			} else {
+				return $this->render_string();
+			}
+			
 		}
 
 
@@ -229,6 +251,7 @@ class template {
 		}
 
 
+		
 
 		$loader = new Twig_Loader_Filesystem($folder);
 		$twig = new Twig_Environment($loader, array(

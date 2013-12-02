@@ -49,7 +49,7 @@ class newsbook extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Newsbook",
 			),
-			"help"=> "/apps/nf/help/newsbook"
+			//"help"=> "/apps/nf/help/newsbook"
 		);
 
 

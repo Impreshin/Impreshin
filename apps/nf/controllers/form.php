@@ -112,7 +112,7 @@ class form extends \apps\nf\controllers\_{
 			),
 			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js"),
 			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css"),
-			"help"        => "/apps/nf/help/form"
+			//"help"        => "/apps/nf/help/form"
 		);
 
 

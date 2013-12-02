@@ -102,7 +102,8 @@ $(document).ready(function () {
 	var help = $.bbq.getState("help");
 	if (help) {
 
-		$(document).fancybox.open([
+
+		$.fancybox.open([
 			{
 				href: help
 			}

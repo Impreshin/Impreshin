@@ -30,6 +30,7 @@ require_once('inc/class.template.php');
 $autoload = array(
 	"./",
 	"lib/",
+	"docs/",
 	"controllers/"
 );
 
@@ -291,8 +292,25 @@ foreach ($router as $key=> $routes) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
+
+	$app->route("GET|POST /app/$key/documentation/*", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; docs->page");
+		}
+			
+	);
+
+	$app->route("GET|POST /app/$key/documentation", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; docs->page");
+		}
+			
+	);
+
 	
-	
+
+
+
 	$app->route("GET /app/$key/access", function ($f3, $params) use ($app, $key) {
 			$ap = "\\apps\\$key\\app";
 			$a = new $ap();
@@ -356,6 +374,7 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use 
 		*/
 	}
 );
+
 
 
 
