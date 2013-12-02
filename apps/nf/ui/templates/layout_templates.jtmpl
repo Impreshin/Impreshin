@@ -125,12 +125,14 @@
 					</table>
 
 				</div>
+				<% if (this.pages[i].ab) { %>
 				<% if (this.pages[i].ab.cm && this.pages[i].ab.cm > 0) { %>
 				<footer class="progress <% if (this.pages[i].ab.percent > 60){ %><% if (this.pages[i].ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 					<div class="bar" style="width: <%= this.pages[i].ab.percent %>%;"></div>
 					<div class="text">Ad Loading: <%= this.pages[i].ab.cm %>cm | <%= this.pages[i].ab.percent %>%</div>
 
 				</footer>
+				<% } %>
 				<% } %>
 				
 				
