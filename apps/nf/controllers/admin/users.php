@@ -31,7 +31,7 @@ class users extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Admin - Users",
 			),
-			"help"=> "/apps/nf/help/admin/users"
+			//"help"=> "/apps/nf/help/admin/users"
 		);
 
 		$permissions = \apps\nf\permissions::_available($cID);
