@@ -34,6 +34,29 @@ class articles {
 		//$currentDate = $currentDate['publish_date'];
 		//test_array($currentDate);
 		$from = self::_from($options);
+
+		$newsbook_sql = $newsbook_select = "";
+		$placed_select = "if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,";
+
+		$photoCount_sql = "(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
+			$placed_select = "(SELECT placed FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID  $newsbook_sql) as placed,";
+
+		} elseif (isset($options['pID'])&&$options['pID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
+		} else {
+			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID LIMIT 0,1)  as page, ";
+		}
+		
+		
+		/*
 		$newsbook_sql = $newsbook_select = "";
 		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
 			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
@@ -42,7 +65,7 @@ class articles {
 			$newsbook_select = $newsbook_select . "(SELECT fullName FROM nf_article_newsbook p_nb INNER JOIN global_users ON p_nb.placed_uID = global_users.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as placed_fullName,";
 
 		}
-		
+		*/
 		$sql = "
 			SELECT
 				DISTINCT (nf_articles.ID),	
@@ -64,6 +87,8 @@ class articles {
 				if(global_dates.ID, 1, 0) AS in_newsbook,
 				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
 				$newsbook_select
+				$placed_select
+				$photoCount_sql
 				(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND stageID ='1' ORDER BY ID DESC  LIMIT 0,1) as draft,
 	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID  ORDER BY ID DESC LIMIT 0,1)  as body
 

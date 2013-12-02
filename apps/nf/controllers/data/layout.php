@@ -27,7 +27,7 @@ class layout extends data {
 
 		$categoryID = (isset($_REQUEST['categoryID']) && $_REQUEST['categoryID'] != "") ? $_REQUEST['categoryID'] : $settings['categoryID'];
 
-	
+		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
 
 		
 	
@@ -60,6 +60,7 @@ class layout extends data {
 		//test_array($maxPage); 
 		$values = array();
 		$values["layout"] = array(
+			"filter"=>$filter,
 			"categoryID" => array(
 				$pID=>$categoryID,
 			),
@@ -72,10 +73,17 @@ class layout extends data {
 
 		
 		models\settings::save($values);
+		
+		$stage_stuff = "";
+		if ($filter=='1'){
+			$stage_stuff = "AND nf_stages.ID='2'";
+		}
+		//
+		
 
 
 	//	test_array(array($pID,$dID)); 
-		$records = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') AND nf_stages.ID='2' AND nf_articles.deleted is null", "", array("c" => $ordering_c, "o" => $ordering_d) , array("pID"=>$pID,"dID"=>$dID));
+		$records = models\articles::getAll("(nf_article_newsbook.pID = '$pID' AND nf_article_newsbook.dID='$dID') $stage_stuff  AND nf_articles.deleted is null", "", array("c" => $ordering_c, "o" => $ordering_d) , array("pID"=>$pID,"dID"=>$dID));
 		$rawBookings= $records;
 		$records = models\articles::display($records);
 
@@ -103,6 +111,7 @@ class layout extends data {
 			"stage",
 			"photosCount",
 			"page",
+			"stageID",
 			
 		);
 
@@ -201,11 +210,42 @@ class layout extends data {
 
 
 		//	test_array($records); 
-		
-		
+
+
+
+		$ab_records = \apps\ab\models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND pageID is not null");
 		
 
-		//test_array($bookingsRaw); 
+
+		
+		$ab = array();
+		foreach ($ab_records as $record){
+			if ($record['pageID']) {
+				
+
+				if (!isset($ab[$record['pageID']])) {
+					$ab[$record['pageID']] = array(
+						"cm"=>0,
+						"records"=>array()
+					);
+				}
+				if ($record['totalspace']) {
+					$ab[$record['pageID']]['cm'] = $ab[$record['pageID']]['cm'] + $record['totalspace'];
+				}
+				$ab[$record['pageID']]['records'][] = array(
+					"ID"=>$record['ID'],
+					"client"=>$record['client'],
+					"totalspace"=>$record['totalspace'],
+					
+				);
+			}
+
+		}
+		
+		
+		//test_array($ab); 
+
+		
 		
 		$stats = $this->_stats();
 		$maxPage = $stats['loading']['pages'];
@@ -249,7 +289,10 @@ class layout extends data {
 		}
 		$records = $r;
 		
-		//test_array($records); 
+		
+		
+		
+		
 		
 		$colourGroups = array();
 		foreach ($user['publication']['colours_group'] as $g){
@@ -266,6 +309,12 @@ class layout extends data {
 		$r = array();
 		$lockedPages = 0;
 		$recordCount = 0;
+
+
+		$pageSize = $user['publication']['columnsav'] * $user['publication']['cmav'];
+		
+		$ab_stats = array();
+		
 		foreach ($pagesReal as $page){
 			
 			if ($pageSelected==$page['page']) $pageID = $page['ID'];
@@ -290,7 +339,22 @@ class layout extends data {
 
 
 
-
+			
+			
+			$cm = isset($ab[$page['ID']]['cm'])?$ab[$page['ID']]['cm']:0;
+			$percent = 0;
+			if ($cm){
+				$percent = ($cm / $pageSize) * 100;
+			}
+			
+			$ab_array = array(
+				"cm"=>$cm,
+				"percent"=>number_format($percent, 2),
+				"records"=>isset($ab[$page['ID']]['records'])?$ab[$page['ID']]['records']:array()
+			);
+			
+			
+			$ab_stats[$page['ID']] = $ab_array;			
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
@@ -301,7 +365,8 @@ class layout extends data {
 					"c"=> ($page['section_colour']) ? $page['section_colour'] : ""
 				),
 				"colour" => $colour,
-				"records"=>isset($records[$page['ID']])?$records[$page['ID']]:array()
+				"records"=>isset($records[$page['ID']])?$records[$page['ID']]:array(),
+				"ab"=>$ab_array
 			);
 			
 		}
@@ -402,10 +467,12 @@ class layout extends data {
 
 
 
+		//test_array($ab_stats); 
 		
 
 		if ($pageID){
 			$return['records'] = isset($records[$pageID])?$records[$pageID]:array();
+			$return['ab'] = isset($ab_stats[$pageID])?$ab_stats[$pageID]:array();
 		} else {
 			$return = $pages;
 		}
@@ -465,6 +532,8 @@ class layout extends data {
 				),
 				"colour" => $colour,
 			);
+			
+			
 			$return = $return +  $this->_pages($page['ID']);
 		} else {
 			$return = array(

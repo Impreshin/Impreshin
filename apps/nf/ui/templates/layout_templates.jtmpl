@@ -1,9 +1,10 @@
+
 {% include '_details.jtmpl' %}
 {% include "_details_newsbook.jtmpl" %}
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
+	<tr data-id="<%= this.ID %>" class="record <% if (this.stageID=='2'){ %>dragable<% } else { %>g<% } %> details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
 		<td class="span1 r" style="padding-left: 0;" data-drag-handler="<%= this.title %>">
 			<% if (this.type_icon){ %>
 			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
@@ -55,7 +56,15 @@
 				<% } %>
 			</table>
 		</div>
-		
+		<% if (this.ab.cm && this.ab.cm > 0) { %>
+		<footer class="progress <% if (this.ab.percent > 60){ %><% if (this.ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+			<div class="bar" style="width: <%= this.ab.percent %>%;"></div>
+			<div class="text">Ad Loading: <%= this.ab.cm %>cm | <%= this.ab.percent %>%</div>
+
+		</footer>
+		<% } %>
+
+
 		<div class="msgs"></div>
 		<% if(this.colour.icons) { %>
 		<div class="page_colour">
@@ -116,7 +125,18 @@
 					</table>
 
 				</div>
+				<% if (this.pages[i].ab.cm && this.pages[i].ab.cm > 0) { %>
+				<footer class="progress <% if (this.pages[i].ab.percent > 60){ %><% if (this.pages[i].ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+					<div class="bar" style="width: <%= this.pages[i].ab.percent %>%;"></div>
+					<div class="text">Ad Loading: <%= this.pages[i].ab.cm %>cm | <%= this.pages[i].ab.percent %>%</div>
+
+				</footer>
+				<% } %>
 				
+				
+				
+				
+			
 				<div class="msgs"></div>
 				<% if(this.pages[i].colour.icons) { %>
 				<div class="page_colour">

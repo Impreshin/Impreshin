@@ -311,6 +311,7 @@ class settings {
 				),
 				"layout"=>array(
 					"categoryID"=>array(),
+					"filter"   => "*",
 					"order"      => array(
 						"c"=> "title",
 						"o"=> "ASC"
