@@ -30,7 +30,7 @@ class Enchant extends \SpellChecker\Driver
 
 		
 		
-		$dictionary = realpath("./uploads/dictionaries/");
+		$dictionary = realpath("./dictionaries/");
 		
 		
 		
@@ -49,8 +49,8 @@ class Enchant extends \SpellChecker\Driver
 		$this->dictionary_custom = false;
 		$custom = isset($_GET['custom'])?$_GET['custom']:"";
 		if ($custom){
-			if (file_exists("./uploads/dictionaries/$custom")){
-				$dictionary_custom = realpath("./uploads/dictionaries/$custom");
+			if (file_exists("./dictionaries/$custom")){
+				$dictionary_custom = realpath("./dictionaries/$custom");
 				$this->dictionary_custom = enchant_broker_request_pwl_dict($this->broker, $dictionary_custom);
 			}
 		}
