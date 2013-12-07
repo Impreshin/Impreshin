@@ -155,11 +155,8 @@ class articles {
 	public static function getAll_count($where = "",$options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
 		$timer = new timer();
 		$f3 = \Base::instance();
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+		
+		$body_id = "";
 		if (isset($options['body_search'])&&$options['body_search']) {
 			$search_str = $options['body_search'];
 			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
@@ -169,9 +166,23 @@ class articles {
 					$n[] = $item['aID'];
 				}
 				$body_id = implode(",",$n);
-				$where = $where . " OR nf_articles.ID in ($body_id) ";
+
+				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
+				if ($where) {
+					$where = "AND " . $where . "";
+				} else {
+					$where = " ";
+				}
+
+				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
 			}
 
+		}
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
 		}
 		$from = self::_from($options);
 		$sql = "
@@ -203,6 +214,10 @@ class articles {
 							"group"=>$groupby
 						));
 		*/
+		
+		
+		
+		
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {
@@ -234,11 +249,7 @@ class articles {
 	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"","distinct"=>"nf_articles.ID","select"=>"" )) {
 		$f3 = \Base::instance();
 		$timer = new timer();
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+	
 		if (!$grouping){
 			$grouping = array("g" => "none", "o" => "ASC");
 		}
@@ -314,10 +325,26 @@ class articles {
 					$n[] = $item['aID'];
 				}
 				$body_id = implode(",",$n);
-				$where = $where . " OR nf_articles.ID in ($body_id) ";
+
+				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
+				if ($where) {
+					$where = "AND " . $where . "";
+				} else {
+					$where = " ";
+				}
+				
+				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
 			}
 			
 		}
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+		
+		//test_array($where); 
 
 		
 		$sql = "
@@ -351,8 +378,6 @@ class articles {
 			$select           ,
 			nf_articles.ID as ID
 			FROM ($from )
-
-			
 			$where
 			$orderby
 			$limit
@@ -416,7 +441,10 @@ class articles {
 			$options['filter'] = array($options['highlight'][0],$options['filter']);
 		}
 		
-	//	test_array($options);
+		$cfg = $f3->get("CFG");
+		$languages = $cfg['nf']['languages'];
+		
+		//test_array($languages);
 
 		$timer = new timer();
 		$user = $f3->get("user");
@@ -447,6 +475,9 @@ class articles {
 				}
 			}
 			$showrecord = true;
+			
+			
+				$record['language']=isset($languages[$record['lang']])?$languages[$record['lang']]:"";
 			
 			if ((isset($options["highlight"][0]))&&(isset($options["highlight"][1]))) {
 				$record['highlight'] = 0;
@@ -544,8 +575,9 @@ class articles {
 
 
 		$arrange = "";
-		$ordering = $grouping['o'];
-		switch ($grouping['g']) {
+		$ordering = isset($grouping['o'])?$grouping['o'] : "ASC";
+		$grouping = isset($grouping['g'])?$grouping['g'] : "none";
+		switch ($grouping) {
 			case "author":
 				$orderby = "COALESCE(global_users.fullName,99999) $ordering, " . $orderby;
 				$arrange = "global_users.fullName as heading";
@@ -836,7 +868,9 @@ class articles {
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-		$log = mysql_escape_string(json_encode($log));
+		$log = (json_encode($log));
+		$log = str_replace("'", "\\'", $log);
+		$log = str_replace('"', '\\"', $log);
 		//	$log = str_replace("'", "\\'", $log);
 		$f3->get("DB")->exec("INSERT INTO nf_articles_logs (`aID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()

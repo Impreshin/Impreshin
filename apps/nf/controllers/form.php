@@ -110,8 +110,8 @@ class form extends \apps\nf\controllers\_{
 			"meta"        => array(
 				"title" => "NF - Form - loading..",
 			),
-			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js"),
-			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css"),
+			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js","/ui/spellchecker/js/jquery.spellchecker.js"),
+			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css","/ui/spellchecker/css/jquery.spellchecker.css"),
 			//"help"        => "/apps/nf/help/form"
 		);
 
@@ -127,6 +127,22 @@ class form extends \apps\nf\controllers\_{
 		$tmpl->authors = $users;
 		$tmpl->cm_calc_css = $cfg['nf']['default_cm_calc_css'] . $user['company']['nf_cm_css'];
 		//$tmpl->stages = $stages;
+
+
+		
+			
+
+		$tmpl->enable_spellcheck = function_exists('enchant_broker_init')? '1' : '0';
+		
+		$custom_dictionary = $cID . "/custom.dic";
+
+		if (!file_exists("./uploads/dictionaries/$custom_dictionary")){
+			$custom_dictionary = "";
+			
+		}
+		$tmpl->custom_dictionary = $custom_dictionary;
+		
+		
 		
 		$tmpl->output();
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());

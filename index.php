@@ -374,6 +374,18 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use 
 		*/
 	}
 );
+$app->route("GET|POST /system/spellcheck", function ($f3, $params) use ($app, $key) {
+		ini_set('display_errors', 1);
+
+		require_once './ui/spellchecker/webservices/php/SplClassLoader.php';
+
+		$classLoader = new SplClassLoader('SpellChecker', 'SpellChecker', array("test"));
+		$classLoader->setIncludePathLookup(true);
+		$classLoader->register();
+
+		new \SpellChecker\Request();
+	}
+);
 
 
 

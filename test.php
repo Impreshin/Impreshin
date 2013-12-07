@@ -1,5 +1,4 @@
 <?php
-
 function test_array($array,$splitter=''){
 
 	if (!is_array($array) && $splitter){
@@ -17,81 +16,66 @@ function test_array($array,$splitter=''){
 }
 
 
+date_default_timezone_set('Africa/Johannesburg');
+$cID = "1";
+
+$broker = enchant_broker_init();
+$tag = 'en_GB';
+$cust='my';
+
+enchant_broker_set_dict_path($broker, ENCHANT_MYSPELL, 'C:\PHP\enchant\MySpell');
 
 
-function grab_xml_definition ($word)
-{	$uri = "http://www.stands4.com/services/v2/defs.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word=" . urlencode($word);
+$file = realpath("./uploads/dictionaries/$cID/$cust.txt");
+
+
+
+//test_array($file); 
+//print_r($dicts);
+
+if (enchant_broker_dict_exists($broker, $tag)) {
+
 	
+	$dict = enchant_broker_request_dict($broker, $tag);
 	
-	
-	return file_get_contents($uri);
-};
+	//$dict2 = enchant_broker_request_pwl_dict( $broker , 'http://impreshin.local/dic.php' );
 
-
-
-$word = isset($_GET['word'])?$_GET['word']:"";
-if ($word){
-	$resp = grab_xml_definition($word);
-
-
-	//test_array($resp);
+	//test_array($dict); 
+//	enchant_dict_add_to_session ( $dict , "woofstamer" );
+	$orig_word = $word = 'failingg';
 	
 
-	$xml   = simplexml_load_string($resp);
-	$array = XML2Array($xml);
-	$array = array($xml->getName() => $array);
-	
-	$defs = $array['results'];
-	test_array($defs);
-	
-	$def = array();
-	foreach ($defs as $k=>$item){
-		if (is_numeric($k) || $item['dt']){
-			
-			$d= array();
-			$dt = $item['def'];
-			foreach ($dt['dt'] as $kk=>$i){
-				if (is_numeric($kk)||$i['dt']){
-				if (is_string($i)) $d[] = $i;
-					}
+	$suggestions = array();
+	if (file_exists($file)){
+		$dict2 = enchant_broker_request_pwl_dict( $broker , $file );
+		if (enchant_dict_check($dict2, $word) !== true) {
+			$r = enchant_dict_suggest($dict2, $word);
+			if ($r){
+				foreach ($r as $word){
+					if (!in_array($word,$suggestions)) $suggestions[] = $word;
+				}
 			}
 			
 			
-			$def[] = array(
-				"heading"=>$item['ew'],
-				"subj"=>$item['subj'],
-				"fl"=>$item['fl'],
-				"def"=>$d,
-				
-			);
 		}
-		
 	}
 	
-	$return = array(
-		"word"=>$defs['ew'],
-		"subj"=>$defs['subj'],
-		"sound"=>$defs['sound']['wav'],
-		"pr"=>$defs['pr'],
-		"fl"=>$defs['fl'],
-		"date"=>$defs['def']['date'],
-	);
 	
-	$return['def']=$def;
-	
-	test_array($return);
-	
-}
-function XML2Array(SimpleXMLElement $parent){
-	$array = array();
-
-	foreach ($parent as $name => $element) {
-		($node = & $array[$name])
-		&& (1 === count($node) ? $node = array($node) : 1)
-		&& $node = & $node[];
-
-		$node = $element->count() ? XML2Array($element) : trim($element);
+	if (enchant_dict_check($dict, $word) !== true) {
+		$r = enchant_dict_suggest($dict, $word);
+		if ($r){
+			foreach ($r as $word){
+				if (!in_array($word,$suggestions)) $suggestions[] = $word;
+			}
+		}
 	}
-
-	return $array;
+	
+	
+	
+	test_array(array("word"=>$orig_word,"suggestions"=>$suggestions)); 
+	
+	
+	echo nl2br(print_r($suggestions, true));
 }
+
+enchant_broker_free($broker);

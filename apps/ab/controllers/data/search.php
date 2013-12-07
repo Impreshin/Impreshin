@@ -87,7 +87,9 @@ class search extends data {
 
 		$searchsql = "";
 		if ($search_string){
-			$search_string = mysql_escape_string($search_string);
+			$search_string = ($search_string);
+			$search_string = str_replace("'", "\\'", $search_string);
+			$search_string = str_replace('"', '\\"', $search_string);
 			$searchsql .= " AND (client like '%$search_string%' OR ab_placing.placing like '%$search_string%' OR ab_marketers.marketer like '%$search_string%' OR ab_accounts.account like '%$search_string%' OR ab_accounts.accNum like '%$search_string%') ";
 		}
 		if ($search_dates){

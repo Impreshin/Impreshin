@@ -134,6 +134,11 @@ class settings {
 				"h"=> "Archived&nbsp;Date",
 				"m"=>60
 			),
+			"language"               => array(
+				"h"=> "Language",
+				"m"=>60,
+				"o"=>"lang"
+			),
 
 		);
 		$c = array();
@@ -336,6 +341,7 @@ class settings {
 				),
 				"form"=>array(
 					"last_type"=>"1",
+					"last_language"=>"1"
 
 				),
 				"search"=> array(

@@ -54,7 +54,9 @@ class form extends data {
 			
 		}
 
-
+		if ($record['lang']) {
+			$settings['last_language'] = $record['lang'];
+		}
 
 		
 		

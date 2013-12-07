@@ -8,7 +8,8 @@ var text_toolbar = [
 	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
 	{ name: 'tools', items: [ 'Find','Replace' ] },
 	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
-	{ name: 'tools', items: [ 'Maximize' ] }
+	{ name: 'tools', items: [ 'Maximize' ] },
+	{ name: 'spellcheck', items: [ 'jQuerySpellChecker' ]}
 
 ];
 

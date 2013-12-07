@@ -141,6 +141,8 @@
 	var var_record_ID = '{{ ID }}';
 	var _allowedFiles = {{ settings['allowedFileTypes']|json_encode()|raw }};
 	var _uploadPath = '{{ uploadPath }}';
+	var _enable_spellcheck = {{ enable_spellcheck }};
+	var _custom_dictionary = '{{ custom_dictionary }}';
 
 </script>
 <div id="dpi"></div>
@@ -149,3 +151,4 @@
 		{{ cm_calc_css|raw }}
 	</style>
 </div>
+

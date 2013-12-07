@@ -16,7 +16,7 @@ class app extends \apps\app{
 		$permissions = $user['permissions'];
 		$permissions['records']['_nav'] = '0';
 		foreach ($permissions['records'] as $p) {
-			if ($p['page']) {
+			if (isset($p['page']) && $p['page']) {
 				$permissions['records']['_nav'] = '1';
 			}
 		}

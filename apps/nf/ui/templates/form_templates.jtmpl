@@ -57,8 +57,8 @@
 									<article id="form-diff-1">
 
 
-										<div class="span11 control-group" style=" min-height:440px; padding-top:5px;" id="body-area" >
-											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body"><%= this.details.body||"" %></textarea>
+										<div class="span11 control-group" style=" padding-top:5px;" id="body-area" >
+											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body" style="height:460px;"><%= this.details.body||"" %></textarea>
 										</div>
 									</article>
 									<article id="form-diff-2">
@@ -133,6 +133,15 @@
 										</select>
 									</section>
 
+									<section class="block control-group" style="">
+										<h4>Language</h4>
+										<select name="language" id="language" style="width:100%;" class="select2">
+											{% for key,row in _cfg.nf.languages %}
+												<option value="{{ key }}" <% if ("{{ key }}" == this.settings.last_language) { %>selected="selected"<% } %>>{{ row }}</option>
+											{% endfor %}
+										</select>
+									</section>
+
 
 									<section class="block control-group" style="">
 										<h4>Meta</h4>
@@ -165,6 +174,7 @@
 									</section>
 									{% endif %}
 									<section class="block" id="tools-block" style="margin-top:10px;">
+									
 
 										<div class="btn-group" style="margin-left:-4px;">
 											<button disabled type="button" id="btn-tools-comments" class="btn btn-mini span1" rel="tooltip" title="Comments">
@@ -341,7 +351,7 @@
 				<% } %>
 			</div>
 
-			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px;"><%= this.caption||"" %></textarea>
+			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px; height:150px;"><%= this.caption||"" %></textarea>
 
 
 

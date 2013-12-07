@@ -59,7 +59,9 @@ class logging {
 		//test_array($changes);
 		if (count($changes)) {
 			array_walk_recursive($changes, "form_write");
-			$log = mysql_escape_string(json_encode(($changes)));
+			$log = (json_encode(($changes)));
+			$log = str_replace("'", "\\'", $log);
+			$log = str_replace('"', '\\"', $log);
 
 			$f3->get("DB")->exec("INSERT INTO global_logs (`cID`, `app`,`section`, `log`, `label`, `uID`) VALUES ('$cID', '$app','$section','$log','$label','$userID')");
 		}

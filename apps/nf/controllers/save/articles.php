@@ -285,6 +285,7 @@ class articles extends save {
 		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
 		if (isset($_POST['checklist'])) $values['checklist'] = $_POST['checklist'];
 		if (isset($_POST['stageID'])) $values['stageID'] = $_POST['stageID'];
+		if (isset($_POST['language'])) $values['lang'] = $_POST['language'];
 		
 		if ($_GET['locked']=='0'){
 			$values['locked_uID'] = NULL;
@@ -304,7 +305,12 @@ class articles extends save {
 		$values['deleted_reason'] = NULL;
 
 		$ss = array();
-		$ss["form"] = array("type" => $type, "last_author" => isset($values['authorID']) && $values['authorID'] ? $values['authorID'] : "", "last_category" => isset($values['categoryID']) && $values['categoryID'] ? $values['categoryID'] : "");
+		$ss["form"] = array(
+			"type" => $type, 
+			"last_author" => isset($values['authorID']) && $values['authorID'] ? $values['authorID'] : "", 
+			"last_category" => isset($values['categoryID']) && $values['categoryID'] ? $values['categoryID'] : "",
+			"last_language" => isset($values['lang']) && $values['lang'] ? $values['lang'] : ""
+		);
 
 		models\settings::save($ss);
 

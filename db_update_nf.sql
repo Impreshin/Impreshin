@@ -312,3 +312,4 @@ INSERT INTO global_users_company (cID,uID,nf,nf_author) SELECT '6', ID, '1', '1'
 
 ALTER TABLE `nf_article_newsbook` CHANGE `placedBy` `placed_uID` INT( 6 ) NULL DEFAULT NULL;
 
+ALTER TABLE `nf_articles` ADD `lang` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `meta`;

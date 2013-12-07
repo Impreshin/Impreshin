@@ -20,20 +20,43 @@ allowedFileExtentions = allowedFileExtentions.join(",");
 var max_height = $(window).height() - 200;
 
 
+var spell_check_config  = {
+	lang: function(){
+		//console.log("woof"); 
+		return $('#language').val()
+	},
+	parser	: 'html',
+	webservice: {
+		path  : '/system/spellcheck?custom=' + _custom_dictionary,
+		driver: 'Enchant'
+	},
+	suggestBox: {
+		position: 'below',
+		appendTo: 'body'
+	}
+};
+
+var extra_plugins_jqueryspellchecker = '';
+if (_enable_spellcheck=='1') {
+	extra_plugins_jqueryspellchecker = ',jqueryspellchecker';
+}
+
 
 var text_settings = {
 	uiColor           : '#FFFFFF',
 	height            : '390px',
 	toolbar           : text_toolbar,
 	resize_enabled    : false,
-	extraPlugins      : 'autogrow,onchange',
+	extraPlugins      : 'autogrow,onchange'+extra_plugins_jqueryspellchecker,
 	autoGrow_maxHeight: max_height,
-	
-	
+
 	autoGrow_minHeight: 390 > max_height ? 390 : max_height,
 	autoGrow_fn       : function () {
 		resizeform();
-	}
+	},
+	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
+	spell_checker: spell_check_config
+	
 };
 var caption_settings = {
 	uiColor           : '#FFFFFF',
@@ -42,13 +65,19 @@ var caption_settings = {
 	removePlugins     : 'elementspath',
 	resize_enabled    : false,
 
-	extraPlugins      : 'autogrow',
+	extraPlugins      : 'autogrow,jqueryspellchecker'+extra_plugins_jqueryspellchecker,
 	autoGrow_minHeight: 110,
 	autoGrow_maxHeight: 110 > max_height ? 110 : max_height,
 	autoGrow_fn       : function () {
 		resizeform();
-	}
+	},
+	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
+	spell_checker: spell_check_config
 };
+
+
+
+
 $(document).ready(function () {
 	getFormData();
 	$(document).on("submit", "#modal-delete form", function (e) {
@@ -474,10 +503,18 @@ function formLoaded(data) {
 	var $cm = $("#cm-block");
 	var body = "";
 	if ($("#body").length) {
+
+		
+
+		//var spellchecker = new $.SpellChecker('#body', spell_check_config);
+		
+
+
 		var instance = CKEDITOR.replace('body', text_settings);
 		instance.on('change', function (e) {
 			var body = e.editor.getData()
 			$cm.html(body).trigger("change");
+			//spellchecker.check();
 		});
 		instance.on('focus', function (e) {
 			
@@ -489,12 +526,18 @@ function formLoaded(data) {
 		});
 
 		body = $("#body").val();
+
+		
+		
+
+		
 		
 	}
 	$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$("#categoryID").val(),function(){
 		$("#cm-block").trigger("change");
 	});
 	$cm.html(body);
+	
 
 	
 
@@ -539,8 +582,9 @@ function formLoaded(data) {
 			}
 		});
 	}
-	
-	
+
+
+
 	
 	
 	

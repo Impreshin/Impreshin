@@ -377,8 +377,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$a = implode(".", $a);
 		$orderby = " " . $a . " " . $ordering['o'];
 		$arrange = "";
-		$ordering = $grouping['o'];
-		switch ($grouping['g']) {
+		$ordering = isset($grouping['o'])?$grouping['o']:"ASC";
+		$grouping = isset($grouping['g'])?$grouping['g']:'none';
+		switch ($grouping) {
 			case "type":
 				$orderby = "COALESCE(ab_bookings_types.orderby,99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(ab_bookings_types.type,ab_bookings_types.type) as heading";
@@ -704,8 +705,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-		$log = mysql_escape_string(json_encode($log));
-		//	$log = str_replace("'", "\\'", $log);
+		$log = (json_encode($log));
+		$log = str_replace("'", "\\'", $log);
+		$log = str_replace('"', '\\"', $log);
 		$f3->get("DB")->exec("INSERT INTO ab_bookings_logs (`bID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);

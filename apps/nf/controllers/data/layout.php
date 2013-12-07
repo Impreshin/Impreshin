@@ -505,6 +505,7 @@ class layout extends data {
 		if (count($pagesReal)){
 			$page = $pagesReal[0];
 		
+			$pageID = isset($page['ID'])?$page['ID']:"";
 
 			$colour = array(
 				"heading"=>"",
@@ -534,7 +535,7 @@ class layout extends data {
 			);
 			
 			
-			$return = $return +  $this->_pages($page['ID']);
+			$return = $return +  $this->_pages($pageID);
 		} else {
 			$return = array(
 				"page"   => 0,
@@ -548,7 +549,7 @@ class layout extends data {
 				"colour_l" => "",
 
 			);
-			$r =  $this->_pages($page['ID']);
+			$r =  $this->_pages();
 			
 			$return = $return + array(
 					"records"=>array(),

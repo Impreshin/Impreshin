@@ -89,8 +89,10 @@ class search extends data {
 
 		$searchsql = "";
 		if ($search_string){
-			$search_string = mysql_escape_string($search_string);
-			$searchsql .= " AND (title like '%$search_string%' OR nf_categories.category like '%$search_string%' OR global_users.fullName like '%$search_string%' OR nf_article_types.type like '%$search_string%' OR meta like '%$search_string%') ";
+			$search_string = ($search_string);
+			$search_string = str_replace("'", "\\'", $search_string);
+			$search_string = str_replace('"', '\\"', $search_string);
+		
 			$options['body_search'] = $search_string;
 		}
 		if ($search_dates){
@@ -110,6 +112,8 @@ class search extends data {
 			$where = $where . " AND authorID = '" . $user['ID'] . "'";
 		}
 
+		
+		//test_array($options); 
 
 		$selectedpage = (isset($_REQUEST['page'])) ? $_REQUEST['page'] :"";
 		if (!$selectedpage) $selectedpage = 1;
