@@ -101,6 +101,9 @@ class permissions {
 					"resources"=>array(
 						"page"=>0
 					),
+					"dictionary"=>array(
+						"page"=>0
+					),
 					
 				),
 				"system"      => array(

@@ -171,6 +171,13 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET|POST',
+	"path"=>'/app/nf/admin/dictionary',
+	"controller"=>'apps\nf\controllers\admin\dictionary->page',
+	"a"=>true,
+	"l"=>true,
+);
 
 
 
