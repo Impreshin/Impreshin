@@ -103,22 +103,24 @@ class Enchant extends \SpellChecker\Driver
 
 	public function check_word($word = NULL)
 	{
-		
 
+		//word = "Solly's";
 
 		$return = $check_dic = enchant_dict_check($this->dictionary, $word);
 		
 
+		
 		$check_dic_cus = true;
 		if ($this->dictionary_custom){
+			//$word = str_replace("'","\'",$word);
 			$check_dic_cus = enchant_dict_check($this->dictionary_custom, $word);
 			if ($check_dic_cus && $return == false) $return = true;
 			
 		}
 		
-		if ($word=='pioneers'){
+		//if ($word=='Solly\'s'){
 			//test_array(array("word"=>$word,"dic"=>$check_dic,"cus"=>$check_dic_cus,"ret"=>$return));
-		}
+		//}
 		
 		return !$return;
 	}
