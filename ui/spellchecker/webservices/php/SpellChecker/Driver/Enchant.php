@@ -44,13 +44,22 @@ class Enchant extends \SpellChecker\Driver
 	//	echo nl2br(print_r($dicts, true));
 		//print_r($dicts);
 		//exit();
+
+		//$this->_config['lang'] = $this->_config['lang'].".UTF-8";
+		//test_array($this->_config['lang']); 
 		
 		$this->dictionary = enchant_broker_request_dict($this->broker, $this->_config['lang']);
 		$this->dictionary_custom = false;
 		$custom = isset($_GET['custom'])?$_GET['custom']:"";
 		if ($custom){
-			if (file_exists("./uploads/dictionaries/$custom")){
-				$dictionary_custom = realpath("./uploads/dictionaries/$custom");
+			$f3 = \Base::instance();
+			$cfg = $f3->get("CFG");
+			$custom = $cfg['upload']['folder'] . "/dictionaries/$custom";
+			$custom = $f3->fixslashes($custom);
+			//test_array($custom); 
+			
+			if (file_exists($custom)){
+				$dictionary_custom = $custom;
 				$this->dictionary_custom = enchant_broker_request_pwl_dict($this->broker, $dictionary_custom);
 			}
 		}

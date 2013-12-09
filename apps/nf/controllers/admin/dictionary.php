@@ -16,8 +16,15 @@ class dictionary extends \apps\nf\controllers\_  {
 		$userID = $user['ID'];
 		$pID = $user['publication']['ID'];
 		$cID = $user['company']['ID'];
-		$folder = "./uploads/dictionaries/$cID";
-		$file = ($folder . "/custom.dic");
+
+		$cfg = $this->f3->get("CFG");
+		$folder = $cfg['upload']['folder'] . "/dictionaries/$cID/";
+	
+		
+		
+		
+		$file = ($folder . "custom.dic");
+		$file = $this->f3->fixslashes($file);
 		//$file = ("./uploads/dictionaries/$cID/new_dic.dic");
 		
 		if (count($_POST)){
@@ -29,17 +36,11 @@ class dictionary extends \apps\nf\controllers\_  {
 
 			$new_list = implode(PHP_EOL,$new_list);
 			if (!is_dir($folder)) {
-				// dir doesn't exist, make it
 				mkdir($folder,0777,true);
 			}
 			
 			
 			file_put_contents($file, $new_list, LOCK_EX);
-			
-			
-			
-			//test_array($new_list); 
-			
 			
 			
 		}
