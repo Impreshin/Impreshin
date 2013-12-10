@@ -108,15 +108,22 @@ class record_stats {
 			);
 		}
 		if (in_array("stages", $columns)){
+			$stages_data = stages::getAll("cID='". $user['company']['ID']."' OR cID='0'","orderby ASC");
 			$return['records']['stages'] = array();
-			foreach ($totals['stages'] as $k=>$value){
-				$return['records']['stages'][$k] = array(
-					"k" => $stages[$k],
-					"r" => $totals['stages'][$k]['count'],
-					"p" => ($totals['stages'][$k]['count']) ? number_format((($totals['stages'][$k]['count'] / $totals["records"]) * 100), 2) : 0,
-					"l"=>$totals['stages'][$k]['locked'],
-				);
+			foreach ($stages_data as $stage){
+				$k = $stage['ID'];
+				if(isset($totals['stages'][$k])){
+					$return['records']['stages'][] = array(
+						"k" => $stages[$k],
+						"r" => $totals['stages'][$k]['count'],
+						"p" => ($totals['stages'][$k]['count']) ? number_format((($totals['stages'][$k]['count'] / $totals["records"]) * 100), 2) : 0,
+						"l"=>$totals['stages'][$k]['locked'],
+					);
+				}
+				
 			}
+			
+			
 		}
 		
 		
