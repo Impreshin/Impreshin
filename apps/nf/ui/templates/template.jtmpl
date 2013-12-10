@@ -12,7 +12,7 @@
 
 
 		    <% for (var i in this.current.records.stages) { %> 
-		    <span style="width: 200px;" class="nbar" title="<%= this.current.records.stages[i].k %> - <%= this.current.records.stages[i].r %> " data-content='<div class="progress <% if (this.current.records.stages[i].p>100 || this.current.records.stages[i].p==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.current.records.stages[i].p>100) { %>100<% } else { %><%= this.current.records.stages[i].p %><% } %>%;"></div></div>' >
+		    <span style="width: 200px;" class="nbar" title="<%= this.current.records.stages[i].k %> - <%= this.current.records.stages[i].r %> of <%= this.current.records.total %>" data-content='<div class="progress <% if (this.current.records.stages[i].p>100 || this.current.records.stages[i].p==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.current.records.stages[i].p>100) { %>100<% } else { %><%= this.current.records.stages[i].p %><% } %>%;"></div></div>' >
 		
 					<span><%= this.current.records.stages[i].k %> -
 					&nbsp; <%= this.current.records.stages[i].r %> &nbsp;
