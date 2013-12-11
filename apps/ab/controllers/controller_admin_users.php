@@ -31,7 +31,7 @@ class controller_admin_users extends \apps\ab\controllers\_ {
 			"meta"    => array(
 				"title"=> "AB - Admin - Users",
 			),
-			"help"=> "/apps/ab/help/admin/users"
+			//"help"=> "/apps/ab/help/admin/users"
 		);
 
 		$permissions = \apps\ab\permissions::_available();
