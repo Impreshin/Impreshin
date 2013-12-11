@@ -8742,4 +8742,9 @@ body.help_pages {
 
   animation-timing-function: ease-in-out;
 }
+a.brand {
+  color: #666!important;
+  text-shadow: 0px 2px 3px #333 !important;
+  font-weight: bold!important;
+}
 /* </general> */

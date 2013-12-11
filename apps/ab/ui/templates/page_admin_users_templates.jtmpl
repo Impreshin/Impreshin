@@ -2,7 +2,7 @@
 	<![CDATA[
 
 	<tr data-id="<%= this.ID %>" class="record">
-		<td class="">
+		<td class="" title="Last page: <%= this.last_page %>">
 			<span class="<% if (!this.ab) { %>g<% } %>"><%= this.fullName %></span>
 
 		</td>
