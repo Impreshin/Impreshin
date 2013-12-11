@@ -583,7 +583,3 @@
   height: 500px;
   position: relative;
 }
-#record-settings.dropdown-menu li a {
-  color: #444!important;
-  font-size: inherit;
-}
