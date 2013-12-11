@@ -95,6 +95,9 @@ $sql = array(
 	),
 	"19"=>array(
 		"ALTER TABLE `global_pages` ADD `ab_locked` TINYINT( 0 ) NULL DEFAULT NULL , ADD `nf_locked` TINYINT( 0 ) NULL DEFAULT NULL , ADD INDEX ( `ab_locked` , `nf_locked` )"
+	),
+	"20"=>array(
+		"CREATE TABLE IF NOT EXISTS `global_messages` (`ID` int(6) NOT NULL, `from_uID` int(6) DEFAULT NULL, `to_uID` int(6) DEFAULT NULL, `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `heading` varchar(100) DEFAULT NULL, `message` text, `read` tinyint(1) DEFAULT '0', PRIMARY KEY (`ID`),  KEY `from_uID` (`from_uID`,`to_uID`));"
 	)
 
 );

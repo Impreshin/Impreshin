@@ -45,8 +45,11 @@ class template {
 
 		$v = $this->f3->get("VERSION");
 
+		
+		$folder = $this->vars['folder'];
+		if (is_array($folder)) $folder = $folder[0];
 
-		$this->vars['_nav_top'] = $this->vars['folder']."_nav_top.tmpl";
+		$this->vars['_nav_top'] =$folder."_nav_top.tmpl";
 		$this->vars['_v'] = $v;
 
 
@@ -65,7 +68,7 @@ class template {
 		unset($cfg['package']);
 
 
-		$this->vars['_nav_top'] = $this->vars['folder'] . "_nav_top.tmpl";
+		//$this->vars['_nav_top'] = $this->vars['folder'] . "_nav_top.tmpl";
 
 
 		

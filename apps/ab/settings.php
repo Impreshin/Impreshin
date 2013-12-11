@@ -55,7 +55,7 @@ class settings {
 				"h"=> "A.Disc"
 			),
 			"placing"                => array(
-				"o"=> "`ab_bookings.placing`",
+				"o"=> "`ab_bookings`.`placing`",
 				"h"=> "Placing"
 			),
 			"category"               => array(
@@ -65,7 +65,8 @@ class settings {
 				"h"=> "Type"
 			),
 			"accNum"                 => array(
-				"h"=> "Acc.Num"
+				"h"=> "Acc.Num",
+				"o"=>"`ab_accounts`.`accNum`"
 			),
 			"account"                => array(
 				"h"=> "Account"
@@ -93,7 +94,7 @@ class settings {
 				"h" => "Payment&nbsp;Method&nbsp;Note"
 			),
 			"insertsLabel"=>array(
-				"o"=> "`ab_inserts_types.insertsLabel`",
+				"o"=> "`ab_inserts_types`.`insertsLabel`",
 				"h"=> "Inserts&nbsp;Type"
 			),
 			"userName"               => array(

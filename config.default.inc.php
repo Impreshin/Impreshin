@@ -59,3 +59,5 @@ $cfg['nf']['languages'] = array(
 	"af_ZA"=>"Afrikaans"
 	
 );
+
+$cfg['system_chat']=true;
