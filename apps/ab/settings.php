@@ -16,7 +16,8 @@ class settings {
 		$return = array();
 		$columns = array(
 			"client"                 => array(
-				"h"=> "Client"
+				"h"=> "Client",
+				"d"=>"Used as a heading / description for the record"
 			),
 			"publishDate"            => array(
 
@@ -30,7 +31,8 @@ class settings {
 			),
 
 			"colour"                 => array(
-				"h"=> "Colour"
+				"h"=> "Colour",
+				"d"=>"(Adverts) Is the booking a full colour, spot colour, or a black and white booking. tarrif rates can be changed according to these values"
 			),
 			"colourLabel"             => array(
 				"h"=> "Colour&nbsp;Label"
@@ -56,7 +58,8 @@ class settings {
 			),
 			"placing"                => array(
 				"o"=> "`ab_bookings`.`placing`",
-				"h"=> "Placing"
+				"h"=> "Placing",
+				"d"=>"(Adverts) Where in the publication (group) the booking should be placed"
 			),
 			"category"               => array(
 				"h"=> "Category"

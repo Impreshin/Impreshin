@@ -50,7 +50,7 @@ class controller_app_provisional extends \apps\ab\controllers\_ {
 			"meta"    => array(
 				"title"=> "AB - Provisional",
 			),
-			"help"=> "/app/ab/documentation/ab/bookings"
+			"help"=> "/app/ab/documentation/bookings"
 		);
 
 
