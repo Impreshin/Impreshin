@@ -48,7 +48,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-notifications-messages">
 	<![CDATA[
-	<a title="Messages" class="messages_link" href="/app/nf/messages" style="margin-left: 5px;">
+	<a title="Messages" class="messages_link" href="/app/ab/messages" style="margin-left: 5px;">
 		<% if (this.unread=='0') { %>
 		<i class="icon-comment-alt icon-grey"></i>
 		<% } else { %>
