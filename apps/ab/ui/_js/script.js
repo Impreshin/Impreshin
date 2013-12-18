@@ -288,6 +288,7 @@ function updatetimerlist(d, page_size) {
 
 	if (d['notifications']) {
 		$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
+		$("#message-icon").jqotesub($("#template-notifications-messages"), d['notifications']['messages']);
 	}
 
 	var pageSize = (page && page['size']) ? page['size'] : page_size;

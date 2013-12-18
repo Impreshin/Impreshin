@@ -98,6 +98,11 @@ $sql = array(
 	),
 	"20"=>array(
 		"CREATE TABLE IF NOT EXISTS `global_messages` (`ID` int(6) NOT NULL, `from_uID` int(6) DEFAULT NULL, `to_uID` int(6) DEFAULT NULL, `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `heading` varchar(100) DEFAULT NULL, `message` text, `read` tinyint(1) DEFAULT '0', PRIMARY KEY (`ID`),  KEY `from_uID` (`from_uID`,`to_uID`));"
+	),
+	"21"=>array(
+		"ALTER TABLE `global_messages` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREMENT;",
+		"ALTER TABLE `global_messages` CHANGE `heading` `subject` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;",
+		"ALTER TABLE `global_messages` ADD `app` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `ID`;"
 	)
 
 );

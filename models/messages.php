@@ -22,16 +22,16 @@ class messages {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT *
-			FROM global_dates
+			SELECT global_messages.*,
+				(SELECT fullName FROM global_users WHERE global_messages.to_uID = global_users.ID) AS to_fullName,
+				(SELECT fullName FROM global_users WHERE global_messages.from_uID = global_users.ID) AS from_fullName
+			FROM global_messages
 			WHERE ID = '$ID'
 		");
 
 
 		if (count($result)) {
 			$return = $result[0];
-			$return['publish_date_display'] = date("d F Y", strtotime($return['publish_date']));
-
 		} else {
 			$return = $this->dbStructure;
 		}
@@ -39,41 +39,25 @@ class messages {
 		return $return;
 	}
 
-	public static function getCurrent($pID) {
+	public static function _count() {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$app = $f3->get("app");
-		$column = "$app" . "_currentDate";
-		$result = $f3->get("DB")->exec("
-			SELECT global_dates.*
-			FROM global_publications INNER JOIN global_dates ON global_publications.$column = global_dates.ID
-			WHERE pID = '$pID'
-		");
-
-		if (!count($result)) {
+		$user = $f3->get("user");
+		$uID = $user['ID'];
 
 			$result = $f3->get("DB")->exec("
-			SELECT global_dates.*
-			FROM global_dates
-			WHERE pID = '$pID'
-			ORDER BY publish_date DESC
-			LIMIT 0,1
-		");
-		}
+				SELECT count(ID) as unread
+				FROM global_messages
+				WHERE to_uID = '$uID' and `read` ='0';
+			");
 
-		if (count($result)) {
-			$return = $result[0];
-			$return['publish_date_display'] = date("d F Y", strtotime($return['publish_date']));
-
-		} else {
-			$return = $f3->get("system")->error("D01");
-		}
-
+		$return = $result[0];
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll($where = "", $orderby = "publish_date DESC", $limit = "") {
+	public static function getAll($where = "", $orderby = "datein DESC", $limit = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {
@@ -91,98 +75,49 @@ class messages {
 
 		}
 
-		$app = $f3->get("app");
-		$column = "$app" . "_currentDate";
 		$result = $f3->get("DB")->exec("
-			SELECT global_dates.*, if ($column,1,0) AS current
-			FROM global_dates LEFT JOIN global_publications ON global_dates.ID = global_publications.$column
-			$where
-			$orderby
-			$limit
-		");
+				SELECT global_messages.*,
+					(SELECT fullName FROM global_users WHERE global_messages.to_uID = global_users.ID) AS to_fullName,
+					(SELECT fullName FROM global_users WHERE global_messages.from_uID = global_users.ID) AS from_fullName
+				FROM global_messages
+				$where
+				$orderby
+				$limit
+				;
+			");
 
-		$a = array();
-		foreach ($result as $record) {
-			$record['publish_date_display'] = date("d F Y", strtotime($record['publish_date']));
-			$a[] = $record;
-		}
-		$return = $a;
+		$return = $result;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
 
-	public static function getAll_count($where = "") {
+
+	public static function _save($ID, $values, $options=array("dry"=>true)) {
 		$timer = new timer();
 		$f3 = \Base::instance();
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
 
 
-		$result = $f3->get("DB")->exec("
-			SELECT count(ID) AS count
-			FROM global_dates
-			$where
-		");
 
-		if (count($result)) {
-			$return = $result[0]['count'];
-
-		} else {
-			$return = 0;
-		}
-
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
-		return $return;
-	}
-
-	public static function save($ID, $values) {
-		$timer = new timer();
-		$f3 = \Base::instance();
-		$user = $f3->get("user");
-
-		$old = array();
-
-		if (!isset($values["pID"]) || $values["pID"] == "") $values["pID"] = $user['publication']['ID'];
-
-
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_dates");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_messages");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)) {
 				$a->$key = $value;
 			}
 		}
-
-		if (!$a->ID) {
-			$label = "Record Added (" . $values['publish_date'] . ')';
+		
+		if (isset($options['dry'])){
+			if ($options['dry']==false && $a->dry()){
+				
+			} else {
+				$a->save();
+			}
 		} else {
-			$label = "Record Edited ($a->publish_date)";
+			$a->save();
 		}
-		$a->save();
-
-		$ID = $a->ID;
-
-
-		$app = $f3->get("app");
-
-		//test_array(array($a->ID,$ID));
-		if (isset($value['current']) && $value['current'] ) {
-			$b = new \DB\SQL\Mapper($f3->get("DB"),"global_publications");
-			$b->load("ID='" . $values["pID"] . "'");
-			$column = $app . "_currentDate";
-			$b->$column = $ID;
-			if (!$b->dry()) $b->save();
-		}
-
-
-	
-
-		\models\logging::_log("dates", $label, $values, $old);
+		
+		
 
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
@@ -190,30 +125,14 @@ class messages {
 
 	}
 
-	public static function _delete($ID) {
-		$timer = new timer();
-		$f3 = \Base::instance();
-		$user = $f3->get("user");
-
-
-
-		$result = $f3->get("DB")->exec("
-			DELETE FROM global_dates WHERE ID = '$ID'");
-
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
-		return "done";
-	}
-
-
 	private static function dbStructure() {
 		$f3 = \Base::instance();
-		$table = $f3->get("DB")->exec("EXPLAIN global_dates;");
+		$table = $f3->get("DB")->exec("EXPLAIN global_messages;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";
 		}
-		$result["heading"] = "";
-		$result["publishDateDisplay"] = "";
+		
 		return $result;
 	}
 }

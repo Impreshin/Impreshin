@@ -160,7 +160,8 @@ class settings {
 				"h"=> "Material&nbsp;Source"
 			),
 			"material_production"               => array(
-				"h"=> "Material&nbsp;Production"
+				"h"=> "Material&nbsp;Production",
+				"o"=> "`ab_production`.`production`",
 			),
 			"material_status"               => array(
 				"h"=> "Material",

@@ -31,6 +31,7 @@ $autoload = array(
 	"./",
 	"lib/",
 	"docs/",
+	"messages/",
 	"controllers/"
 );
 
@@ -303,6 +304,31 @@ foreach ($router as $key=> $routes) {
 	$app->route("GET|POST /app/$key/documentation", function ($f3, $params) use ($app, $key) {
 			$f3->set("params",$params);
 			$app->chain("apps\\$key\\app->app; docs->page");
+		}
+			
+	);
+
+	$app->route("GET|POST /app/$key/messages", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->page");
+		}
+			
+	);
+	$app->route("GET|POST /app/$key/messages/list", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->_list");
+		}
+			
+	);
+	$app->route("GET|POST /app/$key/messages/do_state", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->do_state");
+		}
+			
+	);
+$app->route("GET|POST /app/$key/messages/do_message", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->do_message");
 		}
 			
 	);

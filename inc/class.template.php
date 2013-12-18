@@ -228,7 +228,7 @@ class template {
 			$this->vars['page'] = $page;
 			return $this->render_template();
 		} else {
-			if (isset($this->vars['docs']['file'])){
+			if (isset($this->vars['docs']['file']) || isset($this->vars['render'])){
 				return $this->render_template();
 			} else {
 				return $this->render_string();

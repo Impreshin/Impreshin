@@ -7804,6 +7804,16 @@ form #form-bottom .form-actions {
   opacity: 1;
   filter: alpha(opacity=100);
 }
+.messages_link {
+  position: relative;
+}
+.messages_link .count {
+  color: #FF0000;
+  text-shadow: 0px 0px 3px #000;
+  margin-top: -15px;
+  margin-bottom: -5px;
+  font-weight: bold;
+}
 .nav-dropdown-li:hover a {
   background-color: #e3e3e3;
   text-decoration: none;

@@ -1,0 +1,258 @@
+<script type="text/x-jqote-template" id="template-list">
+<![CDATA[
+<div class="row">
+<article id="left-area" class="span4">
+	<div class="content">
+		<div class="scroll-pane scrolly" style="top: 0px; bottom:0; ">
+			<div style="margin-left: -2px; margin-right: 2px; ">
+
+				<ul class="nav nav-list" style="margin-top:10px;">
+
+					<li <% if (this.section == 'home'){ %>class="active"<% } %>><a href="#" class="section_link" data-section="home">Unread <% if (this.side.unread > 0){ %><span class="badge label-important" style="float:right;"><%= this.side.unread %></span> <% } %></a></li>
+					<li class="nav-header">Users</li>
+					<% for (var i in this.side.users){ %>
+					<li <% if (this.section == 'user|'+this.side.users[i].ID){ %>class="active"<% } %>><a href="#" class="section_link" data-section="user|<%= this.side.users[i].ID %>"><%= this.side.users[i].name %>
+					<span class="badge g" style="float:right;" title="Total read Messages"><%= this.side.users[i].total - this.side.users[i].unread %></span> <% if (this.side.users[i].unread > 0){ %><span class="badge label-important" style="float:right;" title="Unread Messages"><%= this.side.users[i].unread %></span> <% } %></a>
+					</li>
+					<% } %>
+					<li class="nav-header">System</li>
+					<% for (var i in this.side.system){ %>
+					<li <% if (this.section == 'system|'+this.side.system[i].ID){ %>class="active"<% } %>><a href="#" class="section_link" data-section="system|<%= this.side.system[i].ID %>"><%= this.side.system[i].name %>
+					<span class="badge g" style="float:right;"><%= this.side.system[i].total - this.side.system[i].unread %></span> <% if (this.side.system[i].unread > 0){ %><span class="badge label-important" style="float:right;"><%= this.side.system[i].unread %></span> <% } %></a>
+					</li>
+					<% } %>
+
+
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	
+
+
+
+</article>
+<article id="right-area" class="span12 offset4">
+<ul class="breadcrumb">
+	<% if (this.details && this.details.ID) { %>
+	<li>
+		<button class="btn btn-mini span1 close-details" type="button" style="margin-left: -10px;">
+			<i class="icon-circle-arrow-left"></i>
+		</button>
+	</li>
+	<% } else { %>
+	<li>
+		<button class="btn btn-mini span1 btn-checkbox-all" type="button" style="margin-left: -10px;">
+			<i class="icon-check-empty"></i>
+		</button>
+	</li>
+	<% } %>
+	<li><span class="divider">|</span></li>
+	<li>
+		<button class="btn btn-mini span1 open-form" type="button"><i class="icon-plus"></i></button>
+	</li>
+	<li>
+		<button class="btn btn-mini span1 reload" type="button"><i class="icon-refresh"></i></button>
+	</li>
+
+	<% if (this.details && this.details.ID) { %>
+	<li>
+		<button class="btn btn-mini span1 reply-to" type="button" data-to_uID="<% if (this.details.direction =='out') { %><%= this.details.to_uID %><% } else { %><%= this.details.from_uID %><% } %>">
+			<i class="icon-reply"></i></button>
+	</li>
+
+
+	<% } else { %>
+
+	<li><span class="divider">|</span></li>
+	<li>
+		<div class="btn-group" id="mark-msg-status">
+			<button class="btn btn-mini span2 btn-mark-un-read" type="button">Mark as un-read</button>
+			<button class="btn btn-mini span2 btn-mark-read" type="button">Mark as read</button>
+		</div>
+	</li>
+
+
+	<% } %>
+	<li style="float: right; margin-top:5px;">
+		<button class="btn btn-mini span1 btn-trash" type="button"><i class="icon-trash"></i></button>
+	</li>
+
+
+</ul>
+<div class="content" style="top:35px;">
+
+
+		<div class="scroll-pane scrolly" style="top: 0px; bottom:0; right:5px; ">
+
+		<% if (this.details && this.details.ID) { %>
+		<h2>
+					    <span id="details-subject">
+						     <%= this.details.subject %>
+					    </span>
+
+			<div class="clearfix"></div>
+			<small style="float: left; margin-top:5px;">
+				<%= this.details.from_fullName %> <% if (this.details.direction =='out') { %> &nbsp;
+				<i class="icon icon-double-angle-right"></i> &nbsp; <%= this.details.to_fullName %><% } %>
+			</small>
+			<small style="float:right; margin-top:5px; margin-right:5px;"><%= this.details.datein %></small>
+		</h2>
+
+		<div class="clearfix"></div>
+		<hr/>
+			<article style="padding: 0 10px;">
+		<%= this.details.message %>
+</article>
+		<div class="clearfix" style="height:30px;"></div>
+
+
+		<table class="table records">
+			<tbody>
+			<% for (var i in this.messages){ %>
+			<tr class="record <% if (this.messages[i].read =='1'){ %>g<% } %>  <% if (this.details && this.details.ID == this.messages[i].ID){ %>highlight<% } %>" data-id="<%= this.messages[i].ID %>">
+
+				<td style="white-space:nowrap">
+					<% if (this.messages[i].app) { %>
+					<span class="badge <% if (this.messages[i].read !='1'){ %>badge-warning<% } %>"><%= this.messages[i].from_fullName %></span>
+					<% } else { %>
+					<% if (this.messages[i].direction =='out') { %>
+					<i class="icon icon-double-angle-right"></i> &nbsp; <em><%= this.messages[i].to_fullName %></em>
+					<% } else { %>
+					<%= this.messages[i].from_fullName %>
+					<% } %>
+					<% } %>
+
+				</td>
+				<td class="dg">: <%= this.messages[i].subject %></td>
+
+				<td style="width:60px;" class="s g"><%= this.messages[i].date %></td>
+
+
+			</tr>
+			<% } %>
+
+
+			</tbody>
+		</table>
+
+
+
+		<% } else { %>
+		<table class="table records">
+			<tbody>
+			<% for (var i in this.messages){ %>
+			<tr class="record <% if (this.messages[i].record.read =='1'){ %>g<% } %>  <% if (this.details && this.details.ID == this.messages[i].record.ID){ %>highlight<% } %>" data-id="<%= this.messages[i].record.ID %>">
+
+				<td style="width:20px;" class="checkbox-cell">
+					<% if (this.messages[i].record.direction =='in'){ %>
+					<input type="checkbox" name="records[]" value="<%= this.messages[i].record.ID %>" data-read="<%= this.messages[i].record.read %>" data-dir="<%= this.messages[i].record.direction %>"/>
+					<% } %>
+				</td>
+
+				<td style="white-space:nowrap; width: 100px;">
+					<% if (this.messages[i].record.app) { %>
+					<span class="badge <% if (this.messages[i].record.read !='1'){ %>badge-warning<% } %>"><%= this.messages[i].record.from_fullName %></span>
+					<% } else { %>
+					<% if (this.messages[i].record.direction =='out') { %>
+					<i class="icon icon-double-angle-right"></i> &nbsp;
+					<em><%= this.messages[i].record.to_fullName %></em>
+					<% } else { %>
+					<%= this.messages[i].record.from_fullName %>
+					<% } %>
+					<% } %>
+
+				</td>
+				<td class="dg">: <%= this.messages[i].record.subject %></td>
+
+				<td style="width:60px;" class="s g"><%= this.messages[i].record.date %></td>
+
+				<td style="width:30px;"> <% if (this.messages[i].count > 1){ %><span class="badge"><%= this.messages[i].count %></span><% } %>
+				</td>
+			</tr>
+			<% } %>
+
+			<% if (this.messages.length==0) { %>
+			<tr>
+				<td colspan="5">No messages found</td>
+			</tr>
+			<% } %>
+
+			</tbody>
+		</table>
+		<% } %>
+	</div>
+</div>
+
+
+<div class="bottom-right">
+	<ul class="breadcrumb">
+		<li>
+			<%= this.side.unread %> Un-read messages
+		</li>
+
+		<li><span class="divider">|</span></li>
+		<li><%= this.side.total %> Total Messages</li>
+
+
+
+	</ul>
+
+
+</div>
+
+
+
+<div class="content" id="send-form-area">
+	<form id="send-form" action="#">
+
+		<section>
+			<div class="span11" style="margin-top:10px;">
+				<select name="to_uID" id="to_uID" style="width:100%;">
+							    {% for row in users %}
+							    
+					<option value="{{ row['ID'] }}">{{ row['fullName'] }}</option>
+					
+													{% endfor %}
+												</select>
+
+				<input type="text" name="subject" id="subject" class="span11" style="margin-top:10px;" placeholder="Subject"/>
+				<textarea name="message" id="message" cols="30" rows="10">
+
+				</textarea>
+
+			</div>
+
+
+
+		</section>
+
+		<div class="bottom-right">
+			<ul class="breadcrumb" style="padding-top: 15px;">
+				<li>
+					<button class="btn span1 btn-danger" type="reset"><i class="icon-trash"></i></button>
+				</li>
+				<li>
+
+					<button class="btn span2 hide-form" type="button">Hide</button>
+				</li>
+				<li style="float:right;">
+					<button class="btn span4 btn-primary" type="submit">Send</button>
+				</li>
+
+
+
+			</ul>
+
+
+		</div>
+	</form>
+</div>
+
+</article>
+</div>
+
+]]>
+</script>
+
