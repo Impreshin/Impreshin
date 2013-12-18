@@ -45,11 +45,12 @@ class messages {
 		$app = $f3->get("app");
 		$user = $f3->get("user");
 		$uID = $user['ID'];
+		$cID = $user['company']['ID'];
 
 			$result = $f3->get("DB")->exec("
 				SELECT count(ID) as unread
 				FROM global_messages
-				WHERE to_uID = '$uID' and `read` ='0';
+				WHERE to_uID = '$uID' and `read` ='0' AND cID = '$cID';
 			");
 
 		$return = $result[0];
@@ -96,6 +97,12 @@ class messages {
 		$timer = new timer();
 		$f3 = \Base::instance();
 
+		if (isset($values['message'])){
+			$cfg = $f3->get("CFG");
+			$values['message'] = $f3->scrub($values['message'], $cfg['nf']['whitelist_tags']);
+			$values['message'] = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $values['message']);
+		}
+		
 
 
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_messages");

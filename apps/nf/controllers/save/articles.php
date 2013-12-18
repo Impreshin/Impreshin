@@ -177,9 +177,61 @@ class articles extends save {
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
 
-		$values = array("aID" => $aID, "uID" => $user['ID'], "comment" => isset($_POST['comment']) ? $_POST['comment'] : "", "parentID" => isset($_POST['comment-parentID']) && $_POST['comment-parentID'] && $_POST['comment-parentID'] != "null" && $_POST['comment-parentID'] != "undefined" ? $_POST['comment-parentID'] : "",);
+		$values = array(
+			"aID" => $aID, 
+			"uID" => $user['ID'], 
+			"comment" => isset($_POST['comment']) ? $_POST['comment'] : "", 
+			"parentID" => isset($_POST['comment-parentID']) && $_POST['comment-parentID'] && $_POST['comment-parentID'] != "null" && $_POST['comment-parentID'] != "undefined" ? $_POST['comment-parentID'] : "",);
+		
 
 		models\comments::save($ID, $values);
+
+
+		$cfg = $this->f3->get("CFG");
+
+		if ($cfg['system_messages']==true){
+			
+					
+			
+			$art = new models\articles();
+			$art = $art->get($aID);
+			
+		
+			
+			$subject = "New comment: <span class='g s'>".$art['title']."</span>";
+			$msg = "Comment posted by: ".$user['fullName']."<hr>". $values['comment'];
+			$url = "/app/nf#ID=".$art['ID']."&details-tab=details-pane-comments";
+			
+			$to_uID_array = array($art['authorID']);
+			
+			foreach ($art['comments'] as $userID){
+				if (!in_array($userID['uID'],$to_uID_array)) $to_uID_array[] = $userID['uID'];
+			}
+			
+			
+
+			foreach ($to_uID_array as $to_uID){
+				if ($to_uID != $user['ID']){
+					$message_values = array(
+						"cID"=>$user['company']['ID'],
+						"app"=>"nf",
+						"to_uID"=>$to_uID,
+						"subject"=>$subject,
+						"message"=>$msg,
+						"url"=>$url
+					);
+
+					\models\messages::_save("",$message_values);
+				}
+			};
+
+			
+		};
+		
+		
+		
+		
+		
 		test_array(array("ID" => $ID, "values" => $values));
 
 	}

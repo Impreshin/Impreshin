@@ -36,7 +36,6 @@ class messages {
 	
 		$tmpl = new \template("template.tmpl","./messages/");
 		$tmpl->render = true;
-		$tmpl->enable_spellcheck = function_exists('enchant_broker_init')? '1' : '0';
 		$tmpl->users = \models\user::getAll("cID='$cID'", "fullName ASC");
 		
 	
@@ -54,7 +53,9 @@ class messages {
 		$params = $this->f3->get("params");
 		$this->f3->set("json",true);
 		$user = $this->f3->get("user");
+		$cfg = $this->f3->get("CFG");
 		$uID = $user['ID'];
+		$cID = $user['company']['ID'];
 		$applications = $this->f3->get("applications");
 		
 		//test_array($applications); 
@@ -113,7 +114,7 @@ class messages {
 		}
 		
 		
-		$data = \models\messages::getAll("from_uID='$uID' || to_uID = '$uID'");
+		$data = \models\messages::getAll("(from_uID='$uID' || to_uID = '$uID') AND cID = '$cID'");
 		//test_array($data); 
 		$messages = array();
 		foreach ($data as $message){
@@ -157,12 +158,19 @@ class messages {
 			} else {
 				$unread = 0;
 			}
+			
+			if ($sec=='user'){
+				
+				
+				
+			}
 
 			$return['side']['unread'] = $return['side']['unread'] + $unread;
 			$return['side']['total'] = $return['side']['total'] + 1;
 			$return['side'][$sec][$from_ID]['unread'] = $return['side'][$sec][$from_ID]['unread'] + $unread;
 			$return['side'][$sec][$from_ID]['total'] = $return['side'][$sec][$from_ID]['total'] + 1;
 
+			
 			
 			if (!isset($return['side'][$sec][$to_ID])){
 				$return['side'][$sec][$to_ID] = array(
@@ -229,7 +237,7 @@ class messages {
 		}
 		
 		
-		//test_array($return['side']['users']); 
+	
 		
 		
 		//exit();
@@ -245,7 +253,13 @@ class messages {
 
 		$n = array();
 		foreach ($return['side']['system'] as $record){
-			$n[] = $record;
+			
+			if (in_array($record['ID'],$cfg['apps'])){
+				$n[] = $record;
+			} else {
+				//test_array(array("record"=>$record,"apps"=>$cfg['apps'],"inc"=>in_array($record['ID'],$cfg['apps'])));
+			}
+			
 		}
 		$return['side']['system'] = $n;
 
@@ -311,16 +325,15 @@ class messages {
 	}
 	function do_message(){
 		$user = $this->f3->get("user");
-		$cfg = $this->f3->get("CFG");
+	
 		$to_uID = isset($_REQUEST['to_uID'])?$_REQUEST['to_uID']:"";
 		$subject = isset($_REQUEST['subject'])?$_REQUEST['subject']:"";
 		$message = isset($_REQUEST['message'])?$_REQUEST['message']:"";
 
-
-		$message = $this->f3->scrub($message, $cfg['nf']['whitelist_tags']);
-		$message = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $message);
+		
 		
 		$values = array(
+			"cID"=>$user['company']['ID'],
 			"from_uID"=>$user['ID'],
 			"to_uID"=>$to_uID,
 			"subject"=>$subject,

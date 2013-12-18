@@ -103,6 +103,11 @@ $sql = array(
 		"ALTER TABLE `global_messages` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREMENT;",
 		"ALTER TABLE `global_messages` CHANGE `heading` `subject` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;",
 		"ALTER TABLE `global_messages` ADD `app` VARCHAR( 30 ) NULL DEFAULT NULL AFTER `ID`;"
+	),
+	"22"=>array(
+		"ALTER TABLE `global_messages` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `ID` , ADD INDEX ( `cID` );",
+		"ALTER TABLE `global_messages` ADD `url` VARCHAR( 200 ) NULL DEFAULT NULL AFTER `message`;",
+		"ALTER TABLE `global_messages` ADD INDEX ( `read` );"
 	)
 
 );

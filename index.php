@@ -423,6 +423,16 @@ $app->route('GET /php', function () {
 		exit();
 	}
 );
+$app->route('GET /redirect', function () {
+		$url = isset($_GET['url'])?$_GET['url']:"";
+		
+		if (!$url){
+			$url = "/";
+		}
+		$f3 = Base::instance();
+		$f3->reroute($url);
+	}
+);
 
 
 $app->run();

@@ -56,12 +56,14 @@
 		<button class="btn btn-mini span1 reload" type="button"><i class="icon-refresh"></i></button>
 	</li>
 
-	<% if (this.details && this.details.ID) { %>
+	<% if ((this.details && this.details.ID)) { %>
+	<% if (this.details.app) { %>
+	<% } else { %>
 	<li>
 		<button class="btn btn-mini span1 reply-to" type="button" data-to_uID="<% if (this.details.direction =='out') { %><%= this.details.to_uID %><% } else { %><%= this.details.from_uID %><% } %>">
 			<i class="icon-reply"></i></button>
 	</li>
-
+	<% } %>
 
 	<% } else { %>
 
@@ -104,8 +106,14 @@
 		<div class="clearfix"></div>
 		<hr/>
 			<article style="padding: 0 10px;">
-		<%= this.details.message %>
-</article>
+				<%= this.details.message %>
+			</article>
+			
+			<% if (this.details.url){ %>
+			
+				<button class="btn btn-mini btn-url-link" style="float: right; width:50px;" type="button" data-url="<%= this.details.url %>"><i class="icon icon-external-link"></i></button><div class="clearfix" style="height:30px;"></div>
+			<% } %>
+			
 		<div class="clearfix" style="height:30px;"></div>
 
 
