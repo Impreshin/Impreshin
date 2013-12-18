@@ -16,7 +16,8 @@ class settings {
 		$return = array();
 		$columns = array(
 			"client"                 => array(
-				"h"=> "Client"
+				"h"=> "Client",
+				"d"=>"Used as a heading / description for the record"
 			),
 			"publishDate"            => array(
 
@@ -30,7 +31,8 @@ class settings {
 			),
 
 			"colour"                 => array(
-				"h"=> "Colour"
+				"h"=> "Colour",
+				"d"=>"(Adverts) Is the booking a full colour, spot colour, or a black and white booking. tarrif rates can be changed according to these values"
 			),
 			"colourLabel"             => array(
 				"h"=> "Colour&nbsp;Label"
@@ -55,8 +57,9 @@ class settings {
 				"h"=> "A.Disc"
 			),
 			"placing"                => array(
-				"o"=> "`ab_bookings.placing`",
-				"h"=> "Placing"
+				"o"=> "`ab_bookings`.`placing`",
+				"h"=> "Placing",
+				"d"=>"(Adverts) Where in the publication (group) the booking should be placed"
 			),
 			"category"               => array(
 				"h"=> "Category"
@@ -65,7 +68,8 @@ class settings {
 				"h"=> "Type"
 			),
 			"accNum"                 => array(
-				"h"=> "Acc.Num"
+				"h"=> "Acc.Num",
+				"o"=>"`ab_accounts`.`accNum`"
 			),
 			"account"                => array(
 				"h"=> "Account"
@@ -93,7 +97,7 @@ class settings {
 				"h" => "Payment&nbsp;Method&nbsp;Note"
 			),
 			"insertsLabel"=>array(
-				"o"=> "`ab_inserts_types.insertsLabel`",
+				"o"=> "`ab_inserts_types`.`insertsLabel`",
 				"h"=> "Inserts&nbsp;Type"
 			),
 			"userName"               => array(
@@ -156,7 +160,8 @@ class settings {
 				"h"=> "Material&nbsp;Source"
 			),
 			"material_production"               => array(
-				"h"=> "Material&nbsp;Production"
+				"h"=> "Material&nbsp;Production",
+				"o"=> "`ab_production`.`production`",
 			),
 			"material_status"               => array(
 				"h"=> "Material",

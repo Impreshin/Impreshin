@@ -129,13 +129,18 @@ function currency($number){
 
 }
 
-function test_array($array,$splitter=","){
+function test_array($array,$splitter=''){
 
-	if (!is_array($array)){
+	if (!is_array($array) && $splitter){
 		$array = explode($splitter,$array);
+	} 
+	
+	if (!is_array($array)){
+		echo ($array);
+		exit();
 	}
 
-	header("Content-Type: application/json");
+	header("Content-type: application/json; charset=UTF-8");
 	echo json_encode($array);
 	exit();
 }
@@ -170,4 +175,50 @@ function sortBy($key="order") {
 	};
 
 
+}
+function form_display(&$value) {
+	if ($value){
+		//$value = utf8_encode($value);
+		$value = str_replace('"',"&quot;",$value);
+		//$value = str_replace('Ã«',"ë",$value);
+		//$value = htmlentities($value,'','UTF-8');
+	}
+	
+}
+function form_write(&$value) {
+	if ($value){
+		//$value = utf8_encode(html_entity_decode( $value));
+	
+	}
+	
+}
+
+function clean_style($cmstyle,$clearspaces=false){
+	if ($cmstyle){
+		$cmstyle = trim(preg_replace('/\s+/', ' ', $cmstyle));
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = trim(preg_replace('/\s+/', ' ', $cmstyle));
+		$cmstyle = str_replace("} ","}",$cmstyle);
+		
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+
+		$cmstyle = str_replace(";",";&#10;    ",$cmstyle);
+		$cmstyle = str_replace("}","}&#10;&#10;",$cmstyle);
+		$cmstyle = str_replace("{","{&#10;    ",$cmstyle);
+		$cmstyle = str_replace("&#10;    }","&#10;}",$cmstyle);
+		$cmstyle = str_replace("     ","    ",$cmstyle);
+		$cmstyle = str_replace("    }","}",$cmstyle);
+		
+	}
+	
+	if ($clearspaces){
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = str_replace("&#10;","",$cmstyle);
+		$cmstyle = preg_replace('/[ ]{2,}|[\t]/', ' ', trim($cmstyle));
+	}
+	
+	//$cmstyle = str_replace(" ",".",$cmstyle);
+	return $cmstyle;
 }

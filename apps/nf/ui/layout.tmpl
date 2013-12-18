@@ -73,17 +73,29 @@
 			</article>
 			<article id="right-area" class="span5 offset11">
 				<div>
-					<select class="span5" name="categoryID" id="categoryID" style="margin-bottom: 0; margin-left: -1px;">
+					<select class="span3" name="categoryID" id="categoryID" style="margin-bottom: 0; margin-left: -1px; width: 202px;">
 						{% for row in categories %}
 						<option value="{{ row['ID'] }}" {% if row['ID']==settings['categoryID'][_user['publication']['ID']] %}selected="selected"{% endif %}>{{ row['category'] }}</option>
 						{% endfor %}
 					</select>
+
+					<div class="btn-group" data-toggle="buttons-radio" id="list-filter-btns">
+						<button data-filter="*" class="btn  btn-mini btn-icon {% if settings['filter'] == "*" %}active{% endif %}" style="width:40px;" title="All records in the newsbook">
+							<i class="icon-asterisk"></i></button>
+						<button data-filter="1" class="btn  btn-mini btn-icon {% if settings['filter'] == "1" %}active{% endif %}" style="width:40px;" title="Only 'Ready' Records">
+							<i class="icon-ok"></i></button>
+					
+					</div>
+					
+					
+				
+					<div class="clearfix"></div>
 					<table class="table table-condensed  s records">
 						<thead>
-						<tr>
-							<th class="span1">Size</th>
-							<th class="span1">Photos</th>
-							<th>Title</th>
+						<tr class="colheading">
+							<th class="span1 order-btn" data-col="cm">Size</th>
+							<th class="span1 order-btn" data-col="photosCount">Photos</th>
+							<th class="order-btn" data-col="title">Title</th>
 						</tr>
 						</thead>
 					</table>

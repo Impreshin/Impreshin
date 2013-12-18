@@ -35,16 +35,25 @@ class form extends \apps\nf\controllers\_{
 		
 		
 		$stage = $b->stageID;
-		if ($user['permissions']['stages'][$stage]['edit']){
-		
-			
+		if ($user['permissions']['stages'][$stage]['edit'] || $this->user['permissions']['form']['edit_master']){
 			if (!$b->dry()){
 				$b->locked_uID = $uID;
 				$b->save();
 			}
 			$this->page();
 		} else {
-			$this->f3->error(404);
+			
+			if ($b->authorID == $user['ID']){
+				echo "you do not have permission to edit this article any more";
+			} else {
+				echo "you dont have permission to view this page";
+			}
+			echo "<hr>";
+			echo "<a href='/app/nf'>Click here to go back to the main list</a>";
+			
+			
+			exit();
+			
 		}
 	}
 
@@ -90,6 +99,7 @@ class form extends \apps\nf\controllers\_{
 		$users = $u;
 		
 
+		//test_array($users);
 	
 
 		$tmpl = new \template("template.tmpl", "apps/nf/ui/");
@@ -100,9 +110,9 @@ class form extends \apps\nf\controllers\_{
 			"meta"        => array(
 				"title" => "NF - Form - loading..",
 			),
-			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js"),
-			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css"),
-			"help"        => "/apps/nf/help/form"
+			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js","/ui/spellchecker/js/jquery.spellchecker.js"),
+			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css","/ui/spellchecker/css/jquery.spellchecker.css"),
+			//"help"        => "/apps/nf/help/form"
 		);
 
 
@@ -117,6 +127,22 @@ class form extends \apps\nf\controllers\_{
 		$tmpl->authors = $users;
 		$tmpl->cm_calc_css = $cfg['nf']['default_cm_calc_css'] . $user['company']['nf_cm_css'];
 		//$tmpl->stages = $stages;
+
+
+		
+			
+
+		$tmpl->enable_spellcheck = function_exists('enchant_broker_init')? '1' : '0';
+		
+		$custom_dictionary = $cID . "/custom.dic";
+
+		if (!file_exists("./uploads/dictionaries/$custom_dictionary")){
+			$custom_dictionary = "";
+			
+		}
+		$tmpl->custom_dictionary = $custom_dictionary;
+		
+		
 		
 		$tmpl->output();
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());

@@ -11,7 +11,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>ScreenShots</title>
+	<title>Test Dictionary</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -21,22 +21,63 @@
 
 
 
+	<link rel="stylesheet" href="/ui/_css/bootstrap.css">
 	<link rel="stylesheet" href="/ui/fancybox/jquery.fancybox.css">
 
 
+	<style type="text/css">
+		article {
+			border-bottom: 1px dotted #ccc;
+			padding: 10px 20px ;
+		}
+		.well {
+			margin: 5px 0 5px 0;			
+		}
+		footer {
+			margin-top:5px;
+		}
+		.lookups {
+			color: #8a8a8a;
+		}
+		.lookups span {
+			cursor: pointer;
+		}
+		.lookups span:hover {
+			background-color: #e1e1e1;
+		}
+		.loading {
+			text-align: center;
+			margin:30px;
+		}
+	</style>
 	
 
 
 </head>
 <body>
+
+http://jquery-spellchecker.badsyntax.co/ckeditor.html
+
+https://github.com/badsyntax/jquery-spellchecker/wiki/Documentation
 <div>
-	<img src="/app/nf/thumb/100/100?file=1/2013//p1854t779411gis3u34b1mvrfdgj.png&crop=true" alt="" class="view"/>
-	<img src="/app/nf/thumb/100/100?file=1/2013//p18759iss01pr21lpi16lf1vsd1b405.jpg&crop=true" alt="" class="view"/>
-	<img src="/app/nf/thumb/100/100?file=1/2013//trtopgr7_1310172056300.jpg&crop=true" alt="" class="view"/>
+	<form action="#">
+		<input type="text" id="word" name="word" />	<button id="lookup" class="btn" type="submit">lookup</button>
+		<div class="help-block">
+			Powered By: <a href="http://www.abbreviations.com" target="_blank"> http://www.abbreviations.com</a>
+		</div>
+	</form>
+
+	
+	<div id="result">
+
+		
+	</div>
+	
+	
+	
 	
 </div>
 
-<button id='exif-toggle' class='btn span1'><i class='icon-tag'></i></button>
 
 <script src="/ui/_js/libs/jquery.js"></script>
 <script src="/ui/_js/plugins/jquery.getData.js"></script>
@@ -44,149 +85,153 @@
 <script src="/ui/fancybox/jquery.fancybox.pack.js"></script>
 
 <style type="text/css">
-	.photo-viewer-pane  {
-		display: none;;
-	}
-	#photo-viewer-caption {
-		display: block;
-	}
-	.exif-toggle {
-		
-		min-height: 30px;;
-		min-width: 30px;
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-	.fancybox-title-over-wrap {
-		right: 0;;	
-	}
+	
 	
 </style>
 <script type="text/javascript">
-	$(document).ready(function () {
-
-		$(document).on("click",".exif-toggle",function(){
+	
+	$("form").submit(function(e){
+		e.preventDefault();
+		lookup();
+	});
+	
+	$(document).on("click",".lookups span",function(){
+		var word = $(this).text();
+		//console.log(word);
+		lookup(word);
 		
-			if ($("#photo-viewer-exif").is(":visible")){
-				$(".photo-viewer-pane").hide();
-				$("#photo-viewer-caption").show();
-			} else {
-				$(".photo-viewer-pane").hide();
-				$("#photo-viewer-exif").show();
+	});
+	
+	function wrapify(str){
+		var ret = str;
+		if (str){
+			var newHtml = str.split(","),
+					spans = $.map(newHtml,function(v){
+						v = v.trim();
+						return '<span>' + v + '</span>';
+					});
+
+
+			ret = spans.join(', ');
+		}
+		
+		return ret;
+	}
+	
+	
+	function lookup(word){
+		if (word){
+			$("#word").val(word);
+		} else {
+			word = $("#word").val();
+		}
+	
+		if (word){
+			def(word);
+		}
+		
+		
+	}
+	function def(word){
+		$result = $("#result");
+		$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
+		jQuery.support.cors = true;
+		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
+			cache : true,
+			type : "get",
+			global : false,
+			dataType : "xml",
+			//jsonp : false,
+			success : function (returnedXMLResponse) {
+
+				var data = {
+					"term":word,
+					"result":"0",
+					"results":[]
+				};
+				$('result', returnedXMLResponse).each(function(){
+					
+					var syn = $('synonyms', this).text()
+
+					var d = {
+						"term":$('term', this).text(),
+						"partofspeech":$('partofspeech', this).text(),
+						"definition":$('definition', this).text(),
+						"example":$('example', this).text(),
+						"synonyms": wrapify($('synonyms', this).text()),
+						"antonyms": wrapify($('antonyms', this).text())
+						
+					};
+					data.results.push(d);
+
+					//Here you can do anything you want with those temporary
+					//variables, e.g. put them in some place in your html document
+					//or store them in an associative array
+				});
+				var template = "#template-result"
+				if (data.results.length){
+					
+				} else {
+					template = "#template-no-result"
+				}
+				
+				$result.jqotesub($(template), data);
+
+
+				//getChannelMessages(channel);
 			}
 		});
-		
-		$(".view").click(function () {
-
-			var path = $(this).attr("src");
-			path = path.split('file=');
-			path = path[1];
-			path = path.split("&");
-			path = path[0];
-			
-			var w = $(window).width();
-			var h = $(window).height();
-			
-			w = w - 100;
-			h = h - 100;
-			
-			w = w > 1000 ? 1000 : w
-			h = h > 1000 ? 1000 : h
-			
-			$.fancybox.open({
-				href : '/app/nf/thumb/'+w+'/'+h+'?file='+path+'&crop=false',
-				title: "test"
-			}, {
-				padding: 10,
-				type:'image',
-				openEffect: 'fade',
-				beforeLoad:function () {
-					this.title = "<div id='photo-viewer-caption' class='photo-viewer-pane'>woof<button class='btn span1 exif-toggle'><i class='icon-tag'></i></button></div><div id='photo-viewer-exif' class='photo-viewer-pane'></div>";
-					
-
-					
-				},
-				afterLoad:function () {
-					$.getData("/app/nf/exif",{'file':path},function(r){
-						if (r.FILE){
-							$("#exif-toggle").css("opacity",100);
-							$('#photo-viewer-exif').jqotesub($("#template-photo-exif"), r);
-							
-						}
-					
-					})
-
-				},
-				helpers:{
-					overlay:{
-						speedIn   :500,
-						speedOut  :500,
-						opacity   :0.4
-
-					},
-					title  :{
-						type:'over'
-					}
-
-				}
-			});
-			
-			
-		})
-
-	});
+	}
+	
+	
+	if ($("#word").val()){
+		lookup();
+	}
+	
 	function updatetimerlist(){
 		
 	}
 </script>
-<script type="text/x-jqote-template" id="template-photo-exif">
+<script type="text/x-jqote-template" id="template-result">
 	<![CDATA[
-	<button class='btn span1 exif-toggle'><i class='icon-tag'></i></button>
-	<table width="100%" cellspacing="0" cellpadding="0" border="0" class="borderTable">
-		<tbody><tr>
-			<td width="13%" class="h">Width</td>
-			<td width="20%"><%= this.COMPUTED.Width||"" %></td>
-			<td width="13%" class="h">ImageDescription</td>
-			<td width="20%"><%= this.IFD0.ImageDescription||"" %></td>
-			<td width="13%" class="h">Make</td>
-			<td width="20%"><%= this.IFD0.Make||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Height</td>
-			<td><%= this.COMPUTED.Height||"" %></td>
-			<td class="h">UserComment</td>
-			<td><%= this.COMPUTED.UserComment||"" %></td>
-			<td class="h">Model</td>
-			<td><%= this.IFD0.Model||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Size</td>
-			<td><%= this.FILE.FileSize||"" %></td>
-			<td class="h">DateTime</td>
-			<td><%= this.IFD0.DateTime||"" %></td>
-			<td class="h">ShutterSpeedValue</td>
-			<td><%= this.EXIF.ShutterSpeedValue||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">DPI</td>
-			<td>-no decent way to get it yet-</td>
-			<td class="h">DateTimeOriginal</td>
-			<td><%= this.EXIF.DateTimeOriginal||"" %></td>
-			<td class="h">ApertureValue</td>
-			<td><%= this.EXIF.ApertureValue||"" %></td>
-		</tr>
-		<tr>
-			<td class="h">Software</td>
-			<td><%= this.IFD0.Software||"" %></td>
-
-			<td class="h">Copyright</td>
-			<td><%= this.COMPUTED.Copyright||"" %></td>
-			<td class="h">FocalLength</td>
-			<td><%= this.EXIF.FocalLength||"" %></td>
-		</tr>
-		</tbody></table>
+	<h1>Result <small><%= this.term %></small></h1>
+			
+		<% for(var i in this.results) { %>
+		<article>
+			<header>
+				<h3><%= this.results[i].term %> <small>(<%= this.results[i].partofspeech %>)</small></h3>
+			</header>
+			<div class="well well-small">
+			<%= this.results[i].definition %>
+			</div>
+			<% if (this.results[i].example) { %>
+			
+			<em><%= this.results[i].example %></em>
+				
+			<% } %>
+			<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
+			<footer>
+				<% if (this.results[i].synonyms) { %>
+				<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+				<% } %>
+				<% if (this.results[i].antonyms) { %>
+				<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+				<% } %>
+				
+			</footer>
+			<% } %>
+			
+		</article>
+		
+			
+	<% } %>
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-no-result">
+	<![CDATA[
+	<h1>No Result <small><%= this.term %></small></h1>
+			No Matches Found
+	]]>
+</script>		
 </body>
 </html>

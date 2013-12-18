@@ -2,7 +2,7 @@
 	<![CDATA[
 
 	<tr data-id="<%= this.ID %>" class="record">
-		<td class="">
+		<td class="" title="Last page: <%= this.last_page %>">
 			<span class="<% if (!this.ab) { %>g<% } %>"><%= this.fullName %></span>
 
 		</td>
@@ -162,7 +162,9 @@
 				<div class="clearfix" style="margin-top:-20px;"></div>
 					<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
 					<% } %>
+				
 					<fieldset style="margin-top: 20px;" id="permissions">
+						<!--
 						<div class="control-group">
 							<label for="allow_setup" class="control-label">Allow Setup</label>
 
@@ -172,7 +174,7 @@
 								</label>
 							</div>
 						</div>
-
+-->
 					{% for key,value in permissions %}
 						<div class="control-group" style="{% if loop.first==false %}border-top: 1px dotted #ccc;{% endif %} padding-top: 10px; margin-bottom: 0; padding-bottom:5px;">
 							<label for="optionsCheckboxList" class="control-label">{{ key|capitalize|replace({"_":" "}) }}</label>

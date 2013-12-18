@@ -36,6 +36,33 @@ class cmstylesheet extends \apps\nf\controllers\data\data {
 		echo '</div>';
 		exit();
 	}
+	function _details(){
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+		$cID = $user['company']['ID'];
+		$cfg = $this->f3->get("CFG");
+		$ID = (isset($_REQUEST['categoryID'])) ? $_REQUEST['categoryID'] : "";
+
+		$o = new models\categories();
+		$details = $o->get($ID);
+
+		$cmstyle =  $user['company']['nf_cm_css'];
+		if ($cmstyle=='' || $cmstyle ==NULL){
+			$cmstyle = $cfg['nf']['default_cm_calc_css'];
+		}
+		
+		if ($details['ID']){
+			if ($details['nf_cm_css']) $cmstyle = $details['nf_cm_css'];
+		}
+		
+		
+		
+		$return['style'] = clean_style($cmstyle);
+
+
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
 	
 
 }

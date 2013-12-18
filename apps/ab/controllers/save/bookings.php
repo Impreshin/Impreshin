@@ -160,6 +160,7 @@ class bookings extends save {
 			$v['dID'] = $date;
 
 			$b[] = $v;
+			array_walk_recursive($v, "form_write");
 			$a[] = models\bookings::save($ID, $v);
 		}
 

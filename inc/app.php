@@ -113,13 +113,13 @@ class app {
 		ob_start("ob_gzhandler");
 		if ($this->get("json")){ // if json is set then to render the json data instead of outputting a whole page
 
-			header("Content-Type: application/json");
+			header("Content-type: application/json; charset=UTF-8");
 			echo json_encode($GLOBALS["output"]);
 		} else {
 			$timersbottom = '
 					<script type="text/javascript">
 						if (typeof(updatetimerlist) != "undefined") {
-				            updatetimerlist(' . json_encode($GLOBALS["output"]) . ');
+				            updatetimerlist(' . json_encode(($GLOBALS["output"])) . ');
 				        }
 					</script>
 				';

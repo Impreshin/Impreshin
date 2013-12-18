@@ -1,0 +1,253 @@
+
+<script type="text/x-jqote-template" id="template-report-figures">
+	<![CDATA[
+
+
+	<div class="hide-fade" style="padding-top: 10px;padding-bottom: 10px;">
+		<div class="btn-group" data-toggle="buttons-checkbox" style=" float:right;" id="year-select">
+			<% for(var i in this.comp.years) { %>
+			<button type="button" class="btn <% if (this.comp.years[i].s == '1') { %>active<% } %> btn-mini" style="width: <%=  (Math.floor(900 /this.comp.years.length)<80)? Math.floor(900 /this.comp.years.length):80  %>px;" data-val="<%= this.comp.years[i].y %>"><%= this.comp.years[i].y %></button>
+			<% } %>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="clearfix"></div>
+
+
+	<table class="table table-condensed table-bordered s records" id="figures-table">
+		<thead>
+		<tr>
+			<td></td>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<td colspan="5" class="c" style="border-left: 1px solid #999;"><%= this.comp.years[i].y %></td>
+			<% } %> <% } %>
+		</tr>
+		<tr class="colheading">
+			<th></th>
+			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
+			<th style="width: 30px;border-left: 1px solid #999;">#</th>
+			<th style="width: 30px;">Article</th>
+			<th style="width: 30px;">Cm</th>
+			<th style="width: 30px;">%</th>
+			<th style="width: 30px;">Photo</th>
+			
+			<% } %> <% } %>
+		</tr>
+		</thead>
+
+		<tbody>
+
+		<% for(var d in this.comp.data) { %>
+		<tr data-month="<%= this.comp.data[d].m %>" class="record">
+			<td><strong><%= this.comp.data[d].month %></strong>
+			</td>
+			<% for(var i in this.comp.data[d].data) { %>
+			
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.records %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+				<span>
+					<%= this.comp.data[d].data[i].records %>
+				</span>
+			</td>
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.articlesCount %> col" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+
+				<span>
+					<%= this.comp.data[d].data[i].articlesCount %>
+				</span>
+			</td>
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.cm %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+
+				<span>
+					<%= this.comp.data[d].data[i].cm %>
+				</span>
+			</td>
+			
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.filesCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+
+				<span>
+					<% if (this.comp.data[d].data[i].percentChanged) { %>
+					<%= this.comp.data[d].data[i].percentChanged %>%
+					<% } %>
+				</span>
+		</td>
+	
+			<td class="figure-dir-<%= this.comp.data[d].data[i].d.photosCount %> col g" data-record="<%= this.comp.data[d].data[i].year %>|<%= this.comp.data[d].m %>">
+
+				<span>
+					<%= this.comp.data[d].data[i].photosCount %>
+				</span>
+			</td>
+			
+
+
+			<% } %>
+		</tr>
+		<% for(var e in this.comp.data[d].editions) { %>
+		<tr class="figure-month-details dg s record <% if (this.dID==this.comp.data[d].editions[e].dID) { %>active<% } %>" data-ID="<%= this.comp.data[d].editions[e].dID %>" data-key="<%= this.comp.data[d].editions[e].key %>">
+			<td><strong><%= this.comp.data[d].editions[e].pub %></strong><em> <%= this.comp.data[d].editions[e].date %></em>
+			</td>
+			<% for(var i in this.comp.data[d].editions[e].data) { %>
+			<td><%= this.comp.data[d].editions[e].data[i].records||"" %></td>
+			<td><%= this.comp.data[d].editions[e].data[i].articlesCount||"" %></td>
+			<td><%= this.comp.data[d].editions[e].data[i].cm||"" %></td>
+			<td><% if (this.comp.data[d].editions[e].data[i].percentChanged) { %><%= this.comp.data[d].editions[e].data[i].percentChanged||"" %>%<% } %></td>
+			<td><%= this.comp.data[d].editions[e].data[i].photosCount||"" %></td>
+			<% } %>
+		</tr>
+		<% } %>
+		<% } %>
+		</tbody>
+	</table>
+	<div class="clearfix"></div>
+	<div class="s dg" style="float:right;" >
+		<em>Tolerance:</em>
+
+		<select name="tolerance" id="tolerance" class="s trigger_getdata" style="width: 55px; padding: 2px; height: 20px; border: none; margin-bottom: 0px;">
+			<option value="5" <% if (this.tolerance == "5") { %>selected="selected"<% } %>>5%</option>
+			<option value="10" <% if (this.tolerance == "10") { %>selected="selected"<% } %>>10%</option>
+			<option value="15" <% if (this.tolerance == "15") { %>selected="selected"<% } %>>15%</option>
+			<option value="20" <% if (this.tolerance == "20") { %>selected="selected"<% } %>>20%</option>
+			<option value="25" <% if (this.tolerance == "25") { %>selected="selected"<% } %>>25%</option>
+			<option value="30" <% if (this.tolerance == "30") { %>selected="selected"<% } %>>30%</option>
+			<option value="40" <% if (this.tolerance == "40") { %>selected="selected"<% } %>>40%</option>
+			<option value="50" <% if (this.tolerance == "50") { %>selected="selected"<% } %>>50%</option>
+		</select>
+	</div>
+	<div class="sectionbreak"></div>
+
+		<div style="margin-left: 20px; float:right; ">
+			<div class="btn-toolbar">
+
+
+				<% if (this.tab=="charts") { %>
+				<div class="btn-group">
+					<button id="date-picker" name="date-picker" type="button" class="span4 btn btn-mini" value="<%= this.daterange %>" style="float:left;"><%= this.daterange %></button>
+                    <% if (this.pubs>1) { %>
+                    <button data-toggle="button" class="btn btn-mini span1 <% if (this.combined=='1') { %> active <% } %>" id="combine-btn" style="height: 27px; float:right;">
+                        <% if (this.combined=='1') { %> <i class="icon-resize-full"></i> <% } else { %>
+                        <i class="icon-resize-small"></i> <% } %>
+
+                    </button>
+                    <% } %>
+				</div>
+				<% } else if (this.tab=="records") { %>
+				<div class="btn-group report-bottom-tabs" data-toggle="buttons-radio" >
+									<button class="btn btn-mini span2 back" data-tab="charts"><i class="icon-arrow-left icon-d-grey" style="margin-top:-2px;"></i> Back to charts</button>
+
+				</div>
+				<div class="dropdown pull-right">
+					<a data-toggle="dropdown" class="dropdown-toggle c btn btn-mini span1" href="#" ><i class="icon-wrench"></i></a>
+					<ul class="dropdown-menu f12" id="record-settings" role="menu">
+						<li class="nav-header">Group By</li>
+                            {% for row in settings['groupby'] %}
+                                <li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+						<a href="#t">{{ row['n'] }}</a>
+					</li>
+                            {% endfor %}
+                            <li class="nav-header clearfix">Direction</li>
+						<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+							<a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
+						<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+							<a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
+						<li class="clearfix"></li>
+						<li class="divider"></li>
+
+						<li>
+							<a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+						</li>
+					</ul>
+				</div>
+				<% } %>
+
+			</div>
+
+
+		</div>
+
+	<% if (this.tab=="charts") { %>
+	<div class="s g">* by default its a month behind.. to prohibit the trend line taking this month into account</div>
+	<div class="clearfix"></div>
+	<h3>Records</h3>
+
+	<div id="chart-records" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
+	<h3>Articles</h3>
+	<div id="chart-articles" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	<h3>Cm</h3>
+	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
+	<h3>Photos</h3>
+	<div id="chart-photos" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
+	
+
+	<% } else if (this.tab=="records") { %>
+	<div class="clearfix"></div>
+	<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+
+
+	</table>
+
+
+	<% } %>
+
+
+
+
+
+	]]>
+</script>
+
+<script type="text/javascript">
+
+	var ym = $.bbq.getState("ym");
+	if (ym) {
+		$(".figure-month-details[data-key='" + ym + "']").show();
+		$("#figures-table tbody tr td[data-record='" + ym + "']").addClass("active");
+	}
+
+	$(document).on("click", '#figures-table tbody tr td.col',function () {
+		var $this = $(this);
+		var s = $this.attr("data-record");
+		$(".figure-month-details").hide();
+
+		$.bbq.removeState("ym");
+		if ($this.hasClass("active")){
+			$("#figures-table tbody tr td.active").removeClass("active");
+		} else {
+			$("#figures-table tbody tr td.active").removeClass("active");
+			$("#figures-table tbody tr td[data-record='" + s + "']").addClass("active");
+			$(".figure-month-details[data-key='" + s + "']").show();
+			$.bbq.pushState({"ym":s});
+		}
+		var $scrollpane = $("#whole-area .scroll-pane");
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+
+
+
+		//console.log(s)
+
+
+		//$row.after('<tr class="figure-month-details"><td colspan="' + columns + '">hahaha</td></tr>');
+
+
+
+	});
+
+	$(document).on("mouseenter", '#figures-table tbody tr td.col', function () {
+				var $this = $(this);
+				var s = $this.attr("data-record");
+				$("#figures-table tbody tr td[data-record='" + s + "']").addClass("hover")
+			}
+	);
+	$(document).on("mouseleave", '#figures-table tbody tr td.col',function () {
+				$("#figures-table tbody tr td.hover").removeClass("hover");
+			}
+	);
+	$(document).on('click', '.scrolllinks a', function (e) {
+		e.preventDefault();
+		var $this = $(this), scrollto = $this.attr("rel");
+
+		api.scrollToElement("[data-heading='" + scrollto + "']", true, true);
+
+	});
+</script>

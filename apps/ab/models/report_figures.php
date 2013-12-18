@@ -110,6 +110,7 @@ class report_figures {
 
 
 			$edition = $record['dID'];
+			
 			if (!isset($data[$year][$month]['e'][$edition])) {
 				$data[$year][$month]['e'][$edition] = $blank;
 			}

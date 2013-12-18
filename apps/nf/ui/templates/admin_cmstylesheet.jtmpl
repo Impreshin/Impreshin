@@ -1,0 +1,7 @@
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+
+	<textarea name="cm-block-form" id="cm-block-form" cols="30" rows="10" class="span5" style="margin-left: 0px; height: 500px"><%= this.style %></textarea>
+
+	]]>
+</script>

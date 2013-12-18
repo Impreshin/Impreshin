@@ -7480,10 +7480,10 @@ textarea[readonly] {
   font-size: 10px !important;
 }
 .g {
-  color: #bfbfbf !important;
+  color: #afafaf !important;
 }
 .dg {
-  color: #8c8c8c !important;
+  color: #828282 !important;
 }
 .f8 {
   font-size: 8px !important;
@@ -7502,6 +7502,12 @@ textarea[readonly] {
 }
 .f13 {
   font-size: 13px !important;
+}
+.em {
+  font-style: italic;
+}
+.bold {
+  font-weight: bold;
 }
 .glow {
   -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
@@ -7797,6 +7803,16 @@ form #form-bottom .form-actions {
 #search-box:hover #search-box-toggle {
   opacity: 1;
   filter: alpha(opacity=100);
+}
+.messages_link {
+  position: relative;
+}
+.messages_link .count {
+  color: #FF0000;
+  text-shadow: 0px 0px 3px #000;
+  margin-top: -15px;
+  margin-bottom: -5px;
+  font-weight: bold;
 }
 .nav-dropdown-li:hover a {
   background-color: #e3e3e3;
@@ -8603,5 +8619,142 @@ body.help_pages {
 [class^="icon-"].icon-d-grey,
 [class*=" icon-"].icon-d-grey {
   color: #666 !important;
+}
+@-webkit-keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#impreshin-logo {
+  -webkit-animation: pulse 3s infinite;
+  /* Safari 4+ */
+
+  -moz-animation: pulse 3s infinite;
+  /* Fx 5+ */
+
+  -o-animation: pulse 3s infinite;
+  /* Opera 12+ */
+
+  animation: pulse 3s infinite;
+  /* IE 10+ */
+
+  animation-timing-function: ease-in-out;
+}
+@keyframes infinite-spinning {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes branch-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes branch-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes branch-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes branch-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#brand-branch {
+  position: absolute;
+  bottom: 0;
+  text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -5px 35px rgba(255, 255, 255, 0.3);
+  margin-left: -30px;
+  font-size: 10px;
+  color: red;
+  -webkit-animation: branch-spin 10s infinite;
+  /* Safari 4+ */
+
+  -moz-animation: branch-spin 10s infinite;
+  /* Fx 5+ */
+
+  -o-animation: branch-spin 10s infinite;
+  /* Opera 12+ */
+
+  animation: branch-spin 10s infinite;
+  /* IE 10+ */
+
+  animation-timing-function: ease-in-out;
+}
+a.brand {
+  color: #666!important;
+  text-shadow: 0px 2px 3px #333 !important;
+  font-weight: bold!important;
 }
 /* </general> */

@@ -10,8 +10,32 @@ $(document).ready(function () {
 		getDetails_right();
 	}
 
-	scrolling(left_pane);
+	$(document).on("click", "#list-filter-btns button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+
+		
+		var filter = $("#list-filter-btns button.active").attr("data-filter");
+		filter = (filter) ? filter : "*";
+
+		$.bbq.pushState({"filter":filter});
+		getList();
+
+	});
 	
+	
+	scrolling(left_pane);
+	$(document).on("click", ".order-btn", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		$this.closest("table").find(".order-btn").removeClass("asc desc");
+		//$this.addClass("active");
+		$.bbq.pushState({"order":$this.attr("data-col")});
+
+		getList();
+		$.bbq.removeState("order");
+
+	});
 
 	$(document).on("click", "#toolbar-stats-link", function (e) {
 		if (!$(e.target).closest("#toolbar-stats-pane").get(0)) {
@@ -269,8 +293,14 @@ function PadDigits(n, totalDigits) {
 function getList() {
 	var categoryID = $("#categoryID").val();
 
+	var order = $.bbq.getState("order");
+	order = (order) ? order : "";
+
+	var filter = $("#list-filter-btns button.active").attr("data-filter");
+	filter = (filter) ? filter : "";
+
 	$("#right-area .loadingmask").show();
-	$.getData("/app/nf/data/layout/_list", {"categoryID":categoryID}, function (data) {
+	$.getData("/app/nf/data/layout/_list", {"categoryID":categoryID, "order":order, "filter":filter}, function (data) {
 
 
 		var categories = $.map(data['category'], function (record) {

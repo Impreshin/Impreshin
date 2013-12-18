@@ -34,6 +34,10 @@ class form extends data {
 			$record = $recordO->dbStructure();
 		}
 
+		$record = json_decode(json_encode($record), true);
+		array_walk_recursive($record, "form_display");
+		
+		
 		if (!$user['permissions']['form']['new'] && !$user['permissions']['form']['edit'] && !$user['permissions']['form']['edit_master'] && !$user['permissions']['form']['delete']) {
 
 
@@ -62,6 +66,7 @@ class form extends data {
 		if ($record['categoryID']) $settings['last_category'] = $record['categoryID'];
 		$settings['printOrder'] = $user['publication']['printOrder'];
 
+		
 		$return['details'] = $record;
 		$return['settings'] = $settings;
 

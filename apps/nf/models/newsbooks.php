@@ -67,6 +67,29 @@ class newsbooks {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}
+	public static function exists($aID,$dID) {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		
+
+		$result = $f3->get("DB")->exec("
+			SELECT *
+			FROM nf_article_newsbook 
+			WHERE aID ='$aID' AND dID = '$dID'
+			
+		");
+		
+		$return = array();
+		foreach ($result as $item){
+			$return[] = $item['ID'];
+		}
+
+
+		//$return = count($result);
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
 
 	public static function save($ID, $values) {
 		$timer = new timer();

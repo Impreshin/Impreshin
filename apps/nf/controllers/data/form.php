@@ -33,7 +33,8 @@ class form extends data {
 		if ($record['ID'] && ($record['cID'] != $cID)) {
 			$record = $recordO->dbStructure();
 		}
-
+		$record = json_decode(json_encode($record), true);
+		array_walk_recursive($record, "form_display");
 		
 
 
@@ -53,6 +54,17 @@ class form extends data {
 			
 		}
 
+		if ($record['lang']) {
+			$settings['last_language'] = $record['lang'];
+		}
+
+		
+		
+		
+		
+		
+		
+		
 
 		$return['details'] = $record;
 		$return['settings'] = $settings;
@@ -114,6 +126,38 @@ class form extends data {
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
+
+	function cm_block_render() {
+
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+		$pID = $user['pID'];
+		$cfg = $this->f3->get("CFG");
+		$ID = (isset($_REQUEST['categoryID'])) ? $_REQUEST['categoryID'] : "";
+
+		$o = new models\categories();
+		$details = $o->get($ID);
+
+		$cmstyle =  $user['company']['nf_cm_css'];
+		if ($cmstyle=='' || $cmstyle ==NULL){
+			$cmstyle = $cfg['nf']['default_cm_calc_css'];
+		}
+
+		if ($details['ID']){
+			if ($details['nf_cm_css']) $cmstyle = $details['nf_cm_css'];
+		}
+
+		clean_style($cmstyle);
+
+
+		echo '<style>';
+		echo $cmstyle;
+		echo '</style>';
+
+		
+		exit();
+	}
+	
 
 
 

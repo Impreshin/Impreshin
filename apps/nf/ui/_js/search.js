@@ -88,7 +88,7 @@ $(document).ready(function () {
 		$("#list-settings").removeClass("active");
 	});
 
-	$(document).on('hide', '#ab-details-modal', function () {
+	$(document).on('hide', '#nf-details-modal', function () {
 		var s = {
 			maintain_position:true
 		};
@@ -196,10 +196,7 @@ $(document).ready(function () {
 	};
 
 	//date_range
-	var earliestDate = date_range.earliestDate;
-	earliestDate = Date.parse(earliestDate);
-	var latestDate = date_range.latestDate;
-	latestDate = Date.parse(latestDate);
+	
 
 	$('#date-picker').daterangepicker({
 		presetRanges     :[
@@ -221,7 +218,7 @@ $(document).ready(function () {
 
 			{heading:'Selectable Ranges'}
 		],
-		presetDates      :editions,
+		
 		presets          :{
 			//specificDate:'Specific Date',
 			allDatesAfter:'All Dates After',
@@ -235,8 +232,7 @@ $(document).ready(function () {
 		datepickerOptions:{
 			changeMonth:true,
 			changeYear :true,
-			minDate    :earliestDate,
-			maxDate    :latestDate
+			
 		},
 		onOpen           :function () {
 
@@ -343,7 +339,7 @@ function getList(settings) {
 				api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, false);
 			}
 
-			if (!$("#ab-details-modal").is(":visible")) {
+			if (!$("#nf-details-modal").is(":visible")) {
 				getDetails();
 			}
 		}

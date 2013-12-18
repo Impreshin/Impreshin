@@ -1,8 +1,8 @@
 
+UPDATE `_global_publications` SET `publication` = 'Mangaung Issue' WHERE `_global_publications`.`ID` =2;
+UPDATE `_global_publications` SET `publication` = 'Eastern Free State Issue' WHERE `_global_publications`.`ID` =1;
 
-UPDATE `_global_publications` SET `publication` = 'Limpopo Mirror' WHERE `_global_publications`.`ID` = 2;
-
-SET @companyID := "1";
+SET @companyID := "6";
 
 
 CREATE TABLE IF NOT EXISTS `nf_articles_body` (`ID` INT(6) NOT NULL AUTO_INCREMENT, `aID` INT(6) DEFAULT NULL, `uID` INT(6) DEFAULT NULL, `body` TEXT, `datein` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`ID`), KEY `aID` (`aID`, `uID`));
@@ -42,7 +42,7 @@ DROP TABLE nf_errors;
 
 
 
-SET @companyID := "1";
+SET @companyID := "6";
 
 
 
@@ -50,7 +50,7 @@ ALTER TABLE `nf_article_newsbook` CHANGE `ID` `ID` INT( 6 ) NOT NULL AUTO_INCREM
 ALTER TABLE `nf_article_newsbook` CHANGE `placedBy` `placedBy` INT( 6 ) NULL DEFAULT NULL;
 ALTER TABLE `nf_article_newsbook` CHANGE `plannedPage` `plannedPage` INT( 6 ) NULL DEFAULT NULL;
 ALTER TABLE `nf_article_newsbook` CHANGE `placedPage` `placedPage` INT( 6 ) NULL DEFAULT NULL;
-ALTER TABLE nf_article_newsbook DROP INDEX aID_2;
+#ALTER TABLE nf_article_newsbook DROP INDEX aID_2;
 ALTER TABLE nf_article_newsbook DROP INDEX aID;
 ALTER TABLE `nf_article_newsbook` CHANGE `articleID` `aID` INT(6) NULL DEFAULT NULL;
 ALTER TABLE `nf_article_newsbook` ADD INDEX (`aID`);
@@ -60,8 +60,6 @@ ALTER TABLE `nf_article_newsbook` ADD INDEX (`uID`);
 
 
 # Run /old_to_new/nf_pages.php
-
-
 
 
 ALTER TABLE `nf_article_newsbook_photos` CHANGE `nID` `nID` INT(6) NULL DEFAULT NULL;
@@ -290,3 +288,28 @@ CREATE TABLE IF NOT EXISTS `nf_files_body` (
 );
 INSERT INTO nf_files_body (fileID,uID,body) SELECT ID, uID, caption FROM nf_files WHERE caption is not null;
 ALTER TABLE `nf_files` DROP `caption`;
+
+ALTER TABLE `nf_categories` ADD `nf_cm_css` TEXT NULL DEFAULT NULL AFTER `category` ;
+ 
+
+UPDATE nf_articles SET locked_uID = NULL;
+ALTER TABLE `nf_articles_body` ADD `cm` INT( 4 ) NULL DEFAULT NULL AFTER `datein`;
+ALTER TABLE `nf_articles` CHANGE `cm` `cm` INT( 4 ) NULL DEFAULT NULL;
+UPDATE `nf_articles_body` SET stageID='1' WHERE stageID is null;
+
+
+
+
+
+
+
+
+#---------------------------------------------
+
+
+INSERT INTO global_users_company (cID,uID,nf,nf_author) SELECT '6', ID, '1', '1' FROM global_users WHERE email is null AND fullName is not null;
+
+
+ALTER TABLE `nf_article_newsbook` CHANGE `placedBy` `placed_uID` INT( 6 ) NULL DEFAULT NULL;
+
+ALTER TABLE `nf_articles` ADD `lang` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `meta`;

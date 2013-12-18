@@ -48,7 +48,7 @@
 						<td class="span12" style="">
 							<div style="padding:10px;">
 								<div class="span11 control-group">
-									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<% if (this.details.title) { %><%= this.details.title %><% } %>">
+									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<%= this.details.title||"" %>">
 								</div>
 
 
@@ -57,11 +57,21 @@
 									<article id="form-diff-1">
 
 
-										<div class="span11 control-group" style=" min-height:440px; padding-top:5px;" id="body-area" >
-											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body"><%= this.details.body||"" %></textarea>
+										<div class="span11 control-group" style=" padding-top:5px;" id="body-area" >
+											<textarea name="body" id="body" cols="30" rows="10" placeholder="Body" style="height:460px;"><%= this.details.body||"" %></textarea>
 										</div>
 									</article>
 									<article id="form-diff-2">
+										<div class="clearfix"></div>
+										
+										<div class="span11">
+											<div class="alert" >
+												You have this record selected as a standalone photo(s)
+											</div>
+										</div>
+										
+										
+										<div class="clearfix"></div>
 									</article>
 								</section>
 
@@ -95,10 +105,20 @@
 									<section class="block control-group" style="margin-top:10px;">
 										<h4>Author</h4>
 										<select name="authorID" id="authorID" style="width:100%;"  class="select2">
+										<% if (this.details.ID){ %>
+											<optgroup label="Selected">
+											<option value="<%= this.details.authorID %>" selected="selected"><%= this.details.author %></option>
+											</optgroup>
+										<optgroup label="Authors">
 											{% for row in authors %}
 												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
 											{% endfor %}
-
+										</optgroup>
+										<% } else { %>
+											{% for row in authors %}
+												<option value="{{ row['ID'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_author) { %>selected="selected"<% } %>>{{ row['fullName'] }}</option>
+											{% endfor %}
+										<% } %>
 										</select>
 									</section>
 									{% else %}
@@ -109,6 +129,15 @@
 										<select name="categoryID" id="categoryID" style="width:100%;" class="select2">
 											{% for row in categories %}
 												<option value="{{ row['ID'] }}" data-checklist-count="{{ row['checklistCount'] }}" <% if ("{{ row['ID'] }}" == this.settings.last_category) { %>selected="selected"<% } %>>{{ row['category'] }}</option>
+											{% endfor %}
+										</select>
+									</section>
+
+									<section class="block control-group" style="">
+										<h4>Language</h4>
+										<select name="language" id="language" style="width:100%;" class="select2">
+											{% for key,row in _cfg.nf.languages %}
+												<option value="{{ key }}" <% if ("{{ key }}" == this.settings.last_language) { %>selected="selected"<% } %>>{{ row }}</option>
 											{% endfor %}
 										</select>
 									</section>
@@ -145,6 +174,7 @@
 									</section>
 									{% endif %}
 									<section class="block" id="tools-block" style="margin-top:10px;">
+									
 
 										<div class="btn-group" style="margin-left:-4px;">
 											<button disabled type="button" id="btn-tools-comments" class="btn btn-mini span1" rel="tooltip" title="Comments">
@@ -154,8 +184,8 @@
 												<i class="icon-check"></i>
 											</button>
 
-											<button disabled type="button" id="comments" class="btn btn-mini span1 g" rel="tooltip" title="Dictionary/Thesaurus">
-												<i class="icon-circle-blank"></i>
+											<button type="button" id="btn-tools-dictionary" class="btn btn-mini span1" rel="tooltip" title="Dictionary/Thesaurus">
+												<i class="icon-search"></i>
 											</button>
 											<button type="button" id="btn-tools-search" class="btn btn-mini span1" rel="tooltip" title="Use meta to perform a news search">
 												<i class="icon-check-sign"></i>
@@ -190,6 +220,7 @@
 						<% } %>
 
 
+						{% if _user['permissions']['form']['priority']=='1' %}
 
 						<span>
 							<div class="span1" style="padding-top:5px;">Priority:</div>
@@ -204,6 +235,7 @@
 							<div class="span1 s g l" style="padding-top:5px;" id="slider-text"></div>
 						</span>
 
+						{% endif %}
 
 					</div>
 
@@ -234,6 +266,12 @@
 							</label>
 							<% } %>
 							<button class="btn btn-primary span4" style="" type="submit">Save Record</button>
+							<% if (this.details.ID && this.details.stageID != '1') { %>
+							<label class="btn span1" title="" id="btn-lock-checkbox">
+								<input type="checkbox" style="margin:0;" name="locked_record" id="locked_record" value="<%= this.details.locked %>" <% if (this.details.locked=='1'){ %>checked="checked"<% } %>/>
+								<i class="icon-lock"></i>
+							</label>
+							<% } %>
 						</div>
 
 
@@ -269,7 +307,8 @@
 				
 			<div class="file-icon-area">
 				<% if (this.fileType=="1"){ %>
-				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" alt=""/>
+			
+				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" class="btn-view-photo" data-file="<%= this.folder %>/<%= this.filename %>" data-ID="<%= this.ID %>" alt=""/>
 
 				<% } else { %>
 				<div class="file-icon <%= this.icon %>"></div>
@@ -288,8 +327,15 @@
 
 
 			<div class="file-buttons">
+				<% if (this.ID) { %>
 				<div class="btn-group">
-					<button class="btn btn-mini span1 dg" type="button"><i class="icon-bookmark"></i></button>
+					
+					<button class="btn btn-mini span1 btn-download-file" data-file="<%= this.folder %>/<%= this.filename %>" data-filename="<%= this.filename_orig %>" type="button"><i class="icon-download-alt"></i></button>
+
+				
+						
+						
+					
 					<div class="span1 replace-area" id="btn-container-<%= this.ID||this.tempID %>" title="Replace file">
 						<button class="btn span1 btn-mini file-replace-btn" data-id="<%= this.ID||this.tempID %>" data-filename="<%= this.filename %>" data-folder="<%= this.folder %>" type="button" title="Replace file" style="margin-left: 0;">
 							<i class="icon-exchange"></i>
@@ -300,11 +346,12 @@
 						</button>
 
 					</div>
-					<button class="btn btn-mini span1" type="button"><i class="icon-remove"></i></button>
+					<button class="btn btn-mini span1 btn-delete-file" data-ID="<%= this.ID %>" type="button"><i class="icon-remove"></i></button>
 				</div>
+				<% } %>
 			</div>
 
-			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px;"><%= this.caption||"" %></textarea>
+			<textarea name="file-caption-<%= this.ID||this.tempID %>" id="file-caption-<%= this.ID||this.tempID %>" cols="30" rows="5" class="span8 caption_boxes" placeholder="Description / Caption" style="margin-bottom:5px; height:150px;"><%= this.caption||"" %></textarea>
 
 
 
@@ -365,3 +412,59 @@
 	</li>
 	]]>
 </script>
+
+<script type="text/x-jqote-template" id="template-dictionary-result">
+	<![CDATA[
+
+	<div class='modal-body'>
+
+	
+	<% for(var i in this.results) { %>
+	<article>
+		<header>
+			<h3><%= this.results[i].term %> <small>(<%= this.results[i].partofspeech %>)</small></h3>
+		</header>
+		<div class="well well-small">
+			<%= this.results[i].definition %>
+		</div>
+		<% if (this.results[i].example) { %>
+
+		<em><%= this.results[i].example %></em>
+
+		<% } %>
+		<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
+		<footer>
+			<% if (this.results[i].synonyms) { %>
+			<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
+			<% } %>
+			<% if (this.results[i].antonyms) { %>
+			<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
+			<% } %>
+
+		</footer>
+		<% } %>
+
+	</article>
+
+
+	<% } %>
+
+	</div>
+	<div class='modal-footer s' style="padding: 4px;">
+		<a href="http://www.definitions.net/definition/<%= this.term %>" target="_blank"> More definitions for "<%= this.term %>" on Definitions.net</a>
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-dictionary-no-result">
+	<![CDATA[
+	<div class='modal-body'>
+	No Matches Found
+
+	</div>
+	<div class='modal-footer s' style="padding: 4px;">
+		<a href="http://www.definitions.net/definition/<%= this.term %>" target="_blank"> More definitions for "<%= this.term %>" on Definitions.net</a>
+	</div>
+
+			
+	]]>
+</script>	

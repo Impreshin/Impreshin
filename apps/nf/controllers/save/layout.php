@@ -48,7 +48,7 @@ class layout extends save {
 
 
 		if ($locked!=""){
-			$values['locked']= $locked;
+			$values['nf_locked']= $locked;
 		}
 
 

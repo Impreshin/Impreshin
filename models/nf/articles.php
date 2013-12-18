@@ -652,7 +652,10 @@ class articles {
 		$userID = $user['ID'];
 
 
-		$log = mysql_escape_string(json_encode($log));
+		$log = (json_encode($log));
+
+		$log = str_replace("'", "\\'", $log);
+		$log = str_replace('"', '\\"', $log);
 		//	$log = str_replace("'", "\\'", $log);
 
 

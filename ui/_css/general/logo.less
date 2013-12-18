@@ -1,0 +1,140 @@
+@-webkit-keyframes pulse {
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0.5;
+	}
+	100% {
+		opacity : 1;
+	}
+}
+
+@-moz-keyframes pulse {
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0.5;
+	}
+	100% {
+		opacity : 1;
+	}
+}
+
+@-o-keyframes pulse {
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0.5;
+	}
+	100% {
+		opacity : 1;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		opacity : 1;
+	}
+	50% {
+		opacity : 0.5;
+	}
+	100% {
+		opacity : 1;
+	}
+}
+
+#impreshin-logo {
+	-webkit-animation         : pulse 3s infinite; /* Safari 4+ */
+	-moz-animation            : pulse 3s infinite; /* Fx 5+ */
+	-o-animation              : pulse 3s infinite; /* Opera 12+ */
+	animation                 : pulse 3s infinite; /* IE 10+ */
+
+	animation-timing-function : ease-in-out;
+}
+
+@keyframes infinite-spinning {
+	from {
+		transform : rotate(0deg);
+	}
+	to {
+		transform : rotate(360deg);
+	}
+}
+
+@-webkit-keyframes branch-spin {
+	0% {
+		transform : rotate(0deg);
+	}
+
+	90% {
+		transform : rotate(0deg);
+	}
+	100% {
+		transform : rotate(360deg);
+	}
+}
+
+@-moz-keyframes branch-spin {
+	0% {
+		transform : rotate(0deg);
+	}
+
+	90% {
+		transform : rotate(0deg);
+	}
+	100% {
+		transform : rotate(360deg);
+	}
+}
+
+@-o-keyframes branch-spin {
+	0% {
+		transform : rotate(0deg);
+	}
+
+	90% {
+		transform : rotate(0deg);
+	}
+	100% {
+		transform : rotate(360deg);
+	}
+}
+
+@keyframes branch-spin {
+	0% {
+		transform : rotate(0deg);
+	}
+
+	90% {
+		transform : rotate(0deg);
+	}
+	100% {
+		transform : rotate(360deg);
+	}
+}
+
+#brand-branch {
+	position                  : absolute;
+	bottom                    : 0;
+	text-shadow               : 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -5px 35px rgba(255, 255, 255, 0.3);
+	margin-left               : -30px;
+	font-size                 : 10px;
+	color                     : red;
+
+	-webkit-animation         : branch-spin 10s infinite; /* Safari 4+ */
+	-moz-animation            : branch-spin 10s infinite; /* Fx 5+ */
+	-o-animation              : branch-spin 10s infinite; /* Opera 12+ */
+	animation                 : branch-spin 10s infinite; /* IE 10+ */
+
+	animation-timing-function : ease-in-out;
+}
+
+a.brand {
+	color: #666!important;
+	text-shadow: 0px 2px 3px #333 !important;
+	font-weight: bold!important;
+	
+}

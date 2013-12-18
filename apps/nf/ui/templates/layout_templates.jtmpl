@@ -1,9 +1,10 @@
+
 {% include '_details.jtmpl' %}
 {% include "_details_newsbook.jtmpl" %}
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
-	<tr data-id="<%= this.ID %>" class="record dragable details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
+	<tr data-id="<%= this.ID %>" class="record <% if (this.stageID=='2'){ %>dragable<% } else { %>g<% } %> details_record" data-page="<%= this.page %>" data-drag-handler="<%= this.title %>">
 		<td class="span1 r" style="padding-left: 0;" data-drag-handler="<%= this.title %>">
 			<% if (this.type_icon){ %>
 			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
@@ -36,7 +37,7 @@
 			<table class="s">
 				<% for(var g in this.records) { %>
 
-				<tr data-id="<%= this.records[g].ID %>" class="record dragable" data-cm="<%= this.records[g].cm %>" data-drag-handler="<%= this.records[g].title %>"  data-page="<%= this.records[g].page %>" >
+				<tr data-id="<%= this.records[g].ID %>" class="record dragable <% if (this.records[g].placed!='1'){ %>em g<% } %>" data-cm="<%= this.records[g].cm %>" data-drag-handler="<%= this.records[g].title %>"  data-page="<%= this.records[g].page %>" >
 					<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
 						<% if (this.records[g].type_icon){ %>
 						<i class="<%= this.records[g].type_icon %> g" ></i>
@@ -55,7 +56,15 @@
 				<% } %>
 			</table>
 		</div>
-		
+		<% if (this.ab.cm && this.ab.cm > 0) { %>
+		<footer class="progress <% if (this.ab.percent > 60){ %><% if (this.ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+			<div class="bar" style="width: <%= this.ab.percent %>%;"></div>
+			<div class="text">Ad Loading: <%= this.ab.cm %>cm | <%= this.ab.percent %>%</div>
+
+		</footer>
+		<% } %>
+
+
 		<div class="msgs"></div>
 		<% if(this.colour.icons) { %>
 		<div class="page_colour">
@@ -93,7 +102,7 @@
 					<table class="s">
 						<% for(var g in this.pages[i].records) { %>
 
-						<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %> " data-cm="<%= this.pages[i].records[g].cm %>" data-drag-handler="<%= this.pages[i].records[g].title %>"  data-page="<%= this.pages[i].records[g].page %>" >
+						<tr data-id="<%= this.pages[i].records[g].ID %>" class="record <% if(this.pages[i].locked!='1') { %>dragable<% } %>  <% if (this.pages[i].records[g].placed!='1'){ %>em g<% } %>" data-cm="<%= this.pages[i].records[g].cm %>" data-drag-handler="<%= this.pages[i].records[g].title %>"  data-page="<%= this.pages[i].records[g].page %>" >
 							<td class="s g c" style="padding-left: 3px;padding-right: 3px;">
 
 								<% if ( this.pages[i].records[g].type_icon){ %>
@@ -116,7 +125,20 @@
 					</table>
 
 				</div>
+				<% if (this.pages[i].ab) { %>
+				<% if (this.pages[i].ab.cm && this.pages[i].ab.cm > 0) { %>
+				<footer class="progress <% if (this.pages[i].ab.percent > 60){ %><% if (this.pages[i].ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+					<div class="bar" style="width: <%= this.pages[i].ab.percent %>%;"></div>
+					<div class="text">Ad Loading: <%= this.pages[i].ab.cm %>cm | <%= this.pages[i].ab.percent %>%</div>
+
+				</footer>
+				<% } %>
+				<% } %>
 				
+				
+				
+				
+			
 				<div class="msgs"></div>
 				<% if(this.pages[i].colour.icons) { %>
 				<div class="page_colour">

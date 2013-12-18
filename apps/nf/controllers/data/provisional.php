@@ -121,6 +121,7 @@ class provisional extends data {
 			$options = array("newsbook_used"=>true);
 		}
 		
+		//test_array(array($ordering)); 
 		
 		
 		

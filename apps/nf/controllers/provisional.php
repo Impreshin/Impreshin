@@ -49,7 +49,7 @@ class provisional extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Provisional",
 			),
-			"help"=> "/apps/nf/help/bookings"
+			//"help"=> "/apps/nf/help/bookings"
 		);
 
 

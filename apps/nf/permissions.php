@@ -23,7 +23,8 @@ class permissions {
 			"form"           => array(
 				"new"         => 0,
 				"edit_master" => 0,
-				"author_dropdown"=>0
+				"author_dropdown"=>0,
+				"priority"=>0
 			),
 			"details"           => array(
 				"overwrite_locked"         => 0,
@@ -49,6 +50,29 @@ class permissions {
 				),
 				"search"  => array(
 					"page" => 0
+				),
+				"newsbook"  => array(
+					"page" => 0
+				)
+			),
+			"reports"=>array(
+				"author"=> array(
+					"submitted"  => array(
+						"page" => 0
+					),
+					"newsbook"  => array(
+						"page" => 0
+					)	
+				),
+				"category" => array(
+					"figures"   => array(
+						"page" => 0
+					),
+				),
+				"publication" => array(
+					"figures"   => array(
+						"page" => 0
+					),
 				)
 			),
 			"administration" => array(
@@ -77,6 +101,9 @@ class permissions {
 					"resources"=>array(
 						"page"=>0
 					),
+					"dictionary"=>array(
+						"page"=>0
+					),
 					
 				),
 				"system"      => array(
@@ -98,6 +125,9 @@ class permissions {
 		$return['d'] = array(
 			"view"=>array(
 				'only_my_records'=>"If this is checked checked then the user will ONLY see their own records (author ID)."
+			),
+			"form"=>array(
+				"priority"=>"This user will be able to use the priority slider on the form to set the articles priority"	
 			),
 			"administration" => array(
 

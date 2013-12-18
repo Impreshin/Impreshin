@@ -62,6 +62,14 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/records/newsbook',
+	"controller"=>'apps\nf\controllers\records_newsbook->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/records/deleted',
 	"controller"=>'apps\nf\controllers\deleted->page',
 	"a"=>true,
@@ -74,6 +82,35 @@ $routes[] =	array(
 	"controller"=>'apps\nf\controllers\deleted->_print',
 	"a"=>true,
 	"l"=>false,
+);
+// reports
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/author/submitted',
+	"controller"=>'apps\nf\controllers\reports\author_submitted->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/author/newsbook',
+	"controller"=>'apps\nf\controllers\reports\author_newsbook->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/publication/figures',
+	"controller"=>'apps\nf\controllers\reports\publication_figures->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/reports/category/figures',
+	"controller"=>'apps\nf\controllers\reports\category_figures->page',
+	"a"=>true,
+	"l"=>true,
 );
 // administration
 
@@ -113,7 +150,7 @@ $routes[] =	array(
 	"l"=>true,
 );
 $routes[] =	array(
-	"method"=>'GET',
+	"method"=>'GET|POST',
 	"path"=>'/app/nf/admin/cmstylesheet',
 	"controller"=>'apps\nf\controllers\admin\cmstylesheet->page',
 	"a"=>true,
@@ -131,6 +168,13 @@ $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/nf/admin/resources',
 	"controller"=>'apps\nf\controllers\admin\resources->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET|POST',
+	"path"=>'/app/nf/admin/dictionary',
+	"controller"=>'apps\nf\controllers\admin\dictionary->page',
 	"a"=>true,
 	"l"=>true,
 );

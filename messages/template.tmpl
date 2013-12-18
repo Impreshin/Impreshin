@@ -1,0 +1,590 @@
+<!doctype html>
+<!--[if lt IE 9]>
+<html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9]>
+<html class="no-js ie ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]>
+<html class="no-js ie" lang="en">
+<![endif]-->
+<!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<!--no_timer_ssssssssssssss_list-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>{{ docs['title']|default("") }}</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/ui/_css/libs/custom-theme/jquery-ui.{{ _v }}.css"/>
+	<link rel="stylesheet" type="text/css" href="/ui/_css/style.{{ _v }}.css"/>
+
+
+	<script src="/ui/_js/libs/modernizr.{{ _v }}.js"></script>
+
+
+	{% for row in page['css'] %}
+		<link rel="stylesheet" href="{{ row }}">
+	{% endfor %}
+
+
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+
+	<style type="text/css">
+		.nav li ul {
+			display : none;
+		}
+
+		.nav a.active {
+			background-color : #ddd;;
+		}
+
+		.nav .icon-caret-down {
+			float        : right;
+			margin-right : 5px;
+			margin-top   : 3px;
+		}
+
+		.nav li a {
+			padding-right : 5px !important;
+		}
+
+		.nav-pills li.active a {
+			background-color : #f1f1f1;
+			border           : 1px solid #ccc;
+			color            : #444;;
+		}
+
+		.badge.g {
+			background-color : #f1f1f1;
+			color            : #ccc;;
+		}
+
+		#right-area .breadcrumb {
+			box-shadow    : -1px 2px 2px rgba(100, 100, 100, 0.2);
+			border-radius : 0;
+			border-left   : none;
+
+			margin        : 0;
+			margin-left   : -1px;
+		}
+
+		#right-area .bottom-right .breadcrumb {
+			border-top : 1px solid #ccc;
+			box-shadow : -1px -2px 2px rgba(100, 100, 100, 0.2);
+
+		}
+
+		#right-area .breadcrumb li {
+			padding-left  : 5px;
+			padding-right : 5px;
+		}
+
+		#right-area .breadcrumb li > .btn {
+			margin-left : 0;
+		}
+
+		#right-area .breadcrumb .btn {
+			margin-top    : -10px;
+			margin-bottom : -8px;
+
+		}
+
+		#right-area .breadcrumb .btn-group {
+			margin-top : -0px;
+		}
+
+		.content {
+			position : absolute;
+			top      : 0;
+			left     : 0;
+			right    : 0;
+			bottom   : 0;
+		}
+
+		#send-form-area {
+			display          : none;
+			background-color : #fff;
+		}
+
+		#mark-msg-status .btn {
+			display : none;
+		}
+	</style>
+
+
+
+</head>
+<body class="help_pages">
+
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+
+			<ul class="nav nav-pills pull-left">
+
+
+				<li>
+					<h2 style="padding-left: 20px; padding-right: 20px;margin-bottom: -5px;">Messages</h2>
+				</li>
+
+				<li class="divider-vertical"></li>
+
+				<li style="float: right;">
+					<button class="btn span1 fancy-close" style="position:absolute;top:5px; right:5px;"> Close
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+<section role="main" id="pagecontent">
+	<div class="container messages_pages">
+
+
+
+
+
+	</div>
+	<div class="loadingmask wide"></div>
+</section>
+
+
+
+
+
+
+
+<script src="/ui/_js/libs/jquery.{{ _v }}.js"></script>
+
+
+
+<script src="/ui/ckeditor/ckeditor.js"></script>
+<script src="/min/js.{{ _v }}.js"></script>
+<script>
+$(".fancy-close").click(function () {
+	parent.$.fancybox.close();
+});
+
+
+
+
+var text_toolbar = [
+	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
+	{ name: 'tools', items: [ 'Find', 'Replace' ] },
+	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
+	{ name: 'tools', items: [ 'Maximize' ] },
+	{ name: 'spellcheck', items: [ 'jQuerySpellChecker' ]}
+
+];
+
+
+
+
+
+
+
+var mess = "home";
+if (parent.$.bbq.getState("messages")) {
+	mess = parent.$.bbq.getState("messages");
+}
+$.bbq.pushState({"messages": mess});
+
+
+var jScrollPaneOptions = {
+	showArrows      : false,
+	maintainPosition: false
+};
+
+
+function scrollbars() {
+	var $right_area = $("#right-area .scroll-pane");
+	var $left_area = $("#left-area .scroll-pane");
+	if ($(".bottom-right").length) {
+		$right_area.css("bottom", $(".bottom-right").outerHeight());
+	}
+	$right_area.jScrollPane(jScrollPaneOptions);
+	$left_area.jScrollPane(jScrollPaneOptions);
+}
+
+
+$(document).ready(function () {
+
+	$(document).on("submit", "#send-form", function (e) {
+		e.preventDefault();
+
+		var data = $(this).serialize();
+		$.post("messages/do_message", data, function (r) {
+			//$("#send-form-area").slideUp();
+			clear_draft_msg();
+			getList();
+		});
+
+
+
+		return false;
+
+	});
+
+
+
+
+
+	$(document).on("click", ".btn-checkbox-all", function (e) {
+
+		$('.records input[type="checkbox"]').each(function () {
+			var checked = $(this).is(":checked") ? false : true;
+			$(this).prop("checked", checked).trigger("change");
+		});
+
+
+	});
+	$(document).on("click", ".btn-url-link", function (e) {
+
+		var url = $(this).attr("data-url");
+
+		if (url) {
+			parent.window.location = "/redirect?url="+url;
+			//console.log(url); 
+		}
+
+
+	});
+
+
+
+
+
+	$(document).on("click", ".records td.checkbox-cell", function (e) {
+		e.stopPropagation();
+
+	});
+
+	$(document).on("change", ".records td.checkbox-cell input[type='checkbox']", function (e) {
+		var show_un_read = false;
+		var show_read = false;
+		var $c = $("#mark-msg-status");
+		$c.find(".btn-mark-read, .btn-mark-un-read").hide()
+
+
+		$(".records input[type='checkbox']:checked").each(function () {
+			var $this = $(this);
+			if ($this.attr("data-dir") == 'in') {
+				if ($this.attr("data-read") == '1') {
+					show_un_read = true;
+				} else {
+					show_read = true;
+				}
+			}
+
+		});
+
+
+		if (show_read) {
+			$c.find(".btn-mark-read").show();
+		}
+		if (show_un_read) {
+			$c.find(".btn-mark-un-read").show();
+		}
+	});
+
+
+	$(document).on("click", ".btn-mark-un-read", function (e) {
+		var ids = [];
+		$(".records input[type='checkbox']:checked").each(function () {
+			ids.push($(this).val())
+		});
+		$.post("messages/do_state", {"ids": ids, "read": "0"}, function (r) {
+			getList();
+		});
+	});
+
+	$(document).on("click", ".btn-mark-read", function (e) {
+		var ids = [];
+		$(".records input[type='checkbox']:checked").each(function () {
+			ids.push($(this).val())
+		});
+		$.post("messages/do_state", {"ids": ids, "read": "1"}, function (r) {
+			getList();
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+	//scrollbars()
+	$(document).on("change", "#to_uID", function (e) {
+		save_draft_msg();
+	});
+	$(document).on("keyup", "#subject", function (e) {
+		save_draft_msg();
+	});
+
+
+
+	$(document).on("click", ".reply-to", function (e) {
+
+		reply_to($(this));
+	});
+
+	$(document).on("click", ".open-form", function (e) {
+		$("#send-form-area").slideDown();
+	});
+
+	$(document).on("click", ".hide-form", function (e) {
+		$("#send-form-area").slideUp();
+	});
+
+
+
+
+	$(document).on("click", ".section_link", function (e) {
+		e.preventDefault();
+		var section = $(this).attr("data-section");
+		$.bbq.pushState({"messages": section});
+		$.bbq.removeState("ID");
+		getList();
+	});
+
+	$(document).on("click", ".close-details", function (e) {
+		e.preventDefault();
+		$.bbq.removeState("ID");
+		getList();
+	});
+
+	$(document).on("click", ".reload", function (e) {
+		e.preventDefault();
+		getList();
+	});
+	$(document).on("click", ".record", function (e) {
+		var ID = $(this).attr("data-id");
+		$.bbq.pushState({"ID": ID});
+		getList();
+	});
+
+	getList();
+
+
+});
+$(function () {
+	$(document).tooltip({
+		selector : '[rel=tooltip]',
+		live     : true,
+		container: 'body'
+	});
+	$(document).popover({
+		selector : '[rel=popover]',
+		offset   : 5,
+		live     : true,
+		trigger  : 'hover',
+		container: 'body'
+	});
+
+
+});
+
+function updatetimerlist(d, page_size) {
+
+}
+
+function getList() {
+
+	var ID = $.bbq.getState("ID");
+
+	var section = $.bbq.getState("messages");
+	section = (section) ? section : "";
+
+	$("#pagecontent .loadingmask").show();
+	$.getData("messages/list", {"section": section, "ID": ID}, function (data) {
+
+		//console.log(data); 
+
+		$("#pagecontent .messages_pages").jqotesub($("#template-list"), data);
+		scrollbars();
+		load_form();
+
+
+		$("#pagecontent .loadingmask").fadeOut();
+		parent.$.bbq.pushState({"messages": section});
+
+	}, "list");
+
+}
+function load_form() {
+
+	load_draft_msg();
+
+
+	$("#to_uID").select2();
+
+	var height = $("#right-area").innerHeight();
+	;
+	height = height - 200;
+
+	var text_settings = {
+		uiColor       : '#FFFFFF',
+		height        : height + 'px',
+		toolbar       : text_toolbar,
+		resize_enabled: false,
+		extraPlugins  : 'onchange'
+
+	};
+
+
+
+
+	if ($("#message").length) {
+
+
+
+
+
+
+		var instance = CKEDITOR.replace('message', text_settings);
+		instance.on('change', function (e) {
+			save_draft_msg()
+		});
+
+
+
+
+
+
+
+	}
+
+
+
+
+
+}
+function load_draft_msg() {
+
+	if (localStorage) {
+
+		if (localStorage.to_uID) {
+			$("#to_uID").val(localStorage.to_uID);
+		}
+		if (localStorage.subject && localStorage.subject != "undefined") {
+			$("#subject").val(localStorage.subject);
+		}
+		if (localStorage.message && localStorage.message != "undefined") {
+			$("#message").val(localStorage.message);
+		}
+
+	}
+
+
+}
+function save_draft_msg() {
+	if (localStorage) {
+		/*
+		 * if form field values exist in local storage use
+		 * them to populate the form when the page loads
+		 */
+
+		/*
+		 * when a form field changes store it's value in local storage
+		 */
+
+		var body = CKEDITOR.instances['message'].getData()
+
+
+		localStorage['to_uID'] = $("#to_uID").val();
+		localStorage['subject'] = $("#subject").val();
+		localStorage['message'] = body;
+
+
+
+
+
+		/*
+		 * clear local storage when the form is submitted
+
+		 .submit(function(){
+		 localStorage.clear();
+		 })
+
+		 * output local storage to the console each time the form changes
+		 * (you may want to remove this code on the production server)
+		 */
+
+	}
+}
+function clear_draft_msg() {
+	//console.log($("#to_uID option:first").attr("value")); 
+	$("#to_uID").val($("#to_uID option:first").attr("value")).trigger("change");
+	$("#subject").val("");
+
+	CKEDITOR.instances['message'].setData('');
+	localStorage.clear();
+}
+
+function reply_to(e) {
+
+	var to_uID = e.attr("data-to_uID");
+	var subject = ($("#details-subject").text());
+	subject = subject.trim();
+
+	if (localStorage) {
+		var ask = false;
+		if (localStorage['to_uID']) {
+			ask = true;
+		}
+		if (localStorage['subject']) {
+			ask = true;
+		}
+		if (localStorage['message']) {
+			ask = true;
+		}
+
+		if (ask) {
+			if (confirm("You are currently busy with a draft message\nClick ok to disregard it.")) {
+				$("#to_uID").val(to_uID).trigger("change");
+				$("#subject").val(subject).trigger("change");
+				CKEDITOR.instances['message'].setData('');
+				$("#send-form-area").slideDown();
+			}
+		} else {
+			$("#to_uID").val(to_uID).trigger("change");
+			$("#subject").val(subject).trigger("change");
+			CKEDITOR.instances['message'].setData('');
+			$("#send-form-area").slideDown();
+		}
+
+
+
+	} else {
+		$("#to_uID").val(to_uID).trigger("change");
+		$("#subject").val(subject).trigger("change");
+		CKEDITOR.instances['message'].setData('');
+		$("#send-form-area").slideDown();
+	}
+
+
+
+}
+</script>
+
+{% include "templates/main.jtmpl" %}
+
+
+{% if page['template_js'] %}
+	<script src='{{ page['template_js'] }}'></script>
+{% endif %}
+
+</body>
+</html>

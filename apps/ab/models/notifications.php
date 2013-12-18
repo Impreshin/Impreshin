@@ -13,7 +13,7 @@ class notifications {
 	public static function show() {
 		$return = array();
 		$return['footer'] = self::bar();
-
+		$return['messages'] = \models\messages::_count();
 		return $return;
 	}
 

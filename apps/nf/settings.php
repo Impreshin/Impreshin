@@ -31,10 +31,12 @@ class settings {
 				"h"=> "Title",
 			),
 			"datein"=>array(
-				"h"=>"Date&nbsp;Created"
+				"h"=>"Date&nbsp;Created",
+				"m"=>60
 			),
 			"dateChanged"=>array(
-				"h"=>"Date&nbsp;Changed"
+				"h"=>"Date&nbsp;Changed",
+				"m"=>60
 			),
 			
 			"stage"=>array(
@@ -44,10 +46,12 @@ class settings {
 				"h"=>"Author"
 			),
 			"cm"=>array(
-				"h"=>"Cm"
+				"h"=>"Cm",
+				"w"=>40
 			),
 			"words"=>array(
-				"h"=>"Words"
+				"h"=>"Words",
+				"w"=>40
 			),
 			"priority"=>array(
 				"h"=>"Priority"
@@ -67,7 +71,8 @@ class settings {
 			),
 			"page"=>array(
 				"h"=>"Page",
-				"o"=>"global_pages.page"
+				"o"=>"global_pages.page",
+				
 			),
 			
 			"category"=>array(
@@ -76,15 +81,18 @@ class settings {
 			),
 			"commentCount"=>array(
 				"h"=>"Comments",
-				"o"=>"commentCount"
+				"o"=>"commentCount",
+				"w"=>40
 			),
 			"photosCount"=>array(
 				"h"=>"Photos",
-				"o"=>"photosCount"
+				"o"=>"photosCount",
+				"w"=>40
 			),
 			"filesCount"=>array(
 				"h"=>"Files",
-				"o"=>"filesCount"
+				"o"=>"filesCount",
+				"w"=>40
 			),
 			"locked_fullName"=>array(
 				"h"=>"Locked&nbsp;By",
@@ -93,12 +101,14 @@ class settings {
 			"locked"=>array(
 				"b"=>"locked",
 				"h"=>"Locked",
-				"o"=>"locked"
+				"o"=>"locked",
+				"w"=>30
 			),
 			"placed"=>array(
 				"b"=>"placed",
 				"h"=>"Placed",
-				"o"=>"placed"
+				"o"=>"placed",
+				"w"=>30
 			),
 
 			"deleted"               => array(
@@ -116,10 +126,18 @@ class settings {
 			),
 			"archived"               => array(
 				"h"=> "Archived",
-				"b"=> true
+				"b"=> true,
+				"w"=>30
+				
 			),
 			"archived_date"               => array(
 				"h"=> "Archived&nbsp;Date",
+				"m"=>60
+			),
+			"language"               => array(
+				"h"=> "Language",
+				"m"=>60,
+				"o"=>"lang"
 			),
 
 		);
@@ -163,6 +181,10 @@ class settings {
 				"n"=> "Page",
 				"g"=> "page"
 			),
+			"type"=> array(
+				"n"=> "Type",
+				"g"=> "type"
+			),
 			"none"=> array(
 				"n"=> "No Grouping",
 				"g"=> "none"
@@ -173,10 +195,15 @@ class settings {
 
 
 		$sections = array(
-			"provisional"=>array("author","category","stage","priority","none"),
-			"newsbook"=>array("author","category","stage","priority","page","none"),
-			"production"=>array("author","category","priority","page","none"),
-			"search"=>array("author","category","stage","priority","none"),
+			"provisional"=>array("author","category","stage","priority","type","none"),
+			"newsbook"=>array("author","category","stage","priority","page","type","none"),
+			"production"=>array("author","category","priority","page","type","none"),
+			"search"=>array("author","category","stage","priority","type","none"),
+			"records_newsbook"=>array("author","category","stage","priority","type","none"),
+			"reports_author_newsbook"=>array("category","stage","priority","type","none"),
+			"reports_category_figures"=>array("category","stage","priority","type","none"),
+			"reports_author_submitted"=>array("category","stage","priority","type","none"),
+			"reports_publication_figures"=>array("category","stage","priority","type","none"),
 		
 		);
 
@@ -243,6 +270,14 @@ class settings {
 			"words",
 			"priority"
 		);
+		$defColumns_reports_author = array(
+			"title",
+			"stage",
+			"cm",
+			"words",
+			"priority",
+			"photosCount"
+		);
 		
 			$settings = array(
 				"provisional"=>array(
@@ -280,7 +315,12 @@ class settings {
 
 				),
 				"layout"=>array(
-					"categoryID"=>array()
+					"categoryID"=>array(),
+					"filter"   => "*",
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
 				),
 				"production"=>array(
 					"col"        => $defColumns,
@@ -301,6 +341,7 @@ class settings {
 				),
 				"form"=>array(
 					"last_type"=>"1",
+					"last_language"=>"1"
 
 				),
 				"search"=> array(
@@ -318,6 +359,20 @@ class settings {
 						"search"=> "",
 						"dates" => date("Y-m-d",strtotime(date("Y")."-".date('m')."-".'1')) . " to " . date("Y-m-d",strtotime(date("Y")."-".date('m')."-".date('t')))
 					)
+
+				),
+				"records_newsbook"=> array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=> "author",
+						"o"=> "ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"dID"=> array()
 
 				),
 				"deleted"=> array(
@@ -345,6 +400,75 @@ class settings {
 
 
 				),
+				"reports_author_submitted"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"combined"=>"0",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
+				"reports_author_newsbook"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"filter"=>"*",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
+				"reports_publication_figures"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"filter"=>"*",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
+				"reports_category_figures"=>array(
+					"years"=>"",
+					"timeframe"=>"",
+					"filter"=>"*",
+					"ID"=>array(),
+					"col" => $defColumns_reports_author,
+					"group"      => array(
+						"g"=>"type",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns_reports_author),
+					"tolerance"=>25
+				),
+				
 				"admin_users"=>array(
 					"order"=>array(
 						"c"=>"fullName",

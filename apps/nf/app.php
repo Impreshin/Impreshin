@@ -16,14 +16,25 @@ class app extends \apps\app{
 		$permissions = $user['permissions'];
 		$permissions['records']['_nav'] = '0';
 		foreach ($permissions['records'] as $p) {
-			if ($p['page']) {
+			if (isset($p['page']) && $p['page']) {
 				$permissions['records']['_nav'] = '1';
 			}
 		}
+		
+		//test_array($permissions['reports']);
 		foreach ($permissions['reports'] as $p) {
-			if ($p['page']) {
+			if (isset($p['page']) && $p['page']=='1'){
 				$permissions['reports']['_nav'] = '1';
 			}
+			if (is_array($p)){
+				foreach ($p as $pp){
+					if (isset($pp['page']) && $pp['page']=='1'){
+						$permissions['reports']['_nav'] = '1';
+					}
+				}
+			}
+			
+			
 		}
 		if ($user['su'] == '1') {
 			$permissions['view']['only_my_records'] = '0';

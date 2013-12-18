@@ -106,7 +106,7 @@ class controller_app_form extends \apps\ab\controllers\_{
 			"meta"        => array(
 				"title" => "AB - Form - loading..",
 			),
-			"help"        => "/apps/ab/help/form"
+			"help"        => "/app/ab/documentation/ab/form"
 		);
 
 		$tmpl->dates = array(
@@ -235,7 +235,7 @@ class controller_app_form extends \apps\ab\controllers\_{
 			"meta"       => array(
 				"title"=> "AB - Form - $title",
 			),
-			"help"=>"/apps/ab/help/form"
+			"help"=>"/app/ab/documentation/ab/form"
 		);
 
 

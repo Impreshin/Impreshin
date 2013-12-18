@@ -31,11 +31,11 @@ class users extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Admin - Users",
 			),
-			"help"=> "/apps/nf/help/admin/users"
+			//"help"=> "/apps/nf/help/admin/users"
 		);
 
 		$permissions = \apps\nf\permissions::_available($cID);
-		$tmpl->use_pub = true;
+		//$tmpl->use_pub = true;
 		$tmpl->permissions = $permissions['p'];
 		$tmpl->permissions_desc = $permissions['d'];
 		$tmpl->output();

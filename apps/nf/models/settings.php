@@ -119,10 +119,17 @@ class settings extends _ {
 
 		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
 		if (isset($values['production']['col'])) $v['production']['col'] = $values['production']['col'];
+		if (isset($values['newsbook']['col'])) $v['newsbook']['col'] = $values['newsbook']['col'];
 		if (isset($values['provisional']['col'])) $v['provisional']['col'] = $values['provisional']['col'];
 		if (isset($values['search']['col'])) $v['search']['col'] = $values['search']['col'];
 		if (isset($values['deleted']['col'])) $v['deleted']['col'] = $values['deleted']['col'];
+		if (isset($values['reports_author_newsbook']['col'])) $v['reports_author_newsbook']['col'] = $values['reports_author_newsbook']['col'];
+		if (isset($values['reports_author_submitted']['col'])) $v['reports_author_submitted']['col'] = $values['reports_author_submitted']['col'];
+		if (isset($values['records_newsbook']['col'])) $v['records_newsbook']['col'] = $values['records_newsbook']['col'];
+		if (isset($values['reports_publication_figures']['col'])) $v['reports_publication_figures']['col'] = $values['reports_publication_figures']['col'];
+		if (isset($values['reports_category_figures']['col'])) $v['reports_category_figures']['col'] = $values['reports_category_figures']['col'];
 
+		//test_array($v); 
 
 		if (count($values)) $t->settings = serialize($v);
 

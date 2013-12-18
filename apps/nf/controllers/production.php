@@ -48,7 +48,7 @@ class production extends \apps\nf\controllers\_ {
 			"meta"    => array(
 				"title"=> "NF - Production",
 			),
-			"help"=> "/apps/nf/help/production"
+			//"help"=> "/apps/nf/help/production"
 		);
 
 

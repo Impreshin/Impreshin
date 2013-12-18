@@ -3,6 +3,8 @@
 	width       : 800px;
 	margin-left : -400px;
 	overflow    : hidden;
+	
+	
 
 	.modal-body {
 		overflow : hidden;
@@ -94,6 +96,32 @@
 			border-radius: 0 4px 4px 0;
 		}
 	}
+	.history-wrapper {
+		bottom: 0;
+		left: 0;
+		overflow-y: auto;
+		padding: 0 10px;
+		padding-top:10px;
+		position: absolute;
+		right: 230px;
+		top: 0;
+	
+		ins, del {
+			text-decoration : none;
+			min-height: 13px;
+			min-width: 13px;
+			display: inline-block;
+		}			
+		ins, ins p {
+			color           : green;
+			background      : #dfd;
+		}
+		del, del p {
+			color           : red;
+			background      : #fdd;
+			
+		}
+	}
 }
 
 #nf-details-modal-area {
@@ -182,18 +210,7 @@
 		text-shadow : none;
 	}
 
-	#details-pane-details {
-		ins, ins p {
-			color           : green;
-			background      : #dfd;
-			text-decoration : none;
-		}
-		del, del p {
-			color           : red;
-			background      : #fdd;
-			text-decoration : none;
-		}
-	}
+	
 	#details-info-pane {
 		position : absolute;
 		right    : 5px;

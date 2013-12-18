@@ -8,12 +8,19 @@ var text_toolbar = [
 	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ] },
 	{ name: 'tools', items: [ 'Find','Replace' ] },
 	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
-	{ name: 'tools', items: [ 'Maximize' ] }
+	{ name: 'tools', items: [ 'Maximize' ] },
+	{ name: 'spellcheck', items: [ 'jQuerySpellChecker' ]}
 
 ];
 
 
 $(function () {
+	/*$(window).bind( "hashchange", function(e) {
+		var ID = $.bbq.getState( "ID" );
+		if (ID){
+			getDetails();
+		}
+	});*/
 
 	$('body').tooltip({
 		selector : '*[rel=tooltip]',
@@ -92,18 +99,57 @@ $(document).ready(function () {
 		title    : false,
 		closeBtn : false
 	};
+	var fancyMessagesOptions = {
+		type         : 'iframe',
+		iframe       : {
+			scrolling: 'no',
+			preload  : true
+		},
+		padding      : 0,
+		width        : 950,
+		scrollOutside: false,
+		beforeClose  : function () {
+			//$(this.element).attr("href", $.bbq.getState("help"));
+
+		},
+		afterClose   : function () {
+			$.bbq.removeState("messages");
+		},
+
+		afterShow: function () {
+
+			// var $frame = $(this.content).contents();
+			var $f = $(this.content);
+			//console.log($f);
+			$f[0].contentWindow.scrollbars();
+
+		},
+		title    : false,
+		closeBtn : false
+	};
 
 	var help = $.bbq.getState("help");
 	if (help) {
 
-		$(document).fancybox.open([
+
+		$.fancybox.open([
 			{
 				href: help
 			}
 		], fancyHelpOptions);
 	}
 
+	var messages = $.bbq.getState("messages");
+	if (messages) {
+		$.fancybox.open([
+			{
+				href: "/app/nf/messages"
+			}
+		], fancyMessagesOptions);
+	}
+
 	$("a.help_link").fancybox(fancyHelpOptions);
+	$("a.messages_link").fancybox(fancyMessagesOptions);
 
 	$(document).bind('keydown', 'f1', function (e) {
 		e.preventDefault();
@@ -187,7 +233,9 @@ var $noticeareaIdle = $("#notice-area-idle");
 // show idle 2 minutes
 
 $("#displaylogout").autoLogout({
-	LogoutTime: 600,
+	LogoutTime: 900,
+	//LogoutTime: 30,
+	keepAliveSelector: '.keep-me-logged-in',
 
 	onResetTimer : function (e) {
 		this.css("background-color", "rgba(250, 250, 250, 0.8)");
@@ -195,12 +243,25 @@ $("#displaylogout").autoLogout({
 
 	},
 	onLogout     : function (timer) {
-
+		var $this = this;
+		var settings = $this.data("settings");
 		
-		window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		
+		
+		
+		if ($(settings.keepAliveSelector).length){
+			$.getJSON("/app/keepalive?keepalive=true", function (result) {
+				$("#displaylogout").autoLogout('resetTimer');
+			});
+		} else {
+			window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		}
+		
+		
 	},
 	keepAlive    : function () {
-		$.getJSON("/app/keepalive/?keepalive=true", function (result) {
+		$.getJSON("/app/keepalive?keepalive=true", function (result) {
+			//this.autoLogout('reset')
 		});
 
 	},
@@ -210,42 +271,62 @@ $("#displaylogout").autoLogout({
 		var LogoutTime = settings.LogoutTime;
 		var parts = LogoutTime / 10;
 
-		if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime - 3) {
-			for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
-			autologoutRequest.push($.getJSON("/app/keepalive", function (result) {
-				var real_idle = result.idle;
-				$this.data("timer", real_idle);
-				idle = real_idle;
-				if (idle >= LogoutTime) {
-					window.location = "/app/logout/?msg=You+were+logged+out+due+to+inactivity";
+		
+		
+			
+		
+			if (idle == Math.floor(parts * 4) || idle == Math.floor(parts * 8) || idle == Math.floor(parts * 9) || idle >= LogoutTime - 3) {
+				if ($(".keep-me-logged-in").length){
+					url = '/app/keepalive?keepalive=true'
+				} else {
+					url = '/app/keepalive'
 				}
-			}));
-		}
+				
+				for (var i = 0; i < autologoutRequest.length; i++) autologoutRequest[i].abort();
+				autologoutRequest.push($.getJSON(url, function (result) {
+					var real_idle = result.idle;
+					$this.data("timer", real_idle);
+					idle = real_idle;
+					if (idle >= LogoutTime) {
+						$this.autoLogout('logout')
+					}
+					
+				}));
+			}
+	
+			if ($(settings.keepAliveSelector).length){
+				
+			} else {
+				
+					if (idle >= (parts * 8) + 2) {
+						remaining = LogoutTime - idle;
+						$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in " + (remaining) + " seconds").fadeIn(1000)
+					} else {
+						$noticeareaIdle.stop(true, true).fadeOut(1000)
+					}
 
-		if (idle >= (parts * 8) + 2) {
-			remaining = LogoutTime - idle;
-			$noticeareaIdle.stop(true, true).html("You will be automaticaly logged out in " + (remaining) + " seconds").fadeIn(1000)
-		} else {
-			$noticeareaIdle.stop(true, true).fadeOut(1000)
-		}
+					if (idle >= (parts * 9) + 2) {
+						remaining = LogoutTime - idle;
+						$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automatically logged out in " + (remaining) + " seconds");
+					} else {
+						$this.stop(true, true).fadeOut(1000);
+					}
 
-		if (idle >= (parts * 9) + 2) {
-			remaining = LogoutTime - idle;
-			$this.stop(true, true).fadeIn(1000).find(".timer").html("You will be automatically logged out in " + (remaining) + " seconds");
-		} else {
-			$this.stop(true, true).fadeOut(1000);
-		}
+					var remaining = (LogoutTime - idle);
+					var remain_p = (remaining / LogoutTime) * 100
 
-		var remaining = (LogoutTime - idle);
-		var remain_p = (remaining / LogoutTime) * 100
+					if (remain_p < 30) {
 
-		if (remain_p < 30) {
+						var new_p = (remain_p / 30)
+						new_p = 1 - new_p;
 
-			var new_p = (remain_p / 30)
-			new_p = 1 - new_p;
-
-			if (new_p > 0.8)    this.css("background-color", "rgba(250, 250, 250, " + new_p + ")");
-		}
+						if (new_p > 0.8)    this.css("background-color", "rgba(250, 250, 250, " + new_p + ")");
+					}
+				
+				
+			}
+			
+		
 
 	}
 });
@@ -296,6 +377,7 @@ function updatetimerlist(d, page_size) {
 
 	if (d['notifications']) {
 		$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
+		$("#message-icon").jqotesub($("#template-notifications-messages"), d['notifications']['messages']);
 	}
 
 	var pageSize = (page && page['size']) ? page['size'] : page_size;

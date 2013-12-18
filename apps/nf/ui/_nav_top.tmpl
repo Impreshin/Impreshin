@@ -5,7 +5,7 @@
 
 <a class="brand" href="#select-app" data-toggle="modal">{{ _application['name'] }}</a>
 {% if _cfg['git']['branch'] != 'master' %}
-	<div style="position:absolute;bottom: 0; text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3); margin-left: -30px;  font-size: 10px; color:red;">{{ _cfg['git']['branch'] }}</div>
+	<div id="brand-branch" >{{ _cfg['git']['branch'] }}</div>
 {% endif %}
 
 <div id="app-nav-bar">
@@ -57,6 +57,13 @@
 			</li>
 
 			{% endif %}
+			{% if _user['permissions']['records']['newsbook']['page'] %}
+			<li class=" {% if page['sub_section'] == "records_newsbook" %} active {% endif %}">
+				<a href="/app/nf/records/newsbook/"><i class="icon-book menu-icon"></i>Newsbook</a>
+			</li>
+
+			{% endif %}
+			
 		</ul>
 	</li>
 	{% endif %}
@@ -65,10 +72,38 @@
 		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
 		<ul class="dropdown-menu">
 
+			{% if _user['permissions']['reports']['author']['submitted']['page'] or _user['permissions']['reports']['author']['newsbook']['page'] %}
 			<li class="nav-header">Authors</li>
-			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
-				<a href="/app/nf/reports/authors/summary">Summary</a>
+			{% if _user['permissions']['reports']['author']['submitted']['page'] %}
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_submitted" %} active {% endif %}">
+				<a href="/app/nf/reports/author/submitted">Submitted</a>
 			</li>
+			{% endif %}
+			{% if _user['permissions']['reports']['author']['newsbook']['page'] %}
+			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_newsbook" %} active {% endif %}">
+				<a href="/app/nf/reports/author/newsbook">Newsbook</a>
+			</li>
+			{% endif %}
+			{% endif %}
+			{% if _user['permissions']['reports']['category']['figures']['page'] %}
+			<li class="nav-header">Categories</li>
+			{% if _user['permissions']['reports']['category']['figures']['page'] %}
+				<li class="{% if page['section']=="reports" and page['sub_section'] == "category_figures" %} active {% endif %}">
+					<a href="/app/nf/reports/category/figures">Figures</a>
+				</li>
+			{% endif %}
+			{% endif %}
+			
+			{% if _user['permissions']['reports']['publication']['figures']['page'] %}
+			<li class="nav-header">Publication</li>
+			{% if _user['permissions']['reports']['publication']['figures']['page'] %}
+				<li class="{% if page['section']=="reports" and page['sub_section'] == "publication_figures" %} active {% endif %}">
+					<a href="/app/nf/reports/publication/figures">Figures</a>
+				</li>
+			{% endif %}
+			{% endif %}
+			
+			<!--
 			<li class="{% if page['section']=="reports" and page['sub_section'] == "author_summary" %} active {% endif %}">
 				<a href="/app/nf/reports/authors/progress">Progress</a>
 			</li>
@@ -76,6 +111,7 @@
 			<li class="{% if page['section']=="reports" and page['sub_section'] == "publications" %} active {% endif %}">
 				<a href="/app/nf/reports/publications">Publications</a>
 			</li>
+			-->
 		</ul>
 	</li>
 	{% endif %}
@@ -163,7 +199,7 @@
 
 	</li>
 	<li class="divider-vertical"></li>
-
+	{% if _user['permissions']['administration']['_nav'] %}
 		<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
 			<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-gears icon-d-grey"></i>
 			</a>
@@ -216,6 +252,11 @@
 						<a href="/app/nf/admin/resources">Resources</a>
 					</li>
 				{% endif %}
+				{% if _user['permissions']['administration']['application']['dictionary']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "dictionary" %} active {% endif %}">
+						<a href="/app/nf/admin/dictionary">Dictionary</a>
+					</li>
+				{% endif %}
 
 
 
@@ -237,17 +278,24 @@
 				{% if _user['permissions']['administration']['system']['company']['page'] %}
 					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
 				{% endif %}
+				
+				
+				
+				<!--
 				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
 					<li class="nav-header">Other</li>
 				{% endif %}
 
+				
 				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
 					<li>
 						<a href="/app/setup"><i class="icon-wrench menu-icon"></i> Setup Wizard</a>
 					</li>
 				{% endif %}
+				-->
 			</ul>
 		</li>
+	{% endif %}
 		<li class="divider-vertical"></li>
 	<li style="margin-right: -10px;">
 		<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>

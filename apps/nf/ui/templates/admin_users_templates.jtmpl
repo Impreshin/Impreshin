@@ -2,7 +2,7 @@
 	<![CDATA[
 
 	<tr data-id="<%= this.ID %>" class="record">
-		<td class="">
+		<td class="" title="Last page: <%= this.last_page %>">
 			<span class="<% if (!this.nf) { %>g<% } %>"><%= this.fullName %></span>
 
 		</td>
@@ -16,8 +16,8 @@
 
 			<% } %>
 		</th>
-		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.currentPub %>">
-			<% if (this.currentPub=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
+		<td style="width:20px;" class="cur-pub c" data-pub="<%= this.nf_author %>">
+			<% if (this.nf_author=='1'){ %> <i class="icon-ok" style="margin-left:5px;"></i> <% } %>
 		</td>
 
 
@@ -126,6 +126,7 @@
 					<div class="alert">This is your own account. Its recommended you reload the page if you change anything</div>
 					<% } %>
 					<fieldset style="margin-top: 20px;" id="permissions">
+						<!--
 						<div class="control-group">
 							<label for="allow_setup" class="control-label">Allow Setup</label>
 
@@ -135,6 +136,7 @@
 								</label>
 							</div>
 						</div>
+						-->
 						<div class="control-group">
 							<label for="allow_setup" class="control-label">User is an Author</label>
 

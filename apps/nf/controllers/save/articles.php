@@ -23,6 +23,7 @@ class articles extends save {
 		$value = isset($_POST['stageID']) ? $_POST['stageID'] : "";
 		$values = array(
 			"stageID" => $value,
+			"locked_uID" => NULL,
 		);
 		$r = array();
 
@@ -140,9 +141,32 @@ class articles extends save {
 		$placed = isset($_POST['placed']) ? $_POST['placed'] : "0";
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
+		$uID = $placed=='1'? $user['ID']:"";
+
 		//test_array(array( "aID"=>$aID,					   "pID"=>$pID,					   "dID"=>$dID,					   "placed"=>$placed,				   )); 
 
-		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+		//$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET placed = '$placed', placed_uID = '$uID' WHERE pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+
+		$b = new \DB\SQL\Mapper( $this->f3->get("DB"), "nf_article_newsbook");
+		$b->load("pID = '$pID' AND dID = '$dID' AND aID = '$aID'");
+		
+		$label = $placed=='1'? "Placed":"Un-Placed";
+		$log = array();
+		$log[] = array(
+			"k"=>"placed",
+			"v"=>$placed,
+			"w"=>$b->placed=='1'?'1':'0'
+		);
+		
+		if (!$b->dry()){
+			$b->placed=$placed;
+			$b->placed_uID=$uID;
+			$b->save();
+
+		}
+
+		//$log = array($log);
+		models\articles::logging($aID,$log,$label);
 		test_array("done");
 
 	}
@@ -153,12 +177,66 @@ class articles extends save {
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
 
-		$values = array("aID" => $aID, "uID" => $user['ID'], "comment" => isset($_POST['comment']) ? $_POST['comment'] : "", "parentID" => isset($_POST['comment-parentID']) && $_POST['comment-parentID'] && $_POST['comment-parentID'] != "null" && $_POST['comment-parentID'] != "undefined" ? $_POST['comment-parentID'] : "",);
+		$values = array(
+			"aID" => $aID, 
+			"uID" => $user['ID'], 
+			"comment" => isset($_POST['comment']) ? $_POST['comment'] : "", 
+			"parentID" => isset($_POST['comment-parentID']) && $_POST['comment-parentID'] && $_POST['comment-parentID'] != "null" && $_POST['comment-parentID'] != "undefined" ? $_POST['comment-parentID'] : "",);
+		
 
 		models\comments::save($ID, $values);
+
+
+		$cfg = $this->f3->get("CFG");
+
+		if ($cfg['system_messages']==true){
+			
+					
+			
+			$art = new models\articles();
+			$art = $art->get($aID);
+			
+		
+			
+			$subject = "New comment: <span class='g s'>".$art['title']."</span>";
+			$msg = "Comment posted by: ".$user['fullName']."<hr>". $values['comment'];
+			$url = "/app/nf#ID=".$art['ID']."&details-tab=details-pane-comments";
+			
+			$to_uID_array = array($art['authorID']);
+			
+			foreach ($art['comments'] as $userID){
+				if (!in_array($userID['uID'],$to_uID_array)) $to_uID_array[] = $userID['uID'];
+			}
+			
+			
+
+			foreach ($to_uID_array as $to_uID){
+				if ($to_uID != $user['ID']){
+					$message_values = array(
+						"cID"=>$user['company']['ID'],
+						"app"=>"nf",
+						"to_uID"=>$to_uID,
+						"subject"=>$subject,
+						"message"=>$msg,
+						"url"=>$url
+					);
+
+					\models\messages::_save("",$message_values);
+				}
+			};
+
+			
+		};
+		
+		
+		
+		
+		
 		test_array(array("ID" => $ID, "values" => $values));
 
 	}
+	
+	
 
 	function newsbook() {
 		$user = $this->f3->get("user");
@@ -166,37 +244,59 @@ class articles extends save {
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 
 
-		$values = array("aID" => $aID, "pID" => isset($_POST['newsbook-pID']) && $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID'] != "undefined" ? $_POST['newsbook-pID'] : "", "dID" => isset($_POST['newsbook-dID']) && $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID'] != "undefined" ? $_POST['newsbook-dID'] : "", "uID" => $user['ID'], "placed" => 0);
+		$values = array(
+			"aID" => $aID, 
+			"pID" => isset($_POST['newsbook-pID']) && $_POST['newsbook-pID'] && $_POST['newsbook-pID'] != "null" && $_POST['newsbook-pID'] != "undefined" ? $_POST['newsbook-pID'] : "", 
+			"dID" => isset($_POST['newsbook-dID']) && $_POST['newsbook-dID'] && $_POST['newsbook-dID'] != "null" && $_POST['newsbook-dID'] != "undefined" ? $_POST['newsbook-dID'] : "", 
+			"uID" => $user['ID'], "placed" => 0);
 
 		// do the insert thing.. get the ID
-		$ID = models\newsbooks::save($ID, $values);
+		
+		
+		$exists = models\newsbooks::exists($values['aID'],$values['dID']);
+		$error = "";
+	
+		//test_array(array("c"=>count($exists),"in"=>in_array($ID,$exists),"ex"=>$exists));
+		
+		if (count($exists)==0 || $ID!=""){
+
+			$ID = models\newsbooks::save($ID, $values);
 
 
-		$files = array();
+			$files = array();
 
-		$file_ids = array();
-		$sql = array();
+			$file_ids = array();
+			$sql = array();
 
-		foreach (explode(",", $_POST['files']) as $fileID) {
-			$sql[] = "('" . $ID . "', '" . $fileID . "')";
-			$files[] = array("nID" => $ID, "fileID" => $fileID);
-			$file_ids[] = $fileID;
+			foreach (explode(",", $_POST['files']) as $fileID) {
+				$sql[] = "('" . $ID . "', '" . $fileID . "')";
+				$files[] = array("nID" => $ID, "fileID" => $fileID);
+				$file_ids[] = $fileID;
+			}
+
+			if (count($sql)) {
+
+				$sql = "INSERT INTO nf_article_newsbook_photos (`nID`,`fileID`) VALUES " . implode(",", $sql);
+
+				$this->f3->get("DB")->exec("DELETE FROM nf_article_newsbook_photos WHERE nID = '$ID'");
+				$this->f3->get("DB")->exec($sql);
+			}
+
+		} else {
+			$values['exists'] = $exists[0];
+
+			$error = "The article already exists in this newsbook\n\rClick 'Ok' to edit the newsbook or 'Cancel' to cancel";
 		}
-
-		if (count($sql)) {
-
-			$sql = "INSERT INTO nf_article_newsbook_photos (`nID`,`fileID`) VALUES " . implode(",", $sql);
-
-			$this->f3->get("DB")->exec("DELETE FROM nf_article_newsbook_photos WHERE nID = '$ID'");
-			$this->f3->get("DB")->exec($sql);
-		}
+		
+		
 
 
 
 
+		$return = array("ID" => $ID, "values" => $values);
 
-
-		test_array(array("ID" => $ID, "values" => $values));
+		if ($error) $return['error'] = $error;
+		test_array($return);
 
 
 	}
@@ -237,7 +337,17 @@ class articles extends save {
 		if (isset($_POST['cm'])) $values['cm'] = $_POST['cm'];
 		if (isset($_POST['checklist'])) $values['checklist'] = $_POST['checklist'];
 		if (isset($_POST['stageID'])) $values['stageID'] = $_POST['stageID'];
+		if (isset($_POST['language'])) $values['lang'] = $_POST['language'];
+		
+		if ($_GET['locked']=='0'){
+			$values['locked_uID'] = NULL;
+		} else {
+			$values['locked_uID'] = $user['ID'];
+		}
 
+		
+		
+		
 
 
 		$values['deleted'] = NULL;
@@ -247,7 +357,12 @@ class articles extends save {
 		$values['deleted_reason'] = NULL;
 
 		$ss = array();
-		$ss["form"] = array("type" => $type, "last_author" => isset($values['authorID']) && $values['authorID'] ? $values['authorID'] : "", "last_category" => isset($values['categoryID']) && $values['categoryID'] ? $values['categoryID'] : "");
+		$ss["form"] = array(
+			"type" => $type, 
+			"last_author" => isset($values['authorID']) && $values['authorID'] ? $values['authorID'] : "", 
+			"last_category" => isset($values['categoryID']) && $values['categoryID'] ? $values['categoryID'] : "",
+			"last_language" => isset($values['lang']) && $values['lang'] ? $values['lang'] : ""
+		);
 
 		models\settings::save($ss);
 
@@ -290,7 +405,13 @@ class articles extends save {
 			if (isset($values['stageID']) && $values['stageID']) {
 				$values['locked_uID'] = NULL;
 			}
+			
+			if ($type!='1'){
+				if (isset($values['cm']))$values['cm']=NULL;
+				if (isset($values['words']))$values['words']=NULL;
+			}
 
+			array_walk_recursive($values, "form_write");
 			$ID = models\articles::save($ID, $values);
 
 
@@ -337,7 +458,7 @@ class articles extends save {
 					$file = array("aID" => $ID, "filename" => $filename, "filename_orig" => isset($_POST['file-filename_orig-' . $n]) ? $_POST['file-filename_orig-' . $n] : "", "caption" => isset($_POST['file-caption-' . $n]) ? $_POST['file-caption-' . $n] : "", "folder" => isset($_POST['file-folder-' . $n]) ? $_POST['file-folder-' . $n] : "", "uID" => isset($_POST['file-uID-' . $n]) ? $_POST['file-uID-' . $n] : $user['ID'], "type" => $filetype,
 
 					);
-
+					array_walk_recursive($file, "form_write");
 					models\files::save($fileID, $file);
 
 					//$files[] = $file;
@@ -373,6 +494,18 @@ class articles extends save {
 		$delete_reason = (isset($_POST['delete_reason'])) ? $_POST['delete_reason'] : "";
 
 		$result = models\articles::_delete($ID, $delete_reason);
+
+		echo json_encode(array("result" => $result));
+		exit();
+	}
+	function file_delete() {
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		
+
+		$result = models\files::_delete($ID);
 
 		echo json_encode(array("result" => $result));
 		exit();

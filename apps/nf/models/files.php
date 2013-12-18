@@ -139,14 +139,17 @@ class files {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-
+		$cfg = $f3->get("CFG");
 
 		$old = array();
-
+		
 
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_files");
 		$a->load("ID='$ID'");
 
+		
+		
+		
 		foreach ($values as $key => $value) {
 			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)) {
@@ -168,7 +171,9 @@ class files {
 		$ID = $a->ID;
 		
 		if (isset($values['caption'])){
-
+			$body = $f3->scrub( $values['caption'], $cfg['nf']['whitelist_tags']);
+			$values['caption'] = $body;
+			
 			$b = new \DB\SQL\Mapper($f3->get("DB"),"nf_files_body");
 			$b->load("fileID='$ID'",
 					 array(

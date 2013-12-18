@@ -17,8 +17,29 @@ allowedFileExtentions = allowedFileExtentions.join(",");
 
 //console.log(allowedFileExtentions); 
 
-var max_height = $(window).height() - 190;
+var max_height = $(window).height() - 200;
 
+
+var spell_check_config  = {
+	lang: function(){
+		//console.log("woof"); 
+		return $('#language').val()
+	},
+	parser	: 'html',
+	webservice: {
+		path  : '/system/spellcheck?custom=' + _custom_dictionary,
+		driver: 'Enchant'
+	},
+	suggestBox: {
+		position: 'below',
+		appendTo: 'body'
+	}
+};
+
+var extra_plugins_jqueryspellchecker = '';
+if (_enable_spellcheck=='1') {
+	extra_plugins_jqueryspellchecker = ',jqueryspellchecker';
+}
 
 
 var text_settings = {
@@ -26,12 +47,16 @@ var text_settings = {
 	height            : '390px',
 	toolbar           : text_toolbar,
 	resize_enabled    : false,
-	extraPlugins      : 'autogrow,onchange',
+	extraPlugins      : 'autogrow,onchange'+extra_plugins_jqueryspellchecker,
 	autoGrow_maxHeight: max_height,
+
 	autoGrow_minHeight: 390 > max_height ? 390 : max_height,
 	autoGrow_fn       : function () {
 		resizeform();
-	}
+	},
+	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
+	spell_checker: spell_check_config
+	
 };
 var caption_settings = {
 	uiColor           : '#FFFFFF',
@@ -39,13 +64,20 @@ var caption_settings = {
 	toolbar           : text_toolbar,
 	removePlugins     : 'elementspath',
 	resize_enabled    : false,
-	extraPlugins      : 'autogrow',
+
+	extraPlugins      : 'autogrow,jqueryspellchecker'+extra_plugins_jqueryspellchecker,
 	autoGrow_minHeight: 110,
 	autoGrow_maxHeight: 110 > max_height ? 110 : max_height,
 	autoGrow_fn       : function () {
 		resizeform();
-	}
+	},
+	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
+	spell_checker: spell_check_config
 };
+
+
+
+
 $(document).ready(function () {
 	getFormData();
 	$(document).on("submit", "#modal-delete form", function (e) {
@@ -88,7 +120,36 @@ $(document).ready(function () {
 		}
 
 	});
+	
+	$(document).on("change", "#locked_record",function(){
+		lock_unlock();
+	});
 
+
+
+
+
+
+	
+	$(document).on("click", "#btn-tools-dictionary", function () {
+
+		var ck_instance_name = false;
+		var selectedText = "";
+		for ( var ck_instance in CKEDITOR.instances ){
+			t = CKEDITOR.instances[ck_instance].getSelection().getSelectedText();
+			if (t){
+				selectedText = t;
+			}
+			
+		}
+
+		$("#modal-dictionary").modal('show');
+		lookup(selectedText);
+			
+		
+	
+
+	});
 
 	$(document).on("click", "#btn-tools-search", function () {
 		var meta = $("form #meta").val();
@@ -113,8 +174,15 @@ $(document).ready(function () {
 	$(document).on("change", "#categoryID", function () {
 
 		checklistBtn();
+		
+		$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$(this).val(),function(){
+			$("#cm-block").trigger("change");
+		})
 
 	});
+	
+	
+	
 	$(document).on("click", "#checklist-container li .label", function () {
 		var $this = $(this);
 		var $help = $this.parent().find(".help-block");
@@ -174,12 +242,11 @@ $(document).ready(function () {
 			
 		///console.log("changed");
 
+		var dpi = document.getElementById("dpi").offsetHeight;
 		var artcm = $(this).height();
 
-
-
 		if (artcm > 0) {
-			artcm = artcm / 38.461538;
+			artcm = (artcm/dpi) *2.54;
 			artcm = Math.ceil(artcm);
 		}
 
@@ -221,9 +288,143 @@ $(document).ready(function () {
 		$("#form-diff-" + type).show();
 	});
 
+	$(document).on("click", ".btn-delete-file", function () {
+		var $this = $(this);
+		var ID = $this.attr("data-ID");
+		if (confirm("Are you sure you want to delete this file?")) {
+			$("#pagecontent .loadingmask").show();
+			$.post("/app/nf/save/articles/file_delete?ID=" + ID, {}, function (response) {
+				$this.closest(".file-record").remove();
+				$("#pagecontent .loadingmask").fadeOut(transSpeed);
+				resizeform();
+			});
+			
+		}
+
+	});
+
+
+
+	$("#dictionary-form").submit(function(e){
+		e.preventDefault();
+		lookup();
+	});
+
+	$(document).on("click",".lookups span",function(){
+		var word = $(this).text();
+		//console.log(word);
+		lookup(word);
+
+	});
+
+	
+
 	
 
 });
+
+function wrapify(str){
+	var ret = str;
+	if (str){
+		var newHtml = str.split(","),
+			spans = $.map(newHtml,function(v){
+				v = v.trim();
+				return '<span>' + v + '</span>';
+			});
+
+
+		ret = spans.join(', ');
+	}
+
+	return ret;
+}
+
+
+function lookup(word){
+	if (word){
+		$("#word").val(word);
+	} else {
+		word = $("#word").val();
+	}
+
+	
+		def(word);
+	
+
+
+}
+function def(word){
+	$result = $("#modal-dictionary-result");
+	if (word){
+		
+		$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
+		jQuery.support.cors = true;
+		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
+			cache : true,
+			type : "get",
+			global : false,
+			dataType : "xml",
+			//jsonp : false,
+			success : function (returnedXMLResponse) {
+
+				var data = {
+					"term":word,
+					"result":"0",
+					"results":[]
+				};
+				$('result', returnedXMLResponse).each(function(){
+
+					var syn = $('synonyms', this).text()
+
+					var d = {
+						"term":$('term', this).text(),
+						"partofspeech":$('partofspeech', this).text(),
+						"definition":$('definition', this).text(),
+						"example":$('example', this).text(),
+						"synonyms": wrapify($('synonyms', this).text()),
+						"antonyms": wrapify($('antonyms', this).text())
+
+					};
+					data.results.push(d);
+
+					//Here you can do anything you want with those temporary
+					//variables, e.g. put them in some place in your html document
+					//or store them in an associative array
+				});
+				var template = "#template-dictionary-result"
+				if (data.results.length){
+
+				} else {
+					template = "#template-dictionary-no-result"
+				}
+
+				$result.jqotesub($(template), data);
+
+
+				//getChannelMessages(channel);
+			}
+		});
+	} else {
+		$result.html("")
+	}
+	
+}
+
+function lock_unlock(){
+	var $this = $("#locked_record");
+	var $parent = $this.parent();
+	var $icon = $parent.find("i");
+	$icon.removeClass('icon-lock');
+	$icon.removeClass('icon-unlock');
+	if ($this.is(":checked")) {
+		$parent.attr("title","Record will remain locked");
+		$icon.addClass('icon-lock')
+	} else {
+		$parent.attr("title","Record will be unlocked");
+		$icon.addClass('icon-unlock')
+	}
+	//console.log($this.is(":checked"))
+}
 function checklistBtn() {
 	var $this = $("#categoryID");
 	var count = $this.find(':selected').attr('data-checklist-count');
@@ -286,7 +487,8 @@ function getFormData() {
 		//console.log(data.details.priority);
 
 		formLoaded(data);
-		resizeform()
+		resizeform();
+		lock_unlock();
 		//setTimeout(resizeform, 1000)
 		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}());
 	}, "form_data");
@@ -301,10 +503,18 @@ function formLoaded(data) {
 	var $cm = $("#cm-block");
 	var body = "";
 	if ($("#body").length) {
+
+		
+
+		//var spellchecker = new $.SpellChecker('#body', spell_check_config);
+		
+
+
 		var instance = CKEDITOR.replace('body', text_settings);
 		instance.on('change', function (e) {
 			var body = e.editor.getData()
 			$cm.html(body).trigger("change");
+			//spellchecker.check();
 		});
 		instance.on('focus', function (e) {
 			
@@ -316,9 +526,18 @@ function formLoaded(data) {
 		});
 
 		body = $("#body").val();
+
+		
+		
+
+		
 		
 	}
-	$cm.html(body).trigger("change");
+	$("#cm-style-block").load("/app/nf/data/form/cm_block_render?categoryID="+$("#categoryID").val(),function(){
+		$("#cm-block").trigger("change");
+	});
+	$cm.html(body);
+	
 
 	
 
@@ -347,25 +566,25 @@ function formLoaded(data) {
 	$("#rightpane-top").css("bottom", $("#rightpane-bottom").outerHeight());
 
 	var $select = $( "#priorityID");
-	$("#slider-text").html($("option:selected",$select).text())
+	
+	if ($select.length){
+		$("#slider-text").html($("option:selected",$select).text())
+		var slider = $("#slider").slider({
+			min: 1,
+			max: $select[ 0 ].length,
+			range: "min",
+			value: $select[ 0 ].selectedIndex + 1,
+			slide: function( event, ui ) {
+				//console.log(ui.value - 1); 
+				$select[ 0 ].selectedIndex = ui.value - 1;
+				$("#slider-text").html($("option:selected",$select).text())
+				$select.trigger("change");
+			}
+		});
+	}
 
-	
-	var slider = $("#slider").slider({
-		min: 1,
-		max: 6,
-		range: "min",
-		value: $select[ 0 ].selectedIndex + 1,
-		slide: function( event, ui ) {
-			//console.log(ui.value - 1); 
-			$select[ 0 ].selectedIndex = ui.value - 1;
-			$("#slider-text").html($("option:selected",$select).text())
-			$select.trigger("change");
-		}
-	});
-	
-	
-	
-	
+
+
 	
 	
 	
@@ -413,6 +632,7 @@ function formLoaded(data) {
 				plupload.each(files, function (file) {
 
 				});
+				up.start();
 			},
 			FilesRemoved  : function (up, files) {
 
@@ -520,6 +740,9 @@ function form_submit() {
 	$(".fielderror", $form).remove();
 
 	var type = $("#booking-type button.active").attr("data-type");
+	var locked = $("#locked_record").is(":checked");
+	locked=locked?"1":"0";
+	//console.log(locked)
 
 	if (!type) {
 		alert("Something went wrong, please select a record type");
@@ -546,7 +769,7 @@ function form_submit() {
 	if (submit) {
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
-		$.post("/app/nf/save/articles/form?ID=" + var_record_ID + "&type=" + type, data, function (response) {
+		$.post("/app/nf/save/articles/form?ID=" + var_record_ID + "&type=" + type + "&locked="+locked, data, function (response) {
 
 
 			if (response['error'] && response['error'].length) {

@@ -30,6 +30,8 @@ require_once('inc/class.template.php');
 $autoload = array(
 	"./",
 	"lib/",
+	"docs/",
+	"messages/",
 	"controllers/"
 );
 
@@ -112,6 +114,7 @@ $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /', 'controllers\controller_login->page');
 
 $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
+$app->route('GET /screenshots/@app', 'controllers\controller_screenshots->page');
 $app->route('GET /news', 'controllers\controller_news->page');
 $app->route('GET /news/@item', 'controllers\controller_news->page');
 $app->route('GET /history', 'controllers\controller_history->page');
@@ -129,7 +132,27 @@ $app->route('GET|POST /app', function ($app) use ($user) {
 			} else {
 				$last_app = $user['last_page'] ? $user['last_page'] : "";
 				if (!$last_app) {
-					$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/ab/";
+					$uID = $user['ID'];
+					$f3 = \base::instance();
+					$applications_list = $f3->get("applications");
+
+
+					$appstuff = $f3->get("DB")->exec("SELECT * FROM global_users_company WHERE uID = '$uID'  ORDER BY ID DESC LIMIT 0,1");
+					//$appstuff = 
+					
+					$use = "";
+					foreach ($appstuff as $item){
+						foreach ($applications_list as $k=>$ap){
+							if (isset($item[$k])&&$item[$k]=='1'){
+								$use = $k;
+								break;
+							}
+						}
+						
+					}
+					
+				
+					$last_app = $user['last_app'] ? "/" . $user['last_app'] . "/" : "/app/$use/";
 				}
 			}
 
@@ -270,8 +293,50 @@ foreach ($router as $key=> $routes) {
 			$app->chain("apps\\$key\\app->app; apps\\$key\\app->access; apps\\$key\\controllers\\".$params['parent_folder']."\\save\\" . $params['folder'] . "\\" . $params['class'] . "->" . $params['function']);
 		}
 	);
+
+	$app->route("GET|POST /app/$key/documentation/*", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; docs->page");
+		}
+			
+	);
+
+	$app->route("GET|POST /app/$key/documentation", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; docs->page");
+		}
+			
+	);
+
+	$app->route("GET|POST /app/$key/messages", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->page");
+		}
+			
+	);
+	$app->route("GET|POST /app/$key/messages/list", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->_list");
+		}
+			
+	);
+	$app->route("GET|POST /app/$key/messages/do_state", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->do_state");
+		}
+			
+	);
+$app->route("GET|POST /app/$key/messages/do_message", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$app->chain("apps\\$key\\app->app; messages->do_message");
+		}
+			
+	);
+
 	
-	
+
+
+
 	$app->route("GET /app/$key/access", function ($f3, $params) use ($app, $key) {
 			$ap = "\\apps\\$key\\app";
 			$a = new $ap();
@@ -335,6 +400,19 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use 
 		*/
 	}
 );
+$app->route("GET|POST /system/spellcheck", function ($f3, $params) use ($app, $key) {
+		ini_set('display_errors', 1);
+
+		require_once './ui/spellchecker/webservices/php/SplClassLoader.php';
+
+		$classLoader = new SplClassLoader('SpellChecker', 'SpellChecker', array("test"));
+		$classLoader->setIncludePathLookup(true);
+		$classLoader->register();
+
+		new \SpellChecker\Request();
+	}
+);
+
 
 
 
@@ -343,6 +421,16 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use 
 $app->route('GET /php', function () {
 		phpinfo();
 		exit();
+	}
+);
+$app->route('GET /redirect', function () {
+		$url = isset($_GET['url'])?$_GET['url']:"";
+		
+		if (!$url){
+			$url = "/";
+		}
+		$f3 = Base::instance();
+		$f3->reroute($url);
 	}
 );
 

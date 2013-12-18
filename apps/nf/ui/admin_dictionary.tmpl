@@ -1,0 +1,111 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav nav-pills pull-left">
+
+				<li>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Administration
+					</h2>
+				</li>
+				<li class="divider-vertical"></li>
+				<li>
+					<h2 style=" margin-bottom: -5px;">
+						<small>Dictionary &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; {{ word_count }} Words</small>
+					</h2>
+				</li>
+			</ul>
+			<div class="pull-right">
+
+				<ul class="nav nav-pills pull-right ">
+
+
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					<li class="dropdown pull-right">
+						<a id="reload-btn" href="javascript:void(0);" style="width:15px;"><i class="icon-refresh"></i></a>
+
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+	<div class="container admin_pages">
+
+
+		<div class="row">
+			<article id="whole-area" class="span16">
+				<div style="margin-left: 10px;">
+					<div class="pagination" style="margin-left: 7px;">
+						<ul>
+							<li class="{% if "Other" not in chars %}disabled{% endif %}"><a href="#"  data-char="Other">Other</a></li>
+							<li class="{% if "A" not in chars %}disabled{% endif %}"><a href="#" data-char="A">A</a></li>
+							<li class="{% if "B" not in chars %}disabled{% endif %}"><a href="#" data-char="B">B</a></li>
+							<li class="{% if "C" not in chars %}disabled{% endif %}"><a href="#" data-char="C">C</a></li>
+							<li class="{% if "D" not in chars %}disabled{% endif %}"><a href="#" data-char="D">D</a></li>
+							<li class="{% if "E" not in chars %}disabled{% endif %}"><a href="#" data-char="E">E</a></li>
+							<li class="{% if "F" not in chars %}disabled{% endif %}"><a href="#" data-char="F">F</a></li>
+							<li class="{% if "G" not in chars %}disabled{% endif %}"><a href="#" data-char="G">G</a></li>
+							<li class="{% if "H" not in chars %}disabled{% endif %}"><a href="#" data-char="H">H</a></li>
+							<li class="{% if "I" not in chars %}disabled{% endif %}"><a href="#" data-char="I">I</a></li>
+							<li class="{% if "J" not in chars %}disabled{% endif %}"><a href="#" data-char="J">J</a></li>
+							<li class="{% if "K" not in chars %}disabled{% endif %}"><a href="#" data-char="K">K</a></li>
+							<li class="{% if "L" not in chars %}disabled{% endif %}"><a href="#" data-char="L">L</a></li>
+							<li class="{% if "M" not in chars %}disabled{% endif %}"><a href="#" data-char="M">M</a></li>
+							<li class="{% if "N" not in chars %}disabled{% endif %}"><a href="#" data-char="N">N</a></li>
+							<li class="{% if "O" not in chars %}disabled{% endif %}"><a href="#" data-char="O">O</a></li>
+							<li class="{% if "P" not in chars %}disabled{% endif %}"><a href="#" data-char="P">P</a></li>
+							<li class="{% if "Q" not in chars %}disabled{% endif %}"><a href="#" data-char="Q">Q</a></li>
+							<li class="{% if "R" not in chars %}disabled{% endif %}"><a href="#" data-char="R">R</a></li>
+							<li class="{% if "S" not in chars %}disabled{% endif %}"><a href="#" data-char="S">S</a></li>
+							<li class="{% if "T" not in chars %}disabled{% endif %}"><a href="#" data-char="T">T</a></li>
+							<li class="{% if "U" not in chars %}disabled{% endif %}"><a href="#" data-char="U">U</a></li>
+							<li class="{% if "V" not in chars %}disabled{% endif %}"><a href="#" data-char="V">V</a></li>
+							<li class="{% if "W" not in chars %}disabled{% endif %}"><a href="#" data-char="W">W</a></li>
+							<li class="{% if "X" not in chars %}disabled{% endif %}"><a href="#" data-char="X">X</a></li>
+							<li class="{% if "Y" not in chars %}disabled{% endif %}"><a href="#" data-char="Y">Y</a></li>
+							<li class="{% if "Z" not in chars %}disabled{% endif %}"><a href="#" data-char="Z">Z</a></li>
+						</ul>
+					</div>
+					<form class="form-horizontal" id="capture-form" method="post" action="/app/nf/admin/dictionary">
+						<div class="scroll-pane scrolly" id="record-list-middle" style="left: 10px; right:-10px; top: 45px; bottom: 42px; ">
+							<div class="content" id="form-area">
+								<div id="new-words">
+									<input type="text" value="" name="words[]" placeholder="New Word" />
+								</div>
+								<div id="existing-words">
+								{% for row in words %}
+	
+									{% if row['words'] is iterable %}
+										{% for word in row['words'] %}
+											<input type="hidden" data-char="{{ row['char'] }}" value="{{ word }}" name="words[]" />
+										{% endfor %}
+									{% endif %}
+								{% endfor %}
+								</div>
+								
+							</div>
+						</div>
+							<div class="form-actions form-footer">
+								<div class="row r">
+									<button type="submit" class="span3 btn pull-right">Save</button>
+								</div>
+							</div>
+						
+					</form>
+				</div>
+			</article>
+
+		</div>
+
+
+
+	</div>
+
+</section>
+
+

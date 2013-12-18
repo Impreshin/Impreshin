@@ -61,8 +61,15 @@
                     </div>
                     <div class="s span2" style="float: right; position: absolute; right: 0;">
                         <div class="s" style="position: absolute; right:0;">
-                            <a href="{{ page['help'] }}" class="help_link" rel="tooltip" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
-
+                            <a href="{{ page['help'] }}" class="help_link" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
+	                        {% if _cfg['system_messages'] %}
+	                        <span id="message-icon">
+		                        <a title="Messages" class="messages_link" href="/app/nf/messages" style="margin-left: 5px;">
+			                        <i class="icon-comment-alt icon-grey"></i>
+		                        </a>
+		                        
+	                        </span>
+	                        {% endif %}
                         </div>
 
 
@@ -132,7 +139,9 @@
 
 <script type="text/javascript">
 var highlightfrom = {{ _cfg['debug']['highlightfrom'] }};
-
+{% if _user['disable_transitions']=='1' %}
+jQuery.fx.off = true;
+{% endif %}
 </script>
 <script src='/apps/ab/ui/_js/script.{{ _v }}.js'></script>
 {% for row in page['js'] %}
@@ -271,25 +280,6 @@ var highlightfrom = {{ _cfg['debug']['highlightfrom'] }};
 
 {% include 'templates/template.jtmpl' ignore missing %}
 
-{% if  _cfg['ga'] %}
-
-	<script>
-		(function (b, o, i, l, e, r) {
-			b.GoogleAnalyticsObject = l;
-			b[l] || (b[l] = function () {
-				(b[l].q = b[l].q || []).push(arguments)
-			});
-			b[l].l = +new Date;
-			e = o.createElement(i);
-			r = o.getElementsByTagName(i)[0];
-			e.src = '//www.google-analytics.com/analytics.js';
-			r.parentNode.insertBefore(e, r)
-		}(window, document, 'script', 'ga'));
-		ga('create', '{{ _cfg['ga'] }}');
-		ga('send', 'pageview');
-	</script>
-
-
-{% endif %}
+{% include 'analytics.tmpl' %}
 </body>
 </html>

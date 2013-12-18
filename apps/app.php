@@ -367,6 +367,9 @@ class app {
 
 	//	test_array(array("uID"=>$return['ID'],"company"=>$return['company'],"publication"=>$return['publication'],"permissions"=>$return['permissions'])); 
 
+		$return['disable_transitions'] = '1';
+		
+		//test_array($_SERVER);
 		
 		$this->user = $return;
 

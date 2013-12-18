@@ -34,16 +34,41 @@ class articles {
 		//$currentDate = $currentDate['publish_date'];
 		//test_array($currentDate);
 		$from = self::_from($options);
-		$newsbook_sql = $newsbook_select = "";
-		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
-			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."')";
-			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, ";
 
+		$newsbook_sql = $newsbook_select = "";
+		$placed_select = "if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,";
+
+		$photoCount_sql = "(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
+			$placed_select = "(SELECT placed FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID  $newsbook_sql) as placed,";
+
+		} elseif (isset($options['pID'])&&$options['pID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
+		} else {
+			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID LIMIT 0,1)  as page, ";
 		}
 		
 		
-		$result = $f3->get("DB")->exec("
+		/*
+		$newsbook_sql = $newsbook_select = "";
+		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
+			
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page,";
+			$newsbook_select = $newsbook_select . "(SELECT fullName FROM nf_article_newsbook p_nb INNER JOIN global_users ON p_nb.placed_uID = global_users.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as placed_fullName,";
+
+		}
+		*/
+		$sql = "
 			SELECT
+				DISTINCT (nf_articles.ID),	
 				nf_articles.*,
 				nf_article_types.type AS type,
 				nf_article_types.icon AS type_icon,
@@ -60,8 +85,10 @@ class articles {
 				if(global_users_1.ID,1,0) AS locked,
 				if(nf_stages.ID='2',1,0) AS ready,
 				if(global_dates.ID, 1, 0) AS in_newsbook,
-				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
+				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
 				$newsbook_select
+				$placed_select
+				$photoCount_sql
 				(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND stageID ='1' ORDER BY ID DESC  LIMIT 0,1) as draft,
 	(SELECT body FROM nf_articles_body WHERE nf_articles.ID = aID AND nf_articles_body.ID  ORDER BY ID DESC LIMIT 0,1)  as body
 
@@ -72,8 +99,13 @@ class articles {
 
 			WHERE nf_articles.ID = '$ID';
 
-		"
-		);
+		";
+
+		if (isset($_GET['debug']) && $_GET['debug']=="articles_get_sql"){
+			echo $sql;exit();
+		}
+		
+		$result = $f3->get("DB")->exec($sql);
 		if (count($result)) {
 			$return = $result[0];
 			$files = files::getAll("aID='" . $return['ID'] . "'", "ID DESC");
@@ -123,11 +155,8 @@ class articles {
 	public static function getAll_count($where = "",$options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
 		$timer = new timer();
 		$f3 = \Base::instance();
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+		
+		$body_id = "";
 		if (isset($options['body_search'])&&$options['body_search']) {
 			$search_str = $options['body_search'];
 			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
@@ -137,9 +166,23 @@ class articles {
 					$n[] = $item['aID'];
 				}
 				$body_id = implode(",",$n);
-				$where = $where . " OR nf_articles.ID in ($body_id) ";
+
+				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
+				if ($where) {
+					$where = "AND " . $where . "";
+				} else {
+					$where = " ";
+				}
+
+				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
 			}
 
+		}
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
 		}
 		$from = self::_from($options);
 		$sql = "
@@ -171,6 +214,10 @@ class articles {
 							"group"=>$groupby
 						));
 		*/
+		
+		
+		
+		
 		$timer = new timer();
 		$f3 = \Base::instance();
 		if ($where) {
@@ -199,14 +246,10 @@ class articles {
 		return $return;
 	}
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
+	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "datein", "o" => "DESC"), $options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"","distinct"=>"nf_articles.ID","select"=>"" )) {
 		$f3 = \Base::instance();
 		$timer = new timer();
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+	
 		if (!$grouping){
 			$grouping = array("g" => "none", "o" => "ASC");
 		}
@@ -214,15 +257,30 @@ class articles {
 			$ordering = array("c" => "datein", "o" => "DESC");
 		}
 		
+		$distinct = isset($options['distinct'])&&$options['distinct']?$options['distinct']:"nf_articles.ID";
+		$select_opt = isset($options['select'])&&$options['select']?$options['select']:"";
+		
+		
 		$order = articles::order($grouping, $ordering);
 		$orderby = $order['order'];
 		$select = $order['select'];
+
+
+
+		
+		
 		if ($orderby) {
 			$orderby = " ORDER BY " . $orderby;
 		}
 		if ($select) {
 			$select = " ," . $select;
 		}
+		if ($select_opt) {
+			$select = $select . " ," . $select_opt;
+		}
+		
+		
+		
 		if (isset($options['limit'])&&$options['limit']) {
 			if (strpos($options['limit'], "LIMIT") === false) {
 				$limit = " LIMIT " . $options['limit'];
@@ -233,16 +291,27 @@ class articles {
 			$limit = " ";
 		}
 
-		$newsbook_sql = "";
+		$newsbook_sql = $newsbook_select = "";
+		$placed_select = "if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,";
+		
+		$photoCount_sql = "(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,";
 		if (isset($options['pID'])&&$options['pID'] && isset($options['dID'])&&$options['dID']) {
-			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."')";
-			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as pageID, ";
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."' AND p_nb.dID = '".$options['dID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
+			$placed_select = "(SELECT placed FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID  $newsbook_sql) as placed,";
 			
+		} elseif (isset($options['pID'])&&$options['pID']) {
+			$newsbook_sql = "AND (p_nb.pID = '".$options['pID']."') LIMIT 0,1";
+			$newsbook_select = "(SELECT FLOOR(global_pages.page) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql) as page, (SELECT global_pages.ID FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID $newsbook_sql LIMIT 0,1) as pageID, ";
+			$photoCount_sql = "(SELECT count(ID) FROM nf_files INNER JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1' AND nf_article_newsbook_photos.nID = nf_article_newsbook.ID) AS photosCount,";
+
 		} else {
-			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  as page, ";
+			$newsbook_select = "(SELECT TRIM(',' FROM TRIM(GROUP_CONCAT(if (g_pages.ID,CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, ' | ', FLOOR(g_pages.page),')'),'')))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID LIMIT 0,1)  as page, ";
 		}
 
-		//test_array($usepub_placed); 
+		
 		$from = self::_from($options);
 		
 		
@@ -256,13 +325,31 @@ class articles {
 					$n[] = $item['aID'];
 				}
 				$body_id = implode(",",$n);
-				$where = $where . " OR nf_articles.ID in ($body_id) ";
+
+				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
+				if ($where) {
+					$where = "AND " . $where . "";
+				} else {
+					$where = " ";
+				}
+				
+				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
 			}
 			
 		}
 
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+		
+		//test_array($where); 
+
+		
 		$sql = "
-			SELECT DISTINCT
+			SELECT DISTINCT 
+				$distinct,
 			 	nf_articles.*,
 				nf_article_types.type AS type,
 				nf_article_types.icon AS type_icon,
@@ -279,17 +366,18 @@ class articles {
 				if(global_users_1.ID,1,0) AS locked,
 				if(nf_stages.ID='2',1,0) AS ready,
 				if(global_dates.ID, 1, 0) AS in_newsbook,
-				if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb INNER JOIN global_pages ON p_nb.pageID = global_pages.ID WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,
+				
 				(SELECT TRIM(GROUP_CONCAT(CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, if(g_pages.ID,CONCAT(' | ',FLOOR(g_pages.page)),''),')'))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  AS newsbooks,
+				
 				$newsbook_select
+				$placed_select
+				
 				(SELECT count(ID) FROM nf_comments WHERE nf_comments.aID =  nf_articles.ID) AS commentCount,
-				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='1') AS photosCount,
+				$photoCount_sql
 				(SELECT count(ID) FROM nf_files WHERE nf_files.aID =  nf_articles.ID AND nf_files.type='2') AS filesCount
 			$select           ,
 			nf_articles.ID as ID
 			FROM ($from )
-
-			
 			$where
 			$orderby
 			$limit
@@ -353,7 +441,10 @@ class articles {
 			$options['filter'] = array($options['highlight'][0],$options['filter']);
 		}
 		
-	//	test_array($options);
+		$cfg = $f3->get("CFG");
+		$languages = $cfg['nf']['languages'];
+		
+		//test_array($languages);
 
 		$timer = new timer();
 		$user = $f3->get("user");
@@ -384,6 +475,9 @@ class articles {
 				}
 			}
 			$showrecord = true;
+			
+			
+				$record['language']=isset($languages[$record['lang']])?$languages[$record['lang']]:"";
 			
 			if ((isset($options["highlight"][0]))&&(isset($options["highlight"][1]))) {
 				$record['highlight'] = 0;
@@ -423,7 +517,13 @@ class articles {
 			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
-					$arr = array("heading" => $record['heading'], "count" => "");
+					$arr = array(
+						"heading" => $record['heading'], 
+						"count" => "",
+						"articles"=>"",
+						"photos"=>"",
+						"cm"=>""
+					);
 					$arr['groups'] = "";
 					$arr['records'] = "";
 					$a[$record['heading']] = $arr;
@@ -439,6 +539,9 @@ class articles {
 					}
 				}
 				$a[$record['heading']]["records"][] = $record;
+				if ($record['typeID']=='1')	$a[$record['heading']]["articles"] = $a[$record['heading']]["articles"] + 1;
+				$a[$record['heading']]["photos"] = $a[$record['heading']]["photos"] + $record['photosCount'];
+				$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['cm'];
 			}
 		}
 		$return = array();
@@ -472,8 +575,9 @@ class articles {
 
 
 		$arrange = "";
-		$ordering = $grouping['o'];
-		switch ($grouping['g']) {
+		$ordering = isset($grouping['o'])?$grouping['o'] : "ASC";
+		$grouping = isset($grouping['g'])?$grouping['g'] : "none";
+		switch ($grouping) {
 			case "author":
 				$orderby = "COALESCE(global_users.fullName,99999) $ordering, " . $orderby;
 				$arrange = "global_users.fullName as heading";
@@ -493,6 +597,10 @@ class articles {
 			case "page":
 				$orderby = "COALESCE(FLOOR(global_pages.page),99999) $ordering, " . $orderby;
 				$arrange = "COALESCE(CONCAT('Page ',FLOOR(global_pages.page)),'Not planned') as heading";
+				break;
+			case "type":
+				$orderby = "COALESCE(FLOOR(nf_article_types.orderby),99999) $ordering, " . $orderby;
+				$arrange = "COALESCE(nf_article_types.type,'None') as heading";
 				break;
 
 			case "none":
@@ -552,7 +660,9 @@ class articles {
 		
 		$cfg = $f3->get("CFG");
 		$writeBody = false;
-		$currentStage = '1';
+		$currentStage = isset($values['stageID'])?$values['stageID']:'1';
+		
+		
 		if ($ID){
 			$details = new articles();
 			$details = $details->get($ID);
@@ -565,6 +675,7 @@ class articles {
 
 
 				$body = $f3->scrub($body, $cfg['nf']['whitelist_tags']);
+				$body = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $body);
 
 				if ($body != $details['body']) {
 					$writeBody = true;
@@ -575,6 +686,10 @@ class articles {
 					$_body = $words;
 					$_draft = $f3->scrub($details['draft']);
 					$_dbody = $f3->scrub($details['body']);
+
+
+					$_draft = preg_replace("/\s+/", " ", $_draft);
+					$_dbody = preg_replace("/\s+/", " ", $_dbody);
 
 					$values['words'] = str_word_count($words);
 
@@ -590,16 +705,18 @@ class articles {
 
 
 					$changes[] = array("k" => "body", "v" =>"Change", "w" => "<div class='r'>". $values['percent_last']."%</div>");
+
+				
 					
 				}
 
 
-			}
+			} 
 			
 			
 		} else {
 			$values['cID']=$user['company']['ID'];
-			$values['stageID']= $currentStage = "1";
+			$values['stageID']= $currentStage;
 			$writeBody = true;
 
 			$body = $values['body'];
@@ -712,6 +829,7 @@ class articles {
 			$b->aID = $ID;
 			$b->uID = $user['ID'];
 			$b->body = $values['body'];
+			$b->cm = $values['cm'];
 			$b->words = $values['words'];
 			if ($values['percent_last']) $b->percent_last = $values['percent_last'];
 			if ($values['percent_orig']) $b->percent_orig = $values['percent_orig'];
@@ -745,12 +863,14 @@ class articles {
 		return $a;
 	}
 
-	private static function logging($ID, $log = array(), $label = "Log") {
+	public static function logging($ID, $log = array(), $label = "Log") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
-		$log = mysql_escape_string(json_encode($log));
+		$log = (json_encode($log));
+		$log = str_replace("'", "\\'", $log);
+		$log = str_replace('"', '\\"', $log);
 		//	$log = str_replace("'", "\\'", $log);
 		$f3->get("DB")->exec("INSERT INTO nf_articles_logs (`aID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()

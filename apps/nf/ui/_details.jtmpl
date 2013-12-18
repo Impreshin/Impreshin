@@ -26,7 +26,7 @@
 
 		<a href="#" class="back-btn-details-pane" rel="tooltip" data-placement="bottom" title="Back"><i class=" icon-circle-arrow-left icon-d-grey"></i></a>
 		<% if (this.a.newsbook=='1') { %>
-		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add to newsbook"><i class="icon-book icon-d-grey"></i></a>
+		<a href="#" class="add-newsbook" rel="tooltip" data-placement="bottom" title="Add record to newsbook"><i class="icon-book icon-d-grey"></i></a>
 		<% } %>
 		<% if (this.a.edit=='1') { %>
 		<a href="/app/nf/form/<%= this.ID %>?acID=<%= this.cID %>" rel="tooltip" data-placement="bottom" title="Edit this Record"><i class="icon-pencil icon-d-grey"></i></a>
@@ -94,6 +94,11 @@
 
 
 	<% if (this.historyShow.type=='body') { %>
+	<div class="history-wrapper tab-pane active">
+		
+	<div class="scroll-pane">
+		<div style="padding:10px 20px;">
+	
 	<div id="history-area">
 	<div class="alert">
 		<button type="button" class="close">&times;</button>
@@ -107,7 +112,15 @@
 	</div>
 	</div>
 	<%= this.historyShow.data.body||"<em class='g'>no article body</em>" %>
+	</div>
+	</div>
+	</div>
 	<% } else if(this.historyShow.type=='media') { %>
+	<div class="history-wrapper tab-pane active">
+
+	<div class="scroll-pane">
+	<div style="padding:10px 20px;">
+
 	<div id="history-area">
 	<div class="alert">
 		<button type="button" class="close">&times;</button>
@@ -133,7 +146,9 @@
 	</div>
 	<% } %>
 </div>
-
+	</div>
+	</div>
+	</div>
 <% } else { %>
 
 
@@ -334,8 +349,8 @@
 				<tbody>
 				<% for(var i in this.used) { %>
 				<tr class="f12">
-					<td><%= this.used[i].publication %></td>
-					<td><%= this.used[i].publish_date %></td>
+					<td <% if (this.used[i].placed=='0') { %>class="g em"<% } %>><%= this.used[i].publication %></td>
+					<td <% if (this.used[i].placed=='0') { %>class="g em"<% } %>><%= this.used[i].publish_date %></td>
 					<td><%= this.used[i].page||"" %></td>
 					<td class="g s "><%= this.used[i].fullName||"" %></td>
 					<td class="g s"><%= this.used[i].datein||"" %></td>
@@ -352,8 +367,8 @@
 						<% for(var f in this.used[i].media) { %>
 						<% if (this.used[i].media[f].fileType=="1"){ %>
 
-						<div class="span2" style="margin-bottom:10px;">
-							<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" class="glow"/>
+						<div class="span2 glow" style="margin-bottom:10px; min-height: 90px;">
+							<img src="/app/nf/thumb/110/90?file=<%= this.used[i].media[f].folder %>/<%= this.used[i].media[f].filename %>" />
 						</div>
 
 
@@ -493,11 +508,13 @@
 
 
 					<div class="dropdown-menu" style="max-height: 400px; overflow-y: auto; margin-left:-62px;">
-						<table class="table table-condensed s records" style="width:400px; margin-bottom:0;" id="details-history-table">
+						<table class="table table-condensed s records" style="width:538px; margin-bottom:0;" id="details-history-table">
 							<thead>
 							<tr>
 								<th class="l">Date/Time</th>
 								<th class="l">User</th>
+								<th class="l">Cm</th>
+								<th class="l">Words</th>
 								<th class="l">Stage</th>
 								<th class="l" style="width:40px;">% Chan</th>
 								<th class="l" style="width:40px;">% Orig</th>
@@ -510,7 +527,9 @@
 							<tr class="record <% if (this.history[i].ID==this.historyShow.ID && this.historyShow.type=='body') { %>active<% } %>" data-id="<%= this.history[i].ID %>">
 								<td><%= this.history[i].datein %></td>
 								<td><%= this.history[i].fullName %></td>
-								<td><%= this.history[i].stage %></td>
+								<td><%= this.history[i].cm||"" %></td>
+								<td><%= this.history[i].words||"" %></td>
+								<td><%= this.history[i].stage||"" %></td>
 								<td><%= this.history[i].percent_last||"" %></td>
 								<td><% if (this.history[i].stageID != '1') { %><%= this.history[i].percent_orig||"" %><% } %></td>
 							</tr>
@@ -730,7 +749,7 @@
 	<![CDATA[
 	<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add to<% } %> Newsbook</h3>
+		<h3><% if (this.details.ID){ %>Edit<% } else { %>Add record to<% } %> Newsbook</h3>
 		<select name="newsbook-pID" id="newsbook-pID" style="margin-left:12px;">
 			<% for (var i in this.publications) { %>
 			<option value="<%= this.publications[i].ID %>"
@@ -1149,22 +1168,25 @@ $(document).on("click", '#comments-area .edit', function () {
 	comment_active();
 });
 
-
-
-$(document).on("shown", '#nf-details-modal', function () {
+function open_tab_pabe(){
 	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
 	if (!tab) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
 		if (tab) tab = tab.replace("#", "");
 	}
-	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent()
+	var t = $('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent();
 	if (t.length < 1) {
 		tab = $(".nav-tabs li:first a", $details_modal).attr("href");
 		if (tab) tab = tab.replace("#", "");
-	}
-	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	}$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
 	$('#' + tab + '', $details_modal).addClass("active");
 	$("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+}
+
+
+$(document).on("shown", '#nf-details-modal', function () {
+
+	open_tab_pabe();
 
 });
 $(document).on('show', '#nf-details-modal .nav-tabs', function (e) {
@@ -1285,7 +1307,24 @@ $(document).on('submit', '#form-newsbook', function (e) {
 
 	$("#popup-newsbook").show().find(".loadingmask").show();
 	$.post("/app/nf/save/articles/newsbook/?aID=" + $.bbq.getState("ID"), data, function (response) {
-		getDetails();
+		if (response.error){
+			$("#popup-newsbook").show().find(".loadingmask").hide();
+			if(confirm(response.error)){
+
+				var ID = response.values.exists;
+				var aID = response.values.aID;
+				var pID = response.values.pID;
+				var dID = response.values.dID;
+				$.bbq.pushState({"n_ID": ID, "n_pID": pID, "n_dID": dID});
+
+				newsbook_form();
+				
+				
+			};
+		} else {
+			getDetails();
+		}
+		
 	});
 
 });
@@ -1318,7 +1357,7 @@ $(document).on("click", ".btn-view-photo", function (e) {
 
 	var p = {
 		"ID"     : ID,
-		"caption": caption,
+		"caption": caption?caption:'',
 		"path"   : path
 	};
 
@@ -1335,7 +1374,7 @@ $(document).on("click", ".btn-view-photo", function (e) {
 
 	$.fancybox.open({
 		href : '/app/nf/thumb/' + w + '/' + h + '?file=' + path + '&crop=false',
-		title: "test"
+		title: ""
 	}, {
 		padding   : 10,
 		type      : 'image',
@@ -1412,10 +1451,7 @@ function showContent_state() {
 	} else {
 		$(".details-record-next").removeAttr("disabled");
 	}
-	var tab = $.bbq.getState("details-tab"), $details_modal = $('#nf-details-modal');
-	if (!tab) tab = "details-pane-details";
-	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-	$('#' + tab + '', $details_modal).addClass("active");
+	open_tab_pabe()
 
 }
 function getDetails() {

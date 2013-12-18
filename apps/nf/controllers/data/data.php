@@ -28,6 +28,8 @@ class data {
 
 		$record = new models\articles();
 		$return = $record->get($ID);
+		
+		if ($return['typeID']!='1') $return['words']=NULL;
 		$allow = array(
 			"newsbook"=>"0",
 			"locked"=>"0",
@@ -38,7 +40,8 @@ class data {
 			"print" => "1",
 			"stageNext"=>"0",
 			"stagePrev"=>"0",
-			"stage_jump_list"=>"0"
+			"stage_jump_list"=>"0",
+			"placed"=>"0"
 		);
 
 
@@ -125,51 +128,64 @@ class data {
 		
 		
 		
+		
 		$history = array();
+		if ($return['typeID']=='1'){
+			$historyData = models\articles::getEdits($ID,"datein ASC");
 
-		$historyData = models\articles::getEdits($ID,"datein ASC");
+			$compare = array();
+			$previous = array();
+			$prev = array();
+			$i=0;
+			foreach ($historyData as $item){
 
-		$compare = array();
-		$previous = array();
-		$prev = array();
-		$i=0;
-		foreach ($historyData as $item){
+				if ($historyID== $item['ID'] &&$history_type=='body' ) {
+					$compare = $item;
+					$previous = $prev;
+				}
 
-			if ($historyID== $item['ID'] &&$history_type=='body' ) {
-				$compare = $item;
-				$previous = $prev;
-			}
-
-			$prev = $item;
-			unset($item['body']);
-			$history[$item['datein']] = $item;
-		}
-
-
-		rsort($history);
-
-		//test_array(array("data" => $history, "c" => $compare, "t" => $previous));
-
-
-		if (isset($compare['body'])&&isset($previous['body'])){
-
-			$orig = $previous['body'];
-			$latest = $compare['body'];
-
-			//test_array(array("o"=>$orig,"l"=>$latest));
-
-			if ($orig!= $latest){
-				$orig = htmlspecialchars_decode($orig);
-				$latest = htmlspecialchars_decode($latest);
-				$diff = \FineDiff::getDiffOpcodes($orig, $latest, \FineDiff::characterDelimiters);
-				$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($orig, $diff);
-				$diffHTML = htmlspecialchars_decode($diffHTML);
-				$compare['body'] = $diffHTML;
+				$prev = $item;
+				unset($item['body']);
+				$history[$item['datein']] = $item;
 			}
 
 
+			rsort($history);
 
+			//test_array(array("data" => $history, "c" => $compare, "t" => $previous));
+
+
+			if (isset($compare['body'])&&isset($previous['body'])){
+
+				$orig = $previous['body'];
+				$latest = $compare['body'];
+
+				//test_array(array("o"=>$orig,"l"=>$latest));
+
+				if ($orig!= $latest){
+					$orig = htmlspecialchars_decode($orig);
+					$latest = htmlspecialchars_decode($latest);
+
+					$myStack = array(
+						\FineDiff::paragraphDelimiters,
+						//\FineDiff::sentenceDelimiters,
+						\FineDiff::wordDelimiters,
+						\FineDiff::characterDelimiters
+					);
+					
+					
+					$diff = \FineDiff::getDiffOpcodes($orig, $latest, $myStack);
+					$diffHTML = \FineDiff::renderDiffToHTMLFromOpcodes($orig, $diff);
+					$diffHTML = htmlspecialchars_decode($diffHTML);
+					$diffHTML = str_replace("\\r\\n","",$diffHTML);
+					$compare['body'] = $diffHTML;
+				}
+
+
+
+			}
 		}
+		
 
 		
 		$newsbooks = models\articles::getNewsbooks($return['ID'],"publish_date DESC");
@@ -251,12 +267,17 @@ class data {
 
 		$record = new models\articles();
 		$return = $record->get($ID,array("pID"=>$pID,"dID"=>$dID));
-		$allow = array("print" => "1",);
+		$allow = array(
+			"print" => "1",
+			"placed" => "0",
+		);
 
 		$permissions = $user['permissions'];
 
 
-		
+		if ($permissions['details']['placed']=='1'){
+			$allow['placed'] ='1';
+		}
 		
 		
 		$history = array();
@@ -265,6 +286,7 @@ class data {
 
 
 
+		//test_array(array($ID,array("pID"=>$pID,"dID"=>$dID)));
 		
 		$newsbook = models\newsbooks::getAll("aID='".$return['ID']."' AND pID = '$pID' AND dID = '$dID'","ID DESC");
 
@@ -274,8 +296,10 @@ class data {
 			$media= models\files::getAll("nf_article_newsbook_photos.nID='".$newsbook['ID']."'");
 
 			$media = models\files::display($media);
+			$return['placed']=$newsbook['placed'];
 		}
 	
+		
 
 		$return['media'] = $media;
 

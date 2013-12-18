@@ -68,12 +68,7 @@ class search extends \apps\nf\controllers\_ {
 
 
 
-		$date_range = $this->f3->get("DB")->exec("SELECT min(datein) as earliestDate, max(datein) as latestDate FROM nf_articles");
-		if (count($date_range)){
-			$date_range = $date_range[0];
-		}
-
-		$tmpl->date_range = json_encode($date_range);
+		
 
 		$tmpl->settings = $settings;
 
