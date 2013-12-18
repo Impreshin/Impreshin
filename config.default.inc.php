@@ -60,4 +60,4 @@ $cfg['nf']['languages'] = array(
 	
 );
 
-$cfg['system_messages']=false;
+$cfg['system_messages']=true;
