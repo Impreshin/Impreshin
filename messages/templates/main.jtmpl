@@ -75,10 +75,11 @@
 
 
 	<% } %>
+	<!--
 	<li style="float: right; margin-top:5px;">
 		<button class="btn btn-mini span1 btn-trash" type="button"><i class="icon-trash"></i></button>
 	</li>
-
+-->
 
 </ul>
 <div class="content" style="top:35px;">
