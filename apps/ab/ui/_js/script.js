@@ -85,6 +85,35 @@ $(document).ready(function () {
 		closeBtn : false
 	};
 
+	var fancyMessagesOptions = {
+		type         : 'iframe',
+		iframe       : {
+			scrolling: 'no',
+			preload  : true
+		},
+		padding      : 0,
+		width        : 950,
+		scrollOutside: false,
+		beforeClose  : function () {
+			//$(this.element).attr("href", $.bbq.getState("help"));
+
+		},
+		afterClose   : function () {
+			$.bbq.removeState("messages");
+		},
+
+		afterShow: function () {
+
+			// var $frame = $(this.content).contents();
+			var $f = $(this.content);
+			//console.log($f);
+			$f[0].contentWindow.scrollbars();
+
+		},
+		title    : false,
+		closeBtn : false
+	};
+
 	var help = $.bbq.getState("help");
 	if (help) {
 
@@ -96,7 +125,17 @@ $(document).ready(function () {
 		], fancyHelpOptions);
 	}
 
+	var messages = $.bbq.getState("messages");
+	if (messages) {
+		$.fancybox.open([
+			{
+				href: "/app/nf/messages"
+			}
+		], fancyMessagesOptions);
+	}
+
 	$("a.help_link").fancybox(fancyHelpOptions);
+	$("a.messages_link").fancybox(fancyMessagesOptions);
 
 	$(document).bind('keydown', 'f1', function (e) {
 		e.preventDefault();
