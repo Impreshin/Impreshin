@@ -59,7 +59,7 @@
                             &nbsp;</div>
                         <div id="notice-area-idle" class="c span10 offset3" style="position: absolute; top:0; left: 0; background-color: #444; display: none;">&nbsp;</div>
                     </div>
-                    <div class="s span2" style="float: right; position: absolute; right: 0;">
+                    <div class="s span2" id="notifications-area-right-bottom" >
                         <div class="s" style="position: absolute; right:0;">
 	                        
                             <a href="{{ page['help'] }}" class="help_link" title="Docs&nbsp;/&nbsp;Help"><i class=" icon-question-sign icon-grey"></i></a>
@@ -73,9 +73,14 @@
 	                        {% endif %}
                         </div>
 
+	                    <div class="dropup" id="user-loggedin-list-trigger">
+		                    <span class="dropdown-toggle" data-toggle="dropdown" >{{ _user['fullName'] }}</span>
 
-                        <span style="padding-right: 30px; color: #999;">{{ _user['fullName'] }}</span>
+		                    <div class="dropdown-menu" id="user-loggedin-list" >
+			                  
+		                    </div>
 
+	                    </div>
 
                     </div>
                 </div>

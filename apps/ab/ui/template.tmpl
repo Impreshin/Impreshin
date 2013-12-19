@@ -73,7 +73,14 @@
                         </div>
 
 
-                        <span style="padding-right: 30px; color: #999;">{{ _user['fullName'] }}</span>
+	                    <div class="dropup" id="user-loggedin-list-trigger">
+		                    <span class="dropdown-toggle" data-toggle="dropdown" >{{ _user['fullName'] }}</span>
+
+		                    <div class="dropdown-menu" id="user-loggedin-list" >
+
+		                    </div>
+
+	                    </div>
 
 
                     </div>

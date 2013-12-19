@@ -331,6 +331,7 @@ function updatetimerlist(d, page_size) {
 	if (d['notifications']) {
 		$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
 		$("#message-icon-area").jqotesub($("#template-notifications-messages"), d['notifications']['messages']);
+		$("#user-loggedin-list").jqotesub($("#template-notifications-users"), d['notifications']);
 	}
 
 	var pageSize = (page && page['size']) ? page['size'] : page_size;

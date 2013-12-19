@@ -46,3 +46,17 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-notifications-users">
+	<![CDATA[
+	<table class="table table-condensed s" style="margin:0;">
+		<% for (var i in this.users) { %>
+		<tr title="<%=this.users[i].d %> &nbsp; | &nbsp; <%=this.users[i].p %>">
+			<td><%=this.users[i].f %> </td>
+			<td><%=this.users[i].t %></td>
+		</tr>
+		<% } %>
+	</table>
+			<div class="s g c">All users with activity in the last 2 hours</div>
+
+	]]>
+</script>

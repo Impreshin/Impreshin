@@ -7844,6 +7844,31 @@ form #form-bottom .form-actions {
 #message-icon.unread:hover .count {
   text-shadow: 0px 0px 6px #000;
 }
+#user-loggedin-list-trigger {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#user-loggedin-list-trigger .dropdown-toggle {
+  cursor: pointer;
+  padding-right: 30px;
+  color: #999;
+}
+#user-loggedin-list-trigger .dropdown-menu {
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+#user-loggedin-list {
+  width: 240px;
+  color: #444;
+  margin-left: -130px;
+}
+#notifications-area-right-bottom {
+  float: right;
+  position: absolute;
+  right: 0;
+}
 .nav-dropdown-li:hover a {
   background-color: #e3e3e3;
   text-decoration: none;
