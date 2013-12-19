@@ -72,6 +72,5 @@
 		</tr>
 		<% } %>
 	</table>
-	<div class="s g c">All users with activity in the last 2 hours</div>
 	]]>
 </script>
