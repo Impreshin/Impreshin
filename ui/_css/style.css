@@ -7804,6 +7804,21 @@ form #form-bottom .form-actions {
   opacity: 1;
   filter: alpha(opacity=100);
 }
+#notifications-area-right-bottom {
+  float: right;
+  position: absolute;
+  right: 0;
+}
+#notifications-area-right-bottom i.icon-grey {
+  font-size: 14px;
+  color: #999!important;
+}
+#notifications-area-right-bottom a:hover i.icon-grey {
+  color: #ccc!important;
+}
+#notifications-area-right-bottom .help_link {
+  margin-left: 5px;
+}
 .messages_link {
   position: relative;
 }
@@ -7823,7 +7838,8 @@ form #form-bottom .form-actions {
 #message-icon.unread a {
   white-space: nowrap;
 }
-#message-icon.unread a i {
+#message-icon.unread a i.icon-grey {
+  font-size: 30px;
   text-shadow: 0px 0px 1px #fff;
 }
 #message-icon.unread .messages_link .count {
@@ -7839,20 +7855,27 @@ form #form-bottom .form-actions {
   border-bottom: 3px solid #005580;
 }
 #message-icon.unread:hover i.icon-grey {
-  color: #999!important;
-}
-#message-icon.unread:hover .count {
-  text-shadow: 0px 0px 6px #000;
+  color: #afafaf !important;
 }
 #user-loggedin-list-trigger {
   position: absolute;
   left: 0;
   top: 0;
+  right: 0;
+  z-index: 1;
 }
 #user-loggedin-list-trigger .dropdown-toggle {
   cursor: pointer;
   padding-right: 30px;
   color: #999;
+  display: inline-block;
+  width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#user-loggedin-list-trigger .dropdown-toggle:hover {
+  color: #ccc;
 }
 #user-loggedin-list-trigger .dropdown-menu {
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
@@ -7863,11 +7886,6 @@ form #form-bottom .form-actions {
   width: 240px;
   color: #444;
   margin-left: -130px;
-}
-#notifications-area-right-bottom {
-  float: right;
-  position: absolute;
-  right: 0;
 }
 .nav-dropdown-li:hover a {
   background-color: #e3e3e3;
