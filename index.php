@@ -326,9 +326,24 @@ foreach ($router as $key=> $routes) {
 		}
 			
 	);
-$app->route("GET|POST /app/$key/messages/do_message", function ($f3, $params) use ($app, $key) {
+	$app->route("GET|POST /app/$key/messages/do_message", function ($f3, $params) use ($app, $key) {
 			$f3->set("params",$params);
 			$app->chain("apps\\$key\\app->app; messages->do_message");
+		}
+			
+	);
+
+	$app->route("GET|POST /app/$key/notifications", function ($f3, $params) use ($app, $key) {
+			$f3->set("params",$params);
+			$f3 = \base::instance();
+			$app->chain("apps\\$key\\app->app;");
+			$f3->set("json",true);
+			
+			$str = "\\apps\\$key\\models\\notifications";
+			$GLOBALS["output"]['notifications'] = $str::show();
+			
+			
+			
 		}
 			
 	);

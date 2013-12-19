@@ -100,6 +100,9 @@ $(document).ready(function () {
 		},
 		afterClose   : function () {
 			$.bbq.removeState("messages");
+			$.getData("/app/nf/notifications?r="+Math.random(),function(){
+
+			})
 		},
 
 		afterShow: function () {
@@ -327,7 +330,7 @@ function updatetimerlist(d, page_size) {
 
 	if (d['notifications']) {
 		$("#notice-area").jqotesub($("#template-notifications"), d['notifications']['footer']);
-		$("#message-icon").jqotesub($("#template-notifications-messages"), d['notifications']['messages']);
+		$("#message-icon-area").jqotesub($("#template-notifications-messages"), d['notifications']['messages']);
 	}
 
 	var pageSize = (page && page['size']) ? page['size'] : page_size;

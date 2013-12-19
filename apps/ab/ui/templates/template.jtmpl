@@ -48,6 +48,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-notifications-messages">
 	<![CDATA[
+	<span id="message-icon" class=" <% if (this.unread=='0') { %><% } else { %>unread<% } %>">
 	<a title="Messages" class="messages_link" href="/app/ab/messages" style="margin-left: 5px;">
 		<% if (this.unread=='0') { %>
 		<i class="icon-comment-alt icon-grey"></i>
@@ -56,7 +57,7 @@
 		<span class="count"><%= this.unread %></span>
 		<% } %>
 	</a>
-
+	</span>
 
 	]]>
 </script>
