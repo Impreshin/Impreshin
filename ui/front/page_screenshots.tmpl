@@ -41,8 +41,8 @@
 							{% endif %}
 					
 						{% for row in data['screenshots'] %}
-						<a href="/uploads/front/screenshots/{{ data['app'] }}/{{ row['i'] }}" class="screenshot">
-							<img src="/uploads/front/screenshots/{{ data['app'] }}/thumbs/{{ row['i'] }}" alt="{{ row['n'] }}" >
+						<a href="/front/screenshots/{{ data['app'] }}/{{ row['i'] }}" class="screenshot">
+							<img src="/front/screenshots/{{ data['app'] }}/thumbs/{{ row['i'] }}" alt="{{ row['n'] }}" >
 
 							<div class="hidden">
 								<h3>{{ row['n'] }}{% if row['d'] %}<small>- {{ row['d'] }}</small>{% endif %}</h3>
