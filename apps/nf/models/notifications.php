@@ -15,6 +15,25 @@ class notifications {
 		$return['footer'] = self::bar();
 		$return['messages'] = \models\messages::_count();
 
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		$cID = $user['company']['ID'];
+
+		$users = \models\user::getAll("cID='$cID' AND COALESCE(last_activity, 0) > CURDATE() - INTERVAL 2 HOUR", "last_activity DESC, fullName ASC");
+		
+		$l = array();
+		foreach ($users as $u){
+			$l[] = array(
+				"ID"=>$u['ID'],
+				"f"=>$u['fullName'],
+				"t"=>timesince($u['last_activity']),
+				"d"=>$u['last_activity'],
+				"p"=>$u['last_page'],
+			);
+		}
+		
+		$return['users'] = $l;
+
 		return $return;
 	}
 

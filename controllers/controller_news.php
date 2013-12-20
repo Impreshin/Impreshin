@@ -11,7 +11,7 @@ class controller_news {
 	function page(){
 		$selected_folder = $this->f3->get('PARAMS["item"]');
 
-		$path = "./uploads/news/";
+		$path = "./front/news/";
 		$dates = glob($path."*", GLOB_ONLYDIR);
 
 

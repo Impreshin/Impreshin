@@ -128,7 +128,7 @@ class messages {
 			$from_ID = $message['from_uID'];
 			$to_ID = $message['to_uID'];
 			$sec = "users";
-			if ($message['app']){
+			if ($message['app']!=""){
 				$from_ID = $message['app'];
 				$sec = "system";
 			}
