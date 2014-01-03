@@ -7812,6 +7812,10 @@ form #form-bottom .form-actions {
 #notifications-area-right-bottom i.icon-grey {
   font-size: 14px;
   color: #999!important;
+  -webkit-box-shadow: -4px 2px 5px #333333, 4px 2px 5px #333333;
+  -moz-box-shadow: -4px 2px 5px #333333, 4px 2px 5px #333333;
+  box-shadow: -4px 2px 5px #333333, 4px 2px 5px #333333;
+  background-color: #333;
 }
 #notifications-area-right-bottom a:hover i.icon-grey {
   color: #ccc!important;
@@ -7841,6 +7845,8 @@ form #form-bottom .form-actions {
 #message-icon.unread a i.icon-grey {
   font-size: 30px;
   text-shadow: 0px 0px 1px #fff;
+  background: none;
+  box-shadow: none;
 }
 #message-icon.unread .messages_link .count {
   color: #FF0000;
