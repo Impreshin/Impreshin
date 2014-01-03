@@ -313,3 +313,31 @@ INSERT INTO global_users_company (cID,uID,nf,nf_author) SELECT '6', ID, '1', '1'
 ALTER TABLE `nf_article_newsbook` CHANGE `placedBy` `placed_uID` INT( 6 ) NULL DEFAULT NULL;
 
 ALTER TABLE `nf_articles` ADD `lang` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `meta`;
+
+#---------------------------------------------
+
+
+ALTER TABLE `nf_articles` CHANGE `articleType` `articleType` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'article';
+ALTER TABLE `nf_articles` CHANGE `checklist` `checklist` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `meta` `meta` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `lang` `lang` VARCHAR( 10 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `rejected_reason` `rejected_reason` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` CHANGE `deleted_reason` `deleted_reason` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_categories` CHANGE `nf_cm_css` `nf_cm_css` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_files` CHANGE `folder` `folder` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_files` CHANGE `filename` `filename` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_files` CHANGE `filename_orig` `filename_orig` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_logs` CHANGE `reason` `reason` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_settings` CHANGE `val` `val` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_settings` CHANGE `description` `description` VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+ALTER TABLE `nf_articles` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_article_newsbook` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+ALTER TABLE `nf_article_newsbook_photos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_categories` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_comments` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_comments_read` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_files` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_logs` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `nf_settings` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+

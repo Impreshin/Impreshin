@@ -7,7 +7,7 @@
 $cfg = array();
 require_once('../config.default.inc.php');
 require_once('../config.inc.php');
-
+date_default_timezone_set($cfg['TZ']);
 require_once('../inc/functions.php');
 require_once('../update/update.php');
 
@@ -140,6 +140,7 @@ $table_changes = array(
 $link = mysql_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password']);
 mysql_select_db($cfg['DB']['database'], $link);
 
+//test_array($table_changes); 
 $actions = array();
 $cleanup = array();
 $renames = array();
