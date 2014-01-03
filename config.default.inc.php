@@ -55,7 +55,7 @@ $cfg['nf']['whitelist_tags'] = "b,i,em,strong,p,br,hr";
 
 
 $cfg['nf']['languages'] = array(
-	"en_gb"=>"English (British)",
+	"en_gb"=>"English",
 	"af_ZA"=>"Afrikaans"
 	
 );
