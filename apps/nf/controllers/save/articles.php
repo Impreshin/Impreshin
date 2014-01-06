@@ -128,6 +128,18 @@ class articles extends save {
 			models\articles::save($aID, $values, array("dry" => false,"section"=>"rejected"));
 			$r['ID'] = $aID;
 			$r['values'] = $values;
+
+			$values = array(
+				"aID" => $aID,
+				"uID" => $user['ID'],
+				"comment" => '<span class="label label-important">Rejected</span> ' . $values['rejected_reason'],
+				"parentID" => ""
+			);
+
+
+			models\comments::save("", $values);
+			
+			
 		}
 
 		test_array($r);
