@@ -208,7 +208,12 @@ class articles extends save {
 				if (!in_array($userID['uID'],$to_uID_array)) $to_uID_array[] = $userID['uID'];
 			}
 			
-			
+			$t = array();
+			foreach ($to_uID_array as $ttttt){
+				if (!in_array($ttttt,$t)) $t[] = $ttttt;
+			}
+
+			$to_uID_array = $t;
 
 			foreach ($to_uID_array as $to_uID){
 				//if ($to_uID != $user['ID']){
