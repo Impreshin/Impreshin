@@ -202,7 +202,7 @@ class articles extends save {
 			$msg = "Comment posted by: ".$user['fullName']."<hr>". $values['comment'];
 			$url = "/app/nf#ID=".$art['ID']."&details-tab=details-pane-comments";
 			
-			$to_uID_array = array($art['authorID']);
+			$to_uID_array = array($art['authorID'],$user['ID']);
 			
 			foreach ($art['comments'] as $userID){
 				if (!in_array($userID['uID'],$to_uID_array)) $to_uID_array[] = $userID['uID'];
@@ -211,18 +211,19 @@ class articles extends save {
 			
 
 			foreach ($to_uID_array as $to_uID){
-				if ($to_uID != $user['ID']){
+				//if ($to_uID != $user['ID']){
 					$message_values = array(
 						"cID"=>$user['company']['ID'],
 						"app"=>"nf",
 						"to_uID"=>$to_uID,
 						"subject"=>$subject,
 						"message"=>$msg,
-						"url"=>$url
+						"url"=>$url,
+						"read"=>($to_uID == $user['ID'])?"1":"0"
 					);
 
 					\models\messages::_save("",$message_values);
-				}
+			//	}
 			};
 
 			
