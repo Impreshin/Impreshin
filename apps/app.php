@@ -252,6 +252,8 @@ class app {
 
 		//test_array($appstuff); 
 		$applications = array();
+		
+		
 		if (count($appstuff)) {
 			$appstuff = $appstuff[0];
 
@@ -299,6 +301,7 @@ class app {
 				}
 			}
 
+			
 			unset($e[$app . "_permissions"]);
 
 
@@ -310,6 +313,8 @@ class app {
 
 
 
+	
+		
 
 		if ($user['su'] == '1') {
 			//$applications = $applications_list;
@@ -324,8 +329,20 @@ class app {
 
 			$return['access'] = true;
 			$permissions['allow_setup'] = '1';
+			
+			
+			foreach ($applications_list as $su_k=>$su_a){
+				if (!isset($su_a['last_page']) || $su_a['last_page']=="") $su_a['last_page'] = "/app/".$su_k;
+				if (!isset($applications[$su_k])){
+					$applications[$su_k] = $su_a;
+				}
+				
+			}
+			
 		}
 
+		
+		//test_array(array("apps"=>$applications,"list"=>$applications_list)); 
 
 		$return['applications'] = $applications;
 		
