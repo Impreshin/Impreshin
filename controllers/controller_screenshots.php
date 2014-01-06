@@ -104,6 +104,120 @@ class controller_screenshots {
 		);
 
 		$screenshots = array();
+		$screenshots[] = array(
+			"i"=>"articles.png",
+			"n"=>"Main article list",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"newsbook.png",
+			"n"=>"Newsbook",
+			"d"=>"Displays the current newsbook's progress"
+		);
+		$screenshots[] = array(
+			"i"=>"layout.png",
+			"n"=>"Layout",
+			"d"=>"Drag articles onto their pages"
+		);
+		$screenshots[] = array(
+			"i"=>"production.png",
+			"n"=>"Production",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"records_search.png",
+			"n"=>"Search",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"records_newsbook.png",
+			"n"=>"Newsbook Archives",
+			"d"=>"Lists records based on the newsbooks they were added to"
+		);
+		$screenshots[] = array(
+			"i"=>"details.png",
+			"n"=>"Article Details",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"details_history.png",
+			"n"=>"Article Details",
+			"d"=>"All changes are stored and are clearly visible"
+		);
+		$screenshots[] = array(
+			"i"=>"details_photo.png",
+			"n"=>"Article Details",
+			"d"=>"Photos display their EXIF and are zoom'able"
+		);
+		
+		
+		
+		
+		$screenshots[] = array(
+			"i"=>"reports_author_submitted_top.png",
+			"n"=>"Reports",
+			"d"=>"Author submitted"
+		);
+		$screenshots[] = array(
+			"i"=>"reports_author_submitted_bottom.png",
+			"n"=>"Reports",
+			"d"=>"Author submitted"
+		);
+		$screenshots[] = array(
+			"i"=>"reports_author_submitted_bottom2.png",
+			"n"=>"Reports",
+			"d"=>"Author submitted"
+		);
+		$screenshots[] = array(
+			"i"=>"reports_category_figures_top.png",
+			"n"=>"Reports",
+			"d"=>"Category Figures"
+		);
+		$screenshots[] = array(
+			"i"=>"reports_category_figures_records.png",
+			"n"=>"Reports",
+			"d"=>"Category Figures Records"
+		);
+		$screenshots[] = array(
+			"i"=>"reports_category_figures_records.png",
+			"n"=>"Reports",
+			"d"=>"Category Figures Records"
+		);
+		$screenshots[] = array(
+			"i"=>"admin_style.png",
+			"n"=>"Admin",
+			"d"=>"Style sheet - for working out the cm"
+		);
+		
+		$screenshots[] = array(
+			"i"=>"admin_users_top.png",
+			"n"=>"Admin",
+			"d"=>"Users"
+		);
+		
+		$screenshots[] = array(
+			"i"=>"admin_users_bottom.png",
+			"n"=>"Admin",
+			"d"=>"Users - Permissions"
+		);
+		$screenshots[] = array(
+			"i"=>"form_top.png",
+			"n"=>"Form",
+			"d"=>""
+		);
+		
+		$screenshots[] = array(
+			"i"=>"form_bottom.png",
+			"n"=>"Form",
+			"d"=>""
+		);
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		
