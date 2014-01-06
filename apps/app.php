@@ -343,6 +343,24 @@ class app {
 
 		
 		//test_array(array("apps"=>$applications,"list"=>$applications_list)); 
+		
+		$t = array();
+		foreach ($applications as $aak=>$aaa){
+			$start = "/app/".$aak;
+			
+			if (substr($aaa['last_page'],0,strlen($start))!=$start){
+				$aaa['last_page'] = $start;
+			}
+			
+			//test_array(substr($aaa['last_page'],0,strlen($start))); 
+			
+			
+			$t[$aak]=$aaa;
+			
+		}
+		$applications = $t;
+
+	
 
 		$return['applications'] = $applications;
 		
@@ -374,7 +392,7 @@ class app {
 
 		}
 
-		//test_array($return);
+		
 
 		
 
