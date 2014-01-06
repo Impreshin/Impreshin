@@ -128,6 +128,18 @@ class articles extends save {
 			models\articles::save($aID, $values, array("dry" => false,"section"=>"rejected"));
 			$r['ID'] = $aID;
 			$r['values'] = $values;
+
+			$values = array(
+				"aID" => $aID,
+				"uID" => $user['ID'],
+				"comment" => '<span class="label label-important">Rejected</span> ' . $values['rejected_reason'],
+				"parentID" => ""
+			);
+
+
+			models\comments::save("", $values);
+			
+			
 		}
 
 		test_array($r);
@@ -202,27 +214,33 @@ class articles extends save {
 			$msg = "Comment posted by: ".$user['fullName']."<hr>". $values['comment'];
 			$url = "/app/nf#ID=".$art['ID']."&details-tab=details-pane-comments";
 			
-			$to_uID_array = array($art['authorID']);
+			$to_uID_array = array($art['authorID'],$user['ID']);
 			
 			foreach ($art['comments'] as $userID){
 				if (!in_array($userID['uID'],$to_uID_array)) $to_uID_array[] = $userID['uID'];
 			}
 			
-			
+			$t = array();
+			foreach ($to_uID_array as $ttttt){
+				if (!in_array($ttttt,$t)) $t[] = $ttttt;
+			}
+
+			$to_uID_array = $t;
 
 			foreach ($to_uID_array as $to_uID){
-				if ($to_uID != $user['ID']){
+				//if ($to_uID != $user['ID']){
 					$message_values = array(
 						"cID"=>$user['company']['ID'],
 						"app"=>"nf",
 						"to_uID"=>$to_uID,
 						"subject"=>$subject,
 						"message"=>$msg,
-						"url"=>$url
+						"url"=>$url,
+						"read"=>($to_uID == $user['ID'])?"1":"0"
 					);
 
 					\models\messages::_save("",$message_values);
-				}
+			//	}
 			};
 
 			

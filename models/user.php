@@ -413,6 +413,8 @@ FROM global_users INNER JOIN global_users_company ON global_users.ID = global_us
 
 
 		$return = $result;
+		
+		
 
 		$timer->stop(array( "Models" => array(
 			                  "Class"  => __CLASS__,
