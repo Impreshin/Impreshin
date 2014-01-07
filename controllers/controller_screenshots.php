@@ -120,21 +120,6 @@ class controller_screenshots {
 			"d"=>"Drag articles onto their pages"
 		);
 		$screenshots[] = array(
-			"i"=>"production.png",
-			"n"=>"Production",
-			"d"=>""
-		);
-		$screenshots[] = array(
-			"i"=>"records_search.png",
-			"n"=>"Search",
-			"d"=>""
-		);
-		$screenshots[] = array(
-			"i"=>"records_newsbook.png",
-			"n"=>"Newsbook Archives",
-			"d"=>"Lists records based on the newsbooks they were added to"
-		);
-		$screenshots[] = array(
 			"i"=>"details.png",
 			"n"=>"Article Details",
 			"d"=>""
@@ -149,7 +134,23 @@ class controller_screenshots {
 			"n"=>"Article Details",
 			"d"=>"Photos display their EXIF and are zoom'able"
 		);
-		
+
+
+		$screenshots[] = array(
+			"i"=>"production.png",
+			"n"=>"Production",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"records_search.png",
+			"n"=>"Search",
+			"d"=>""
+		);
+		$screenshots[] = array(
+			"i"=>"records_newsbook.png",
+			"n"=>"Newsbook Archives",
+			"d"=>"Lists records based on the newsbooks they were added to"
+		);
 		
 		
 		

@@ -157,7 +157,8 @@
 						<tr>
 							<td colspan="3">
 								<div class="help-block g">
-									Click save record after changing or re-ordering the rows
+									Click save record after changing or re-ordering the rows<br>
+									To remove a sub-placing item clear its label and click save
 								</div></td>
 							<td>
 								<button class="btn span1 btn-mini" type="button" style="float:right;" id="btn-new-sub_placing" >
