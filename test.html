@@ -11,7 +11,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>Test Dictionary</title>
+	<title>Test regex</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -21,217 +21,120 @@
 
 
 
-	<link rel="stylesheet" href="/ui/_css/bootstrap.css">
-	<link rel="stylesheet" href="/ui/fancybox/jquery.fancybox.css">
 
 
-	<style type="text/css">
-		article {
-			border-bottom: 1px dotted #ccc;
-			padding: 10px 20px ;
-		}
-		.well {
-			margin: 5px 0 5px 0;			
-		}
-		footer {
-			margin-top:5px;
-		}
-		.lookups {
-			color: #8a8a8a;
-		}
-		.lookups span {
-			cursor: pointer;
-		}
-		.lookups span:hover {
-			background-color: #e1e1e1;
-		}
-		.loading {
-			text-align: center;
-			margin:30px;
-		}
-	</style>
+	
 	
 
 
 </head>
 <body>
 
-http://jquery-spellchecker.badsyntax.co/ckeditor.html
-
-https://github.com/badsyntax/jquery-spellchecker/wiki/Documentation
-<div>
-	<form action="#">
-		<input type="text" id="word" name="word" />	<button id="lookup" class="btn" type="submit">lookup</button>
-		<div class="help-block">
-			Powered By: <a href="http://www.abbreviations.com" target="_blank"> http://www.abbreviations.com</a>
-		</div>
-	</form>
-
-	
-	<div id="result">
-
-		
-	</div>
-	
-	
-	
-	
+<div id="test"> u  A person only becomes what she or he visualises about himself or herself),” she added. “So, I visualised about my successful matric results while working hard, and went on to make it.”
 </div>
 
-
 <script src="/ui/_js/libs/jquery.js"></script>
-<script src="/ui/_js/plugins/jquery.getData.js"></script>
-<script src="/ui/_js/plugins/jquery.jqote2.js"></script>
-<script src="/ui/fancybox/jquery.fancybox.pack.js"></script>
 
 <style type="text/css">
-	
+	.word-highlight {
+		color:red;
+	}
 	
 </style>
 <script type="text/javascript">
-	
-	$("form").submit(function(e){
-		e.preventDefault();
-		lookup();
+	String.prototype.replaceArray = function(find, replace) {
+		var replaceString = this;
+		var regex;
+		console.log(find); 
+		console.log(replace); 
+		for (var i = 0; i < find.length; i++) {
+			regex = new RegExp(find[i], "g");
+			//console.log(regex); 
+			replaceString = replaceString.replace(regex, replace[i]);
+		}
+		return replaceString;
+	};
+	var letterChars = "a-zA-Z ";
+</script>
+
+<script type="text/javascript">
+
+	var incorrectWords = ['u','matric']
+	incorrectWords = $.map(incorrectWords, function(word) {
+		return escape(word);
 	});
 	
-	$(document).on("click",".lookups span",function(){
-		var word = $(this).text();
-		//console.log(word);
-		lookup(word);
-		
-	});
 	
-	function wrapify(str){
-		var ret = str;
-		if (str){
-			var newHtml = str.split(","),
-					spans = $.map(newHtml,function(v){
-						v = v.trim();
-						return '<span>' + v + '</span>';
-					});
+	
+	findAndReplaceDOMText($("#test"), incorrectWords);
+	
+	
+	//this.replaceText(new RegExp(regExp, 'g'), element[0], this.highlightWordsHandler(incorrectWords), 2);
+	
+
+	function highlightWordsHandler(incorrectWords) {
+
+		 
+		var r = $.map(incorrectWords,function(v){
+			
+			var span = $('<span />', {
+				'class': 'word-highlight'
+			});
+
+			span.text(v);
+			span = $('<div>').append(span).html();
+			
+			
+			return span
+		})
+
+		//$('#element-of-interest').prop('outerHTML');
+		
+		return r;
+	};
+	function escape(text) {
+		return text.replace(/[\-\[\]{}()*+?.,\^$|#\s]/g, "\\$&");
+	};
+	
+
+	function findAndReplaceDOMText(element,words) {
+
+		console.info(element.html()); 
+		console.info(words);
 
 
-			ret = spans.join(', ');
-		}
-		
-		return ret;
-	}
-	
-	
-	function lookup(word){
-		if (word){
-			$("#word").val(word);
-		} else {
-			word = $("#word").val();
-		}
-	
-		if (word){
-			def(word);
-		}
-		
-		
-	}
-	function def(word){
-		$result = $("#result");
-		$result.html('<img src="/ui/_images/loading-wide.gif" class="loading">');
-		jQuery.support.cors = true;
-		$.ajax("http://www.stands4.com/services/v2/syno.php?uid=3116&tokenid=DncJPzPES3OLbTH7&word="+word, {
-			cache : true,
-			type : "get",
-			global : false,
-			dataType : "xml",
-			//jsonp : false,
-			success : function (returnedXMLResponse) {
 
-				var data = {
-					"term":word,
-					"result":"0",
-					"results":[]
-				};
-				$('result', returnedXMLResponse).each(function(){
+		var body = element.html();
+
+		var patterns = $.map(words,function(v){
+					var regExp = '';
 					
-					var syn = $('synonyms', this).text()
 
-					var d = {
-						"term":$('term', this).text(),
-						"partofspeech":$('partofspeech', this).text(),
-						"definition":$('definition', this).text(),
-						"example":$('example', this).text(),
-						"synonyms": wrapify($('synonyms', this).text()),
-						"antonyms": wrapify($('antonyms', this).text())
-						
-					};
-					data.results.push(d);
-
-					//Here you can do anything you want with those temporary
-					//variables, e.g. put them in some place in your html document
-					//or store them in an associative array
-				});
-				var template = "#template-result"
-				if (data.results.length){
+			regExp += '([^' + letterChars + ']?)';
+			regExp += '(' + v + ')';
+			regExp += '(?=[^' + letterChars + ']?)';
+			
+			
 					
-				} else {
-					template = "#template-no-result"
-				}
-				
-				$result.jqotesub($(template), data);
-
-
-				//getChannelMessages(channel);
-			}
+					return regExp
 		});
-	}
-	
-	
-	if ($("#word").val()){
-		lookup();
-	}
-	
-	function updatetimerlist(){
+
+
+		console.log(patterns); 
+
+		var rep = highlightWordsHandler(words);
+		console.log(rep); 
 		
-	}
-</script>
-<script type="text/x-jqote-template" id="template-result">
-	<![CDATA[
-	<h1>Result <small><%= this.term %></small></h1>
-			
-		<% for(var i in this.results) { %>
-		<article>
-			<header>
-				<h3><%= this.results[i].term %> <small>(<%= this.results[i].partofspeech %>)</small></h3>
-			</header>
-			<div class="well well-small">
-			<%= this.results[i].definition %>
-			</div>
-			<% if (this.results[i].example) { %>
-			
-			<em><%= this.results[i].example %></em>
-				
-			<% } %>
-			<% if (this.results[i].synonyms || this.results[i].antonyms) { %>
-			<footer>
-				<% if (this.results[i].synonyms) { %>
-				<p class="lookups"><em><strong>Synonyms:</strong></em> <%= this.results[i].synonyms %></p>
-				<% } %>
-				<% if (this.results[i].antonyms) { %>
-				<p class="lookups"><em><strong>Antonyms:</strong></em> <%= this.results[i].antonyms %></p>
-				<% } %>
-				
-			</footer>
-			<% } %>
-			
-		</article>
+		body = body.replaceArray(patterns, rep);
+
+		element.html(body);
 		
-			
-	<% } %>
-	]]>
+		
+		
+	};
+	
+	
 </script>
-<script type="text/x-jqote-template" id="template-no-result">
-	<![CDATA[
-	<h1>No Result <small><%= this.term %></small></h1>
-			No Matches Found
-	]]>
-</script>		
+
 </body>
 </html>
