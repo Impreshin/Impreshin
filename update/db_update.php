@@ -108,6 +108,9 @@ $sql = array(
 		"ALTER TABLE `global_messages` ADD `cID` INT( 6 ) NULL DEFAULT NULL AFTER `ID` , ADD INDEX ( `cID` );",
 		"ALTER TABLE `global_messages` ADD `url` VARCHAR( 200 ) NULL DEFAULT NULL AFTER `message`;",
 		"ALTER TABLE `global_messages` ADD INDEX ( `read` );"
+	),
+	"23"=>array(
+		"ALTER TABLE `nf_stages` CHANGE `orderby` `orderby` INT( 6 ) NULL DEFAULT '1';"
 	)
 
 );
