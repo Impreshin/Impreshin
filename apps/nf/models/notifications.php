@@ -20,18 +20,32 @@ class notifications {
 		$cID = $user['company']['ID'];
 
 		$users = \models\user::getAll("cID='$cID' AND COALESCE(last_activity, 0) > CURDATE() - INTERVAL 2 HOUR", "last_activity DESC, fullName ASC");
+
+		$applications_list = $f3->get("applications");
 		
 		$l = array();
 		foreach ($users as $u){
+			$app = "";
+			foreach ($applications_list as $k=>$v){
+				$start = "/app/".$k;
+
+				if (substr($u['last_page'],0,strlen($start))==$start){
+					$app = $k;
+				}
+			}
+			
+			
 			$l[] = array(
 				"ID"=>$u['ID'],
 				"f"=>$u['fullName'],
 				"t"=>timesince($u['last_activity']),
 				"d"=>$u['last_activity'],
 				"p"=>$u['last_page'],
+				"a"=>strtoupper($app)
 			);
 		}
 		
+		//test_array(array("users"=>$l,"apps"=>$applications_list)); 
 		$return['users'] = $l;
 
 		return $return;

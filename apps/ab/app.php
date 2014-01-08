@@ -31,16 +31,22 @@ class app extends \apps\app{
 				$permissions['records']['_nav'] = '1';
 			}
 		}
-
+		
 		if (isset($user['marketer']['ID']) && $user['marketer']['ID']) {
-			$permissions['reports']['_nav'] = '1';
-			$permissions['reports']['marketer']['_nav'] = '1';
+			
 			foreach ($permissions['reports']['marketer'] as $k => $p) {
-				$permissions['reports']['marketer'][$k]['spage'] = '1';
+				if (isset($permissions['reports']['marketer'][$k])) {
+					if (is_array($permissions['reports']['marketer'][$k])) {
+						$permissions['reports']['marketer'][$k]['spage'] = '1';
+					}
+				}
 
 			}
-
+			$permissions['reports']['_nav'] = '1';
+			$permissions['reports']['marketer']['_nav'] = '1';
 		}
+
+		//test_array($permissions);
 		$user['permissions'] = $permissions;
 		$this->user = $user;
 

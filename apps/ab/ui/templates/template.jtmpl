@@ -69,6 +69,7 @@
 		<tr title="<%=this.users[i].d %> &nbsp; | &nbsp; <%=this.users[i].p %>">
 			<td><%=this.users[i].f %> </td>
 			<td><%=this.users[i].t %></td>
+			<td><%=this.users[i].a %></td>
 		</tr>
 		<% } %>
 	</table>
