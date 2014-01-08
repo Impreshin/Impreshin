@@ -114,7 +114,9 @@ $app->route('GET|POST /login', 'controllers\controller_login->page');
 $app->route('GET|POST /', 'controllers\controller_login->page');
 
 $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
+$app->route('GET /screenshots/thumb', 'controllers\controller_screenshots->thumb');
 $app->route('GET /screenshots/@app', 'controllers\controller_screenshots->page');
+
 $app->route('GET /news', 'controllers\controller_news->page');
 $app->route('GET /news/@item', 'controllers\controller_news->page');
 $app->route('GET /history', 'controllers\controller_history->page');
@@ -415,6 +417,9 @@ $app->route("GET|POST /app/@app/thumb/@folder/@ID", function ($f3, $params) use 
 		*/
 	}
 );
+
+
+
 $app->route("GET|POST /system/spellcheck", function ($f3, $params) use ($app, $key) {
 		ini_set('display_errors', 1);
 

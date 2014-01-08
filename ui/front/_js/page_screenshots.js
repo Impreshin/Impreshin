@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 	$("a.screenshot").attr('rel', 'gallery').fancybox({
 			padding:0,
+		type:'image',
 		openEffect: 'fade',
 			beforeLoad:function () {
 				this.title = $(this.element).find("div.hidden").html();

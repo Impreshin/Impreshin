@@ -33,7 +33,7 @@ class controller_screenshots {
 			"d"=>"drag adverts from right onto pages"
 		);
 		$screenshots[] = array(
-			"i"=>"details.png",
+			"i"=>"details.jpg",
 			"n"=>"Record Details",
 			"d"=>""
 		);
@@ -45,7 +45,7 @@ class controller_screenshots {
 		);
 		
 		$screenshots[] = array(
-			"i"=>"details_material.png",
+			"i"=>"details_material.jpg",
 			"n"=>"Record uploading material",
 			"d"=>"Material status form"
 		);
@@ -212,6 +212,21 @@ class controller_screenshots {
 			"n"=>"Form",
 			"d"=>""
 		);
+		$screenshots[] = array(
+			"i"=>"meta_search_1.png",
+			"n"=>"Meta Search",
+			"d"=>"Click the meta search button to do a search if the article is used anywhere"
+		);
+		$screenshots[] = array(
+			"i"=>"meta_search_2.png",
+			"n"=>"Meta Search",
+			"d"=>"This article returns some hits"
+		);
+		$screenshots[] = array(
+			"i"=>"meta_search_3.png",
+			"n"=>"Meta Search",
+			"d"=>"Looks legit..."
+		);
 		
 		
 		
@@ -251,6 +266,59 @@ class controller_screenshots {
 		$tmpl->output();
 
 	}
+	
+	public function thumb() {
+		$f3 = \base::instance();
+		$cfg = $f3->get("CFG");
+		$f3->set("json",False);
 
+		$cfg = $this->f3->get("CFG");
+
+
+		
+		
+		$folder ="./front/screenshots/";
+
+
+		//header("Content-Type: image/png");
+		//header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+		//header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+			//	header('HTTP/1.1 304 Not Modified');
+			die();
+		}
+
+		$filename = isset($_REQUEST['file'])?$_REQUEST['file']:"";
+		$crop = isset($_REQUEST['crop'])?$_REQUEST['crop']:true;
+
+		if ($crop==="false"){
+			$crop=false;
+		}
+
+		$file = $folder . $filename;
+		$file = $f3->fixslashes($file);
+		$file = str_replace("//","/",$file);
+
+
+		//test_array(array("file"=>$file,"exists"=>file_exists($file)));
+
+		
+
+		$width = isset($_REQUEST['w'])?$_REQUEST['w']:"";
+		$height = isset($_REQUEST['h'])?$_REQUEST['h']:"";
+
+
+		//test_array($file);
+
+		if (file_exists($file)) {
+			$thumb = new \mods_Image($file);
+
+			$thumb->resize($width, $height, $crop);
+			$thumb->render();
+
+		}
+
+
+	}
 
 }
