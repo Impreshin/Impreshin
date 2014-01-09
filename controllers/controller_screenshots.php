@@ -130,6 +130,11 @@ class controller_screenshots {
 			"d"=>"All changes are stored and are clearly visible"
 		);
 		$screenshots[] = array(
+			"i"=>"details_comments.png",
+			"n"=>"Article Details",
+			"d"=>"Comments"
+		);
+		$screenshots[] = array(
 			"i"=>"details_photo.png",
 			"n"=>"Article Details",
 			"d"=>"Photos display their EXIF and are zoom'able"
