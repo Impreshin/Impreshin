@@ -35,10 +35,12 @@ $(document).ready(function () {
 	}
 	getList();
 //$("#whole-area .loadingmask").show();
-	
-	
 
-	
+
+
+	$(document).on("click", "#reload-btn", function () {
+		getList();
+	});
 
 	$(document).on("click", "#action-btn", function (e) {
 
