@@ -14,7 +14,7 @@
 					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
 
 						{% for row in bookingTypes %}
-							<button class="btn span1 btn-mini <% if(this.data.settings.type == "{{ row["ID"] }}"){ %> active <% } %>" style="width:80px;" data-type="{{ row["ID"] }}">
+							<button class="btn btn-mini <% if(this.data.settings.type == "{{ row["ID"] }}"){ %> active <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="{{ row["ID"] }}">
 							{{ row["type"] }}
 							</button>
 						{% endfor %}

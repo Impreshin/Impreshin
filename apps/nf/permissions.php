@@ -53,6 +53,9 @@ class permissions {
 				),
 				"newsbook"  => array(
 					"page" => 0
+				),
+				"mass_archive"  => array(
+					"page" => 0
 				)
 			),
 			"reports"=>array(
@@ -128,6 +131,10 @@ class permissions {
 			),
 			"form"=>array(
 				"priority"=>"This user will be able to use the priority slider on the form to set the articles priority"	
+			),
+			"records"=>array(
+				"mass_archive"  =>  "A page with checkboxes to allow mass archiving of records"
+				
 			),
 			"administration" => array(
 

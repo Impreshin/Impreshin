@@ -66,7 +66,8 @@ class articles extends save {
 
 		test_array($r);
 
-	}function archive() {
+	}
+	function archive() {
 		$user = $this->f3->get("user");
 		$aID = (isset($_GET['aID']) && $_GET['aID'] && $_GET['aID'] != "undefined") ? $_GET['aID'] : "";
 		$archived = isset($_POST['archived']) ? $_POST['archived'] : "0";
@@ -90,6 +91,26 @@ class articles extends save {
 		}
 
 		test_array($r);
+
+	}
+
+	function archive_mass() {
+		$user = $this->f3->get("user");
+		
+		$ids = (isset($_POST['aIDs']) && $_POST['aIDs'] && $_POST['aIDs'] != "undefined") ? $_POST['aIDs'] : array();
+
+		$values = array(
+			"archived" => "1",
+			"archived_date" => date("Y-m-d H:i:s")
+		);
+		
+		
+		foreach ($ids as $id){
+			models\articles::save($id, $values, array("dry" => false,"section"=>"archive"));
+		}
+		
+
+		test_array($ids);
 
 	}
 

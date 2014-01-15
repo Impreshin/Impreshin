@@ -83,6 +83,16 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>false,
 );
+
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/records/archives',
+	"controller"=>'apps\nf\controllers\records_archives->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+
 // reports
 $routes[] =	array(
 	"method"=>'GET',

@@ -24,16 +24,20 @@ class settings extends _ {
 
 		//test_array($user_settings);
 		$return = $user_settings[$section];
-		
+		//test_array($return); 
 
 		if (isset($user_settings[$section]['col']) && count($settings["columns"])) {
 			$columns = array();
 
 			foreach ($user_settings[$section]['col'] as $col) {
+				if ($col=="checkbox"){
+					$columns[] = array(
+						"h"=> "checkbox"
+					);
+				}
 				if (isset($settings['columns'][$col])) {
 					$columns[] = $settings['columns'][$col];
 				}
-
 			}
 
 

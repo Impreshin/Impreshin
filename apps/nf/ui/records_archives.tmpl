@@ -1,0 +1,90 @@
+<section id="maintoolbar">
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<form class="" style="margin: 0;" id="search-form">
+				<ul class="nav nav-pills pull-left">
+					<li>
+						<h2 style="padding-left: 30px; margin-bottom: -5px;">Mass archive of current articles</h2>
+					</li>
+
+					<li class="divider-vertical"></li>
+
+				</ul>
+				<div class="pull-right">
+
+					<ul class="nav nav-pills pull-right ">
+
+						<li><button class="btn btn-mini span3 f12" style="margin-top: 3px;" id="action-btn" >Archive all checked</button></li>
+						
+					
+					
+						<li class="divider-vertical" style="margin-right: 0;"></li>
+
+
+						<li class="dropdown pull-right">
+							<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
+							<ul class="dropdown-menu" id="record-settings" role="menu">
+								<li class="nav-header">Group By</li>
+								{% for row in settings['groupby'] %}
+									<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
+										<a href="#t">{{ row['n'] }}</a>
+									</li>
+								{% endfor %}
+								<li class="nav-header clearfix">Direction</li>
+								<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
+									<a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
+								<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
+									<a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
+								<li class="clearfix"></li>
+								<li class="divider"></li>
+
+								<li>
+									<a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
+								</li>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+			</form>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+
+</section>
+
+<section role="main" id="pagecontent">
+
+	<div class="container">
+
+
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane">
+
+					<div data-heading="top" id="scroll-container">
+						<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px; ">
+
+
+						</table>
+
+					</div>
+
+				</div>
+
+			</div>
+			<div class="pagination pagination-centered" id="pagination">
+
+
+			</div>
+			<div class="loadingmask wide"></div>
+		</article>
+	</div>
+
+
+</section>
+
+{% include "_record_settings.tmpl" %}
+
+

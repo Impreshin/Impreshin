@@ -200,6 +200,7 @@ class settings {
 			"production"=>array("author","category","priority","page","type","none"),
 			"search"=>array("author","category","stage","priority","type","none"),
 			"records_newsbook"=>array("author","category","stage","priority","type","none"),
+			"records_archives"=>array("author","category","stage","priority","type","none"),
 			"reports_author_newsbook"=>array("category","stage","priority","type","none"),
 			"reports_category_figures"=>array("category","stage","priority","type","none"),
 			"reports_author_submitted"=>array("category","stage","priority","type","none"),
@@ -278,6 +279,8 @@ class settings {
 			"priority",
 			"photosCount"
 		);
+
+		
 		
 			$settings = array(
 				"provisional"=>array(
@@ -373,6 +376,23 @@ class settings {
 					),
 					"count"      => count($defColumns),
 					"dID"=> array()
+
+				),
+				"records_archives"=> array(
+					"col"        => $defColumns,
+					"group"      => array(
+						"g"=>"stage",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "title",
+						"o"=> "ASC"
+					),
+					"count"      => count($defColumns),
+					"highlight"=> "",
+					"stage"=> "*",
+					"filter"   => "*",
+					"search" => "",
 
 				),
 				"deleted"=> array(

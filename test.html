@@ -11,128 +11,170 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>Test regex</title>
+	<title>Test page</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-
-
-
-
-
-
-	
-	
-
+	<link rel="stylesheet" type="text/css" href="/ui/_css/libs/custom-theme/jquery-ui.css"/>
+	<link rel="stylesheet" type="text/css" href="/ui/_css/style.0002044068.css"/>
 
 </head>
 <body>
-
-<div id="test"> u  A person only becomes what she or he visualises about himself or herself),” she added. “So, I visualised about my successful matric results while working hard, and went on to make it.”
+	
+	
+<div id="page2" class="page connected"></div>
+<div id="list2" class="list connected" >
+	<div data-colour="blue" data-cm="10" data-col="8" >Blue</div>
+	<div data-colour="red" data-cm="19" data-col="2" >Red</div>
+	<div data-colour="yellow" data-cm="5" data-col="2" >Yellow</div>
+	<div data-colour="purple" data-cm="5" data-col="2" >Purple</div>
+	<div data-colour="pink" data-cm="9" data-col="4" >Pink</div>
+	
 </div>
+<hr/>
+<div class="clearfix"></div>
 
-<script src="/ui/_js/libs/jquery.js"></script>
+
+
+
+
+
+<script  src="/ui/_js/libs/jquery.0002044068.js"></script>
+<script src="/min/js.0002044068.js"></script>
+<script src="/ui/_js/plugins/collision.js"></script>
 
 <style type="text/css">
-	.word-highlight {
-		color:red;
+	.list {
+		width: 200px;
+		margin-left: 300px;
 	}
 	
+	.page {
+		
+		border:1px solid #000;
+		margin: 30px;
+		border-collapse: collapse;  
+		position: absolute;
+		height: 400px;
+		width: 200px;
+		background-color: #e1e1e1;
+	}
+	.list {
+		width: 200px;
+		margin-left: 300px;
+	}
+	.list li {
+		padding: 5px;
+		border:1px solid #ccc;
+		margin:3px;
+	}
+	.page div {
+		border:1px solid #002a80;
+		
+	}
+	
+
+	
 </style>
-<script type="text/javascript">
-	String.prototype.replaceArray = function(find, replace) {
-		var replaceString = this;
-		var regex;
-		console.log(find); 
-		console.log(replace); 
-		for (var i = 0; i < find.length; i++) {
-			regex = new RegExp(find[i], "g");
-			//console.log(regex); 
-			replaceString = replaceString.replace(regex, replace[i]);
-		}
-		return replaceString;
-	};
-	var letterChars = "a-zA-Z ";
-</script>
 
 <script type="text/javascript">
+	
+	var columnsav = 8;
+	var cmav = 39;
+	var pagewidth = 262;
+	
+	
+	var page_width = 280;
+	var page_height = (((page_width/( pagewidth / 100 ))*cmav)/10);
+	
+	var r_h = page_height / cmav;
+		r_h = Math.round(r_h);
+	
+	var r_w = pagewidth / columnsav;
+		r_w = Math.round(r_w);
 
-	var incorrectWords = ['u','matric']
-	incorrectWords = $.map(incorrectWords, function(word) {
-		return escape(word);
-	});
-	
-	
-	
-	findAndReplaceDOMText($("#test"), incorrectWords);
-	
-	
-	//this.replaceText(new RegExp(regExp, 'g'), element[0], this.highlightWordsHandler(incorrectWords), 2);
+	page_height = r_h * cmav;
+	page_width = r_w * columnsav;
 	
 
-	function highlightWordsHandler(incorrectWords) {
-
-		 
-		var r = $.map(incorrectWords,function(v){
+	$(".page").css({"height":page_height,"width":page_width});
 			
-			var span = $('<span />', {
-				'class': 'word-highlight'
+	
+	
+	
+	
+	$(function() {
+		
+		
+		
+		$( ".list, .page" ).sortable({
+			connectWith: ".connected",
+			appendTo   : 'body',
+			stack: ".page div",
+			helper     : function (e) {
+				var $target = $(e.target).closest("div");
+				var cm = $target.attr("data-cm");
+				var col = $target.attr("data-col");
+				var colour = $target.attr("data-colour");
+
+				//var width = colSize * col, 
+				//var height = cmSize * cm, 
+
+				var height = cm * r_h;
+				var width = col * r_w;
+
+				var offsetX = width / 2;
+				var offsetY = height / 2;
+
+				var str = "";
+				str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px; background-color: ' + colour + ';">';
+
+				str += '</div>';
+
+				return str;
+			},
+			update: function(){
+				drag()
+			},
+			start: function(e, ui){
+				$(".page div").css('z-index', '1');
+				console.log(ui)
+			},
+			stop: function(event, ui) {
+				//$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
+				//$(this).sortable('cancel');
+
+				var $this = $(ui.item);
+				var cm = $this.attr("data-cm") * r_h;
+				var col = $this.attr("data-col")* r_w;
+				var colour = $this.attr("data-colour");
+				
+				$this.css({"height":cm - 2 ,"width":col -2,"background-color":colour}).text("");
+				
+				
+				console.log(ui);
+				console.log($(ui.item));
+			},
+			
+			
+			cursorAt   : {left: 0, top: 0}
+		}).disableSelection();
+
+		function drag(){
+			$( ".page div" ).draggable({
+				grid: [ r_w, r_h ],
+				containment: ".page"
+			
+
 			});
-
-			span.text(v);
-			span = $('<div>').append(span).html();
-			
-			
-			return span
-		})
-
-		//$('#element-of-interest').prop('outerHTML');
+		}
 		
-		return r;
-	};
-	function escape(text) {
-		return text.replace(/[\-\[\]{}()*+?.,\^$|#\s]/g, "\\$&");
-	};
-	
-
-	function findAndReplaceDOMText(element,words) {
-
-		console.info(element.html()); 
-		console.info(words);
 
 
-
-		var body = element.html();
-
-		var patterns = $.map(words,function(v){
-					var regExp = '';
-					
-
-			regExp += '([^' + letterChars + ']?)';
-			regExp += '(' + v + ')';
-			regExp += '(?=[^' + letterChars + ']?)';
-			
-			
-					
-					return regExp
-		});
-
-
-		console.log(patterns); 
-
-		var rep = highlightWordsHandler(words);
-		console.log(rep); 
 		
-		body = body.replaceArray(patterns, rep);
-
-		element.html(body);
-		
-		
-		
-	};
-	
+	});
 	
 </script>
 
