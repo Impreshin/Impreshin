@@ -137,22 +137,41 @@ class provisional extends data {
 
 		//
 		$highlight = array("locked","1");
+		
+		$stats['main'] = array(
+			"ID"=>"",
+			"k"=>"",
+			"r"=> "0",
+			"p"=>"",
+			"l"=>"0"
+		);
 		if ($stage=="*"){
 			
 			$filter = array("","");
-			
-			$stats['main'] = array(
-				"k"=>"",
-				"r"=> $stats['records']['total'],
-				"p"=>"",
-				"l"=>$stats['records']['locked']['r']
-			);
+
+			foreach ($stats['records']['stages'] as $loop_stage){
+				if (isset($loop_stage['ID']) && $loop_stage['ID']=="1"){
+					$stats['main'] = $loop_stage;
+				}
+			}
 		} else {
+
+			
+			foreach ($stats['records']['stages'] as $loop_stage){
+				if (isset($loop_stage['ID']) && $loop_stage['ID']==$stage){
+					$stats['main'] = $loop_stage;
+				}
+			}
+			
+			
 			
 			$filter = array("stageID",$stage);;
-			$stats['main'] = isset($stats['records']['stages'][$stage])?$stats['records']['stages'][$stage]:array();
+			//$stats['main'] = isset($stats['records']['stages'][$stage])?$stats['records']['stages'][$stage]:array();
 		}
+
+		$stats['selected_stage'] = $stage;
 		
+	//	test_array($stats); 
 		$return = array();
 		$return['stats'] = $stats;
 		

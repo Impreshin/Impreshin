@@ -114,6 +114,7 @@ class record_stats {
 				$k = $stage['ID'];
 				if(isset($totals['stages'][$k])){
 					$return['records']['stages'][] = array(
+						"ID" => $k,
 						"k" => $stages[$k],
 						"r" => $totals['stages'][$k]['count'],
 						"p" => ($totals['stages'][$k]['count']) ? number_format((($totals['stages'][$k]['count'] / $totals["records"]) * 100), 2) : 0,

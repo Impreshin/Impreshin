@@ -9,9 +9,9 @@
 			<div id="list-stats-progress-bar" style="width: <%= this.stats.main.p||"0" %>%;" class="bar"></div>
 		</div>
 		<div style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;" class="row">
-			<div class="span2"><span class="s dg">Articles:</span><strong> <%= this.stats.main.r||"" %> </strong></div>
+			<div class="span2"><span class="s dg">Articles:</span><strong> <%= this.stats.records.total||"" %> </strong></div>
 			<div class="span2"><span class="s dg">Locked:</span> <strong><%= this.stats.main.l||"0" %></strong></div>
-			<div class="span2"><span class="s dg"><%= this.stats.main.k %>:</span> <strong><%= this.stats.main.r||"" %></strong></div>
+			<div class="span2"><% if (this.stats.main.k) { %><span class="s dg"><%= this.stats.main.k %>:</span> <strong><%= this.stats.main.r||"" %></strong><% } %></div>
 		</div>
 		<div class="statstable" id="toolbar-stats-pane">Records:&nbsp;<strong><%= this.stats.records.total %></strong>
 			<table style="margin-bottom:0; margin-top:10px;" class="table">
