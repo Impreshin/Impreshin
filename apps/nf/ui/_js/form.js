@@ -79,6 +79,23 @@ var caption_settings = {
 
 
 $(document).ready(function () {
+
+	window.onbeforeunload = function(){
+		var changed = false;
+		for (var i in CKEDITOR.instances) {
+			if ( CKEDITOR.instances[i].checkDirty() ) {
+				changed = true;
+			}
+		}
+		
+		if (changed){
+			return "You have made changes to the form, are you sure you want to navigate away from this page without saving them?"
+		}
+		
+	};
+	
+	
+	
 	getFormData();
 	$(document).on("submit", "#modal-delete form", function (e) {
 		e.preventDefault();
