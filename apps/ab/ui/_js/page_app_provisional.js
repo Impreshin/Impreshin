@@ -263,17 +263,7 @@ function getList(settings) {
 
 		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 
-		var $scrollpane = $("#whole-area .scroll-pane");
-		if (orderingactive) {
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-		} else {
-			if (settings && settings.maintain_position) {
-				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-			} else {
-				$scrollpane.jScrollPane(jScrollPaneOptions);
-			}
-
-		}
+		
 
 		var order = data['order']['c'];
 		$(".order-btn[data-col='" + order + "'] .indicator", $recordsList).show();
@@ -304,8 +294,23 @@ function getList(settings) {
 			$.bbq.removeState("scrollTo");
 		}
 
+		scrollwindow(orderingactive,settings);
+		
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	},"list");
 
 
+}
+function scrollwindow(orderingactive,settings){
+	var $scrollpane = $("#whole-area .scroll-pane");
+	if (orderingactive) {
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+	} else {
+		if (settings && settings.maintain_position) {
+			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+		} else {
+			$scrollpane.jScrollPane(jScrollPaneOptions);
+		}
+
+	}
 }

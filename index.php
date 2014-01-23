@@ -443,6 +443,30 @@ $app->route('GET /php', function () {
 		exit();
 	}
 );
+$app->route('GET /map_test', function () {
+		$r = date('ymdhis');
+		echo '<img src="/maps_test?m='.$r.'" />';
+		exit();
+		
+	}
+);
+$app->route('GET /maps_test', function () {
+		$map = new \Web\Google\StaticMap();
+		$map->format('png');
+		$map->center("130 Vlei street, benoni");
+		$map->zoom(15);
+		$map->size('1000x560');
+		$map->markers('130+vlei+street,+Benoni'); //
+		//$map->markers('color:blue|label:130 Vlei Street, Benoni'); //
+		$map->scale(1);
+		$map->maptype( 'hybrid' ); // roadmap , satellite , terrain , hybrid
+		$map->sensor( 'false' ); // 'true' or 'false' as a string, not a boolean!
+
+		echo $map->dump();
+		exit();
+		
+	}
+);
 $app->route('GET /redirect', function () {
 		$url = isset($_GET['url'])?$_GET['url']:"";
 		
