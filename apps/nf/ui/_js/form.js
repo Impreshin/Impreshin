@@ -65,7 +65,7 @@ var caption_settings = {
 	removePlugins     : 'elementspath',
 	resize_enabled    : false,
 
-	extraPlugins      : 'autogrow,jqueryspellchecker'+extra_plugins_jqueryspellchecker,
+	extraPlugins      : 'autogrow'+extra_plugins_jqueryspellchecker,
 	autoGrow_minHeight: 110,
 	autoGrow_maxHeight: 110 > max_height ? 110 : max_height,
 	autoGrow_fn       : function () {
