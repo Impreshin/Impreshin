@@ -261,7 +261,7 @@
 
 							<% if (this.stageNext.ID) { %>
 							
-							<label class="btn span1" title="Tick this checkbox to save and move the record to <%= this.stageNext.stage %>" rel="tooltip" data-placement="top" id="btn-stage-checkbox" data-stage-label="<%= this.stageNext.stage %>">
+							<label class="btn span1" title="Tick this checkbox to save and move the record to <%= this.stageNext.stage %>"  id="btn-stage-checkbox" data-stage-label="<%= this.stageNext.stage %>">
 								<input type="checkbox" style="margin:0;" name="stageID" id="stageID" value="<%= this.stageNext.ID %>"/>
 							</label>
 							<% } %>
