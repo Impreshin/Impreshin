@@ -332,20 +332,7 @@ function getList(settings) {
 
 
 
-		var $scrollpane = $("#whole-area .scroll-pane");
-
-		$scrollpane.css("bottom", bottomChanges);
-		if (orderingactive){
-			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-		} else {
-			if (settings && settings.maintain_position){
-				$scrollpane.jScrollPane(jScrollPaneOptionsMP);
-			} else {
-				$scrollpane.jScrollPane(jScrollPaneOptions);
-			}
-
-		}
-
+		
 
 
 
@@ -379,9 +366,22 @@ function getList(settings) {
 			}
 			$.bbq.removeState("scrollTo");
 		}
-
+		scrollwindow(orderingactive,settings);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}, "data");
 
 
+}
+function scrollwindow(orderingactive,settings){
+	var $scrollpane = $("#whole-area .scroll-pane");
+	if (orderingactive) {
+		$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+	} else {
+		if (settings && settings.maintain_position) {
+			$scrollpane.jScrollPane(jScrollPaneOptionsMP);
+		} else {
+			$scrollpane.jScrollPane(jScrollPaneOptions);
+		}
+
+	}
 }
