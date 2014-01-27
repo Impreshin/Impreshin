@@ -355,18 +355,7 @@ function getList(settings) {
 				getDetails();
 			}
 		}
-		var $scrollpane = $("#whole-area .scroll-pane");
-		var goto = $.bbq.getState("scrollTo");
-		if (goto) {
-			if ($("#record-list .record[data-ID='" + goto + "']").length) {
-				var api = $scrollpane.data("jsp");
-				if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
-					api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
-				}
-
-			}
-			$.bbq.removeState("scrollTo");
-		}
+		
 		scrollwindow(orderingactive,settings);
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}, "data");
@@ -384,5 +373,16 @@ function scrollwindow(orderingactive,settings){
 			$scrollpane.jScrollPane(jScrollPaneOptions);
 		}
 
+	}
+	var goto = $.bbq.getState("scrollTo");
+	if (goto) {
+		if ($("#record-list .record[data-ID='" + goto + "']").length) {
+			var api = $scrollpane.data("jsp");
+			if ($("#record-list .record[data-ID='" + goto + "']").length && api) {
+				api.scrollToElement("#record-list .record[data-ID='" + goto + "']", true, true);
+			}
+
+		}
+		$.bbq.removeState("scrollTo");
 	}
 }
