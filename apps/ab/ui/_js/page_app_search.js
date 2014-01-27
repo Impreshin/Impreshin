@@ -335,6 +335,7 @@ function getList(settings) {
 				getDetails();
 			}
 		}
+		var $scrollpane = $("#whole-area .scroll-pane");
 		var goto = $.bbq.getState("scrollTo");
 		if (goto) {
 			if ($("#record-list .record[data-ID='" + goto + "']").length) {
