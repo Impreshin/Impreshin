@@ -106,10 +106,11 @@ class articles extends save {
 		
 		
 		foreach ($ids as $id){
-			models\articles::save($id, $values, array("dry" => false,"section"=>"archive"));
+			$ID = models\articles::save($id, $values, array("dry" => false,"section"=>"archive"));
 		}
 		
 
+		
 		test_array($ids);
 
 	}

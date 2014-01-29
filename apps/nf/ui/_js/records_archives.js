@@ -51,7 +51,7 @@ $(document).ready(function () {
 		if (ids.length){
 			if (confirm("Are you sure you want to archive these records?")){
 				$("#whole-area .loadingmask").show();
-				$.post("/app/nf/save/articles/archive_mass",{"aIDs":ids},function(){
+				$.post("/app/nf/save/articles/archive_mass?r="+Math.random(),{"aIDs":ids},function(){
 					getList();
 				})				
 			}
