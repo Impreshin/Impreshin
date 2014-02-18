@@ -151,7 +151,7 @@ class settings {
 
 			"remark"                 => array(
 				"h"=> "Remark",
-				"mw"=>"250"
+				"mw"=>"300"
 			),
 
 
