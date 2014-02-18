@@ -18,7 +18,7 @@ class settings {
 			"client"                 => array(
 				"h"=> "Client",
 				"d"=>"Used as a heading / description for the record",
-				"m"=>"120"
+				"m"=>"180"
 			),
 			"publishDate"            => array(
 
