@@ -17,7 +17,8 @@ class settings {
 		$columns = array(
 			"client"                 => array(
 				"h"=> "Client",
-				"d"=>"Used as a heading / description for the record"
+				"d"=>"Used as a heading / description for the record",
+				"m"=>"120"
 			),
 			"publishDate"            => array(
 
