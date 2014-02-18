@@ -22,6 +22,7 @@ class settings {
 		 *  d =>"description",
 		 *  b =>"show a tick mark if its 1",
 		 *  m => "minimum width",
+		 *  mw => "maximum width",
 		 *  w => "width",
 		 * )
 		 */

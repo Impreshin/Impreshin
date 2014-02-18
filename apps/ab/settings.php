@@ -14,6 +14,20 @@ class settings {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();
+
+		/*
+		 * name => array(
+		 *  h =>"heading",
+		 *  o =>"order by",
+		 *  d =>"description",
+		 *  b =>"show a tick mark if its 1",
+		 *  m => "minimum width",
+		 *  mw => "maximum width",
+		 *  w => "width",
+		 * )
+		 */
+		
+		
 		$columns = array(
 			"client"                 => array(
 				"h"=> "Client",
@@ -136,7 +150,8 @@ class settings {
 
 
 			"remark"                 => array(
-				"h"=> "Remark"
+				"h"=> "Remark",
+				"mw"=>"250"
 			),
 
 
