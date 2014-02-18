@@ -40,7 +40,7 @@
     </tr>
     <tr class="colheading">
         {% for k,col in settings['col'] %}
-            <th {% if col['o'] %}data-col="{{ col['c'] }}" class="order-btn"{% endif %} {% if col['m'] or col['w'] %} style="{% if col['m'] %}min-width: {{ col['m'] }}px;{% endif %} {% if col['w'] %}width: {{ col['w'] }}px;{% endif %}"{% endif %}>
+            <th {% if col['o'] %}data-col="{{ col['c'] }}" class="order-btn"{% endif %} {% if col['m'] or col['w'] %} style="{% if col['m'] %}min-width: {{ col['m'] }}px;{% endif %}  {% if col['mw'] %}max-width: {{ col['mw'] }}px;{% endif %} {% if col['w'] %}width: {{ col['w'] }}px;{% endif %}"{% endif %}>
                 {{ col['h']|raw }}{% if col['o'] %}<span class="indicator">&nbsp;*</span>{% endif %}
 
             </th>
