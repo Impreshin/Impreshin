@@ -222,3 +222,22 @@ function clean_style($cmstyle,$clearspaces=false){
 	//$cmstyle = str_replace(" ",".",$cmstyle);
 	return $cmstyle;
 }
+function sanitize_filename($filename) {
+
+	if ($filename) {
+		
+			
+			
+		$filename = preg_replace('/[^a-z0-9_\.\-]/i', '_', $filename);
+		$filename = preg_replace('/__/i', '_', $filename);
+		$filename = preg_replace('/__/i', '_', $filename);
+		$filename = preg_replace('/__/i', '_', $filename);
+		$filename = preg_replace('/__/i', '_', $filename);
+		$filename = preg_replace('/\.\./i', '.', $filename);
+		$filename = preg_replace('/\.\./i', '.', $filename);
+		$filename = preg_replace('/_\./i', '.', $filename);
+	}
+
+
+	return $filename;
+}

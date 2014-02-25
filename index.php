@@ -477,6 +477,21 @@ $app->route('GET /redirect', function () {
 		$f3->reroute($url);
 	}
 );
+$app->route('GET /test', function () {
+		
+		$a = array(
+			"this is,.jpg",
+			"My new!file name.jpg",
+			"file..test.jpg"
+		);
+		$n = array();
+		foreach ($a as $i){
+			$n[$i] = sanitize_filename($i);
+		}
+		test_array($n); 
+		
+	}
+);
 
 
 $app->run();
