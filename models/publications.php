@@ -76,8 +76,13 @@ class publications {
 
 		$app_users_pub = $app."_users_pub";
 
+		$currentDate = ", COALESCE((SELECT publish_date FROM global_dates WHERE global_dates.ID = ".$app."_currentDate),(SELECT publish_date FROM global_dates WHERE global_dates.pID=global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) AS currentDate, COALESCE((SELECT ID FROM global_dates WHERE global_dates.ID = ".$app."_currentDate),(SELECT ID FROM global_dates WHERE global_dates.pID=global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) AS currentDateID";
+		
+
 		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT global_publications.*, $app_users_pub.uID, COALESCE(global_users_company.ab,0) AS access, global_companies.company
+			
+			$currentDate
 
 			FROM ((global_publications INNER JOIN $app_users_pub ON global_publications.ID = $app_users_pub.pID) INNER JOIN global_users_company ON ($app_users_pub.uID = global_users_company.uID) AND (global_publications.cID = global_users_company.cID)) INNER JOIN global_companies ON global_publications.cID = global_companies.ID
 			$where
