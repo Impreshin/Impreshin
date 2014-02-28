@@ -50,6 +50,9 @@ class permissions {
 				"all_suggestions"      => 0,
 				"edit_master" => 0
 			),
+			"bookings"     => array(
+				"checkbox_checked" => 0
+			),
 			"production"     => array(
 				"page" => 0
 			),

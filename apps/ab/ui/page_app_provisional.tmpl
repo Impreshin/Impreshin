@@ -5,9 +5,9 @@
 
                 <li>
                     <div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="checked">Checked</button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px;" data-highlight="material">Material</button>
-                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:80px;" data-highlight="layout">Layout</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "checked" %}active{% endif %} " style="width:73px; margin-left: 10px;" data-highlight="checked">Checked</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:73px;" data-highlight="material">Material</button>
+                        <button class="btn span1 btn-mini {% if settings['highlight'] == "layout" %}active{% endif %} " style="width:73px;" data-highlight="layout">Layout</button>
                     </div>
                 </li>
                 <li class="divider-vertical"></li>
@@ -30,6 +30,13 @@
                 </ul>
                 <ul class="nav nav-pills pull-right ">
                     <li class="divider-vertical" style="margin-right: 0;"></li>
+	                {% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
+
+		                <li>
+			                <a class="c" href="#" style="width:15px;" id="checkbox-button" data-toggle="button"><i class="icon-check"></i></a>
+		                </li>
+	                {% endif %}
+	                
                     <li>
                         <a href="{{ page['print'] }}" target="_blank" class="toolbar-print"><i class="icon-print icon-d-grey"></i></a>
                     </li>
@@ -89,7 +96,35 @@
             </div>
 
             <div class="loadingmask wide"></div>
+	        <div id="checkbox-menu">
+		        <div class="toolbar clearfix ">
 
+
+
+
+
+
+			        <ul class="nav nav-tabs pull-left">
+				        {% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
+					        <li><a href="#checkbox-menu-checked" data-toggle="tab">Checked</a></li>
+				        {% endif %}
+				      
+			        </ul>
+			        <div class="tab-content">
+				    
+				        {% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
+					        <div class="tab-pane" id="checkbox-menu-checked">
+						        <form id="checkbox-menu-form-checked" data-section="checked">
+							        <button class="btn btn-primary span3 checkbox-menu-action-btn">Mark as Checked
+								        <span class="count-area"></span></button>
+						        </form>
+					        </div>
+				        {% endif %}
+
+			        </div>
+		        </div>
+
+	        </div>
 
             <div id="search-box">
                 <button type="button" class="btn btn-mini  btn-icon" style="width: 30px;" id="search-box-toggle">

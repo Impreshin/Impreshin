@@ -33,6 +33,10 @@ class permissions {
 				"stage_jump_list"=>0
 				
 			),
+			"articles"         => array(
+				"checkbox_archive"      => 0,
+				"checkbox_add_to_newsbook" => 0
+			),
 			"newsbook"         => array(
 				"page"      => 0,
 			),
@@ -53,10 +57,8 @@ class permissions {
 				),
 				"newsbook"  => array(
 					"page" => 0
-				),
-				"mass_archive"  => array(
-					"page" => 0
 				)
+				
 			),
 			"reports"=>array(
 				"author"=> array(

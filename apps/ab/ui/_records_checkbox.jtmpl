@@ -1,0 +1,128 @@
+
+<script type="text/x-jqote-template" id="template-records-checkbox-menu">
+	<![CDATA[
+	<div style="position: absolute; left:0; right:0; bottom:0; background-color: red; height: 40px;">woof</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-records-checkbox">
+	<![CDATA[
+
+
+	<thead>
+	<tr class="heading" data-heading="<%= this.heading %>">
+		<th colspan="{{ settings['count'] + 1 }}">
+			<div class="scrolllinks">
+				<% for(var g in this.groups) { %>
+				<a href="#" rel='<%= this.groups[g] %>'><%= this.groups[g] %></a> <% } %> <a href="#" rel='top'>
+				<i class="icon-arrow-up icon-l-grey"></i> </a>
+			</div>
+			<h3><%= this.heading %>
+				<small><%= this.count %> Records | <%= this.cm %> cm <% if (this.totalCost) { %>| <%= this.totalCost %><% } %></small>
+			</h3>
+
+
+		</th>
+
+	</tr>
+	<tr class="colheading">
+		<th style="width:25px;">&nbsp;</th>
+        {% for k,col in settings['col'] %}
+            <th {% if col['o'] %}data-col="{{ col['c'] }}" class="order-btn"{% endif %} {% if col['m'] or col['w'] or col['mw'] %} style="{% if col['m'] %}min-width: {{ col['m'] }}px;{% endif %}  {% if col['mw'] %}max-width: {{ col['mw'] }}px;{% endif %} {% if col['w'] %}width: {{ col['w'] }}px;{% endif %}"{% endif %}>
+                {{ col['h']|raw }}{% if col['o'] %}<span class="indicator">&nbsp;*</span>{% endif %}
+
+            </th>
+        {% endfor %}
+    </tr>
+	</thead>
+	<tbody>
+	<% for(var i in this.records) { %>
+	<tr class="checkbox-record <% if (this.records[i].highlight=='1') { %>highlight highlight-<%= this.records[i].highlight %><% } %>" data-ID="<%= this.records[i].ID %>">
+		<td class="cb_cell"><input type="checkbox" value="<%= this.records[i].ID %>"/></td>
+        {% for col in settings['col'] %}
+            <td {% if col['b'] %} class=" record-tick"{% endif %}>
+                {% if col['b'] %}
+                    <% if (this.records[i].{{ col['c'] }}==0 || this.records[i].{{ col['c'] }}==false || this.records[i].{{ col['c'] }}==null ) { %>
+		<% } else { %>
+		<i class="icon-ok {% if col['c'] == "material_status" %}<% if(this.records[i].material_approved != '1' && this.records[i].typeID=='1') { %>icon-grey<% } %>{% endif %}"></i>
+
+
+		<% } %>
+
+                {% else %}
+
+                    {% if col['c'] == "remark" %}
+                        <% if (this.records[i].remark) { %>
+		<% if (this.records[i].remarkTypeLabelClass){ %>
+		<span class="label <%= this.records[i].remarkTypeLabelClass %>" title="<%= this.records[i].remarkType %>"></span>
+		<% } else { %>
+		<span style="padding:0 5px;"></span>
+		<% } %>
+		<% } %>
+                    {% endif %}
+
+                    {% if col['c'] in  ',account,percent_diff,accNum' %}
+
+                        {% if col['c'] == "percent_diff" %}
+                            <% if (this.records[i].percent_diff!="0.00"){ %>
+
+		<span class="label <% if (this.records[i].percent_diff<0){ %>label-green<% } else { %>label-red<% } %> <% if (this.records[i].percent_diff>50){ %>heatmap-3<% } else if (this.records[i].percent_diff>20) { %>heatmap-2<% } else { %>heatmap-1<% } %>"> <%= Math.abs(this.records[i].percent_diff) %>% </span>
+		<% } %>
+                        {% endif %}
+                        {% if col['c'] in ',account,accNum' %}
+                            <% if (this.records[i].labelClass){ %>
+		<span class="label <%= this.records[i].labelClass %>"> <%= this.records[i].accountStatus %></span>
+		<% } %>
+		<%= this.records[i].{{ col['c'] }} %>
+
+                        {% endif %}
+                    {% else %}
+                        <% if (this.records[i].{{ col['c'] }}) { %><%= this.records[i].{{ col['c'] }} %><% } %>
+
+
+
+                    {% endif %}
+                {% endif %}
+
+            </td>
+        {% endfor %}
+
+    </tr>
+	<% } %>
+	</tbody>
+			
+		
+
+	]]>
+</script>
+<script type="text/javascript">
+
+
+	$(document).ready(function () {
+
+		$(document).on("click", "#record-list .checkbox-record", function (e) {
+			var $this = $(this);
+			e.stopPropagation();
+			if (!$(e.target).closest("a").get(0) && !$(e.target).closest("button").get(0) && !$(e.target).closest("input[type='checkbox']").get(0)) {
+				$this.find("input[type='checkbox']").trigger("click")
+			}
+			show_selected_count();
+		});
+	});
+	function show_selected_count(){
+		var count = $("#record-list .checkbox-record input:checkbox:checked").length
+		var html = "";
+		var $btns = $(".checkbox-menu-action-btn");
+		if (count>0){
+			html = "("+count+")";
+			$btns.prop("disabled",false);
+		} else {
+			$btns.prop("disabled",true);
+		}
+		$(".count-area").html(html);
+		
+		
+	}
+	show_selected_count();
+
+</script>

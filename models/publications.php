@@ -112,7 +112,7 @@ class publications {
 			$app_users_pub_sql = ", if ((SELECT count($app_users_pub.ID) FROM $app_users_pub WHERE $app_users_pub.pID = global_publications.ID AND $app_users_pub.uID = '$uID' LIMIT 0,1)<>0,1,0) AS currentUser";
 		}
 
-		$currentDate = ", COALESCE((SELECT publish_date FROM global_dates WHERE global_dates.ID = ".$app."_currentDate),(SELECT publish_date FROM global_dates WHERE global_dates.pID=global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) AS currentDate";
+		$currentDate = ", COALESCE((SELECT publish_date FROM global_dates WHERE global_dates.ID = ".$app."_currentDate),(SELECT publish_date FROM global_dates WHERE global_dates.pID=global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) AS currentDate, COALESCE((SELECT ID FROM global_dates WHERE global_dates.ID = ".$app."_currentDate),(SELECT ID FROM global_dates WHERE global_dates.pID=global_publications.ID ORDER BY publish_date DESC LIMIT 0,1)) AS currentDateID";
 
 		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT global_publications.*, global_companies.company $currentDate $app_users_pub_sql

@@ -111,6 +111,9 @@ $sql = array(
 	),
 	"23"=>array(
 		"ALTER TABLE `nf_stages` CHANGE `orderby` `orderby` INT( 6 ) NULL DEFAULT '1';"
+	),
+	"24"=>array(
+		"ALTER TABLE `nf_article_newsbook_photos` ADD `ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;"
 	)
 
 );

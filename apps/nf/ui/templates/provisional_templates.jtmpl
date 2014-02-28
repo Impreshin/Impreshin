@@ -1,4 +1,5 @@
 {% include '_records.jtmpl' %}
+{% include '_records_checkbox.jtmpl' %}
 {% include '_details.jtmpl' %}
 
 <script type="text/x-jqote-template" id="template-provisional-stats-bar">

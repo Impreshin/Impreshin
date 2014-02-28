@@ -8119,29 +8119,36 @@ html.ie9 table.records tbody:not(.thead) {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.record {
+.record,
+.checkbox-record {
   background-color: #fff;
 }
-.record.highlight {
+.record.highlight,
+.checkbox-record.highlight {
   background-color: #ccffff;
 }
-.record.error {
+.record.error,
+.checkbox-record.error {
   background-color: #ffe6e6;
 }
-.record.active {
+.record.active,
+.checkbox-record.active {
   background-color: #DEEBFF;
   cursor: pointer;
   text-shadow: 0 1px 1px rgba(250, 250, 250, 0.25);
   color: #444;
 }
-.record:hover {
+.record:hover,
+.checkbox-record:hover {
   background-color: #DEEBFF;
   color: #000;
   cursor: pointer;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 .record.active td,
-.record:hover td {
+.checkbox-record.active td,
+.record:hover td,
+.checkbox-record:hover td {
   text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.75);
 }
 .no-records {

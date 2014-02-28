@@ -12,6 +12,9 @@ $(document).ready(function () {
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
 
+	var checkbox = $.bbq.getState("check");
+	checkbox = (checkbox) ? checkbox : "0";
+
 	if ($.bbq.getState("modal") == "settings") {
 		$("#settings-modal").modal('show');
 	}
@@ -33,6 +36,10 @@ $(document).ready(function () {
 		$("#record-settings li[data-order-records-by].active").removeClass("active");
 		$("#record-settings li[data-order-records-by='" + $.bbq.getState("orderBy") + "']").addClass("active");
 	}
+	if ($.bbq.getState("check")=='1') {
+		$("#checkbox-button").addClass("active");
+	}
+	
 	getList();
 //$("#whole-area .loadingmask").show();
 	$("#pageheader li ul a").click(function () {
@@ -75,6 +82,99 @@ $(document).ready(function () {
 		$.bbq.removeState("order");
 
 	});
+
+
+	$(document).on("click", "#checkbox-button", function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var checkbox = '0';
+		if ($this.hasClass("active")){
+			$this.removeClass("active");
+			checkbox = '0'
+		} else {
+			$this.addClass("active");
+			checkbox = '1';
+		}
+
+		$.bbq.pushState({"check":checkbox});
+		var s = {
+			maintain_position:true
+		};
+		getList(s);
+
+	});
+	$(document).on('show', '#checkbox-menu .nav-tabs', function (e) {
+		var target = e.target; // activated tab
+		var previous = e.relatedTarget; // previous tab
+		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+
+
+		$.bbq.pushState({"check-tab": pane});
+
+	});
+
+
+	$(document).on('submit', '#checkbox-menu form', function (e) {
+		e.preventDefault();
+		var $this = $(this);
+		var section = $this.attr("data-section");
+		var msg = "";
+		var data = $this.serializeArray();
+		//data = data?data:[];
+
+		var ids = $("#record-list .checkbox-record input:checkbox:checked").map(function(){
+			return $(this).val();
+		}).get();
+
+		//console.info(ids);
+		data.push({ name: "ids", value: ids });
+
+
+
+
+		switch(section){
+			case "checked":
+				msg = "Are you sure you want to mark these "+ ids.length +" records as 'checked'?";
+				break;
+			
+		}
+
+		var dp = true;
+		if (msg){
+			dp = confirm(msg);
+
+		}
+		if (dp){
+			$("#whole-area .loadingmask").show();
+			$.post("/app/ab/save/checkboxes/"+section+"?r="+Math.random(),data,function(r){
+				var s = {
+					maintain_position:true
+				};
+				getList(s);
+
+			});
+
+
+
+
+		}
+
+
+
+
+
+
+		return false;
+	});
+
+
+
+
+
+
+
+
+
 	$(document).on("click", "#record-settings li[data-order-records-by]", function (e) {
 		e.preventDefault();
 		var $this = $(this);
@@ -248,6 +348,8 @@ function getList(settings) {
 
 	var orderingactive = (order) ? true : false;
 
+	var checkbox = ($("#checkbox-button").hasClass("active"))?"1":"0";
+
 	$("#maintoolbar-date").html('Loading...');
 
 	$("#whole-area .loadingmask").show();
@@ -255,8 +357,33 @@ function getList(settings) {
 
 	$.getData("/app/ab/data/provisional/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search}, function (data) {
 		var $recordsList = $("#record-list");
+		var $scrollpane = $("#whole-area .scroll-pane");
+		var $checkboxMenu = $("#checkbox-menu");
 		if (data['list'][0]) {
-			$recordsList.jqotesub($("#template-records"), data['list']);
+			if (checkbox =='1'){
+				$recordsList.jqotesub($("#template-records-checkbox"), data['list']);
+				$scrollpane.css("bottom","40px");
+				$checkboxMenu.show();
+				var check_tab_first = $checkboxMenu.find(".nav-tabs a:first").attr("href").replace("#","");
+				var check_tab = $.bbq.getState("check-tab")?$.bbq.getState("check-tab"): $.cookie("check_tab")
+
+				if (check_tab){
+
+				} else {
+					check_tab = check_tab_first;
+				}
+				if (!$checkboxMenu.find("a[href='#"+check_tab+"']").length){
+					check_tab = check_tab_first;
+				}
+
+				$checkboxMenu.find("a[href='#"+check_tab+"']").trigger("click");
+				show_selected_count();
+				//$recordsList.jqoteapp($("#template-records-checkbox-menu"),data);
+			} else {
+				$recordsList.jqotesub($("#template-records"), data['list']);
+				$scrollpane.css("bottom","0");
+				$checkboxMenu.hide();
+			}
 		} else {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
