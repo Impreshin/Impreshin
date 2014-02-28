@@ -112,7 +112,8 @@
 							<form id="checkbox-menu-form-addnewsbook" data-section="addnewsbook">
 								
 								<button class="btn btn-primary span3  checkbox-menu-action-btn" style="float:right;" type="submit">Add to Newsbook
-									<span class="count-area"></span></button><select name="checkbox-menu-addnewsbook-publications" id="checkbox-menu-addnewsbook-publications" class="span5" style="float:right;" >
+									<span class="count-area"></span></button>
+								<select name="checkbox-menu-addnewsbook-publications" id="checkbox-menu-addnewsbook-publications" class="span5" style="float:right;" >
 									{% for row in _user['publications'] if row['cID'] == _user['company']['ID'] %}
 										<option value="{{ row['ID'] }}">{{ row['publication'] }} - {{ row['currentDate'] }}</option>
 									{% endfor %}

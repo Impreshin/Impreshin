@@ -72,6 +72,10 @@
 						<%= this.records[i].stage %>
 						<% } %>
 
+					{% elseif col['c'] == 'newsbooks_count' %}
+					<% if (this.records[i].newsbooks_count!=0){ %>
+		<%= this.records[i].newsbooks_count %>
+					<% } %>
 					{% elseif col['c'] == 'title' %}
 						<% if (this.records[i].rejected=='1'){ %>
 						<span class="badge"  style="margin-right:7px;">Rejected</span>

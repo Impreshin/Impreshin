@@ -70,6 +70,11 @@ class settings {
 				"h"=>"Newsbooks",
 				"o"=>"global_publications.publication, global_dates.publish_date"
 			),
+			"newsbooks_count"=>array(
+				"h"=>"Nb's&nbsp;#",
+				"o"=>"newsbooks_count",
+				"d"=>"Number of newsbooks the record has been added to"
+			),
 			"page"=>array(
 				"h"=>"Page",
 				"o"=>"global_pages.page",

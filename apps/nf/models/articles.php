@@ -369,6 +369,8 @@ class articles {
 				
 				(SELECT TRIM(GROUP_CONCAT(CONCAT(' ', g_publications.publication, ' (', g_dates.publish_date, if(g_pages.ID,CONCAT(' | ',FLOOR(g_pages.page)),''),')'))) FROM ((nf_article_newsbook nb INNER JOIN global_publications g_publications ON nb.pID = g_publications.ID) INNER JOIN global_dates g_dates ON nb.dID = g_dates.ID) LEFT JOIN global_pages g_pages ON nb.pageID = g_pages.ID WHERE nb.aID = nf_articles.ID)  AS newsbooks,
 				
+				(SELECT count(nf_article_newsbook.ID) FROM nf_article_newsbook WHERE nf_article_newsbook.aID =  nf_articles.ID) AS newsbooks_count,
+				
 				$newsbook_select
 				$placed_select
 				
