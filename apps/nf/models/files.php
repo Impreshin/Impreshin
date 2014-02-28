@@ -60,7 +60,7 @@ class files {
 		$result = $f3->get("DB")->exec("
 			SELECT DISTINCT nf_files.*, 
 				(SELECT body FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS caption, 
-				(SELECT COUNT(ID) FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS edits
+				(SELECT COUNT(nf_files.ID) FROM nf_files_body WHERE nf_files_body.fileID=nf_files.ID ORDER BY ID DESC LIMIT 0,1) AS edits
 			FROM nf_files LEFT JOIN nf_article_newsbook_photos ON nf_files.ID = nf_article_newsbook_photos.fileID
 			$where
 			$orderby
