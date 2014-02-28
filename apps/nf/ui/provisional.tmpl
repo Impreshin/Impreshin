@@ -99,15 +99,15 @@
 
 
 					<ul class="nav nav-tabs pull-left">
-						{% if _user['permissions']['articles']['checkbox_archive']=='1' %}
+						{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
 						<li><a href="#checkbox-menu-addnewsbook" data-toggle="tab">Add to Newsbook</a></li>
 						{% endif %}
-						{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
+						{% if _user['permissions']['articles']['checkbox_archive']=='1' %}
 						<li><a href="#checkbox-menu-archive" data-toggle="tab">Archive</a></li>
 						{% endif %}
 					</ul>
 					<div class="tab-content">
-						{% if _user['permissions']['articles']['checkbox_archive']=='1' %}
+						{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
 						<div class="tab-pane" id="checkbox-menu-addnewsbook">
 							<form id="checkbox-menu-form-addnewsbook" data-section="addnewsbook">
 								
@@ -121,7 +121,7 @@
 							</form>
 						</div>
 						{% endif %}
-						{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
+						{% if _user['permissions']['articles']['checkbox_archive']=='1' %}
 						<div class="tab-pane" id="checkbox-menu-archive">
 							<form id="checkbox-menu-form-archive" data-section="archive">
 							<button class="btn btn-primary span3 checkbox-menu-action-btn">Archive Records
