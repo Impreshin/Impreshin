@@ -20,6 +20,9 @@ class checkboxes extends save {
 	
 	function addnewsbook(){
 		$user = $this->f3->get("user");
+		if ($user['permissions']['articles']['checkbox_add_to_newsbook']!='1'){
+			test_array(array("error"=>"No permission")); 
+		}
 		$pID = isset($_POST['checkbox-menu-addnewsbook-publications'])?$_POST['checkbox-menu-addnewsbook-publications']:"";
 		$dID = "";
 		
@@ -113,8 +116,10 @@ class checkboxes extends save {
 	}
 	
 	function archive() {
-
-
+		$user = $this->f3->get("user");
+		if ($user['permissions']['articles']['checkbox_archive']!='1'){
+			test_array(array("error"=>"No permission"));
+		}
 	
 
 		$values = array(
