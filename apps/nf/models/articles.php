@@ -155,35 +155,8 @@ class articles {
 	public static function getAll_count($where = "",$options = array("limit" => "","pID"=>"","dID"=>"","body_search"=>"" )) {
 		$timer = new timer();
 		$f3 = \Base::instance();
-		
-		$body_id = "";
-		if (isset($options['body_search'])&&$options['body_search']) {
-			$search_str = $options['body_search'];
-			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
-			if (count($body_id)){
-				$n = array();
-				foreach($body_id as $item){
-					$n[] = $item['aID'];
-				}
-				$body_id = implode(",",$n);
 
-				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
-				if ($where) {
-					$where = "AND " . $where . "";
-				} else {
-					$where = " ";
-				}
-
-				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
-			}
-
-		}
-
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+		$where = self::_where($where,$options);
 		$from = self::_from($options);
 		$sql = "
 			SELECT COUNT(DISTINCT(nf_articles.ID)) AS records
@@ -290,6 +263,8 @@ class articles {
 		} else {
 			$limit = " ";
 		}
+		
+	
 
 		$newsbook_sql = $newsbook_select = "";
 		$placed_select = "if((SELECT count(p_nb.ID) FROM nf_article_newsbook p_nb  WHERE p_nb.aID = nf_articles.ID AND p_nb.placed='1' $newsbook_sql),1,0) as placed,";
@@ -313,38 +288,17 @@ class articles {
 
 		
 		$from = self::_from($options);
-		
-		
-		$body_id = "";
-		if (isset($options['body_search'])&&$options['body_search']) {
-			$search_str = $options['body_search'];
-			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
-			if (count($body_id)){
-				$n = array();
-				foreach($body_id as $item){
-					$n[] = $item['aID'];
-				}
-				$body_id = implode(",",$n);
 
-				$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
-				if ($where) {
-					$where = "AND " . $where . "";
-				} else {
-					$where = " ";
-				}
-				
-				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
-			}
-			
-		}
-
-		if ($where) {
-			$where = "WHERE " . $where . "";
-		} else {
-			$where = " ";
-		}
+		//$options['body_search'] = "willdddiam";
 		
-		//test_array($where); 
+		$where = self::_where($where,$options);
+		
+		
+
+		
+		
+	//	test_array($options); 
+	//	test_array(array("options"=>$options,"where"=>$where)); 
 
 		
 		$sql = "
@@ -384,6 +338,8 @@ class articles {
 			$orderby
 			$limit
 		";
+		
+		//test_array($sql); 
 
 		if (isset($_GET['debug']) && $_GET['debug']=="articles_getAll_sql"){
 			echo $sql;exit();
@@ -850,6 +806,57 @@ class articles {
 		return $ID;
 	}
 
+	private static function _where($where, $options){
+		$f3 = \Base::instance();
+		$timer = new timer();
+		$body_id = "";
+		if (isset($options['body_search'])&&$options['body_search']) {
+			$search_str = $options['body_search'];
+			$body_id = $f3->get("DB")->exec("SELECT aID FROM `nf_articles_body` WHERE `body` LIKE '%$search_str%' GROUP BY aID ORDER BY ID DESC");
+
+			$searchsql = " (title like '%$search_str%' OR nf_categories.category like '%$search_str%' OR global_users.fullName like '%$search_str%' OR nf_article_types.type like '%$search_str%' OR meta like '%$search_str%') ";
+
+			if ($where) {
+				$where = "AND (" . $where . ")";
+			} else {
+				$where = " ";
+			}
+
+
+			if (count($body_id)){
+				$n = array();
+				foreach($body_id as $item){
+					$n[] = $item['aID'];
+				}
+				$body_id = implode(",",$n);
+
+
+
+				$where = " (nf_articles.ID in ($body_id) OR $searchsql) $where";
+			}	else {
+
+				//test_array(" $searchsql $where"); 
+				$where = " $searchsql $where";
+
+			}
+			//test_array($where); 
+
+
+
+
+		}
+		if ($where) {
+			$where = "WHERE (" . $where . ")";
+		} else {
+			$where = " ";
+		}
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+
+		return $where;
+
+
+	}
 	public static function getLogs($ID) {
 		$timer = new timer();
 		$f3 = \Base::instance();
