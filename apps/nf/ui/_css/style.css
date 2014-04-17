@@ -627,3 +627,6 @@
   margin: 0;
   padding: 0;
 }
+.bigdrop {
+  width: 270px !important;
+}

@@ -149,7 +149,9 @@ $(document).ready(function () {
 
 	var $pubSelectID = $("#pubSelectID");
 	if ($pubSelectID.length) {
-		$pubSelectID.select2().change(function () {
+		$pubSelectID.select2({
+			dropdownCssClass : 'bigdrop'
+		}).change(function () {
 			window.location = "?apID=" + $(this).val();
 		});
 	}
