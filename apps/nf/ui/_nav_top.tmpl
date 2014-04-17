@@ -157,16 +157,16 @@
 				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
 					{% set lastCompany = "" %}
 					{% for row in _user['publications'] %}
-						{% if lastCompany != row['company'] %}
-						<optgroup label="{{ row['company'] }}">
-						{% else %}
-							{% if lastCompany  %}
-								</optgroup>
-							{% endif %}
+					{% if lastCompany != row['company'] %}
+						{% if lastCompany  %}
+							</optgroup>
+						{% endif %}
+					<optgroup label="{{ row['company'] }}{{ row['companyID'] }}">
 						{% endif %}
 						{% set lastCompany = row['company'] %}
 						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
-					{% endfor %}
+						{% endfor %}
+					</optgroup>
 
 				</select>
 			{% endif %}
