@@ -42,11 +42,15 @@
 			<div class="form-header">
 
 			</div>
+			
 			<section class="form-body" style="padding-top: 10px; bottom: 37px;">
+				
 				<table>
 					<tr>
 						<td class="span12" style="">
 							<div style="padding:10px;">
+
+								<div id="error-locked" ></div>
 								<div class="span11 control-group">
 									<input type="text" placeholder="Title" class="span11" id="title" name="title" style="" value="<%= this.details.title||"" %>">
 								</div>

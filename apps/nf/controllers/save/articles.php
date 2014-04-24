@@ -357,6 +357,83 @@ class articles extends save {
 		$type = (isset($_GET['type'])) ? $_GET['type'] : "";
 
 
+		// ------------------------
+		$submit = true;
+		$r = array();
+
+		if ($ID){
+			$record = new models\articles();
+			$return = $record->get($ID);
+
+
+			$allow = array(
+				"newsbook"=>"0",
+				"locked"=>"0",
+				"reject"=>"0",
+				"delete"=>"0",
+				"archive"=>"0",
+				"edit"=>"0",
+				"print" => "1",
+				"stageNext"=>"0",
+				"stagePrev"=>"0",
+				"stage_jump_list"=>"0",
+				"placed"=>"0"
+			);
+
+
+			$permissions = $user['permissions'];
+			$stage_permissions = isset($permissions['stages'][$return['stageID']])?$permissions['stages'][$return['stageID']]:array("label"=>"-none-",
+				"edit"=>"0",
+				"to"=>"0",
+				"reject"=>"0",
+				"delete"=>"0",
+				"newsbook"=>"0");
+
+			if ($stage_permissions['edit']=='1'){
+				if ($return['locked_uID']){
+					if ($return['locked_uID']==$user['ID']){
+						$allow['edit'] = '1';
+					}
+				} else {
+					$allow['edit'] = '1';
+				}
+			}
+			if ($stage_permissions['delete']=='1'){
+				$allow['delete']='1';
+			}
+			if ($stage_permissions['newsbook']=='1'){
+				$allow['newsbook']='1';
+			}
+			if ($stage_permissions['reject']=='1'){
+				$allow['reject']='1';
+			}
+			if ($permissions['details']['overwrite_locked']=="1" || ($return['locked_uID']==$user['ID'] && $return['stageID']!='1')){
+				$allow['locked']='1';
+			}
+			if ($permissions['details']['archive']=="1"){
+				$allow['archive']='1';
+			}
+			if ($permissions['details']['stage_jump_list']=="1"){
+				$allow['stage_jump_list']='1';
+			}
+			if ($permissions['form']['edit_master']=="1"){
+				$allow['edit']='1';
+			}
+
+
+
+			if ($allow['edit']!='1'){
+				$submit = false;
+				$r['error'][] = array("field" => "title", "msg" => "The permission for this article has changed. You no longer have the permission to edit it. No changes saved");
+			}
+			
+			
+			
+
+		}
+		
+		
+		
 		$values = array();
 
 		if ($type) {
@@ -415,9 +492,7 @@ class articles extends save {
 
 
 
-		// ------------------------
-		$submit = true;
-		$r = array();
+		
 
 		if (isset($values['title']) && $values['title'] == '') {
 			$submit = false;
