@@ -77,3 +77,23 @@
 	</li>
 	]]>
 </script>
+
+<script type="text/x-jqote-template" id="template-provisional-checkbox-bar">
+	<![CDATA[
+
+	
+
+	<li  style="margin-top:2px;" class="checkbox-menu">
+		{% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
+			<div class="tab-pane" id="checkbox-menu-checked">
+				<form id="checkbox-menu-form-checked" data-section="checked" style="margin:0;">
+					<button class="btn btn-mini span3 checkbox-menu-action-btn"  style="margin:0;">Mark as Checked
+						<span class="count-area"></span></button>
+				</form>
+			</div>
+		{% endif %}
+	</li>
+
+
+	]]>
+</script>

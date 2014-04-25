@@ -82,18 +82,10 @@ $(document).ready(function () {
 		getList(s);
 
 	});
-	$(document).on('show', '#checkbox-menu .nav-tabs', function (e) {
-		var target = e.target; // activated tab
-		var previous = e.relatedTarget; // previous tab
-		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+	
 
 
-		$.bbq.pushState({"check-tab": pane});
-
-	});
-
-
-	$(document).on('submit', '#checkbox-menu form', function (e) {
+	$(document).on('submit', '.checkbox-menu form', function (e) {
 		e.preventDefault();
 		var $this = $(this);
 		var section = $this.attr("data-section");
@@ -373,29 +365,20 @@ function getList(settings) {
 		var $recordsList = $("#record-list");
 		var $scrollpane = $("#whole-area .scroll-pane");
 		var $checkboxMenu = $("#checkbox-menu");
+		
+		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
 		if (data['list'][0]) {
 			if (checkbox =='1'){
+				$("#provisional-stats-bar").jqotesub($("#template-provisional-checkbox-bar"), data);
+				
 				$recordsList.jqotesub($("#template-records-checkbox"), data['list']);
-				$scrollpane.css("bottom","40px");
-				$checkboxMenu.show();
-				var check_tab_first = $checkboxMenu.find(".nav-tabs a:first").attr("href").replace("#","");
-				var check_tab = $.bbq.getState("check-tab")?$.bbq.getState("check-tab"): $.cookie("check_tab")
 				
-				if (check_tab){
-					
-				} else {
-					check_tab = check_tab_first;
-				}
-				if (!$checkboxMenu.find("a[href='#"+check_tab+"']").length){
-					check_tab = check_tab_first;
-				}
 				
-				$checkboxMenu.find("a[href='#"+check_tab+"']").trigger("click");
 				show_selected_count();
 				//$recordsList.jqoteapp($("#template-records-checkbox-menu"),data);
 			} else {
 				$recordsList.jqotesub($("#template-records"), data['list']);
-				$scrollpane.css("bottom","0");
+				
 				$checkboxMenu.hide();
 			}
 			
@@ -403,7 +386,7 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-		$("#provisional-stats-bar").jqotesub($("#template-provisional-stats-bar"), data);
+		
 
 		
 		

@@ -26,7 +26,7 @@
 
 	</tr>
 	<tr class="colheading">
-		<th style="width:25px;">&nbsp;</th>
+		<th style="width:25px;" class="c"><input type="checkbox" value="#"/></th>
         {% for k,col in settings['col'] %}
             <th {% if col['o'] %}data-col="{{ col['c'] }}" class="order-btn"{% endif %} {% if col['m'] or col['w'] or col['mw'] %} style="{% if col['m'] %}min-width: {{ col['m'] }}px;{% endif %}  {% if col['mw'] %}max-width: {{ col['mw'] }}px;{% endif %} {% if col['w'] %}width: {{ col['w'] }}px;{% endif %}"{% endif %}>
                 {{ col['h']|raw }}{% if col['o'] %}<span class="indicator">&nbsp;*</span>{% endif %}
@@ -108,13 +108,22 @@
 			}
 			show_selected_count();
 		});
+		$(document).on("change", ".colheading input:checkbox", function (e) {
+			var $this = $(this);
+			e.stopPropagation();
+
+			$this.closest("thead").next("tbody").find(':checkbox').prop('checked', this.checked);
+
+
+			show_selected_count();
+		});
 	});
 	function show_selected_count(){
 		var count = $("#record-list .checkbox-record input:checkbox:checked").length
 		var html = "";
 		var $btns = $(".checkbox-menu-action-btn");
 		if (count>0){
-			html = "("+count+")";
+			html = " ("+count+")";
 			$btns.prop("disabled",false);
 		} else {
 			$btns.prop("disabled",true);

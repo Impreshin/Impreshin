@@ -38,3 +38,41 @@
 
 	]]>
 </script>
+<script type="text/x-jqote-template" id="template-provisional-checkbox-bar">
+	<![CDATA[
+
+			<li style="margin-top:2px;" class="checkbox-menu">
+				{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
+					<div id="checkbox-menu-addnewsbook">
+						<form id="checkbox-menu-form-addnewsbook" data-section="addnewsbook" style="margin:0;">
+							<button class="btn btn-mini  span1  checkbox-menu-action-btn" style="float:right;" type="submit">Do
+								<span class="count-area"></span></button>
+							<select name="checkbox-menu-addnewsbook-publications" id="checkbox-menu-addnewsbook-publications" class="span4" style="float:right; margin:0;" >
+								{% for row in _user['publications'] if row['cID'] == _user['company']['ID'] %}
+									<option value="{{ row['ID'] }}">{{ row['publication'] }} - {{ row['currentDate'] }}</option>
+								{% endfor %}
+							</select>
+							</form>
+					</div>
+				{% endif %}
+			</li>
+	{% if _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' and _user['permissions']['articles']['checkbox_archive']=='1' %}
+			<li class="divider-vertical">
+				
+			</li>
+			{% endif %}
+	
+			<li  style="margin-top:2px;" class="checkbox-menu">
+				{% if _user['permissions']['articles']['checkbox_archive']=='1' %}
+					<div id="checkbox-menu-archive">
+						<form id="checkbox-menu-form-archive" data-section="archive"  style="margin:0;">
+							<button class="btn  btn-mini span2 checkbox-menu-action-btn" style="margin:0;">Archive
+								<span class="count-area"></span></button>
+							</form>
+					</div>
+				{% endif %}
+			</li>
+						
+
+	]]>
+</script>

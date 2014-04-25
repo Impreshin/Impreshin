@@ -96,35 +96,7 @@
             </div>
 
             <div class="loadingmask wide"></div>
-	        <div id="checkbox-menu">
-		        <div class="toolbar clearfix ">
-
-
-
-
-
-
-			        <ul class="nav nav-tabs pull-left">
-				        {% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
-					        <li><a href="#checkbox-menu-checked" data-toggle="tab">Checked</a></li>
-				        {% endif %}
-				      
-			        </ul>
-			        <div class="tab-content">
-				    
-				        {% if _user['permissions']['bookings']['checkbox_checked']=='1' %}
-					        <div class="tab-pane" id="checkbox-menu-checked">
-						        <form id="checkbox-menu-form-checked" data-section="checked">
-							        <button class="btn btn-primary span3 checkbox-menu-action-btn">Mark as Checked
-								        <span class="count-area"></span></button>
-						        </form>
-					        </div>
-				        {% endif %}
-
-			        </div>
-		        </div>
-
-	        </div>
+	        
 
             <div id="search-box">
                 <button type="button" class="btn btn-mini  btn-icon" style="width: 30px;" id="search-box-toggle">
