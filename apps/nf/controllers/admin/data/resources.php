@@ -27,7 +27,7 @@ class resources extends \apps\nf\controllers\data\data {
 
 
 
-		$where = "";
+		$where = "cID = '$cID'";
 
 
 
