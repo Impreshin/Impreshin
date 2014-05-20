@@ -90,7 +90,7 @@ class search extends data {
 			$search_string = ($search_string);
 			$search_string = str_replace("'", "\\'", $search_string);
 			$search_string = str_replace('"', '\\"', $search_string);
-			$searchsql .= " AND (client like '%$search_string%' OR ab_placing.placing like '%$search_string%' OR ab_marketers.marketer like '%$search_string%' OR ab_accounts.account like '%$search_string%' OR ab_accounts.accNum like '%$search_string%') ";
+			$searchsql .= " AND (client like '%$search_string%' OR ab_placing.placing like '%$search_string%' OR ab_marketers.marketer like '%$search_string%' OR ab_accounts.account like '%$search_string%' OR ab_accounts.accNum like '%$search_string%' OR orderNum like '%$search_string%') ";
 		}
 		if ($search_dates){
 			$search_dates = explode("to",$search_dates);
