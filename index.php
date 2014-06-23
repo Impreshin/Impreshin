@@ -480,6 +480,7 @@ $app->route('GET /redirect', function () {
 $app->route('GET /test', function () {
 		$f3 = Base::instance();
 		$a=array();
+		$return=array();
 
 		$oldTZ = 'Africa/Johannesburg'; 
 		$newTZ = 'America/Los_Angeles';
@@ -508,8 +509,33 @@ $app->route('GET /test', function () {
 		$a['voodoo']['mysql'] =datetime($a["real"]["mysql"],'','America/Los_Angeles');
 		//echo 
 		//echo $time->getOffset();
+
+
+		$return['dates'] = $a;$c = array();
 		
-		test_array($a); 
+		$amount = '12345.67';
+
+		$formatter = new \NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
+		
+		$c['UK'] =  $formatter->formatCurrency($amount, 'EUR');
+
+		$formatter = new \NumberFormatter('de_DE',  NumberFormatter::CURRENCY);
+		$c['DE'] =  $formatter->formatCurrency($amount, 'EUR');
+		
+		$formatter = new \NumberFormatter('en_ZA',  NumberFormatter::CURRENCY);
+		$c['ZA'] =  $formatter->formatCurrency($amount, 'ZAR');
+		
+		$formatter = new \NumberFormatter('en_US',  NumberFormatter::CURRENCY);
+		$c['US'] =  $formatter->formatCurrency($amount, 'USD');
+		
+		
+
+		$return['currency'] = $c;
+		
+		
+		
+		
+		test_array($return); 
 		
 	}
 );
