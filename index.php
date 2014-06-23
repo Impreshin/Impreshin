@@ -478,20 +478,69 @@ $app->route('GET /redirect', function () {
 	}
 );
 $app->route('GET /test', function () {
+		$f3 = Base::instance();
+		$a=array();
+
+		$oldTZ = 'Africa/Johannesburg'; 
+		$newTZ = 'America/Los_Angeles';
+
+		date_default_timezone_set($oldTZ);
 		
-		$a = array(
-			"this is,.jpg",
-			"My new!file name.jpg",
-			"file..test.jpg"
-		);
-		$n = array();
-		foreach ($a as $i){
-			$n[$i] = sanitize_filename($i);
-		}
-		test_array($n); 
+		$a["real"]["php"]=date("Y-m-d H:i:s");
+		
+		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
+		$a["real"]["mysql"] = $md[0]['datetime'];
+
+		
+		
+
+		date_default_timezone_set($newTZ);
+
+		$a["after"]['php']=date("Y-m-d H:i:s");
+
+		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
+		$a["after"]["mysql"] = $md[0]['datetime'];
+
+
+		
+
+
+		$a['voodoo']['mysql'] =datetime($a["real"]["mysql"],'','America/Los_Angeles');
+		//echo 
+		//echo $time->getOffset();
+		
+		test_array($a); 
 		
 	}
 );
+
+function datetime($value,$format='Y-m-d H:i:s',$timezone_to='Africa/Johannesburg',$timezone_from=''){
+
+	if ($format=='')$format = 'Y-m-d H:i:s';
+	if ($timezone_from==''){
+		$cfg = $GLOBALS['cfg'];
+		
+		$timezone_from = $cfg['TZ'];;
+	}
+	$f3 = Base::instance();
+
+	
+	
+	//test_array($user['company']['timezone']); 
+	
+	$oldTZ =$timezone_from;
+	$newTZ = $timezone_to;
+	
+	$time = new DateTime($value , new DateTimeZone($oldTZ));
+	if ($oldTZ != $newTZ){
+		$time->setTimezone(new DateTimeZone($newTZ));
+	}
+	$value = $time->format($format);
+	
+	
+	
+	return $value;
+}
 
 
 $app->run();
