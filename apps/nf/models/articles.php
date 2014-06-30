@@ -417,8 +417,8 @@ class articles {
 			if (isset($record['dateChanged']) && $record['dateChanged']) $record['dateChanged'] = datetime($record['dateChanged'],'',$user['company']['timezone']);
 			if (isset($record['archived_date']) && $record['archived_date']) $record['archived_date'] = datetime($record['archived_date'],'',$user['company']['timezone']);
 			if (isset($record['deleted_date']) && $record['deleted_date']) $record['deleted_date'] = datetime($record['deleted_date'],'',$user['company']['timezone']);
-			
 
+			$record['cm'] = $record['cm'] + 0;
 
 		}
 
