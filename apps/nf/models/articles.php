@@ -118,6 +118,7 @@ class articles {
 			$comments = comments::getAll("aID='" . $return['ID'] . "'", "ID DESC");
 			$return['commentCount'] = count($comments);
 			$return['comments'] = comments::display($comments);
+			$return['cm'] = $return['cm'] + 0;
 			
 			//$return['logs'] = articles::getLogs($return['ID']);
 		} else {
@@ -424,6 +425,8 @@ class articles {
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
+			$record['cm'] = $record['cm'] + 0;
+			
 			if (isset($user['permissions']['fields'])) {
 				foreach ($user['permissions']['fields'] as $key => $value) {
 					if ($value == 0) {
