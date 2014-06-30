@@ -124,6 +124,9 @@ $sql = array(
 		"ALTER TABLE  `global_companies` ADD  `units` VARCHAR( 100 ) NULL DEFAULT  'metric';",
 		"ALTER TABLE  `global_publications` CHANGE  `pagewidth`  `pagewidth` DECIMAL( 6, 2 ) NULL DEFAULT  '0';",
 		"ALTER TABLE  `global_publications` CHANGE  `cmav`  `cmav` DECIMAL( 6, 2 ) NULL DEFAULT NULL;"
+	),
+	"27"=>array(
+		"ALTER TABLE  `nf_articles` CHANGE  `cm`  `cm` DECIMAL( 7, 3 ) NULL DEFAULT NULL;"
 	)
 	
 
