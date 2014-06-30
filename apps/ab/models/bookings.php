@@ -239,6 +239,12 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 	private static function currency($record) {
 		$f3 = \Base::instance();
 		if (is_array($record)) {
+
+
+			if (isset($record['cm']) && $record['cm']) $record['cm'] = $record['cm'] + 0;
+			if (isset($record['totalspace']) && $record['totalspace']) $record['totalspace'] = $record['totalspace']+0;
+
+
 			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
 			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate']);
 			if (isset($record['totalCost']) && $record['totalCost']) $record['totalCost_C'] = currency($record['totalCost']);
@@ -267,8 +273,12 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$user = $f3->get("user");
 		$permissions = $user['permissions'];
 		if (is_array($data)) {
+			
+			
 			$a = array();
 			foreach ($data as $item) {
+
+				$item = bookings::currency($item);
 				$showrecord = true;
 				$item['size'] = "";
 				switch ($item['typeID']) {
@@ -292,7 +302,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$showrecord = false;
 					}
 				}
-				if ($showrecord) $a[] = bookings::currency($item);
+				if ($showrecord) $a[] = $item;
 			}
 			$data = $a;
 		}
