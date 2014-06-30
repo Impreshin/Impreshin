@@ -77,7 +77,7 @@ class admin_users extends data {
 				}
 
 				$record['last_activity'] = array(
-					"time"=> $record['last_activity'],
+					"time"=> datetime($record['last_activity'],"",$user['company']['timezone']),
 					"display"=>timesince($record['last_activity']),
 					"active"=>$t
 				);

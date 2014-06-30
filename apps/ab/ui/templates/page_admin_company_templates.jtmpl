@@ -1,0 +1,94 @@
+<script type="text/x-jqote-template" id="template-details">
+	<![CDATA[
+	<div class="scroll-pane scrolly" style="bottom: 43px;">
+
+		<div data-heading="top" class="scroll-container" style="padding-left: 15px;">
+
+
+			<fieldset style="margin-top: 20px;">
+
+				<div id="errorArea"></div>
+
+				<div class="control-group">
+					<label for="publication" class="control-label">Company</label>
+
+					<div class="controls">
+						<input type="text" id="publication" name="publication" class="span4" value="<% if (this.company) { %><%= this.company %><% } %>">
+					</div>
+				</div>
+              
+				<div class="control-group">
+					<label for="timezone" class="control-label">Time Zone</label>
+
+					<div class="controls">
+						<select name="timezone" id="timezone">
+							{% for row in timezones %}
+								<option value="{{ row }}" <% if ("{{ row }}"==this.timezone) { %>selected="selected"<% } %>>{{ row }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label for="language" class="control-label">Language</label>
+
+					<div class="controls">
+						<select name="language" id="language">
+							
+								<option value="en_ZA" <% if ("en_ZA"==this.language) { %>selected="selected"<% } %>>en_ZA</option>
+								<option value="en_US" <% if ("en_US"==this.language) { %>selected="selected"<% } %>>en_US</option>
+								<option value="en_UK" <% if ("en_UK"==this.language) { %>selected="selected"<% } %>>en_UK</option>
+							
+						</select>
+					</div>
+				</div>
+
+			<div class="control-group">
+					<label for="currency" class="control-label">Currency</label>
+
+					<div class="controls">
+						<select name="currency" id="currency">
+							
+								<option value="en_ZA" <% if ("en_ZA"==this.language) { %>selected="selected"<% } %>>en_ZA</option>
+								<option value="en_US" <% if ("en_US"==this.language) { %>selected="selected"<% } %>>en_US</option>
+								<option value="en_UK" <% if ("en_UK"==this.language) { %>selected="selected"<% } %>>en_UK</option>
+							
+						</select>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+			</fieldset>
+
+
+			
+
+		</div>
+
+	</div>
+
+
+	<div id="form-bottom">
+		<div class="form-actions">
+			<div style="float:left; margin-left:0; padding-top: 3px;">
+			
+			</div>
+			<div style="float:right; margin-right: 10px;">
+
+				<button class="btn btn-primary span4 " style="" type="submit">Save Record</button>
+
+
+			</div>
+		</div>
+	</div>
+
+	]]>
+</script>
+

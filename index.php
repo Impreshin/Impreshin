@@ -517,16 +517,29 @@ $app->route('GET /test', function () {
 
 		$formatter = new \NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
 		
-		$c['UK'] =  $formatter->formatCurrency($amount, 'EUR');
+		$c['UK'] =  array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'EUR')
+		);
 
 		$formatter = new \NumberFormatter('de_DE',  NumberFormatter::CURRENCY);
-		$c['DE'] =  $formatter->formatCurrency($amount, 'EUR');
+		$c['DE'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'EUR')
+		);
 		
 		$formatter = new \NumberFormatter('en_ZA',  NumberFormatter::CURRENCY);
-		$c['ZA'] =  $formatter->formatCurrency($amount, 'ZAR');
+		$c['ZA'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'ZAR')
+		);
 		
 		$formatter = new \NumberFormatter('en_US',  NumberFormatter::CURRENCY);
-		$c['US'] =  $formatter->formatCurrency($amount, 'USD');
+		$c['US'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'USD')
+		);
+		
 		
 		
 
@@ -540,33 +553,7 @@ $app->route('GET /test', function () {
 	}
 );
 
-function datetime($value,$format='Y-m-d H:i:s',$timezone_to='Africa/Johannesburg',$timezone_from=''){
 
-	if ($format=='')$format = 'Y-m-d H:i:s';
-	if ($timezone_from==''){
-		$cfg = $GLOBALS['cfg'];
-		
-		$timezone_from = $cfg['TZ'];;
-	}
-	$f3 = Base::instance();
-
-	
-	
-	//test_array($user['company']['timezone']); 
-	
-	$oldTZ =$timezone_from;
-	$newTZ = $timezone_to;
-	
-	$time = new DateTime($value , new DateTimeZone($oldTZ));
-	if ($oldTZ != $newTZ){
-		$time->setTimezone(new DateTimeZone($newTZ));
-	}
-	$value = $time->format($format);
-	
-	
-	
-	return $value;
-}
 
 
 $app->run();

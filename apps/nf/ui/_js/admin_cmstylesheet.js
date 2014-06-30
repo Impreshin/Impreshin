@@ -54,16 +54,24 @@ $(document).ready(function(){
 		var artcm = $(this).height();
 
 		if (artcm > 0) {
-			artcm = (artcm/dpi) *2.54;
+			artcm = (artcm/dpi);
+			if (_useImperial){
+				
+			} else {
+				artcm = (artcm) *2.54;
+			}
 			artcm = Math.ceil(artcm);
 		}
 
 		
 		
-		var heading = "Cm Style Sheet";
+		var heading = "Length Style Sheet";
 		if (artcm){
 			$("#cm").val(artcm);
-			heading = heading + '<strong style="margin-left:50px;">'+ artcm + "</strong> <span class=' g'>cm</span>";
+			
+			var heading_unit = _useImperial?"Inches":"Cm";
+			
+			heading = heading + '<strong style="margin-left:50px;">'+ artcm + "</strong> <span class=' g'>"+heading_unit+"</span>";
 		} else {
 			$("#cm").val("0");
 		}

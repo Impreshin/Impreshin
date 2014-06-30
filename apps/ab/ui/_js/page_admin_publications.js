@@ -12,6 +12,10 @@ $(document).ready(function () {
 		$.bbq.pushState({"page":$this.attr("data-page")});
 		getList();
 	});
+	$(document).on("change", ".imperialblock", function (e) {
+		var $this = $(this);
+		$this.val(imperial2metric($this.val()));
+	});
 
 	$(document).on("click", "#record-list .record", function (e) {
 		var $this = $(this), ID = $this.attr("data-id");
@@ -185,4 +189,42 @@ function getDetails() {
 		$("#left-area .loadingmask").fadeOut(transSpeed);
 
 	}, "details");
+}
+
+function imperial2metric($number) {
+	// Get rid of whitespace on both ends of the string.
+	$number = ($number.trim());
+
+	// This results in the number of feet getting multiplied by 12 when eval'd
+	// which converts them to inches.
+	$number = $number.replace("'", '*12');
+
+	// We don't need the double quote.
+	$number = $number.replace('"', '');
+
+	// Convert other whitespace into a plus sign.
+	$number = $number.replace(' ', '+');
+
+	// Make sure they aren't making us eval() evil PHP code.
+	if ($number.match('/[^0-9\/\.\+\*\-]/')) {
+		return false;
+	} else {
+
+		console.log($number)
+		if (!$number){
+			return "";
+		}
+		console.info($number)
+		// Evaluate the expression we've built to get the number of inches.
+		$inches = eval("("+$number+")");
+
+		console.log($inches)
+
+		// This is how you convert inches to meters according to Google calculator.
+		//$meters = $inches * 0.0254;
+
+		// Returns it in meters. You may then convert to centimeters by
+		// multiplying by 100, kilometers by dividing by 1000, etc.
+		return $inches;
+	}
 }

@@ -142,7 +142,7 @@
 				<tr>
 					<td class="span3">
 						<div class="control-group">
-							<label for="cm" class="control-label">Cm*</label>
+							<label for="cm" class="control-label">{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}*</label>
 
 							<div class="controls">
 								<input type="text" id="cm" name="cm" class="span1 display_notes" value="<% if (this.details.cm) { %><%= this.details.cm %><% } %>">

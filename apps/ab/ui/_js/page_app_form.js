@@ -346,15 +346,60 @@ function colours_fn() {
 	}
 
 }
+function imperial2metric($number) {
+	// Get rid of whitespace on both ends of the string.
+	$number = ($number.trim());
 
+	// This results in the number of feet getting multiplied by 12 when eval'd
+	// which converts them to inches.
+	$number = $number.replace("'", '*12');
+
+	// We don't need the double quote.
+	$number = $number.replace('"', '');
+
+	// Convert other whitespace into a plus sign.
+	$number = $number.replace(' ', '+');
+
+	// Make sure they aren't making us eval() evil PHP code.
+	if ($number.match('/[^0-9\/\.\+\*\-]/')) {
+		return false;
+	} else {
+		
+		console.log($number)
+		if (!$number){
+			return "";
+		}
+		console.info($number)
+		// Evaluate the expression we've built to get the number of inches.
+		$inches = eval("("+$number+")");
+
+		console.log($inches)
+		
+		// This is how you convert inches to meters according to Google calculator.
+		//$meters = $inches * 0.0254;
+
+		// Returns it in meters. You may then convert to centimeters by
+		// multiplying by 100, kilometers by dividing by 1000, etc.
+		return $inches;
+	}
+}
 function display_notes() {
-
+	
 	var cm = $("#cm").val(), col = $("#col").val();
-	cm = cm.replace(/[^0-9\.]/g, "");
+	
+	
+	if (_useImperial){
+		cm = imperial2metric(cm);
+	} else {
+		cm = (cm.replace(/[^0-9\.]/g, ""));
+	}
+	
 	col = col.replace(/[^0-9\.]/g, "");
 
 	$("#cm").val(cm);
 	$("#col").val(col);
+	
+	console.log(cm)
 
 	var discount = $("#discount").val(), agencyDiscount = $("#agencyDiscount").val(), InsertPO = $("#InsertPO").attr("placeholder", var_publication['printOrder']).val();
 	InsertPO = (InsertPO) ? InsertPO : var_publication['printOrder'];

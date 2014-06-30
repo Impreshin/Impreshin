@@ -55,6 +55,8 @@ class admin_publications extends data {
 
 		$ID = $details['ID'];
 
+		if ($details['cmav']) $details['cmav'] = $details['cmav'] + 0;
+		if ($details['pagewidth']) $details['pagewidth'] = $details['pagewidth'] + 0;
 
 		$used = array();
 		foreach ($details['colours'] as $colour){

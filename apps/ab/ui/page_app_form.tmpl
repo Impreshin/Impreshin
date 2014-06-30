@@ -57,6 +57,7 @@
 	var var_record_ID = '{{ ID }}';
 	var var_sub_placing = {{ sub_placing|json_encode()|raw }};
 	var var_publication = {{ _user['publication']|json_encode()|raw }};
+	var _useImperial = {% if _user['company']['units']=='imperial' %}true{% else %}false{% endif %};
 
 </script>
 <div id="account-search-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="account-search-modal" aria-hidden="true">
@@ -95,3 +96,4 @@
 
 
 </div>
+

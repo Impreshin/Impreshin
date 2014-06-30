@@ -13,6 +13,7 @@ class report_discounts {
 	public static function figures($where, $years, $margin = "25") {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = array();
 		$months = array(
 			array(
@@ -199,8 +200,8 @@ class report_discounts {
 					foreach ($years as $year) {
 						if ($year == date("Y", strtotime($e['date']))) {
 							$e['percent'] = ($e['net'] && $e['gross']) ? abs(number_format((($e['net'] - $e['gross']) / $e['gross']) * 100, 1)) : "";
-							$e['net'] = currency($e['net']);
-							$e['gross'] = currency($e['gross']);
+							$e['net'] = currency($e['net'],$user['company']['language'],$user['company']['currency']);
+							$e['gross'] = currency($e['gross'],$user['company']['language'],$user['company']['currency']);
 
 							$n['data'][$year] = $e;
 						} else {
@@ -241,8 +242,8 @@ class report_discounts {
 				//	test_array($rec);
 
 
-				$rec['net'] = ($rec['net']) ? currency($rec['net']) : "";
-				$rec['gross'] = ($rec['gross']) ? currency($rec['gross']) : "";
+				$rec['net'] = ($rec['net']) ? currency($rec['net'],$user['company']['language'],$user['company']['currency']) : "";
+				$rec['gross'] = ($rec['gross']) ? currency($rec['gross'],$user['company']['language'],$user['company']['currency']) : "";
 				$rec['percent'] = ($rec['percent']) ? abs(number_format(($rec['percent']), 1)) : "";
 
 				$ndata[] = $rec;

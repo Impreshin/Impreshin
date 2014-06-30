@@ -171,7 +171,12 @@ class permissions {
 					),
 					"publications" => array(
 						"page" => 0
+					),
+				/*	
+					"company" => array(
+						"page" => 0
 					)
+				*/
 				)
 			)
 

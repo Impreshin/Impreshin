@@ -16,7 +16,7 @@
 					<i class="icon-arrow-up icon-l-grey"></i> </a>
 			</div>
 			<h3><%= this.heading %>
-				<small><% if (this.count) { %><%= this.count %> Records | <% } %><% if (this.articles) { %><%= this.articles %> Articles | <% } %><% if (this.photos) { %><%= this.photos %> Photos | <% } %><% if (this.cm) { %><%= this.cm %> Cm<% } %> </small>
+				<small><% if (this.count) { %><%= this.count %> Records | <% } %><% if (this.articles) { %><%= this.articles %> Articles | <% } %><% if (this.photos) { %><%= this.photos %> Photos | <% } %><% if (this.cm) { %><%= this.cm %> {% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}<% } %> </small>
 			</h3>
 
 

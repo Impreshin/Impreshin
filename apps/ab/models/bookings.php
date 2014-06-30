@@ -61,7 +61,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		"
 		);
 		if (count($result)) {
-			$return = bookings::currency($result[0]);
+			$return = bookings::localization($result[0]);
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state'] = "";
@@ -236,14 +236,15 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		return $return;
 	}
 
-	private static function currency($record) {
+	private static function localization($record) {
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if (is_array($record)) {
-			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost']);
-			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate']);
-			if (isset($record['totalCost']) && $record['totalCost']) $record['totalCost_C'] = currency($record['totalCost']);
-			if (isset($record['totalShouldbe']) && $record['totalShouldbe']) $record['totalShouldbe_C'] = currency($record['totalShouldbe']);
-			if (isset($record['InsertRate']) && $record['InsertRate']) $record['InsertRate_C'] = currency($record['InsertRate']);
+			if (isset($record['colourCost']) && $record['colourCost']) $record['colourCost_C'] = currency($record['colourCost'],$user['company']['language'],$user['company']['currency']);
+			if (isset($record['rate']) && $record['rate']) $record['rate_C'] = currency($record['rate'],$user['company']['language'],$user['company']['currency']);
+			if (isset($record['totalCost']) && $record['totalCost']) $record['totalCost_C'] = currency($record['totalCost'],$user['company']['language'],$user['company']['currency']);
+			if (isset($record['totalShouldbe']) && $record['totalShouldbe']) $record['totalShouldbe_C'] = currency($record['totalShouldbe'],$user['company']['language'],$user['company']['currency']);
+			if (isset($record['InsertRate']) && $record['InsertRate']) $record['InsertRate_C'] = currency($record['InsertRate'],$user['company']['language'],$user['company']['currency']);
 			$record['percent_diff'] = "";
 			if ((isset($record['totalShouldbe']) && $record['totalShouldbe']) && (isset($record['totalCost']) && $record['totalCost'])) {
 				$dif = $record['totalShouldbe'] - $record['totalCost'];
@@ -254,6 +255,18 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				}
 				$record['percent_diff'] = number_format($per, 2);
 			}
+
+			if (isset($record['datein']) && $record['datein']) $record['datein'] = datetime($record['datein'],'',$user['company']['timezone']);
+			if (isset($record['dateChanged']) && $record['dateChanged']) $record['dateChanged'] = datetime($record['dateChanged'],'',$user['company']['timezone']);
+			if (isset($record['checked_date']) && $record['checked_date']) $record['checked_date'] = datetime($record['checked_date'],'',$user['company']['timezone']);
+			if (isset($record['material_date']) && $record['material_date']) $record['material_date'] = datetime($record['material_date'],'',$user['company']['timezone']);
+			if (isset($record['last_change']) && $record['last_change']) $record['last_change'] = datetime($record['last_change'],'',$user['company']['timezone']);
+			if (isset($record['deleted_date']) && $record['deleted_date']) $record['deleted_date'] = datetime($record['deleted_date'],'',$user['company']['timezone']);
+			
+			if (isset($record['cm']) && $record['cm']) $record['cm'] = $record['cm'] + 0;
+			if (isset($record['totalspace']) && $record['totalspace']) $record['totalspace'] = $record['totalspace']+0;
+			
+			
 		}
 
 		return $record;
@@ -269,6 +282,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		if (is_array($data)) {
 			$a = array();
 			foreach ($data as $item) {
+
+				$item = bookings::localization($item);
 				$showrecord = true;
 				$item['size'] = "";
 				switch ($item['typeID']) {
@@ -292,7 +307,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$showrecord = false;
 					}
 				}
-				if ($showrecord) $a[] = bookings::currency($item);
+				if ($showrecord) $a[] = $item;
 			}
 			$data = $a;
 		}
@@ -354,7 +369,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
 			if (isset($permissions['lists']['totals']['totalCost']) && $permissions['lists']['totals']['totalCost']) {
-				$record['totalCost'] = currency($record['totalCost']);
+				$record['totalCost'] = currency($record['totalCost'],$user['company']['language'],$user['company']['currency']);
 			} else {
 				if (isset($record['totalCost'])) unset($record['totalCost']);
 			};
@@ -688,10 +703,12 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 	private static function getLogs($ID) {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =ab_bookings_logs.userID ) AS fullName FROM ab_bookings_logs WHERE bID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
+			$record['datein'] = datetime($record['datein'],'',$user['company']['timezone']);
 			$a[] = $record;
 		}
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()

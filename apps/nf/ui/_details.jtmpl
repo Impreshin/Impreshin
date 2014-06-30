@@ -462,7 +462,7 @@
 			<tr>
 				<th class="r span1">Words</th>
 				<td><%= this.words||"" %></td>
-				<th class="r span1">Cm</th>
+				<th class="r span1">{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}</th>
 				<td><%= this.cm||"" %></td>
 
 
@@ -513,7 +513,7 @@
 							<tr>
 								<th class="l">Date/Time</th>
 								<th class="l">User</th>
-								<th class="l">Cm</th>
+								<th class="l">{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}</th>
 								<th class="l">Words</th>
 								<th class="l">Stage</th>
 								<th class="l" style="width:40px;">% Chan</th>

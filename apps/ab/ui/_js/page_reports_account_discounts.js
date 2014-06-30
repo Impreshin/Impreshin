@@ -394,7 +394,7 @@ function drawChart(element, data) {
 						ret = cur(Number(ret));
 						break;
 					case 'chart-cm':
-						ret = ret + ' cm';
+						
 						break;
 					case 'chart-records':
 						ret = ret + '';
@@ -403,7 +403,7 @@ function drawChart(element, data) {
 						ret = ret + ' %';
 						break;
 					case 'chart-o_u_charged':
-						ret = cur(Number(ret));
+						
 						break;
 				}
 

@@ -322,7 +322,7 @@
 					</li>
 				{% endif %}
 				{% if _user['permissions']['administration']['system']['company']['page'] %}
-					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "company" %} active {% endif %}"><a href="/app/ab/admin/company"><i class="icon-globe menu-icon"></i> Company</a></li>
 				{% endif %}
 				
 				<!--

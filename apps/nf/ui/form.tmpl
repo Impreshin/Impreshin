@@ -143,6 +143,7 @@
 	var _uploadPath = '{{ uploadPath }}';
 	var _enable_spellcheck = {{ enable_spellcheck }};
 	var _custom_dictionary = '{{ custom_dictionary }}';
+	var _useImperial = {% if _user['company']['units']=='imperial' %}true{% else %}false{% endif %};
 
 </script>
 <div id="dpi"></div>

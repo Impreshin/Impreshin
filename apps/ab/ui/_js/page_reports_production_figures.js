@@ -332,10 +332,10 @@ function drawChart(element, data) {
 				var ret = str;
 				switch (element) {
 					case 'chart-income':
-						ret = cur(Number(ret));
+						
 						break;
 					case 'chart-cm':
-						ret = ret + ' cm';
+						
 						break;
 					case 'chart-records':
 						ret = ret + '';

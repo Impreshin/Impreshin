@@ -114,7 +114,18 @@ $sql = array(
 	),
 	"24"=>array(
 		"ALTER TABLE `nf_article_newsbook_photos` ADD `ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;"
+	),
+	"25"=>array(
+		"ALTER TABLE  `global_companies` ADD  `timezone` VARCHAR( 100 ) NULL DEFAULT NULL , ADD  `language` VARCHAR( 100 ) NULL DEFAULT NULL , ADD  `currency` VARCHAR( 100 ) NULL DEFAULT NULL"
+	),
+	"26"=>array(
+		"ALTER TABLE  `ab_bookings` CHANGE  `cm`  `cm` DECIMAL( 7,3 ) NULL DEFAULT NULL;",
+		"ALTER TABLE  `ab_bookings` CHANGE  `totalspace`  `totalspace` DECIMAL( 7,3 ) NULL DEFAULT NULL;",
+		"ALTER TABLE  `global_companies` ADD  `units` VARCHAR( 100 ) NULL DEFAULT  'metric';",
+		"ALTER TABLE  `global_publications` CHANGE  `pagewidth`  `pagewidth` DECIMAL( 6, 2 ) NULL DEFAULT  '0';",
+		"ALTER TABLE  `global_publications` CHANGE  `cmav`  `cmav` DECIMAL( 6, 2 ) NULL DEFAULT NULL;"
 	)
+	
 
 );
 

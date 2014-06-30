@@ -32,6 +32,7 @@ class messages {
 
 		if (count($result)) {
 			$return = $result[0];
+			$return['datein'] = datetime($return['datein'],'',$user['company']['timezone']);
 		} else {
 			$return = $this->dbStructure;
 		}
@@ -61,6 +62,7 @@ class messages {
 	public static function getAll($where = "", $orderby = "datein DESC", $limit = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -86,8 +88,14 @@ class messages {
 				$limit
 				;
 			");
+		$return = array();
+		foreach ($result as $item){
+			$item['datein'] = datetime($item['datein'],'',$user['company']['timezone']);
+			$return[] = $item;
+		}
+		
 
-		$return = $result;
+		//$return = $result;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 	}

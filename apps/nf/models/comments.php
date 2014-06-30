@@ -70,11 +70,12 @@ class comments {
 
 	public static function display($data) {
 		$return = array();
-
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$rows = array();
 
 		foreach ($data as $item) {
-
+			if (isset($item['datein']) && $item['datein']) $item['datein'] = datetime($item['datein'],'',$user['company']['timezone']);
 
 
 			$item['children'] = array();

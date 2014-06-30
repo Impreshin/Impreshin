@@ -15,7 +15,7 @@
 		</div>
 		<div class="row" style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;">
 
-			<div class="span2"><span class="s dg">Cm:</span> <strong><%= this.stats.cm %></strong></div>
+			<div class="span2"><span class="s dg">{% if _user['company']['units']=='imperial' %}In{% else %}Cm{% endif %}:</span> <strong><%= this.stats.cm %></strong></div>
 			<div class="span2"><span class="s dg">Material:</span> <strong><%= this.stats.records.material.r %></strong> of <strong><%= this.stats.records.total %></strong></div>
 			<div class="span2"><span class="s dg">Approved:</span> <strong><%= this.stats.records.material_approved.r %></strong> of <strong><%= this.stats.records.material.r %></strong></div>
 

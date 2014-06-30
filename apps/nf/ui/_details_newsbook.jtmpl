@@ -126,7 +126,7 @@
 				<table class="table table-condensed" style="margin:0;">
 					<tr>
 						<th class="r span1">Size</th>
-						<td class="span3"><%= this.cm||"" %> <span class="g"> cm | </span><%= this.words||"" %><span class="g"> words</span></td>
+						<td class="span3"><%= this.cm||"" %> <span class="g"> {% if _user['company']['units']=='imperial' %}inches{% else %}cm{% endif %} | </span><%= this.words||"" %><span class="g"> words</span></td>
 						<th class="r span1">Photos</th>
 						<td class="span1"><%= this.media.length %></td>
 						<% if (this.page) { %>

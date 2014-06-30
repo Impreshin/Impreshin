@@ -53,8 +53,10 @@ class controller_reports_marketer_targets extends \apps\ab\controllers\_ {
 		$publicationselected = (count($publicationselected)>1)?count($publicationselected)." Publications": $publicationselected[0];
 
 
+		$formatter = new \NumberFormatter($user['company']['language'],  \NumberFormatter::CURRENCY);
+		$currency = $formatter->getSymbol(\NumberFormatter::INTL_CURRENCY_SYMBOL);
 
-//test_array($settings);
+
 
 		//test_array($ab_settings);
 		$tmpl = new \template("template.tmpl","apps/ab/ui/");
@@ -72,6 +74,7 @@ class controller_reports_marketer_targets extends \apps\ab\controllers\_ {
 
 		$tmpl->publications = $publications;
 		$tmpl->publicationselected = $publicationselected;
+		$tmpl->currency = $currency;
 
 
 		$selected = (isset($settings['ID']["cID_$cID"])) ? $settings['ID']["cID_$cID"] : "";

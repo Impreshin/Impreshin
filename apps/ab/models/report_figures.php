@@ -13,6 +13,7 @@ class report_figures {
 	public static function figures($where, $years, $margin = "25") {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = array();
 		$months = array(
 			array(
@@ -226,8 +227,8 @@ class report_figures {
 					unset($e['dID']);
 					foreach ($years as $year) {
 						if ($year == date("Y", strtotime($e['date']))) {
-							$e['yield'] = (isset($e['totals']['type']['t_1']) && $e['totals']['type']['t_1'] && $e['cm']) ? currency($e['totals']['type']['t_1'] / $e['cm']) : "";
-							$e['totals'] = currency($e['totals']['total']);
+							$e['yield'] = (isset($e['totals']['type']['t_1']) && $e['totals']['type']['t_1'] && $e['cm']) ? currency($e['totals']['type']['t_1'] / $e['cm'],$user['company']['language'],$user['company']['currency']) : "";
+							$e['totals'] = currency($e['totals']['total'],$user['company']['language'],$user['company']['currency']);
 							$n['data'][$year] = $e;
 						} else {
 							$n['data'][$year] = array();
@@ -326,8 +327,8 @@ class report_figures {
 				}
 
 
-				$rec['totals']['total'] = ($rec['totals']['total']) ? currency($rec['totals']['total']) : "";
-				$rec['yield'] = ($rec['yield']) ? currency($rec['yield']) : "";
+				$rec['totals']['total'] = ($rec['totals']['total']) ? currency($rec['totals']['total'],$user['company']['language'],$user['company']['currency']) : "";
+				$rec['yield'] = ($rec['yield']) ? currency($rec['yield'],$user['company']['language'],$user['company']['currency']) : "";
 
 				$ndata[] = $rec;
 

@@ -49,6 +49,7 @@ class marketers_targets {
 	public static function _current($mID, $pID) {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$result = array();
 
 
@@ -152,8 +153,8 @@ class marketers_targets {
 				foreach ($targets as $target) {
 					$percent = number_format(($target['done'] / $target['target']) * 100, 2);
 					$target['percent'] = $percent;
-					$target['target'] = currency($target['target']);
-					$target['done'] = currency($target['done']);
+					$target['target'] = currency($target['target'],$user['company']['language'],$user['company']['currency']);
+					$target['done'] = currency($target['done'],$user['company']['language'],$user['company']['currency']);
 					if (!$next && $percent <= 100) {
 						$next = $target;
 					}
@@ -273,9 +274,9 @@ class marketers_targets {
 
 		}
 		if (!$a->dry()) {
-			$label = "Record Edited (" . currency($a->target) . ")";
+			$label = "Record Edited (" . currency($a->target,$user['company']['language'],$user['company']['currency']) . ")";
 		} else {
-			$label = "Record Added (" . currency($values['target']) . ')';
+			$label = "Record Added (" . currency($values['target'],$user['company']['language'],$user['company']['currency']) . ')';
 		}
 		$a->save();
 

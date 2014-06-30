@@ -10,7 +10,7 @@
 				</li>
 				<li class="divider-vertical"></li>
 				<li>
-					<h2 style=" margin-bottom: -5px;" id="page-heading"><small>Cm Style Sheet</small></h2>
+					<h2 style=" margin-bottom: -5px;" id="page-heading"><small>Length Style Sheet</small></h2>
 				</li>
 			</ul>
 			<div class="pull-right">
@@ -109,6 +109,8 @@
 	</div>
 
 </section>
-
+<script type="text/javascript">
+	var _useImperial = {% if _user['company']['units']=='imperial' %}true{% else %}false{% endif %};
+</script>
 
 <div id="dpi"></div>
