@@ -24,14 +24,14 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 	
 
-		header("Content-Type: image/png");
-		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
-		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
-		header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-			header('HTTP/1.1 304 Not Modified');
-			die();
-		}
+	header("Content-Type: image/png");
+	header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+	header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+	header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
+	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+		header('HTTP/1.1 304 Not Modified');
+		die();
+	}
 
 		$folder = "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
 		$filename = $data['material_file_store'];
@@ -44,15 +44,15 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
 		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
 
+		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
+		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
 
+		$w = round($w);
+		$h = round($h);
+		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
 		if (file_exists($upload_folder . $folder . $filename)) {
 
-			$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
-			$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
-
-			$w = round($w);
-			$h = round($h);
-
+			
 			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
 
@@ -83,8 +83,10 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 				if (file_exists($upload_folder . $folder . $thumb)) {
 					//test_array(array($folder . $thumb));
+					
+					
 					$image = new \Image($folder . $thumb);
-					$image->resize($w,$h,false);
+					$image->resize($w,$h,true);
 					$image->render();
 					unset($image);
 				}
