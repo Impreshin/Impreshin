@@ -206,7 +206,7 @@ class layout extends data {
 				),
 				"colour" => $colour,
 				"percent"=> $page['percent'],
-				"cm"     => $page['cm'],
+				"cm"     => $page['cm']+0,
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
 			);
 		}
@@ -363,7 +363,7 @@ class layout extends data {
 				),
 				"colour" => $colour,
 				"percent"=> $page['percent'],
-				"cm"     => $page['cm']
+				"cm"     => $page['cm']+0
 			);
 
 
@@ -491,7 +491,7 @@ class layout extends data {
 				$a['material_status'] = $booking['material_status'];
 
 				$bookings[] = $a;
-			if ($a['cm']) $cm = $cm + $a['totalspace'];
+			if ($a['cm']) $cm = $cm + $a['totalspace'] + 0;
 			$records++;
 		}
 

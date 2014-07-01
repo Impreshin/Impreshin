@@ -58,7 +58,7 @@
 		<% if (this.percent && this.cm) { %>
 		<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 			<div class="bar" style="width: <%= this.percent %>%;"></div>
-			<div class="text"><%= this.percent %>% | total of <%= this.cm %></div>
+			<div class="text"><%= this.percent %>% | total of <%= this.cm %>{% if _user['company']['units'] == "imperial" %}in{% else %}cm{% endif %}</div>
 
 		</footer>
 
@@ -118,7 +118,7 @@
 				<% if (this.pages[i].percent && this.pages[i].cm) { %>
 				<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 					<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
-					<div class="text"><%= this.pages[i].percent %>% | total of <%= this.pages[i].cm %></div>
+					<div class="text"><%= this.pages[i].percent %>% | total of <%= this.pages[i].cm %>{% if _user['company']['units'] == "imperial" %}in{% else %}cm{% endif %}</div>
 
 				</footer>
 				<% } %>
