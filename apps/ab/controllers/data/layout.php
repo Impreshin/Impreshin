@@ -149,7 +149,7 @@ class layout extends data {
 				$a['colourID'] = $booking['colourID'];
 				$a['col'] = $booking['col'] + 0;
 				$a['cm'] = $booking['cm'] + 0;
-				$a['totalspace'] = $booking['totalspace'];
+				$a['totalspace'] = $booking['totalspace'] + 0;
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
@@ -378,7 +378,7 @@ class layout extends data {
 				$a['colourID'] = $booking['colourID'];
 				$a['col'] = $booking['col'] + 0;
 				$a['cm'] = $booking['cm'] + 0;
-				$a['totalspace'] = $booking['totalspace'];
+				$a['totalspace'] = $booking['totalspace'] + 0;
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
@@ -483,7 +483,7 @@ class layout extends data {
 				$a['colourLabel'] = $booking['colourLabel'];
 				$a['col'] = $booking['col'] + 0;
 				$a['cm'] = $booking['cm'] + 0;
-				$a['totalspace'] = $booking['totalspace'];
+				$a['totalspace'] = $booking['totalspace'] + 0;
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
