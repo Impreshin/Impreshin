@@ -46,6 +46,7 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
+		$crop = (isset($_GET['c']) && $_GET['c']=="true") ? true:false;
 
 		$w = round($w);
 		$h = round($h);
@@ -85,8 +86,9 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 					//test_array(array($folder . $thumb));
 					
 					
+					
 					$image = new \Image($folder . $thumb);
-					$image->resize($w,$h,true);
+					$image->resize($w,$h,$crop);
 					$image->render();
 					unset($image);
 				}

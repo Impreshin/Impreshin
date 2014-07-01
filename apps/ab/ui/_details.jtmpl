@@ -409,7 +409,7 @@
 										</div>
 										<div id="material-file-area-filename">
 											<% if (this.material_file_filename) { %>
-											<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=25&h=25&s=<%= this.material_file_filestore %>" alt=""><%= this.material_file_filename %> <% } else { %>
+											<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=25&h=25&c=true&s=<%= this.material_file_filestore %>" alt=""><%= this.material_file_filename %> <% } else { %>
 											<em>No File - click here to upload</em> <% } %>
 										</div>
 									</div>
@@ -847,7 +847,7 @@ function set_upload() {
 			var file = files[0];
 
 			var $material_file_area_filename = $('#material-file-area-filename');
-			var $img = '<img src="/app/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&s=' + file.target_name + '&instantrender=true" alt="">';
+			var $img = '<img src="/app/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
 
             $material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 
