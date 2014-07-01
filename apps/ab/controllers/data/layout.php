@@ -147,8 +147,8 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colourID'] = $booking['colourID'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
+				$a['col'] = $booking['col'] + 0;
+				$a['cm'] = $booking['cm'] + 0;
 				$a['totalspace'] = $booking['totalspace'];
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
@@ -376,8 +376,8 @@ class layout extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colourID'] = $booking['colourID'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
+				$a['col'] = $booking['col'] + 0;
+				$a['cm'] = $booking['cm'] + 0;
 				$a['totalspace'] = $booking['totalspace'];
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
@@ -481,8 +481,8 @@ class layout extends data {
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
 				$a['colourLabel'] = $booking['colourLabel'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
+				$a['col'] = $booking['col'] + 0;
+				$a['cm'] = $booking['cm'] + 0;
 				$a['totalspace'] = $booking['totalspace'];
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
