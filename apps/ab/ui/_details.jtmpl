@@ -1,3 +1,5 @@
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+{% set _pageHeight = (_user['publication']['cmav'] / _pubPageWidth) * 180 %}
 <script type="text/x-jqote-template" id="template-details">
 <![CDATA[
 
@@ -78,9 +80,9 @@
 					<th>Size</th>
 					<td
 					<% if (!this.rate_C) { %> <% } %>>
-					<div style="margin-right: -50px;">: <%= this.cm || "" %>
-						<span class="g"> x </span> <%= this.col || "" %>
-						<span class="g"> = </span> <%= this.totalspace || "" %> <span class="g"> col/cm's</span>
+					<div style="margin-right: -50px;">: <%= this.col || "" %>
+						<span class="g"> x </span> <%= this.cm || "" %>
+						<span class="g"> = </span> <%= this.totalspace || "" %> <span class="g"> col/{% if _user['company']['units']=='imperial' %}in{% else %}cm{% endif %}'s</span>
 					</div>
 					</td>                            <% if (this.rate_C) { %>
 					<th>Tariff</th>
@@ -274,14 +276,14 @@
 </div>
 <% if (this.typeID =='1') { %>
 
-<a <% if (this.material_file_filename) { %><% if (this.a.material_pane=='1') { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material=='1') { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} %>px;" > <% if (this.page){ %>
+<a <% if (this.material_file_filename) { %><% if (this.a.material_pane=='1') { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material=='1') { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ _pageHeight }} %>px;" > <% if (this.page){ %>
 <div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 
 <% } %> <% if (this.material_production) { %>
 <div class="g s " style="position: absolute; top: -18px; left: 0;"><% if (this.material_source=='1') { %><%= this.material_production %><% } else { %>Supplied<% } %></div>
 <% } %>
 
-<div style="background-color: #e1e1e1; height: <%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
+<div style="background-color: #e1e1e1; height: <%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
 	<% if (this.material_file_filename && this.a.material_pane=='1') { %>
 
     <img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
@@ -407,7 +409,7 @@
 										</div>
 										<div id="material-file-area-filename">
 											<% if (this.material_file_filename) { %>
-											<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=25&h=25&s=<%= this.material_file_filestore %>" alt=""><%= this.material_file_filename %> <% } else { %>
+											<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=25&h=25&c=true&s=<%= this.material_file_filestore %>" alt=""><%= this.material_file_filename %> <% } else { %>
 											<em>No File - click here to upload</em> <% } %>
 										</div>
 									</div>
@@ -845,7 +847,7 @@ function set_upload() {
 			var file = files[0];
 
 			var $material_file_area_filename = $('#material-file-area-filename');
-			var $img = '<img src="/app/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&s=' + file.target_name + '&instantrender=true" alt="">';
+			var $img = '<img src="/app/ab/thumb/material/' + data['ID'] + '/' + file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
 
             $material_file_area_filename.html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 

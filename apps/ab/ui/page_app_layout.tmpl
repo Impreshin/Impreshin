@@ -125,6 +125,9 @@
 	</div>
 
 </section>
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+{% set _pageHeight = (_user['publication']['cmav'] / _pubPageWidth) * 143 %}
+
 
 <script type="text/javascript">
 	var pageSize = "0";
@@ -132,8 +135,8 @@
 	var colSize = "0";
 	var colcmAv = "0";
 	{% if _user['publication']['pagewidth'] and _user['publication']['cmav'] %}
-		pageSize ="{{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}";
-		cmSize ="{{ ((((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10)) / _user['publication']['cmav'] }}";
+		pageSize ="{{ _pageHeight }}";
+		cmSize ="{{ _pageHeight / _user['publication']['cmav'] }}";
 		colSize ="{{ 143 / _user['publication']['columnsav'] }}";
 		colcmAv = "{{  _user['publication']['cmav'] * _user['publication']['columnsav'] }}";
 	{% endif %}

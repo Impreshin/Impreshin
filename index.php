@@ -478,20 +478,82 @@ $app->route('GET /redirect', function () {
 	}
 );
 $app->route('GET /test', function () {
+		$f3 = Base::instance();
+		$a=array();
+		$return=array();
+
+		$oldTZ = 'Africa/Johannesburg'; 
+		$newTZ = 'America/Los_Angeles';
+
+		date_default_timezone_set($oldTZ);
 		
-		$a = array(
-			"this is,.jpg",
-			"My new!file name.jpg",
-			"file..test.jpg"
+		$a["real"]["php"]=date("Y-m-d H:i:s");
+		
+		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
+		$a["real"]["mysql"] = $md[0]['datetime'];
+
+		
+		
+
+		date_default_timezone_set($newTZ);
+
+		$a["after"]['php']=date("Y-m-d H:i:s");
+
+		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
+		$a["after"]["mysql"] = $md[0]['datetime'];
+
+
+		
+
+
+		$a['voodoo']['mysql'] =datetime($a["real"]["mysql"],'','America/Los_Angeles');
+		//echo 
+		//echo $time->getOffset();
+
+
+		$return['dates'] = $a;$c = array();
+		
+		$amount = '12345.67';
+
+		$formatter = new \NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
+		
+		$c['UK'] =  array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'EUR')
 		);
-		$n = array();
-		foreach ($a as $i){
-			$n[$i] = sanitize_filename($i);
-		}
-		test_array($n); 
+
+		$formatter = new \NumberFormatter('de_DE',  NumberFormatter::CURRENCY);
+		$c['DE'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'EUR')
+		);
+		
+		$formatter = new \NumberFormatter('en_ZA',  NumberFormatter::CURRENCY);
+		$c['ZA'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'ZAR')
+		);
+		
+		$formatter = new \NumberFormatter('en_US',  NumberFormatter::CURRENCY);
+		$c['US'] =   array(
+			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
+			$formatter->formatCurrency($amount, 'USD')
+		);
+		
+		
+		
+
+		$return['currency'] = $c;
+		
+		
+		
+		
+		test_array($return); 
 		
 	}
 );
+
+
 
 
 $app->run();

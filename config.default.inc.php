@@ -1,8 +1,10 @@
 <?php
 
 $cfg['TZ'] = "Africa/Johannesburg";
-$cfg['currency']['sign'] = "R ";
-$cfg['currency']['separator'] = " ";
+$cfg['localization']['language'] = "en_ZA";
+$cfg['localization']['currency'] = "ZAR";
+
+
 
 
 $cfg['news']['path'] = "http://admin.impreshin.com/news/json";

@@ -107,7 +107,7 @@ class articles {
 		
 		$result = $f3->get("DB")->exec($sql);
 		if (count($result)) {
-			$return = $result[0];
+			$return = self::localization($result[0]);
 			$files = files::getAll("aID='" . $return['ID'] . "'", "ID DESC");
 			$f = array();
 			foreach ($files as $file) {
@@ -118,7 +118,6 @@ class articles {
 			$comments = comments::getAll("aID='" . $return['ID'] . "'", "ID DESC");
 			$return['commentCount'] = count($comments);
 			$return['comments'] = comments::display($comments);
-			$return['cm'] = $return['cm'] + 0;
 			
 			//$return['logs'] = articles::getLogs($return['ID']);
 		} else {
@@ -132,19 +131,30 @@ class articles {
 	public static function getNewsbooks($aID,$orderby){
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		if ($orderby) {
 			$orderby = "ORDER BY " . $orderby . "";
 		} else {
 			$orderby = " ";
 		}
 
-		$return = $f3->get("DB")->exec("
+		$result = $f3->get("DB")->exec("
 			SELECT nf_article_newsbook.*, global_publications.ID AS pID, global_publications.publication, global_dates.ID AS dID, global_dates.publish_date, global_pages.ID AS pageID, FLOOR(global_pages.page) AS page, global_users.fullName
 			FROM (((nf_article_newsbook LEFT JOIN global_pages ON nf_article_newsbook.pageID = global_pages.ID) INNER JOIN global_publications ON nf_article_newsbook.pID = global_publications.ID) INNER JOIN global_dates ON nf_article_newsbook.dID = global_dates.ID) INNER JOIN global_users ON nf_article_newsbook.uID = global_users.ID
 			WHERE nf_article_newsbook.aID = '$aID'
 			$orderby
 		"
 		);
+
+
+
+		$return = array();
+		foreach ($result as $item){
+			if (isset($item['datein']) && $item['datein']) $item['datein'] = datetime($item['datein'],'',$user['company']['timezone']);
+			$return[] = $item;
+		}
+		
+		
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
@@ -361,6 +371,7 @@ class articles {
 
 	public static function getEdits($aID, $orderby) {
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$timer = new timer();
 
 		if ($orderby) {
@@ -381,12 +392,38 @@ class articles {
 		//echo $sql;
 		//exit();
 		$result = $f3->get("DB")->exec($sql);
-		$return = $result;
+
+
+		$return = array();
+		foreach ($result as $item){
+			if (isset($item['datein']) && $item['datein']) $item['datein'] = datetime($item['datein'],'',$user['company']['timezone']);
+			$return[] = $item;
+		}
+		
+		
+		
+		
+		//$return = $result;
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
 		return $return;
 	}
+	private static function localization($record) {
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		if (is_array($record)) {
+			
+			if (isset($record['datein']) && $record['datein']) $record['datein'] = datetime($record['datein'],'',$user['company']['timezone']);
+			if (isset($record['dateChanged']) && $record['dateChanged']) $record['dateChanged'] = datetime($record['dateChanged'],'',$user['company']['timezone']);
+			if (isset($record['archived_date']) && $record['archived_date']) $record['archived_date'] = datetime($record['archived_date'],'',$user['company']['timezone']);
+			if (isset($record['deleted_date']) && $record['deleted_date']) $record['deleted_date'] = datetime($record['deleted_date'],'',$user['company']['timezone']);
 
+			$record['cm'] = $record['cm'] + 0;
+
+		}
+
+		return $record;
+	}
 
 	public static function display($data, $options = array("highlight" => "", "filter" => "*")) {
 		$f3 = \Base::instance();
@@ -425,8 +462,7 @@ class articles {
 		$a = array();
 		$groups = array();
 		foreach ($data as $record) {
-			$record['cm'] = $record['cm'] + 0;
-			
+			$record = self::localization($record);
 			if (isset($user['permissions']['fields'])) {
 				foreach ($user['permissions']['fields'] as $key => $value) {
 					if ($value == 0) {
@@ -863,10 +899,12 @@ class articles {
 	public static function getLogs($ID) {
 		$timer = new timer();
 		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =nf_articles_logs.userID ) AS fullName FROM nf_articles_logs WHERE aID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
+			$record['datein'] = datetime($record['datein'],'',$user['company']['timezone']);
 			$a[] = $record;
 		}
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()

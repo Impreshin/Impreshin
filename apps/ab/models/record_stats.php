@@ -90,7 +90,7 @@ class record_stats {
 		);
 
 		if (in_array("cm", $columns)) $return['cm'] = $totals['cm'];
-		if (in_array("totalCost", $columns) && $user['permissions']['lists']['totals']['totalCost']) $return['totalCost'] = currency($totals['totalCost']);
+		if (in_array("totalCost", $columns) && $user['permissions']['lists']['totals']['totalCost']) $return['totalCost'] = currency($totals['totalCost'],$user['company']['language'],$user['company']['currency']);
 
 
 		if (in_array("checked", $columns)) $return['records']['checked'] = array(

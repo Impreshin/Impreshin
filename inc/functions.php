@@ -122,12 +122,54 @@ function curl_get_contents($url) {
 
 	return $file_contents;
 }
-function currency($number){
+function currency($number,$language='en_ZA',$currency='ZAR'){
+	$f3 = \base::instance();
+	$cfg = $f3->get("CFG");
+	if ($language==""){
+		$language = $cfg['localization']['language'];
+	}
+	if ($currency==""){
+		$currency = $cfg['localization']['currency'];
+	}
+	
+	
+	
 
-	$number = $GLOBALS['cfg']['currency']['sign'] . number_format($number, 2, '.', $GLOBALS['cfg']['currency']['separator']);
-	return str_replace(" ", "&nbsp;", $number);
+	$formatter = new \NumberFormatter($language,  NumberFormatter::CURRENCY);
+	$number =  $formatter->formatCurrency($number, $currency);
+
+	
+	return $number;
 
 }
+
+function datetime($value,$format='Y-m-d H:i:s',$timezone_to='Africa/Johannesburg',$timezone_from=''){
+	$f3 = Base::instance();
+	$cfg = $f3->get("CFG");
+	if ($format=='')$format = 'Y-m-d H:i:s';
+	if ($timezone_from==''){
+		$timezone_from = $cfg['TZ'];;
+	}
+
+	if ($timezone_to==""){
+		$timezone_to = $timezone_from;
+	}
+
+	$oldTZ =$timezone_from;
+	$newTZ = $timezone_to;
+
+	$time = new DateTime($value , new DateTimeZone($oldTZ));
+	if ($oldTZ != $newTZ){
+		$time->setTimezone(new DateTimeZone($newTZ));
+	}
+	$value = $time->format($format);
+
+
+
+	return $value;
+}
+
+
 
 function test_array($array,$splitter=''){
 

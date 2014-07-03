@@ -28,7 +28,7 @@
 			<% for(var i in this.comp.years) { %> <% if (this.comp.years[i].s == '1') { %>
 			<th style="width: 30px;border-left: 1px solid #999;">#</th>
 			<th style="width: 30px;">Article</th>
-			<th style="width: 30px;">Cm</th>
+			<th style="width: 30px;">{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}</th>
 			<th style="width: 30px;">%</th>
 			<th style="width: 30px;">Photo</th>
 			
@@ -173,7 +173,7 @@
 	
 	<h3>Articles</h3>
 	<div id="chart-articles" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
-	<h3>Cm</h3>
+	<h3>{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}</h3>
 	<div id="chart-cm" style="height:250px; width:100%; margin-bottom: 20px;" class="line-chart"></div>
 	
 	<h3>Photos</h3>

@@ -1,6 +1,11 @@
 
 {% include '_details.jtmpl' %}
 {% include "_details_newsbook.jtmpl" %}
+
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+{% set _pageWidth = (_user['publication']['cmav'] / _pubPageWidth) * 143 %}
+
+
 <script type="text/x-jqote-template" id="template-records-list">
 	<![CDATA[
 
@@ -9,13 +14,13 @@
 			<% if (this.type_icon){ %>
 			<i class="<%= this.type_icon %> g" style="margin-right:10px;"></i>
 			<% } else { %>
-			<%= this.cm %><span class="s g"> cm</span>
+			<%= this.cm %><span class="s g"> {% if _user['company']['units']=='imperial' %}in{% else %}cm{% endif %}</span>
 
 			<% } %>
 			
 			</td>
 		<td class="span1 c"><%= this.photosCount %></td>
-		<td>
+		<td colspan="2">
 			 <%= this.title %>
 		</td>
 	</tr>
@@ -23,7 +28,7 @@
 </script>
 <script type="text/x-jqote-template" id="template-spreads-page">
 	<![CDATA[
-	<article style="<% if (this.colour.icons) { %>background: url('/ui/_images/ab/<%= this.colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.cm %>" data-limit="<%= this.colour.limit %>">
+	<article style="<% if (this.colour.icons) { %>background: url('/ui/_images/ab/<%= this.colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ _pageWidth }}px" data-cm="<%= this.cm %>" data-limit="<%= this.colour.limit %>">
 
 		<% if(this.section.c) { %>
 		<div class="page_section" style="background-color:<%= this.section.c %>;" title="<%= this.section.n %>" data-id="<%= this.section.i %>"></div>
@@ -59,7 +64,7 @@
 		<% if (this.ab.cm && this.ab.cm > 0) { %>
 		<footer class="progress <% if (this.ab.percent > 60){ %><% if (this.ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 			<div class="bar" style="width: <%= this.ab.percent %>%;"></div>
-			<div class="text">Ad Loading: <%= this.ab.cm %>cm | <%= this.ab.percent %>%</div>
+			<div class="text">Ad Loading: <%= this.ab.cm %>{% if _user['company']['units']=='imperial' %}in{% else %}cm{% endif %} | <%= this.ab.percent %>%</div>
 
 		</footer>
 		<% } %>
@@ -89,7 +94,7 @@
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
 		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> <% if(this.pages[i].locked=='1') { %>locked<% } %>" data-page="<%= this.pages[i].page %>">
-			<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{ (((143/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }}px" data-cm="<%= this.pages[i].cm %>" data-limit="<%= this.pages[i].colour.limit %>">
+			<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 143px; height: {{_pageWidth }}px" data-cm="<%= this.pages[i].cm %>" data-limit="<%= this.pages[i].colour.limit %>">
 
 				<% if(this.pages[i].section.c) { %>
 				<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
@@ -129,7 +134,7 @@
 				<% if (this.pages[i].ab.cm && this.pages[i].ab.cm > 0) { %>
 				<footer class="progress <% if (this.pages[i].ab.percent > 60){ %><% if (this.pages[i].ab.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
 					<div class="bar" style="width: <%= this.pages[i].ab.percent %>%;"></div>
-					<div class="text">Ad Loading: <%= this.pages[i].ab.cm %>cm | <%= this.pages[i].ab.percent %>%</div>
+					<div class="text">Ad Loading: <%= this.pages[i].ab.cm %>{% if _user['company']['units']=='imperial' %}in{% else %}cm{% endif %} | <%= this.pages[i].ab.percent %>%</div>
 
 				</footer>
 				<% } %>

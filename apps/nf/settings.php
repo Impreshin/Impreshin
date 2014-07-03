@@ -15,6 +15,7 @@ class settings {
 		$f3 = \Base::instance();
 		$return = array();
 
+		$user = $f3->get("user");
 		/*
 		 * name => array(
 		 *  h =>"heading",
@@ -47,7 +48,7 @@ class settings {
 				"h"=>"Author"
 			),
 			"cm"=>array(
-				"h"=>"Cm",
+				"h"=>$user['company']['units']=="imperial"?"Inches":"Cm",
 				"w"=>40
 			),
 			"words"=>array(
@@ -147,6 +148,9 @@ class settings {
 			),
 
 		);
+
+
+		
 		$c = array();
 		foreach ($columns as $column=>$values){
 			$values['c'] = $column;

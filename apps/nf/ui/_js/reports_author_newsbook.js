@@ -483,17 +483,7 @@ function drawChart(element, data) {
 			tooltipContentEditor:function (str, seriesIndex, pointIndex, plot) {
 
 				var ret = str;
-				switch (element) {
-					case 'chart-income':
-						ret = cur(Number(ret));
-						break;
-					case 'chart-cm':
-						ret = ret + ' cm';
-						break;
-					case 'chart-records':
-						ret = ret + '';
-						break;
-				}
+				
 
 				//console.log(pub_column);
 				return "<span class='s dg'>" + label_d[pointIndex] + "</span><br> <strong>" + ret + "</strong>";

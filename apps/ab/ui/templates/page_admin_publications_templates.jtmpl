@@ -78,15 +78,15 @@
 					<label for="columnsav" class="control-label">Columns</label>
 
 					<div class="controls">
-						<input type="text" id="columnsav" name="columnsav" class="span1" value="<% if (this.details.columnsav) { %><%= this.details.columnsav %><% } %>">
+						<input type="text" id="columnsav" name="columnsav" class="span2" value="<% if (this.details.columnsav) { %><%= this.details.columnsav %><% } %>">
 					</div>
 				</div>
 
 				<div class="control-group">
-					<label for="cmav" class="control-label">Cm</label>
+					<label for="cmav" class="control-label">{% if _user['company']['units']=='imperial' %}Inches{% else %}Cm{% endif %}</label>
 
 					<div class="controls">
-						<input type="text" id="cmav" name="cmav" class="span1" value="<% if (this.details.cmav) { %><%= this.details.cmav %><% } %>">
+						<input type="text" id="cmav" name="cmav" class="span2 {% if _user['company']['units']=='imperial' %}imperialblock{% else %}{% endif %}" value="<% if (this.details.cmav) { %><%= this.details.cmav %><% } %>">
 					</div>
 				</div>
 
@@ -95,8 +95,8 @@
 
 					<div class="controls">
 						<div class="input-append">
-						<input type="text" id="pagewidth" name="pagewidth" class="span1" value="<% if (this.details.pagewidth) { %><%= this.details.pagewidth %><% } %>">
-							<span class="add-on focustrigger">mm</span>
+						<input type="text" id="pagewidth" name="pagewidth" class="span2 {% if _user['company']['units']=='imperial' %}imperialblock{% else %}{% endif %}" value="<% if (this.details.pagewidth) { %><%= this.details.pagewidth %><% } %>">
+							<span class="add-on focustrigger">{% if _user['company']['units']=='imperial' %}In{% else %}Cm{% endif %}</span>
 						</div>
 					</div>
 				</div>

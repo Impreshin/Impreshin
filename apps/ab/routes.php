@@ -325,6 +325,14 @@ $routes[] =	array(
 	"l"=>true,
 );
 
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/ab/admin/company',
+	"controller"=>'apps\ab\controllers\controller_admin_company->page',
+	"a"=>true,
+	"l"=>true,
+);
+
 
 
 

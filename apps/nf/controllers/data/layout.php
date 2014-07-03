@@ -235,7 +235,7 @@ class layout extends data {
 				$ab[$record['pageID']]['records'][] = array(
 					"ID"=>$record['ID'],
 					"client"=>$record['client'],
-					"totalspace"=>$record['totalspace'],
+					"totalspace"=>$record['totalspace']+0,
 					
 				);
 			}
@@ -275,7 +275,7 @@ class layout extends data {
 				$a = array();
 				$a['ID'] = $record['ID'];
 				$a['title'] = $record['title'];
-				$a['cm'] = $record['cm'];
+				$a['cm'] = $record['cm']+0;
 				$a['pageID'] = $record['pageID'];
 				$a['page'] = $record['page'];
 				$a['type'] = $record['type'];
@@ -348,7 +348,7 @@ class layout extends data {
 			}
 			
 			$ab_array = array(
-				"cm"=>$cm,
+				"cm"=>$cm+0,
 				"percent"=>number_format($percent, 2),
 				"records"=>isset($ab[$page['ID']]['records'])?$ab[$page['ID']]['records']:array()
 			);
@@ -645,7 +645,7 @@ class layout extends data {
 				$a = array();
 				$a['ID'] = $record['ID'];
 				$a['title'] = $record['title'];
-				$a['cm'] = $record['cm'];
+				$a['cm'] = $record['cm']+0;
 				$a['pageID'] = $record['pageID'];
 				$a['page'] = $record['page'];
 				$a['type'] = $record['type'];

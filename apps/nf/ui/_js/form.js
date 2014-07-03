@@ -262,15 +262,23 @@ $(document).ready(function () {
 		var dpi = document.getElementById("dpi").offsetHeight;
 		var artcm = $(this).height();
 
-		if (artcm > 0) {
-			artcm = (artcm/dpi) *2.54;
+		if (artcm > 0) {	
+			
+			artcm = (artcm/dpi);
+			if (_useImperial){
+
+			} else {
+				artcm = (artcm) *2.54;
+			}
+		
 			artcm = Math.ceil(artcm);
 		}
 
 		var heading = "";
 		if (artcm){
 			$("#cm").val(artcm);
-			heading = heading + '<strong>'+ artcm + "</strong> <span class=' g'>cm</span>";
+			var heading_unit = _useImperial?"Inches":"Cm";
+			heading = heading + '<strong>'+ artcm + "</strong> <span class=' g'>"+heading_unit+"</span>";
 		} else {
 			$("#cm").val("0");
 		}

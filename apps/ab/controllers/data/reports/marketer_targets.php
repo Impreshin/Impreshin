@@ -86,7 +86,7 @@ class marketer_targets extends data {
 		foreach ($targets as $target){
 			$target['date_from_D'] = date("d F Y",strtotime($target['date_from']));
 			$target['date_to_D'] = date("d F Y",strtotime($target['date_to']));
-			$target['target_C'] = currency($target['target']);
+			$target['target_C'] = currency($target['target'],$user['company']['language'],$user['company']['currency']);
 
 			$pubs = $target['pubs'];
 			$pubs = explode(",",$pubs);
@@ -98,11 +98,11 @@ class marketer_targets extends data {
 				//test_array(array("targets"=>$target,"records"=>$records));
 				if (count($records)) {
 					$records = $records[0];
-					$records['totalcost_C'] = currency($records['totalcost']);
+					$records['totalcost_C'] = currency($records['totalcost'],$user['company']['language'],$user['company']['currency']);
 					$target['total'] = $records;
 					$target['percent'] = number_format(($records['totalcost'] / $target['target']) * 100, 2);
 				} else {
-					$records['totalcost_C'] = currency(0);
+					$records['totalcost_C'] = currency(0,$user['company']['language'],$user['company']['currency']);
 					$target['total'] = array(
 						"totalcost" => 0,
 						"records"   => 0

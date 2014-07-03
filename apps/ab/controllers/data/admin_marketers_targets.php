@@ -84,7 +84,7 @@ class admin_marketers_targets extends data {
 		//$records = \models\dates::getAll("pID='$pID'", $ordering_c . " " . $ordering_d . ",publish_date DESC", $pagination['limit']);
 		$a = array();
 		foreach ($records as $target){
-			$target['target'] = currency($target['target']);
+			$target['target'] = currency($target['target'],$user['company']['language'],$user['company']['currency']);
 			$target['active'] = 0;
 
 			$date_from = date("Y-m-d", strtotime($target['date_from']));

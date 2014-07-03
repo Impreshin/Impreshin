@@ -98,19 +98,23 @@ class files {
 
 	public static function display($data, $highlight = "") {
 		$return = array();
-
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 		$settings = \apps\nf\settings::_available();
 		
 		$filetypes = $settings['allowedFileTypes'];
 
 
 		foreach ($data as $file) {
-
+			if (isset($file['datein']) && $file['datein']) $file['datein'] = datetime($file['datein'],'',$user['company']['timezone']);
 			$icon = "file";
 
 			$file_ext = strtolower($file['filename']);
 			$file_ext = explode(".", $file_ext);
 			$file_ext = $file_ext[count($file_ext) - 1];
+
+
+			
 
 			$filetype = "0";
 			foreach ($filetypes as $k => $v) {
