@@ -91,6 +91,10 @@ class company {
 
 				";
 
+		if (isset($_GET['test'])){
+			test_array(array("sql"=>$sql));
+		}
+
 			$result = $f3->get("DB")->exec($sql);
 
 
