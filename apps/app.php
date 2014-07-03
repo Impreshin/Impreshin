@@ -170,6 +170,10 @@ class app {
 			foreach ($companies AS $item) {
 				$compstr[] = $item["ID"];
 			}
+			
+			if (isset($_GET['test'])){
+				test_array(array("company"=>$companies,"compstr"=>$compstr,"user"=>$user)); 
+			}
 			$publications = models\publications::getAll_user("global_users_company.uID='" . $user['ID'] . "' and global_users_company.cID in (" . implode(",",$compstr) . ") and [access] = '1'", "company ASC, publication ASC");
 
 
