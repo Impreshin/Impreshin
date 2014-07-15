@@ -59,7 +59,7 @@
 
 					<div class="controls">
 						<div class="input-prepend">
-							<span class="add-on">{{ _cfg['currency']['sign'] }}</span>
+							<span class="add-on"></span>
 						<input type="text" id="target" name="target" class="span2" value="<% if (this.details.target) { %><%= this.details.target %><% } %>">
 
 						</div>
