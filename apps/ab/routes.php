@@ -43,7 +43,7 @@ $routes[] =	array(
 	"path"=>'/app/ab/layout',
 	"controller"=>'apps\ab\controllers\controller_app_layout->page',
 	"a"=>true,
-	"l"=>true,
+	"l"=>false,
 );
 
 $routes[] =	array(
