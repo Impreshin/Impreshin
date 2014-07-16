@@ -22,7 +22,7 @@ $routes[] =	array(
 	"path"=>'/app/ab/print/details',
 	"controller"=>'apps\ab\controllers\controller_app_details->_print',
 	"a"=>true,
-	"l"=>true,
+	"l"=>false,
 );
 $routes[] =	array(
 	"method"=>'GET',
@@ -43,7 +43,7 @@ $routes[] =	array(
 	"path"=>'/app/ab/layout',
 	"controller"=>'apps\ab\controllers\controller_app_layout->page',
 	"a"=>true,
-	"l"=>false,
+	"l"=>true,
 );
 
 $routes[] =	array(
