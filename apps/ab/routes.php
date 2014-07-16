@@ -21,8 +21,8 @@ $routes[] =	array(
 	"method"=>'GET',
 	"path"=>'/app/ab/print/details',
 	"controller"=>'apps\ab\controllers\controller_app_details->_print',
-	//"a"=>true,
-	//"l"=>true,
+	"a"=>true,
+	"l"=>true,
 );
 $routes[] =	array(
 	"method"=>'GET',
