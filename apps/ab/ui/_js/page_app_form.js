@@ -365,15 +365,15 @@ function imperial2metric($number) {
 		return false;
 	} else {
 		
-		console.log($number)
+		//console.log($number)
 		if (!$number){
 			return "";
 		}
-		console.info($number)
+		//console.info($number)
 		// Evaluate the expression we've built to get the number of inches.
 		$inches = eval("("+$number+")");
 
-		console.log($inches)
+		//console.log($inches)
 		
 		// This is how you convert inches to meters according to Google calculator.
 		//$meters = $inches * 0.0254;
@@ -399,7 +399,7 @@ function display_notes() {
 	$("#cm").val(cm);
 	$("#col").val(col);
 	
-	console.log(cm)
+	//console.log(cm)
 
 	var discount = $("#discount").val(), agencyDiscount = $("#agencyDiscount").val(), InsertPO = $("#InsertPO").attr("placeholder", var_publication['printOrder']).val();
 	InsertPO = (InsertPO) ? InsertPO : var_publication['printOrder'];
