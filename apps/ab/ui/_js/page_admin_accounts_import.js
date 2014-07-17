@@ -72,7 +72,7 @@ $(document).ready(function () {
 				$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 			} else {
 
-				getDetails(r);
+				getDetails(r.data);
 			}
 
 		});
@@ -89,7 +89,7 @@ function getDetails(data) {
 	$("#left-area .loadingmask").show();
 
 	if (data) {
-		//console.log(data);
+		
 		$("#form-area").jqotesub($("#template-details"), data);
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 
