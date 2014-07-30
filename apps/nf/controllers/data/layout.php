@@ -136,6 +136,7 @@ class layout extends data {
 					$r[] = $b;
 				}
 				$remainingRecords++;
+				if (!isset($cats[$record['categoryID']]['recordCount']))$cats[$record['categoryID']]['recordCount'] = 0;
 				$cats[$record['categoryID']]['recordCount']=$cats[$record['categoryID']]['recordCount'] + 1;
 			}
 			
