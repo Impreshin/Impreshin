@@ -103,7 +103,7 @@
 			</div>
 		</div>
 		<div class="control-group" id="sub_placing_area">
-			<label for="sub_placingID" class="control-label">Sub Placing*</label>
+			<label for="sub_placingID" class="control-label">Alt Rate*</label>
 
 			<div class="controls">
 				<select id="sub_placingID" name="sub_placingID" class="display_notes" style="width: 342px;">

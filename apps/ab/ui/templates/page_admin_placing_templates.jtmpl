@@ -79,7 +79,7 @@
 							<input type="text" id="rate" name="rate" class="span1" value="<% if (this.details.rate) { %><%= this.details.rate %><% } %>">
 
 						</div>
-						<span class="help-inline g">* Used if no sub placing selected</span>
+						<span class="help-inline g">* Used if no alternative rate option selected</span>
 					</div>
 				</div>
 				<div class="control-group">
@@ -104,7 +104,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<fieldset style="margin-top:30px;">
-				<legend>Sub placings
+				<legend>Alternative Rates
 					<small></small>
 				</legend>
 
@@ -158,7 +158,7 @@
 							<td colspan="3">
 								<div class="help-block g">
 									Click save record after changing or re-ordering the rows<br>
-									To remove a sub-placing item clear its label and click save
+									To remove a alternative rate option clear its label and click save
 								</div></td>
 							<td>
 								<button class="btn span1 btn-mini" type="button" style="float:right;" id="btn-new-sub_placing" >
