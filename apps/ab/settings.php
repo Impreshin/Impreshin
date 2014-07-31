@@ -79,7 +79,7 @@ class settings {
 			"sub_placing"                => array(
 				"o"=> "`ab_placing_sub`.`label`",
 				"h"=> "Sub-Placing",
-				"d"=>"(Adverts) Sub Placing alternative rates"
+				"d"=>"(Adverts) Sub Placing / Alternative Rate"
 			),
 			"category"               => array(
 				"h"=> "Category"
