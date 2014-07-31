@@ -76,6 +76,11 @@ class settings {
 				"h"=> "Placing",
 				"d"=>"(Adverts) Where in the publication (group) the booking should be placed"
 			),
+			"sub_placing"                => array(
+				"o"=> "`ab_placing_sub`.`label`",
+				"h"=> "Sub-Placing",
+				"d"=>"(Adverts) Sub Placing alternative rates"
+			),
 			"category"               => array(
 				"h"=> "Category"
 			),
