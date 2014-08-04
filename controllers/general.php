@@ -101,6 +101,7 @@ class general {
 				"/ui/_js/plugins/jquery.autologout.js",
 				"/ui/_js/plugins/select2.js",
 				"/ui/_js/plugins/jquery.getData.js",
+				"/ui/_js/plugins/jquery.overlaps.js",
 				"/ui/fancybox/jquery.fancybox.pack.js",
 
 
