@@ -25,8 +25,9 @@
 
 <div style="padding:30px;">
 	<div id="page-container">
-		<div id="page-area" class="connected">
+		<div id="page-area" class="connected"><div data-colour="orange" data-cm="1" data-col="1" data-offset-col="1" data-offset-cm="20">Orange (1x1)</div>
 			<div data-colour="green" data-cm="5" data-col="1" data-offset-col="1" data-offset-cm="20" >Green</div>
+			
 		</div>
 		<div id="grid-area"></div>
 	</div>
@@ -36,7 +37,6 @@
 	</div>
 
 <div id="list2" class="list connected" >
-	<div data-colour="orange" data-cm="1" data-col="1" >Orange (1x1)</div>
 	<div data-colour="blue" data-cm="10" data-col="8" >Blue (8x10)</div>
 	<div data-colour="aqua" data-cm="19" data-col="2">Aqua (2x19)</div>
 	<div data-colour="yellow" data-cm="5" data-col="2">Yellow (2x5)</div>
@@ -288,9 +288,16 @@
 		
 
 		function doLayout(){
-			$("#page-area > div.overlapped").removeClass("overlapped")
+			$("#page-area > div.overlapped").removeClass("overlapped");
+			
+			var base_zIndex = (columnsav * cmav) + 10
 			$("#page-area > div").each(function(){
 				var $this = $(this);
+				
+				var size = $this.attr("data-col") *  $this.attr("data-cm");
+				var zIndex = base_zIndex - size;
+				//console.log(size)
+				
 				
 				var offset_t = $this.attr("data-offset-cm") * r_h;
 				var offset_l = $this.attr("data-offset-col") * r_w;
@@ -309,14 +316,15 @@
 				
 				
 				
-				$this.css({top: offset_t, left: offset_l, position:"absolute", "width":width-2,"height":height-2,"background-color":colour}).text("");
+				$this.css({top: offset_t, left: offset_l, position:"absolute", "width":width-2,"height":height-2,"background-color":colour,"z-index":zIndex}).text("");
 				//console.log(offset_t+" | "+offset_l);
 			});
 			
 			var overlaps = $('#page-area > div').overlaps();
+			
 			$.each(overlaps,function(){
 				$(this).addClass("overlapped");
-			})
+			});
 			
 			
 			
