@@ -171,6 +171,7 @@
 			appendTo   : 'body',
 			stack: "#page-area div",
 			revert:0,
+			tolerance:'pointer',
 			helper     : function (e) {
 				var $target = $(e.target).closest("div");
 				var cm = $target.attr("data-cm");
@@ -232,18 +233,7 @@
 				console.log(containerPos);
 
 			
-				/*
-				oT = ((pos.top - containerPos.top) / r_h );
-				oL = ((pos.left - containerPos.left) / r_w);
-				
-				oT = (pos.top - height) / r_h;
-				oL = (pos.left - width) / r_w;
-				
-
-				oT = (pos.top - (cm/2))/ r_h;
-				oL = (pos.left - (col/2))/ r_w;
-				*/
-				
+		
 				
 				
 
