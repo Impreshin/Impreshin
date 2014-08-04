@@ -25,24 +25,27 @@
 
 <div style="padding:30px;">
 	<div id="page-container">
-		<div id="page-area" class="connected"><div data-colour="orange" data-cm="1" data-col="1" data-offset-col="1" data-offset-cm="20">Orange (1x1)</div>
-			<div data-colour="green" data-cm="5" data-col="1" data-offset-col="1" data-offset-cm="20" >Green</div>
-			
+		<div id="page-area" class="connected">
+			<div data-colour="orange" data-cm="1" data-col="1" data-offset-col="1" data-offset-cm="20" data-id="1">Orange (1x1)</div>
+			<div data-colour="green" data-cm="5" data-col="1" data-offset-col="1" data-offset-cm="20" data-id="2">Green (1x5)</div>
+
 		</div>
 		<div id="grid-area"></div>
 	</div>
-	
-		
-		
-	</div>
 
-<div id="list2" class="list connected" >
-	<div data-colour="blue" data-cm="10" data-col="8" >Blue (8x10)</div>
-	<div data-colour="aqua" data-cm="19" data-col="2">Aqua (2x19)</div>
-	<div data-colour="yellow" data-cm="5" data-col="2">Yellow (2x5)</div>
-	<div data-colour="purple" data-cm="5" data-col="2" >Purple (2x5)</div>
-	<div data-colour="pink" data-cm="9" data-col="4" >Pink (4x9)</div>
-	
+
+
+</div>
+
+<div id="list2" class="list connected">
+	<div data-colour="blue" data-cm="10" data-col="8" data-id="3">Blue (8x10)</div>
+	<div data-colour="aqua" data-cm="19" data-col="2" data-id="4">Aqua (2x19)</div>
+	<div data-colour="yellow" data-cm="5" data-col="2" data-id="5">Yellow (2x5)</div>
+	<div data-colour="purple" data-cm="5" data-col="2" data-id="6">Purple (2x5)</div>
+	<div data-colour="pink" data-cm="9" data-col="4" data-id="7">Pink (4x9)</div>
+	<div data-colour="maroon" data-cm="5" data-col="3" data-id="8">Maroon (3x5)</div>
+	<div data-colour="grey" data-cm="39" data-col="8" data-id="9">Grey (8x39)</div>
+
 </div>
 <hr/>
 <div class="clearfix"></div>
@@ -52,7 +55,7 @@
 
 
 
-<script  src="/ui/_js/libs/jquery.0002044068.js"></script>
+<script src="/ui/_js/libs/jquery.0002044068.js"></script>
 <script src="/min/js.0002044068.js"></script>
 
 <style type="text/css">
@@ -60,286 +63,301 @@
 		width: 200px;
 		margin-left: 300px;
 	}
-	
+
 	#page-container {
 		position: relative;
-		border:1px solid #000;
+		border: 1px solid #000;
 
 		border-collapse: collapse;
 		height: 400px;
 		width: 200px;
 		background-color: #e1e1e1;
 	}
+
 	#page-area {
 		position: relative;
-	
+
 		z-index: 5;
-		
+
 	}
+
 	#grid-area {
 		position: absolute;
-		top:0;
-		left:0;
-		right:0;
+		top: 0;
+		left: 0;
+		right: 0;
 		bottom: 0;
 		z-index: 1;
-		
+
 	}
+
 	.list {
 		width: 200px;
 		margin-left: 400px;
 		margin-top: -300px;
 	}
+
 	.list div {
 		padding: 5px;
-		border:1px solid #ccc;
-		margin:3px;
-	}
-	#page-area div {
-		border:1px solid #002a80;
-		
+		border: 1px solid #ccc;
+		margin: 3px;
 	}
 
+	#page-area div {
+		border: 1px solid #002a80;
+
+	}
 
 	#grid .row {
-		margin:0;
+		margin: 0;
 	}
-	#grid .row .cell{
-		border-bottom:1px solid #ccc;
-		border-right:1px solid #ccc;
+
+	#grid .row .cell {
+		border-bottom: 1px solid #ccc;
+		border-right: 1px solid #ccc;
 		display: table-cell;
 		line-height: normal;
 	}
-	#page-area div.overlapped {
+
+	#page-area div.error {
 		background-color: red;
-		border-color:red;
+		border-color: red;
 		box-shadow: 0 0 10px red;
 	}
-	
+
 </style>
 
 <script type="text/javascript">
-	
-	var columnsav = 8;
-	var cmav = 39;
-	var pagewidth = 262;
-	
-	
-	var page_width = 280;
-	var page_height = (((page_width/( pagewidth / 100 ))*cmav)/10);
-	
-	var r_h = page_height / cmav;
-		r_h = Math.round(r_h);
-	
-	var r_w = pagewidth / columnsav;
-		r_w = Math.round(r_w);
 
-	page_height = r_h * cmav;
-	page_width = r_w * columnsav;
-	
-
-	$("#page-area").css({"height":page_height,"width":page_width});
-	$("#page-container").css({"height":page_height,"width":page_width});
+var columnsav = 8;
+var cmav = 39;
+var pagewidth = 262;
 
 
+var page_width = 280;
+var page_height = (((page_width / ( pagewidth / 100 )) * cmav) / 10);
 
-	function drawGrid(width, height) {
-		var grid = '<div id="grid">',
-				cell_html = '',
-				i = 0, j = 0;
+var r_h = page_height / cmav;
+r_h = Math.round(r_h);
 
-		for( ; i < width; i++) {
-			cell_html += '<div class="cell"></div>';
-		}
+var r_w = pagewidth / columnsav;
+r_w = Math.round(r_w);
 
-		for( ; j < height; j++) {
-			grid += '<div class="row">' + cell_html + '</div>';
-		}
+page_height = r_h * cmav;
+page_width = r_w * columnsav;
 
-		grid += '</div>';
 
-		return grid;
+$("#page-area").css({"height": page_height, "width": page_width});
+$("#page-container").css({"height": page_height, "width": page_width});
+
+
+
+function drawGrid(width, height) {
+	var grid = '<div id="grid">', cell_html = '', i = 0, j = 0;
+
+	for (; i < width; i++) {
+		cell_html += '<div class="cell"></div>';
 	}
 
-	$("#grid-area").html(drawGrid(columnsav,cmav)).find(".cell").css({"width":r_w-1,"height":r_h-1})
-	
-	
-	$(function() {
-		var parentPos= null;
-		drag();
-		doLayout();
-		
-		
+	for (; j < height; j++) {
+		grid += '<div class="row">' + cell_html + '</div>';
+	}
 
-		$( ".list, #page-area" ).sortable({
-			connectWith: ".connected",
-			appendTo   : 'body',
-			stack: "#page-area div",
-			revert:0,
-			tolerance:'pointer',
-			helper     : function (e) {
-				var $target = $(e.target).closest("div");
-				var cm = $target.attr("data-cm");
-				var col = $target.attr("data-col");
-				var colour = $target.attr("data-colour");
+	grid += '</div>';
 
-				//var width = colSize * col, 
-				//var height = cmSize * cm, 
+	return grid;
+}
 
-				var height = cm * r_h;
-				var width = col * r_w;
+$("#grid-area").html(drawGrid(columnsav, cmav)).find(".cell").css({"width": r_w - 1, "height": r_h - 1})
 
-				var offsetX = width / 2;
-				var offsetY = height / 2;
 
-				var str = "";
-				str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px; background-color: ' + colour + '; position:relative;">';
+$(function () {
+	var parentPos = null;
+	drag();
+	doLayout();
 
-				str += '</div>';
 
-				return str;
-			},
-			update: function(){
-				drag();
-				doLayout();
-			},
-			start: function(e, ui){
-				//$("#page-area > div").css('z-index', '1');
-				doLayout();
-				//console.log(ui)
-			},
-			stop: function(event, ui) {
-				//$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
-				//$(this).sortable('cancel');
 
-				var $this = $(ui.item);
-				var cm = $this.attr("data-cm") * r_h;
-				var col = $this.attr("data-col")* r_w;
-				var colour = $this.attr("data-colour");
-				
-				$this.css({"height":cm - 2 ,"width":col -2,"background-color":colour}).text("");
-				
+	$(".list, #page-area").sortable({
+		connectWith: ".connected",
+		appendTo: 'body',
+		stack: "#page-area div",
+		revert: 0,
+		tolerance: 'pointer',
+		helper: function (e) {
+			var $target = $(e.target).closest("div");
+			var cm = $target.attr("data-cm");
+			var col = $target.attr("data-col");
+			var colour = $target.attr("data-colour");
+
+			//var width = colSize * col, 
+			//var height = cmSize * cm, 
+
+			var height = cm * r_h;
+			var width = col * r_w;
+
+			var offsetX = width / 2;
+			var offsetY = height / 2;
+
+			var str = "";
+			str += '<div class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px; background-color: ' + colour + '; position:relative;">';
+
+			str += '</div>';
+
+			return str;
+		},
+		update: function () {
+			drag();
+			doLayout();
+		},
+		start: function (e, ui) {
+			//$("#page-area > div").css('z-index', '1');
+			doLayout();
+			//console.log(ui)
+		},
+		stop: function (event, ui) {
+			//$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
+			//$(this).sortable('cancel');
+
+			var $this = $(ui.item);
+			var cm = $this.attr("data-cm") * r_h;
+			var col = $this.attr("data-col") * r_w;
+			var colour = $this.attr("data-colour");
+
+			$this.css({"height": cm - 2, "width": col - 2, "background-color": colour}).text("");
+
+			var pos = ui.position;
+
+
+
+			var width = col - 2;
+			var height = cm - 2;
+
+			//console.info("r_h:"+r_h+" | r_w:"+r_w)
+			//console.info("h:"+cm+" | w:"+col)
+			//console.log(pos);
+
+
+			var oT = 0, oL = 0;
+
+			var containerPos = $("#page-area").offset();
+
+			//console.log(containerPos);
+
+
+
+
+
+
+			oT = ((pos.top - containerPos.top) - (height / 2)) / r_h;
+			oL = ((pos.left - containerPos.left) - (width / 2)) / r_w;
+
+			oT = Math.round(oT)
+			oL = Math.round(oL)
+
+
+
+
+
+			//console.log("top: " + oT);
+			//console.log("left: "+ oL);
+			$this.attr("data-offset-col", oL).attr("data-offset-cm", oT);
+			doLayout();
+		},
+		change: function () {
+			doLayout();
+		},
+
+
+		cursorAt: {left: 0, top: 0}
+	}).disableSelection();
+
+	function drag() {
+		$("#page-area > div").draggable({
+			grid: [r_w, r_h], containment: "#page-area,.list ", //refreshPositions: true,
+			stack: "div",
+
+			stop: function (event, ui) {
 				var pos = ui.position;
-				
+				var col = pos.left / r_w;
+				var cm = pos.top / r_h;
 
-				
-				var width = col -2;
-				var height = cm -2;
+				$(ui.helper).attr("data-offset-col", col).attr("data-offset-cm", cm);
 
-				//console.info("r_h:"+r_h+" | r_w:"+r_w)
-				//console.info("h:"+cm+" | w:"+col)
-				//console.log(pos);
-				
-				
-				var oT = 0, oL = 0;
-				
-				var containerPos = $("#page-area").offset();
-
-				//console.log(containerPos);
-
-			
-		
-				
-				
-
-				oT = ((pos.top - containerPos.top) - (height / 2))/r_h;
-				oL = ((pos.left - containerPos.left) - (width / 2))/r_w;
-
-				oT = Math.round(oT)
-				oL = Math.round(oL)
-				
-				
-				
-				
-
-				//console.log("top: " + oT);
-				//console.log("left: "+ oL);
-				$this.attr("data-offset-col",oL).attr("data-offset-cm",oT);
 				doLayout();
-			},
-			change: function () {
-				doLayout();
-			},
+			}
+
+
+		});
+	}
+
+
+	function doLayout() {
+		$("#page-area div.error").removeClass("error");
+
+		var base_zIndex = (columnsav * cmav) + 10
+		$("#page-area > div").each(function () {
+			var $this = $(this);
+
+			var size = $this.attr("data-col") * $this.attr("data-cm");
+			var zIndex = base_zIndex - size;
+			//console.log(size)
+
+
+			var offset_t = $this.attr("data-offset-cm") * r_h;
+			var offset_l = $this.attr("data-offset-col") * r_w;
+
+			var cm = $this.attr("data-cm");
+			var col = $this.attr("data-col");
+			var colour = $this.attr("data-colour");
+
+
+			var height = cm * r_h;
+			var width = col * r_w;
+
 			
-			
-			cursorAt   : {left: 0, top: 0}
-		}).disableSelection();
 		
-		function drag(){
-			$( "#page-area > div" ).draggable({
-				grid: [ r_w, r_h ],
-				containment: "#page-area",
-				//refreshPositions: true,
-				stack: "div",
-				
-				stop:function(event, ui ){
-					var pos = ui.position;
-					var col = pos.left/r_w;
-					var cm = pos.top/r_h;
-					
-					$(ui.helper).attr("data-offset-col",col).attr("data-offset-cm",cm);
-
-					doLayout();
-				}	
 			
+			if (($this.attr("data-offset-cm")*1) + (cm*1) > cmav) $this.addClass("error")
+			if (($this.attr("data-offset-col")*1) + (col*1) > columnsav) $this.addClass("error")
 
-			});
-		}
-		
-
-		function doLayout(){
-			$("#page-area > div.overlapped").removeClass("overlapped");
-			
-			var base_zIndex = (columnsav * cmav) + 10
-			$("#page-area > div").each(function(){
-				var $this = $(this);
-				
-				var size = $this.attr("data-col") *  $this.attr("data-cm");
-				var zIndex = base_zIndex - size;
-				//console.log(size)
-				
-				
-				var offset_t = $this.attr("data-offset-cm") * r_h;
-				var offset_l = $this.attr("data-offset-col") * r_w;
-
-				var cm = $this.attr("data-cm");
-				var col = $this.attr("data-col");
-				var colour = $this.attr("data-colour");
-
-
-				var height = cm * r_h;
-				var width = col * r_w;
 
 			
 
-				
-				
-				
-				
-				$this.css({top: offset_t, left: offset_l, position:"absolute", "width":width-2,"height":height-2,"background-color":colour,"z-index":zIndex}).text("");
-				//console.log(offset_t+" | "+offset_l);
-			});
-			
-			var overlaps = $('#page-area > div').overlaps();
-			
-			$.each(overlaps,function(){
-				$(this).addClass("overlapped");
-			});
-			
-			
-			
-		}
-		function writeChanges(){
-			$(".page div.ui-draggable").each(function(){
-					
-				
-			});
-			console.log("write");
-		}
 
-		
-	});
-	
+			$this.css({
+				top: offset_t,
+				left: offset_l,
+				position: "absolute",
+				"width": width - 2,
+				"height": height - 2,
+				"background-color": colour,
+				"z-index": zIndex
+			}).text("");
+			//console.log(offset_t+" | "+offset_l);
+		});
+
+		var overlaps = $('#page-area > div').overlaps();
+
+		$.each(overlaps, function () {
+			$(this).addClass("error");
+		});
+
+
+
+	}
+
+	function writeChanges() {
+		$(".page div.ui-draggable").each(function () {
+
+
+		});
+		console.log("write");
+	}
+
+
+});
+
 </script>
 
 </body>
