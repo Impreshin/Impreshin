@@ -54,6 +54,7 @@
 
 <script  src="/ui/_js/libs/jquery.0002044068.js"></script>
 <script src="/min/js.0002044068.js"></script>
+<script src="https://raw.githubusercontent.com/brandonaaron/jquery-overlaps/master/jquery.overlaps.js"></script>
 
 <style type="text/css">
 	.list {
@@ -109,6 +110,11 @@
 		border-right:1px solid #ccc;
 		display: table-cell;
 		line-height: normal;
+	}
+	#page-area div.overlapped {
+		background-color: red;
+		border-color:red;
+		box-shadow: 0 0 10px red;
 	}
 	
 </style>
@@ -221,16 +227,16 @@
 				var width = col -2;
 				var height = cm -2;
 
-				console.info("r_h:"+r_h+" | r_w:"+r_w)
-				console.info("h:"+cm+" | w:"+col)
-				console.log(pos);
+				//console.info("r_h:"+r_h+" | r_w:"+r_w)
+				//console.info("h:"+cm+" | w:"+col)
+				//console.log(pos);
 				
 				
 				var oT = 0, oL = 0;
 				
 				var containerPos = $("#page-area").offset();
 
-				console.log(containerPos);
+				//console.log(containerPos);
 
 			
 		
@@ -247,8 +253,8 @@
 				
 				
 
-				console.log("top: " + oT);
-				console.log("left: "+ oL);
+				//console.log("top: " + oT);
+				//console.log("left: "+ oL);
 				$this.attr("data-offset-col",oL).attr("data-offset-cm",oT);
 				doLayout();
 			},
@@ -283,7 +289,7 @@
 		
 
 		function doLayout(){
-			
+			$("#page-area > div.overlapped").removeClass("overlapped")
 			$("#page-area > div").each(function(){
 				var $this = $(this);
 				
@@ -307,6 +313,14 @@
 				$this.css({top: offset_t, left: offset_l, position:"absolute", "width":width-2,"height":height-2,"background-color":colour}).text("");
 				//console.log(offset_t+" | "+offset_l);
 			});
+			
+			var overlaps = $('#page-area > div').overlaps();
+			$.each(overlaps,function(){
+				$(this).addClass("overlapped");
+			})
+			
+			
+			
 		}
 		function writeChanges(){
 			$(".page div.ui-draggable").each(function(){
