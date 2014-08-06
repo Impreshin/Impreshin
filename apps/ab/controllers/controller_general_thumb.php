@@ -47,6 +47,7 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
 		$crop = (isset($_GET['c']) && $_GET['c']=="true") ? true:false;
+		$stretch = (isset($_GET['stretch']) && $_GET['stretch']=="true") ? true:false;
 
 		$w = round($w);
 		$h = round($h);

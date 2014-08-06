@@ -223,6 +223,7 @@
 			margin-left : -64px;
 			left        : 50%;
 			text-align  : center;
+			z-index: 12;
 		}
 
 	}
@@ -252,5 +253,27 @@
 		}
 
 	}
+
+	#grid-area-details {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 0;
+
+
+		.row {
+			margin: 0;
+			.cell {
+				border-bottom: 1px solid #f1f1f1;
+				border-right: 1px solid #f1f1f1;
+				display: table-cell;
+				line-height: normal;
+			}
+		}
+
+	}
+
 }
 

@@ -449,8 +449,13 @@ class layout extends data {
 
 	}
 
-	function _details_page(){
-		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
+	function _details_page($val=""){
+		if ($val){
+			$page_nr = $val;
+		} else {
+			$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
+		}
+		
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
@@ -476,6 +481,7 @@ class layout extends data {
 		$cm = 0;
 		$records = 0;
 		foreach ($bookingsRaw as $booking) {
+			//test_array($booking); 
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
@@ -489,6 +495,10 @@ class layout extends data {
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
 				$a['material_status'] = $booking['material_status'];
+				//$a['material_file_filename'] = $booking['material_file_filename'];
+				$a['material_file_store'] = $booking['material_file_store'];
+				$a['x_offset'] = $booking['x_offset']?$booking['x_offset']+0:"";
+				$a['y_offset'] = $booking['y_offset']?$booking['y_offset']+0:"";
 
 				$bookings[] = $a;
 			if ($a['cm']) $cm = $cm + $a['totalspace'] + 0;
@@ -510,7 +520,7 @@ class layout extends data {
 			"records" => $records,
 			"loading" => $loading
 		);
-		$GLOBALS["output"]['data'] = $page;
+		return $GLOBALS["output"]['data'] = $page;
 	}
 	function _details_section(){
 		$ID = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";

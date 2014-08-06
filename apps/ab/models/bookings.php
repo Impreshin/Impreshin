@@ -65,6 +65,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$return['publishDateDisplay'] = date("d F Y", strtotime($return['publish_date']));
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state'] = "";
+
+			if ($return['x_offset'])$return['x_offset'] = $return['x_offset'] + 0;
+			if ($return['y_offset'])$return['y_offset'] = $return['y_offset'] + 0;
+			
+			
 			if ($return['publish_date'] == $currentDate) {
 				$return['state'] = "Current";
 			} elseif ($return['publish_date'] < $currentDate) {
@@ -86,6 +91,9 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$cfg = $f3->get("CFG");
 			$cfg = $cfg['upload'];
 			$return['material_file_filesize_display'] = 0;
+			
+			
+			
 			if ($cfg['material'] && $user['company']['ab_upload_material'] == '1' && $user['publication']['ab_upload_material'] == '1') {
 				if ($return['material_file_store']) {
 					$file = $cfg['folder'] . "ab/" . $return['cID'] . "/" . $return['pID'] . "/" . $return['dID'] . "/material/" . $return['material_file_store'];
@@ -282,6 +290,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		if (is_array($data)) {
 			$a = array();
 			foreach ($data as $item) {
+				if ($item['x_offset'])$item['x_offset'] = $item['x_offset'] + 0;
+				if ($item['y_offset'])$item['y_offset'] = $item['y_offset'] + 0;
 
 				$item = bookings::localization($item);
 				$showrecord = true;

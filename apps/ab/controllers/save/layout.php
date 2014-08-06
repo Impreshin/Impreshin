@@ -141,6 +141,33 @@ class layout extends save {
 		}
 		return $pages;
 	}
+	function _tetris(){
+		$user = $this->f3->get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$x_offset = isset($_REQUEST['x_offset']) ? $_REQUEST['x_offset'] : "";
+		$y_offset = isset($_REQUEST['y_offset']) ? $_REQUEST['y_offset'] : "";
+
+		//test_array(array("x_offset"=>$x_offset,"y_offset"=>$y_offset)); 
+
+		$record = new models\bookings();
+		$record = $record->get($ID);
+		
+		if ($record['page'] and $record['ID']){
+
+			$values = array(
+				"x_offset"=>$x_offset!==""?$x_offset:null,
+			    "y_offset"=>$y_offset!==""?$y_offset:null
+			);
+			//test_array($values); 
+			models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+
+		}
+		$data = new \apps\ab\controllers\data\layout();
+		$data = $data->_details_page($record['page']);
+
+
+		return $GLOBALS["output"]['data'] = $data;
+	}
 
 
 }

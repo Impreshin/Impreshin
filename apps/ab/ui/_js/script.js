@@ -447,3 +447,19 @@ String.prototype.capitalize = function () {
 function capitaliseFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function drawGrid(width, height) {
+	var grid = '<div id="grid">', cell_html = '', i = 0, j = 0;
+
+	for (; i < width; i++) {
+		cell_html += '<div class="cell"></div>';
+	}
+
+	for (; j < height; j++) {
+		grid += '<div class="row">' + cell_html + '</div>';
+	}
+
+	grid += '</div>';
+
+	return grid;
+}

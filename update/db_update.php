@@ -127,6 +127,9 @@ $sql = array(
 	),
 	"27"=>array(
 		"ALTER TABLE  `nf_articles` CHANGE  `cm`  `cm` DECIMAL( 7, 3 ) NULL DEFAULT NULL;"
+	),
+	"28"=>array(
+		"ALTER TABLE  `ab_bookings` ADD  `x_offset` DECIMAL( 6, 3 ) NULL DEFAULT NULL AFTER  `pageID` , ADD  `y_offset` DECIMAL( 6, 3 ) NULL DEFAULT NULL AFTER  `x_offset`;"
 	)
 	
 

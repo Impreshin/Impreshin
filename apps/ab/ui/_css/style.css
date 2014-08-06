@@ -230,6 +230,7 @@
   margin-left: -64px;
   left: 50%;
   text-align: center;
+  z-index: 12;
 }
 #ab-details-modal #details-bottom-right-btns {
   position: absolute;
@@ -257,6 +258,23 @@
 #ab-details-modal #modal-header-btns a:hover {
   opacity: 1;
   filter: alpha(opacity=100);
+}
+#ab-details-modal #grid-area-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+#ab-details-modal #grid-area-details .row {
+  margin: 0;
+}
+#ab-details-modal #grid-area-details .row .cell {
+  border-bottom: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+  display: table-cell;
+  line-height: normal;
 }
 #settings-modal #available-columns div {
   opacity: 0.8;

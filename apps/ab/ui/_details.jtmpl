@@ -279,21 +279,37 @@
 <a <% if (this.material_file_filename) { %><% if (this.a.material_pane=='1') { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material=='1') { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ _pageHeight }} %>px;" > <% if (this.page){ %>
 <div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
 
+
+<% if (this.y_offset!=null) { %>
+<div class="s dg c" style="position: absolute; top: 0px;  z-index:20; right: 0; background-color: rgba(250,250,250,0.9); width:20px;">
+	<i class="icon-arrow-down"></i>
+	<div style="margin-top:-5px;">
+		<strong><%= this.y_offset %></strong>
+	</div>
+	
+</div>
+<% } %>
+<% if (this.x_offset!=null) { %>
+<div class="s dg"  style="position: absolute; bottom: 0px; z-index:20; left: 0;background-color: rgba(250,250,250,0.9); line-height:20px; padding-right:5px;"><i class="icon-arrow-right"></i> <strong><%= this.x_offset %></strong>
+</div>
+<% } %>
+
+
 <% } %> <% if (this.material_production) { %>
 <div class="g s " style="position: absolute; top: -18px; left: 0;"><% if (this.material_source=='1') { %><%= this.material_production %><% } else { %>Supplied<% } %></div>
 <% } %>
 
-<div style="background-color: #e1e1e1; height: <%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;">
+<div style="background-color: #e1e1e1; position:absolute; z-index:10; height: <%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;<% if (this.y_offset) { %>top:<%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.y_offset %>px;<% } %><% if (this.x_offset) { %>left:<%= (180 / {{ _user['publication']['columnsav'] }})*this.x_offset %>px;<% } %>">
 	<% if (this.material_file_filename && this.a.material_pane=='1') { %>
 
-    <img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>">
+    <img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>" style="height:100%; width:100%;">
 
     <% } %>
 </div>
 
 <% if (this.material_status!='1') { %> <img src="/ui/_images/question.png" alt="" class="material-state"> <% } else { %>
 <img src="/ui/_images/success.png" alt="" class="material-state"> <% } %>
-
+<div id="grid-area-details"></div>
 </a>
 <% if (this.a.material=='1') { %>
 
@@ -354,7 +370,7 @@
 </section>
 <div class="loadingmask wide"></div>
 <% if (this.a.material=='1') { %>
-<div class="popup" id="popup-material">
+<div class="popup" id="popup-material" style="z-index:600;">
 	<form class="form" id="form-material">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
@@ -777,6 +793,18 @@ function getDetails() {
 
 			}
 		}
+
+	
+
+		var r_h = {{  (_pageHeight / _user['publication']['cmav'])}};
+
+		var r_w = {{ 180 / _user['publication']['columnsav'] }};
+		
+		
+		$("#grid-area-details").html(drawGrid({{ _user['publication']['columnsav'] }}, {{ _user['publication']['cmav'] }})).find(".cell").css({
+			"width": r_w-1,
+			"height": r_h - 1
+		});
 
 		$("#ab-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 	},"details");

@@ -10,6 +10,11 @@ $(document).ready(function () {
 		getDetails_right();
 	}
 
+	if ($.bbq.getState("page")) {
+		$("#modal-tetris").modal("show");
+		loadTetris()
+	}
+
 	scrolling(left_pane);
 
 	$(document).on("click", "#toolbar-stats-link", function (e) {
@@ -18,6 +23,43 @@ $(document).ready(function () {
 		}
 
 	});
+	$(document).on("click", ".pages .progress", function (e) {
+		$("#modal-tetris").modal("show");
+		$.bbq.pushState({page: $(this).closest(".pages").attr("data-page")});
+		loadTetris();
+	});
+	$(document).on('hide', '#modal-tetris', function () {
+		$.bbq.removeState("page");
+		getList();
+		load_pages();
+		getDetails_right();
+	});
+	
+	$(document).on('mouseenter', '#page-area-tetris > article, #list-tetris > article', function () {
+		var $this = $(this);
+		
+		
+
+		var str = "";
+			str += '<h1>'+$this.attr("data-client")+'</h1>';
+		
+		
+			if ($this.attr("data-img")){
+				img  = '<img src="/app/ab/thumb/material/'+$this.attr("data-id")+'/'+$this.attr("data-img")+'?w=260&h=260&c=false&s='+$this.attr("data-img")+'"/>';
+			} else {
+				img = "no material";
+			}
+		str += "<div class='preview'>"+ img + "</div>";
+		
+		$("#tetris-details").html(str);
+	});
+	$(document).on('mouseleave', '#page-area-tetris > article, #list-tetris > article', function () {
+		
+		$("#tetris-details").html("");
+	});
+	
+	
+	
 
 	$(document).on("scroll", "#left-area .scroll-pane", function () {
 		visible_pages();
@@ -115,9 +157,7 @@ $(document).ready(function () {
 		var colour = $("#colourID", $this).val();
 
 		var data = {
-			"page"     : page,
-			"sectionID": section,
-			"colourID" : colour
+			"page": page, "sectionID": section, "colourID": colour
 		};
 		for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
 		activityRequest.push($.post("/app/ab/save/layout/_page", data, function (response) {
@@ -148,8 +188,7 @@ $(document).ready(function () {
 		page = (page.match(/\d+/));
 		page = page.join("");
 		var data = {
-			"page"  : page,
-			"locked": lockState
+			"page": page, "locked": lockState
 		};
 		for (var i = 0; i < activityRequest.length; i++) activityRequest[i].abort();
 		activityRequest.push($.post("/app/ab/save/layout/_page", data, function (response) {
@@ -165,22 +204,17 @@ $(document).ready(function () {
 	});
 
 	$("#record-list-middle").droppable({
-		accept   : ".pages tr.record",
-		greedy   : true,
-		tolerance: "pointer",
-		over     : function (event, ui) {
+		accept: ".pages tr.record", greedy: true, tolerance: "pointer", over: function (event, ui) {
 			var $this = $(this);
 
 			$this.addClass("droppablehover");
 
-		},
-		out      : function (event, ui) {
+		}, out: function (event, ui) {
 			var $this = $(this);
 
 			$this.removeClass("pagefull droppablehover");
 
-		},
-		drop     : function (event, ui) {
+		}, drop: function (event, ui) {
 			var $this = $(this);
 			var $page = $(this).parent();
 			var $dragged = $(ui.draggable);
@@ -262,7 +296,7 @@ function PadDigits(n, totalDigits) {
 			pd += '&nbsp';
 		}
 	}
-	return  n.toString() + pd;
+	return n.toString() + pd;
 }
 
 function getList() {
@@ -321,8 +355,7 @@ function getList() {
 function tr_draggable($parent) {
 
 	$("tr.record.dragable", $parent).draggable({
-		opacity    : 0.5,
-		helper     : function (e) {
+		opacity: 0.5, helper: function (e) {
 			var $target = $(e.target).closest("tr.record");
 			var cm = $target.attr("data-cm");
 			var col = $target.attr("data-col");
@@ -339,26 +372,17 @@ function tr_draggable($parent) {
 			str += '</div>';
 
 			return str;
-		},
-		cursorAt   : {left: 0, top: 0},
-		containment: false,
-		zIndex     : 2710,
-		appendTo   : 'body',
-		//snap:true,
+		}, cursorAt: {left: 0, top: 0}, containment: false, zIndex: 2710, appendTo: 'body', //snap:true,
 		//snapMode:"outer",
 		//revert: 'invalid',
-		stop       : function (event, ui) {
+		stop: function (event, ui) {
 
-		},
-		revert     : 'invalid'
+		}, revert: 'invalid'
 	});
 }
 function page_droppable($element) {
 	$element.droppable({
-		accept   : "tr.record",
-		greedy   : true,
-		tolerance: "pointer",
-		over     : function (event, ui) {
+		accept: "tr.record", greedy: true, tolerance: "pointer", over: function (event, ui) {
 			var $this = $(this);
 			var $page = $this.find("article");
 			var $dragged = ui.draggable;
@@ -419,13 +443,11 @@ function page_droppable($element) {
 
 			}
 
-		},
-		out      : function (event, ui) {
+		}, out: function (event, ui) {
 			var $this = $(this);
 			$this.removeClass("pagefull pagehover ").find(".msgs").html("").stop(true, true).fadeOut();
 
-		},
-		drop     : function (event, ui) {
+		}, drop: function (event, ui) {
 			var $this = $(this);
 			var $page = $this.find("article");
 			var $dragged = $(ui.draggable);
@@ -636,3 +658,348 @@ function remove(ID, $dragged) {
 		}
 	}));
 }
+function loadTetris() {
+	$("#modal-tetris").css("z-index",1050);
+	var ID = $.bbq.getState("page");
+	if (ID) {
+
+		$.getJSON("/app/ab/data/layout/_details_page?r=" + Math.random(), {"val": ID}, function (data) {
+			data = data['data'];
+
+			$("#modal-tetris").jqotesub($("#template-tetris"), data);
+			dragTetris();
+			doLayout();
+
+			var parentPos = null;
+
+
+			$("#list-tetris, #page-area-tetris").sortable({
+				connectWith: ".connected",
+				appendTo: '#modal-tetris',
+				stack: "#page-area-tetris article",
+				revert: 0,
+				tolerance: 'pointer',
+				helper: function (e) {
+					var $target = $(e.target).closest("article");
+					
+					
+					
+					//console.log($target)
+					var ID = $target.attr("data-id");
+					var cm = $target.attr("data-cm");
+					var col = $target.attr("data-col");
+					var img = $target.attr("data-img");
+					var client = $target.attr("data-client");
+
+					//var width = colSize * col, 
+					//var height = cmSize * cm, 
+
+					var height = cm * r_h;
+					var width = col * r_w;
+
+					var offsetX = width / 2;
+					var offsetY = height / 2;
+
+					if (img){
+						img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
+					} else {
+						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+					}
+
+					
+					
+
+					var str = "";
+					str += '<article class="dragablethingy" style="width: ' + width + 'px; height: ' + height + 'px; margin-left: -' + offsetX + 'px; margin-top: -' + offsetY + 'px; background-color: #ccc; position:relative; ">';
+
+					str += img;
+					str += '</article>';
+
+					
+
+					return str;
+				},
+				update: function () {
+
+					//dragTetris();
+					//doLayout();
+				},
+				start: function (e, ui) {
+					//$("#page-area > div").css('z-index', '1');
+					//doLayout();
+					//console.log(ui)
+				},
+				stop: function (event, ui) {
+					//$(ui.helper).clone(true).removeClass('box ui-draggable ui-draggable-dragging').addClass('box-clone').appendTo('body');
+					//$(this).sortable('cancel');
+
+					var $this = $(ui.item);
+					var ID = $this.attr("data-id");
+					var cm = $this.attr("data-cm") ;
+					var col = $this.attr("data-col") ;
+					var colour = $this.attr("data-colour");
+					var img = $this.attr("data-img");
+					var client = $this.attr("data-client");
+
+					var pos = ui.position;
+
+
+					
+
+					var width = (col* r_w) ;
+					var height = (cm* r_h) ;
+					
+					
+
+					if (img){
+						img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
+					} else {
+						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+					}
+					
+
+					$this.css({"height": height, "width": width, "background-color": "#ccc"}).html(img);
+
+					
+
+					//console.info("r_h:"+r_h+" | r_w:"+r_w)
+					//console.info("h:"+cm+" | w:"+col)
+					//console.log(pos);
+
+
+					var oT = 0, oL = 0;
+
+					var containerPos = $("#page-area-tetris").offset();
+					var modalPos = $("#modal-tetris").offset();
+
+					containerPos.top = containerPos.top - modalPos.top
+					containerPos.left = containerPos.left - modalPos.left
+					
+
+					//console.log(modalPos);
+					//console.log(containerPos);
+					//console.log(pos);
+
+
+
+
+
+
+					oT = ((pos.top - containerPos.top) - (height / 2)) / r_h;
+					oL = ((pos.left - containerPos.left) - (width / 2)) / r_w;
+
+					oT = Math.round(oT)
+					oL = Math.round(oL)
+
+
+					$this.attr("data-offset-col", oL).attr("data-offset-cm", oT);
+					writeChanges($this)
+
+					//console.log("top: " + oT);
+					//console.log("left: "+ oL);
+
+					doLayout();
+				},
+				change: function () {
+
+					//doLayout();
+				},
+
+
+				cursorAt: {left: 0, top: 0}
+			}).disableSelection();
+
+
+			$("#page-area-tetris").css({"height": page_height, "width": page_width});
+			$("#page-container-tetris").css({"height": page_height, "width": page_width});
+
+			$("#grid-area-tetris").html(drawGrid(columnsav, cmav)).find(".cell").css({
+				"width": r_w - 1,
+				"height": r_h - 1
+			});
+			
+
+		});
+	}
+
+}
+
+
+
+var columnsav = 8;
+var cmav = 39;
+var pagewidth = 262;
+
+
+var page_width = 255;
+var page_height = (((page_width / ( pagewidth / 100 )) * cmav) / 10);
+
+var r_h = page_height / cmav;
+r_h = Math.round(r_h);
+
+var r_w = page_width / columnsav;
+r_w = Math.round(r_w);
+
+page_height = r_h * cmav;
+page_width = r_w * columnsav;
+
+
+
+
+
+
+
+
+
+
+function dragTetris() {
+	$("#page-area-tetris > div").draggable({
+		grid: [r_w, r_h], //containment: "#page-area,.list ", //refreshPositions: true,
+		stack: "div",
+
+		stop: function (event, ui) {
+			var pos = ui.position;
+			var col = pos.left / r_w;
+			var cm = pos.top / r_h;
+
+			$(ui.helper).attr("data-offset-col", col).attr("data-offset-cm", cm);
+			writeChanges($(ui.helper))
+			doLayout();
+		}
+
+
+	});
+}
+
+
+function doLayout() {
+	$("#page-area-tetris article.error").removeClass("error");
+
+	var base_zIndex = (columnsav * cmav) + 10
+	$("#page-area-tetris > article").each(function () {
+		var $this = $(this);
+
+		var size = $this.attr("data-col") * $this.attr("data-cm");
+		var zIndex = base_zIndex - size;
+		//console.log(zIndex)
+
+
+		var offset_t = $this.attr("data-offset-cm") * r_h;
+		var offset_l = $this.attr("data-offset-col") * r_w;
+
+		var cm = $this.attr("data-cm");
+		var col = $this.attr("data-col");
+		var client = $this.attr("data-client");
+		
+
+
+		var height = cm * r_h;
+		var width = col * r_w;
+
+
+
+
+		if (($this.attr("data-offset-cm") * 1) + (cm * 1) > cmav) $this.addClass("error")
+		if (($this.attr("data-offset-col") * 1) + (col * 1) > columnsav) $this.addClass("error")
+
+
+		var ID = $this.attr("data-id");
+		var img = $this.attr("data-img");
+
+		
+
+
+
+		
+
+
+		if (img){
+			img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
+		} else {
+			img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+		}
+
+		
+		
+
+
+
+		$this.css({
+			top: offset_t,
+			left: offset_l,
+			position: "absolute",
+			"width": width,
+			"height": height,
+			"background-color": "#ccc",
+			"z-index": zIndex
+		}).html(img);
+		//console.log(offset_t+" | "+offset_l);
+	});
+
+	var overlaps = $('#page-area-tetris > article').overlaps();
+
+	$.each(overlaps, function () {
+		$(this).addClass("error");
+	});
+
+
+
+}
+
+function writeChanges(element) {
+
+	var offpage = false;
+	var save = true;
+	var cm = element.attr("data-cm");
+	var col = element.attr("data-col");
+
+	if ((element.attr("data-offset-cm") * 1) > cmav) {
+		offpage = true
+		save = false;
+	}
+	if ((element.attr("data-offset-col") * 1) > columnsav) {
+		offpage = true
+		save = false;
+	}
+
+	if ((element.attr("data-offset-cm") * 1 + (cm * 1)) > cmav) {
+		save = false;
+	}
+	if ((element.attr("data-offset-col") * 1 + (col * 1)) > columnsav) {
+		save = false;
+	}
+	if ((element.attr("data-offset-cm") * 1 + (cm * 1)) < 0) {
+		save = false;
+	}
+	if ((element.attr("data-offset-col") * 1 + (col * 1)) < 0) {
+		save = false;
+	}
+
+	var d = {
+		"ID": element.attr("data-id"),
+		"x_offset": offpage ? null : element.attr("data-offset-col"),
+		"y_offset": offpage ? null : element.attr("data-offset-cm"),
+		"offpage": offpage
+	}
+	//console.log(d);
+	//console.log(save);
+	//console.log(offpage);
+
+	var _class = "";
+	var tex = "";
+	if (save==true || offpage ==true) {
+		$.post("/app/ab/save/layout/_tetris?ID=" + d['ID'], d, function (data) {
+			data = data['data'];
+
+			if (offpage) {
+
+				loadTetris()
+			}
+			
+			
+		});
+	}
+	
+}
+
+

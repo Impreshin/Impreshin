@@ -414,3 +414,72 @@
 
 	]]>
 </script>
+
+<script type="text/x-jqote-template" id="template-tetris">
+	<![CDATA[
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Page: <%= this.page %></h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<article id="tetris-details"></article>
+			<div class="span5 offset5">
+				<div style="padding-left:20px;">
+					<div id="page-container-tetris">
+						<div id="page-area-tetris" class="connected">
+							
+							<% for (var i in this.records){ %>
+							<% if (this.records[i].x_offset!=="" && this.records[i].y_offset!==""){ %>
+							<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-offset-col="<%= this.records[i].x_offset %>" data-offset-cm="<%= this.records[i].y_offset %>" data-client="<%= this.records[i].client %>">
+								<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
+								<span class="span3"><%= this.records[i].client %></span>
+								<div class="clearfix"></div>
+							</article>
+
+							<% } %>
+							<% } %>
+							
+
+						</div>
+						<div id="grid-area-tetris"></div>
+					</div>
+
+
+
+				</div>
+			</div>
+
+				<div id="list-tetris" class="list connected">
+					<% var lis = 0; %>
+					<% for (var i in this.records){ %>
+					<% if (this.records[i].x_offset==="" || this.records[i].y_offset===""){ %>
+					<% lis = lis+1; %>
+					<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-client="<%= this.records[i].client %>">
+						<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
+						<span class="span3"><%= this.records[i].client %></span>
+						<div class="clearfix"></div>
+					</article>
+
+					<% } %>
+					<% } %>
+					
+					<% if (lis==0){ %>
+					<div class="c g">
+						no records found / all placed
+						</div>
+					<% } %>
+					
+
+
+				</div>
+		</div>
+		
+	
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn span4 pull-right"  data-dismiss="modal" aria-hidden="true">Close</a>
+	</div>
+]]>
+</script>
