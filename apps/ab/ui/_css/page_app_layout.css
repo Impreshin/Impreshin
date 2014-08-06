@@ -392,6 +392,9 @@
   margin: 3px;
   cursor: pointer;
 }
+#list-tetris article .span3 {
+  width: 210px;
+}
 #list-tetris article:hover {
   background-color: #e1e1e1;
 }
