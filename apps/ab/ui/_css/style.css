@@ -276,6 +276,30 @@
   display: table-cell;
   line-height: normal;
 }
+#ab-details-modal .advert_thumb {
+  background-color: #999;
+  position: absolute;
+  z-index: 5;
+  opacity: 0.3;
+  border: 1px solid #666;
+}
+#ab-details-modal .advert_thumb img {
+  height: 100%;
+  width: 100%;
+}
+#ab-details-modal .advert_thumb:hover {
+  z-index: 6;
+}
+#ab-details-modal .advert_thumb.active {
+  opacity: 1;
+  z-index: 7;
+  background-color: #ccc;
+  border: none;
+}
+#ab-details-modal .advert_thumb.active.multi {
+  border: 1px solid #999;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
 #settings-modal #available-columns div {
   opacity: 0.8;
   filter: alpha(opacity=80);

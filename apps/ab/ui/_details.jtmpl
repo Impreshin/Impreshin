@@ -299,14 +299,34 @@
 <div class="g s " style="position: absolute; top: -18px; left: 0;"><% if (this.material_source=='1') { %><%= this.material_production %><% } else { %>Supplied<% } %></div>
 <% } %>
 
-<div style="background-color: #e1e1e1; position:absolute; z-index:10; height: <%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.cm %>px; width: <%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>px;<% if (this.y_offset) { %>top:<%= ({{  (_pageHeight / _user['publication']['cmav'])}})* this.y_offset %>px;<% } %><% if (this.x_offset) { %>left:<%= (180 / {{ _user['publication']['columnsav'] }})*this.x_offset %>px;<% } %>">
-	<% if (this.material_file_filename && this.a.material_pane=='1') { %>
+<% var ratio_x = (180 / {{ _user['publication']['columnsav'] }}); %>
+<% var ratio_y = ({{  (_pageHeight / _user['publication']['cmav'])}}); %>
+<% var lis = 0; %>
 
-    <img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=<%= (180 / {{ _user['publication']['columnsav'] }})*this.col %>&h=<%= ({{ (((180/( _user['publication']['pagewidth'] / 100 ))*_user['publication']['cmav'])/10) }} / {{ _user['publication']['cmav'] }})* this.cm %>&s=<%= this.material_file_store %>" style="height:100%; width:100%;">
-
-    <% } %>
-</div>
-
+<% if (this.x_offset!==null && this.y_offset!==null){ %>
+	<% for (var d in this.page_details.records) { %>
+		<% if (this.page_details.records[d].x_offset!=="" && this.page_details.records[d].y_offset!==""){ %>
+			<% lis = lis + 1; %>
+			<div class="advert_thumb <% if (this.page_details.records[d].ID == this.ID) { %>active<% } %> multi" style="width: <%= (ratio_x * this.page_details.records[d].col)-2 %>px;height: <%= (ratio_y * this.page_details.records[d].cm)-2 %>px; top:<%= ratio_y * this.page_details.records[d].y_offset %>px; left:<%= ratio_x * this.page_details.records[d].x_offset %>px; ">
+				<% if (this.page_details.records[d].material_file_store) { %>
+				<img src="/app/ab/thumb/material/<%= this.page_details.records[d].ID %>/<%= this.page_details.records[d].material_file_store %>?w=<%= (ratio_x * this.page_details.records[d].col)-2 %>&h=<%= (ratio_y * this.page_details.records[d].cm)-2 %>&s=<%= this.page_details.records[d].material_file_store %>" style="height:100%; width:100%;">
+				<% } else { %>
+				
+				<% } %>
+			</div>
+		
+		<% } %>
+	
+	<% } %>
+<% } else { %>
+	<div class="advert_thumb active" style="width: <%= (ratio_x * this.col) %>px;height: <%= (ratio_y * this.cm) %>px;">
+		<% if (this.material_file_store) { %>
+		<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_store %>?w=<%= (ratio_x * this.col) %>&h=<%= (ratio_y * this.cm) %>&s=<%= this.material_file_store %>" style="height:100%; width:100%;">
+		<% } else { %>
+	
+		<% } %>
+	</div>
+<% } %>
 <% if (this.material_status!='1') { %> <img src="/ui/_images/question.png" alt="" class="material-state"> <% } else { %>
 <img src="/ui/_images/success.png" alt="" class="material-state"> <% } %>
 <div id="grid-area-details"></div>
