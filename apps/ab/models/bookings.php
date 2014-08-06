@@ -66,8 +66,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			$return['logs'] = bookings::getLogs($return['ID']);
 			$return['state'] = "";
 
-			if ($return['x_offset'])$return['x_offset'] = $return['x_offset'] + 0;
-			if ($return['y_offset'])$return['y_offset'] = $return['y_offset'] + 0;
+			if (isset($return['x_offset'])&&$return['x_offset'])$return['x_offset'] = $return['x_offset'] + 0;
+			if (isset($return['y_offset'])&&$return['y_offset'])$return['y_offset'] = $return['y_offset'] + 0;
 			
 			
 			if ($return['publish_date'] == $currentDate) {
@@ -290,8 +290,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		if (is_array($data)) {
 			$a = array();
 			foreach ($data as $item) {
-				if ($item['x_offset'])$item['x_offset'] = $item['x_offset'] + 0;
-				if ($item['y_offset'])$item['y_offset'] = $item['y_offset'] + 0;
+				if (isset($item['x_offset']) && $item['x_offset'])$item['x_offset'] = $item['x_offset'] + 0;
+				if (isset($item['y_offset']) && $item['y_offset'])$item['y_offset'] = $item['y_offset'] + 0;
 
 				$item = bookings::localization($item);
 				$showrecord = true;
