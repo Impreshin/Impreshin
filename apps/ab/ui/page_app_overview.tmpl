@@ -6,19 +6,7 @@
 					<h2 style="padding-left: 30px; margin-bottom: -5px;">Overview</h2>
 				</li>
 
-				<li class="divider-vertical"></li>
-				<li>
-					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
-						<button class="btn span1 btn-mini  {% if settings['highlight'] == "material" %}active{% endif %} " style="width:120px; margin-left: 10px;" data-highlight="material">Material Status</button>
-						<button class="btn span1 btn-mini  {% if settings['highlight'] == "material_approved" %}active{% endif %} " style="width:120px; " data-highlight="material_approved">Material Approved</button>
-						<button class="btn span1 btn-mini  {% if settings['highlight'] == "planned" %}active{% endif %} " style="width:120px; " data-highlight="planned">Bookings Planned</button>
-						
-						
-						<button class="btn span1 btn-mini  {% if settings['highlight'] == "locked" %}active{% endif %} " style="width:120px; " data-highlight="locked">Pages Locked</button>
-
-					</div>
-				</li>
-				<li class="divider-vertical"></li>
+			
 
 
 			</ul>
@@ -27,7 +15,21 @@
 
 				</ul>
 				<ul class="nav nav-pills pull-right ">
-					<li class="divider-vertical" style="margin-right: 0;"></li>
+
+					<li class="divider-vertical"></li>
+					<li>
+						<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
+							<button class="btn span1 btn-mini  {% if settings['highlight'] == "material" %}active{% endif %} " style="width:120px; margin-left: 10px;" data-highlight="material">Material Status</button>
+							<button class="btn span1 btn-mini  {% if settings['highlight'] == "material_approved" %}active{% endif %} " style="width:120px; " data-highlight="material_approved">Material Approved</button>
+							<button class="btn span1 btn-mini  {% if settings['highlight'] == "planned" %}active{% endif %} " style="width:120px; " data-highlight="planned">Bookings Planned</button>
+
+
+							<button class="btn span1 btn-mini  {% if settings['highlight'] == "locked" %}active{% endif %} " style="width:120px; " data-highlight="locked">Pages Locked</button>
+
+						</div>
+					</li>
+					<li class="divider-vertical"></li>
+					
 					<li class="dropdown pull-right">
 						<a id="reload-btn" href="javascript:void(0);" style="width:15px;"><i class="icon-refresh"></i></a>
 
