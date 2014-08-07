@@ -219,6 +219,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				ab_production.production AS material_production,
 				if (`page`,1,0) AS layout,
 				format(global_pages.page,0) AS page,
+				if(x_offset is not null and y_offset is not null,1,0) AS planned,
 				ab_inserts_types.insertsLabel AS insertLabel,
 				system_payment_methods.label AS payment_method,
 				if(ab_placing_sub.placingID=ab_bookings.placingID,ab_placing_sub.label,NULL) AS sub_placing,
@@ -239,6 +240,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		
 		$result = $f3->get("DB")->exec($sql);
 		$return = $result;
+		
+		//test_array($return); 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
 		return $return;
@@ -293,11 +296,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				if (isset($item['x_offset']) && $item['x_offset'])$item['x_offset'] = $item['x_offset'] + 0;
 				if (isset($item['y_offset']) && $item['y_offset'])$item['y_offset'] = $item['y_offset'] + 0;
 
-				$placed="0";
-				if ($item['x_offset']!==null&&$item['y_offset']!==null){
-					$placed = '1';
-				}
-				$item['planned'] = $placed;
+				
 				
 
 				$item = bookings::localization($item);

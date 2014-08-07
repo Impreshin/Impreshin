@@ -102,8 +102,9 @@ class production extends data {
 		$records = models\bookings::getAll($where, $grouping, $ordering);
 
 
-		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved"));
+		$stats = models\record_stats::stats($records,array("cm","checked","material","material_approved","planned"));
 
+		//test_array($stats); 
 
 		if ($search) {
 			$searchsql = " AND (client like '%$search%' OR ab_placing.placing like '%$search%' OR ab_marketers.marketer like '%$search%' OR ab_accounts.account like '%$search%' OR ab_accounts.accNum like '%$search%') ";

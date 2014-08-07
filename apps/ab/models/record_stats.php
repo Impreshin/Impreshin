@@ -31,6 +31,7 @@ class record_stats {
 		if (in_array("placed", $columns)) $totals['placed'] = 0;
 		if (in_array("placed_cm", $columns)) $totals['placed_cm'] = 0;
 		if (in_array("totalCost", $columns)) $totals['totalCost'] = 0;
+		if (in_array("planned", $columns)) $totals['planned'] = 0;
 
 		$lastdID_ = "";
 		$maxPages = 0;
@@ -45,6 +46,7 @@ class record_stats {
 			if (in_array("cm", $columns)) if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
 			if (in_array("checked", $columns)) if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
 			if (in_array("material", $columns)) if ($record['material']) $totals['material'] = $totals['material'] + 1;
+			if (in_array("planned", $columns)) if ($record['planned']) $totals['planned'] = $totals['planned'] + 1;
 			if (in_array("material_approved", $columns)) if ($record['material_approved']) $totals['material_approved'] = $totals['material_approved'] + 1;
 			if (in_array("layout", $columns)) if ($record['layout']) $totals['layout'] = $totals['layout'] + 1;
 			if (in_array("totalCost", $columns)) if ($record['totalCost']) $totals['totalCost'] = $totals['totalCost'] + $record['totalCost'];
@@ -100,6 +102,10 @@ class record_stats {
 		if (in_array("material", $columns)) $return['records']['material'] = array(
 			"r" => $totals["material"],
 			"p" => ($totals['records']) ? number_format((($totals["material"] / $totals["records"]) * 100), 2) : 0
+		);
+		if (in_array("planned", $columns)) $return['records']['planned'] = array(
+			"r" => $totals["planned"],
+			"p" => ($totals['records']) ? number_format((($totals["planned"] / $totals["records"]) * 100), 2) : 0
 		);
 		if (in_array("material_approved", $columns)) {
 			$t = (isset($totals["material"])) ? $totals["material"] : $totals["records"];
