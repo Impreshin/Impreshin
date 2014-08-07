@@ -58,7 +58,7 @@
 			</table>
 		</div>
 		<% if (this.percent && this.cm) { %>
-		<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+		<footer class="progress <% if (this.percent > 60){ %><% if (this.percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %> {% if _user['permissions']['layout']['plan'] %}open-tetris{% endif %}" data-page="<%= this.records[g].page %>" >
 			<div class="bar" style="width: <%= this.percent %>%;"></div>
 			<div class="text"><%= this.percent %>% | total of <%= this.cm %>{% if _user['company']['units'] == "imperial" %}in{% else %}cm{% endif %}</div>
 
@@ -120,7 +120,7 @@
 
 				</div>
 				<% if (this.pages[i].percent && this.pages[i].cm) { %>
-				<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>">
+				<footer class="progress <% if (this.pages[i].percent > 60){ %><% if (this.pages[i].percent > 80){ %>progress-danger<% } else { %>progress-warning <% } %> <% } %>  {% if _user['permissions']['layout']['plan'] %}open-tetris{% endif %}" data-page="<%= this.pages[i].records[g].page %>">
 					<div class="bar" style="width: <%= this.pages[i].percent %>%;"></div>
 					<div class="text"><%= this.pages[i].percent %>% | total of <%= this.pages[i].cm %>{% if _user['company']['units'] == "imperial" %}in{% else %}cm{% endif %}</div>
 
@@ -424,7 +424,7 @@
 
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		<h3>Page: <%= this.page %></h3>
+		<h3><% if (this.locked=='1'){ %> <i class="icon-padlock"></i> <% } %>Page: <%= this.page %> <% if (this.locked=='1'){ %> <span style="color: red;">LOCKED!</span><% } %></h3>
 	</div>
 	<div class="modal-body">
 		<div class="row">
@@ -436,7 +436,7 @@
 							
 							<% for (var i in this.records){ %>
 							<% if (this.records[i].x_offset!=="" && this.records[i].y_offset!==""){ %>
-							<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-offset-col="<%= this.records[i].x_offset %>" data-offset-cm="<%= this.records[i].y_offset %>" data-client="<%= this.records[i].client %>">
+							<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-offset-col="<%= this.records[i].x_offset %>" data-offset-cm="<%= this.records[i].y_offset %>" data-client="<%= this.records[i].client %>"   class="<% if (this.locked=='1'){ %>locked<% } %>">
 								<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
 								<span class="span3"><%= this.records[i].client %></span>
 								<div class="clearfix"></div>
@@ -460,7 +460,7 @@
 					<% for (var i in this.records){ %>
 					<% if (this.records[i].x_offset==="" || this.records[i].y_offset===""){ %>
 					<% lis = lis+1; %>
-					<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-client="<%= this.records[i].client %>">
+					<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-client="<%= this.records[i].client %>"  class="<% if (this.locked=='1'){ %>locked<% } %>">
 						<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
 						<span class="span3"><%= this.records[i].client %></span>
 						<div class="clearfix"></div>

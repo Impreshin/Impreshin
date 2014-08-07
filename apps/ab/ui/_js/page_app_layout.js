@@ -23,9 +23,9 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", ".pages .progress", function (e) {
+	$(document).on("click", ".open-tetris", function (e) {
 		$("#modal-tetris").html("").modal("show");
-		$.bbq.pushState({page: $(this).closest(".pages").attr("data-page")});
+		$.bbq.pushState({page: $(this).attr("data-page")});
 		loadTetris();
 	});
 	$(document).on('hide', '#modal-tetris', function () {
@@ -679,6 +679,7 @@ function loadTetris() {
 				stack: "#page-area-tetris article",
 				revert: 0,
 				tolerance: 'pointer',
+				items:'article:not(.locked)',
 				helper: function (e) {
 					var $target = $(e.target).closest("article");
 					

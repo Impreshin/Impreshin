@@ -103,7 +103,9 @@ class layout extends save {
 
 
 		$values=array(
-			"pageID"=> $pageID
+			"pageID"=> $pageID,
+		    "x_offset"=>null,
+		    "y_offset"=>null,
 		);
 
 		$record = new models\bookings();

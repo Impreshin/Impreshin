@@ -85,7 +85,6 @@
   right: -10px;
 }
 .pages footer.progress {
-  cursor: pointer;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -104,6 +103,9 @@
   bottom: 0;
   text-align: center;
   font-size: 9px;
+}
+.pages footer.progress.open-tetris {
+  cursor: pointer;
 }
 .pages footer.progress .bar {
   -moz-opacity: 0.3;
@@ -432,15 +434,17 @@
   height: 100px;
   border: 1px solid #444;
 }
-#page-area-tetris:hover > article {
-  opacity: 0.5;
-  filter: alpha(opacity=50);
+#page-area-tetris article.locked {
+  cursor: default;
 }
-#page-area-tetris:hover > .donthighlighthovered {
-  opacity: 1;
-  filter: alpha(opacity=100);
+#page-area-tetris > article:not(.locked):hover {
+  box-shadow: 0 0 5px rgba(100, 100, 100, 0.8);
 }
-#page-area-tetris > article:hover {
-  opacity: 1;
-  filter: alpha(opacity=100);
+#list-tetris article.locked {
+  background-color: #fff;
+  color: #999;
+  cursor: default;
+}
+#list-tetris article.locked:hover {
+  background-color: #fff;
 }

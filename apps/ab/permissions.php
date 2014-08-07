@@ -59,7 +59,8 @@ class permissions {
 			"layout"         => array(
 				"page"      => 0,
 				"pagecount" => 0,
-				"editpage"  => 0
+				"editpage"  => 0,
+				"plan"  => 0
 			),
 			"overview"       => array(
 				"page" => 0
@@ -224,7 +225,8 @@ class permissions {
 			"layout"         => array(
 				"page"      => "the user will have access to the layout page. this includes the user being able to 'plan' adverts onto pages",
 				"pagecount" => "Allows this user to set how many pages the edition will be",
-				"editpage"  => "When ticked the user can change the page settings like colour / section etc"
+				"editpage"  => "When ticked the user can change the page settings like colour / section etc",
+				"plan"  => "When ticked the user can open the tetris window to plan adverts into their placed on a page"
 			),
 			"overview"       => array(
 				"page" => "The user will have access to view the overview page"
