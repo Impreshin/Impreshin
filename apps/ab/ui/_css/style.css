@@ -293,7 +293,7 @@
 }
 #ab-details-modal .advert_thumb.active {
   opacity: 1;
-  z-index: 7;
+  z-index: 16;
   background-color: #ccc;
   border: none;
 }
