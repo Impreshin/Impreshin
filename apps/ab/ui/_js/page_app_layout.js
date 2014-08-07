@@ -24,7 +24,7 @@ $(document).ready(function () {
 
 	});
 	$(document).on("click", ".pages .progress", function (e) {
-		$("#modal-tetris").modal("show");
+		$("#modal-tetris").html("").modal("show");
 		$.bbq.pushState({page: $(this).closest(".pages").attr("data-page")});
 		loadTetris();
 	});

@@ -24,6 +24,7 @@ class settings {
 		 *  m => "minimum width",
 		 *  mw => "maximum width",
 		 *  w => "width",
+		 *  sz => "show zero true/false",
 		 * )
 		 */
 		
@@ -198,7 +199,25 @@ class settings {
 			"page"               => array(
 				"h"=> "Page",
 			),
-
+			"placed"           => array(
+				"o"=> "(x_offset + y_offset)",
+				"h"=> "Placed",
+				"w"=>40,
+			    "b"=>"1",
+			    "d" => "Shows if the booking has been placed in tetris",
+			),
+			"x_offset"           => array(
+				"h"=> "Offset&nbsp;(X)",
+				"w"=>50,
+				"d" => "Columns offset from being placed",
+			    "sz"=>true
+			),
+			"y_offset"           => array(
+				"h"=> "Offset&nbsp;(Y)",
+				"w"=>50,
+				"d" => "CM/Inches offset from being placed",
+				"sz"=>true
+			),
 			"deleted"               => array(
 				"h"=> "Deleted",
 				"b"=> true

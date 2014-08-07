@@ -142,6 +142,12 @@ class layout extends data {
 
 		$bookings = array();
 		foreach ($bookingsRaw as $booking){
+			
+			$placed="0";
+			if ($booking['x_offset']!==null&&$booking['y_offset']!==null){
+				$placed = '1';
+			}
+			
 			if ($booking['pageID']) {
 				$a = array();
 				$a['ID'] = $booking['ID'];
@@ -154,6 +160,7 @@ class layout extends data {
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
+				$a['placed'] = $placed;
 
 				$bookings[$booking['pageID']][] = $a;
 			}
@@ -371,6 +378,11 @@ class layout extends data {
 		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
 		$bookings = array();
 		foreach ($bookingsRaw as $booking) {
+			$placed="0";
+			if ($booking['x_offset']!==null&&$booking['y_offset']!==null){
+				$placed = '1';
+			}
+			
 			if ($booking['pageID'] == $pageID) {
 				$a = array();
 				$a['ID'] = $booking['ID'];
@@ -384,6 +396,7 @@ class layout extends data {
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
 				$a['material_status'] = $booking['material_status'];
+				$a['placed'] = $placed;
 
 				$bookings[] = $a;
 			}
@@ -482,6 +495,13 @@ class layout extends data {
 		$records = 0;
 		foreach ($bookingsRaw as $booking) {
 			//test_array($booking); 
+
+			$placed="0";
+			if ($booking['x_offset']!==null&&$booking['y_offset']!==null){
+				$placed = '1';
+			}
+			
+			
 				$a = array();
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
@@ -499,6 +519,7 @@ class layout extends data {
 				$a['material_file_store'] = $booking['material_file_store'];
 				$a['x_offset'] = $booking['x_offset']?$booking['x_offset']+0:"";
 				$a['y_offset'] = $booking['y_offset']?$booking['y_offset']+0:"";
+				$a['placed'] = $placed;
 
 				$bookings[] = $a;
 			if ($a['cm']) $cm = $cm + $a['totalspace'] + 0;
