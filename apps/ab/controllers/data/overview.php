@@ -66,6 +66,12 @@ class overview extends data {
 					"p" => 0,
 					"t" => 0
 				),
+				"planned"         => array(
+					"y"=> 0,
+					"n"=> 0,
+					"p"=>0,
+					"t"=>0
+				),
 				"bar"=> array(
 					"y" => 0,
 					"n" => 0,
@@ -90,6 +96,7 @@ class overview extends data {
 		);
 
 
+		//test_array($bookingsRaw); 
 
 
 		$bookings = array();
@@ -99,13 +106,17 @@ class overview extends data {
 				$a['ID'] = $booking['ID'];
 				$a['client'] = $booking['client'];
 				$a['colour'] = $booking['colour'];
-				$a['col'] = $booking['col'];
-				$a['cm'] = $booking['cm'];
-				$a['totalspace'] = $booking['totalspace'];
+				$a['col'] = $booking['col']+0;
+				$a['cm'] = $booking['cm']+0;
+				$a['totalspace'] = $booking['totalspace']+0;
 				$a['pageID'] = $booking['pageID'];
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
+				$a['planned'] = $booking['planned'];
+				$a['material_file_store'] = $booking['material_file_store'];
+				$a['x_offset'] = $booking['x_offset']?$booking['x_offset']+0:"";
+				$a['y_offset'] = $booking['y_offset']?$booking['y_offset']+0:"";
 
 				$bookings[$booking['pageID']][] = $a;
 			}
@@ -136,16 +147,34 @@ class overview extends data {
 				} else {
 					$stats['records']['material']['n']++;
 				}
+				if ($record['planned']){
+					$stats['records']['planned']['y']++;
+					
+				} else {
+					$stats['records']['planned']['n']++;
+				}
+				
+				
 
 
 			}
+			$stats['records']['records'] = $records;
 			$stats['records']['total']=count($records);
 			$h = "";
 
 			if ($stats['records']['total'] && $stats['records']['material']['y']) {
 				$stats['records']['material']['p'] = number_format(($stats['records']['material']['y'] / $stats['records']['total']) * 100, 2);
 			}
+			if ($stats['records']['total'] && $stats['records']['planned']['y']) {
+				$stats['records']['planned']['p'] = number_format(($stats['records']['planned']['y'] / $stats['records']['total']) * 100, 2);
+			}
+			
+			
+			
 			$stats['records']['material']['t'] = $stats['records']['total'];
+			$stats['records']['planned']['t'] = $stats['records']['total'];
+			
+			
 			if ($stats['records']['material']['t'] && $stats['records']['material_approved']['y']) {
 				$stats['records']['material_approved']['p'] = number_format(($stats['records']['material_approved']['y'] / $stats['records']['material']['y']) * 100, 2);
 			}
@@ -166,6 +195,13 @@ class overview extends data {
 					if (!$stats['records']['material_approved']['n'] && $stats['records']['material_approved']['y']) $h = "yes";
 					$stats['records']['bar'] = $stats['records']['material_approved'];
 					break;
+				case "planned":
+					if ($stats['records']['planned']['n']) $h = "no";
+					if (!$stats['records']['planned']['n'] && $stats['records']['planned']['y']) $h = "yes";
+					$stats['records']['bar'] = $stats['records']['planned'];
+
+					break;
+				
 				case "locked":
 					if ($page['locked']=='1') $h = "no";
 					$stats['records']['bar'] = array(
@@ -353,6 +389,7 @@ class overview extends data {
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
+				$a['planned'] = $booking['planned'];
 
 				$bookings[] = $a;
 			}
@@ -387,13 +424,13 @@ class overview extends data {
 				if ($item['checked']=='1') $statsData[] = $item;
 			}
 			$loading = models\loading::getLoading($pID, $layoutcm, $currentDate['pages']);
-			$stats = models\record_stats::stats($statsData,array("cm","placed","placed_cm"), $loading['pages']);
+			$stats = models\record_stats::stats($statsData,array("cm","placed","placed_cm","planned"), $loading['pages']);
 			$stats['loading'] = $loading;
 
 		} else {
 			$stats = models\record_stats::stats($data,array("cm"));
 			$loading = models\loading::getLoading($pID, $stats['cm'], $currentDate['pages']);
-			$stats = models\record_stats::stats($data,array("cm","placed","placed_cm"), $loading['pages']);
+			$stats = models\record_stats::stats($data,array("cm","placed","placed_cm","planned"), $loading['pages']);
 			$stats['loading'] = $loading;
 		}
 

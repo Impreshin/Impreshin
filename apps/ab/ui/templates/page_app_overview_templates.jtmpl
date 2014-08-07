@@ -9,10 +9,13 @@
 <script type="text/x-jqote-template" id="template-spreads">
 	<![CDATA[
 
+	<% var ratio_x = (97 / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = ({{  (_pageWidth / _user['publication']['cmav'])}}); %>
+
 	<section class="spread <%= this.side %>">
 		<% for(var i in this.pages) { %>
 		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> highlight-<%= this.pages[i].highlight %>" data-page="<%= this.pages[i].page %>">
-		<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 97px; height: {{ _pageWidth }}px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
+		<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 97px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
 
 			<% if(this.pages[i].section.c) { %>
 			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
@@ -22,76 +25,44 @@
 
 			</header>
 			<div>
-				<!--
-				<table>
-					<tr>
-						<td colspan="2">
-							<h5>Records </h5>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<h5>Material</h5>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<i class="icon-ok icon-grey"></i><%= this.pages[i].stats.records.material.y %>
-						</td>
-						<td>
-							<i class="icon-remove icon-grey"></i><%= this.pages[i].stats.records.material.n %>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<h6>Material Approved</h6>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<i class="icon-ok icon-grey"></i><%= this.pages[i].stats.records.material_approved.y %>
-						</td>
-						<td>
-							<i class="icon-remove icon-grey"></i><%= this.pages[i].stats.records.material_approved.n %>
-						</td>
-					</tr>
-				</table>
 
--->
 
+
+				<% for (var d in this.pages[i].stats.records.records) { %>
+					<% if (this.pages[i].stats.records.records[d].planned=="1"){ %>
+
+				<div class="advert_thumb" style="width: <%= (ratio_x * this.pages[i].stats.records.records[d].col)-2 %>px;height: <%= (ratio_y * this.pages[i].stats.records.records[d].cm)-2 %>px; top:<%= ratio_y * this.pages[i].stats.records.records[d].y_offset %>px; left:<%= ratio_x * this.pages[i].stats.records.records[d].x_offset %>px; " title="<%= this.pages[i].stats.records.records[d].col %> x <%= this.pages[i].stats.records.records[d].cm %> | <%= this.pages[i].stats.records.records[d].client %>">
+					<% if (this.pages[i].stats.records.records[d].material_file_store) { %>
+					<img src="/app/ab/thumb/material/<%= this.pages[i].stats.records.records[d].ID %>/<%= this.pages[i].stats.records.records[d].material_file_store %>?w=<%= (ratio_x * this.pages[i].stats.records.records[d].col)-2 %>&h=<%= (ratio_y * this.pages[i].stats.records.records[d].cm)-2 %>&s=<%= this.pages[i].stats.records.records[d].material_file_store %>" style="height:100%; width:100%;">
+					<% } else { %>
+
+					<% } %>
+				</div>
+				
+
+					<% } %>
+				<% } %>
+				
+				
 
 
 				<% if (this.pages[i].stats.records.bar.n) { %>
-				<div class="progress progress-info progress-striped" style="position:absolute; top:0; left:0; right:0; bottom:0;">
+				<div class="progress progress-info" style="position:absolute; top:0; bottom:0;">
 					<div class="bar" style="height: <%= this.pages[i].stats.records.bar.p %>%;"></div>
-					<div class="text">
-
-						<div class="vals">
-							<strong><%= this.pages[i].stats.records.bar.y %>
-								<span class="dg f13"> of </span> <%= this.pages[i].stats.records.bar.t %> </strong></div>
-
-					</div>
+					
+					
 				</div>
 				<% } %>
-				<!--
-<% if (this.pages[i].stats.records.material_approved.n) { %>
-				<div class="progress">
-					<div class="bar" style="width: <%= this.pages[i].stats.records.material_approved.p %>%;"></div>
-					<div class="text">
-						<small>Approved: </small>
-						<strong><%= this.pages[i].stats.records.material_approved.y %>
-							<span class="g"> of </span> <%= this.pages[i].stats.records.material.y %> </strong>
-					</div>
-				</div>
-				<% } %>
--->
-
+				
 
 
 
 			</div>
+			
 			<% if (this.pages[i].stats.records.total > 0) { %>
-			<div class="record-count"> <%= this.pages[i].stats.records.total %><br><div class="label">Record<% if (this.pages[i].stats.records.total > 1) { %>s<% } %></div></div>
+			<div class="record-count"> <strong><%= this.pages[i].stats.records.bar.y %>
+					<span class="dg"> of </span>  <%= this.pages[i].stats.records.total %></strong>
+			</div>
 			<% } %>
 
 			<% if(this.pages[i].colour.icons) { %>
@@ -105,7 +76,7 @@
 
 			</div>
 			<% } %>
-
+			
 		</article>
 	</div>
 
@@ -164,6 +135,7 @@
 
 				<th>Colour</th>
 				<th>Material</th>
+				<th>Planned</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -180,6 +152,12 @@
 				<td style="width: 20px;" class="c">
 					<% if (this.records[i].material_status=='1'){ %>
 					<i class="icon-ok <% if(this.records[i].material_approved!='1') { %>icon-grey<% } %>"></i> <% } else { %>
+					<i class="icon-remove icon-l-grey"></i> <% } %>
+				</td>
+				<td style="width: 20px;" class="c">
+					<% if (this.records[i].planned=='1'){ %>
+					<i class="icon-ok "></i> 
+					<% } else { %>
 					<i class="icon-remove icon-l-grey"></i> <% } %>
 				</td>
 

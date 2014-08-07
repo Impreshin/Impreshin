@@ -41,6 +41,11 @@ $(document).ready(function () {
 		$.bbq.pushState({"page": ID});
 		getPageDetails();
 	});
+	$(document).on('hide', '#page-details-modal', function () {
+		$.bbq.removeState("page");
+		
+	});
+	
 
 	load_pages();
 });
