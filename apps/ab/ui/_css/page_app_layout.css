@@ -393,9 +393,19 @@
   border: 1px solid #ccc;
   margin: 3px;
   cursor: pointer;
+  display: table-row;
+}
+#list-tetris article .span1 {
+  display: table-cell;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
 #list-tetris article .span3 {
-  width: 210px;
+  width: 200px;
+  display: table-cell;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  margin-left: -10px;
 }
 #list-tetris article:hover {
   background-color: #e1e1e1;

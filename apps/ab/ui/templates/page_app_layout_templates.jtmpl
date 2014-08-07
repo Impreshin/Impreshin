@@ -299,6 +299,9 @@
 		</div>
 	</article>
 	<footer class="footer">
+		{% if _user['permissions']['layout']['plan'] %}
+		<button class="btn btn-mini span5 open-tetris " data-page="<%= this.page %>" style="margin-left:0; margin-bottom: 5px; " type="button">Plan Pane</button>
+		{% endif %}
 		<button class="btn btn-mini span5 close-right-over " style="margin-left:0; " type="button">&gt; Back to list &lt;</button>
 		<div class="clearfix"></div>
 		<% if (this.a.edit){ %>
