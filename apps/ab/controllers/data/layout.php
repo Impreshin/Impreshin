@@ -160,7 +160,7 @@ class layout extends data {
 				$a['page'] = $booking['page'];
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
-				$a['placed'] = $placed;
+				$a['planned'] = $placed;
 
 				$bookings[$booking['pageID']][] = $a;
 			}
@@ -396,7 +396,7 @@ class layout extends data {
 				$a['material'] = $booking['material'];
 				$a['material_approved'] = $booking['material_approved'];
 				$a['material_status'] = $booking['material_status'];
-				$a['placed'] = $placed;
+				$a['planned'] = $placed;
 
 				$bookings[] = $a;
 			}
@@ -519,7 +519,7 @@ class layout extends data {
 				$a['material_file_store'] = $booking['material_file_store'];
 				$a['x_offset'] = $booking['x_offset']?$booking['x_offset']+0:"";
 				$a['y_offset'] = $booking['y_offset']?$booking['y_offset']+0:"";
-				$a['placed'] = $placed;
+				$a['planned'] = $placed;
 
 				$bookings[] = $a;
 			if ($a['cm']) $cm = $cm + $a['totalspace'] + 0;

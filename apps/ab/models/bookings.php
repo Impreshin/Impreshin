@@ -297,7 +297,7 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 				if ($item['x_offset']!==null&&$item['y_offset']!==null){
 					$placed = '1';
 				}
-				$item['placed'] = $placed;
+				$item['planned'] = $placed;
 				
 
 				$item = bookings::localization($item);

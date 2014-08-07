@@ -47,8 +47,7 @@
 					</td>
 
 					<td>
-						<% if (this.records[g].placed=='1'){ %><span title="Booking has been planned on the page">*</span><% } %>
-
+						<% if (this.records[g].planned=='1'){ %><span title="Booking has been planned">*</span><% } %>
 						<%= this.records[g].client %>
 					</td>
 
@@ -109,7 +108,7 @@
 							</td>
 
 							<td>
-								<% if (this.pages[i].records[g].placed=='1'){ %><span title="Booking has been planned on the page">*</span><% } %>
+								<% if (this.pages[i].records[g].planned=='1'){ %><span title="Booking has been planned">*</span><% } %>
 								<%= this.pages[i].records[g].client %>
 							</td>
 
@@ -436,7 +435,7 @@
 						<div id="page-area-tetris" class="connected">
 							
 							<% for (var i in this.records){ %>
-							<% if (this.records[i].placed=='1'){ %>
+							<% if (this.records[i].x_offset!=="" && this.records[i].y_offset!==""){ %>
 							<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-offset-col="<%= this.records[i].x_offset %>" data-offset-cm="<%= this.records[i].y_offset %>" data-client="<%= this.records[i].client %>">
 								<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
 								<span class="span3"><%= this.records[i].client %></span>
@@ -459,7 +458,7 @@
 				<div id="list-tetris" class="list connected">
 					<% var lis = 0; %>
 					<% for (var i in this.records){ %>
-					<% if (this.records[i].placed!='1'){ %>
+					<% if (this.records[i].x_offset==="" || this.records[i].y_offset===""){ %>
 					<% lis = lis+1; %>
 					<article data-cm="<%= this.records[i].cm %>" data-col="<%= this.records[i].col %>" data-id="<%= this.records[i].ID %>" data-rollover="<%= this.records[i].client %>" data-img="<%= this.records[i].material_file_store||'' %>" data-client="<%= this.records[i].client %>">
 						<span class="span1"><%= this.records[i].col %>x<%= this.records[i].cm %></span>
@@ -472,7 +471,7 @@
 					
 					<% if (lis==0){ %>
 					<div class="c g">
-						no records found / all placed
+						no records found / all planned
 						</div>
 					<% } %>
 					

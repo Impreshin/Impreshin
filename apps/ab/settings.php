@@ -199,12 +199,12 @@ class settings {
 			"page"               => array(
 				"h"=> "Page",
 			),
-			"placed"           => array(
+			"planned"           => array(
 				"o"=> "(x_offset + y_offset)",
-				"h"=> "Placed",
+				"h"=> "Planned",
 				"w"=>40,
 			    "b"=>"1",
-			    "d" => "Shows if the booking has been placed in tetris",
+			    "d" => "Shows if the booking has been planned in tetris",
 			),
 			"x_offset"           => array(
 				"h"=> "Offset&nbsp;(X)",

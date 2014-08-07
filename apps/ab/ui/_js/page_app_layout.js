@@ -468,7 +468,7 @@ function page_droppable($element) {
 				if (draggedColour == 'null' || draggedColour == 'undefined') {
 
 				} else {
-					console.log("hmm");
+					//console.log("hmm");
 					if (limit.indexOf(draggedColour) < 0) {
 						allowDrop = false;
 
