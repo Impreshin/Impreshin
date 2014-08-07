@@ -223,8 +223,8 @@
   bottom: 33px;
 }
 #ab-details-modal #details-advert-size .material-state {
-  opacity: 0.2;
-  filter: alpha(opacity=20);
+  opacity: 0.3;
+  filter: alpha(opacity=30);
   position: absolute;
   bottom: 0;
   margin-left: -64px;
