@@ -449,7 +449,8 @@ class settings {
 
 				),
 				"overview"=>array(
-					"highlight"=>"material"
+					"highlight"=>"material",
+				    "zoom"=>"3"
 				),
 
 				"form"=>array(

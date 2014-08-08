@@ -3,24 +3,28 @@
 
 
 {% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
-{% set _pageWidth = (_user['publication']['cmav'] / _pubPageWidth) * 97 %}
+
 
 
 <script type="text/x-jqote-template" id="template-spreads">
 	<![CDATA[
 
-	<% var ratio_x = (97 / {{ _user['publication']['columnsav'] }}); %>
-	<% var ratio_y = ({{  (_pageWidth / _user['publication']['cmav'])}}); %>
+	<% var width = this.size; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth)   }} * width) / {{ _user['publication']['cmav'] }}); %>
 
-	<section class="spread <%= this.side %>">
-		<% for(var i in this.pages) { %>
-		<div id="page-<%= this.pages[i].page %>" class="pages <%= this.pages[i].side %> highlight-<%= this.pages[i].highlight %>" data-page="<%= this.pages[i].page %>">
-		<article style="<% if (this.pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: 97px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.pages[i].cm %>" data-colour="<%= this.pages[i].colour %>">
+	
+			
+	<% for (var s in this.spreads){ %>
+	<section class="spread <%= this.spreads[s].side %>" style="width:<%= (width * 2) + 19 %>px;">
+		<% for(var i in this.spreads[s].pages) { %>
+		<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
+		<article style="<% if (this.spreads[s].pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.spreads[s].pages[i].cm %>" data-colour="<%= this.spreads[s].pages[i].colour %>">
 
-			<% if(this.pages[i].section.c) { %>
-			<div class="page_section" style="background-color:<%= this.pages[i].section.c %>;" title="<%= this.pages[i].section.n %>" data-id="<%= this.pages[i].section.i %>"></div>
+			<% if(this.spreads[s].pages[i].section.c) { %>
+			<div class="page_section" style="background-color:<%= this.spreads[s].pages[i].section.c %>;" title="<%= this.spreads[s].pages[i].section.n %>" data-id="<%= this.spreads[s].pages[i].section.i %>"></div>
 			<% } %>
-			<div class="pagenr" data-page="<%= this.pages[i].page %>"><%= this.pages[i].page %></div>
+			<div class="pagenr" data-page="<%= this.spreads[s].pages[i].page %>"><%= this.spreads[s].pages[i].page %></div>
 			<header>
 
 			</header>
@@ -28,12 +32,12 @@
 
 
 
-				<% for (var d in this.pages[i].stats.records.records) { %>
-					<% if (this.pages[i].stats.records.records[d].planned=="1"){ %>
+				<% for (var d in this.spreads[s].pages[i].stats.records.records) { %>
+					<% if (this.spreads[s].pages[i].stats.records.records[d].planned=="1"){ %>
 
-				<div class="advert_thumb" style="width: <%= (ratio_x * this.pages[i].stats.records.records[d].col)-2 %>px;height: <%= (ratio_y * this.pages[i].stats.records.records[d].cm)-2 %>px; top:<%= ratio_y * this.pages[i].stats.records.records[d].y_offset %>px; left:<%= ratio_x * this.pages[i].stats.records.records[d].x_offset %>px; " title="<%= this.pages[i].stats.records.records[d].col %> x <%= this.pages[i].stats.records.records[d].cm %> | <%= this.pages[i].stats.records.records[d].client %>">
-					<% if (this.pages[i].stats.records.records[d].material_file_store) { %>
-					<img src="/app/ab/thumb/material/<%= this.pages[i].stats.records.records[d].ID %>/<%= this.pages[i].stats.records.records[d].material_file_store %>?w=<%= (ratio_x * this.pages[i].stats.records.records[d].col)-2 %>&h=<%= (ratio_y * this.pages[i].stats.records.records[d].cm)-2 %>&s=<%= this.pages[i].stats.records.records[d].material_file_store %>" style="height:100%; width:100%;">
+				<div class="advert_thumb" style="width: <%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>px;height: <%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>px; top:<%= ratio_y * this.spreads[s].pages[i].stats.records.records[d].y_offset %>px; left:<%= ratio_x * this.spreads[s].pages[i].stats.records.records[d].x_offset %>px; " title="<%= this.spreads[s].pages[i].stats.records.records[d].col %> x <%= this.spreads[s].pages[i].stats.records.records[d].cm %> | <%= this.spreads[s].pages[i].stats.records.records[d].client %>">
+					<% if (this.spreads[s].pages[i].stats.records.records[d].material_file_store) { %>
+					<img src="/app/ab/thumb/material/<%= this.spreads[s].pages[i].stats.records.records[d].ID %>/<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>?w=<%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>&h=<%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>&s=<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>" style="height:100%; width:100%;">
 					<% } else { %>
 
 					<% } %>
@@ -46,9 +50,9 @@
 				
 
 
-				<% if (this.pages[i].stats.records.bar.n) { %>
+				<% if (this.spreads[s].pages[i].stats.records.bar.n) { %>
 				<div class="progress progress-info" style="position:absolute; top:0; bottom:0;">
-					<div class="bar" style="height: <%= this.pages[i].stats.records.bar.p %>%;"></div>
+					<div class="bar" style="height: <%= this.spreads[s].pages[i].stats.records.bar.p %>%;"></div>
 					
 					
 				</div>
@@ -59,18 +63,18 @@
 
 			</div>
 			
-			<% if (this.pages[i].stats.records.total > 0) { %>
-			<div class="record-count"> <strong><%= this.pages[i].stats.records.bar.y %>
-					<span class="dg"> of </span>  <%= this.pages[i].stats.records.total %></strong>
+			<% if (this.spreads[s].pages[i].stats.records.total > 0) { %>
+			<div class="record-count"> <strong><%= this.spreads[s].pages[i].stats.records.bar.y %>
+					<span class="dg"> of </span>  <%= this.spreads[s].pages[i].stats.records.total %></strong>
 			</div>
 			<% } %>
 
-			<% if(this.pages[i].colour.icons) { %>
+			<% if(this.spreads[s].pages[i].colour.icons) { %>
 			<div class="page_colour">
-				<img src="/ui/_images/ab/<%= this.pages[i].colour.icons %>.png" alt="" width="20">
+				<img src="/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>.png" alt="" width="20">
 
 			</div>
-			<% } %> <% if(this.pages[i].locked=='1') { %>
+			<% } %> <% if(this.spreads[s].pages[i].locked=='1') { %>
 			<div class="page_locked">
 				<i class="icon-lock icon-d-grey"></i>
 
@@ -81,7 +85,10 @@
 	</div>
 
 	<% } %>
+	
 	</section>
+	
+	<% } %>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-spreads-bottom">

@@ -37,12 +37,26 @@ class overview extends data {
 			$highlight = $defaults['overview']['heighlight'];
 		}
 
+
+		$zoom = $settings['zoom'];
+		if (!$zoom){
+			$zoom = $defaults['overview']['heighlight'];
+		}
+		$zoom_change = isset($_GET['zoom'])? $_GET['zoom']: "";
+		
+		if ($zoom_change){
+			$zoom = $zoom + $zoom_change;
+		}
+		
+		
+
 		$editionPages = $stats['loading']['pages'];
 
 
 		$values = array();
 		$values["overview"] = array(
 			"highlight"    => $highlight,
+			"zoom"    => $zoom,
 		);
 
 
@@ -314,11 +328,53 @@ class overview extends data {
 		$spread = $a;
 
 		$pages = array();
+		
 		$pages["spreads"] = $spread;
 		$pages["count"] = $pagesCount;
 
+	
+		$size = "";
+		$plus = true;
+		$minus = true;
+		switch($zoom){
+			case "1":
+				$size = "61";
+				$minus = false;
+				break;
+			case "2":
+				$size = "76";
+				break;
+			case "3":
+				$size = "97";
+				break;
+			case "4":
+				$size = "137";
+				break;
+			case "5":
+				$size = "213";
+				break;
+			case "6":
+				$size = "415";
+				$plus = false;
+				break;
+			default: 
+				$zoom = "3";
+				$size = "97";
+				
+		}
+		
+		
+		
+		
+		
 
 		$return = $pages;
+		$return['zoom'] = array(
+			"p"=>$plus,
+		    "m"=>$minus,
+		    "z"=>$zoom
+		);
+		$return['size'] = $size;
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
 		$return['stats'] = $stats;

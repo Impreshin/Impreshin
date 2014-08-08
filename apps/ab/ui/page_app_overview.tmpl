@@ -11,8 +11,16 @@
 
 			</ul>
 			<div class="pull-right">
-				<ul class="nav nav-pills pull-left" id="provisional-stats-bar">
+				<ul class="nav nav-pills pull-left">
+					<li class="divider-vertical"></li>
+					<li>
+						<div class="btn-group"  id="list-zoom-btns">
+							<button class="btn span1 btn-mini" style="" data-zoom="+1"><i class="icon-zoom-in"></i></button>
+							<button class="btn span1 btn-mini" style="" data-zoom="-1"><i class="icon-zoom-out"></i></button>
+							
+							</div>
 
+					</li>
 				</ul>
 				<ul class="nav nav-pills pull-right ">
 
@@ -25,6 +33,8 @@
 
 
 							<button class="btn span1 btn-mini  {% if settings['highlight'] == "locked" %}active{% endif %} " style="width:120px; " data-highlight="locked">Pages Locked</button>
+						
+							<!--	<button class="btn span1 btn-mini  {% if settings['highlight'] == "fullpage" %}active{% endif %} " style="width:120px; " data-highlight="fullpage">Complete Pages</button>-->
 
 						</div>
 					</li>
