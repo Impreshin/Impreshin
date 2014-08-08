@@ -134,7 +134,8 @@ class layout extends data {
 
 			),
 			"colour" => "",
-			"colour_l" => ""
+			"colour_l" => "",
+			"pdf" => ""
 		);
 
 
@@ -214,6 +215,7 @@ class layout extends data {
 				"colour" => $colour,
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm']+0,
+				"pdf"     => $page['pdf'],
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
 			);
 		}

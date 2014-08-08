@@ -250,6 +250,10 @@ class overview extends data {
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"pdf"   => $page['pdf'],
+				"dID"   => $page['dID'],
+				"pID"   => $page['pID'],
+				"cID"   => $page['cID'],
 				"locked"   => $page['locked'],
 				"highlight"   => $h,
 				"section"=> array(
@@ -375,6 +379,7 @@ class overview extends data {
 		    "z"=>$zoom
 		);
 		$return['size'] = $size;
+		$return['highlight'] = $highlight;
 		$return['date'] = $currentDate['publish_date_display'];
 		$return['dID'] = $currentDate['ID'];
 		$return['stats'] = $stats;

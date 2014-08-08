@@ -170,6 +170,41 @@ class layout extends save {
 
 		return $GLOBALS["output"]['data'] = $data;
 	}
+	function _upload_page(){
+		$user = $this->f3->get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : "";
+		$pID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
+		$filename = isset($_REQUEST['filename']) ? $_REQUEST['filename'] : "";
 
+		$pID = $user['pID'];
+		
+
+		if ($page && ($page != "remove") ){
+			$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_pages");
+			$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
+			if ($a->dry()) {
+				$a->pID = $pID;
+				$a->dID = $dID;
+				$a->page = $page;
+				$a->pdf = $filename;
+				$a->save();
+
+				$pageID = $a->_id;
+			} else {
+				$a->pdf = $filename;
+				$a->save();
+				$pageID = $a->ID;
+			}
+		} else {
+			$pageID = NULL;
+		}
+
+
+
+		return $GLOBALS["output"]['data'] = $pageID;
+
+	}
 
 }

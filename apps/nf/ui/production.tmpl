@@ -28,8 +28,11 @@
 	            </ul>
                 <ul class="nav nav-pills pull-right ">
                     <li class="divider-vertical" style="margin-right: 0;"></li>
+	                <li>
+		                <button class="btn span1 btn-mini" style="margin-top:2px;" rel="tooltip" title="Upload full page PDF" data-placement="bottom" id="btn-page-upload" ><i class="icon-upload"></i></button>
 
-
+	                </li>
+	                <li class="divider-vertical" style="margin-right: 0;"></li>
                     <li class="dropdown pull-right">
                         <a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
                         <ul class="dropdown-menu" id="record-settings" role="menu">
@@ -111,3 +114,6 @@
 
 <input type="hidden" id="use-pID" name="use-pID" value="{{ _user['publication']['ID'] }}" />
 <input type="hidden" id="use-dID" name="use-dID" />
+
+
+<div id='modal-upload-page' class='modal hide fade wide'></div>

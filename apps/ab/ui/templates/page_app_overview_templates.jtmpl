@@ -18,7 +18,7 @@
 	<% for (var s in this.spreads){ %>
 	<section class="spread <%= this.spreads[s].side %>" style="width:<%= (width * 2) + 19 %>px;">
 		<% for(var i in this.spreads[s].pages) { %>
-		<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
+		<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %> <% if (this.highlight=="fullpage") { %><% if (this.spreads[s].pages[i].pdf) { %>highlight-yes<% } else { %>highlight-no<% } %><% } %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
 		<article style="<% if (this.spreads[s].pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.spreads[s].pages[i].cm %>" data-colour="<%= this.spreads[s].pages[i].colour %>">
 
 			<% if(this.spreads[s].pages[i].section.c) { %>
@@ -31,23 +31,31 @@
 			<div>
 
 
-
-				<% for (var d in this.spreads[s].pages[i].stats.records.records) { %>
-					<% if (this.spreads[s].pages[i].stats.records.records[d].planned=="1"){ %>
-
-				<div class="advert_thumb" style="width: <%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>px;height: <%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>px; top:<%= ratio_y * this.spreads[s].pages[i].stats.records.records[d].y_offset %>px; left:<%= ratio_x * this.spreads[s].pages[i].stats.records.records[d].x_offset %>px; " title="<%= this.spreads[s].pages[i].stats.records.records[d].col %> x <%= this.spreads[s].pages[i].stats.records.records[d].cm %> | <%= this.spreads[s].pages[i].stats.records.records[d].client %>">
-					<% if (this.spreads[s].pages[i].stats.records.records[d].material_file_store) { %>
-					<img src="/app/ab/thumb/material/<%= this.spreads[s].pages[i].stats.records.records[d].ID %>/<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>?w=<%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>&h=<%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>&s=<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>" style="height:100%; width:100%;">
-					<% } else { %>
-
-					<% } %>
-				</div>
 				
-
+				<% if (this.highlight=="fullpage") { %>
+					<% if (this.spreads[s].pages[i].pdf) { %>
+					<img style="height:100%; width:100%;" src="/app/ab/thumb/page/<%= this.spreads[s].pages[i].dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>&s=<%= this.spreads[s].pages[i].pdf %>">
+				
+				<% } else { %>
 					<% } %>
+				<% } else { %>
+
+					<% for (var d in this.spreads[s].pages[i].stats.records.records) { %>
+						<% if (this.spreads[s].pages[i].stats.records.records[d].planned=="1"){ %>
+	
+					<div class="advert_thumb" style="width: <%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>px;height: <%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>px; top:<%= ratio_y * this.spreads[s].pages[i].stats.records.records[d].y_offset %>px; left:<%= ratio_x * this.spreads[s].pages[i].stats.records.records[d].x_offset %>px; " title="<%= this.spreads[s].pages[i].stats.records.records[d].col %> x <%= this.spreads[s].pages[i].stats.records.records[d].cm %> | <%= this.spreads[s].pages[i].stats.records.records[d].client %>">
+						<% if (this.spreads[s].pages[i].stats.records.records[d].material_file_store) { %>
+						<img src="/app/ab/thumb/material/<%= this.spreads[s].pages[i].stats.records.records[d].ID %>/<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>?w=<%= (ratio_x * this.spreads[s].pages[i].stats.records.records[d].col)-2 %>&h=<%= (ratio_y * this.spreads[s].pages[i].stats.records.records[d].cm)-2 %>&s=<%= this.spreads[s].pages[i].stats.records.records[d].material_file_store %>" style="height:100%; width:100%;">
+						<% } else { %>
+	
+						<% } %>
+					</div>
+					
+	
+						<% } %>
+					<% } %>
+				
 				<% } %>
-				
-				
 
 
 				<% if (this.spreads[s].pages[i].stats.records.bar.n) { %>
@@ -74,7 +82,8 @@
 				<img src="/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>.png" alt="" width="20">
 
 			</div>
-			<% } %> <% if(this.spreads[s].pages[i].locked=='1') { %>
+			<% } %> 
+			<% if(this.spreads[s].pages[i].locked=='1') { %>
 			<div class="page_locked">
 				<i class="icon-lock icon-d-grey"></i>
 

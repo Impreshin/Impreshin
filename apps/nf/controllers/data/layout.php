@@ -263,7 +263,8 @@ class layout extends data {
 
 			),
 			"colour" => "",
-			"colour_l" => ""
+			"colour_l" => "",
+		    "pdf"=>""
 		);
 
 
@@ -359,6 +360,7 @@ class layout extends data {
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"pdf"   => $page['pdf'],
 				"locked"   => $page['locked'],
 				"section"=> array(
 					"i"=> ($page['sectionID']) ? $page['sectionID'] : "",

@@ -130,7 +130,10 @@ $sql = array(
 	),
 	"28"=>array(
 		"ALTER TABLE  `ab_bookings` ADD  `x_offset` DECIMAL( 6, 3 ) NULL DEFAULT NULL AFTER  `pageID` , ADD  `y_offset` DECIMAL( 6, 3 ) NULL DEFAULT NULL AFTER  `x_offset`;"
-	)
+	),
+    "29"=>array(
+	    "ALTER TABLE  `global_pages` ADD  `pdf` VARCHAR( 100 ) NULL DEFAULT NULL;"
+    )
 	
 
 );
