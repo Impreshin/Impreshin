@@ -13,6 +13,11 @@ $(document).ready(function () {
 		$.bbq.pushState({"uploadPage":"true"})
 		openPDFupload()
 	});
+	$(document).on("hide","#modal-upload-page",function(){
+
+		$.bbq.removeState("uploadPage")
+		
+	});
 	$(document).on("click","#modal-upload-page .pages",function(){
 		var $this = $(this);
 		$.bbq.pushState({"uploadPage":$this.attr("data-page")})

@@ -10,7 +10,9 @@ $(document).ready(function () {
 	if ($.bbq.getState("uploadPage")){
 		openPDFupload()
 	}
-
+	$(document).on("hide","#modal-upload-page",function(){
+		$.bbq.removeState("uploadPage")
+	});
 	$(document).on("click","#btn-page-upload",function(){
 
 		$.bbq.pushState({"uploadPage":"true"})
