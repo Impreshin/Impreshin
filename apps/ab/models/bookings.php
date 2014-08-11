@@ -619,7 +619,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 			if (strpos($key, "aterial_")) $material = true;
 			if (isset($a->$key)) {
 				$cur = $a->$key;
-				if ($cur != $value) {
+				if (is_numeric($cur)) $cur = $cur + 0;
+				
+				
+				//$cur = $a->$key;
+				if ($cur !== $value) {
 					if (isset($lookupColumns[$key])) {
 						$lookupColumns[$key]['val'] = $value;
 						$lookupColumns[$key]['was'] = $cur;
@@ -660,8 +664,11 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$v = $f3->get("DB")->exec($sql);
 		$v = $v[0];
 		foreach ($lookup as $col) {
-			$changes[] = array("k" => $col['col'], "v" => $v[$col['col']], "w" => $v[$col['col'] . "_was"]);
+			$was = $v[$col['col'] . "_was"];
+			if (is_numeric($was)) $was = $was + 0;
+			$changes[] = array("k" => $col['col'], "v" => $v[$col['col']], "w" => $was);
 		}
+		
 		if (isset($opts['section']) && $opts['section']) {
 			switch ($opts['section']) {
 				case "material":
@@ -705,8 +712,16 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$label = "Booking removed from a page";
 					}
 					break;
+				case "layout_plan":
+					if ($a->x_offset!=null && $a->y_offset!=null) {
+						$label = "Booking Planned / Moved";
+					} else {
+						$label = "Booking Un-Planned";
+					}
+					break;
 			}
 		}
+		//test_array(array("changes"=>$changes,"label"=>$label)); 
 		if (count($changes)) bookings::logging($ID, $changes, $label);
 		$n = new bookings();
 		$n = $n->get($ID);

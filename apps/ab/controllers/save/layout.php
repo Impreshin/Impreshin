@@ -161,7 +161,7 @@ class layout extends save {
 			    "y_offset"=>$y_offset!==""?$y_offset:null
 			);
 			//test_array($values); 
-			models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+			models\bookings::save($ID, $values,array("section"=>"layout_plan","dry"=>false));
 
 		}
 		$data = new \apps\ab\controllers\data\layout();
