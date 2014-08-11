@@ -1,12 +1,12 @@
 <?php
 
-namespace models\nf;
+namespace apps\pf\models;
 
 
 
 use \timer as timer;
 
-class categories {
+class sections {
 	private $classname;
 
 	function __construct() {
@@ -18,13 +18,14 @@ class categories {
 
 	function get($ID) {
 		$timer = new timer();
+		$f3 = \Base::instance();
 		$user = $f3->get("user");
 		$userID = $user['ID'];
 
 
 		$result = $f3->get("DB")->exec("
 			SELECT *
-			FROM nf_categories
+			FROM global_pages_sections
 			WHERE ID = '$ID';
 
 		");
@@ -41,8 +42,7 @@ class categories {
 
 	public static function getAll($where = "", $orderby = "") {
 		$timer = new timer();
-		$user = $f3->get("user");
-		$pID = $user['publication']['ID'];
+		$f3 = \Base::instance();
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -56,7 +56,7 @@ class categories {
 
 		$result = $f3->get("DB")->exec("
 			SELECT *
-			FROM nf_categories
+			FROM global_pages_sections
 			$where
 			$orderby
 		");
@@ -68,28 +68,38 @@ class categories {
 	}
 
 	public static function save($ID, $values) {
-		$user = $f3->get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
 
 		$old = array();
+		$lookupColumns = array();
 
-
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_categories");
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_pages_sections");
 		$a->load("ID='$ID'");
 
 		foreach ($values as $key => $value) {
-			$old[$key] = isset($a->$key)?$a->$key:"";
-			$a->$key = $value;
-		}
+			$old[$key] = isset($a->$key) ? $a->$key : "";
+			if (isset($a->$key)) {
 
+				$a->$key = $value;
+			}
+		}
+		if (!$a->dry()) {
+			$label = "Record Edited ($a->section)";
+		} else {
+			$label = "Record Added (" . $values['section'] . ')';
+		}
 		$a->save();
 
-		if (!$a->ID) {
-			$ID = $a->_id;
-		}
+		$ID = $a->ID;
 
 
+		//test_array($new_logging);
 
+
+		\models\logging::_log("sections", $label, $values, $old);
 
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $ID;
@@ -97,10 +107,12 @@ class categories {
 	}
 
 	public static function _delete($ID) {
-		$user = $f3->get("user");
 		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
 
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"nf_categories");
+
+		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_pages_sections");
 		$a->load("ID='$ID'");
 
 		$a->erase();
@@ -113,9 +125,34 @@ class categories {
 
 	}
 
+	public static function copyfrom($new_pID, $old_pID){
+		$timer = new timer();
+		$f3 = \Base::instance();
 
-	private static function dbStructure() {
-		$table = $f3->get("DB")->exec("EXPLAIN nf_categories;");
+
+		$source = $f3->get("DB")->exec("
+			SELECT *
+			FROM global_pages_sections
+			where pID = '$old_pID'
+		"
+		);
+		foreach ($source as $item){
+			$item['pID']=$new_pID;
+			unset($item['ID']);
+
+			self::save("",$item);
+		}
+
+
+
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return "done";
+	}
+
+
+	public static function dbStructure() {
+		$f3 = \Base::instance();
+		$table = $f3->get("DB")->exec("EXPLAIN global_pages_sections;");
 		$result = array();
 		foreach ($table as $key => $value) {
 			$result[$value["Field"]] = "";

@@ -1,0 +1,165 @@
+<div class="navbar navbar-fixed-top" id="pageheader">
+<div class="navbar-inner" style="">
+<div class="container">
+<div class="clearfix">
+
+<a class="brand" href="#select-app" data-toggle="modal">{{ _application['name'] }}</a>
+{% if _cfg['git']['branch'] != 'master' %}
+	<div id="brand-branch" >{{ _cfg['git']['branch'] }}</div>
+{% endif %}
+
+<div id="app-nav-bar">
+<ul class="nav" id="app-nav">
+	
+
+	<li class="{% if page['section'] == "front" %} active {% endif %}">
+		<a href="/app/pf/">Front</a>
+
+	</li>
+	
+
+	<li class="divider-vertical" style="margin-right: 0;"></li>
+
+
+</ul>
+<ul class="nav pull-right" style="margin-left: 0;margin-right: 0;">
+
+
+
+
+	<li class="dropdown" style="padding-left: 0; padding-right: 0; width: 145px; " id="pubSelectID-container">
+		{% if use_pub %}
+			{% if _user['publications']|length < 18 %}
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+					<div id="nav-pub-list">
+						{{ _user['publication']['publication'] }}<b class="caret"></b>
+					</div>
+				</a>
+
+
+
+				<ul class="dropdown-menu">
+					{% set lastCompany = "" %}
+					{% for row in _user['publications'] %}
+						{% if lastCompany != row['company'] %}
+							<li class="heading">{{ row['company'] }}</li>
+						{% endif %}
+						{% set lastCompany = row['company'] %}
+						<li class="{% if row['ID'] ==  _user['publication']['ID'] %}active{% endif %}">
+							<a href="?apID={{ row['ID'] }}">{{ row['publication'] }}</a></li>
+					{% endfor %}
+					
+					
+					
+					
+				</ul>
+			{% else %}
+				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+					{% set lastCompany = "" %}
+					{% for row in _user['publications'] %}
+					{% if lastCompany != row['company'] %}
+						{% if lastCompany  %}
+							</optgroup>
+						{% endif %}
+					<optgroup label="{{ row['company'] }}{{ row['companyID'] }}">
+						{% endif %}
+						{% set lastCompany = row['company'] %}
+						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['publication']['ID'] %}selected="selected"{% endif %}>{{ row['publication'] }}</option>
+						{% endfor %}
+					</optgroup>
+
+				</select>
+			{% endif %}
+
+
+		{% else %}
+			{% if _user['companies']|length < 25 %}
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#" style="padding-left: 8px; padding-right: 0; ">
+					<div id="nav-pub-list">
+						{{ _user['company']['company'] }}<b class="caret"></b>
+					</div>
+				</a>
+
+
+
+				<ul class="dropdown-menu">
+					{% for row in _user['companies'] %}
+						<li class="{% if row['ID'] ==  _user['company']['ID'] %}active{% endif %}">
+							<a href="?acID={{ row['ID'] }}">{{ row['company'] }}</a></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<select name="pubSelectID" id="pubSelectID" style="width: 150px;" data-width="200">
+					{% for row in _user['companies'] %}
+						<option value="{{ row['ID'] }}" {% if row['ID'] ==  _user['company']['ID'] %}selected="selected"{% endif %}>{{ row['company'] }}</option>
+					{% endfor %}
+
+				</select>
+			{% endif %}
+		{% endif %}
+
+
+	</li>
+	<li class="divider-vertical"></li>
+	{% if _user['permissions']['administration']['_nav'] %}
+		<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
+			<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-gears icon-d-grey"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li class="nav-header">Application</li>
+
+				
+
+
+
+				<li class="nav-header">System</li>
+				{% if _user['permissions']['administration']['system']['dates']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
+						<a href="/app/pf/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
+					</li>
+				{% endif %}{% if _user['permissions']['administration']['system']['users']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
+						<a href="/app/pf/admin/users"><i class="icon-user menu-icon" style="margin-right: 7px;"></i> Users</a>
+					</li>
+				{% endif %}
+				{% if _user['permissions']['administration']['system']['publications']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "publications" %} active {% endif %}">
+						<a href="/app/pf/admin/publications"><i class="icon-book menu-icon"></i> Publications</a>
+					</li>
+				{% endif %}
+				{% if _user['permissions']['administration']['system']['company']['page'] %}
+					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
+				{% endif %}
+				
+				
+				
+				<!--
+				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
+					<li class="nav-header">Other</li>
+				{% endif %}
+
+				
+				{% if _user['permissions']['allow_setup']=='1' or _user['su']=='1' %}
+					<li>
+						<a href="/app/setup"><i class="icon-wrench menu-icon"></i> Setup Wizard</a>
+					</li>
+				{% endif %}
+				-->
+			</ul>
+		</li>
+	{% endif %}
+		<li class="divider-vertical"></li>
+	<li style="margin-right: -10px;">
+		<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
+	</li>
+</ul>
+</div>
+<!--/.nav-collapse -->
+</div>
+</div>
+
+</div>
+
+
+<div class="clearfix"></div>
+</div>

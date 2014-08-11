@@ -268,7 +268,7 @@ class settings {
 		return $return;
 	}
 
-	public static function defaults($application = "ab", $ID = "") {
+	public static function defaults($application = "nf", $ID = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$return = array();

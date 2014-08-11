@@ -133,6 +133,11 @@ $sql = array(
 	),
     "29"=>array(
 	    "ALTER TABLE  `global_pages` ADD  `pdf` VARCHAR( 100 ) NULL DEFAULT NULL;"
+    ),
+    "30"=>array(
+	    "ALTER TABLE  `global_users_company` ADD  `pf` TINYINT( 1 ) NULL DEFAULT NULL AFTER  `nf`;",
+        "ALTER TABLE  `global_users_company` ADD  `pf_permissions` TEXT NULL DEFAULT NULL AFTER  `nf_permissions`;",
+        "ALTER TABLE  `global_companies` ADD  `pf` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `nf`;"
     )
 	
 
