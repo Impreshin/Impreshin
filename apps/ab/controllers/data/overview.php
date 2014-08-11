@@ -475,7 +475,7 @@ class overview extends data {
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
 
-
+//test_array($currentDate); 
 		if (!is_array($data)) {
 			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND typeID='1' ");
 			$statsData = array();

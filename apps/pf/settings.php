@@ -102,7 +102,7 @@ class settings {
 		
 			$settings = array(
 				"front"=>array(
-					
+					"zoom"=>"3"
 
 				),
 				

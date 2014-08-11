@@ -1,0 +1,98 @@
+
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+
+
+
+<script type="text/x-jqote-template" id="template-spreads">
+	<![CDATA[
+
+	<% var zoom = this.zoom; %>
+	<% var width = this.size; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth)   }} * width) / {{ _user['publication']['cmav'] }}); %>
+
+
+		
+
+	<% for (var s in this.spreads){ %>	
+	<section class="spread <%= this.spreads[s].side %>" style="width:<%= (width * 2) + 19 %>px;">
+		<% for(var i in this.spreads[s].pages) { %>
+		<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %> <% if (this.highlight=="fullpage") { %><% if (this.spreads[s].pages[i].pdf) { %>highlight-yes<% } else { %>highlight-no<% } %><% } %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
+		<article style="<% if (this.spreads[s].pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.spreads[s].pages[i].cm %>" data-colour="<%= this.spreads[s].pages[i].colour %>">
+
+			<% if(this.spreads[s].pages[i].section.c) { %>
+			<div class="page_section" style="background-color:<%= this.spreads[s].pages[i].section.c %>;" title="<%= this.spreads[s].pages[i].section.n %>" data-id="<%= this.spreads[s].pages[i].section.i %>"></div>
+			<% } %>
+			<div class="pagenr" data-page="<%= this.spreads[s].pages[i].page %>"><%= this.spreads[s].pages[i].page %></div>
+			<header>
+
+			</header>
+			<div>
+
+				
+
+
+				<% if (this.spreads[s].pages[i].pdf) { %>
+				<img style="height:100%; width:100%;" src="/app/ab/thumb/page/<%= this.spreads[s].pages[i].dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>&s=<%= this.spreads[s].pages[i].pdf %>">
+
+				<% } %>
+				
+				
+
+
+				
+
+
+
+			</div>
+
+		
+
+			<% if(this.spreads[s].pages[i].colour.icons) { %>
+			<div class="page_colour">
+				<img src="/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>.png" alt="" width="20">
+
+			</div>
+			<% } %>
+		
+
+		</article>
+		</div>
+
+		<% } %>
+
+	</section>
+
+	<% } %>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom">
+	<![CDATA[
+
+	<div class="spread">
+		<% for(var i in this.pages) { %>
+		<div data-page_nr="<%= this.pages[i].page %>" class="page highlight-<%= this.pages[i].highlight %>" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
+
+			<div>
+				<%= this.pages[i].page %>
+			</div>
+
+
+		</div>
+		<% } %>
+	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom-page">
+	<![CDATA[
+
+
+	<div>
+		<%= this.page %>
+		
+	</div>
+
+
+	]]>
+</script>

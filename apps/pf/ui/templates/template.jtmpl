@@ -2,28 +2,10 @@
     <![CDATA[
 <div></div>
     <% if (this.current) { %>
-		<span class="nbar" title="Records - <%= this.current.records.total %>">
-
-			<span>Records -
-			&nbsp; <%= this.current.records.total %> &nbsp;
-			</span>
-			
-		</span>
-
-
-		    <% for (var i in this.current.records.stages) { %> 
-		    <span style="width: 200px;" class="nbar" title="<%= this.current.records.stages[i].k %> - <%= this.current.records.stages[i].r %> of <%= this.current.records.total %>" data-content='<div class="progress <% if (this.current.records.stages[i].p>100 || this.current.records.stages[i].p==100) { %>progress-success<% } %>" style="min-width:120px;"><div class="bar" style="width: <% if (this.current.records.stages[i].p>100) { %>100<% } else { %><%= this.current.records.stages[i].p %><% } %>%;"></div></div>' >
 		
-					<span><%= this.current.records.stages[i].k %> -
-					&nbsp; <%= this.current.records.stages[i].r %> &nbsp;
-					</span>
-					<% if (this.current.records.stages[i].p) { %>
-						<div style=" width: <% if (this.current.records.stages[i].p>100) { %>100<% } else { %><%= this.current.records.stages[i].p %><% } %>%; "></div>
-					<% } %>
-				</span>
-			    
-			    
-	    <% } %>
+
+
+		   
     <% } %>
    
 
@@ -34,7 +16,7 @@
 <script type="text/x-jqote-template" id="template-notifications-messages">
 	<![CDATA[
 	<span id="message-icon" class="<% if (this.unread=='0') { %><% } else { %>unread<% } %>">
-	<a title="Messages" class="messages_link" href="/app/nf/messages" style="margin-left: 5px;">
+	<a title="Messages" class="messages_link" href="/app/pf/messages" style="margin-left: 5px;">
 		<% if (this.unread=='0') { %>
 		<i class="icon-comment-alt icon-grey"></i>
 		<% } else { %>

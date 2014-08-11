@@ -2,29 +2,38 @@
 	<div class="container">
 		<div class="toolbar clearfix  ">
 			<ul class="nav nav-pills pull-left">
-
 				<li>
-					
+					<h2 style="padding-left: 30px; margin-bottom: -5px;" id="page-heading-area" >loading...</h2>
 				</li>
 
 
 
 
-				<li class="divider-vertical"></li>
 			</ul>
 			<div class="pull-right">
-				<ul id="provisional-stats-bar" class="nav nav-pills pull-left">
+				<ul class="nav nav-pills pull-left">
+					<li class="divider-vertical"></li>
+					<li>
+						<div class="btn-group"  id="list-zoom-btns">
+							<button class="btn span1 btn-mini" style="" data-zoom="-1"  disabled="disabled"><i class="icon-zoom-out"></i></button>
+							<button class="btn span1 btn-mini" style="" data-zoom="+1" disabled="disabled"><i class="icon-zoom-in"></i></button>
 
 
+						</div>
+
+					</li>
 				</ul>
 				<ul class="nav nav-pills pull-right ">
-					<li class="divider-vertical" style="margin-right: 0;"></li>
 
 					
+					<li class="divider-vertical"></li>
 
+					<li class="dropdown pull-right">
+						<a id="reload-btn" href="javascript:void(0);" style="width:15px;"><i class="icon-refresh"></i></a>
+
+					</li>
 				</ul>
 			</div>
-
 
 		</div>
 		<div class="toolbar-end"></div>
@@ -33,44 +42,37 @@
 </section>
 
 <section role="main" id="pagecontent">
-
 	<div class="container">
 
 
 		<article id="whole-area" class="span16">
 			<div class="content">
-				<div class="scroll-pane">
+				<div class="scroll-pane scrolly" id="dummy-area">
 
-					<div data-heading="top" id="scroll-container" style="padding-bottom: 30px;  ">
-
-						<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
+					<div data-heading="top" class="scroll-container" style="padding-left: 15px;" id="pages-area">
 
 
-						</table>
+
 					</div>
 
 				</div>
 
 			</div>
-
-			<div class="loadingmask wide"></div>
-
-		
-
-			<div id="search-box">
-				<button type="button" class="btn btn-mini" style="width: 30px;" id="search-box-toggle">
-					<i class="icon-search"></i></button>
-				<form class="form-search " style="margin-right: 40px;">
-					<div class="input-append">
-						<input type="text" class="span3 search-query glow" placeholder="Search..." id="record-search">
-						<button type="submit" class="btn glow">Search</button>
-
-					</div>
-
-
-				</form>
+			<div id="dummy-bottom" class="highlighthovered">
 
 			</div>
+			<div class="loadingmask wide"></div>
+
 		</article>
+
 	</div>
+
+
+
+
 </section>
+
+
+<div id="page-details-modal" class="modal hide fade" tabindex="-1" role="dialog">
+
+</div>
