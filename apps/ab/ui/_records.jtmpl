@@ -65,7 +65,7 @@
                     {% if col['c'] == "remark" %}
                         <% if (this.records[i].remark) { %>
                         <% if (this.records[i].remarkTypeLabelClass){ %>
-                        <span class="label <%= this.records[i].remarkTypeLabelClass %>" title="<%= this.records[i].remarkType %>"></span>
+                        <span class="label <%= this.records[i].remarkTypeLabelClass %>" title="<%= this.records[i].remarkType %>">&nbsp;</span>
                         <% } else { %>
                         <span style="padding:0 5px;"></span>
                         <% } %>
