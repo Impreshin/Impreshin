@@ -138,6 +138,10 @@ $sql = array(
 	    "ALTER TABLE  `global_users_company` ADD  `pf` TINYINT( 1 ) NULL DEFAULT NULL AFTER  `nf`;",
         "ALTER TABLE  `global_users_company` ADD  `pf_permissions` TEXT NULL DEFAULT NULL AFTER  `nf_permissions`;",
         "ALTER TABLE  `global_companies` ADD  `pf` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `nf`;"
+    ),
+    "31"=>array(
+	   "CREATE TABLE IF NOT EXISTS `pf_users_pub` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `pID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `pID` (`pID`),  KEY `uID` (`uID`));" ,
+       "CREATE TABLE IF NOT EXISTS `pf_users_settings` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `uID` int(6) DEFAULT NULL,  `settings` text,  `pID` int(6) DEFAULT NULL,  `cID` int(6) DEFAULT NULL,  `last_activity` datetime DEFAULT NULL,  `last_page` varchar(250) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `uID` (`uID`),  KEY `cID` (`cID`));"
     )
 	
 
