@@ -80,8 +80,8 @@
 					<th>Size</th>
 					<td
 					<% if (!this.rate_C) { %> <% } %>>
-					<div style="margin-right: -50px;">: <%= this.col || "" %>
-						<span class="g"> x </span> <%= this.cm || "" %>
+					<div style="margin-right: -50px;">: <%= this.cm || "" %>
+						<span class="g"> x </span> <%= this.col || "" %>
 						<span class="g"> = </span> <%= this.totalspace || "" %> <span class="g"> col/{% if _user['company']['units']=='imperial' %}in{% else %}cm{% endif %}'s</span>
 					</div>
 					</td>                            <% if (this.rate_C) { %>

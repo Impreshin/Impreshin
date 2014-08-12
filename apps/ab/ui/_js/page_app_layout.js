@@ -41,7 +41,7 @@ $(document).ready(function () {
 		
 
 		var str = "";
-			str += '<h1>'+$this.attr("data-client")+'<small class="pull-right" style="font-size:12px; margin-right:10px; padding-top:10px;">('+$this.attr("data-col")+' x '+$this.attr("data-cm")+')</small></h1>';
+			str += '<h1>'+$this.attr("data-client")+'<small class="pull-right" style="font-size:12px; margin-right:10px; padding-top:10px;">('+$this.attr("data-cm")+' x '+$this.attr("data-col")+')</small></h1>';
 		
 		
 			if ($this.attr("data-img")){
