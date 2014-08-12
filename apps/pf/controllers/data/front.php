@@ -17,11 +17,52 @@ class front extends data {
 	}
 
 
-	function _pages() {
+	function _pages($pID="",$dID="") {
 
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
-		$pID = $user['pID'];
+		
+		
+		if (!$pID) {
+			$pID = $user['publication']['ID'];
+		}
+		if (!$dID) {
+			
+			$dID = isset($_GET['dID'])?$_GET['dID']:"";
+		}
+
+		$dateList = \models\dates::getAll("pID = '$pID'");
+
+		
+	
+		$pdf_dID = $this->f3->get("DB")->exec("SELECT dID FROM `global_pages` WHERE pdf is not null AND pID ='$pID' GROUP BY dID ORDER BY dID DESC");
+
+		$n = array();
+		foreach ($pdf_dID as $item){
+			$n[] = $item['dID'];
+		}
+		$pdf_dID = $n;
+		
+		if (!$dID) {
+			if (isset($pdf_dID[0])){
+				$dID = $pdf_dID[0];
+			} else {
+				$dID = $dateList[0]['ID'];
+			}
+			
+		}
+
+		
+		$n = array();
+		foreach ($dateList as $item){
+			$item['has'] = in_array($item['ID'],$pdf_dID)?"1":"0";
+			$n[] = $item;
+		}
+		$dateList = $n;
+		
+		//test_array($dateList); 
+		
+
 
 		$settings = models\settings::_read("front");
 
@@ -58,9 +99,7 @@ class front extends data {
 		
 		//test_array($zoom); 
 
-		$dID = "1596";
-		$pID = "1";
-
+	
 
 		$editionPages = $this->_num_pages($dID);
 
@@ -236,6 +275,7 @@ class front extends data {
 		$return['highlight'] = $highlight;
 		$return['dID'] = $dID;
 		$return['date'] = date("d M Y",strtotime($date['publish_date_display']));
+		$return['datelist'] = $dateList;
 		
 		
 		
@@ -278,7 +318,7 @@ class front extends data {
 	
 
 	function _details(){
-		$page_nr = (isset($_REQUEST['val'])) ? $_REQUEST['val'] : "";
+		$page_nr = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : "";
 		$user = $this->f3->get("user");
 		$userID = $user['ID'];
 
