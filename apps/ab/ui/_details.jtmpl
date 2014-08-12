@@ -307,7 +307,7 @@
 	<% for (var d in this.page_details.records) { %>
 		<% if (this.page_details.records[d].x_offset!=="" && this.page_details.records[d].y_offset!==""){ %>
 			<% lis = lis + 1; %>
-			<div class="advert_thumb <% if (this.page_details.records[d].ID == this.ID) { %>active<% } %> multi" style="width: <%= (ratio_x * this.page_details.records[d].col)-2 %>px;height: <%= (ratio_y * this.page_details.records[d].cm)-2 %>px; top:<%= ratio_y * this.page_details.records[d].y_offset %>px; left:<%= ratio_x * this.page_details.records[d].x_offset %>px; " data-id="<%= this.page_details.records[d].ID %>" title="<%= this.page_details.records[d].col %> x <%= this.page_details.records[d].cm %> | <%= this.page_details.records[d].client %>">
+			<div class="advert_thumb <% if (this.page_details.records[d].ID == this.ID) { %>active<% } %> multi" style="width: <%= (ratio_x * this.page_details.records[d].col)-2 %>px;height: <%= (ratio_y * this.page_details.records[d].cm)-2 %>px; top:<%= ratio_y * this.page_details.records[d].y_offset %>px; left:<%= ratio_x * this.page_details.records[d].x_offset %>px; " data-id="<%= this.page_details.records[d].ID %>" title="<%= this.page_details.records[d].cm %> x <%= this.page_details.records[d].col %> | <%= this.page_details.records[d].client %>">
 				<% if (this.page_details.records[d].material_file_store) { %>
 				<img src="/app/ab/thumb/material/<%= this.page_details.records[d].ID %>/<%= this.page_details.records[d].material_file_store %>?w=<%= (ratio_x * this.page_details.records[d].col)-2 %>&h=<%= (ratio_y * this.page_details.records[d].cm)-2 %>&s=<%= this.page_details.records[d].material_file_store %>" style="height:100%; width:100%;">
 				<% } else { %>
