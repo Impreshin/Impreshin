@@ -156,11 +156,11 @@
 	<div class="modal-footer">
 		<div class="row">
 			<div class="span6" style="position: relative;">
-				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px" ></i>
+				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px; margin-top:2px;" ></i>
 					<span style="margin-left:-15px;">Upload</span>
 				</button>
 				<% if (this.page.pdf) { %>
-				<a class="btn span3 pull-right" href="/app/pf/download/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>" ><i class="icon-download-alt pull-left" style="margin-left:15px"></i>
+				<a class="btn span3 pull-right" href="/app/pf/download/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>" ><i class="icon-download-alt pull-left" style="margin-left:15px; margin-top:2px;"></i>
 					<span style="margin-left:-15px;">Download</span>
 				</a>
 				<% } %>
