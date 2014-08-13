@@ -145,6 +145,13 @@ $sql = array(
     ),
     "32"=>array(
 	    "ALTER TABLE  `global_pages` ADD  `pdf_uID` INT( 6 ) NULL DEFAULT NULL AFTER  `pdf` , ADD  `pdf_datein` DATETIME NULL DEFAULT NULL AFTER  `pdf_uID`;"
+    ),
+    "33"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_users_settings` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `uID` int(6) DEFAULT NULL,  `settings` text,  `pID` int(6) DEFAULT NULL,  `cID` int(6) DEFAULT NULL,  `last_activity` datetime DEFAULT NULL,  `last_page` varchar(250) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `uID` (`uID`),  KEY `cID` (`cID`));",
+        "CREATE TABLE IF NOT EXISTS `cm_users_pub` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `pID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `pID` (`pID`),  KEY `uID` (`uID`));",
+        "ALTER TABLE  `global_users_company` ADD  `cm` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `pf`;",
+        "ALTER TABLE  `global_users_company` ADD  `cm_permissions` TEXT NULL DEFAULT NULL AFTER  `pf_permissions`;",
+        "ALTER TABLE  `global_companies` ADD  `cm` TINYINT NULL DEFAULT  '0' AFTER  `pf`;"
     )
 	
 

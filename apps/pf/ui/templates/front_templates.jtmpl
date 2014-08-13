@@ -156,16 +156,9 @@
 	<div class="modal-footer">
 		<div class="row">
 			<div class="span6" style="position: relative;">
-				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px; margin-top:2px;" ></i>
-					<span style="margin-left:-15px;">Upload</span>
-				</button>
-				<% if (this.page.pdf) { %>
-				<a class="btn span3 pull-right" href="/app/pf/download/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>" ><i class="icon-download-alt pull-left" style="margin-left:15px; margin-top:2px;"></i>
-					<span style="margin-left:-15px;">Download</span>
-				</a>
-				<% } %>
-
-				<div class="span6" style="display:none; position: absolute; top:0; left:0; right:0; bottom:0; z-index:3; background-color: #f1f1f1;" id="progress-area">
+				{% if _user['permissions']['front']['upload_pdf'] %}
+					
+					<div class="span6" style="display:none; position: absolute; top:0; left:0; right:0; bottom:0; z-index:3; background-color: #f1f1f1;" id="progress-area">
 					<div class="progress progress-striped active span5" style="margin:0;">
 						<div class="bar" style="width: 0%;"></div>
 					</div>
@@ -173,6 +166,20 @@
 
 					</div>
 				</div>
+					
+					
+				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px; margin-top:2px;" ></i>
+					<span style="margin-left:-15px;">Upload</span>
+				</button>
+				{% endif %}
+				{% if _user['permissions']['front']['download_pdf'] %}
+				<% if (this.page.pdf) { %>
+				<a class="btn span3 pull-right" href="/app/pf/download/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>" ><i class="icon-download-alt pull-left" style="margin-left:15px; margin-top:2px;"></i>
+					<span style="margin-left:-15px;">Download</span>
+				</a>
+				<% } %>
+				{% endif %}
+				
 			</div>
 			<div class="span3">
 				<a href="#" class="btn span2 pull-right" data-dismiss="modal" aria-hidden="true">Close</a>

@@ -68,7 +68,10 @@ function getPageDetails(){
 	$.getData("/app/pf/data/front/_details?r=" + Math.random(), {"page": ID,"dID":dID}, function (data) {
 
 		$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
-		set_upload(data.page);
+		if ($("#upload-page-pdf").length){
+			set_upload(data.page);
+		}
+		
 	});
 }
 function dummy_resize(settings) {

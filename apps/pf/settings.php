@@ -105,6 +105,19 @@ class settings {
 					"zoom"=>"3"
 
 				),
+				"admin_users"=>array(
+					"order"=>array(
+						"c"=>"fullName",
+						"o"=>"ASC"
+					)
+				),
+
+				"admin_dates"=>array(
+					"order"=>array(
+						"c"=>"publish_date",
+						"o"=>"DESC"
+					)
+				),
 				
 
 			);
