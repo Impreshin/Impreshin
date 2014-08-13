@@ -263,7 +263,8 @@ class layout extends data {
 
 			),
 			"colour" => "",
-			"colour_l" => ""
+			"colour_l" => "",
+		    "pdf"=>""
 		);
 
 
@@ -359,6 +360,7 @@ class layout extends data {
 
 			$r[$page['page']] = array(
 				"page"   => $page['page'],
+				"pdf"   => $page['pdf'],
 				"locked"   => $page['locked'],
 				"section"=> array(
 					"i"=> ($page['sectionID']) ? $page['sectionID'] : "",
@@ -734,6 +736,12 @@ class layout extends data {
 		} else {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
+
+			$page['dID'] = $dID;
+			$page['cID'] = $user['company']['ID'];
+			$page['pID'] = $user['publication']['ID'];
+			$page['page'] = $page_nr;
+			$page['pdf'] = "";
 		}
 		//test_array($page); 
 		$pageID = $page['ID'];

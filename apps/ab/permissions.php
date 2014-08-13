@@ -54,7 +54,8 @@ class permissions {
 				"checkbox_checked" => 0
 			),
 			"production"     => array(
-				"page" => 0
+				"page" => 0,
+			    "upload_page_pdf"=>0
 			),
 			"layout"         => array(
 				"page"      => 0,

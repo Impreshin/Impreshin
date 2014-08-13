@@ -6,9 +6,9 @@
 				<li>
 					<div class="btn-group" data-toggle="buttons-radio" id="list-highlight-btns">
 
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:80px; margin-left: 10px;" data-highlight="material">Status</button>
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "material_approved" %}active{% endif %} " style="width:80px;" data-highlight="material_approved">Approved</button>
-						<button class="btn span1 btn-mini {% if settings['highlight'] == "planned" %}active{% endif %} " style="width:80px; " data-highlight="planned">Planned</button>
+						<button class="btn span1 btn-mini {% if settings['highlight'] == "material" %}active{% endif %} " style="width:70px; margin-left: 10px;" data-highlight="material">Status</button>
+						<button class="btn span1 btn-mini {% if settings['highlight'] == "material_approved" %}active{% endif %} " style="width:70px;" data-highlight="material_approved">Approved</button>
+						<button class="btn span1 btn-mini {% if settings['highlight'] == "planned" %}active{% endif %} " style="width:70px; " data-highlight="planned">Planned</button>
 					</div>
 				</li>
 				<li class="divider-vertical"></li>
@@ -30,10 +30,14 @@
 
 				</ul>
 				<ul class="nav nav-pills pull-right ">
+					{% if _user['permissions']['production']['upload_page_pdf'] %}
 					<li class="divider-vertical" style="margin-right: 0;"></li>
 					<li>
-						<a href="{{ page['print'] }}" target="_blank" class="toolbar-print"><i class="icon-print icon-d-grey"></i></a>
+						<button class="btn span1 btn-mini" style="margin-top:2px;" rel="tooltip" title="Upload full page PDF" data-placement="bottom" id="btn-page-upload" ><i class="icon-upload-alt"></i></button>
 					</li>
+					{% endif %}
+					<li class="divider-vertical" style="margin-right: 0;"></li>
+					
 					<li class="dropdown pull-right">
 						<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
 						<ul class="dropdown-menu" id="record-settings">
@@ -43,12 +47,6 @@
 									<a href="#">{{ row['n'] }}</a>
 								</li>
 							{% endfor %}
-
-
-
-
-
-
 							<li class="nav-header clearfix">Direction</li>
 							<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
 								<a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
@@ -61,8 +59,6 @@
 					</li>
 				</ul>
 			</div>
-
-
 		</div>
 		<div class="toolbar-end"></div>
 	</div>
@@ -110,5 +106,5 @@
 
 
 </section>
-
+<div id='modal-upload-page' class='modal hide fade wide'></div>
 {% include "_record_settings.tmpl" %}

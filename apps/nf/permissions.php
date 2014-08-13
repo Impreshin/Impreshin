@@ -47,6 +47,7 @@ class permissions {
 			),
 			"production"         => array(
 				"page"      => 0,
+				"upload_page_pdf"=>0
 			),
 			"records"        => array(
 				"deleted" => array(

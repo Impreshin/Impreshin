@@ -235,7 +235,12 @@ $app->route("GET|POST /app/nf/download", function ($app, $params) {
 
 	}
 );
+$app->route("GET|POST /app/nf/thumb/page/@dID/@page/*", function ($app, $params) {
 
+		$app->chain("apps\\ab\\app->app; apps\\ab\\controllers\\controller_general_thumb->page");
+
+	}
+);
 
 // utilities
 

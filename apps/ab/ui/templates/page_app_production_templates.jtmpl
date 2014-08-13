@@ -1,6 +1,9 @@
-
 {% include '_records.jtmpl' %}
 {% include '_details.jtmpl' %}
+
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+
+
 
 <script type="text/x-jqote-template" id="template-provisional-stats-bar">
 	<![CDATA[
@@ -15,9 +18,15 @@
 		</div>
 		<div class="row" style="position: absolute; top: 5px; left: -10px; text-align: center; right:0;">
 
-			<div class="span2"><span class="s dg">{% if _user['company']['units']=='imperial' %}In{% else %}Cm{% endif %}:</span> <strong><%= this.stats.cm %></strong></div>
-			<div class="span2"><span class="s dg">Material:</span> <strong><%= this.stats.records.material.r %></strong> of <strong><%= this.stats.records.total %></strong></div>
-			<div class="span2"><span class="s dg">Approved:</span> <strong><%= this.stats.records.material_approved.r %></strong> of <strong><%= this.stats.records.material.r %></strong></div>
+			<div class="span2">
+				<span class="s dg">{% if _user['company']['units']=='imperial' %}In{% else %}Cm{% endif %}:</span>
+				<strong><%= this.stats.cm %></strong></div>
+			<div class="span2"><span class="s dg">Material:</span>
+				<strong><%= this.stats.records.material.r %></strong> of 
+				<strong><%= this.stats.records.total %></strong></div>
+			<div class="span2"><span class="s dg">Approved:</span>
+				<strong><%= this.stats.records.material_approved.r %></strong> of 
+				<strong><%= this.stats.records.material.r %></strong></div>
 
 		</div>
 
@@ -47,7 +56,8 @@
 					<td>
 						<div class="progress">
 							<div class="bar" style="width: <%= this.stats.records.material_approved.p %>%;"></div>
-							<div class="text"><strong><%= this.stats.records.material_approved.r %> <span class="s g"> of </span> <%= this.stats.records.material.r %> &nbsp;
+							<div class="text"><strong><%= this.stats.records.material_approved.r %>
+									<span class="s g"> of </span> <%= this.stats.records.material.r %> &nbsp;
 									<small> &nbsp; <%= this.stats.records.material_approved.p %>%</small>
 								</strong>
 							</div>
@@ -62,5 +72,102 @@
 
 		</div>
 	</li>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-upload-page-pdf">
+	<![CDATA[
+
+	<% var width = 72; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth) }} * width) / {{ _user['publication']['cmav'] }}); %>
+
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Full pages</h3>
+	</div>
+	<div class="modal-body">
+		<div id="side-pane">
+
+
+		</div>
+		<div id="spread-area">
+			<% for (var s in this.spreads){ %>
+			<section class="spread <%= this.spreads[s].side %>" style="width:<%= (width * 2) + 15 %>px;">
+				<% for(var i in this.spreads[s].pages) { %>
+				<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
+					<article style="width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px; margin:0;" data-cm="<%= this.spreads[s].pages[i].cm %>" data-colour="<%= this.spreads[s].pages[i].colour %>">
+						<% if(this.spreads[s].pages[i].section.c) { %>
+						<div class="page_section" style="background-color:<%= this.spreads[s].pages[i].section.c %>;" title="<%= this.spreads[s].pages[i].section.n %>" data-id="<%= this.spreads[s].pages[i].section.i %>"></div>
+						<% } %>
+						<div class="pagenr" data-page="<%= this.spreads[s].pages[i].page %>"><%= this.spreads[s].pages[i].page %></div>
+
+						<% if (this.spreads[s].pages[i].pdf) { %>
+
+						<img src="/app/ab/thumb/page/<%= this.dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.spreads[s].pages[i].pdf %>" style="height:100%; width:100%;">
+
+						<% } %>
+
+						<% if(this.spreads[s].pages[i].colour.icons) { %>
+						<div class="page_colour">
+							<img src="/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>.png" alt="" width="20">
+
+						</div>
+						<% } %>
+						<% if(this.spreads[s].pages[i].locked=='1') { %>
+						<div class="page_locked">
+							<i class="icon-lock icon-d-grey"></i>
+
+						</div>
+						<% } %>
+
+					</article>
+				</div>
+
+				<% } %>
+
+			</section>
+
+			<% } %>
+
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div class="span10" style="padding-top:7px;" id="progress-area">
+			<div class="progress progress-striped active span7" style="margin:0;">
+				<div class="bar" style="width: 0%;"></div>
+			</div>
+			<div class="span3 l">
+				
+			</div>
+		</div>
+
+		<a href="#" class="btn span4 pull-right" data-dismiss="modal" aria-hidden="true">Close</a>
+	</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-upload-page-pdf-side">
+	<![CDATA[
+
+	<% var width = 168; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth) }} * width) / {{ _user['publication']['cmav'] }}); %>
+
+	<h3 class="" style="margin-bottom: 15px; border-bottom:1px solid #ccc; padding-left:10px;">Page: <%= this.page %></h3>
+
+
+
+	<div style="border:1px solid #ccc; width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px; margin-left:10px;margin-bottom:20px; ">
+
+
+		<% if (this.pdf) { %>
+
+		<img src="/app/ab/thumb/page/<%= this.dID %>/<%= this.page %>/<%= this.pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.pdf %>" style="height:100%; width:100%;">
+
+		<% } else { %>
+		<div style="background: url(/ui/_images/question.png) no-repeat bottom center; width:100%; height:100%; opacity:0.5"></div>
+		<% } %>
+	</div>
+	<div class="clearfix"></div>
+	<button class="btn span3 btn-mini upload-page-pdf" id="upload-page-pdf" >Upload PDF</button>
 	]]>
 </script>

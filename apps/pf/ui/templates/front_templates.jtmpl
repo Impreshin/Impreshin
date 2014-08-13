@@ -1,0 +1,190 @@
+
+{% set _pubPageWidth = _user['publication']['pagewidth'] > 100? _user['publication']['pagewidth'] / 10: _user['publication']['pagewidth'] %}
+
+
+
+<script type="text/x-jqote-template" id="template-spreads">
+	<![CDATA[
+
+	<% var zoom = this.zoom; %>
+	<% var width = this.size; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth)   }} * width) / {{ _user['publication']['cmav'] }}); %>
+
+
+		
+
+	<% for (var s in this.spreads){ %>	
+	<section class="spread <%= this.spreads[s].side %>" style="width:<%= (width * 2) + 19 %>px;">
+		<% for(var i in this.spreads[s].pages) { %>
+		<div id="page-<%= this.spreads[s].pages[i].page %>" class="pages <%= this.spreads[s].pages[i].side %> highlight-<%= this.spreads[s].pages[i].highlight %> <% if (this.highlight=="fullpage") { %><% if (this.spreads[s].pages[i].pdf) { %>highlight-yes<% } else { %>highlight-no<% } %><% } %>" data-page="<%= this.spreads[s].pages[i].page %>" style="width:<%= width %>px;">
+		<article style="<% if (this.spreads[s].pages[i].colour.icons) { %>background: url('/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>_text.png') right bottom no-repeat;<% } %> width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px" data-cm="<%= this.spreads[s].pages[i].cm %>" data-colour="<%= this.spreads[s].pages[i].colour %>">
+
+			<% if(this.spreads[s].pages[i].section.c) { %>
+			<div class="page_section" style="background-color:<%= this.spreads[s].pages[i].section.c %>;" title="<%= this.spreads[s].pages[i].section.n %>" data-id="<%= this.spreads[s].pages[i].section.i %>"></div>
+			<% } %>
+			<div class="pagenr" data-page="<%= this.spreads[s].pages[i].page %>"><%= this.spreads[s].pages[i].page %></div>
+			<header>
+
+			</header>
+			<div class="img-area">
+
+				
+
+
+				<% if (this.spreads[s].pages[i].pdf) { %>
+				<img style="height:100%; width:100%;" src="/app/pf/thumb/page/<%= this.spreads[s].pages[i].dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>&s=<%= this.spreads[s].pages[i].pdf %>">
+
+				<% } %>
+				
+				
+
+
+				
+
+
+
+			</div>
+
+		
+
+			<% if(this.spreads[s].pages[i].colour.icons) { %>
+			<div class="page_colour">
+				<img src="/ui/_images/ab/<%= this.spreads[s].pages[i].colour.icons %>.png" alt="" width="20">
+
+			</div>
+			<% } %>
+		
+
+		</article>
+		</div>
+
+		<% } %>
+
+	</section>
+
+	<% } %>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom">
+	<![CDATA[
+
+	<div class="spread">
+		<% for(var i in this.pages) { %>
+		<div data-page_nr="<%= this.pages[i].page %>" class="page highlight-<%= this.pages[i].highlight %>" style="float:<%= this.pages[i].side %>; <% if(this.pages[i].section.c) { %>border-top-color: <%= this.pages[i].section.c %>; border-top-width: 2px; <% } else { %> margin-top: 1px; <% } %>">
+
+			<div>
+				<%= this.pages[i].page %>
+			</div>
+
+
+		</div>
+		<% } %>
+	</div>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-spreads-bottom-page">
+	<![CDATA[
+
+
+	<div>
+		<%= this.page %>
+		
+	</div>
+
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-page-details-modal">
+	<![CDATA[
+	<% var width = 170; %>
+	<% var ratio_x = (width / {{ _user['publication']['columnsav'] }}); %>
+	<% var ratio_y = (({{ (_user['publication']['cmav'] / _pubPageWidth)   }} * width) / {{ _user['publication']['cmav'] }}); %>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>Page: <%= this.page.page %>
+			
+			<small class="pull-right" style="margin-right: 20px; padding-top:5px;"><%= this.date.publish_date_display %> | {{ _user['publication']['publication'] }} </small>
+		</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="span4" style="border-right:1px dotted #ccc;">
+				
+				
+				<div style="width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px; margin-left:25px; box-shadow: 0 0 5px #666;">
+					<% if (this.page.pdf) { %>
+					<img style="height:100%; width:100%;" src="/app/pf/thumb/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>&s=<%= this.page.pdf %>">
+					<% } else { %>
+					<div style="background: url(/ui/_images/question.png) no-repeat bottom center; width:100%; height:100%; opacity:0.5"></div>
+					<% } %>
+				</div>
+				
+			</div>
+			<div class="span5" style="margin-right:-1px;">
+				<table class="table">
+					<% if (this.page.pdf) { %>
+						<% if (this.page.size) { %>
+						<tr>
+							<th class="r g span1">Size:</th>
+							<td><%= this.page.size %></td>
+						</tr>
+						<% } %>
+						<% if (this.page.pdf_fullname) { %>
+						<tr>
+							<th class="r g">User:</th>
+							<td><%= this.page.pdf_fullname %></td>
+						</tr>
+						<% } %>
+						<% if (this.page.pdf_datein) { %>
+						<tr>
+							<th class="r g">Uploaded:</th>
+							<td><%= this.page.pdf_datein %></td>
+						</tr>
+						<% } %>
+					<% } else { %>
+					<tr>
+						<td class="c g" style="padding-top: 120px;">No PDF uploaded for this page</td>
+					</tr>
+					<% } %>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	<div class="modal-footer">
+		<div class="row">
+			<div class="span6" style="position: relative;">
+				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px; margin-top:2px;" ></i>
+					<span style="margin-left:-15px;">Upload</span>
+				</button>
+				<% if (this.page.pdf) { %>
+				<a class="btn span3 pull-right" href="/app/pf/download/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>" ><i class="icon-download-alt pull-left" style="margin-left:15px; margin-top:2px;"></i>
+					<span style="margin-left:-15px;">Download</span>
+				</a>
+				<% } %>
+
+				<div class="span6" style="display:none; position: absolute; top:0; left:0; right:0; bottom:0; z-index:3; background-color: #f1f1f1;" id="progress-area">
+					<div class="progress progress-striped active span5" style="margin:0;">
+						<div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="span1 l pull-right" style="">
+
+					</div>
+				</div>
+			</div>
+			<div class="span3">
+				<a href="#" class="btn span2 pull-right" data-dismiss="modal" aria-hidden="true">Close</a>
+			</div>
+		</div>
+		
+		
+	</div>
+
+
+	
+
+
+	]]>
+</script>

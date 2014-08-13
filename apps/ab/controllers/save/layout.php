@@ -161,7 +161,7 @@ class layout extends save {
 			    "y_offset"=>$y_offset!==""?$y_offset:null
 			);
 			//test_array($values); 
-			models\bookings::save($ID, $values,array("section"=>"layout","dry"=>false));
+			models\bookings::save($ID, $values,array("section"=>"layout_plan","dry"=>false));
 
 		}
 		$data = new \apps\ab\controllers\data\layout();
@@ -170,6 +170,46 @@ class layout extends save {
 
 		return $GLOBALS["output"]['data'] = $data;
 	}
+	function _upload_page(){
+		$user = $this->f3->get("user");
+		$ID = isset($_REQUEST['ID']) ? $_REQUEST['ID'] : "";
+		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : "";
+		$pID = isset($_REQUEST['pID']) ? $_REQUEST['pID'] : "";
+		$dID = isset($_REQUEST['dID']) ? $_REQUEST['dID'] : "";
+		$filename = isset($_REQUEST['filename']) ? $_REQUEST['filename'] : "";
 
+		$pID = $user['pID'];
+		
+
+		if ($page && ($page != "remove") ){
+			$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_pages");
+			$a->load("pID = '$pID' AND dID = '$dID' AND page = '$page'");
+			if ($a->dry()) {
+				$a->pID = $pID;
+				$a->dID = $dID;
+				$a->page = $page;
+				$a->pdf = $filename;
+				$a->pdf_uID = $user['ID'];
+				$a->pdf_datein = date("Y-m-d H:i:s");
+				
+				$a->save();
+
+				$pageID = $a->_id;
+			} else {
+				$a->pdf = $filename;
+				$a->pdf_uID = $user['ID'];
+				$a->pdf_datein = date("Y-m-d H:i:s");
+				$a->save();
+				$pageID = $a->ID;
+			}
+		} else {
+			$pageID = NULL;
+		}
+
+
+
+		return $GLOBALS["output"]['data'] = $pageID;
+
+	}
 
 }

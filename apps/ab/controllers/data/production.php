@@ -116,7 +116,7 @@ class production extends data {
 		$return = array();
 
 
-		$return['date'] = $currentDate['publish_date_display'];
+		$return['date'] = date("d M Y",strtotime($currentDate['publish_date_display']));
 		$stats['percent_highlight'] = ($highlight) ? $stats['records'][$highlight]['p'] : "0";
 		$return['stats'] = $stats;
 		$return['group'] = $grouping;

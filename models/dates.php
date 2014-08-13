@@ -92,14 +92,26 @@ class dates {
 		}
 
 		$app = $f3->get("app");
-		$column = "$app" . "_currentDate";
-		$result = $f3->get("DB")->exec("
+		if (in_array($app,array("ab","nf"))){
+			$column = "$app" . "_currentDate";
+			$result = $f3->get("DB")->exec("
 			SELECT global_dates.*, if ($column,1,0) AS current
 			FROM global_dates LEFT JOIN global_publications ON global_dates.ID = global_publications.$column
 			$where
 			$orderby
 			$limit
 		");
+		} else {
+			$result = $f3->get("DB")->exec("
+			SELECT global_dates.*
+			FROM global_dates
+			$where
+			$orderby
+			$limit
+		");
+		}
+		
+		
 
 		$a = array();
 		foreach ($result as $record) {

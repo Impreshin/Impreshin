@@ -218,6 +218,7 @@ class app {
 
 
 	
+		//test_array($app); 
 
 		$publication = $publicationObject->get($pID);
 

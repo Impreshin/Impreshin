@@ -134,7 +134,8 @@ class layout extends data {
 
 			),
 			"colour" => "",
-			"colour_l" => ""
+			"colour_l" => "",
+			"pdf" => ""
 		);
 
 
@@ -214,6 +215,7 @@ class layout extends data {
 				"colour" => $colour,
 				"percent"=> $page['percent'],
 				"cm"     => $page['cm']+0,
+				"pdf"     => $page['pdf'],
 				"records"=>isset($bookings[$page['ID']])?$bookings[$page['ID']]:array()
 			);
 		}
@@ -484,6 +486,12 @@ class layout extends data {
 		} else {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
+
+			$page['dID'] = $dID;
+			$page['cID'] = $user['company']['ID'];
+			$page['pID'] = $user['publication']['ID'];
+			$page['page'] = $page_nr;
+			$page['pdf'] = "";
 		}
 		$pageID = $page['ID'];
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;

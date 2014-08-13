@@ -6,6 +6,157 @@ var api = pane.data("jsp");
 
 
 $(document).ready(function () {
+
+	if ($.bbq.getState("uploadPage")){
+		openPDFupload()
+	}
+	$(document).on("hide","#modal-upload-page",function(){
+		$.bbq.removeState("uploadPage")
+	});
+	$(document).on("click","#btn-page-upload",function(){
+
+		$.bbq.pushState({"uploadPage":"true"})
+		openPDFupload()
+	});
+	$(document).on("click","#modal-upload-page .pages",function(){
+		var $this = $(this);
+		$.bbq.pushState({"uploadPage":$this.attr("data-page")})
+		if ($.bbq.getState("uploadPage")!="true"){
+			openPDFuploadPage($.bbq.getState("uploadPage"));
+		}
+	});
+
+	function openPDFupload(){
+
+		$("#modal-upload-page").html("<div style='width:100%; height:440px;'><img src='/ui/_images/loading-wide.gif' style='margin-top:200px;margin-left:356px;'/></div>").modal("show");
+
+
+		$.getData("/app/nf/data/layout/_pages", {}, function (data) {
+
+
+			$("#modal-upload-page").jqotesub($("#template-upload-page-pdf"), data);
+
+			if ($.bbq.getState("uploadPage")!="true"){
+				openPDFuploadPage($.bbq.getState("uploadPage"));
+			}
+
+		}, "data-pages");
+	}
+	function openPDFuploadPage(page){
+
+		$("#modal-upload-page #side-pane").html("");
+		$("#modal-upload-page .pages.active").removeClass("active")
+		$.getData("/app/nf/data/layout/_details_page", {"val":page}, function (data) {
+
+
+			$("#modal-upload-page .pages[data-page='"+data.page+"']").addClass("active")
+
+			$("#modal-upload-page #side-pane").jqotesub($("#template-upload-page-pdf-side"), data);
+
+
+
+			set_upload(data)
+
+		}, "data-pages-page");
+	}
+	function set_upload(data) {
+		$("#progress-area .progress .bar").css("width", "0%");
+		$("#progress-area .span3.l").html("");
+
+
+
+		var folder = "../pages/"+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
+
+
+		var uploader = new plupload.Uploader({
+			runtimes      :'html5,gears,flash,silverlight',
+			browse_button :'upload-page-pdf',
+			//container          :'container',
+			max_file_size :'200mb',
+			max_file_count:1,
+			chunk_size    :"2MB",
+			url           :'/app/nf/upload/?folder=' + folder,
+
+			flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
+			silverlight_xap_url:'/ui/plupload/js/plupload.silverlight.xap',
+			filters            :[
+				{title:"PDF", extensions:"pdf"}
+				//{title:"Zip files", extensions:"zip"}
+			],
+			unique_names       :true
+		});
+
+
+
+		uploader.bind('Init', function (up, params) {
+
+		});
+
+		uploader.bind('FilesAdded', function (up, files) {
+			var fileCount = up.files.length, i = 0, ids = $.map(up.files, function (item) {
+				return item.id;
+			});
+
+			for (i = 0; i < fileCount; i++) {
+				uploader.removeFile(uploader.getFile(ids[i]));
+			}
+			i = 0;
+			$('#material-file-area-filename').html('<div id="' + files[i].id + '" class="g">Uploading: ' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ')</div>');
+
+			setTimeout(function () {
+				$("#progress-area").fadeIn();
+				uploader.start();
+			}, 100);
+
+
+		});
+
+		uploader.bind('UploadProgress', function (up, file) {
+			$("#progress-area .progress .bar").css("width", file.percent + "%");
+			$("#progress-area .span3.l").html("Uploading: "+ file.percent + "%");
+
+		});
+
+		uploader.bind('UploadComplete', function (up, files) {
+			var file = files[0];
+
+
+
+
+			var $img = '<img src="/app/nf/thumb/page/' + data['dID'] + '/'  + data['page'] + '/'+ file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
+
+			$("#progress-area .span3.l").html($img + "<em class='g'>Rendering: " + file.name + "</em>");
+
+
+
+			// console.log($($img).attr("src"))
+			$('#progress-area .span3.l img').load(function () {
+				$("#progress-area .span3.l").html($img + file.name);
+
+				$("#progress-area").fadeOut(500, function () {
+					$("#material-file-area .progress .bar").css("width", "0%");
+				});
+
+				data.filename = file.target_name;
+				$.post("/app/nf/save/layout/_upload_page", data, function (response) {
+					openPDFupload()
+				});
+
+			});
+
+
+
+
+
+		});
+
+		uploader.init();
+
+	}
+
+
+
+
 	$("#stageID").select2();
 	scrolling(api);
 
