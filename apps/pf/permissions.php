@@ -16,6 +16,10 @@ class permissions {
 		$f3 = \Base::instance();
 		$return = array();
 		$return['p'] = array(
+			"front"=>array(
+				"upload_pdf"=>0,
+				"download_pdf"=>0,
+			),
 			"administration"=>array(
 				"application" => array(),
 			    "system"=>array(

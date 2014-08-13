@@ -13,7 +13,7 @@
 	
 
 	<li class="{% if page['section'] == "front" %} active {% endif %}">
-		<a href="/app/pf/">Pages</a>
+		<a href="/app/pf/">Front</a>
 
 	</li>
 	
@@ -113,23 +113,12 @@
 
 
 				<li class="nav-header">System</li>
-				{% if _user['permissions']['administration']['system']['dates']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "dates" %} active {% endif %}">
-						<a href="/app/pf/admin/dates"><i class="icon-calendar menu-icon"></i> Dates</a>
-					</li>
-				{% endif %}{% if _user['permissions']['administration']['system']['users']['page'] %}
+				{% if _user['permissions']['administration']['system']['users']['page'] %}
 					<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
 						<a href="/app/pf/admin/users"><i class="icon-user menu-icon" style="margin-right: 7px;"></i> Users</a>
 					</li>
 				{% endif %}
-				{% if _user['permissions']['administration']['system']['publications']['page'] %}
-					<li class="{% if page['section']=="admin" and page['sub_section'] == "publications" %} active {% endif %}">
-						<a href="/app/pf/admin/publications"><i class="icon-book menu-icon"></i> Publications</a>
-					</li>
-				{% endif %}
-				{% if _user['permissions']['administration']['system']['company']['page'] %}
-					<li><a href="#"><i class="icon-globe menu-icon"></i> Company</a></li>
-				{% endif %}
+				
 				
 				
 				
