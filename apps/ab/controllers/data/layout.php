@@ -486,6 +486,12 @@ class layout extends data {
 		} else {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
+
+			$page['dID'] = $dID;
+			$page['cID'] = $user['company']['ID'];
+			$page['pID'] = $user['publication']['ID'];
+			$page['page'] = $page_nr;
+			$page['pdf'] = "";
 		}
 		$pageID = $page['ID'];
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;

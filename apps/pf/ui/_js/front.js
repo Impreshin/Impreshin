@@ -68,6 +68,7 @@ function getPageDetails(){
 	$.getData("/app/pf/data/front/_details?r=" + Math.random(), {"page": ID,"dID":dID}, function (data) {
 
 		$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
+		set_upload(data.page);
 	});
 }
 function dummy_resize(settings) {
@@ -145,3 +146,100 @@ function dID_options(data) {
 	}
 	
 }
+
+function set_upload(data) {
+	$("#progress-area").hide();
+	$("#progress-area .progress .bar").css("width", "0%");
+	$("#progress-area .span1.l").html("");
+
+
+
+	var folder = "../pages/"+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
+
+
+	var uploader = new plupload.Uploader({
+		runtimes      :'html5,gears,flash,silverlight',
+		browse_button :'upload-page-pdf',
+		//container          :'container',
+		max_file_size :'200mb',
+		max_file_count:1,
+		chunk_size    :"2MB",
+		url           :'/app/pf/upload/?folder=' + folder,
+
+		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
+		silverlight_xap_url:'/ui/plupload/js/plupload.silverlight.xap',
+		filters            :[
+			{title:"PDF", extensions:"pdf"}
+			//{title:"Zip files", extensions:"zip"}
+		],
+		unique_names       :true
+	});
+
+
+
+	uploader.bind('Init', function (up, params) {
+
+	});
+
+	uploader.bind('FilesAdded', function (up, files) {
+		var fileCount = up.files.length, i = 0, ids = $.map(up.files, function (item) {
+			return item.id;
+		});
+
+		for (i = 0; i < fileCount; i++) {
+			uploader.removeFile(uploader.getFile(ids[i]));
+		}
+		i = 0;
+		$('#material-file-area-filename').html('<div id="' + files[i].id + '" class="g">Uploading: ' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ')</div>');
+
+		setTimeout(function () {
+			$("#progress-area").fadeIn();
+			uploader.start();
+		}, 100);
+
+
+	});
+
+	uploader.bind('UploadProgress', function (up, file) {
+		$("#progress-area .progress .bar").css("width", file.percent + "%");
+		$("#progress-area .span1.l").html(""+ file.percent + "%");
+
+	});
+
+	uploader.bind('UploadComplete', function (up, files) {
+		var file = files[0];
+
+
+
+
+		var $img = '<img src="/app/pf/thumb/page/' + data['dID'] + '/'  + data['page'] + '/'+ file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
+
+		$("#progress-area .span1.l").html($img + "<em class='g'>Rendering</em>");
+
+
+
+		// console.log($($img).attr("src"))
+		$('#progress-area .span1.l img').load(function () {
+			$("#progress-area .span1.l").html($img);
+
+			$("#progress-area").fadeOut(500, function () {
+				$("#material-file-area .progress .bar").css("width", "0%");
+			});
+
+			data.filename = file.target_name;
+			$.post("/app/pf/save/front/_upload_page", data, function (response) {
+				load_pages()
+			});
+
+		});
+
+
+
+
+
+	});
+
+	uploader.init();
+
+}
+	

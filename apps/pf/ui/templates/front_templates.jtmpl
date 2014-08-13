@@ -115,7 +115,7 @@
 				
 				<div style="width: <%= width %>px; height: <%= ratio_y * {{ _user['publication']['cmav'] }} %>px; margin-left:25px; box-shadow: 0 0 5px #666;">
 					<% if (this.page.pdf) { %>
-					<img style="height:100%; width:100%;" src="/app/pf/thumb/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>">
+					<img style="height:100%; width:100%;" src="/app/pf/thumb/page/<%= this.page.dID %>/<%= this.page.page %>/<%= this.page.pdf %>?w=<%= width %>&h=<%= ratio_y * {{ _user['publication']['cmav'] }} %>&s=<%= this.page.pdf %>">
 					<% } else { %>
 					<div style="background: url(/ui/_images/question.png) no-repeat bottom center; width:100%; height:100%; opacity:0.5"></div>
 					<% } %>
@@ -155,8 +155,8 @@
 	</div>
 	<div class="modal-footer">
 		<div class="row">
-			<div class="span6">
-				<button class="btn span2" type="button"><i class="icon-upload-alt pull-left" style="margin-left:15px"></i>
+			<div class="span6" style="position: relative;">
+				<button class="btn span2" type="button" id="upload-page-pdf" ><i class="icon-upload-alt pull-left" style="margin-left:15px" ></i>
 					<span style="margin-left:-15px;">Upload</span>
 				</button>
 				<% if (this.page.pdf) { %>
@@ -164,6 +164,15 @@
 					<span style="margin-left:-15px;">Download</span>
 				</a>
 				<% } %>
+
+				<div class="span6" style="display:none; position: absolute; top:0; left:0; right:0; bottom:0; z-index:3; background-color: #f1f1f1;" id="progress-area">
+					<div class="progress progress-striped active span5" style="margin:0;">
+						<div class="bar" style="width: 0%;"></div>
+					</div>
+					<div class="span1 l pull-right" style="">
+
+					</div>
+				</div>
 			</div>
 			<div class="span3">
 				<a href="#" class="btn span2 pull-right" data-dismiss="modal" aria-hidden="true">Close</a>

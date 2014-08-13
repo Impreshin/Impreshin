@@ -125,7 +125,7 @@ $(document).ready(function () {
 				
 				var $img = '<img src="/app/ab/thumb/page/' + data['dID'] + '/'  + data['page'] + '/'+ file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
 
-				$("#progress-area .span3.l").html($img + "<em class='g'>Rendering: " + file.name + "</em>");
+				$("#progress-area .span3.l").html($img + "<em class='g'>Rendering</em>");
 
 
 

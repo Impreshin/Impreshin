@@ -102,6 +102,7 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 	public function page() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");
+		$user = $f3->get("user");
 		$f3->set("json",False);
 		
 		$dID = $f3->get("PARAMS.dID");
@@ -113,9 +114,12 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		
 		if (count($data)){
 			$data = $data[0];
-			
-			
-			
+		} else {
+			$data['dID'] = $dID;
+			$data['cID'] = $user['company']['ID'];
+			$data['pID'] = $user['publication']['ID'];
+			$data['page'] = $page;
+			$data['pdf'] = "";
 		}
 
 

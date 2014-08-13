@@ -351,6 +351,12 @@ class front extends data {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
 			$page['size'] = null;
+
+			$page['dID'] = $dID;
+			$page['pID'] = $pID;
+			$page['cID'] = $user['company']['ID'];
+			
+			
 		}
 		
 		$return = array();

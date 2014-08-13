@@ -19,6 +19,8 @@ class _file extends \apps\pf\controllers\_ {
 	public function thumbnail() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");
+		$user = $f3->get("user");
+		
 		$f3->set("json",False);
 
 		$dID = $f3->get("PARAMS.dID");
@@ -30,9 +32,13 @@ class _file extends \apps\pf\controllers\_ {
 
 		if (count($data)){
 			$data = $data[0];
-
-
-
+		} else {
+			$data['dID'] = $dID;
+			$data['cID'] = $user['company']['ID'];
+			$data['pID'] = $user['publication']['ID'];
+			$data['page'] = $page;
+			$data['pdf'] = "";
+			
 		}
 
 
@@ -224,9 +230,7 @@ class _file extends \apps\pf\controllers\_ {
 			$f3->error("404");
 		}
 
-		$path = $folder . "nf/".$file;
-		$path = $f3->fixslashes($path);
-		$path = str_replace("//","/",$path);
+		
 		
 		
 		
