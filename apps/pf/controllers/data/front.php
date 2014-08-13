@@ -319,24 +319,46 @@ class front extends data {
 
 	function _details(){
 		$page_nr = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : "";
+		$dID = (isset($_REQUEST['dID'])) ? $_REQUEST['dID'] : "";
 		$user = $this->f3->get("user");
+		$cfg = $this->f3->get("CFG");
 		$userID = $user['ID'];
 
-		$pID = $user['publication']['ID'];
+		$date = new \models\dates();
+		$date = $date->get($dID);
 
-		$dID = $user['publication']['current_date']['ID'];
+		$pID = $date['pID'];
+		$dID = $date['ID'];
+
+		
 
 		$page = models\pages::getAll("page='$page_nr' AND global_pages.dID = '$dID' AND global_pages.pID='$pID'");
 
 		if (count($page)) {
 			$page = $page[0];
+			$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+			$folder = "pages/" . $page['cID'] . "/" . $page['pID'] . "/" . $page['dID'] . "/";
+			$path = $upload_folder .DIRECTORY_SEPARATOR . $folder .  $page['pdf'];
+			$path = $this->f3->fixSlashes($path);
+			$path = str_replace(array("/","\\","\\\\"), DIRECTORY_SEPARATOR, $path);
+			if (file_exists($path)){
+				$page['size'] = file_size(filesize($path));
+			}
+			
+			//test_array($page); 
+			
 		} else {
 			$page = models\pages::dbStructure();
 			$page['page'] = $page_nr;
+			$page['size'] = null;
 		}
+		
+		$return = array();
+		$return['date'] = $date;
+		$return['page'] = $page;
 
 
-		$GLOBALS["output"]['data'] = $page;
+		return $GLOBALS["output"]['data'] = $return;
 	}
 	
 

@@ -9,9 +9,6 @@ $(document).ready(function () {
 		$("#list-highlight-btns button[data-highlight].active").removeClass("active");
 		$("#list-highlight-btns button[data-highlight='" + $.bbq.getState("highlight") + "']").addClass("active");
 	}
-	if ($.bbq.getState("page")) {
-		getPageDetails();
-	}
 	
 
 	$(document).on("click", "#list-highlight-btns button", function (e) {
@@ -67,9 +64,10 @@ $(document).on("change", "#dID", function () {
 });
 function getPageDetails(){
 	var ID = $.bbq.getState("page");
-	$.getData("/app/pf/data/front/_details?r=" + Math.random(), {"val": ID}, function (data) {
+	var dID = $("#dID").val();
+	$.getData("/app/pf/data/front/_details?r=" + Math.random(), {"page": ID,"dID":dID}, function (data) {
 
-		//$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
+		$("#page-details-modal").jqotesub($("#template-page-details-modal"), data).modal("show");
 	});
 }
 function dummy_resize(settings) {
@@ -132,6 +130,10 @@ function load_pages(settings) {
 
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 		dummy_resize(settings);
+		if ($.bbq.getState("page")) {
+			getPageDetails();
+		}
+
 	}, "data");
 }
 function dID_options(data) {

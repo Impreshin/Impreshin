@@ -158,11 +158,15 @@ class layout extends save {
 				$a->dID = $dID;
 				$a->page = $page;
 				$a->pdf = $filename;
+				$a->pdf_uID = $user['ID'];
+				$a->pdf_datein = date("Y-m-d H:i:s");
 				$a->save();
 
 				$pageID = $a->_id;
 			} else {
 				$a->pdf = $filename;
+				$a->pdf_uID = $user['ID'];
+				$a->pdf_datein = date("Y-m-d H:i:s");
 				$a->save();
 				$pageID = $a->ID;
 			}

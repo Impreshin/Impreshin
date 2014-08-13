@@ -58,7 +58,8 @@ class pages {
 		$timer2 = new timer();
 		$result = $f3->get("DB")->exec("
 			SELECT global_pages.*, section, section_colour, global_pages.nf_locked as locked,
-			(SELECT cID FROM global_publications WHERE global_publications.ID = global_pages.pID) as cID
+			(SELECT cID FROM global_publications WHERE global_publications.ID = global_pages.pID) as cID,
+			(SELECT fullname FROM global_users WHERE global_users.ID = global_pages.pdf_uID) as pdf_fullname
 			FROM global_pages LEFT JOIN global_pages_sections ON global_pages.sectionID = global_pages_sections.ID
 			$where
 			$orderby

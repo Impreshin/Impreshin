@@ -14,54 +14,106 @@ class _file extends \apps\pf\controllers\_ {
 
 	
 
+	
+
 	public function thumbnail() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");
 		$f3->set("json",False);
 
-		$cfg = $this->f3->get("CFG");
+		$dID = $f3->get("PARAMS.dID");
+		$page = $f3->get("PARAMS.page");
 
 
-		$user = $this->f3->get("user");
-		$app = $this->f3->get('PARAMS.app');
-		$folder = ($cfg['upload']['folder'] . $app . "/");
-	
 
-		//header("Content-Type: image/png");
-		//header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
-		//header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+		$data = $f3->get("DB")->exec("SELECT *, (SELECT cID FROM global_publications WHERE global_publications.ID = global_pages.pID) as cID FROM global_pages WHERE dID = '$dID' AND page = '$page'");
+
+		if (count($data)){
+			$data = $data[0];
+
+
+
+		}
+
+
+		//test_array($data); 
+
+
+
+
+		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-		//	header('HTTP/1.1 304 Not Modified');
+			header('HTTP/1.1 304 Not Modified');
 			die();
 		}
 
-		$filename = isset($_REQUEST['file'])?$_REQUEST['file']:"";
-		$crop = isset($_REQUEST['crop'])?$_REQUEST['crop']:true;
-		
-		if ($crop==="false"){
-			$crop=false;
+		$folder = "pages/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
+		$filename = $data['pdf'];
+
+		if (isset($_GET['instantrender'])) {
+			$filename = $_GET['s'];
 		}
 
-		$file = $folder . "nf/".$filename;
-		$file = $f3->fixslashes($file);
-		$file = str_replace("//","/",$file);
+
+		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+
+		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
+		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
+		$crop = (isset($_GET['c']) && $_GET['c']=="true") ? true:false;
+
+		$w = round($w);
+		$h = round($h);
+		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
+		if (file_exists($upload_folder . $folder . $filename)) {
 
 
-		//test_array($this->f3->get('PARAMS.w'));
-
-		$width = $this->f3->get('PARAMS.w')? $this->f3->get('PARAMS.w'): "";
-		$height = $this->f3->get('PARAMS.h')? $this->f3->get('PARAMS.h'): "";
+			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
 
-		//test_array($file);
 
-		if (file_exists($file)) {
-			$thumb = new \mods_Image($file);
 
-			$thumb->resize($width, $height, $crop);
-			$thumb->render();
 
+			if ($file_extension == "pdf") {
+				$thumb = "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename);
+
+				if (!file_exists($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR, 01777, true);
+
+				if (!file_exists($upload_folder . $folder . $thumb) && file_exists($upload_folder . $folder . $filename)) {
+					$exportPath = $upload_folder . $folder . $thumb;
+					$res = "96";
+					$pdf = $upload_folder . $folder . $filename;
+
+					$str = "gs -dCOLORSCREEN -dNOPAUSE -box -sDEVICE=png16m -dUseCIEColor -dTextAlphaBits=4 -dFirstPage=1 -dLastPage=1 -dGraphicsAlphaBits=4 -o$exportPath -r$res  $pdf";
+
+					//echo $str;
+					//exit();
+					exec($str);
+
+					self::remove_white($upload_folder . $folder . $thumb);
+				}
+
+
+
+
+
+
+				if (file_exists($upload_folder . $folder . $thumb)) {
+					//test_array(array($folder . $thumb));
+
+
+
+					$image = new \Image($folder . $thumb);
+					$image->resize($w,$h,$crop);
+					$image->render();
+					unset($image);
+				}
+			}
 		}
+
+		$f3->set("exit", true);
 
 
 	}
@@ -125,35 +177,58 @@ class _file extends \apps\pf\controllers\_ {
 		$cfg = $f3->get("CFG");
 		$f3->set("json",False);
 
-		$cfg = $this->f3->get("CFG");
+		$dID = $f3->get("PARAMS.dID");
+		$page = $f3->get("PARAMS.page");
 
 
-		$user = $this->f3->get("user");
-		$app = $this->f3->get('PARAMS.app');
-		$folder = ($cfg['upload']['folder'] . $app . "/");
-		
-		
-		
-		$file = isset($_GET['file'])?$_GET['file']:"";
-		$filename = isset($_GET['filename'])?$_GET['filename']:basename($file);
+
+		$data = $f3->get("DB")->exec("SELECT *, (SELECT cID FROM global_publications WHERE global_publications.ID = global_pages.pID) as cID, (SELECT publish_date FROM global_dates WHERE global_dates.ID = global_pages.dID) as publish_date, (SELECT publication FROM global_publications WHERE global_publications.ID = global_pages.pID) as publication FROM global_pages WHERE dID = '$dID' AND page = '$page'");
+
+		if (count($data)){
+			$data = $data[0];
+
+		}
+
+		$folder = "pages/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
+		$filename = $data['pdf'];
+
+
+		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+
+		if (file_exists($upload_folder . $folder . $filename)) {
+			$o = new \Web();
+			
+			$path = $upload_folder . $folder . $filename;
+
+			$gen = $data['publication'];
+			$gen = $gen . "_" . $data['publish_date'];
+			$gen = $gen . "_page-" . ($data['page'] + 0);
+			
+			
+			$gen = $gen . ".pdf";
+
+			//test_array($gen); 
+			header('Content-Type: '.$o->mime($filename));
+			header('Content-Disposition: attachment; '.
+			       'filename='.$gen);
+			header('Accept-Ranges: bytes');
+			header('Content-Length: '.$size=filesize($path));
+
+			echo readfile($path);
+
+
+			exit();
+			
+		} else {
+			$f3->error("404");
+		}
 
 		$path = $folder . "nf/".$file;
 		$path = $f3->fixslashes($path);
 		$path = str_replace("//","/",$path);
 		
-		$o = new \Web();
 		
-
-		header('Content-Type: '.$o->mime($file));
-		header('Content-Disposition: attachment; '.
-				   'filename='.basename($filename));
-		header('Accept-Ranges: bytes');
-		header('Content-Length: '.$size=filesize($path));
-
-		echo readfile($path);
-		
-		
-		exit();
 		
 		
 	}

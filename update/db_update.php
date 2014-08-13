@@ -142,6 +142,9 @@ $sql = array(
     "31"=>array(
 	   "CREATE TABLE IF NOT EXISTS `pf_users_pub` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `pID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `pID` (`pID`),  KEY `uID` (`uID`));" ,
        "CREATE TABLE IF NOT EXISTS `pf_users_settings` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `uID` int(6) DEFAULT NULL,  `settings` text,  `pID` int(6) DEFAULT NULL,  `cID` int(6) DEFAULT NULL,  `last_activity` datetime DEFAULT NULL,  `last_page` varchar(250) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `uID` (`uID`),  KEY `cID` (`cID`));"
+    ),
+    "32"=>array(
+	    "ALTER TABLE  `global_pages` ADD  `pdf_uID` INT( 6 ) NULL DEFAULT NULL AFTER  `pdf` , ADD  `pdf_datein` DATETIME NULL DEFAULT NULL AFTER  `pdf_uID`;"
     )
 	
 

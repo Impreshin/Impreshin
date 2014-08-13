@@ -43,6 +43,11 @@ $routes[] =	array(
 	"l"=>true,
 );
 
+$app->route("GET|POST /app/pf/thumb/page/@dID/@page/*", function ($app, $params) {
+		$app->chain("apps\\pf\\app->app; apps\\pf\\controllers\\_file->thumbnail");
+	}
+);
+
 $app->route("GET|POST /app/np/thumb", function ($app, $params) {
 		$app->chain("apps\\pf\\app->app; apps\\pf\\controllers\\_file->thumbnail");
 
@@ -59,9 +64,8 @@ $app->route("GET|POST /app/pf/download", function ($app, $params) {
 
 	}
 );
-$app->route("GET|POST /app/pf/thumb/page/@dID/@page/*", function ($app, $params) {
-
-		$app->chain("apps\\ab\\app->app; apps\\ab\\controllers\\controller_general_thumb->page");
+$app->route("GET|POST /app/pf/download/page/@dID/@page/*", function ($app, $params) {
+		$app->chain("apps\\pf\\app->app; apps\\pf\\controllers\\_file->download");
 
 	}
 );
