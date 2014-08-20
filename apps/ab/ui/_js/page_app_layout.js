@@ -704,7 +704,7 @@ function loadTetris() {
 					if (img){
 						img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
 					} else {
-						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br><span class=' s'>("+cm+"x"+col+")</span></div>";
 					}
 
 					
@@ -755,7 +755,7 @@ function loadTetris() {
 					if (img){
 						img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
 					} else {
-						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+						img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br><span class=' s'>("+cm+"x"+col+")</span></div>";
 					}
 					
 
@@ -917,7 +917,7 @@ function doLayout() {
 		if (img){
 			img  = '<img src="/app/ab/thumb/material/'+ID+'/'+img+'?w='+width+'&h='+height+'&c=false&s='+img+'"/>';
 		} else {
-			img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br>("+col+"x"+cm+")</div>";
+			img = "<div class='tetris-no-img' style='height:"+height+"px'>"+client + "<br><span class='s'>("+cm+"x"+col+")</span></div>";
 		}
 
 		
