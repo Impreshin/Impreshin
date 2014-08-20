@@ -1,6 +1,3 @@
-/*
- * Date: 2013/02/19 - 2:31 PM
- */
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
 $(document).ready(function () {
 	getData();
