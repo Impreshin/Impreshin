@@ -127,7 +127,7 @@
   display: none;
 }
 .pages > article {
-  overflow-y: auto;
+  overflow: hidden;
 }
 #record-list-middle {
   position: absolute;
