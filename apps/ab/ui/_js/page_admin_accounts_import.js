@@ -1,6 +1,3 @@
-/*
- * Date: 2012/06/20 - 8:49 AM
- */
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
 var _data = "";

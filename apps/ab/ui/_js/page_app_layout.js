@@ -1,6 +1,3 @@
-/*
- * Date: 2012/05/30 - 8:37 AM
- */
 var left_pane = $("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
 
@@ -21,7 +18,6 @@ $(document).ready(function () {
 		if (!$(e.target).closest("#toolbar-stats-pane").get(0)) {
 			$("#toolbar-stats-pane").slideToggle(transSpeed);
 		}
-
 	});
 	$(document).on("click", ".open-tetris", function (e) {
 		$("#modal-tetris").html("").modal("show");
@@ -38,8 +34,6 @@ $(document).ready(function () {
 	$(document).on('mouseenter', '#page-area-tetris > article, #list-tetris > article', function () {
 		var $this = $(this);
 		
-		
-
 		var str = "";
 			str += '<h1>'+$this.attr("data-client")+'<small class="pull-right" style="font-size:12px; margin-right:10px; padding-top:10px;">('+$this.attr("data-cm")+' x '+$this.attr("data-col")+')</small></h1>';
 		

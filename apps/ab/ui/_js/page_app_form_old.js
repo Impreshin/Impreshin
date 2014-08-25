@@ -1,6 +1,3 @@
-/*
- * Date: 2012/05/05 - 1:00 PM
- */
 var $form = $("#booking-form").data({
 	clients    :var_clients,
 	spots      :var_spots,

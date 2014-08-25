@@ -70,11 +70,16 @@
 
 
 			</div>
+
+			<% if (this.highlight=="fullpage" || this.highlight=="locked") { %>
 			
-			<% if (this.spreads[s].pages[i].stats.records.total > 0) { %>
-			<div class="record-count"> <strong><%= this.spreads[s].pages[i].stats.records.bar.y %>
-					<span class="dg"> of </span>  <%= this.spreads[s].pages[i].stats.records.total %></strong>
-			</div>
+			<% } else { %>
+			
+				<% if (this.spreads[s].pages[i].stats.records.total > 0) { %>
+				<div class="record-count"> <strong><%= this.spreads[s].pages[i].stats.records.bar.y %>
+						<span class="dg"> of </span>  <%= this.spreads[s].pages[i].stats.records.total %></strong>
+				</div>
+				<% } %>
 			<% } %>
 
 			<% if(this.spreads[s].pages[i].colour.icons) { %>

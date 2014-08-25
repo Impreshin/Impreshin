@@ -1,6 +1,3 @@
-/*
- * Date: 2012/06/20 - 8:49 AM
- */
 var whole_pane = $("#whole-area .scroll-pane").jScrollPane(jScrollPaneOptions).data("jsp");
 $(document).ready(function () {
 	getDetails();
