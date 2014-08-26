@@ -3,7 +3,7 @@
 <div class="container">
 <div class="clearfix">
 
-<a class="brand" href="#select-app" data-toggle="modal">{{ _application['name'] }}</a>
+<a class="brand" href="#select-app" data-toggle="modal" rel="tooltip" title="Switch Applications" data-placement="bottom">{{ _application['name'] }}</a>
 {% if _cfg['git']['branch'] != 'master' %}
 	<div id="brand-branch" >{{ _cfg['git']['branch'] }}</div>
 {% endif %}
