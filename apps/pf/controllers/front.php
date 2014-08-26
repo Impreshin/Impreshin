@@ -65,36 +65,7 @@ class front extends \apps\pf\controllers\_ {
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}
 
-	function _print() {
-		$timer = new timer();
-		$user = $this->f3->get("user");
-
-		$settings = models\settings::_read("provisional", $user['permissions']);
-
-
-		$dataO = new \apps\nf\controllers\data\provisional();
-		$data = $dataO->_list();
-
-		//test_array($data);
-
-		$tmpl = new \template("template.tmpl","apps/nf/ui/print/",true);
-		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
-			"meta"    => array(
-				"title"=> "AB - Print - Provisional",
-			)
-		);
-
-		$tmpl->settings=$settings;
-		$tmpl->data=$data;
-
-		//test_array($data);
-
-		$tmpl->output();
-		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
-	}
+	
 
 
 }

@@ -80,7 +80,7 @@ $router['pf'] = $routes;
 
 $apps["pf"] = array(
 		"name" => "Pages",
-		"description"=>"Upload full page PDF"
+		"description"=>"Page (PDF) Archiving and Download"
 );
 
 

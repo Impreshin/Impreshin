@@ -8,7 +8,12 @@
 			<ul>
 				{% for app,row in _user['applications'] %}
 						<li class='{% if _folder =='apps/'~app~'/ui/' %}active{% endif %}'>
-							<a href="{{ row['last_page'] }}">{{ row['name'] }}</a>
+							<a href="{{ row['last_page'] }}">
+								{{ row['name'] }}
+							<br>
+								<span class="s g">{{ row['description'] }}</span>
+
+							</a>
 						</li>
 				{% endfor %}
 

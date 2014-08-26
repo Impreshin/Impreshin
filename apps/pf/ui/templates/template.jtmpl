@@ -32,7 +32,7 @@
 	<![CDATA[
 	<table class="table table-condensed s" style="margin:0;">
 		<% for (var i in this.users) { %>
-		<tr title="<%=this.users[i].d %> &nbsp; | &nbsp; <%=this.users[i].p %>" class="<% if (this.users[i].a =='NF') { %><% } else { %>g<% } %>">
+		<tr title="<%=this.users[i].d %> &nbsp; | &nbsp; <%=this.users[i].p %>" class="<% if (this.users[i].a =='PF') { %><% } else { %>g<% } %>">
 			<td><%=this.users[i].f %> </td>
 			<td><%=this.users[i].t %></td>
 			<td><%=this.users[i].a %></td>

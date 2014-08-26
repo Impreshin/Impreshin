@@ -348,7 +348,7 @@ $router['ab'] = $routes;
 
 $apps["ab"] = array(
 		"name" => "AdBooker",
-		"description"=>"Advert management tool"
+		"description"=>"Advert Management Tool"
 );
 
 
