@@ -251,6 +251,22 @@ class controller_screenshots {
 		
 		
 		
+		$images["cm"]=array(
+			"app"=>"cm",
+			"name"=>$apps['cm']['name'],
+			"description"=>$apps['cm']['description'],
+			"screenshots"=>array()
+		);
+		
+		$images["pf"]=array(
+			"app"=>"pf",
+			"name"=>$apps['pf']['name'],
+			"description"=>$apps['pf']['description'],
+			"screenshots"=>array()
+		);
+		
+		
+		
 		
 		
 		$data= isset($images[$app])?$images[$app]:false;
