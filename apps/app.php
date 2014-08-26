@@ -369,7 +369,7 @@ class app {
 		$apporder = $apporder['apps'];
 		$n = array();
 		foreach ($apporder as $item){
-			$n[$item] = $applications[$item];
+			if (isset($applications[$item])) $n[$item] = $applications[$item];
 		}
 
 		$applications = $n;
