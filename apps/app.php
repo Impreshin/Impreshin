@@ -344,8 +344,10 @@ class app {
 			
 		}
 
+	
 		
-		//test_array(array("apps"=>$applications,"list"=>$applications_list)); 
+		
+		//test_array(array("order"=>$apporder,"apps"=>$applications,"list"=>$applications_list)); 
 		
 		$t = array();
 		foreach ($applications as $aak=>$aaa){
@@ -361,10 +363,17 @@ class app {
 			$t[$aak]=$aaa;
 			
 		}
-		$applications = $t;
 
-	
 
+		$apporder = $this->f3->get("CFG");
+		$apporder = $apporder['apps'];
+		$n = array();
+		foreach ($apporder as $item){
+			$n[$item] = $applications[$item];
+		}
+
+		$applications = $n;
+//test_array($applications); 
 		$return['applications'] = $applications;
 		
 
@@ -400,7 +409,7 @@ class app {
 		
 
 
-		//test_array($permissions);
+	//	test_array($return);
 		$return['permissions'] = $permissions;
 
 	//	test_array(array("uID"=>$return['ID'],"company"=>$return['company'],"publication"=>$return['publication'],"permissions"=>$return['permissions'])); 
