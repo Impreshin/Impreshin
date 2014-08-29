@@ -516,6 +516,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$values['userName'] = $user['fullName'];
 		$values['repeat_from'] = $data['ID'];
 		$values['pageID'] = null;
+		$values['x_offset'] = null;
+		$values['y_offset'] = null;
 		$values['invoiceNum'] = null;
 		$values['dID'] = $dID;
 		if ($exact_repeat) {
