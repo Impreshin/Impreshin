@@ -277,7 +277,9 @@
 <% if (this.typeID =='1') { %>
 
 <a <% if (this.material_file_filename) { %><% if (this.a.material_pane=='1') { %> href="#details-pane-material" data-toggle="tab"<% } %><% } else { %> <% if (this.a.material=='1') { %> href="#popup-material" data-target="popup"<% } %><% } %> id="details-advert-size" style="width: 180px; height: <%= {{ _pageHeight }} %>px;" > <% if (this.page){ %>
-<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %></div>
+<div class="label label-info" style="position: absolute; top: -18px; right: 0;">Page: <%= this.page %><% if (this.pageLocked=='1') { %> 
+	<i class="icon-lock"></i>
+	<% } %></div>
 
 
 <% if (this.y_offset!=null) { %>
