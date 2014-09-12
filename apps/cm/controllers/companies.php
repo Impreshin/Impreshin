@@ -25,14 +25,16 @@ class companies extends \apps\cm\controllers\_ {
 		$pID = $user['pID'];
 		
 		//test_array($user);
-		$app_settings = \apps\cm\settings::_available();
+		$app_settings = \apps\cm\settings::_available("","companies");
+		
+		
 
 
 
-		//test_array($user);
+		//test_array($app_settings);
 
 
-		$settings = models\settings::_read("front",$user['permissions']);
+		$settings = models\settings::_read("companies","companies");
 
 
 		//test_array($settings);
@@ -43,7 +45,7 @@ class companies extends \apps\cm\controllers\_ {
 		$tmpl->page = array(
 			"section"=> "companies",
 			"sub_section"=> "",
-			"template"=> "front",
+			"template"=> "companies",
 			
 			"meta"    => array(
 				"title"=> "CM - Companies",
@@ -52,7 +54,34 @@ class companies extends \apps\cm\controllers\_ {
 		);
 
 
-		
+		$a = array();
+		$b = array();
+
+		foreach ($settings['col'] as $col){
+			$a[] = $col;
+			$b[] = $col['c'];
+
+		}
+
+
+
+		$selected = $a;
+		$available = array();
+		foreach ($app_settings["columns"] as $col){
+			if ( !in_array($col['c'],$b)){
+				$available[] = $col;
+			}
+
+		}
+
+
+
+
+
+		$tmpl->settings_columns = array(
+			"selected"=> $selected,
+			"available"=> $available
+		);
 
 
 
@@ -65,36 +94,7 @@ class companies extends \apps\cm\controllers\_ {
 		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
 	}
 
-	function _print() {
-		$timer = new timer();
-		$user = $this->f3->get("user");
-
-		$settings = models\settings::_read("provisional", $user['permissions']);
-
-
-		$dataO = new \apps\nf\controllers\data\provisional();
-		$data = $dataO->_list();
-
-		//test_array($data);
-
-		$tmpl = new \template("template.tmpl","apps/nf/ui/print/",true);
-		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
-			"meta"    => array(
-				"title"=> "AB - Print - Provisional",
-			)
-		);
-
-		$tmpl->settings=$settings;
-		$tmpl->data=$data;
-
-		//test_array($data);
-
-		$tmpl->output();
-		$timer->stop("Controller - ".__CLASS__." - ".__FUNCTION__, func_get_args());
-	}
+	
 
 
 }

@@ -5,6 +5,20 @@ $routes = array();
 // main app
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/cm/form',
+	"controller"=>'apps\cm\controllers\form->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/cm/form/@ID',
+	"controller"=>'apps\cm\controllers\form->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/cm',
 	"controller"=>'apps\cm\controllers\front->page',
 	"a"=>true,

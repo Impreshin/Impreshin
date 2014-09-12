@@ -72,6 +72,9 @@ class permissions {
 				),
 				"search"  => array(
 					"page" => 0
+				),
+				"marketer"  => array(
+					"page" => 0
 				)
 			),
 			"reports"        => array(

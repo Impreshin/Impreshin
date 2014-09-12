@@ -152,6 +152,23 @@ $sql = array(
         "ALTER TABLE  `global_users_company` ADD  `cm` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `pf`;",
         "ALTER TABLE  `global_users_company` ADD  `cm_permissions` TEXT NULL DEFAULT NULL AFTER  `pf_permissions`;",
         "ALTER TABLE  `global_companies` ADD  `cm` TINYINT NULL DEFAULT  '0' AFTER  `pf`;"
+    ),
+    "34"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_companies` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `company` varchar(200) DEFAULT NULL,  `short` varchar(200) DEFAULT NULL,  `phone` varchar(200) DEFAULT NULL,  `fax` varchar(200) DEFAULT NULL,  `email` varchar(200) DEFAULT NULL,  `website` varchar(200) DEFAULT NULL,  `address1` varchar(200) DEFAULT NULL,  `address2` varchar(200) DEFAULT NULL,  `city` varchar(200) DEFAULT NULL,  `country` varchar(200) DEFAULT NULL,  `postalCode` varchar(200) DEFAULT NULL,  `taxID` varchar(200) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+        "CREATE TABLE IF NOT EXISTS `cm_contacts` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `firstName` varchar(200) DEFAULT NULL,  `lastName` varchar(200) DEFAULT NULL,  `title` varchar(200) DEFAULT NULL,  `phone` varchar(200) DEFAULT NULL,  `mobile` varchar(200) DEFAULT NULL,  `fax` varchar(200) DEFAULT NULL,  `email` varchar(200) DEFAULT NULL,  `website` varchar(200) DEFAULT NULL,  `address1` varchar(200) DEFAULT NULL,  `address2` varchar(200) DEFAULT NULL,  `city` varchar(200) DEFAULT NULL,  `country` varchar(200) DEFAULT NULL,  `postalCode` varchar(200) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+        "CREATE TABLE IF NOT EXISTS `cm_companies_contacts` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `companyID` int(6) DEFAULT NULL,  `contactID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `companyID` (`companyID`,`contactID`));",
+        "ALTER TABLE  `cm_companies` ADD  `dateChanged` TIMESTAMP NULL DEFAULT NULL;",
+        "CREATE TABLE IF NOT EXISTS `cm_companies_logs` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `companyID` int(6) DEFAULT NULL,  `log` text,  `label` varchar(100) DEFAULT NULL,  `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `userID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `userID` (`userID`),  KEY `datein` (`datein`),  KEY `companyID` (`companyID`));",
+        "ALTER TABLE  `cm_companies` CHANGE  `dateChanged`  `dateChanged` DATETIME NULL DEFAULT NULL;",
+        "ALTER TABLE  `cm_companies` ADD  `cID` INT( 6 ) NULL DEFAULT NULL AFTER  `ID` , ADD INDEX (  `cID` );",
+        "ALTER TABLE  `cm_contacts` ADD  `cID` INT( 6 ) NULL DEFAULT NULL AFTER  `ID` ,ADD INDEX (  `cID` );"
+    ),
+    "35"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_contacts_logs` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `contactID` int(6) DEFAULT NULL,  `log` text,  `label` varchar(100) DEFAULT NULL,  `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `userID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `userID` (`userID`),  KEY `datein` (`datein`),  KEY `contactID` (`contactID`));"
+    ),
+    "36"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_details_types` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `group` varchar(100) DEFAULT NULL,  `type` varchar(100) DEFAULT NULL,  `orderby` int(4) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+        "INSERT INTO `cm_details_types` (`ID`, `group`, `type`, `orderby`) VALUES (1, 'Phones', 'Mobile', 1), (2, 'Phones', 'Work', 2), (3, 'Phones', 'Home', 3), (4, 'Phones', 'Main', 4), (5, 'Phones', 'Other', 5), (6, 'Fax', 'Work', 6), (7, 'Fax', 'Home', 7), (8, NULL, 'Pager', 100), (9, NULL, 'Website', 101), (10, 'Address', 'Address 1', 10), (11, 'Address', 'Address 2', 11), (12, 'Address', 'City/Town', 12), (13, 'Address', 'Suburb', 13);"
     )
 	
 

@@ -1,0 +1,262 @@
+{% include '_details.jtmpl' %}
+
+<script type="text/x-jqote-template" id="template-toolbar">
+	<![CDATA[
+	<div class="container">
+		<div class="toolbar clearfix  ">
+			<ul class="nav pull-left">
+				<li>
+					<h2 style="padding-left: 30px;" id="booking-heading"><%= this.heading %>
+						<small style="margin-left:20px;"></small>
+					</h2>
+				</li>
+			</ul>
+			<ul class="nav nav-pills pull-right">
+				<li style="padding-top: 6px; margin-right: 10px;">Type:</li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="booking-type">
+						<button class="btn btn-mini <% if(this.data.type == 'co'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %> <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="co"
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Company</button>
+						<button class="btn btn-mini <% if(this.data.type == 'pe'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="pe"
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Person</button>
+						<button class="btn btn-mini <% if(this.data.type == 'in'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="in"
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Interaction</button>
+						<button class="btn btn-mini <% if(this.data.type == 'ta'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="ta"
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Task</button>
+
+					</div>
+				</li>
+
+				<li class="divider-vertical"></li>
+			</ul>
+
+		</div>
+		<div class="toolbar-end"></div>
+	</div>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template-form">
+	<![CDATA[
+	<form class="form-horizontal form-fill" id="main-form">
+
+
+		<section id="form-body" class="form-body" style="padding-top: 10px; bottom: 37px;">
+
+
+
+
+
+		</section>
+
+
+		<div class="form-actions form-footer">
+			<div class="row r">
+
+				<div style="float:left; margin-left:10px; padding-top: 3px;">
+					<% if (this.details.ID) { %>
+					<% if (this.a.delete=='1') { %>
+					<a href="#modal-delete" data-toggle="modal" class="btn btn-mini span1 " style="margin-right:20px" type="button" rel="tooltip" title="Delete this Record" data-position="above"><i class="icon-trash icon-d-grey"></i></a>
+					<% } %>
+					<% } %>
+
+
+
+
+				</div>
+
+
+
+
+
+				<div style="float:right; margin-right: 10px;">
+					<% if (this.details.ID) { %>
+
+					<button class="btn btn-mini  span1 view-record-btn" style="margin-top:2px;" type="button" id="view-record-btn" data-id="<%= this.details.linkID %>" rel="tooltip" title="View this record" data-position="above">
+						<i class="icon-fullscreen icon-d-grey"></i></button>
+					<a href="/app/cm/#scrollTo=<%= this.details.ID %>" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="Back to Article List" data-position="above">
+						<i class="icon-list-alt icon-d-grey"></i></a>
+					<a href="/app/cm/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
+						<i class="icon-plus"></i></a>
+					<% } %>
+
+
+
+
+
+					<div class="btn-group" style="margin-left:10px;">
+
+
+						<button class="btn btn-primary span4" style="" type="submit">Save Record</button>
+
+					</div>
+
+
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+
+	</form>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-modal-form">
+	<![CDATA[
+	<div class='modal-header'><a href='#' class='close' data-dismiss="modal">&times;</a>
+
+		<h3>Completed</h3></div>
+	<div class='modal-body'>
+		<article class="c">
+			<img src="/ui/_images/success.png" alt="Success">
+
+
+		</article>
+	</div>
+	<div class='modal-footer'>
+		<div class="btn-group c" style="margin-left: 7px;">
+			<a href="/app/cm/form/" class="btn span3" id="modal-btn-new">New Record</a>
+			<a data-id="<%= this.ID %>" class="btn span3 view-record-btn">View Record</a>
+			<a href="/app/cm/#scrollTo=<%= this.ID %>" class="btn span3">Go to list</a>
+
+		</div>
+	</div>
+
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template-form-co">
+	<![CDATA[
+		<div class="span8" style="margin-left:15px;">
+
+			<fieldset>
+				<legend>Details</legend>
+				<div class="control-group">
+					<label class="control-label" for="company">Company</label>
+
+					<div class="controls">
+						<input type="text" id="company" placeholder="Company Name" class="span5">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="short">Code</label>
+
+					<div class="controls">
+						<input type="text" id="short" placeholder="Company Code" class="span2">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="taxID">Tax ID</label>
+
+					<div class="controls">
+						<input type="text" id="taxID" placeholder="Tax ID" class="span3">
+					</div>
+				</div>
+			</fieldset>
+
+
+
+		</div>
+		<div class="span6 offset1">
+			<fieldset>
+				<legend>Contact Details</legend>
+
+				<div class="row">
+					<div class="span2">
+						<select style="width: 100%;" name="" id="">
+							{% for label,items in display_types %}
+							<optgroup label="{{ label|default("General") }}">
+								{% for row in items %}
+								<option value="{{ row['ID'] }}">{{ row['type'] }}</option>
+								{% endfor %}
+							</optgroup>
+							{% endfor %}
+							
+							
+						</select>
+					</div>
+					<div class="span3">
+						<input type="text" id="value" placeholder="Value" class="span3" style="width: 165px;">
+					</div>
+					<div class="span1">
+						<button class="btn span1 btn-mini" style="padding: 6px 0 6px 0;">Add</button>
+					</div>
+
+				</div>
+
+
+
+
+
+
+
+			</fieldset>
+			<hr/>
+			<fieldset>
+				<legend>
+					<small>General</small>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-plus"></i></button>
+				</legend>
+
+
+
+			</fieldset>
+			<fieldset>
+				<legend>
+					<small>Head Office</small>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
+				</legend>
+
+
+
+			</fieldset>
+
+
+			<fieldset>
+				<legend>
+					<small>Small Office</small>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
+				</legend>
+
+
+
+			</fieldset>
+
+			<fieldset>
+				<legend>
+					<small>Outside Office</small>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
+					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
+				</legend>
+
+
+
+			</fieldset>
+		</div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-pe">
+	<![CDATA[
+	contact
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-in">
+	<![CDATA[
+	interaction
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-form-ta">
+	<![CDATA[
+	task
+	]]>
+</script>
+

@@ -310,6 +310,7 @@ class settings {
 			"provisional"=>array("placing","type","colours","marketer","columns","discountPercent","accountStatus","invoiced","payment_method","none"),
 			"production"=>array("placing","type","colours","columns","pages","material_production","none"),
 			"search"=>array("date","placing","type","colours","marketer","columns","discountPercent","accountStatus","pages","material_production","invoiced",	"payment_method","none"),
+			"marketer_records"=>array("date","placing","type","colours","columns","discountPercent","accountStatus","pages","material_production","invoiced",	"payment_method","none"),
 		);
 
 		$groupby = array();
@@ -417,6 +418,31 @@ class settings {
 						"o"=> "ASC"
 					),
 					"count"      => "5",
+					"search"=> array(
+						"search"=> "",
+						"dates" => ""
+					)
+
+				),
+				"marketer_records"=> array(
+					"marketerID"=>"",
+					"col"        => array(
+						"client",
+						"size",
+						"colour",
+						"remark",
+						"page",
+					    "material_status"
+					),
+					"group"      => array(
+						"g"=> "date",
+						"o"=> "DESC"
+					),
+					"order"      => array(
+						"c"=> "client",
+						"o"=> "ASC"
+					),
+					"count"      => "6",
 					"search"=> array(
 						"search"=> "",
 						"dates" => ""

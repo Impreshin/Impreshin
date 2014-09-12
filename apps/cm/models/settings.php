@@ -5,12 +5,12 @@ use \timer as timer;
 
 class settings extends _ {
 
-	public static function _read($section) {
+	public static function _read($section,$av_section="") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 
-		$settings = \apps\cm\settings::_available($user['permissions']);
+		$settings = \apps\cm\settings::_available($user['permissions'],$av_section);
 		$defaults = \apps\cm\settings::defaults();
 		$settings_raw = $settings;
 

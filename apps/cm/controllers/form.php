@@ -8,7 +8,7 @@ use \timer as timer;
 use \apps\cm\models as models;
 use \models\user as user;
 use \models\dates as dates;
-class front extends \apps\cm\controllers\_ {
+class form extends \apps\cm\controllers\_ {
 	function __construct() {
 		parent::__construct();
 	}
@@ -17,7 +17,7 @@ class front extends \apps\cm\controllers\_ {
 		$timer = new timer();
 		$user = $this->user;
 		//$this->f3->get("DB")->exec("UPDATE global_users SET last_page = '" . $_SERVER['REQUEST_URI'] . "' WHERE ID = '" . $user['ID'] . "'");
-
+		$ID = $this->f3->get('PARAMS["ID"]');
 
 //test_array($user);
 
@@ -32,7 +32,7 @@ class front extends \apps\cm\controllers\_ {
 		//test_array($user);
 
 
-		$settings = models\settings::_read("form",$user['permissions']);
+		$settings = models\settings::_read("front",$user['permissions']);
 
 
 		//test_array($settings);
@@ -41,24 +41,32 @@ class front extends \apps\cm\controllers\_ {
 
 		$tmpl = new \template("template.tmpl","apps/cm/ui/");
 		$tmpl->page = array(
-			"section"=> "front",
+			"section"=> "form",
 			"sub_section"=> "",
-			"template"=> "front",
+			"template"=> "form",
 			
 			"meta"    => array(
-				"title"=> "CM - Front",
+				"title"=> "CM - Form",
 			),
 			//"help"=> "/apps/nf/help/bookings"
 		);
 
 
-		
+		$dt = models\details_types::getAll("","orderby ASC");
 
+		$dt_f = array();
+		foreach ($dt as $item){
+			$dt_f[$item['group']][] = $item;
+		}
+		
+		//test_array($dt_f); 
 
 
 
 		$tmpl->settings = $settings;
 		$tmpl->use_pub = false;
+		$tmpl->ID = $ID;
+		$tmpl->display_types = $dt_f;
 
 		
 		$tmpl->output();
