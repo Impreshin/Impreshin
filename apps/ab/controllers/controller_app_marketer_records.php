@@ -84,7 +84,7 @@ class controller_app_marketer_records extends \apps\ab\controllers\_ {
 		$tmpl->date_range = json_encode($date_range);
 
 		$tmpl->settings = $settings;
-		$tmpl->marketers = models\marketers::getAll("cID = '{$user['company']['ID']}'", "marketer ASC");
+		$tmpl->marketers = models\marketers::getAll("pID = '{$user['publication']['ID']}' AND cID = '{$user['company']['ID']}'", "marketer ASC");
 
 
 
