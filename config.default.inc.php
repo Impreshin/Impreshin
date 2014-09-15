@@ -27,7 +27,7 @@ $cfg['upload']['pages'] = false;
 $cfg['upload']['folder'] = $_SERVER['DOCUMENT_ROOT'] .  "/uploads/";
 $cfg['debug']['highlightfrom'] = 0.7;
 
-$cfg['apps'] = array("ab","nf","pf","cm");
+$cfg['apps'] = array("ab","cm","nf","pf");
 $cfg['gzip'] = false;
 
 $cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/backups/";

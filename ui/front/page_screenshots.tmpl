@@ -51,10 +51,10 @@
 					{% endfor %}
 					
 					{% else %}
-						<ul class="nav nav-pills" style="margin-left:-10px;margin-top:50px;">
+						<ul class="nav nav-pills" style="margin-left:50px;;margin-top:50px;">
 							
 							{% for row in apps %}
-								<li class="span8 {% if row['app'] == data['app'] %}active{% endif %}">
+								<li class="span7 {% if row['app'] == data['app'] %}active{% endif %}">
 									<a href="/screenshots/{{ row['app'] }}">
 										<h4 class="c">
 											{{ row['name'] }}

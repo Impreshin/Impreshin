@@ -1,0 +1,399 @@
+<script type="text/x-jqote-template" id="template-details-company">
+	<![CDATA[
+
+	<section class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>
+			<span class="label label-info" style="margin-right:10px;">Company</span><%= this.company %>
+		</h3>
+
+		<div id="modal-header-btns">
+
+			<a href="/app/cm/form/<%= this.linkID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
+
+		</div>
+
+
+		<div class="modal-header-right" style="width:193px;">
+			<h3>
+
+			</h3>
+
+		</div>
+	</section>
+	<section class="modal-body">
+
+
+		<div class="tabbable tabs-right">
+			<ul class="nav nav-tabs">
+				<li>
+					<a href="#details-pane-details" data-toggle="tab"> Details </a>
+				</li>
+				<li>
+					<a href="#details-pane-tasks" data-toggle="tab"> Tasks <span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
+				</li>
+				<li>
+					<a href="#details-pane-contacts" data-toggle="tab"> Contacts <span class="badge pull-right">1</span></a>
+				</li>
+				<li>
+					<a href="#details-pane-interactions " data-toggle="tab"> Interactions
+						<span class="badge pull-right">1</span>
+					</a>
+				</li>
+
+				<li class="tab-icon">
+					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+				</li>
+
+
+			</ul>
+			<div class="tab-content" style="width: 520px;">
+				<div id="details-pane-details" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							details
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-tasks" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							tasks
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-contacts" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							contacts
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-interactions" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							interactions
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				<div id="details-pane-logs" class="tab-pane">
+					<div class="scroll-pane">
+						logs
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+<div id="graphics-area">
+	<span class="sparklines" sparkWidth="170px" style="margin-left:30px;" ><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+</div>
+
+	</section>
+
+	<section class="modal-footer">
+		<div class="row">
+
+			<div class="span9 l">
+
+
+
+
+			</div>
+
+			<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+				<div class="btn-group">
+					<button id="details-record-prev" class="btn span2">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+	<div class="loadingmask wide"></div>
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-details-contact">
+	<![CDATA[
+
+	<section class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>
+			<span class="label label-inverse" style="margin-right:10px;">Person</span><%= this.fullName %>
+		</h3>
+
+		<div id="modal-header-btns">
+
+			<a href="/app/cm/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
+
+		</div>
+
+
+		<div class="modal-header-right" style="width:193px;">
+			<h3>
+
+			</h3>
+
+		</div>
+	</section>
+	<section class="modal-body">
+
+
+		<div class="tabbable tabs-right">
+			<ul class="nav nav-tabs">
+				<li>
+					<a href="#details-pane-details" data-toggle="tab"> Details </a>
+				</li>
+				<li>
+					<a href="#details-pane-tasks" data-toggle="tab"> Tasks <span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
+				</li>
+				
+				<li>
+					<a href="#details-pane-interactions " data-toggle="tab"> Interactions
+						<span class="badge pull-right">1</span>
+					</a>
+				</li>
+
+				<li class="tab-icon">
+					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+				</li>
+
+
+			</ul>
+			<div class="tab-content" style="width: 520px;">
+				<div id="details-pane-details" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							details
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-tasks" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							tasks
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-contacts" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							contacts
+						</div>
+					</div>
+				</div>
+				<div id="details-pane-interactions" class="tab-pane ">
+					<div class="scroll-pane">
+						<div style="padding-right:1px;">
+							interactions
+						</div>
+					</div>
+				</div>
+
+
+
+				<div id="details-pane-logs" class="tab-pane">
+					<div class="scroll-pane">
+						logs
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="graphics-area">
+			<span class="sparklines" sparkWidth="170px" style="margin-left:30px;" ><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+		</div>
+
+	</section>
+
+	<section class="modal-footer">
+		<div class="row">
+
+			<div class="span9 l">
+
+
+
+
+			</div>
+
+			<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+				<div class="btn-group">
+					<button id="details-record-prev" class="btn span2">
+						<i class="icon-step-backward"></i> Previous
+					</button>
+					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+	<div class="loadingmask wide"></div>
+	]]>
+</script>
+<script type="text/javascript">
+
+
+	$(document).on("shown", '#cm-details-modal', function () {
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
+		$.sparkline_display_visible();
+		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+	});
+	$(document).on('show', '#cm-details-modal .nav-tabs', function (e) {
+		var target = e.target; // activated tab
+		var previous = e.relatedTarget; // previous tab
+		$("#cm-details-modal .nav-tabs li.active").removeClass("active");
+		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+
+		$("#cm-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
+		$.sparkline_display_visible();
+		$.bbq.pushState({"details-tab": pane});
+		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+	});
+	$(document).on('hide', '#cm-details-modal', function () {
+		$.bbq.removeState("ID");
+		$("#record-list .record.active").removeClass("active");
+	});
+
+	$(document).on('click', '#details-pane-logs .record', function (e) {
+		var $this = $(this);
+		var $clicked = $(e.target).closest("tr.record");
+		var active = true;
+
+		if ($this.hasClass("active") && $clicked) active = false;
+
+		$("#details-pane-logs .record.active").removeClass("active");
+		if (active) {
+			$this.addClass("active");
+		}
+
+		var show = $("#details-pane-logs .record.active").attr("data-log-id");
+
+		$("#details-pane-logs .log-record-details").hide();
+		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
+		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+	});
+	$(document).on('click', '#details-record-prev', function () {
+		prevRecord();
+	});
+	$(document).on('click', '#details-record-next', function () {
+		nextRecord();
+	});
+
+
+
+	function nextRecord() {
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.nextAll("tr.record:first");
+		$.bbq.pushState({ID: $new.attr("data-ID")});
+		getDetails();
+	}
+	function prevRecord() {
+		var ID = $.bbq.getState("ID");
+		var $item = $("#record-list .record[data-ID='" + ID + "']");
+		var $new = $item.prevAll("tr.record:first");
+		$.bbq.pushState({ID: $new.attr("data-ID")});
+		getDetails();
+	}
+
+	function showContent_state() {
+		var ID = $.bbq.getState("ID");
+		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+			$("#details-record-prev").attr("disabled", "disabled");
+		} else {
+			$("#details-record-prev").removeAttr("disabled");
+		}
+		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+			$("#details-record-next").attr("disabled", "disabled");
+		} else {
+			$("#details-record-next").removeAttr("disabled");
+		}
+		var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
+		if (!tab) tab = "details-pane-details";
+		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+		$('#' + tab + '', $details_modal).addClass("active");
+
+	}
+	function getDetails() {
+		var ID = $.bbq.getState("ID");
+		$("#cm-details-modal").addClass("loading");
+		$.getData("/app/cm/data/details?r=" + Math.random(), {"ID": ID}, function (data) {
+			$("#record-list .record.active").removeClass("active");
+			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+
+			var template = "#template-details";
+
+			switch (data.type) {
+				case "company":
+					template = "#template-details-company";
+					break;
+				case "contact":
+					template = "#template-details-contact";
+					break;
+				default:
+					template = "#template-details";
+
+			}
+
+
+
+
+			$('#cm-details-modal').data("data", data).jqotesub($(template), data).modal('show').removeClass("loading").trigger("shown");
+
+			if ($("#record-list:visible").length) {
+
+				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
+
+					showContent_state();
+					$("#list-next-prev-btns").show();
+					var api = $("#whole-area .scroll-pane").data("jsp");
+					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
+					}
+
+				}
+			}
+
+			$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+
+
+			//$('.sparklines').sparkline("html");
+
+			$(".sparklines").sparkline('html', {
+				type: 'line',
+				fillColor: false,
+				spotColor: false,
+				minSpotColor: false,
+				maxSpotColor: false,
+				highlightSpotColor: false,
+				highlightLineColor: false,
+				enableTagOptions: true,
+				lineColor: "#0000FF"
+			});
+
+
+
+
+		}, "details");
+
+	}
+</script>
+<div class="modal hide fade" id="cm-details-modal" data-show="false">
+</div>

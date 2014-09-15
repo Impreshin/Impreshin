@@ -3,7 +3,7 @@
 <div class="container">
 <div class="clearfix">
 
-<a class="brand" href="#select-app" data-toggle="modal">{{ _application['name'] }}</a>
+<a class="brand" href="#select-app" data-toggle="modal" rel="tooltip" title="Switch Applications" data-placement="bottom">{{ _application['name'] }}</a>
 {% if _cfg['git']['branch'] != 'master' %}
 	<div id="brand-branch" >{{ _cfg['git']['branch'] }}</div>
 {% endif %}
@@ -55,6 +55,12 @@
 				{% endif %} {% if _user['permissions']['records']['search']['page'] %}
 					<li class=" {% if page['sub_section'] == "search" %} active {% endif %}">
 						<a href="/app/ab/records/search/"><i class="icon-search menu-icon"></i>Search</a>
+					</li>
+
+				{% endif %}
+				 {% if _user['permissions']['records']['marketer']['page'] %}
+					<li class=" {% if page['sub_section'] == "marketer" %} active {% endif %}">
+						<a href="/app/ab/records/marketers/">Marketers List</a>
 					</li>
 
 				{% endif %}

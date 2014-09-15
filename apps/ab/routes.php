@@ -69,6 +69,20 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/ab/records/marketers',
+	"controller"=>'apps\ab\controllers\controller_app_marketer_records->page',
+	"a"=>true,
+	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/ab/records/marketers/print',
+	"controller"=>'apps\ab\controllers\controller_app_marketer_records->_print',
+	"a"=>true,
+	"l"=>false,
+);
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/ab/records/deleted',
 	"controller"=>'apps\ab\controllers\controller_app_deleted->page',
 	"a"=>true,
@@ -348,7 +362,7 @@ $router['ab'] = $routes;
 
 $apps["ab"] = array(
 		"name" => "AdBooker",
-		"description"=>"Advert management tool"
+		"description"=>"Advert Management Tool"
 );
 
 

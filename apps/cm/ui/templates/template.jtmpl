@@ -1,0 +1,39 @@
+<script type="text/x-jqote-template" id="template-notifications">
+    <![CDATA[
+<div></div>
+   
+   
+
+
+    ]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-notifications-messages">
+	<![CDATA[
+	<span id="message-icon" class="<% if (this.unread=='0') { %><% } else { %>unread<% } %>">
+	<a title="Messages" class="messages_link" href="/app/cm/messages" style="margin-left: 5px;">
+		<% if (this.unread=='0') { %>
+		<i class="icon-comment-alt icon-grey"></i>
+		<% } else { %>
+		<i class="icon-comments icon-grey"></i>
+		<span class="count"><%= this.unread %></span>
+		<% } %>
+	</a>
+	</span>
+
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-notifications-users">
+	<![CDATA[
+	<table class="table table-condensed s" style="margin:0;">
+		<% for (var i in this.users) { %>
+		<tr title="<%=this.users[i].d %> &nbsp; | &nbsp; <%=this.users[i].p %>" class="<% if (this.users[i].a =='CM') { %><% } else { %>g<% } %>">
+			<td><%=this.users[i].f %> </td>
+			<td><%=this.users[i].t %></td>
+			<td><%=this.users[i].a %></td>
+		</tr>
+		<% } %>
+	</table>
+
+	]]>
+</script>

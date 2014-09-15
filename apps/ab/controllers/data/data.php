@@ -80,6 +80,10 @@ class data {
 			$allow['edit'] = "0";
 		}
 
+		if ($return['pageLocked']=='1'){
+			$allow['edit'] = "0";
+		}
+
 
 
 

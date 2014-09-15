@@ -27,3 +27,16 @@
 .fancybox-title h3 {
 	margin: 0;
 }
+
+
+#whole-area {
+	background: url('/ui/_images/logo-big.png') center center no-repeat;
+}
+
+.nav.nav-pills li {
+	margin-bottom: 10px;
+	background-color: rgba(250,250,250,0.7);
+}
+.nav.nav-pills li a {
+	border: 1px solid #ccc;
+}

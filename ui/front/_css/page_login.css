@@ -10,6 +10,7 @@
 	margin-left: -270px;
 	padding-bottom: 0;
 	margin-bottom: 0;
+	border:1px solid #ccc;
 }
 
 
@@ -20,4 +21,7 @@
 
 
 
+}
+#whole-area {
+	background: url('/ui/_images/logo-big.png') center center no-repeat;
 }

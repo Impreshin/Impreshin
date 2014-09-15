@@ -3,7 +3,7 @@
 
 	<tr data-id="<%= this.ID %>" class="record">
 		<td class="" title="Last page: <%= this.last_page %>">
-			<span class="<% if (!this.nf) { %>g<% } %>"><%= this.fullName %></span>
+			<span class="<% if (this.nf!='1') { %>g<% } %>"><%= this.fullName %></span>
 
 		</td>
 

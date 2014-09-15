@@ -252,7 +252,7 @@ $router['nf'] = $routes;
 
 $apps["nf"] = array(
 		"name" => "NewsFiler",
-		"description"=>"Editorial content management tool"
+		"description"=>"Editorial Content Management Tool"
 );
 
 

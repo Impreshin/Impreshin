@@ -42,6 +42,7 @@ class bookings {
 				ab_accounts.accNum AS accNum,
 				ab_remark_types.remarkType, ab_remark_types.labelClass AS remarkTypeLabelClass,
 				global_pages.page,
+				global_pages.ab_locked AS pageLocked,
 				ab_production.production AS material_production,
 				system_payment_methods.label AS payment_method,
 				DATE_FORMAT(ab_bookings.datein, '%Y-%m-%d' ) AS datein_date,
@@ -516,6 +517,8 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 		$values['userName'] = $user['fullName'];
 		$values['repeat_from'] = $data['ID'];
 		$values['pageID'] = null;
+		$values['x_offset'] = null;
+		$values['y_offset'] = null;
 		$values['invoiceNum'] = null;
 		$values['dID'] = $dID;
 		if ($exact_repeat) {
