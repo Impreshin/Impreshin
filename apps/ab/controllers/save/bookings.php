@@ -110,6 +110,14 @@ class bookings extends save {
 			case 2:
 				if (isset($_POST['InsertPO'])) $values['InsertPO'] = ($_POST['InsertPO']) ? $_POST['InsertPO'] : $publication['printOrder'];
 				if (isset($_POST['insertTypeID'])) $values['insertTypeID'] = $_POST['insertTypeID'];
+				$values['placingID'] = null;
+				$values['sub_placingID'] = null;
+				$values['colourID'] = null;
+				$values['cm'] = null;
+				$values['col'] = null;
+				$values['pageID'] = null;
+				$values['x_offset'] = null;
+				$values['y_offset'] = null;
 				break;
 		}
 
