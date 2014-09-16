@@ -7,7 +7,7 @@ namespace models;
 
 
 
-use \timer as timer;
+use timer as timer;
 
 class company {
 	public $ID;
@@ -37,19 +37,7 @@ class company {
 
 		if (count($result)) {
 			$result = $result[0];
-			if ($cfg['online']) {
-				$packagesDB = new \DB\SQL('mysql:host=' . $cfg['package']['host'] . ';dbname=' . $cfg['package']['database'] . '', $cfg['package']['username'], $cfg['package']['password']);
-				$packages = $packagesDB->exec("SELECT * FROM packages WHERE ID = '". $result['packageID']."'");
-				if (count($packages)) {
-					$packages = $packages[0];
-					unset($packages['ID']);
-
-
-					$result = array_merge((array)$result, (array)$packages);
-
-				}
-
-		}
+			
 		} else {
 			$result = $this->dbStructure();
 		}
@@ -81,7 +69,7 @@ class company {
 		$where = str_replace("[access]", "(COALESCE(global_users_company." . $app . ",0)=1 AND COALESCE(global_companies." . $app . ",0)=1)", $where);
 
 
-		
+
 		//test_array($where);
 		$sql = "SELECT DISTINCT global_companies.*, global_companies.company, global_users_company.allow_setup
 				FROM global_companies INNER JOIN global_users_company ON global_companies.ID = global_users_company.cID
@@ -91,14 +79,15 @@ class company {
 
 				";
 
-			$result = $f3->get("DB")->exec($sql);
+		$result = $f3->get("DB")->exec($sql);
 
 
 		$return = $result;
-		$timer->stop(array( "Models" => array( "Class"  => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 
 	}
+
 	public static function getAll($where = "", $orderby = "company ASC", $limit = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
@@ -127,22 +116,22 @@ class company {
 
 				";
 
-			$result = $f3->get("DB")->exec($sql);
+		$result = $f3->get("DB")->exec($sql);
 
 
 		$return = $result;
-		$timer->stop(array( "Models" => array( "Class"  => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 		return $return;
 
 	}
 
-public static function save($ID, $values, $cID="") {
+	public static function save($ID, $values, $cID = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
 
 
-		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_companies");
+		$a = new \DB\SQL\Mapper($f3->get("DB"), "global_companies");
 		$a->load("ID='$ID'");
 		$old = array();
 		foreach ($values as $key => $value) {
@@ -165,6 +154,7 @@ public static function save($ID, $values, $cID="") {
 		return $ID;
 
 	}
+
 	private static function dbStructure() {
 		$f3 = \Base::instance();
 		$table = $f3->get("DB")->exec("EXPLAIN global_companies;");
