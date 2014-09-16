@@ -134,7 +134,7 @@
 
 <script type="text/x-jqote-template" id="template-form-co">
 	<![CDATA[
-		<div class="span8" style="margin-left:15px;">
+		<div class="span7" style="margin-left:15px;">
 
 			<fieldset>
 				<legend>Details</legend>
@@ -142,7 +142,7 @@
 					<label class="control-label" for="company">Company</label>
 
 					<div class="controls">
-						<input type="text" id="company" placeholder="Company Name" class="span5">
+						<input type="text" id="company" placeholder="Company Name" class="span4">
 					</div>
 				</div>
 				<div class="control-group">
@@ -164,32 +164,38 @@
 
 
 		</div>
-		<div class="span6 offset1">
+		<div class="span7 offset1">
 			<fieldset>
 				<legend>Contact Details</legend>
 
-				<div class="row">
-					<div class="span2">
-						<select style="width: 100%;" name="" id="">
-							{% for label,items in display_types %}
-							<optgroup label="{{ label|default("General") }}">
-								{% for row in items %}
-								<option value="{{ row['ID'] }}">{{ row['type'] }}</option>
+				<table style="width:100%;" id="new-contact-table" >
+					<tr>
+						<td>
+							<select style="width: 100px;" name="" id="">
+								{% for label,items in display_types %}
+									<optgroup label="{{ label|default("General") }}">
+										{% for row in items %}
+											<option value="{{ row['ID'] }}">{{ row['type'] }}</option>
+										{% endfor %}
+									</optgroup>
 								{% endfor %}
-							</optgroup>
-							{% endfor %}
-							
-							
-						</select>
-					</div>
-					<div class="span3">
-						<input type="text" id="value" placeholder="Value" class="span3" style="width: 165px;">
-					</div>
-					<div class="span1">
-						<button class="btn span1 btn-mini" style="padding: 6px 0 6px 0;">Add</button>
-					</div>
 
-				</div>
+
+							</select>
+						</td>
+						<td>
+							<input type="text" id="value" placeholder="Value" class="" style="width: 125px;">
+						</td>
+						<td>
+							<select style="width: 100px;" name="" id="">
+							</select>
+						</td>
+						<td>
+							<button class="btn span1 btn-mini" style="padding: 6px 0 6px 0;"><i class="icon-plus"></i></button>
+						</td>
+					</tr>
+				</table>
+				
 
 
 
@@ -199,6 +205,9 @@
 
 			</fieldset>
 			<hr/>
+			<div id="drag-new-contacts-group" class="contact-detail-drag-here" >
+				Drag here for new group
+			</div>
 			<fieldset>
 				<legend>
 					<small>General</small>
