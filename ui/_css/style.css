@@ -8842,6 +8842,7 @@ a.brand {
   color: #666!important;
   text-shadow: 0px 2px 3px #333 !important;
   font-weight: bold!important;
+  padding-right: 15px!important;
 }
 a.brand {
   -webkit-animation: pulse2 2s linear infinite;
