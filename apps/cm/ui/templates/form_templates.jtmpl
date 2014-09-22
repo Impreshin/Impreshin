@@ -161,17 +161,13 @@
 				</div>
 			</fieldset>
 
-
-
-		</div>
-		<div class="span7 offset1">
-			<fieldset>
+			<fieldset style="margin-top:30px;">
 				<legend>Contact Details</legend>
 
 				<table style="width:100%;" id="new-contact-table" >
 					<tr>
 						<td>
-							<select style="width: 100px;" name="" id="">
+							<select style="width: 130px;" name="" id="">
 								{% for label,items in display_types %}
 									<optgroup label="{{ label|default("General") }}">
 										{% for row in items %}
@@ -184,18 +180,15 @@
 							</select>
 						</td>
 						<td>
-							<input type="text" id="value" placeholder="Value" class="" style="width: 125px;">
+							<input type="text" id="value" placeholder="Value" class="" style="width: 210px;">
 						</td>
-						<td>
-							<select style="width: 100px;" name="" id="">
-							</select>
-						</td>
+						
 						<td>
 							<button class="btn span1 btn-mini" style="padding: 6px 0 6px 0;"><i class="icon-plus"></i></button>
 						</td>
 					</tr>
 				</table>
-				
+
 
 
 
@@ -204,52 +197,111 @@
 
 
 			</fieldset>
-			<hr/>
+
+		</div>
+		<div class="span7 offset1">
+			<div id="new-contact-details-block-area">
+				<ul class="nav contact-details-block">
+					<li>
+						<span class="dg s span2 r" >Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+						015 516 4996
+					</li>
+					<li>
+						<table style="width:100%;" id="new-contact-table" >
+							<tr>
+								<td>
+									<select style="width: 130px;" name="" id="">
+										{% for label,items in display_types %}
+											<optgroup label="{{ label|default("General") }}">
+												{% for row in items %}
+													<option value="{{ row['ID'] }}">{{ row['type'] }}</option>
+												{% endfor %}
+											</optgroup>
+										{% endfor %}
+
+
+									</select>
+								</td>
+								<td>
+									<input type="text" id="value" placeholder="Value" class="" style="width: 210px;">
+								</td>
+
+								<td>
+									<button class="btn span1 btn-mini" style="padding: 6px 0 6px 0;"><i class="icon-ok"></i></button>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li>
+						<span class="dg s span2 r" >Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+						 william@impreshin.com
+					</li>
+					<li>
+						<span class="dg s span2 r" >Website</span>
+						<span class="contact-details-icon"></span>
+						www.impreshin.com
+					</li>
+					
+				</ul>
+			</div>
+			
+			
 			<div id="drag-new-contacts-group" class="contact-detail-drag-here" >
 				Drag here for new group
 			</div>
-			<fieldset>
-				<legend>
-					<small>General</small>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-plus"></i></button>
-				</legend>
+			<section id="contact-details-groups">
+				<fieldset>
+					<legend>
+						<small>Head Office</small>
+						<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
+						<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
+					</legend>
 
 
+					<ul class="nav contact-details-block">
+						<li>
+							<span class="dg s span2 r" >Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+							015 516 4996
+						</li>
+						<li>
+							<span class="dg s span2 r" >Mobile</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+							083 502 9157
+						</li>
+						<li>
+							<span class="dg s span2 r" >Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+							william@impreshin.com
+						</li>
+						<li>
+							<span class="dg s span2 r" >Website</span>
+							<span class="contact-details-icon"></span>
+							www.impreshin.com
+						</li>
 
-			</fieldset>
-			<fieldset>
-				<legend>
-					<small>Head Office</small>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
-				</legend>
-
-
-
-			</fieldset>
-
-
-			<fieldset>
-				<legend>
-					<small>Small Office</small>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
-				</legend>
-
-
-
-			</fieldset>
-
-			<fieldset>
-				<legend>
-					<small>Outside Office</small>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-pencil"></i></button>
-					<button class="btn span1 btn-link  pull-right"><i class="icon-trash"></i></button>
-				</legend>
+					</ul>
 
 
+				</fieldset>
+			</section>
+			
+			
 
-			</fieldset>
+
+			
 		</div>
 	]]>
 </script>

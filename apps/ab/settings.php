@@ -36,7 +36,7 @@ class settings {
 				"m"=>"180"
 			),
 			"publishDate"            => array(
-
+				"o"=>"`ab_bookings`.`publishDate`",
 				"h"=> "Publish&nbsp;Date",
 				"m"=>60
 			),

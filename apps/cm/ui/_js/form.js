@@ -100,7 +100,7 @@ function getFormData() {
 
 		
 		
-		
+		$("select").select2();
 		
 		
 

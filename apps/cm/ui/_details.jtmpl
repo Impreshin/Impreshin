@@ -1,124 +1,247 @@
 <script type="text/x-jqote-template" id="template-details-company">
-	<![CDATA[
+<![CDATA[
 
-	<section class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
+<section class="modal-header">
+	<a class="close" data-dismiss="modal">×</a>
 
+	<h3>
+		<span class="label label-info" style="margin-right:10px;">Company</span><%= this.company %>
+	</h3>
+
+	<div id="modal-header-btns">
+
+		<a href="/app/cm/form/<%= this.linkID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
+
+	</div>
+
+
+	<div class="modal-header-right" style="width:193px;">
 		<h3>
-			<span class="label label-info" style="margin-right:10px;">Company</span><%= this.company %>
+
 		</h3>
 
-		<div id="modal-header-btns">
+	</div>
+</section>
+<section class="modal-body">
 
-			<a href="/app/cm/form/<%= this.linkID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
+
+	<div class="tabbable tabs-right">
+		<ul class="nav nav-tabs">
+			<li>
+				<a href="#details-pane-details" data-toggle="tab"> Details </a>
+			</li>
+			<li>
+				<a href="#details-pane-tasks" data-toggle="tab"> Tasks
+					<span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
+			</li>
+			<li>
+				<a href="#details-pane-contacts" data-toggle="tab"> Contacts <span class="badge pull-right">1</span></a>
+			</li>
+			<li>
+				<a href="#details-pane-interactions " data-toggle="tab"> Interactions
+					<span class="badge pull-right">1</span>
+				</a>
+			</li>
+
+			<li class="tab-icon">
+				<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
+			</li>
+
+
+		</ul>
+		<div class="tab-content" style="width: 520px;">
+			<div id="details-pane-details" class="tab-pane ">
+				<div class="scroll-pane">
+					<div style="padding-right:1px;">
+
+						<section>
+
+							<ul class="nav contact-details-block" style="padding:10px;">
+								<li>
+									<span class="dg s span2 r">Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+									015 516 4996
+								</li>
+								<li>
+									<span class="dg s span2 r">Mobile</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+									083 502 9157
+								</li>
+								<li>
+									<span class="dg s span2 r">Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+									william@impreshin.com
+								</li>
+								<li>
+									<span class="dg s span2 r">Website</span>
+									<span class="contact-details-icon"></span>
+									www.impreshin.com
+								</li>
+
+							</ul>
+
+							<fieldset class="span5" style="width:265px;">
+								<legend>
+									<small>Head Office</small>
+								</legend>
+
+
+								<ul class="nav contact-details-block">
+									<li>
+										<span class="dg s span1 r">Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+										015 516 4996
+									</li>
+									<li>
+										<span class="dg s span1 r">Mobile</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+										083 502 9157
+									</li>
+									<li>
+										<span class="dg s span1 r">Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+										william@impreshin.com
+									</li>
+									<li>
+										<span class="dg s span1 r">Website</span>
+										<span class="contact-details-icon"></span>
+										www.impreshin.com
+									</li>
+
+								</ul>
+
+
+							</fieldset>
+							<fieldset class="span5" style="width:265px;">
+								<legend>
+									<small>Head Office</small>
+								</legend>
+
+
+								<ul class="nav contact-details-block">
+									<li>
+										<span class="dg s span1 r">Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+										015 516 4996
+									</li>
+									<li>
+										<span class="dg s span1 r">Mobile</span>
+						<span class="contact-details-icon">
+							<i class="icon-mobile-phone"></i>
+						</span>
+										083 502 9157
+									</li>
+									<li>
+										<span class="dg s span1 r">Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+										william@impreshin.com
+									</li>
+									<li>
+										<span class="dg s span1 r">Website</span>
+										<span class="contact-details-icon"></span>
+										www.impreshin.com
+									</li>
+
+								</ul>
+
+
+							</fieldset>
+						</section>
+
+<div class="clearfix"></div>
+						<section style="padding-left: 10px;">
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+						</section>
+
+
+
+
+					</div>
+				</div>
+			</div>
+			<div id="details-pane-tasks" class="tab-pane ">
+				<div class="scroll-pane">
+					<div style="padding-right:1px;">
+						tasks
+					</div>
+				</div>
+			</div>
+			<div id="details-pane-contacts" class="tab-pane ">
+				<div class="scroll-pane">
+					<div style="padding-right:1px;">
+						contacts
+					</div>
+				</div>
+			</div>
+			<div id="details-pane-interactions" class="tab-pane ">
+				<div class="scroll-pane">
+					<div style="padding-right:1px;">
+						interactions
+					</div>
+				</div>
+			</div>
+
+
+
+			<div id="details-pane-logs" class="tab-pane">
+				<div class="scroll-pane">
+					logs
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="graphics-area">
+		<span class="sparklines" sparkWidth="170px" style="margin-left:30px;"><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+	</div>
+
+</section>
+
+<section class="modal-footer">
+	<div class="row">
+
+		<div class="span9 l">
+
+
+
 
 		</div>
 
-
-		<div class="modal-header-right" style="width:193px;">
-			<h3>
-
-			</h3>
-
-		</div>
-	</section>
-	<section class="modal-body">
-
-
-		<div class="tabbable tabs-right">
-			<ul class="nav nav-tabs">
-				<li>
-					<a href="#details-pane-details" data-toggle="tab"> Details </a>
-				</li>
-				<li>
-					<a href="#details-pane-tasks" data-toggle="tab"> Tasks <span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
-				</li>
-				<li>
-					<a href="#details-pane-contacts" data-toggle="tab"> Contacts <span class="badge pull-right">1</span></a>
-				</li>
-				<li>
-					<a href="#details-pane-interactions " data-toggle="tab"> Interactions
-						<span class="badge pull-right">1</span>
-					</a>
-				</li>
-
-				<li class="tab-icon">
-					<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
-				</li>
-
-
-			</ul>
-			<div class="tab-content" style="width: 520px;">
-				<div id="details-pane-details" class="tab-pane ">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-							details
-						</div>
-					</div>
-				</div>
-				<div id="details-pane-tasks" class="tab-pane ">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-							tasks
-						</div>
-					</div>
-				</div>
-				<div id="details-pane-contacts" class="tab-pane ">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-							contacts
-						</div>
-					</div>
-				</div>
-				<div id="details-pane-interactions" class="tab-pane ">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-							interactions
-						</div>
-					</div>
-				</div>
-				
-				
-				
-				<div id="details-pane-logs" class="tab-pane">
-					<div class="scroll-pane">
-						logs
-					</div>
-				</div>
-
+		<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
+			<div class="btn-group">
+				<button id="details-record-prev" class="btn span2">
+					<i class="icon-step-backward"></i> Previous
+				</button>
+				<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
 			</div>
 		</div>
 
-<div id="graphics-area">
-	<span class="sparklines" sparkWidth="170px" style="margin-left:30px;" ><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
-</div>
+	</div>
 
-	</section>
-
-	<section class="modal-footer">
-		<div class="row">
-
-			<div class="span9 l">
-
-
-
-
-			</div>
-
-			<div style="padding-left: 5px; margin-right: -5px;" class="offset9" id="list-next-prev-btns">
-				<div class="btn-group">
-					<button id="details-record-prev" class="btn span2">
-						<i class="icon-step-backward"></i> Previous
-					</button>
-					<button id="details-record-next" class="btn span2"> Next <i class="icon-step-forward"></i></button>
-				</div>
-			</div>
-
-		</div>
-
-	</section>
-	<div class="loadingmask wide"></div>
-	]]>
+</section>
+<div class="loadingmask wide"></div>
+]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-contact">
 	<![CDATA[
@@ -153,9 +276,10 @@
 					<a href="#details-pane-details" data-toggle="tab"> Details </a>
 				</li>
 				<li>
-					<a href="#details-pane-tasks" data-toggle="tab"> Tasks <span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
+					<a href="#details-pane-tasks" data-toggle="tab"> Tasks
+						<span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
 				</li>
-				
+
 				<li>
 					<a href="#details-pane-interactions " data-toggle="tab"> Interactions
 						<span class="badge pull-right">1</span>
@@ -172,7 +296,35 @@
 				<div id="details-pane-details" class="tab-pane ">
 					<div class="scroll-pane">
 						<div style="padding-right:1px;">
-							details
+							<ul class="nav contact-details-block" style="padding:10px;">
+								<li>
+									<span class="dg s span2 r">Work</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+									015 516 4996
+								</li>
+								<li>
+									<span class="dg s span2 r">Mobile</span>
+						<span class="contact-details-icon">
+							<i class="icon-phone"></i>
+						</span>
+									083 502 9157
+								</li>
+								<li>
+									<span class="dg s span2 r">Email</span>
+						<span class="contact-details-icon">
+							<i class="icon-envelope-alt"></i>
+						</span>
+									william@impreshin.com
+								</li>
+								<li>
+									<span class="dg s span2 r">Website</span>
+									<span class="contact-details-icon"></span>
+									www.impreshin.com
+								</li>
+
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -210,7 +362,7 @@
 		</div>
 
 		<div id="graphics-area">
-			<span class="sparklines" sparkWidth="170px" style="margin-left:30px;" ><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+			<span class="sparklines" sparkWidth="170px" style="margin-left:30px;"><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
 		</div>
 
 	</section>
