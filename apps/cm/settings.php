@@ -418,7 +418,7 @@ class settings {
 						
 					),
 					"group"      => array(
-						"g"=>"last_az",
+						"g"=>"az_last",
 						"o"=>"ASC"
 					),
 					"order"      => array(
