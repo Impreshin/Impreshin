@@ -1,6 +1,15 @@
 
 $(document).ready(function () {
+	$(document).on("click", ".view-record-btn", function () {
+		var id = $(this).attr("data-id");
+		if (id) {
+			$(this).closest(".modal").modal("hide");
+			$.bbq.pushState({"ID": id});
 
+			getDetails();
+		}
+
+	});
 	getFormData();
 
 	$(document).on("submit", "#modal-delete form", function (e) {
@@ -29,6 +38,55 @@ $(document).ready(function () {
 			getDetails();
 		}
 
+	});
+
+	$(document).on('change','#add-new-contact-field-select',function(e) {
+		//$("#add-new-contact-field-value").focus();
+
+	})
+	$(document).on('select2-close','#add-new-contact-field-select',function(e) {
+		
+		setTimeout(function () {
+			$("#add-new-contact-field-value").focus();
+		}, 200);
+		
+		
+
+	})
+	$(document).on('keydown','#add-new-contact-field-value',function(e){
+		var key = e.which;
+		//	console.log(key)
+		if(key == 13){
+			e.preventDefault();
+			$("#add-new-contact-field-btn").trigger("click");
+			return false;
+		}
+
+	});
+	
+	
+	$(document).on("click", "#add-new-contact-field-btn", function () {
+		var $this = $(this);
+		var $row = $this.closest("table");
+
+
+		
+		var ID = "n"+ ($(".contact-details-block li").length + 1)
+		var data = {
+			"ID":ID,
+			"catID":$row.find("select").val(),
+			"value":$row.find("td>input").val(),
+			"group":""
+		}
+		$("#new-contact-details-block-area .contact-details-block").jqoteapp($("#template-contact-item"), data);
+		$("#contact-details-cat-"+ID).select2({
+			formatResult: format_details_select2,
+			formatSelection: format_details_select2,
+			escapeMarkup: function(m) { return m; }
+		});
+		showDragBlocks();
+		$row.find("select").select2('open');
+		$row.find("td>input").val("").trigger("focus");
 	});
 	
 	
@@ -98,12 +156,70 @@ function getFormData() {
 		$("#maintoolbar").jqotesub($("#template-toolbar"), toolbar);
 
 
+		var $details_area = $("#contact-details-groups");
+		$details_area.jqotesub($("#template-contact-group"), data['details']['details']);
 		
 		
-		$("select").select2();
 		
-		
+		$("select.details-select").select2({
+			formatResult: format_details_select2,
+			formatSelection: format_details_select2,
+			escapeMarkup: function(m) { return m; }
+		});
 
+		sorting()
+		$( "#drag-new-contacts-group" ).droppable({
+			hoverClass: "ui-state-highlight",
+			activeClass: "ui-state-default",
+			drop: function( event, ui ) {
+				var group = prompt("Please enter a group name", "test");
+			
+				
+				if (group){
+					if (!$("fieldset[data-label='"+group+"']").length){
+						var $group = $("<fieldset data-label='"+group+"'><legend></legend><ul class='nav contact-details-block'></ul></fieldset>");
+						$group.appendTo("#contact-details-groups");
+					}
+
+					$group = $("fieldset[data-label='"+group+"']");
+					$group.find("legend").text(group);
+					
+					var $item = $(ui.draggable).detach();
+					
+					var vals_id = $item.attr("data-id");
+					var vals_se = $item.find("select.details-select").select2("destroy").val();
+					var vals_in = $item.find("input[name^='contact-details-val']").val();
+					
+					var html = $item = $item.html();
+				//	console.log($item);
+
+					$item = $("<li data-id='"+vals_id+"'>"+html+"</li>");
+
+					$item.appendTo($group.find(".nav"));
+					$("#contact-details-cat-"+vals_id).val(vals_se).select2({
+						formatResult: format_details_select2,
+						formatSelection: format_details_select2,
+						escapeMarkup: function(m) { return m; }
+					});
+					$("#contact-details-val-"+vals_id).val(vals_in);
+					//$("#contact-details-gro-"+vals_id).val(group);
+					
+
+					
+					//.append($item);
+
+
+
+					
+					sorting();
+					sortingCleanup();
+					resizeform();
+				}
+					
+			}
+		});
+
+		showDragBlocks();
 		formLoaded(data);
 		resizeform();
 		//setTimeout(resizeform, 1000)
@@ -111,7 +227,38 @@ function getFormData() {
 	}, "form_data");
 
 }
-
+function showDragBlocks(){
+	var $blocks = $(".contact-details-block, #drag-new-contacts-group")
+	var l = $("li",$blocks).length;
+	if (l){
+		$blocks.show();
+	} else {
+		$blocks.hide();
+		
+	}
+}
+function sorting(){
+	$("ul.contact-details-block").sortable({
+		connectWith: ".contact-details-block",
+		placeholder: "ui-state-highlight",
+		//helper: "clone",
+		revert: 'invalid',
+		axis: "y",
+		update:function( event, ui ){
+			sortingCleanup();
+		}
+	})
+}
+function sortingCleanup(){
+	$("#contact-details-groups ul.contact-details-block:empty").closest("fieldset").remove();
+	$("ul.contact-details-block li").each(function(){
+		var $this = $(this);
+		$this.find("input[name^='contact-details-gro']").val($this.closest("fieldset").attr("data-label"))
+	})
+	
+	//$("#contact-details-block-area select").select2("destroy").select2();;
+	
+}
 
 function formLoaded(data) {
 	
@@ -122,7 +269,7 @@ function formLoaded(data) {
 	
 
 
-	$("select.select2").select2();
+	//$("select.select2").select2();
 
 
 }
@@ -142,32 +289,31 @@ function form_submit() {
 	var type = $("#booking-type button.active").attr("data-type");
 	
 
+	
+	
 	if (!type) {
 		alert("Something went wrong, please select a record type");
 		return false;
 	}
 
 	var submit = true;
-
-	var $fld = "";
-	$fld = $("#title");
-	if (!$fld.val()) {
-		submit = error_msg($fld, "<strong>Title</strong> is Required");
+	
+	if ($("#add-new-contact-field-value").val() != ""){
+		submit = false;
+		//$("#add-new-contact-field-btn").trigger("click");
+		var $row = $("#add-new-contact-field-btn").trigger("click").closest("table");
+		$row.find("select").select2('close');
+		$form.trigger("submit");
+		
 	}
 
-	$fld = $("#authorID");
-	if (!$fld.val()) {
-		submit = error_msg($fld, "<strong>Author</strong> is Required");
-	}
 
 
-
-	resizeform();
 
 	if (submit) {
 		$("#pagecontent .loadingmask").show();
 		var data = $form.serialize();
-		$.post("/app/cm/save/form/form?ID=" + var_record_ID + "&type=" + type + "&locked="+locked, data, function (response) {
+		$.post("/app/cm/save/form/form?ID=" + var_record_ID + "&type=" + type , data, function (response) {
 
 
 			if (response['error'] && response['error'].length) {
@@ -183,6 +329,7 @@ function form_submit() {
 
 				getFormData();
 				$("#pagecontent .loadingmask").fadeOut(transSpeed);
+				console.log(response)
 				$("#modal-form").jqotesub($("#template-modal-form"), response).modal("show");
 			}
 			
@@ -202,4 +349,9 @@ function error_msg($fld, msg) {
 	$fld.prepend(str);
 	return false;
 
+}
+function format_details_select2(item) {
+	if (!item.id) return item.text; // optgroup
+	//console.log(item)
+	return "<i class='g " + $(item.element).attr("data-icon") + "' style='margin-right:10px'></i>" + item.text;
 }

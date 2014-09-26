@@ -169,6 +169,18 @@ $sql = array(
     "36"=>array(
 	    "CREATE TABLE IF NOT EXISTS `cm_details_types` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `group` varchar(100) DEFAULT NULL,  `type` varchar(100) DEFAULT NULL,  `orderby` int(4) DEFAULT NULL,  PRIMARY KEY (`ID`));",
         "INSERT INTO `cm_details_types` (`ID`, `group`, `type`, `orderby`) VALUES (1, 'Phones', 'Mobile', 1), (2, 'Phones', 'Work', 2), (3, 'Phones', 'Home', 3), (4, 'Phones', 'Main', 4), (5, 'Phones', 'Other', 5), (6, 'Fax', 'Work', 6), (7, 'Fax', 'Home', 7), (8, NULL, 'Pager', 100), (9, NULL, 'Website', 101), (10, 'Address', 'Address 1', 10), (11, 'Address', 'Address 2', 11), (12, 'Address', 'City/Town', 12), (13, 'Address', 'Suburb', 13);"
+    ),
+    "37"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_companies_details` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `parentID` int(6) DEFAULT NULL,  `catID` int(6) DEFAULT NULL,  `value` varchar(100) DEFAULT NULL,  `group` varchar(50) DEFAULT NULL,  `orderby` int(4) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `parentID` (`parentID`,`catID`));",
+        "ALTER TABLE `cm_companies`  DROP `phone`,  DROP `fax`,  DROP `email`,  DROP `website`,  DROP `address1`,  DROP `address2`,  DROP `city`,  DROP `country`,  DROP `postalCode`;",
+        "INSERT INTO  `cm_details_types` (`ID` ,`group` ,`type` ,`icon` ,`orderby`)VALUES (NULL ,  'Address',  'Postal Code', NULL ,  '14');",
+        "DROP TABLE cm_details_types;",
+        "CREATE TABLE IF NOT EXISTS `cm_contacts_details` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `parentID` int(6) DEFAULT NULL,  `catID` int(6) DEFAULT NULL,  `value` varchar(100) DEFAULT NULL,  `group` varchar(50) DEFAULT NULL,  `orderby` int(4) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `parentID` (`parentID`,`catID`));",
+        "ALTER TABLE `cm_contacts`  DROP `phone`,  DROP `mobile`,  DROP `fax`,  DROP `email`,  DROP `website`,  DROP `address1`,  DROP `address2`,  DROP `city`,  DROP `country`,  DROP `postalCode`;",
+        "ALTER TABLE  `cm_companies_logs` CHANGE  `companyID`  `parentID` INT( 6 ) NULL DEFAULT NULL;",
+        "ALTER TABLE  `cm_contacts_logs` CHANGE  `contactID`  `parentID` INT( 6 ) NULL DEFAULT NULL;",
+        "ALTER TABLE  `cm_contacts` ADD  `dateChanged` TIMESTAMP NULL DEFAULT NULL;"
+        
     )
 	
 

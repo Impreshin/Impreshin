@@ -29,7 +29,7 @@ class form extends \apps\cm\controllers\_ {
 
 
 
-		//test_array($user);
+		//test_array($app_settings);
 
 
 		$settings = models\settings::_read("front",$user['permissions']);
@@ -52,7 +52,8 @@ class form extends \apps\cm\controllers\_ {
 		);
 
 
-		$dt = models\details_types::getAll("","orderby ASC");
+		$dt = $app_settings['types'];
+		//test_array($dt); 
 
 		$dt_f = array();
 		foreach ($dt as $item){

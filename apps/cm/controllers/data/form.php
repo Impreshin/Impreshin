@@ -53,6 +53,7 @@ class form extends data {
 
 		}
 
+		$data['linkID'] = $type . "-".$data['ID'];
 
 
 		$return = array();

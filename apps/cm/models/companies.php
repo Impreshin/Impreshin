@@ -28,13 +28,49 @@ class companies {
 		"
 		);
 		if (count($result)) {
-			$return = self::localization($result[0]);
+			$return = $result[0];
+
+			$app_settings = \apps\cm\settings::_available();
+			$types = array();
+			foreach ($app_settings['types'] as $i){
+				$types[$i['ID']] = $i;
+			}
+			
+			
+			$details = $f3->get("DB")->exec("
+				SELECT cm_companies_details.*
+				FROM cm_companies_details 
+				WHERE parentID = '{$return['ID']}'
+				ORDER BY orderby ASC;"
+			);
+			$d = array();
+			foreach ($details as $item){
+
+				$item['icon']=isset($types[$item['catID']]['icon'])?$types[$item['catID']]['icon']:"";
+				$item['type']=isset($types[$item['catID']]['type'])?$types[$item['catID']]['type']:"";
+				
+				$d[$item['group']]["group"] = $item['group'];
+				$d[$item['group']]["records"][] = $item;
+				
+			}
+			$c = array();
+			foreach ($d as $item){
+				$c[] = $item;
+			}
+			$details = ($c); 
+			
+			
+			$return['details'] =$details;
+			$return = self::localization($return);
 			$return['logs'] = self::getLogs($return['ID']);
 
-
+			
 			
 		} else {
 			$return = $this->dbStructure;
+			$return['details'] = array();
+
+		
 		}
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
@@ -118,6 +154,13 @@ class companies {
 			$data = array($data);
 			$single = true;
 		}
+
+		$app_settings = \apps\cm\settings::_available();
+		$types = array();
+		foreach ($app_settings['types'] as $i){
+			$types[$i['ID']] = $i;
+		}
+
 
 		if (is_array($data)) {
 			$a = array();
@@ -216,7 +259,7 @@ class companies {
 		switch ($grouping) {
 			case "az":
 				$orderby = "COALESCE(LEFT(cm_companies.company, 1),'zzzzzzz') $ordering, " . $orderby;
-				$arrange = "COALESCE(LEFT(cm_companies.company, 1),'None') as heading";
+				$arrange = "COALESCE(LEFT(UPPER(cm_companies.company), 1),'None') as heading";
 				break;
 			
 			case "none":
@@ -308,24 +351,30 @@ class companies {
 			$changes[] = array("k" => $col['col'], "v" => $v[$col['col']], "w" => $was);
 		}
 
-		if (isset($opts['section']) && $opts['section']) {
-			switch ($opts['section']) {
-				case "company":
-					if ($a->material_status == '1') {
-						$label = "Material - Ready";
-						if ($a->material_source == '1') {
-							$production = (isset($v['production'])) ? $v['production'] : "";
-							if ($production) $label .= " (" . $production . ")";
-						} else {
-							$label .= " (Supplied)";
-						}
-					} else {
-						$label = "Material - Not Ready";
-					}
-					break;
+		
+		if (isset($values['details'])){
+			$b = new \DB\SQL\Mapper($f3->get("DB"), "cm_companies_details");
+			foreach($values['details'] as $item){
+				$b->load("ID='{$item['ID']}'");
+				if ($item['value']=="" && !$b->dry()){
+					$b->erase();
+				} else {
+					$b->parentID = $ID;
+					$b->catID = $item['catID'];
+					$b->value = $item['value'];
+					$b->group = $item['group'];
+					$b->orderby = $item['orderby'];
+
+					$b->save();
+				}
+				$b->reset();
+				
 				
 			}
 		}
+		
+		
+		
 		//test_array(array("changes"=>$changes,"label"=>$label)); 
 		if (count($changes)) self::logging($ID, $changes, $label);
 		$n = new companies();
@@ -340,7 +389,7 @@ class companies {
 		$timer = new timer();
 		$f3 = \Base::instance();
 		$user = $f3->get("user");
-		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =cm_companies_logs.userID ) AS fullName FROM cm_companies_logs WHERE companyID = '$ID' ORDER BY datein DESC");
+		$return = $f3->get("DB")->exec("SELECT *, (SELECT fullName FROM global_users WHERE global_users.ID =cm_companies_logs.userID ) AS fullName FROM cm_companies_logs WHERE parentID = '$ID' ORDER BY datein DESC");
 		$a = array();
 		foreach ($return as $record) {
 			$record['log'] = json_decode($record['log']);
@@ -361,7 +410,7 @@ class companies {
 		$log = (json_encode($log));
 		$log = str_replace("'", "\\'", $log);
 		$log = str_replace('"', '\\"', $log);
-		$f3->get("DB")->exec("INSERT INTO cm_companies_logs (`companyID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
+		$f3->get("DB")->exec("INSERT INTO cm_companies_logs (`parentID`, `log`, `label`, `userID`) VALUES ('$ID','$log','$label','$userID')");
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
 	}

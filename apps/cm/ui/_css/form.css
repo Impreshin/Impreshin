@@ -1,30 +1,57 @@
-#new-contact-table td {
+#form-body #new-contact-table td {
   padding: 4px;
 }
-#new-contact-table td button.span1 {
+#form-body #new-contact-table td button.span1 {
   margin: 0;
 }
-.contact-detail-drag-here {
+#form-body .contact-detail-drag-here {
   border: 1px dashed #adadad;
   font-size: 11px;
   text-align: center;
   line-height: 30px;
   color: #999;
 }
-.contact-details-block li {
+#form-body .contact-details-block {
+  min-height: 30px;
+}
+#form-body .contact-details-block li {
   padding: 5px;
 }
-.contact-details-icon {
+#form-body .contact-details-block li:hover {
+  background-color: #f1f1f1;
+}
+#form-body .contact-details-block li.ui-sortable-helper {
+  background-color: transparent;
+}
+#form-body .contact-details-block:empty {
+  border: 1px dashed #adadad;
+  font-size: 11px;
+  text-align: center;
+  line-height: 30px;
+  color: #999;
+}
+#form-body .contact-details-block:empty:before {
+  content: 'Drag here';
+}
+#form-body .contact-details-icon {
   float: left;
   margin-left: 0px;
   min-height: 1px;
   width: 30px;
   text-align: center;
 }
-#contact-details-groups fieldset legend .btn {
+#form-body #contact-details-groups fieldset legend {
+  margin-bottom: 0;
+  margin-top: 30px;
+}
+#form-body #contact-details-groups fieldset legend .btn {
   display: none;
   width: 20px;
 }
-#contact-details-groups fieldset legend:hover .btn {
+#form-body #contact-details-groups fieldset legend:hover .btn {
   display: block;
+}
+#form-body .ui-state-highlight {
+  min-height: 26px;
+  margin: 4px 0;
 }

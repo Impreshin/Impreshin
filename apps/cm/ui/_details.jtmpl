@@ -28,14 +28,14 @@
 	<div class="tabbable tabs-right">
 		<ul class="nav nav-tabs">
 			<li>
-				<a href="#details-pane-details" data-toggle="tab"> Details </a>
+				<a href="#details-pane-details" data-toggle="tab"> Notes <span class="badge pull-right">1</span></a>
 			</li>
 			<li>
 				<a href="#details-pane-tasks" data-toggle="tab"> Tasks
 					<span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
 			</li>
 			<li>
-				<a href="#details-pane-contacts" data-toggle="tab"> Contacts <span class="badge pull-right">1</span></a>
+				<a href="#details-pane-contacts" data-toggle="tab"> People <span class="badge pull-right">1</span></a>
 			</li>
 			<li>
 				<a href="#details-pane-interactions " data-toggle="tab"> Interactions
@@ -49,171 +49,158 @@
 
 
 		</ul>
-		<div class="tab-content" style="width: 520px;">
+		<div id="contact-details-area">
+			<section class="scroll-pane">
+				<div id="contact-details-block-area" >
+				<% for (var i in this.details) { %>
+				<fieldset>
+					<legend>
+						<small><%= this.details[i].group %></small>
+					</legend>
+
+
+					<ul class="nav contact-details-block">
+						<% for (var g in this.details[i].records) { %>
+						<li>
+							<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
+						<span class="contact-details-icon">
+							<i class="dg <%= this.details[i].records[g].icon %>"></i>
+						</span>
+							<%= this.details[i].records[g].value %>
+						</li>
+						<% } %>
+						
+
+					</ul>
+
+
+				</fieldset>
+				<% } %>
+				</div>
+			</section>
+		</div>
+		<div class="tab-content" style="width: 450px; background-color: #0000ff">
 			<div id="details-pane-details" class="tab-pane ">
 				<div class="scroll-pane">
-					<div style="padding-right:1px;">
+					
+						
 
-						<section>
-
-							<ul class="nav contact-details-block" style="padding:10px;">
-								<li>
-									<span class="dg s span2 r">Work</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-									015 516 4996
-								</li>
-								<li>
-									<span class="dg s span2 r">Mobile</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-									083 502 9157
-								</li>
-								<li>
-									<span class="dg s span2 r">Email</span>
-						<span class="contact-details-icon">
-							<i class="icon-envelope-alt"></i>
-						</span>
-									william@impreshin.com
-								</li>
-								<li>
-									<span class="dg s span2 r">Website</span>
-									<span class="contact-details-icon"></span>
-									www.impreshin.com
-								</li>
-
-							</ul>
-
-							<fieldset class="span5" style="width:265px;">
-								<legend>
-									<small>Head Office</small>
-								</legend>
-
-
-								<ul class="nav contact-details-block">
-									<li>
-										<span class="dg s span1 r">Work</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-										015 516 4996
-									</li>
-									<li>
-										<span class="dg s span1 r">Mobile</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-										083 502 9157
-									</li>
-									<li>
-										<span class="dg s span1 r">Email</span>
-						<span class="contact-details-icon">
-							<i class="icon-envelope-alt"></i>
-						</span>
-										william@impreshin.com
-									</li>
-									<li>
-										<span class="dg s span1 r">Website</span>
-										<span class="contact-details-icon"></span>
-										www.impreshin.com
-									</li>
-
-								</ul>
-
-
-							</fieldset>
-							<fieldset class="span5" style="width:265px;">
-								<legend>
-									<small>Head Office</small>
-								</legend>
-
-
-								<ul class="nav contact-details-block">
-									<li>
-										<span class="dg s span1 r">Work</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-										015 516 4996
-									</li>
-									<li>
-										<span class="dg s span1 r">Mobile</span>
-						<span class="contact-details-icon">
-							<i class="icon-mobile-phone"></i>
-						</span>
-										083 502 9157
-									</li>
-									<li>
-										<span class="dg s span1 r">Email</span>
-						<span class="contact-details-icon">
-							<i class="icon-envelope-alt"></i>
-						</span>
-										william@impreshin.com
-									</li>
-									<li>
-										<span class="dg s span1 r">Website</span>
-										<span class="contact-details-icon"></span>
-										www.impreshin.com
-									</li>
-
-								</ul>
-
-
-							</fieldset>
-						</section>
-
-<div class="clearfix"></div>
-						<section style="padding-left: 10px;">
+						<div >
 							<h4>Notes</h4>
 							<blockquote>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
 								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
 							</blockquote>
-						</section>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							
+							
+							
+						</div>
+
+				
+					
+					
+					
 
 
 
 
-					</div>
+
+
 				</div>
 			</div>
-			<div id="details-pane-tasks" class="tab-pane ">
-				<div class="scroll-pane">
-					<div style="padding-right:1px;">
-						tasks
-					</div>
+		
+		<div id="details-pane-tasks" class="tab-pane ">
+			<div class="scroll-pane">
+				<div style="padding-right:1px;">
+					tasks
 				</div>
 			</div>
-			<div id="details-pane-contacts" class="tab-pane ">
-				<div class="scroll-pane">
-					<div style="padding-right:1px;">
-						contacts
-					</div>
-				</div>
-			</div>
-			<div id="details-pane-interactions" class="tab-pane ">
-				<div class="scroll-pane">
-					<div style="padding-right:1px;">
-						interactions
-					</div>
-				</div>
-			</div>
-
-
-
-			<div id="details-pane-logs" class="tab-pane">
-				<div class="scroll-pane">
-					logs
-				</div>
-			</div>
-
 		</div>
+		<div id="details-pane-contacts" class="tab-pane ">
+			<div class="scroll-pane">
+				<div style="padding-right:1px;">
+					contacts
+				</div>
+			</div>
+		</div>
+		<div id="details-pane-interactions" class="tab-pane ">
+			<div class="scroll-pane">
+				<div style="padding-right:1px;">
+					interactions
+				</div>
+			</div>
+		</div>
+
+
+
+		<div id="details-pane-logs" class="tab-pane">
+			<div class="scroll-pane">
+				logs
+			</div>
+		</div>
+
+	</div>
 	</div>
 
 	<div id="graphics-area">
-		<span class="sparklines" sparkWidth="170px" style="margin-left:30px;"><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+
+		<div id="cal-heatmap-1"></div>
+
+		<div id="cal-heatmap-2"></div>
+		<div id="cal-heatmap-3"></div>
+
+
+
 	</div>
 
 </section>
@@ -255,7 +242,7 @@
 
 		<div id="modal-header-btns">
 
-			<a href="/app/cm/form/<%= this.ID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
+			<a href="/app/cm/form/<%= this.linkID %>" rel="tooltip" data-placement="bottom" title="Edit this record"><i class="icon-pencil icon-d-grey"></i></a>
 
 		</div>
 
@@ -270,16 +257,19 @@
 	<section class="modal-body">
 
 
+
 		<div class="tabbable tabs-right">
 			<ul class="nav nav-tabs">
 				<li>
-					<a href="#details-pane-details" data-toggle="tab"> Details </a>
+					<a href="#details-pane-details" data-toggle="tab"> Notes <span class="badge pull-right">1</span></a>
 				</li>
 				<li>
 					<a href="#details-pane-tasks" data-toggle="tab"> Tasks
 						<span class="badge pull-right">1</span><span class="badge badge-important pull-right">1</span></a>
 				</li>
-
+				<li>
+					<a href="#details-pane-contacts" data-toggle="tab"> Companies <span class="badge pull-right">1</span></a>
+				</li>
 				<li>
 					<a href="#details-pane-interactions " data-toggle="tab"> Interactions
 						<span class="badge pull-right">1</span>
@@ -292,42 +282,116 @@
 
 
 			</ul>
-			<div class="tab-content" style="width: 520px;">
-				<div id="details-pane-details" class="tab-pane ">
-					<div class="scroll-pane">
-						<div style="padding-right:1px;">
-							<ul class="nav contact-details-block" style="padding:10px;">
+			<div id="contact-details-area">
+				<section class="scroll-pane">
+					<div id="contact-details-block-area" >
+						<% for (var i in this.details) { %>
+						<fieldset>
+							<legend>
+								<small><%= this.details[i].group %></small>
+							</legend>
+
+
+							<ul class="nav contact-details-block">
+								<% for (var g in this.details[i].records) { %>
 								<li>
-									<span class="dg s span2 r">Work</span>
+									<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
 						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
+							<i class="dg <%= this.details[i].records[g].icon %>"></i>
 						</span>
-									015 516 4996
+									<%= this.details[i].records[g].value %>
 								</li>
-								<li>
-									<span class="dg s span2 r">Mobile</span>
-						<span class="contact-details-icon">
-							<i class="icon-phone"></i>
-						</span>
-									083 502 9157
-								</li>
-								<li>
-									<span class="dg s span2 r">Email</span>
-						<span class="contact-details-icon">
-							<i class="icon-envelope-alt"></i>
-						</span>
-									william@impreshin.com
-								</li>
-								<li>
-									<span class="dg s span2 r">Website</span>
-									<span class="contact-details-icon"></span>
-									www.impreshin.com
-								</li>
+								<% } %>
+
 
 							</ul>
+
+
+						</fieldset>
+						<% } %>
+					</div>
+				</section>
+			</div>
+			<div class="tab-content" style="width: 450px; background-color: #0000ff">
+				<div id="details-pane-details" class="tab-pane ">
+					<div class="scroll-pane">
+
+
+
+						<div >
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+							<h4>Notes</h4>
+							<blockquote>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+								<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+							</blockquote>
+
+
+
 						</div>
+
+
+
+
+
+
+
+
+
+
+
 					</div>
 				</div>
+
 				<div id="details-pane-tasks" class="tab-pane ">
 					<div class="scroll-pane">
 						<div style="padding-right:1px;">
@@ -362,7 +426,14 @@
 		</div>
 
 		<div id="graphics-area">
-			<span class="sparklines" sparkWidth="170px" style="margin-left:30px;"><!-- 7,5,3,1,9,0,6,8,4,2 --></span>
+
+			<div id="cal-heatmap-1"></div>
+
+			<div id="cal-heatmap-2"></div>
+			<div id="cal-heatmap-3"></div>
+
+
+
 		</div>
 
 	</section>
@@ -392,160 +463,214 @@
 	<div class="loadingmask wide"></div>
 	]]>
 </script>
+<script type="text/javascript" src="/ui/_js/plugins/d3.v3.min.js"></script>
+<link rel="stylesheet" href="/ui/_css/plugins/cal-heatmap.css"/>
+<script type="text/javascript" src="/ui/_js/plugins/cal-heatmap.js"></script>
+<script type="text/javascript" src="/ui/_js/plugins/moment.min.js"></script>
 <script type="text/javascript">
 
 
-	$(document).on("shown", '#cm-details-modal', function () {
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
-		if (!tab) tab = "details-pane-details";
-		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-		$('#' + tab + '', $details_modal).addClass("active");
-		$.sparkline_display_visible();
-		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+$(document).on("shown", '#cm-details-modal', function () {
+	var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
+	if (!tab) tab = "details-pane-details";
+	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	$('#' + tab + '', $details_modal).addClass("active");
+	$.sparkline_display_visible();
+	$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	$("#contact-details-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-	});
-	$(document).on('show', '#cm-details-modal .nav-tabs', function (e) {
-		var target = e.target; // activated tab
-		var previous = e.relatedTarget; // previous tab
-		$("#cm-details-modal .nav-tabs li.active").removeClass("active");
-		var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
+});
+$(document).on('show', '#cm-details-modal .nav-tabs', function (e) {
+	var target = e.target; // activated tab
+	var previous = e.relatedTarget; // previous tab
+	$("#cm-details-modal .nav-tabs li.active").removeClass("active");
+	var $this = $(this), href = $(e.target).attr("href"), pane = href.replace("#", "");
 
-		$("#cm-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
-		$.sparkline_display_visible();
-		$.bbq.pushState({"details-tab": pane});
-		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+	$("#cm-details-modal .nav-tabs li a[href='" + href + "']").parent().addClass("active");
+	$.sparkline_display_visible();
+	$.bbq.pushState({"details-tab": pane});
+	$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 
-	});
-	$(document).on('hide', '#cm-details-modal', function () {
-		$.bbq.removeState("ID");
+});
+$(document).on('hide', '#cm-details-modal', function () {
+	$.bbq.removeState("ID");
+	$("#record-list .record.active").removeClass("active");
+});
+
+$(document).on('click', '#details-pane-logs .record', function (e) {
+	var $this = $(this);
+	var $clicked = $(e.target).closest("tr.record");
+	var active = true;
+
+	if ($this.hasClass("active") && $clicked) active = false;
+
+	$("#details-pane-logs .record.active").removeClass("active");
+	if (active) {
+		$this.addClass("active");
+	}
+
+	var show = $("#details-pane-logs .record.active").attr("data-log-id");
+
+	$("#details-pane-logs .log-record-details").hide();
+	$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
+	$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
+
+});
+$(document).on('click', '#details-record-prev', function () {
+	prevRecord();
+});
+$(document).on('click', '#details-record-next', function () {
+	nextRecord();
+});
+
+
+
+function nextRecord() {
+	var ID = $.bbq.getState("ID");
+	var $item = $("#record-list .record[data-ID='" + ID + "']");
+	var $new = $item.nextAll("tr.record:first");
+	$.bbq.pushState({ID: $new.attr("data-ID")});
+	getDetails();
+}
+function prevRecord() {
+	var ID = $.bbq.getState("ID");
+	var $item = $("#record-list .record[data-ID='" + ID + "']");
+	var $new = $item.prevAll("tr.record:first");
+	$.bbq.pushState({ID: $new.attr("data-ID")});
+	getDetails();
+}
+
+function showContent_state() {
+	var ID = $.bbq.getState("ID");
+	if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
+		$("#details-record-prev").attr("disabled", "disabled");
+	} else {
+		$("#details-record-prev").removeAttr("disabled");
+	}
+	if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
+		$("#details-record-next").attr("disabled", "disabled");
+	} else {
+		$("#details-record-next").removeAttr("disabled");
+	}
+	var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
+	if (!tab) tab = "details-pane-details";
+	$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
+	$('#' + tab + '', $details_modal).addClass("active");
+
+}
+function getDetails() {
+	var ID = $.bbq.getState("ID");
+	$("#cm-details-modal").addClass("loading");
+	$.getData("/app/cm/data/details?r=" + Math.random(), {"ID": ID}, function (data) {
 		$("#record-list .record.active").removeClass("active");
-	});
+		$("#record-list .record[data-ID='" + ID + "']").addClass("active");
 
-	$(document).on('click', '#details-pane-logs .record', function (e) {
-		var $this = $(this);
-		var $clicked = $(e.target).closest("tr.record");
-		var active = true;
+		var template = "#template-details";
 
-		if ($this.hasClass("active") && $clicked) active = false;
+		switch (data.type) {
+			case "company":
+				template = "#template-details-company";
+				break;
+			case "contact":
+				template = "#template-details-contact";
+				break;
+			default:
+				template = "#template-details";
 
-		$("#details-pane-logs .record.active").removeClass("active");
-		if (active) {
-			$this.addClass("active");
 		}
 
-		var show = $("#details-pane-logs .record.active").attr("data-log-id");
-
-		$("#details-pane-logs .log-record-details").hide();
-		$("#details-pane-logs .log-record-details[data-log-id='" + show + "']").show();
-		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptionsMP);
-
-	});
-	$(document).on('click', '#details-record-prev', function () {
-		prevRecord();
-	});
-	$(document).on('click', '#details-record-next', function () {
-		nextRecord();
-	});
 
 
 
-	function nextRecord() {
-		var ID = $.bbq.getState("ID");
-		var $item = $("#record-list .record[data-ID='" + ID + "']");
-		var $new = $item.nextAll("tr.record:first");
-		$.bbq.pushState({ID: $new.attr("data-ID")});
-		getDetails();
-	}
-	function prevRecord() {
-		var ID = $.bbq.getState("ID");
-		var $item = $("#record-list .record[data-ID='" + ID + "']");
-		var $new = $item.prevAll("tr.record:first");
-		$.bbq.pushState({ID: $new.attr("data-ID")});
-		getDetails();
-	}
+		$('#cm-details-modal').data("data", data).jqotesub($(template), data).modal('show').removeClass("loading").trigger("shown");
 
-	function showContent_state() {
-		var ID = $.bbq.getState("ID");
-		if ($("#record-list .record[data-ID='" + ID + "']").prevAll("tr.record:first").length == 0) {
-			$("#details-record-prev").attr("disabled", "disabled");
-		} else {
-			$("#details-record-prev").removeAttr("disabled");
-		}
-		if ($("#record-list .record[data-ID='" + ID + "']").nextAll("tr.record:first").length == 0) {
-			$("#details-record-next").attr("disabled", "disabled");
-		} else {
-			$("#details-record-next").removeAttr("disabled");
-		}
-		var tab = $.bbq.getState("details-tab"), $details_modal = $('#cm-details-modal');
-		if (!tab) tab = "details-pane-details";
-		$('.nav-tabs li a[href="#' + tab + '"]', $details_modal).parent().addClass("active");
-		$('#' + tab + '', $details_modal).addClass("active");
+		if ($("#record-list:visible").length) {
 
-	}
-	function getDetails() {
-		var ID = $.bbq.getState("ID");
-		$("#cm-details-modal").addClass("loading");
-		$.getData("/app/cm/data/details?r=" + Math.random(), {"ID": ID}, function (data) {
-			$("#record-list .record.active").removeClass("active");
-			$("#record-list .record[data-ID='" + ID + "']").addClass("active");
+			if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
 
-			var template = "#template-details";
-
-			switch (data.type) {
-				case "company":
-					template = "#template-details-company";
-					break;
-				case "contact":
-					template = "#template-details-contact";
-					break;
-				default:
-					template = "#template-details";
-
-			}
-
-
-
-
-			$('#cm-details-modal').data("data", data).jqotesub($(template), data).modal('show').removeClass("loading").trigger("shown");
-
-			if ($("#record-list:visible").length) {
-
-				if (ID && $("#record-list .record[data-ID='" + ID + "']").length) {
-
-					showContent_state();
-					$("#list-next-prev-btns").show();
-					var api = $("#whole-area .scroll-pane").data("jsp");
-					if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
-						api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
-					}
-
+				showContent_state();
+				$("#list-next-prev-btns").show();
+				var api = $("#whole-area .scroll-pane").data("jsp");
+				if ($("#record-list .record[data-ID='" + ID + "']").length && api) {
+					api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, true);
 				}
+
+			}
+		}
+
+		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+		$("#contact-details-area .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+
+
+		//$('.sparklines').sparkline("html");
+
+
+		if (data.heatmap) {
+			var cal_1 = new CalHeatMap();
+			var cal_2 = new CalHeatMap();
+			var cal_3 = new CalHeatMap();
+
+			var cal_options = {
+				domain: "month",
+				subDomain: "x_day",
+				data: data.heatmap,
+
+				domainGutter: 10,
+				cellSize: 9,
+				range: 2,
+				tooltip: false,
+				verticalOrientation: false,
+				domainDynamicDimension: false, //	considerMissingDataAsZero:true,
+				//	previousSelector: "#example-f-PreviousDomain-selector",
+				//nextSelector: "#example-f-NextDomain-selector",
+				label: {
+					position: "top",
+
+					offset: {
+						x: 0, y: 3
+					}
+				},
+				domainLabelFormat: function (date) {
+					moment.lang("en");
+					return moment(date).format("MMMM").toUpperCase();
+				},
+				displayLegend: false,
+
+				legend: [1, 5, 10, 15, 20]
 			}
 
-			$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
+
+
+			cal_1_options = cal_options;
+			cal_1_options.start = Date.parse('-5 month');
+			cal_1_options.itemSelector = "#cal-heatmap-1";
+			cal_1.init(cal_1_options);
+
+			cal_2_options = cal_options;
+			cal_2_options.start = Date.parse('-3 month');
+			cal_2_options.itemSelector = "#cal-heatmap-2";
+			cal_2.init(cal_2_options);
+
+			cal_3_options = cal_options;
+			cal_3_options.start = Date.parse('-1 month');
+			cal_3_options.itemSelector = "#cal-heatmap-3";
+			cal_3.init(cal_3_options);
+
+		}
 
 
 
-			//$('.sparklines').sparkline("html");
-
-			$(".sparklines").sparkline('html', {
-				type: 'line',
-				fillColor: false,
-				spotColor: false,
-				minSpotColor: false,
-				maxSpotColor: false,
-				highlightSpotColor: false,
-				highlightLineColor: false,
-				enableTagOptions: true,
-				lineColor: "#0000FF"
-			});
 
 
 
 
-		}, "details");
 
-	}
+
+
+	}, "details");
+
+}
 </script>
-<div class="modal hide fade" id="cm-details-modal" data-show="false">
+<div class="modal hide wide fade" id="cm-details-modal" data-show="false">
 </div>

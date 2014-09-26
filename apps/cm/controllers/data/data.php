@@ -44,6 +44,15 @@ class data {
 		}
 		$return = $data;
 		$return['type']=$type;
+		$return['heatmap']=array(
+			strtotime("now")=>3,
+			strtotime("-1 day")=>7,
+			strtotime("-1 month")=>5,
+			strtotime("-4 month +3 day")=>1,
+			strtotime("-3 month")=>12,
+			strtotime("-3 month -4 day")=>3,
+			//strtotime("1 September 2014")=>"2"
+		);
 		
 		
 
