@@ -20,9 +20,9 @@
 						<button class="btn btn-mini <% if(this.data.type == 'pe'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="pe"
 						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Person</button>
 						<button class="btn btn-mini <% if(this.data.type == 'in'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="in"
-						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Interaction</button>
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %> disabled="disabled">Interaction</button>
 						<button class="btn btn-mini <% if(this.data.type == 'ta'){ %> active<% if (this.data.details.ID){ %> btn-inverse<% } %>  <% } %>" style="min-width:80px; padding-left: 10px; padding-right: 10px;" data-type="ta"
-						<% if (this.data.details.ID){ %>disabled="disabled"<% } %>>Task</button>
+						<% if (this.data.details.ID){ %>disabled="disabled"<% } %> disabled="disabled">Task</button>
 
 					</div>
 				</li>
