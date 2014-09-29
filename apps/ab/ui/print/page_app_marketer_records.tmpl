@@ -11,9 +11,10 @@
 
 <div style="height: 10px;"></div>
 <div>
-	Pages: <strong>{{ data['stats']['loading']['pages']|raw }}</strong> | Cm:
-	<strong>{{ data['stats']['cm']|raw }} </strong> | Loading:
-	<strong>{{ data['stats']['loading']['loading']|raw }}</strong>% {% if data['stats']['totalCost'] %}| Revenue: <strong>{{ data['stats']['totalCost']|raw }}</strong> {% endif %}
+	Cm:	<strong>{{ data['stats']['cm']|raw }} </strong> | 
+	Records:	<strong>{{ data['stats']['records']['grandtotal'] }} </strong> 
+	
+	{% if data['stats']['totalCost'] %}| Revenue: <strong>{{ data['stats']['totalCost']|raw }}</strong> {% endif %}
 </div>
 <div style="height: 10px;"></div>
 

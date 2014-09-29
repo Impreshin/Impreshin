@@ -148,6 +148,7 @@ class marketer_records extends data {
 		$return['pagination'] = $pagination;
 
 		$return['stats'] = $stats;
+		$return['stats']['records']['grandtotal'] = $recordsFound;
 
 
 

@@ -319,7 +319,7 @@ function getList(settings) {
 			$recordsList.html('<tfoot><tr><td class="c no-records">No Records Found</td></tr></tfoot>')
 		}
 
-		$search_stats.html("Result:  <strong>" + data['stats']['records'] + "</strong> records");
+		$search_stats.html("Result:  <strong>" + data['stats']['records']['grandtotal']+ "</strong> records");
 
 		
 
