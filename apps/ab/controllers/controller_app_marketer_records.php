@@ -123,6 +123,7 @@ class controller_app_marketer_records extends \apps\ab\controllers\_ {
 		$marketer = $marketer->get($settings['marketerID']);
 		
 
+		//test_array($data); 
 		$tmpl->settings = $settings;
 		$tmpl->data = $data;
 		$tmpl->marketer = $marketer;

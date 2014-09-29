@@ -6,15 +6,16 @@
 {{ _user['fullName'] }} | <em>Printed Date: </em>
 {{ "now"|date("d M Y H:i:s") }}
 
+
+
+
 <div style="height: 10px;"></div>
 <div>
-	Records: <strong>{{ data['stats']['records']|raw }} </strong> |
-	 Search: <strong>{{ settings['search']['search']|raw }} </strong>
-	| Dates: <strong>{{ settings['search']['dates']|raw }}</strong>
+	Pages: <strong>{{ data['stats']['loading']['pages']|raw }}</strong> | Cm:
+	<strong>{{ data['stats']['cm']|raw }} </strong> | Loading:
+	<strong>{{ data['stats']['loading']['loading']|raw }}</strong>% {% if data['stats']['totalCost'] %}| Revenue: <strong>{{ data['stats']['totalCost']|raw }}</strong> {% endif %}
 </div>
 <div style="height: 10px;"></div>
-
-
 
 
 {% include '_records.tmpl' %}

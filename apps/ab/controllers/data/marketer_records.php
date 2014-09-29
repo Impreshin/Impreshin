@@ -132,9 +132,12 @@ class marketer_records extends data {
 		//test_array($ordering); 
 
 		$records = models\bookings::getAll($where, $grouping, $ordering, $limits);
+		$stats = models\record_stats::stats($records,array("cm","checked","material","layout","totalCost"));
+		$loading = models\loading::getLoading($pID,$stats['cm'], $currentDate['pages']);
+		//$loading = loading::getLoading($pID,16000, $currentDate['pages']);
 
 
-
+		$stats['loading'] = $loading;
 
 		$return = array();
 
@@ -144,7 +147,7 @@ class marketer_records extends data {
 		$return['order'] = array("c" => $ordering_c, "o" => $ordering_d);
 		$return['pagination'] = $pagination;
 
-		$return['stats']['records']= $recordsFound;
+		$return['stats'] = $stats;
 
 
 
