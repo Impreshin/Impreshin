@@ -22,12 +22,9 @@
 		<a href="/app/cm/">Desk</a>
 
 	</li>	
-	<li class="{% if page['section'] == "calendar" %} active {% endif %}">
-		<a href="/app/cm/calendar">Calendar</a>
 
-	</li>
 	<li class="{% if page['section'] == "watchlist" %} active {% endif %}">
-		<a href="/app/cm/watch">My Watchlist</a>
+		<a href="/app/cm/watch">Watchlist</a>
 	</li>
 	
 	<li class="{% if page['section'] == "companies" %} active {% endif %}">
@@ -38,7 +35,10 @@
 		<a href="/app/cm/people">People</a>
 
 	</li>
+	<li class="{% if page['section'] == "calendar" %} active {% endif %}">
+		<a href="/app/cm/calendar">Calendar</a>
 
+	</li>
 	<li class="dropdown {% if page['section'] == "reports" %} active {% endif %}">
 		<a data-toggle="dropdown" class="dropdown-toggle" href="#">Reports <b class="caret"></b></a>
 		<ul class="dropdown-menu">

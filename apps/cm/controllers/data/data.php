@@ -69,6 +69,8 @@ class data {
 		
 		$data = models\companies::display($data);
 
+		//$data['linked'] = models\companies::getAll("","","0,2");
+
 		$return = $data;
 
 

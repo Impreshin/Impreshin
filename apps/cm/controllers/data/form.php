@@ -10,6 +10,7 @@ class form extends data {
 	function __construct() {
 		parent::__construct();
 
+		//$this->f3 = 
 
 	}
 
@@ -129,6 +130,43 @@ class form extends data {
 
 
 		return $return;
+	}
+	
+	function companyList(){
+		$return = array();
+		$search = isset($_REQUEST['q'])?$_REQUEST['q']:"";
+		$ID = isset($_REQUEST['ID'])?$_REQUEST['ID']:"";
+		$where = "";
+		if ($search){
+			$where = "cm_companies.company LIKE '%{$search}%' OR cm_companies.short LIKE '%{$search}%'";
+		}
+		if ($ID){
+			$where = "cm_companies.ID='{$ID}'";
+		}
+		
+
+		$return = models\companies::getAll($where,"company ASC");
+
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function contactList(){
+		$return = array();
+		$search = isset($_REQUEST['q'])?$_REQUEST['q']:"";
+		$ID = isset($_REQUEST['ID'])?$_REQUEST['ID']:"";
+		$where = "";
+		if ($search){
+			$where = "cm_contacts.firstName LIKE '%{$search}%' OR cm_contacts.lastName LIKE '%{$search}%'";
+		}
+		if ($ID){
+			$where = "cm_contacts.ID='{$ID}'";
+		}
+		
+
+		$return = models\contacts::getAll($where,"firstName ASC");
+
+
+		return $GLOBALS["output"]['data'] = $return;
 	}
 
 }

@@ -17,7 +17,7 @@
 		top: 0;
 		width: 220px;
 		bottom: 0;
-		margin-top:0px;
+		margin-top: 0px;
 		padding-top: 0px;
 		padding-right: 10px;
 		a {
@@ -29,11 +29,11 @@
 		position: absolute;
 		left: 10px;
 		top: -1px;
-		width:250px;
+		width: 250px;
 		bottom: 0;
 		overflow-y: auto;
 		padding: 0 10px;
-		border-right:1px solid #ddd;
+		border-right: 1px solid #ddd;
 		.jspVerticalBar {
 			.opacity(0);
 			.transition();
@@ -49,7 +49,7 @@
 			right: 0;
 			bottom: 0;
 			fieldset {
-				width:270px;
+				width: 270px;
 			}
 		}
 	}
@@ -112,7 +112,6 @@
 		right: 30px;
 	}
 
-	
 	.log-changes-table th {
 		text-align: left !important;
 	}
@@ -128,7 +127,6 @@
 		display: none;
 	}
 
-	
 	#details-bottom-right-btns {
 		position: absolute;
 		right: 10px;
@@ -159,68 +157,121 @@
 		position: absolute;
 		right: 15px;
 		bottom: 13px;
-		
-		width:188px;
-		height:258px;
+
+		width: 188px;
+		height: 258px;
 		#cal-heatmap-1 {
-			
+
 		}
-		
+
 	}
 
-	.contact-details-block {
-		li {
-			padding:5px;
-		}
-	}
 	.contact-details-icon {
 		float: left;
 		margin-left: 0px;
 		min-height: 1px;
-		width:30px;
+		width: 30px;
 		text-align: center;
 	}
-	
-	
+
+	.fake-input {
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+		color: #999;
+		border: 1px solid #ccc;
+		position: absolute;
+		left: 5px;
+		right: 15px;
+		bottom: 2px;
+		border-radius: 4px;
+
+		cursor: pointer;
+		&:hover {
+			border-color: rgba(82, 168, 236, 0.8);
+			.box-shadow(0 1px 1px rgba(0, 0, 0, 0.075) inset);
+			.box-shadow(0 0 8px rgba(82, 168, 236, 0.6));
+
+		}
+	}
+	.open-details-link {
+		cursor: pointer;
+		&.label {
+			
+			font-size: 10px;
+		}
+	}
+
 
 }
 
-
-
-.q1{
+.q1 {
 	background-color: #87E0FF;
 	fill: #87E0FF
 }
 
-.q2{
+.q2 {
 	background-color: #66BD63;
 	fill: #66BD63
 }
 
-.q3{
+.q3 {
 	background-color: #FFFFBF;
 	fill: #FFFFBF
 }
 
-.q4{
+.q4 {
 	background-color: #FDAE61;
 	fill: #FDAE61
 }
 
-.q5{
+.q5 {
 	background-color: #D73027;
 	fill: #D73027
 }
 
 #contact-details-block-area {
+	legend {
+		color: #999999;
+		font-size: 13.5px;
+		&:empty {
+			display: none
+		}
+	}
 	&:empty {
-		margin-top:40px;
-		font-size:11px;
+		margin-top: 40px;
+		font-size: 11px;
 		text-align: center;
 		line-height: 30px;
-		color:#999;
+		color: #999;
 		&:before {
 			content: 'No details';
 		}
+	}
+
+	.contact-details-icon {
+		float: left;
+		margin-left: 0px;
+		min-height: 1px;
+		width: 30px;
+		text-align: center;
+	}
+	.contact-details-block {
+		li {
+			padding: 3px;
+		}
+	}
+
+}
+
+#contact-details-footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 10px;
+	padding-bottom: 5px;
+	border-top:1px solid #ddd;
+	li {
+		line-height: 20px;
 	}
 }

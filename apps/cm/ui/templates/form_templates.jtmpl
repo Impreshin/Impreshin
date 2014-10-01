@@ -87,8 +87,8 @@
 						<i class="icon-list-alt icon-d-grey"></i></a>
 					<% } %>
 					<% } %>
-					
-					
+
+
 					<a href="/app/cm/form" class="btn btn-mini  span1 " style="margin-top:2px;" rel="tooltip" title="New Record" data-position="above">
 						<i class="icon-plus"></i></a>
 					<% } %>
@@ -134,17 +134,17 @@
 
 			<% var w = "style='width:260px;'"; %>
 			<% if (this.data.type=="co" || this.data.type=="pe"){ %>
-			<%  w = ""; %>
+			<% w = ""; %>
 			<% } %>
 			<a href="/app/cm/form/" class="btn span3" id="modal-btn-new" <%= w %>>New Record</a>
 			<a data-id="<%= this.data.details.linkID %>" class="btn span3 view-record-btn" <%= w %>>View Record</a>
 			<% if (this.data.type=="co" || this.data.type=="pe"){ %>
-				<% if (this.data.type=="co"){ %>
-					<a href="/app/cm/companies#scrollTo=<%= this.data.details.ID %>" class="btn span3">Go to list</a>
-				<% } %>
-				<% if (this.data.type=="pe"){ %>
-				<a href="/app/cm/people#scrollTo=<%= this.data.details.ID %>" class="btn span3">Go to list</a>
-				<% } %>
+			<% if (this.data.type=="co"){ %>
+			<a href="/app/cm/companies#scrollTo=<%= this.data.details.ID %>" class="btn span3">Go to list</a>
+			<% } %>
+			<% if (this.data.type=="pe"){ %>
+			<a href="/app/cm/people#scrollTo=<%= this.data.details.ID %>" class="btn span3">Go to list</a>
+			<% } %>
 			<% } %>
 
 		</div>
@@ -157,110 +157,174 @@
 
 <script type="text/x-jqote-template" id="template-form-co">
 	<![CDATA[
-		<div class="span7" style="margin-left:15px;">
+	<div class="span7" style="margin-left:15px;">
 
-			<fieldset>
-				<legend>Details</legend>
-				<div class="control-group">
-					<label class="control-label" for="company">Company</label>
+		<fieldset>
+			<legend>Details</legend>
+			<div class="control-group">
+				<label class="control-label" for="company">Company</label>
 
-					<div class="controls">
-						<input type="text" id="company" name="company"  placeholder="Company Name" class="span4" value="<%= this.details.company||'' %>">
-					</div>
+				<div class="controls">
+					<input type="text" id="company" name="company" placeholder="Company Name" class="span4" value="<%= this.details.company||'' %>">
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="short">Code</label>
-
-					<div class="controls">
-						<input type="text" id="short" name="short"  placeholder="Company Code" class="span2" value="<%= this.details.short||'' %>">
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="taxID">Tax ID</label>
-
-					<div class="controls">
-						<input type="text" id="taxID" name="taxID"  placeholder="Tax ID" class="span3" value="<%= this.details.taxID||'' %>">
-					</div>
-				</div>
-			</fieldset>
-
-			<fieldset style="margin-top:30px;">
-				<legend>Contact Details</legend>
-
-				<table style="width:100%;" id="new-contact-table" >
-					<tr>
-						<td>
-							<select style="width: 150px;" name="" id="add-new-contact-field-select" class="details-select">
-								{% for label,items in display_types %}
-									<optgroup label="{{ label|default("General") }}">
-										{% for row in items %}
-											<option value="{{ row['ID'] }}" data-icon="{{ row['icon'] }}">{{ row['type'] }}</option>
-										{% endfor %}
-									</optgroup>
-								{% endfor %}
-
-
-							</select>
-						</td>
-						<td>
-							<input type="text" id="add-new-contact-field-value" placeholder="Value" class="" style="width: 210px;">
-						</td>
-						
-						<td>
-							<button class="btn span1 btn-mini" type="button" style="padding: 6px 0 6px 0;" id="add-new-contact-field-btn" ><i class="icon-plus"></i></button>
-						</td>
-					</tr>
-				</table>
-
-
-
-
-
-
-
-
-			</fieldset>
-
-		</div>
-		<div class="span7 offset1" id="contact-details-block-area" >
-			<div id="new-contact-details-block-area">
-				<fieldset data-label="">
-					<legend style="margin:0;">
-						<small>General Details</small>
-					</legend>
-				<ul class="nav contact-details-block">
-					
-					
-					
-				</ul>
-					</fieldset>
 			</div>
-			
-			
-			<div id="drag-new-contacts-group" class="contact-detail-drag-here" >
-				Drag here for new group
+			<div class="control-group">
+				<label class="control-label" for="short">Code</label>
+
+				<div class="controls">
+					<input type="text" id="short" name="short" placeholder="Company Code" class="span2" value="<%= this.details.short||'' %>">
+				</div>
 			</div>
-			<section id="contact-details-groups">
+			<div class="control-group">
+				<label class="control-label" for="taxID">Tax ID</label>
+
+				<div class="controls">
+					<input type="text" id="taxID" name="taxID" placeholder="Tax ID" class="span3" value="<%= this.details.taxID||'' %>">
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset style="margin-top:30px;">
+			<legend>Contact Details</legend>
+
+			<table style="width:100%;" id="new-contact-table">
+				<tr>
+					<td>
+						<select style="width: 150px;" name="" id="add-new-contact-field-select" class="details-select">
+							{% for label,items in display_types %}
+								<optgroup label="{{ label|default("General") }}">
+									{% for row in items %}
+										<option value="{{ row['ID'] }}" data-icon="{{ row['icon'] }}">{{ row['type'] }}</option>
+									{% endfor %}
+								</optgroup>
+							{% endfor %}
+
+
+						</select>
+					</td>
+					<td>
+						<input type="text" id="add-new-contact-field-value" placeholder="Value" class="" style="width: 210px;">
+					</td>
+
+					<td>
+						<button class="btn span1 btn-mini" type="button" style="padding: 6px 0 6px 0;" id="add-new-contact-field-btn">
+							<i class="icon-plus"></i></button>
+					</td>
+				</tr>
+			</table>
+
+
+
+
+
+
+
+
+		</fieldset>
+		<hr/>
+		<fieldset style="margin-top:30px;">
+			<legend>
+				<small>Linked Companies</small>
+			</legend>
+			<div id="link-company-area">
+				<% for (var i in this.details.linked.company) { %>
 				
-			</section>
-			
-			
+					<div class="linked-company-record linked-record">
+						<input type="hidden" value="<%= this.details.linked.company[i].ID %>" name="link-company-field-<%= this.details.linked.company[i].ID %>" id="link-company-field-<%= this.details.linked.company[i].ID %>"> <%= this.details.linked.company[i].company %>
+						<button class="btn pull-right span1  remove-linked-record" type="button" ><i class="icon-trash"></i></button>
+					</div>
+					<div class="clearfix"></div>
+				
+				<% } %>
+			</div>
+			<table style="width:100%;">
+				<tr>
+					<td>
+						<input type="hidden" id="link-company-select" style="width:420px"/>
+
+					</td>
 
 
-			
+					<td>
+
+					</td>
+				</tr>
+			</table>
+
+		</fieldset>
+		<fieldset style="margin-top:30px;margin-bottom:30px;">
+			<legend>
+				<small>Linked People / Contacts</small>
+			</legend>
+			<div id="link-contact-area">
+				<% for (var i in this.details.linked.contact) { %>
+
+				<div class="linked-contact-record linked-record">
+					<input type="hidden" value="<%= this.details.linked.contact[i].ID %>" name="link-contact-field-<%= this.details.linked.contact[i].ID %>" id="link-contact-field-<%= this.details.linked.contact[i].ID %>"> <%= this.details.linked.contact[i].firstName %> <%= this.details.linked.contact[i].lastName %> 
+					<button class="btn pull-right span1  remove-linked-record"  type="button"><i class="icon-trash"></i></button>
+				</div>
+				<div class="clearfix"></div>
+
+				<% } %>
+			</div>
+			<table style="width:100%;">
+				<tr>
+					<td>
+						<input type="hidden" id="link-contact-select" style="width:420px"/>
+
+					</td>
+
+
+					<td>
+
+					</td>
+				</tr>
+			</table>
+
+		</fieldset>
+
+	</div>
+	<div class="span7 offset1" id="contact-details-block-area">
+		<div id="new-contact-details-block-area">
+			<fieldset data-label="">
+				<legend style="margin:0;">
+					<small>General Details</small>
+				</legend>
+				<ul class="nav contact-details-block">
+
+
+
+				</ul>
+			</fieldset>
 		</div>
+
+
+		<div id="drag-new-contacts-group" class="contact-detail-drag-here">
+			Drag here for new group
+		</div>
+		<section id="contact-details-groups">
+
+		</section>
+
+
+
+
+
+	</div>
 	]]>
 </script>
 <script type="text/x-jqote-template" id="template-contact-group">
 	<![CDATA[
 	<% if (this.group=="" || this.group == null) { %>
-			
-				<% $("#new-contact-details-block-area .contact-details-block").jqoteapp($("#template-contact-item"), this['records']) %>
-			
+
+	<% $("#new-contact-details-block-area .contact-details-block").jqoteapp($("#template-contact-item"), this['records']) %>
+
 	<% } else { %>
 	<fieldset data-label="<%= this.group %>">
 		<legend>
-			<%= this.group||'<small>General Details</small>' %>
+			<%= this.group||'
+			<small>General Details</small>
+			' %>
 		</legend>
 		<ul class="nav contact-details-block">
 
@@ -274,7 +338,7 @@
 <script type="text/x-jqote-template" id="template-contact-item">
 	<![CDATA[
 	<li data-id="<%= this.ID %>">
-		<table style="width:100%;"  >
+		<table style="width:100%;">
 			<tr>
 				<td>
 					<select style="width: 150px;" name="contact-details-cat-<%= this.ID %>" id="contact-details-cat-<%= this.ID %>" class="details-select">
@@ -292,10 +356,10 @@
 				<td>
 					<input type="text" id="contact-details-val-<%= this.ID %>" name="contact-details-val-<%= this.ID %>" placeholder="Value" class="" style="width: 210px;" value="<%= this.value %>">
 					<input type="hidden" id="contact-details-gro-<%= this.ID %>" name="contact-details-gro-<%= this.ID %>" value="<%= this.group||'' %>">
-					
+
 				</td>
 
-				
+
 			</tr>
 		</table>
 	</li>
@@ -311,33 +375,33 @@
 				<label class="control-label" for="firstName">First Name</label>
 
 				<div class="controls">
-					<input type="text" id="firstName" name="firstName"  placeholder="First Name" class="span4" value="<%= this.details.firstName||'' %>">
+					<input type="text" id="firstName" name="firstName" placeholder="First Name" class="span4" value="<%= this.details.firstName||'' %>">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="lastName">Last Name</label>
 
 				<div class="controls">
-					<input type="text" id="lastName" name="lastName"  placeholder="Last Name" class="span4" value="<%= this.details.lastName||'' %>">
+					<input type="text" id="lastName" name="lastName" placeholder="Last Name" class="span4" value="<%= this.details.lastName||'' %>">
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="short">Title</label>
 
 				<div class="controls">
-					<input type="text" id="title" name="title"  placeholder="Company Code" class="span2" value="<%= this.details.title||'' %>">
+					<input type="text" id="title" name="title" placeholder="Company Code" class="span2" value="<%= this.details.title||'' %>">
 				</div>
 			</div>
-			
+
 		</fieldset>
 
 		<fieldset style="margin-top:30px;">
 			<legend>Contact Details</legend>
 
-			<table style="width:100%;" id="new-contact-table" >
+			<table style="width:100%;" id="new-contact-table">
 				<tr>
 					<td>
-						<select style="width: 150px;" name="" id="add-new-contact-field-select" class="details-select" >
+						<select style="width: 150px;" name="" id="add-new-contact-field-select" class="details-select">
 							{% for label,items in display_types %}
 								<optgroup label="{{ label|default("General") }}">
 									{% for row in items %}
@@ -354,7 +418,8 @@
 					</td>
 
 					<td>
-						<button class="btn span1 btn-mini" type="button" style="padding: 6px 0 6px 0;" id="add-new-contact-field-btn" ><i class="icon-plus"></i></button>
+						<button class="btn span1 btn-mini" type="button" style="padding: 6px 0 6px 0;" id="add-new-contact-field-btn">
+							<i class="icon-plus"></i></button>
 					</td>
 				</tr>
 			</table>
@@ -369,7 +434,7 @@
 		</fieldset>
 
 	</div>
-	<div class="span7 offset1" id="contact-details-block-area" >
+	<div class="span7 offset1" id="contact-details-block-area">
 		<div id="new-contact-details-block-area">
 			<fieldset data-label="">
 				<legend style="margin:0;">
@@ -384,7 +449,7 @@
 		</div>
 
 
-		<div id="drag-new-contacts-group" class="contact-detail-drag-here" >
+		<div id="drag-new-contacts-group" class="contact-detail-drag-here">
 			Drag here for new group
 		</div>
 		<section id="contact-details-groups">

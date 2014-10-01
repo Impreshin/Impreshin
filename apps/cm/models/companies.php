@@ -61,6 +61,40 @@ class companies {
 			
 			
 			$return['details'] =$details;
+
+
+			$linked_co = array();
+			$linked_pe = array();
+			
+			$ID = $return['ID'];
+
+			$detailss = $f3->get("DB")->exec("
+				SELECT GROUP_CONCAT(CONCAT(cm_companies_links_company.linkedID,',',cm_companies_links_company.parentID) SEPARATOR ',') as links
+				FROM cm_companies_links_company 
+				WHERE parentID = '{$ID}' OR linkedID = '{$ID}'
+			");
+			if (count($detailss)){
+				$detailss = $detailss[0]['links'];
+				if ($detailss) $linked_co = self::getAll("ID in ($detailss) AND ID != '{$ID}'");
+			}
+			
+			$detailss = $f3->get("DB")->exec("
+				SELECT GROUP_CONCAT((cm_companies_links_contact.linkedID) SEPARATOR ',') as links
+				FROM cm_companies_links_contact 
+				WHERE parentID = '{$ID}'
+			");
+			
+			if (count($detailss)){
+				$detailss = $detailss[0]['links'];
+				if ($detailss) $linked_pe = contacts::getAll("ID in ($detailss)");
+			}
+			
+			
+
+
+			$return['linked']['company'] =$linked_co;
+			$return['linked']['contact'] =$linked_pe;
+			
 			$return = self::localization($return);
 			$return['logs'] = self::getLogs($return['ID']);
 
@@ -78,11 +112,45 @@ class companies {
 		return $return;
 	}
 
-	
 
-	
 
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "company", "o" => "ASC"), $options = array("limit" => "")) {
+	public static function getAll($where = "", $orderby = "cm_companies.company ASC",$limit="") {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+		if ($limit) {
+			$limit = str_replace("LIMIT", "", $limit);
+			$limit = " LIMIT " . $limit;
+
+		}
+		
+		//test_array($where);
+
+		
+		$result = $f3->get("DB")->exec("
+			SELECT cm_companies.* 
+			FROM cm_companies
+			$where
+			$orderby
+			$limit
+		");
+		
+		$return = $result;
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
+
+	public static function getList($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "company", "o" => "ASC"), $options = array("limit" => "")) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {
@@ -371,6 +439,22 @@ class companies {
 				
 				
 			}
+		}
+
+		if (isset($values['linked'])){
+			if (isset($values['linked']['company'])){
+				$f3->get("DB")->exec("DELETE FROM cm_companies_links_company WHERE parentID = '{$ID}' OR linkedID='{$ID}'");
+				foreach ($values['linked']['company'] as $item){
+					$f3->get("DB")->exec("INSERT INTO cm_companies_links_company (parentID,linkedID) VALUES ('{$ID}','{$item}')");
+				}
+			}
+			if (isset($values['linked']['contact'])){
+				$f3->get("DB")->exec("DELETE FROM cm_companies_links_contact WHERE parentID = '{$ID}'");
+				foreach ($values['linked']['contact'] as $item){
+					$f3->get("DB")->exec("INSERT INTO cm_companies_links_contact (parentID,linkedID) VALUES ('{$ID}','{$item}')");
+				}
+			}
+			
 		}
 		
 		

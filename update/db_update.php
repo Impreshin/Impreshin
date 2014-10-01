@@ -181,6 +181,11 @@ $sql = array(
         "ALTER TABLE  `cm_contacts_logs` CHANGE  `contactID`  `parentID` INT( 6 ) NULL DEFAULT NULL;",
         "ALTER TABLE  `cm_contacts` ADD  `dateChanged` TIMESTAMP NULL DEFAULT NULL;"
         
+    ),
+    "38"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_companies_links_company` (  `parentID` int(6) DEFAULT NULL,  `linkedID` int(6) DEFAULT NULL,  KEY `parentID` (`parentID`,`linkedID`));",
+	    "CREATE TABLE IF NOT EXISTS `cm_companies_links_contact` (  `parentID` int(6) DEFAULT NULL,  `linkedID` int(6) DEFAULT NULL,  KEY `parentID` (`parentID`,`linkedID`));", 
+	   
     )
 	
 

@@ -55,3 +55,37 @@
   min-height: 26px;
   margin: 4px 0;
 }
+#link-company-area {
+  margin-bottom: 20px;
+}
+#link-company-area:empty {
+  font-size: 11px;
+  text-align: center;
+  color: #999;
+}
+#link-company-area:empty:before {
+  content: 'No Linked Companies';
+}
+#link-company-area .linked-company-record {
+  border-bottom: 1px dotted #e1e1e1;
+  margin-bottom: 5px;
+  line-height: 37px;
+  padding-left: 20px;
+}
+#link-contact-area {
+  margin-bottom: 20px;
+}
+#link-contact-area:empty {
+  font-size: 11px;
+  text-align: center;
+  color: #999;
+}
+#link-contact-area:empty:before {
+  content: 'No Linked People / Contacts';
+}
+#link-contact-area .linked-contact-record {
+  border-bottom: 1px dotted #e1e1e1;
+  margin-bottom: 5px;
+  line-height: 37px;
+  padding-left: 20px;
+}

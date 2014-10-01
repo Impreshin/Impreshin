@@ -78,11 +78,43 @@ class contacts {
 		return $return;
 	}
 
+
+	public static function getAll($where = "", $orderby = "cm_contacts.firstName ASC",$limit="") {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+
+		if ($where) {
+			$where = "WHERE " . $where . "";
+		} else {
+			$where = " ";
+		}
+
+		if ($orderby) {
+			$orderby = " ORDER BY " . $orderby;
+		}
+		if ($limit) {
+			$limit = str_replace("LIMIT", "", $limit);
+			$limit = " LIMIT " . $limit;
+
+		}
+
+
+		$result = $f3->get("DB")->exec("
+			SELECT cm_contacts.* 
+			FROM cm_contacts
+			$where
+			$orderby
+			$limit
+		");
+
+		$return = $result;
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
 	
 
-	
-
-	public static function getAll($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "company", "o" => "ASC"), $options = array("limit" => "")) {
+	public static function getList($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "company", "o" => "ASC"), $options = array("limit" => "")) {
 		$f3 = \Base::instance();
 		$timer = new timer();
 		if ($where) {

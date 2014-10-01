@@ -89,6 +89,65 @@ $(document).ready(function () {
 		$row.find("td>input").val("").trigger("focus");
 	});
 	
+	$(document).on("change", "#link-company-select", function () {
+		var $this = $(this);
+		var value = $("#link-company-select").val();
+		if (value){
+			if ($("#link-company-area input[value='"+value+"']").length == 0){
+				var fieldID = "link-company-field-n"+ ($("#link-company-area input").length + 1);
+				var str = '<input type="hidden" id="'+fieldID+'" name="'+fieldID+'" value="'+value+'" />';
+				var sel = $("#link-company-select").data("select2")
+				sel = $(sel.container).find(".co").text();
+				str = str + sel;
+				str = str + '<button class="btn pull-right span1 remove-linked-record"  type="button"><i class="icon-trash"></i></button>';
+				str = '<div class="linked-company-record linked-record">'+str+'</div><div class="clearfix"></div>'
+				
+				
+				
+				$("#link-company-area").append(str);
+				resizeform()
+			}
+			
+		}
+		
+	//	console.log(sel)
+		
+		//console.log($("#link-company-select").data("select2"))
+	});
+	
+	$(document).on("change", "#link-contact-select", function () {
+		var $this = $(this);
+		var value = $("#link-contact-select").val();
+		if (value){
+			if ($("#link-contact-area input[value='"+value+"']").length == 0){
+				var fieldID = "link-contact-field-n"+ ($("#link-contact-area input").length + 1);
+				var str = '<input type="hidden" id="'+fieldID+'" name="'+fieldID+'" value="'+value+'" />';
+				var sel = $("#link-contact-select").data("select2")
+				sel = $(sel.container).find(".co").text();
+				str = str + sel;
+				str = str + '<button class="btn pull-right span1  remove-linked-record"  type="button"><i class="icon-trash"></i></button>';
+				str = '<div class="linked-contact-record linked-record">'+str+'</div><div class="clearfix"></div>'
+				
+				
+				
+				$("#link-contact-area").append(str);
+				resizeform()
+			}
+			
+		}
+		
+		
+	});	
+	$(document).on("click", ".remove-linked-record", function () {
+		var $this = $(this);
+		$this.closest(".linked-record").remove();
+		
+		
+	});
+	
+	
+	
+	
 	
 	
 
@@ -172,7 +231,7 @@ function getFormData() {
 			hoverClass: "ui-state-highlight",
 			activeClass: "ui-state-default",
 			drop: function( event, ui ) {
-				var group = prompt("Please enter a group name", "test");
+				var group = prompt("Please enter a group name", "");
 			
 				
 				if (group){
@@ -209,6 +268,9 @@ function getFormData() {
 					//.append($item);
 
 
+					
+					
+					
 
 					
 					sorting();
@@ -264,9 +326,94 @@ function formLoaded(data) {
 	
 	var pane = $(".form-body").jScrollPane(jScrollPaneOptionsMP);
 	var api = pane.data("jsp");
-	var $cm = $("#cm-block");
-	var body = "";
-	
+
+
+	$("#link-company-select").select2({
+		placeholder: "Search for a Company",
+		minimumInputLength: 1,
+		ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+			url: "/app/cm/data/form/companyList",
+			dataType: 'json',
+			data: function (term, page) {
+				return {
+					q: term, // search term
+					page_limit: 10
+				};
+			},
+			results: function (data, page) { // parse the results into the format expected by Select2.
+				// since we are using custom formatting functions we do not need to alter remote JSON data
+				
+				return {
+					results: $.map(data.data, function (item) {
+						return {
+							text: item.company,
+							short: item.short,
+							dateChanged: item.dateChanged,
+							id: item.ID
+						}
+					})
+				};
+			}
+		},
+		initSelection: function(element, callback) {
+			// the input tag has a value attribute preloaded that points to a preselected movie's id
+			// this function resolves that id attribute to an object that select2 can render
+			// using its formatResult renderer - that way the movie name is shown preselected
+			var id=$(element).val();
+			if (id!=="") {
+				$.ajax("/app/cm/data/form/companyList?ID="+id+"", {
+					dataType: "json"
+				}).done(function(data) { callback(data); });
+			}
+		},
+		formatResult: select2remotecompanies, // omitted for brevity, see the source of this page
+		formatSelection: select2remotecompanies, // omitted for brevity, see the source of this page
+		//dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+		escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+	});
+	$("#link-contact-select").select2({
+		placeholder: "Search for a Company",
+		minimumInputLength: 1,
+		ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+			url: "/app/cm/data/form/contactList",
+			dataType: 'json',
+			data: function (term, page) {
+				return {
+					q: term, // search term
+					page_limit: 10
+				};
+			},
+			results: function (data, page) { // parse the results into the format expected by Select2.
+				// since we are using custom formatting functions we do not need to alter remote JSON data
+				
+				return {
+					results: $.map(data.data, function (item) {
+						return {
+							text: item.firstName + " " + item.lastName,
+							short: item.title,
+							dateChanged: item.dateChanged,
+							id: item.ID
+						}
+					})
+				};
+			}
+		},
+		initSelection: function(element, callback) {
+			// the input tag has a value attribute preloaded that points to a preselected movie's id
+			// this function resolves that id attribute to an object that select2 can render
+			// using its formatResult renderer - that way the movie name is shown preselected
+			var id=$(element).val();
+			if (id!=="") {
+				$.ajax("/app/cm/data/form/contactList?ID="+id+"", {
+					dataType: "json"
+				}).done(function(data) { callback(data); });
+			}
+		},
+		formatResult: select2remotecompanies, // omitted for brevity, see the source of this page
+		formatSelection: select2remotecompanies, // omitted for brevity, see the source of this page
+		//dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+		escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+	});
 
 
 	//$("select.select2").select2();
@@ -329,7 +476,7 @@ function form_submit() {
 
 				getFormData();
 				$("#pagecontent .loadingmask").fadeOut(transSpeed);
-				console.log(response)
+			//	console.log(response)
 				$("#modal-form").jqotesub($("#template-modal-form"), response).modal("show");
 			}
 			
@@ -354,4 +501,10 @@ function format_details_select2(item) {
 	if (!item.id) return item.text; // optgroup
 	//console.log(item)
 	return "<i class='g " + $(item.element).attr("data-icon") + "' style='margin-right:10px'></i>" + item.text;
+}
+function select2remotecompanies(item) {
+	
+	if (!item.id) return item.text; // optgroup
+	
+	return "<div><span class='co'> " + item.text + "</span><span class='pull-right g s'>"+item.short+"</span></div>";
 }

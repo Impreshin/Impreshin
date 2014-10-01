@@ -59,6 +59,8 @@ class form extends save {
 
 
 
+		
+		
 
 
 
@@ -110,7 +112,27 @@ class form extends save {
 		}
 
 		$values['details'] = $contacts;
+
+
+		$l_co = array();
+		foreach ($_POST as $k=>$v){
+			if (strpos($k,"ink-company-field")){
+				if (!in_array($v,$l_co)) $l_co[] = $v;
+			}
+		}
+		$l_pe = array();
+		foreach ($_POST as $k=>$v){
+			if (strpos($k,"ink-contact-field")){
+				if (!in_array($v,$l_pe)) $l_pe[] = $v;
+			}
+		}
+
+		$values['linked'] = array(
+			"company"=>$l_co,
+			"contact"=>$l_pe,
+		);
 		
+		//test_array($_POST);
 		//test_array($values); 
 
 		$ID = models\companies::save($ID,$values);

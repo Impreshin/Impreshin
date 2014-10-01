@@ -86,7 +86,7 @@ class companies extends data {
 		$where = "cID = '".$user['company']['ID']."'";
 
 
-		$records = models\companies::getAll($where, $grouping, $ordering);
+		$records = models\companies::getList($where, $grouping, $ordering);
 
 		$return = array();
 

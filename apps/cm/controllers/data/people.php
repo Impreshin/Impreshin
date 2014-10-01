@@ -86,7 +86,7 @@ class people extends data {
 		$where = "cID = '".$user['company']['ID']."'";
 
 
-		$records = models\contacts::getAll($where, $grouping, $ordering);
+		$records = models\contacts::getList($where, $grouping, $ordering);
 
 		$return = array();
 
