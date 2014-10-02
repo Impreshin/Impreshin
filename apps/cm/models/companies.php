@@ -103,6 +103,8 @@ class companies {
 		} else {
 			$return = $this->dbStructure;
 			$return['details'] = array();
+			$return['linked']['company'] =array();;
+			$return['linked']['contact'] =array();;
 
 		
 		}
