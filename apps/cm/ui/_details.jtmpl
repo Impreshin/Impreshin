@@ -52,9 +52,9 @@
 					<li>
 						<div>
 							<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
-						<span class="contact-details-icon">
-							<i class="dg <%= this.details[i].records[g].icon %>"></i>
-						</span>
+							<span class="contact-details-icon">
+								<i class="dg <%= this.details[i].records[g].icon %>"></i>
+							</span>
 							<%= this.details[i].records[g].value %>
 						</div>
 						<div class="clearfix"></div>
@@ -76,7 +76,9 @@
 		<ul class="nav nav-list" style="">
 			<li class="nav-header">Linked Company(s)</li>
 			<% for (var i in this.linked.company) { %>
-			<li><a href="#ID=co-<%= this.linked.company[i].ID %>" data-id="co-<%= this.linked.company[i].ID %>" class="open-details-link"><%= this.linked.company[i].company %></a></li>
+			<li>
+				<a href="#ID=co-<%= this.linked.company[i].ID %>" data-id="co-<%= this.linked.company[i].ID %>" class="open-details-link"><%= this.linked.company[i].company %></a>
+			</li>
 			<% } %>
 		</ul>
 		<% } %>
@@ -116,9 +118,9 @@
 
 
 
-			<div id="notes-area" class="records-block" >
+			<div id="notes-area" class="records-block">
 				<% for (var i in this.notes) { %>
-				
+
 				<h4><%= this.notes[i].heading %></h4>
 				<blockquote>
 					<%= this.notes[i].note %>
@@ -127,12 +129,13 @@
 							<a href="#" class="records-block-button edit-note" data-id="<%= this.notes[i].ID %>"><i class="icon-pencil"></i></a> 
 							<a href="#" class="records-block-button delete-note" data-id="<%= this.notes[i].ID %>"><i class="icon-trash"></i></a> 
 						</span>
-						<small><%= this.notes[i].fullName %> <cite title="<%= this.notes[i].datein %>"><%= this.notes[i].timeago %></cite></small>
+						<small><%= this.notes[i].fullName %>
+							<cite title="<%= this.notes[i].datein %>"><%= this.notes[i].timeago %></cite></small>
 					</div>
-					
+
 				</blockquote>
 				<% } %>
-				
+
 
 
 
@@ -154,7 +157,7 @@
 
 	<div id="details-pane-tasks" class="tab-pane ">
 		<div class="scroll-pane" style="bottom:40px;">
-			<div style="padding-right:1px;"  id="tasks-area" class="records-block" >
+			<div style="padding-right:1px;" id="tasks-area" class="records-block">
 				<% for (var i in this.tasks) { %>
 				<h4>Tasks</h4>
 				<blockquote>
@@ -164,7 +167,7 @@
 				<% } %>
 			</div>
 		</div>
-		<div class="fake-input" >Add a new Task</div>
+		<div class="fake-input">Add a new Task</div>
 	</div>
 	<div id="details-pane-contacts" class="tab-pane ">
 		<div class="scroll-pane">
@@ -176,29 +179,29 @@
 						<th>First Name</th>
 						<th>Last Name</th>
 					</tr>
-						<% for (var i in this.linked.contact) { %>
+					<% for (var i in this.linked.contact) { %>
 					<tr data-id="pe-<%= this.linked.contact[i].ID %>" class="open-details-link record">
 						<td><%= this.linked.contact[i].title %></td>
 						<td><%= this.linked.contact[i].firstName %></td>
 						<td><%= this.linked.contact[i].lastName %></td>
 					</tr>
-						
-						<% } %>
-					
+
+					<% } %>
+
 				</table>
-				
+
 			</div>
 		</div>
 	</div>
 	<div id="details-pane-interactions" class="tab-pane ">
 		<div class="scroll-pane" style="bottom:40px;">
-			<div style="padding-right:10px;"  id="interactions-area" class="records-block" >
+			<div style="padding-right:10px;" id="interactions-area" class="records-block">
 
 				<% for (var i in this.interactions) { %>
 				<h4>
 					<small><i class="icon-envelope " style="margin-right:8px;"></i></small>
 					Email
-					<span class="label label-warning pull-right open-details-link" data-id="pe-1" >William Stam</span>
+					<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>
 				</h4>
 				<blockquote>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
@@ -216,14 +219,14 @@
 	<div id="details-pane-logs" class="tab-pane">
 		<div class="scroll-pane">
 			<div style="padding-right:1px;">
-				
+
 				<table class="table s" style="margin-top: 10px; margin-bottom: 8px; font-size: 11px;">
 					<tr>
 						<th width="100" style="width: 100px; text-align: left">Date</th>
 						<td>Label</td>
 						<td width="120" style="width: 120px;">Person</td>
 					</tr>
-					
+
 					<% for(var i in this.logs) { %>
 					<tr class="log-record record" data-log-id="<%= this.logs[i].ID %>">
 						<th class="s"><%= this.logs[i].datein %></th>
@@ -292,7 +295,8 @@
 			<div class="btn-group">
 				<button class="btn span3"><i class="icon-plus-sign-alt" style="margin-right:5px;"></i> Interaction
 				</button>
-				<button class="btn span2 open-popup-notes"><i class="icon-flag" style="margin-right:5px;"></i> Note</button>
+				<button class="btn span2 open-popup-notes"><i class="icon-flag" style="margin-right:5px;"></i> Note
+				</button>
 				<button class="btn span2"><i class="icon-tasks" style="margin-right:5px;"></i> Task</button>
 			</div>
 
@@ -324,17 +328,17 @@
 
 </section>
 <div class="loadingmask wide"></div>
-<div class="" id="popup-loading-area" ></div>
+<div class="" id="popup-loading-area"></div>
 
-		
-		
+
+
 ]]>
 </script>
 <script type="text/x-jqote-template" id="template-details-contact">
-<![CDATA[
+	<![CDATA[
 
-<div class="loadingmask wide"></div>
-]]>
+	<div class="loadingmask wide"></div>
+	]]>
 </script>
 
 
@@ -343,42 +347,42 @@
 	<![CDATA[
 
 
-<div class="popup" id="popup-notes" style="height: 270px; z-index: 600;">
-	<form class="form form-horizontal" id="form-repeat">
-		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+	<div class="popup" id="popup-notes" style="height: 270px; z-index: 600;">
+		<form class="form form-horizontal" id="form-repeat">
+			<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-			<h3><% if (this.ID!=""){ %>Edit <% } else { %>New<% } %> Note</h3></div>
-		<div class='popup-body' style="height: 165px; padding:5px 10px;">
-			<input type="text" id="heading" name="heading" placeholder="Note heading goes here" value="<%= this.heading||'' %>" style="width:465px; margin-bottom:10px;" />
-			<textarea name="note" id="note" cols="30" rows="10" style="width:465px; height:110px;" placeholder="Insert your note here"><%= this.note||'' %></textarea>
+				<h3><% if (this.ID!=""){ %>Edit <% } else { %>New<% } %> Note</h3></div>
+			<div class='popup-body' style="height: 165px; padding:5px 10px;">
+				<input type="text" id="heading" name="heading" placeholder="Note heading goes here" value="<%= this.heading||'' %>" style="width:465px; margin-bottom:10px;"/>
+				<textarea name="note" id="note" cols="30" rows="10" style="width:465px; height:110px;" placeholder="Insert your note here"><%= this.note||'' %></textarea>
 
-
-		</div>
-		<div class='popup-footer '>
-			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button" >Cancel</button>
-
-				<div style="float:right;">
-					<table>
-						<tr>
-							<td style="vertical-align: middle;">
-
-
-
-							</td>
-							<td>
-								<button class="btn btn-primary span3" type="submit">Save</button>
-							</td>
-						</tr>
-					</table>
-
-
-				</div>
 
 			</div>
-		</div>
-	</form>
-</div>
+			<div class='popup-footer '>
+				<div class="row">
+					<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+
+					<div style="float:right;">
+						<table>
+							<tr>
+								<td style="vertical-align: middle;">
+
+
+
+								</td>
+								<td>
+									<button class="btn btn-primary span3" type="submit">Save</button>
+								</td>
+							</tr>
+						</table>
+
+
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
 	]]>
 </script>
 
@@ -387,51 +391,51 @@
 <script type="text/x-jqote-template" id="template-popup-tasks">
 	<![CDATA[
 
-<div class="popup" id="popup-tasks" style="height: 230px; z-index: 600;">
-	<form class="form form-horizontal" id="form-repeat">
-		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+	<div class="popup" id="popup-tasks" style="height: 230px; z-index: 600;">
+		<form class="form form-horizontal" id="form-repeat">
+			<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-			<h3>Tasks</h3></div>
-		<div class='popup-body' style="height: 126px;">
+				<h3>Tasks</h3></div>
+			<div class='popup-body' style="height: 126px;">
 
-			<div class="control-group date_list" style="margin-left: -10px;">
-
-
-				<div class="controls" style="margin-left: 50px;">
+				<div class="control-group date_list" style="margin-left: -10px;">
 
 
+					<div class="controls" style="margin-left: 50px;">
 
+
+
+
+					</div>
+				</div>
+
+
+			</div>
+			<div class='popup-footer '>
+				<div class="row">
+					<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+
+					<div style="float:right;">
+						<table>
+							<tr>
+								<td style="vertical-align: middle;">
+
+
+
+								</td>
+								<td>
+									<button class="btn btn-primary span3" type="submit">Save</button>
+								</td>
+							</tr>
+						</table>
+
+
+					</div>
 
 				</div>
 			</div>
-
-
-		</div>
-		<div class='popup-footer '>
-			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button" >Cancel</button>
-
-				<div style="float:right;">
-					<table>
-						<tr>
-							<td style="vertical-align: middle;">
-
-
-
-							</td>
-							<td>
-								<button class="btn btn-primary span3"  type="submit">Save</button>
-							</td>
-						</tr>
-					</table>
-
-
-				</div>
-
-			</div>
-		</div>
-	</form>
-</div>
+		</form>
+	</div>
 	]]>
 </script>
 
@@ -439,51 +443,51 @@
 
 <script type="text/x-jqote-template" id="template-popup-interactions">
 	<![CDATA[
-<div class="popup" id="popup-interactions" style="height: 230px; z-index: 600;">
-	<form class="form form-horizontal" id="form-repeat">
-		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
+	<div class="popup" id="popup-interactions" style="height: 230px; z-index: 600;">
+		<form class="form form-horizontal" id="form-repeat">
+			<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-			<h3>Tasks</h3></div>
-		<div class='popup-body' style="height: 126px;">
+				<h3>Tasks</h3></div>
+			<div class='popup-body' style="height: 126px;">
 
-			<div class="control-group date_list" style="margin-left: -10px;">
-
-
-				<div class="controls" style="margin-left: 50px;">
+				<div class="control-group date_list" style="margin-left: -10px;">
 
 
+					<div class="controls" style="margin-left: 50px;">
 
+
+
+
+					</div>
+				</div>
+
+
+			</div>
+			<div class='popup-footer '>
+				<div class="row">
+					<button class="btn span2" data-dismiss="popup" type="button">Cancel</button>
+
+					<div style="float:right;">
+						<table>
+							<tr>
+								<td style="vertical-align: middle;">
+
+
+
+								</td>
+								<td>
+									<button class="btn btn-primary span3" type="submit">Save</button>
+								</td>
+							</tr>
+						</table>
+
+
+					</div>
 
 				</div>
 			</div>
-
-
-		</div>
-		<div class='popup-footer '>
-			<div class="row">
-				<button class="btn span2" data-dismiss="popup" type="button" >Cancel</button>
-
-				<div style="float:right;">
-					<table>
-						<tr>
-							<td style="vertical-align: middle;">
-
-
-
-							</td>
-							<td>
-								<button class="btn btn-primary span3"  type="submit">Save</button>
-							</td>
-						</tr>
-					</table>
-
-
-				</div>
-
-			</div>
-		</div>
-	</form>
-</div>
+		</form>
+	</div>
 
 	]]>
 </script>
@@ -513,29 +517,31 @@ $(document).on("click", '.open-popup-notes', function (e) {
 	var parentID = $.bbq.getState("ID");
 	$.getData("/app/cm/data/details_note?r=" + Math.random(), {"ID": ID, "parentID": parentID}, function (data) {
 		//console.log(data); 
-		$('#popup-loading-area').jqotesub($("#template-popup-notes"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show").find("input:first").focus();;
+		$('#popup-loading-area').jqotesub($("#template-popup-notes"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show").find("input:first").focus();
+		;
 	});
 });
 
 $(document).on("click", '.edit-note', function (e) {
 	e.preventDefault();
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({noteID:ID});
+	$.bbq.pushState({noteID: ID});
 	var parentID = $.bbq.getState("ID");
 	$.getData("/app/cm/data/details_note?r=" + Math.random(), {"ID": ID, "parentID": parentID}, function (data) {
 		//console.log(data); 
-		$('#popup-loading-area').jqotesub($("#template-popup-notes"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show");;
+		$('#popup-loading-area').jqotesub($("#template-popup-notes"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show");
+		;
 	});
 });
 $(document).on("click", '.delete-note', function (e) {
 	e.preventDefault();
 	var ID = $(this).attr("data-id");
-	$.bbq.pushState({noteID:ID});
+	$.bbq.pushState({noteID: ID});
 	var parentID = $.bbq.getState("ID");
-	if (confirm("Are you sure you want to delete this record?")){
-		$.post("/app/cm/save/delete_note?ID="+ID+"&parentID="+parentID+"&r=" + Math.random(),{},function(d){
+	if (confirm("Are you sure you want to delete this record?")) {
+		$.post("/app/cm/save/delete_note?ID=" + ID + "&parentID=" + parentID + "&r=" + Math.random(), {}, function (d) {
 			$.bbq.removeState("noteID");
-			
+
 			getDetails();
 		})
 	}
@@ -543,15 +549,15 @@ $(document).on("click", '.delete-note', function (e) {
 
 $(document).on("submit", '#popup-notes form', function (e) {
 	e.preventDefault();
-	var ID = $.bbq.getState("noteID")||'';
-	var parentID = $.bbq.getState("ID")||'';
+	var ID = $.bbq.getState("noteID") || '';
+	var parentID = $.bbq.getState("ID") || '';
 	var data = $(this).serialize();
-	
-	$(this).find("button[type='submit']").attr("disabled","disabled").text("Saving...");
-	
-	$.post("/app/cm/save/save_note?ID="+ID+"&parentID="+parentID+"&r=" + Math.random(),data,function(d){
+
+	$(this).find("button[type='submit']").attr("disabled", "disabled").text("Saving...");
+
+	$.post("/app/cm/save/save_note?ID=" + ID + "&parentID=" + parentID + "&r=" + Math.random(), data, function (d) {
 		$.bbq.removeState("noteID");
-		$.bbq.pushState({highlight:d['result']});
+		$.bbq.pushState({highlight: d['result']});
 		getDetails();
 	})
 });
@@ -702,7 +708,7 @@ function getDetails() {
 		var footer_height = ($("#contact-details-footer li").length * 20) + 20;
 
 		$("#cm-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
-		$("#contact-details-area .scroll-pane").css("bottom",footer_height).jScrollPane(jScrollPaneOptions);
+		$("#contact-details-area .scroll-pane").css("bottom", footer_height).jScrollPane(jScrollPaneOptions);
 		//
 		//console.log($("#contact-details-footer").height())
 		setTimeout(function () {
