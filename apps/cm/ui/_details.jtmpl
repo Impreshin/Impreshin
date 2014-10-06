@@ -344,7 +344,7 @@
 	<form class="form form-horizontal" id="form-repeat">
 		<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-			<h3>Notes</h3></div>
+			<h3><% if (this.ID!=""){ %>Edit <% } else { %>New<% } %> Note</h3></div>
 		<div class='popup-body' style="height: 165px; padding:5px 10px;">
 			<input type="text" id="heading" name="heading" placeholder="Note heading goes here" value="<%= this.heading||'' %>" style="width:465px; margin-bottom:10px;" />
 			<textarea name="note" id="note" cols="30" rows="10" style="width:465px; height:110px;" placeholder="Insert your note here"><%= this.note||'' %></textarea>
@@ -499,6 +499,11 @@
 
 
 
+$(document).on("popup-hide", '.popup', function (e) {
+	$.bbq.removeState("noteID");
+});
+
+
 $(document).on("click", '.open-popup-notes', function (e) {
 	e.preventDefault();
 	var ID = $.bbq.getState("noteID");
@@ -547,6 +552,7 @@ $(document).on("submit", '#popup-notes form', function (e) {
 		getDetails();
 	})
 });
+
 
 
 

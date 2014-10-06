@@ -20,8 +20,9 @@ class update {
 		if (!file_exists($root_folder."\\.git")) {
 			shell_exec('git init');
 		} else {
-			shell_exec('git reset --hard HEAD');
+			
 			shell_exec('git stash');
+			shell_exec('git reset --hard HEAD');
 		}
 
 

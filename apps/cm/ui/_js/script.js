@@ -188,7 +188,7 @@ $(document).ready(function () {
 	});
 	$(document).on("click", "*[data-dismiss='popup']", function (e) {
 		e.preventDefault();
-		var $this = $(this), $popup = $this.closest(".popup");
+		var $this = $(this), $popup = $this.closest(".popup").trigger("popup-hide");
 		$popup.fadeOut(transSpeed);
 	});
 	$(document).on("click", "*[data-target='popup']", function (e) {

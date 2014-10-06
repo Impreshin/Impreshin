@@ -306,6 +306,7 @@
 }
 #contact-details-block-area .contact-details-block li {
   padding: 3px;
+  display: block;
 }
 #contact-details-footer {
   position: absolute;
