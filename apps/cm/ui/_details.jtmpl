@@ -50,11 +50,14 @@
 				<ul class="nav contact-details-block">
 					<% for (var g in this.details[i].records) { %>
 					<li>
-						<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
+						<div>
+							<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
 						<span class="contact-details-icon">
 							<i class="dg <%= this.details[i].records[g].icon %>"></i>
 						</span>
-						<%= this.details[i].records[g].value %>
+							<%= this.details[i].records[g].value %>
+						</div>
+						<div class="clearfix"></div>
 					</li>
 					<% } %>
 
