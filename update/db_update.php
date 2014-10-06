@@ -186,6 +186,9 @@ $sql = array(
 	    "CREATE TABLE IF NOT EXISTS `cm_companies_links_company` (  `parentID` int(6) DEFAULT NULL,  `linkedID` int(6) DEFAULT NULL,  KEY `parentID` (`parentID`,`linkedID`));",
 	    "CREATE TABLE IF NOT EXISTS `cm_companies_links_contact` (  `parentID` int(6) DEFAULT NULL,  `linkedID` int(6) DEFAULT NULL,  KEY `parentID` (`parentID`,`linkedID`));", 
 	   
+    ),
+    "39"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_companies_notes` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `parentID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `heading` varchar(200) DEFAULT NULL,  `note` text,  PRIMARY KEY (`ID`),  KEY `parentID` (`parentID`), KEY `uID` (`uID`));",
     )
 	
 

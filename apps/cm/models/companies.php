@@ -103,13 +103,12 @@ class companies {
 		} else {
 			$return = $this->dbStructure;
 			$return['details'] = array();
-			$return['linked']['company'] =array();;
-			$return['linked']['contact'] =array();;
+			$return['linked']['company'] =array();
+			$return['linked']['contact'] =array();
 
 		
 		}
-		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
-		);
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
 
 		return $return;
 	}

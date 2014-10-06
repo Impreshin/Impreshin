@@ -226,6 +226,40 @@
 #cm-details-modal .open-details-link.label {
   font-size: 10px;
 }
+#cm-details-modal .records-block h4 {
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+#cm-details-modal .records-block:empty {
+  margin-top: 40px;
+  font-size: 11px;
+  text-align: center;
+  line-height: 30px;
+  color: #999;
+}
+#cm-details-modal .records-block .records-block-button {
+  padding-left: 5px;
+  padding-right: 5px;
+  opacity: 0;
+}
+#cm-details-modal .records-block blockquote:hover .records-block-button {
+  opacity: 0.5;
+}
+#cm-details-modal .records-block blockquote:hover .records-block-button:hover {
+  opacity: 1;
+}
+#cm-details-modal .records-block blockquote small cite {
+  margin-left: 10px;
+}
+#cm-details-modal #notes-area:empty:before {
+  content: 'No Notes';
+}
+#cm-details-modal #tasks-area:empty:before {
+  content: 'No Tasks';
+}
+#cm-details-modal #interactions-area:empty:before {
+  content: 'No Interactions';
+}
 .q1 {
   background-color: #87E0FF;
   fill: #87e0ff;

@@ -193,7 +193,8 @@ $(document).ready(function () {
 	});
 	$(document).on("click", "*[data-target='popup']", function (e) {
 		e.preventDefault();
-		var $this = $(this), $popup = $this.attr("href");
+		var $this = $(this), $popup = $this.attr("href")||$this.attr("data-href");
+		
 		$($popup).fadeIn(transSpeed).trigger("popup-show");
 	});
 

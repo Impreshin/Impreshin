@@ -16,6 +16,7 @@ class save {
 	function __construct() {
 		$this->f3 = \base::instance();
 		$this->f3->set("json", true);
+		$this->user =  $this->f3->get("user");
 	}
 
 	function __destruct() {
@@ -25,8 +26,7 @@ class save {
 
 
 	function list_settings(){
-		$user = $this->f3->get("user");
-		$userID = $user['ID'];
+		$userID = $this->user['ID'];
 
 		$reset = (isset($_GET['reset'])) ? explode(",",$_GET['reset']) : array();
 		$app_defaults = \apps\cm\settings::defaults();
@@ -69,6 +69,68 @@ class save {
 
 
 		echo json_encode(array("result"=> "1"));
+		exit();
+	}
+	function save_note(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$user = $this->f3->get("user");
+		$return = array();
+
+		$sec = substr($parentID,0,3);
+		$parentID = str_replace(array("pe-","co-"),"",$parentID);
+		//test_array($sec); 
+
+
+		switch($sec){
+			case "co-":
+				$type = "company";
+				$child = new save_company($this);
+				$data = $child->note($ID);
+				break;
+			case "pe-":
+				$type = "contact";
+				$child = new save_contact($this);
+				$data = $child->note($ID);
+				break;
+			default:
+				$type = "";
+				$data = array();
+
+		}
+
+		echo json_encode(array("result"=> $data));
+		exit();
+	}
+	function delete_note(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$user = $this->f3->get("user");
+		$return = array();
+
+		$sec = substr($parentID,0,3);
+		$parentID = str_replace(array("pe-","co-"),"",$parentID);
+		//test_array($sec); 
+
+
+		switch($sec){
+			case "co-":
+				$type = "company";
+				$child = new save_company($this);
+				$data = $child->delete_note($ID);
+				break;
+			case "pe-":
+				$type = "contact";
+				$child = new save_contact($this);
+				$data = $child->delete_note($ID);
+				break;
+			default:
+				$type = "";
+				$data = array();
+
+		}
+
+		echo json_encode(array("result"=> $data));
 		exit();
 	}
 

@@ -12,6 +12,8 @@ class data {
 
 		$this->f3->set("json",true);
 		$GLOBALS["output"]['notifications'] = \apps\cm\models\notifications::show();
+		
+		
 	}
 
 	function __destruct() {
@@ -25,17 +27,19 @@ class data {
 		$return = array();
 		
 		$sec = substr($ID,0,3);
-		$ID = str_replace(array("pe-","co-"),"",$ID);
+		$ID = preg_replace("/[^0-9 ]/", '', $ID);
 		//test_array($sec); 
 		
 		switch($sec){
 			case "co-":
 				$type = "company";
-				$data = $this->details_co($ID);
+				$child = new data_company($this);
+				$data = $child->data($ID);
 				break;
 			case "pe-":
 				$type = "contact";
-				$data = $this->details_pe($ID);
+				$child = new data_contact($this);
+				$data = $child->data($ID);
 				break;
 			default:
 				$type = "";
@@ -61,33 +65,43 @@ class data {
 		return $GLOBALS["output"]['data'] = $return;
 		
 	}
-	function details_co($ID){
+	
+
+	function details_note(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$user = $this->f3->get("user");
 		$return = array();
-		
-		$data = new models\companies();
-		$data = $data->get($ID);
-		
-		$data = models\companies::display($data);
 
-		//$data['linked'] = models\companies::getAll("","","0,2");
+		$sec = substr($parentID,0,3);
+		$parentID = preg_replace("/[^0-9 ]/", '', $parentID);
+		//test_array($sec); 
+		
 
+		switch($sec){
+			case "co-":
+				$type = "company";
+				$child = new data_company($this);
+				$data = $child->data_note($ID);
+				break;
+			case "pe-":
+				$type = "contact";
+				$child = new data_contact($this);
+				$data = $child->data_note($ID);
+				break;
+			default:
+				$type = "";
+				$data = array();
+
+		}
+	//	test_array($data); 
+
+		$data['type']=$type;
+		$data['parentID']=$parentID;
 		$return = $data;
-
 
 		return $GLOBALS["output"]['data'] = $return;
 	}
-	function details_pe($ID){
-		$return = array();
-		
-		$data = new models\contacts();
-		$data = $data->get($ID);
-		$data = models\contacts::display($data);
-		$return = $data;
-
-
-		return $GLOBALS["output"]['data'] = $return;
-	}
-
 
 
 }
