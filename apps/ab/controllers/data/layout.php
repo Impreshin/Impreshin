@@ -135,7 +135,8 @@ class layout extends data {
 			),
 			"colour" => "",
 			"colour_l" => "",
-			"pdf" => ""
+			"pdf" => "",
+		    "records"=>array()
 		);
 
 
