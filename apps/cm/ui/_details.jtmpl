@@ -24,8 +24,10 @@
 </section>
 <section class="modal-body">
 <div id="contact-details-area">
-
-	<div class="scroll-pane">
+<div id="contact-details-header" >
+	Details
+</div>
+	<div class="scroll-pane" style="top:30px;">
 
 
 		<section id="contact-details-block-area">
@@ -38,12 +40,7 @@
 				<legend>
 					<small><%= this.details[i].group %></small>
 				</legend>
-				<% } else { %>
-				<% if (i==0){ %>
-				<legend>
-					<small>Contact Details</small>
-				</legend>
-				<% } %>
+				
 				<% } %>
 
 
@@ -88,7 +85,12 @@
 <div class="tabbable tabs-right">
 	<ul class="nav nav-tabs">
 		<li>
-			<a href="#details-pane-details" data-toggle="tab"> Notes <% if (this.notes.length>0) { %><span class="badge pull-right"><%= this.notes.length %></span><% } %></a>
+			<a href="#details-pane-details" data-toggle="tab"> Interactions
+				<% if (this.interactions.length>0) { %><span class="badge pull-right"><%= this.interactions.length %></span><% } %>
+			</a>
+		</li>
+		<li>
+			<a href="#details-pane-notes" data-toggle="tab"> Notes <% if (this.notes.length>0) { %><span class="badge pull-right"><%= this.notes.length %></span><% } %></a>
 		</li>
 		<li>
 			<a href="#details-pane-tasks" data-toggle="tab"> Tasks
@@ -99,10 +101,9 @@
 			<a href="#details-pane-contacts" data-toggle="tab"> People <% if (this.linked.contact.length>0) { %><span class="badge pull-right"><%= this.linked.contact.length %></span><% } %></a>
 		</li>
 		<li>
-			<a href="#details-pane-interactions " data-toggle="tab"> Interactions
-				<% if (this.interactions.length>0) { %><span class="badge pull-right"><%= this.interactions.length %></span><% } %>
-			</a>
+			<a href="#details-pane-media" data-toggle="tab"> Media <% if (this.media && this.media.length>0) { %><span class="badge pull-right"><%= this.media.length %></span><% } %></a>
 		</li>
+		
 
 		<li class="tab-icon">
 			<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
@@ -114,6 +115,27 @@
 </div>
 <div class="tab-content" style="width: 450px;">
 	<div id="details-pane-details" class="tab-pane ">
+		<div class="scroll-pane" style="bottom:40px;">
+			<div style="padding-right:10px;" id="interactions-area" class="records-block">
+
+				<% for (var i in this.interactions) { %>
+				<h4>
+					<small><i class="icon-envelope " style="margin-right:8px;"></i></small>
+					Email
+					<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>
+				</h4>
+				<blockquote>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+					<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+				</blockquote>
+				<% } %>
+
+			</div>
+		</div>
+		<div class="fake-input">Add a new Interaction</div>
+	</div>
+	
+	<div id="details-pane-notes" class="tab-pane ">
 		<div class="scroll-pane" style="bottom:40px;">
 
 
@@ -193,26 +215,16 @@
 			</div>
 		</div>
 	</div>
-	<div id="details-pane-interactions" class="tab-pane ">
-		<div class="scroll-pane" style="bottom:40px;">
-			<div style="padding-right:10px;" id="interactions-area" class="records-block">
+	
+	<div id="details-pane-media" class="tab-pane ">
+		<div class="scroll-pane">
+			<div style="padding-right:1px;">
 
-				<% for (var i in this.interactions) { %>
-				<h4>
-					<small><i class="icon-envelope " style="margin-right:8px;"></i></small>
-					Email
-					<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>
-				</h4>
-				<blockquote>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-					<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
-				</blockquote>
-				<% } %>
-
+			media
 			</div>
 		</div>
-		<div class="fake-input">Add a new Interaction</div>
 	</div>
+	
 
 
 
@@ -277,8 +289,6 @@
 
 	<div id="cal-heatmap-1"></div>
 
-	<div id="cal-heatmap-2"></div>
-	<div id="cal-heatmap-3"></div>
 
 
 
@@ -726,33 +736,36 @@ function getDetails() {
 
 		if (data.heatmap) {
 			var cal_1 = new CalHeatMap();
-			var cal_2 = new CalHeatMap();
-			var cal_3 = new CalHeatMap();
+			
 
 			var cal_options = {
 				domain: "month",
 				subDomain: "x_day",
 				data: data.heatmap,
 
-				domainGutter: 10,
+				domainGutter: 5,
 				cellSize: 9,
-				range: 2,
+				range: 6,
 				tooltip: false,
-				verticalOrientation: false,
+				verticalOrientation: true,
 				domainDynamicDimension: false, //	considerMissingDataAsZero:true,
-				//	previousSelector: "#example-f-PreviousDomain-selector",
-				//nextSelector: "#example-f-NextDomain-selector",
-				label: {
-					position: "top",
+				
 
+
+				label: {
+					position: "left",
+					rotate: "left",
 					offset: {
-						x: 0, y: 3
+						x: 0,
+						y: 5
 					}
 				},
-				domainLabelFormat: function (date) {
+				domainLabelFormat: function(date) {
 					moment.lang("en");
 					return moment(date).format("MMMM").toUpperCase();
 				},
+				
+				
 				displayLegend: false,
 
 				legend: [1, 5, 10, 15, 20]
@@ -765,15 +778,7 @@ function getDetails() {
 			cal_1_options.itemSelector = "#cal-heatmap-1";
 			cal_1.init(cal_1_options);
 
-			cal_2_options = cal_options;
-			cal_2_options.start = Date.parse('-3 month');
-			cal_2_options.itemSelector = "#cal-heatmap-2";
-			cal_2.init(cal_2_options);
-
-			cal_3_options = cal_options;
-			cal_3_options.start = Date.parse('-1 month');
-			cal_3_options.itemSelector = "#cal-heatmap-3";
-			cal_3.init(cal_3_options);
+			
 
 		}
 
