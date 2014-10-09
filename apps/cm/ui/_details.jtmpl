@@ -742,28 +742,16 @@ function getDetails() {
 				domain: "month",
 				subDomain: "x_day",
 				data: data.heatmap,
-
-				domainGutter: 5,
+				//tooltip:true,
+				domainGutter: 4,
 				cellSize: 9,
 				range: 6,
 				tooltip: false,
 				verticalOrientation: true,
 				domainDynamicDimension: false, //	considerMissingDataAsZero:true,
-				
+				itemNamespace: "cal_1",
 
-
-				label: {
-					position: "left",
-					rotate: "left",
-					offset: {
-						x: 0,
-						y: 5
-					}
-				},
-				domainLabelFormat: function(date) {
-					moment.lang("en");
-					return moment(date).format("MMMM").toUpperCase();
-				},
+				domainLabelFormat: "",
 				
 				
 				displayLegend: false,
