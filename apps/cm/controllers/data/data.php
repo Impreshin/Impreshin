@@ -48,15 +48,43 @@ class data {
 		}
 		$return = $data;
 		$return['type']=$type;
-		$return['heatmap']=array(
-			strtotime("now")=>3,
-			strtotime("-1 day")=>7,
-			strtotime("-1 month")=>5,
-			strtotime("-4 month +3 day")=>1,
-			strtotime("-3 month")=>12,
-			strtotime("-3 month -4 day")=>3,
-			//strtotime("1 September 2014")=>"2"
-		);
+		
+		$heatmap = array();
+		
+		foreach ($data['notes'] as $item){
+			$k = strtotime($item['datein']);
+			if (!isset($heatmap[$k])){
+				$heatmap[$k] = 0;
+			}
+			$heatmap[$k] = $heatmap[$k] + 1;
+		}
+		foreach ($data['interactions'] as $item){
+			$k = strtotime($item['datein']);
+			if (!isset($heatmap[$k])){
+				$heatmap[$k] = 0;
+			}
+			$heatmap[$k] = $heatmap[$k] + 1;
+		}
+		foreach ($data['tasks'] as $item){
+			$k = strtotime($item['datein']);
+			if (!isset($heatmap[$k])){
+				$heatmap[$k] = 0;
+			}
+			$heatmap[$k] = $heatmap[$k] + 1;
+		}
+		
+		
+		//test_array($heatmap); 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		$return['heatmap']=$heatmap;
 		
 		
 
@@ -97,6 +125,64 @@ class data {
 	//	test_array($data); 
 
 		$data['type']=$type;
+		$data['parentID']=$parentID;
+		$return = $data;
+
+		return $GLOBALS["output"]['data'] = $return;
+	}
+	function details_interaction(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$settings = models\settings::_read("details");
+		$typeID = (isset($_REQUEST['type'])) ? $_REQUEST['type'] : "";
+		$user = $this->f3->get("user");
+		$return = array();
+
+		$sec = substr($parentID,0,3);
+		$parentID = preg_replace("/[^0-9 ]/", '', $parentID);
+		//test_array($sec); 
+
+		
+
+		
+
+		if ($typeID!=""){
+			if (($typeID != $settings['interactions']['typeID'])){
+				$values["details"] = array(
+					"interactions" => array(
+						"typeID"=>$typeID
+					)
+				);
+				models\settings::save($values);
+			}
+			
+		} else {
+			$typeID = $settings['interactions']['typeID'];
+		}
+		
+		
+
+		switch($sec){
+			case "co-":
+				$child = new data_company($this);
+				$data = $child->data_interaction($ID);
+				break;
+			case "pe-":
+				$child = new data_contact($this);
+				$data = $child->data_interaction($ID);
+				break;
+			default:
+				$data = array();
+
+		}
+		
+		if ($data['typeID']==""){
+			$data['typeID']=$typeID;
+		}
+	//	test_array($data); 
+
+		//$data['type']=$type;
+		//
 		$data['parentID']=$parentID;
 		$return = $data;
 

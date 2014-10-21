@@ -24,9 +24,9 @@
 </section>
 <section class="modal-body">
 <div id="contact-details-area">
-<div id="contact-details-header" >
-	Details
-</div>
+	<div id="contact-details-header">
+		Details
+	</div>
 	<div class="scroll-pane" style="top:30px;">
 
 
@@ -40,7 +40,7 @@
 				<legend>
 					<small><%= this.details[i].group %></small>
 				</legend>
-				
+
 				<% } %>
 
 
@@ -93,17 +93,17 @@
 			<a href="#details-pane-notes" data-toggle="tab"> Notes <% if (this.notes.length>0) { %><span class="badge pull-right"><%= this.notes.length %></span><% } %></a>
 		</li>
 		<li>
-			<a href="#details-pane-tasks" data-toggle="tab"> Tasks
+			<a href="#details-pane-tasks" data-toggle="tab" class="g"> Tasks
 				<% if (this.tasks.length>0) { %><span class="badge pull-right"><%= this.tasks.length %></span><% } %>
 				<% if (this.tasks_open>0) { %><span class="badge pull-right badge-important"><%= this.tasks_open %></span><% } %>
 		</li>
 		<li>
 			<a href="#details-pane-contacts" data-toggle="tab"> People <% if (this.linked.contact.length>0) { %><span class="badge pull-right"><%= this.linked.contact.length %></span><% } %></a>
 		</li>
-		<li>
-			<a href="#details-pane-media" data-toggle="tab"> Media <% if (this.media && this.media.length>0) { %><span class="badge pull-right"><%= this.media.length %></span><% } %></a>
+		<li >
+			<a href="#details-pane-media" data-toggle="tab" class="g"> Media <% if (this.media && this.media.length>0) { %><span class="badge pull-right"><%= this.media.length %></span><% } %></a>
 		</li>
-		
+
 
 		<li class="tab-icon">
 			<a href="#details-pane-logs" data-toggle="tab"> <i class="icon-list-alt icon-grey"></i></a>
@@ -115,26 +115,45 @@
 </div>
 <div class="tab-content" style="width: 450px;">
 	<div id="details-pane-details" class="tab-pane ">
-		<div class="scroll-pane" style="bottom:40px;">
+		<div class="scroll-pane" style="bottom:47px;">
 			<div style="padding-right:10px;" id="interactions-area" class="records-block">
 
 				<% for (var i in this.interactions) { %>
 				<h4>
-					<small><i class="icon-envelope " style="margin-right:8px;"></i></small>
-					Email
-					<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>
+					<small><i class="<%= this.interactions[i].icon %>" style="margin-right:8px;"></i></small>
+					<%= this.interactions[i].heading %>
+					<!--<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>-->
 				</h4>
 				<blockquote>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-					<small>William Stam <cite title="2014-09-13 14:05:23">15 Hours ago</cite></small>
+					<%= this.interactions[i].text %>
+					<div>
+						<span class="pull-right">
+							<a href="#" class="records-block-button edit-interaction" data-id="<%= this.interactions[i].ID %>"><i class="icon-pencil"></i></a> 
+							<a href="#" class="records-block-button delete-interaction" data-id="<%= this.interactions[i].ID %>"><i class="icon-trash"></i></a> 
+						</span>
+						<small><%= this.interactions[i].fullName %>
+							<cite title="<%= this.interactions[i].datein %>"><%= this.interactions[i].timeago %></cite></small>
+					</div>
+
 				</blockquote>
 				<% } %>
 
 			</div>
 		</div>
-		<div class="fake-input">Add a new Interaction</div>
+		<div id="interaction-new-btns">
+
+			<span>New interaction:</span>
+
+			<div class="btn-group">
+				<button class="btn span1 btn-mini open-popup-interactions" type="button" data-type="1">Phone</button>
+				<button class="btn span1 btn-mini open-popup-interactions" type="button" data-type="2">Email</button>
+				<button class="btn span1 btn-mini open-popup-interactions" type="button" data-type="3">Face2face</button>
+				<button class="btn span1 btn-mini open-popup-interactions" type="button" data-type="4">SMS</button>
+				<button class="btn span1 btn-mini open-popup-interactions" type="button" data-type="5">Other</button>
+			</div>
+		</div>
 	</div>
-	
+
 	<div id="details-pane-notes" class="tab-pane ">
 		<div class="scroll-pane" style="bottom:40px;">
 
@@ -215,16 +234,16 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="details-pane-media" class="tab-pane ">
 		<div class="scroll-pane">
 			<div style="padding-right:1px;">
 
-			media
+				media
 			</div>
 		</div>
 	</div>
-	
+
 
 
 
@@ -312,14 +331,15 @@
 			</div>
 
 			<div class="btn-group pull-right">
-				<button class="btn span3"><i class="icon-plus-sign-alt" style="margin-right:5px;"></i> Interaction
+				<button class="btn span3 open-popup-interactions" type="button">
+					<i class="icon-plus-sign-alt" style="margin-right:5px;"></i> Interaction
 				</button>
-				<button class="btn span2 open-popup-notes"><i class="icon-flag" style="margin-right:5px;"></i> Note
+				<button class="btn span2 open-popup-notes"  type="button"><i class="icon-flag" style="margin-right:5px;"></i> Note
 				</button>
-				<button class="btn span2"><i class="icon-tasks" style="margin-right:5px;"></i> Task</button>
+				<button class="btn span2" disabled  type="button"><i class="icon-tasks" style="margin-right:5px;"></i> Task</button>
 			</div>
 
-			
+
 
 
 
@@ -453,23 +473,22 @@
 
 <script type="text/x-jqote-template" id="template-popup-interactions">
 	<![CDATA[
-	<div class="popup" id="popup-interactions" style="height: 230px; z-index: 600;">
+	<div class="popup" id="popup-interactions" style="height: 270px; z-index: 600;">
 		<form class="form form-horizontal" id="form-repeat">
 			<div class='popup-header'><a href='#' class='close' data-dismiss="popup">&times;</a>
 
-				<h3>Tasks</h3></div>
-			<div class='popup-body' style="height: 126px;">
-
-				<div class="control-group date_list" style="margin-left: -10px;">
-
-
-					<div class="controls" style="margin-left: 50px;">
-
-
-
-
-					</div>
+				<div class="btn-group" data-toggle="buttons-radio" >
+					<button class="btn span1 btn-mini <% if (this.typeID=='1') { %>active<% } %>" type="button" data-type="1" >Phone</button>
+					<button class="btn span1 btn-mini <% if (this.typeID=='2') { %>active<% } %>" type="button" data-type="2" >Email</button>
+					<button class="btn span1 btn-mini <% if (this.typeID=='3') { %>active<% } %>" type="button" data-type="3" >Face2face</button>
+					<button class="btn span1 btn-mini <% if (this.typeID=='4') { %>active<% } %>" type="button" data-type="4">SMS</button>
+					<button class="btn span1 btn-mini <% if (this.typeID=='5') { %>active<% } %>" type="button" data-type="5" >Other</button>
 				</div>
+				
+			</div>
+			<div class='popup-body' style="height: 165px; padding:5px 10px;">
+				<input type="text" id="heading" name="heading" placeholder="Heading" value="<%= this.heading||'' %>" style="width:465px; margin-bottom:10px;"/>
+				<textarea name="text" id="text" cols="30" rows="10" style="width:465px; height:110px;" placeholder="Text"><%= this.text||'' %></textarea>
 
 
 			</div>
@@ -571,6 +590,68 @@ $(document).on("submit", '#popup-notes form', function (e) {
 		getDetails();
 	})
 });
+
+
+$(document).on("click", '.open-popup-interactions', function (e) {
+	e.preventDefault();
+	var ID = $.bbq.getState("interactionID");
+	var parentID = $.bbq.getState("ID");
+	var type = $(this).attr("data-type") || '';
+	$.getData("/app/cm/data/details_interaction?r=" + Math.random(), {
+		"ID": ID,
+		"parentID": parentID,
+		"type": type
+	}, function (data) {
+		//console.log(data); 
+		$('#popup-loading-area').jqotesub($("#template-popup-interactions"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show").find("input:first").focus();
+	});
+});
+$(document).on("click", '.edit-interaction', function (e) {
+	e.preventDefault();
+	var ID = $(this).attr("data-id");
+	$.bbq.pushState({noteID: ID});
+	var parentID = $.bbq.getState("ID");
+	$.getData("/app/cm/data/details_interaction?r=" + Math.random(), {"ID": ID, "parentID": parentID}, function (data) {
+		//console.log(data); 
+		$('#popup-loading-area').jqotesub($("#template-popup-interactions"), data).find(".popup").fadeIn(transSpeed).trigger("popup-show");
+	});
+});
+$(document).on("click", '.delete-interaction', function (e) {
+	e.preventDefault();
+	var ID = $(this).attr("data-id");
+	$.bbq.pushState({noteID: ID});
+	var parentID = $.bbq.getState("ID");
+	if (confirm("Are you sure you want to delete this record?")) {
+		$.post("/app/cm/save/delete_interaction?ID=" + ID + "&parentID=" + parentID + "&r=" + Math.random(), {}, function (d) {
+			$.bbq.removeState("noteID");
+
+			getDetails();
+		})
+	}
+});
+
+$(document).on("submit", '#popup-interactions form', function (e) {
+	e.preventDefault();
+	var ID = $.bbq.getState("noteID") || '';
+	var parentID = $.bbq.getState("ID") || '';
+	var data = $(this).serialize();
+	
+	var type = $("#popup-interactions .popup-header .btn-group .btn.active").attr("data-type");
+
+	data = data + "&typeID="+type;
+
+	$(this).find("button[type='submit']").attr("disabled", "disabled").text("Saving...");
+
+	$.post("/app/cm/save/save_interaction?ID=" + ID + "&parentID=" + parentID + "&r=" + Math.random(), data, function (d) {
+		$.bbq.removeState("noteID");
+		$.bbq.pushState({highlight: d['result']});
+		getDetails();
+	})
+});
+
+
+
+
 
 
 
@@ -736,13 +817,12 @@ function getDetails() {
 
 		if (data.heatmap) {
 			var cal_1 = new CalHeatMap();
-			
+
 
 			var cal_options = {
 				domain: "month",
 				subDomain: "x_day",
-				data: data.heatmap,
-				//tooltip:true,
+				data: data.heatmap, //tooltip:true,
 				domainGutter: 4,
 				cellSize: 9,
 				range: 6,
@@ -752,11 +832,11 @@ function getDetails() {
 				itemNamespace: "cal_1",
 
 				domainLabelFormat: "",
-				
-				
+
+
 				displayLegend: false,
 
-				legend: [1, 5, 10, 15, 20]
+				legend: [2,5,10,20,50,1000]
 			}
 
 
@@ -766,7 +846,7 @@ function getDetails() {
 			cal_1_options.itemSelector = "#cal-heatmap-1";
 			cal_1.init(cal_1_options);
 
-			
+
 
 		}
 

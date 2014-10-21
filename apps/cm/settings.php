@@ -332,7 +332,14 @@ class settings {
 				    "icon"=>"",
 				    "orderby"=>14
 				),
-			)
+			),
+		    "interaction_types_icons"=>array(
+			    "1"=>"icon-phone",
+			    "2"=>"icon-envelope",
+			    "3"=>"icon-comments-alt",
+			    "4"=>"icon-mobile-phone",
+			    "5"=>"icon-bookmark-empty",
+		    )
 		);
 	
 
@@ -376,6 +383,11 @@ class settings {
 		
 		
 			$settings = array(
+				"details"=>array(
+					"interactions"=>array(
+						"typeID"=>"1"
+					)
+				),
 				"form"=>array(
 					"type"=>"co"
 				),

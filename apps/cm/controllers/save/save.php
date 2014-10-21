@@ -133,6 +133,66 @@ class save {
 		echo json_encode(array("result"=> $data));
 		exit();
 	}
+	function save_interaction(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$user = $this->f3->get("user");
+		$return = array();
+
+		$sec = substr($parentID,0,3);
+		$parentID = str_replace(array("pe-","co-"),"",$parentID);
+		//test_array($sec); 
+
+
+		switch($sec){
+			case "co-":
+				$child = new save_company($this);
+				$data = $child->interaction($ID);
+				break;
+			case "pe-":
+				$child = new save_contact($this);
+				$data = $child->interaction($ID);
+				break;
+			default:
+				$type = "";
+				$data = array();
+
+		}
+
+		echo json_encode(array("result"=> $data));
+		exit();
+	}
+	function delete_interaction(){
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$user = $this->f3->get("user");
+		$return = array();
+
+		$sec = substr($parentID,0,3);
+		$parentID = str_replace(array("pe-","co-"),"",$parentID);
+		//test_array($sec); 
+
+
+		switch($sec){
+			case "co-":
+				$type = "company";
+				$child = new save_company($this);
+				$data = $child->delete_interaction($ID);
+				break;
+			case "pe-":
+				$type = "contact";
+				$child = new save_contact($this);
+				$data = $child->delete_interaction($ID);
+				break;
+			default:
+				$type = "";
+				$data = array();
+
+		}
+
+		echo json_encode(array("result"=> $data));
+		exit();
+	}
 
 
 

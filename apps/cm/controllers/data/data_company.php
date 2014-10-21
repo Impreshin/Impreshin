@@ -24,7 +24,7 @@ class data_company extends data {
 		$n = array();
 		foreach ($notes as $item){
 			$item['timeago'] = timesince($item['datein']);
-			$item['note'] = nl2br ($item['note']);
+			$item['note'] = nl2br($item['note']);
 			$n[] = $item;
 		}
 		$notes = $n;
@@ -33,7 +33,17 @@ class data_company extends data {
 		$data['notes'] = $notes;
 		$data['tasks'] = array();
 		$data['tasks_open'] = 0;
-		$data['interactions'] = array();
+
+		$d = models\companies_interactions::getAll("parentID = '{$data['ID']}'","datein DESC");
+		$n = array();
+		foreach ($d as $item){
+			$item['timeago'] = timesince($item['datein']);
+			$item['text'] = nl2br($item['text']);
+			$n[] = $item;
+		}
+		$interactions = $n;
+		
+		$data['interactions'] = $interactions;
 
 		//$data['linked'] = models\companies::getAll("","","0,2");
 
@@ -46,6 +56,14 @@ class data_company extends data {
 	function data_note($ID){
 		$return = array();
 		$data = new models\companies_notes();
+		$data = $data->get($ID);
+
+		$return = $data;
+		return $return;
+	}
+	function data_interaction($ID){
+		$return = array();
+		$data = new models\companies_interactions();
 		$data = $data->get($ID);
 
 		$return = $data;

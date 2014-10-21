@@ -312,7 +312,7 @@
 			<div class="file-icon-area">
 				<% if (this.fileType=="1"){ %>
 			
-				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" class="btn-view-photo" data-file="<%= this.folder %>/<%= this.filename %>" data-ID="<%= this.ID %>" alt=""/>
+				<img src="/app/nf/thumb/110/90?file=<%= this.folder %>/<%= this.filename %>" class="btn-view-photo-form" data-file="<%= this.folder %>/<%= this.filename %>" data-ID="<%= this.ID %>" alt=""/>
 
 				<% } else { %>
 				<div class="file-icon <%= this.icon %>"></div>

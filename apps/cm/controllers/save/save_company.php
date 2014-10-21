@@ -50,6 +50,43 @@ class save_company extends save {
 		return "done";
 		
 	}
+	function interaction(){
+		$return = array();
+
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		$parentID = (isset($_REQUEST['parentID'])) ? $_REQUEST['parentID'] : "";
+		$parentID = preg_replace("/[^0-9 ]/", '', $parentID);
+
+		$text = (isset($_REQUEST['text'])) ? $_REQUEST['text'] : "";;
+		$heading = (isset($_REQUEST['heading'])) ? $_REQUEST['heading'] : "";;
+		$typeID = (isset($_REQUEST['typeID'])) ? $_REQUEST['typeID'] : "";;
+		$values = array(
+			"parentID"=>$parentID,
+			"uID"=>$this->user['ID'],
+			"heading"=>$heading,
+			"typeID"=>$typeID,
+			"text"=>$text
+
+		);
+		//test_array($values); 
+		$ID = models\companies_interactions::save($ID,$values);
+
+
+		return $ID;
+		
+	}
+	function delete_interaction(){
+		$return = array();
+
+		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
+		
+		//test_array($values); 
+		$ID = models\companies_interactions::_delete($ID);
+
+
+		return "done";
+		
+	}
 	
 
 

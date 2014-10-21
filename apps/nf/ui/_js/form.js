@@ -342,7 +342,78 @@ $(document).ready(function () {
 
 	});
 
+	$(document).on("click", ".btn-view-photo-form", function (e) {
+		e.stopPropagation();
+		var path = $(this).attr("data-file");
+		var ID = $(this).attr("data-id");
+		var caption = $(this).attr("data-caption");
+		
+		var $this = $(this);
+		var $record = $this.closest("article.file-record");
+		
+		var id = $record.attr("id");
+		
+		var capti = id.replace("file-record-","file-caption-");
+
+		caption = CKEDITOR.instances[capti].getData()
+		//file-caption-25481
+		
 	
+
+		var p = {
+			"ID"     : ID,
+			"caption": caption?caption:'',
+			"path"   : path
+		};
+
+		var w = $(window).width();
+		var h = $(window).height();
+
+		w = w - 100;
+		h = h - 100;
+
+		w = w > 930 ? 930 : w;
+		h = h > 930 ? 930 : h;
+
+
+
+		$.fancybox.open({
+			href : '/app/nf/thumb/' + w + '/' + h + '?file=' + path + '&crop=false',
+			title: ""
+		}, {
+			padding   : 10,
+			type      : 'image',
+			openEffect: 'fade',
+			beforeLoad: function () {
+
+				this.title = $("#template-photo-caption").jqote(p);
+
+
+			},
+			afterLoad : function () {
+
+
+
+
+
+
+			},
+			helpers   : {
+				overlay: {
+					speedIn : 500,
+					speedOut: 500,
+					opacity : 0.4
+
+				},
+				title  : {
+					type: 'over'
+				}
+
+			}
+		});
+
+
+	});
 
 	
 
