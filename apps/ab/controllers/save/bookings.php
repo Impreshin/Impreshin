@@ -52,6 +52,7 @@ class bookings extends save {
 		$details = $details->get($ID);
 
 
+		//test_array($details); 
 
 		$ID = $details['ID'];
 
@@ -66,6 +67,15 @@ class bookings extends save {
 					$values['checked'] = "0";
 					
 				}
+				if ($details['pageID']){
+					
+					$a = new \DB\SQL\Mapper($this->f3->get("DB"),"global_pages");
+					$a->load("ID = '{$details['pageID']}'");
+					$a->ab_locked="0";
+					$a->save();
+				}
+				
+				
 				$values['pageID'] = null;
 				$values['x_offset'] = null;
 				$values['y_offset'] = null;
