@@ -372,11 +372,20 @@
 				<% } %>
 			<% } %>
 
-			<% if (this.a.invoice=='1') { %> <% if (this.invoiceNum) { %>
-			<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
-			<% } else { %>
-			<button class="btn  span2" type="button" id="booking-invoiced" data-invoice="">Invoiced</button>
-			<% } %> <% } %>
+			<% if (this.a.invoice=='1') { %> 
+				<% if (this.invoiceNum) { %>
+				<button class="btn  span2 btn-success" type="button" id="booking-invoiced" data-invoice="<%= this.invoiceNum %>">Invoiced</button>
+				<% } else { %>
+				<button class="btn  span2" type="button" id="booking-invoiced" data-invoice="">Invoiced</button>
+				<% } %> 
+			<% } %>
+			<% if (this.a.order=='1') { %> 
+				<% if (this.orderNum) { %>
+				<button class="btn  span2 btn-success" type="button" id="booking-ordernum" data-order="<%= this.orderNum %>">Order Number</button>
+				<% } else { %>
+				<button class="btn  span2" type="button" id="booking-ordernum" data-order="">Order Number</button>
+				<% } %> 
+			<% } %>
 
 
 		</div>
@@ -715,6 +724,33 @@ $(document).on("click", '#booking-invoiced', function () {
 
 	if (data) {
 		$.post("/app/ab/save/invoice/?ID=" + $.bbq.getState("ID"), data, function (response) {
+			getDetails();
+		});
+	}
+
+});
+$(document).on("click", '#booking-ordernum', function () {
+	var $this = $(this);
+	var invoice = $this.attr("data-order");
+	var data;
+	var new_invoice = prompt("Order Number", invoice);
+
+	if (new_invoice) {
+		data = {
+			"orderNum":new_invoice
+		};
+	} else {
+		if (invoice) {
+			if (confirm("Are you sure you want to clear this order number?")) {
+				data = {
+					"orderNum":""
+				};
+			}
+		}
+	}
+
+	if (data) {
+		$.post("/app/ab/save/ordernum/?ID=" + $.bbq.getState("ID"), data, function (response) {
 			getDetails();
 		});
 	}

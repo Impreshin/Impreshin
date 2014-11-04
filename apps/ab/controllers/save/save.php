@@ -196,4 +196,25 @@ class save {
 
 
 	}
+	function ordernum(){
+		$ID = (isset($_GET['ID'])) ? $_GET['ID'] : "";
+		$section = "";
+
+		$user = $this->f3->get("user");
+		$userID = $user['ID'];
+
+
+		$values = array();
+		if (isset($_POST['orderNum'])) $values['orderNum'] = $_POST['orderNum'];
+
+
+		$section = "order";
+
+
+
+		if ($section) bookings::save($ID, $values, array("section"=> $section,"dry" => false));
+		test_array($values);
+
+
+	}
 }

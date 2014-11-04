@@ -708,6 +708,13 @@ COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_col
 						$label = "Booking Not Invoiced";
 					}
 					break;
+				case "order":
+					if ($a->orderNum) {
+						$label = "Booking Order Number added";
+					} else {
+						$label = "Booking Order Number removed";
+					}
+					break;
 				case "layout":
 					if ($a->pageID) {
 						$label = "Booking added to a page";

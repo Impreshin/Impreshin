@@ -25,6 +25,7 @@ class permissions {
 					"material" => 0,
 					"repeat"   => 0,
 					"invoice"  => 0,
+					"order"  => 0,
 				),
 				"fields"  => array(
 					"rate"          => 0,
@@ -197,7 +198,8 @@ class permissions {
 					"check"    => "Gives the user permission to be able to 'check' records",
 					"material" => "Gives the user permission to be able to change the material status",
 					"repeat"   => "Allows the user to repeat this booking",
-					"invoice"  => "If ticked the invoice button apears allowing the user to capture an invoice number",
+					"invoice"  => "If ticked the invoice button appears allowing the user to capture an invoice number",
+					"order"  => "If ticked the Order Number button appears allowing the user to capture an order number",
 				),
 				"fields"  => array(
 					"rate"          => "If checked the user can view this field on the details pane",

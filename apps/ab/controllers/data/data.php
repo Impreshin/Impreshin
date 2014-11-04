@@ -43,12 +43,14 @@ class data {
 			"material_pane"=>"0",
 			"checked"=>"0",
 			"material"=>"0",
-			"invoice"=>"0"
+			"invoice"=>"0",
+			"order"=>"0"
 
 		);
 
 		if (!$return['deleted']){
 			$allow['invoice'] = '1';
+			$allow['order'] = '1';
 			if (isset($return['accountBlocked']) && (!$return['accountBlocked'] && $return['accNum'])){
 				$allow['repeat'] = '1';
 			}
@@ -93,6 +95,7 @@ class data {
 		if ($permissions['details']['actions']['repeat']=='0') $allow['repeat'] = 0;
 		if ($permissions['form']['edit']=='0') $allow['edit'] = 0;
 		if ($permissions['details']['actions']['invoice']=='0') $allow['invoice'] = 0;
+		if ($permissions['details']['actions']['order']=='0') $allow['order'] = 0;
 		//if ($permissions['actions']['delete']=='0') $allow['delete'] = '0';
 
 		if ($permissions['form']['edit_master']) {
