@@ -138,7 +138,9 @@
 			<ul class="dropdown-menu">
 				<li class="nav-header">Application</li>
 
-				
+				<li class="{% if page['section']=="admin" and page['sub_section'] == "users" %} active {% endif %}">
+					<a href="/app/cm/admin/details_types"> Details Types</a>
+				</li>
 
 
 

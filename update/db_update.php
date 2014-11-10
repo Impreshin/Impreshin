@@ -192,6 +192,15 @@ $sql = array(
     ),
     "40"=>array(
 	    "CREATE TABLE IF NOT EXISTS `cm_companies_interactions` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `parentID` int(6) DEFAULT NULL,  `typeID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  `datein` timestamp NULL DEFAULT CURRENT_TIMESTAMP,  `heading` varchar(200) DEFAULT NULL,  `text` text,  PRIMARY KEY (`ID`),  KEY `parentID` (`parentID`),  KEY `uID` (`uID`),  KEY `typeID` (`typeID`));"
+    ),
+    "41"=>array(
+	    "CREATE TABLE IF NOT EXISTS `cm_details_types` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `group` varchar(100) DEFAULT NULL,  `type` varchar(100) DEFAULT NULL,  `orderby` int(4) DEFAULT NULL,  PRIMARY KEY (`ID`));",
+	    "INSERT INTO `cm_details_types` (`ID`, `group`, `type`, `orderby`) VALUES (1, 'Phones', 'Mobile', 1), (2, 'Phones', 'Work', 2), (3, 'Phones', 'Home', 3), (4, 'Phones', 'Main', 4), (5, 'Phones', 'Other', 5), (6, 'Fax', 'Work', 6), (7, 'Fax', 'Home', 7), (8, NULL, 'Pager', 100), (9, NULL, 'Website', 101), (10, 'Address', 'Address 1', 10), (11, 'Address', 'Address 2', 11), (12, 'Address', 'City/Town', 12), (13, 'Address', 'Suburb', 13), (14, NULL, 'Email', 100), (15, 'Address', 'Postal Code', 14);",
+        "ALTER TABLE  `cm_details_types` ADD  `icon` VARCHAR( 100 ) NULL DEFAULT NULL AFTER  `type`;",
+        "UPDATE `cm_details_types` SET `icon`= 'icon-phone' WHERE `group` = 'Phones';",
+        "UPDATE `cm_details_types` SET `icon`= 'icon-envelope' WHERE `type` = 'Email';",
+        "ALTER TABLE  `cm_details_types` ADD  `companyID` INT( 6 ) NULL DEFAULT NULL AFTER  `ID` , ADD INDEX (  `companyID` );"
+        
     )
 	
 

@@ -30,36 +30,30 @@ class companies {
 		if (count($result)) {
 			$return = $result[0];
 
-			$app_settings = \apps\cm\settings::_available();
-			$types = array();
-			foreach ($app_settings['types'] as $i){
-				$types[$i['ID']] = $i;
-			}
+			
 			
 			
 			$details = $f3->get("DB")->exec("
-				SELECT cm_companies_details.*
-				FROM cm_companies_details 
+				SELECT cm_companies_details.*, cm_details_types.*, cm_companies_details.ID as ID
+				FROM cm_companies_details INNER JOIN cm_details_types ON cm_details_types.ID = cm_companies_details.catID
 				WHERE parentID = '{$return['ID']}'
-				ORDER BY orderby ASC;"
+				ORDER BY cm_companies_details.orderby ASC, cm_details_types.orderby ASC;"
 			);
+
 			$d = array();
 			foreach ($details as $item){
 
-				$item['icon']=isset($types[$item['catID']]['icon'])?$types[$item['catID']]['icon']:"";
-				$item['type']=isset($types[$item['catID']]['type'])?$types[$item['catID']]['type']:"";
-				
+
 				$d[$item['group']]["group"] = $item['group'];
 				$d[$item['group']]["records"][] = $item;
-				
+
 			}
 			$c = array();
 			foreach ($d as $item){
 				$c[] = $item;
 			}
-			$details = ($c); 
-			
-			
+			$details = ($c);
+
 			$return['details'] =$details;
 
 
@@ -154,6 +148,7 @@ class companies {
 	public static function getList($where = "", $grouping = array("g" => "none", "o" => "ASC"), $ordering = array("c" => "company", "o" => "ASC"), $options = array("limit" => "")) {
 		$f3 = \Base::instance();
 		$timer = new timer();
+		$user = $f3->get("user");
 		if ($where) {
 			$where = "WHERE " . $where . "";
 		} else {
@@ -178,13 +173,26 @@ class companies {
 			$limit = " ";
 		}
 		
+		$dtstr = array();
+		$dt = details_types::getAll("companyID='{$user['company']['ID']}' OR companyID is null","orderby ASC");
+		foreach ($dt as $item){
+			$dtstr[] = "group_concat(if(catID='{$item['ID']}', cm_companies_details.value, null) separator ', ') `dt_{$item['ID']}`"; 
+		}
+
+		$dtstr = implode(",",$dtstr);
 
 
 		$sql = "
-			SELECT cm_companies.* 
+			SELECT DISTINCT cm_companies . * , 
+
+				$dtstr
 			$select
-			FROM cm_companies
+			FROM cm_companies LEFT JOIN 
+				cm_companies_details 
+			 ON cm_companies.ID = cm_companies_details.parentID
 			$where
+			
+			GROUP BY cm_companies.ID
 			$orderby
 			$limit
 		";
@@ -224,12 +232,7 @@ class companies {
 			$single = true;
 		}
 
-		$app_settings = \apps\cm\settings::_available();
-		$types = array();
-		foreach ($app_settings['types'] as $i){
-			$types[$i['ID']] = $i;
-		}
-
+		
 
 		if (is_array($data)) {
 			$a = array();

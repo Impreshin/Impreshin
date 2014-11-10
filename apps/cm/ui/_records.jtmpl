@@ -73,6 +73,7 @@
 		                   <% } %>
 		                  
 		               {% else %}
+                           
 			               <%= this.records[i].{{ col['c'] }}||'' %>
 	                   {% endif %}
                        

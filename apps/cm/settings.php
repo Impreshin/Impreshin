@@ -38,38 +38,24 @@ class settings {
 				"h"=> "Co.",
 				"d"=>"Short name for the company",
 			),
-		    "phone"=>array(
-			    "h"=>"Phone"
-		    ),
-		    "fax"=>array(
-			    "h"=>"Fax"
-		    ),
-		    "email"=>array(
-			    "h"=>"Email"
-		    ),
-		    "website"=>array(
-			    "h"=>"Website"
-		    ),
-		    "address1"=>array(
-			    "h"=>"Address&nbsp;1"
-		    ),
-		    "address2"=>array(
-			    "h"=>"Address&nbsp;2"
-		    ),
-		    "city"=>array(
-			    "h"=>"City"
-		    ),
-		    "country"=>array(
-			    "h"=>"Country"
-		    ),
-		    "postalCode"=>array(
-			    "h"=>"PostCode"
-		    ),
-		    "taxID"=>array(
-			    "h"=>"Tax&nbsp;nr"
-		    ),
+			"dateChanged"                 => array(
+				"h"=> "Date&nbsp;Changed",
+				"d"=>"Date & time when the record was last changed",
+			),
 
 		);
+		$dt = models\details_types::getAll("companyID='{$user['company']['ID']}' OR companyID is null","orderby ASC");
+		//test_array($dt); 
+		foreach ($dt as $item){
+			$columns["dt_".$item['ID']] = array(
+				"h"=> $item['group'] ? $item['type'] . "&nbsp;(".$item['group']. ")" :$item['type']  ,
+			    "c"=>$item['type'],
+			    "d"=> $item['group'] ? "(".$item['group']. ")" :"" 
+			);
+		}
+		
+		
+	//	test_array($columns); 
 
 
 		
@@ -226,113 +212,6 @@ class settings {
 		
 
 		$return['general']=array(
-			"types"=>array(
-				array(
-					"ID"=>"1",
-					"group"=>"Phones",
-				    "type"=>"Mobile",
-				    "icon"=>"icon-phone",
-				    "orderby"=>1
-				),
-				array(
-					"ID"=>"2",
-					"group"=>"Phones",
-				    "type"=>"Work",
-				    "icon"=>"icon-phone",
-				    "orderby"=>2
-				),
-				array(
-					"ID"=>"3",
-					"group"=>"Phones",
-				    "type"=>"Home",
-				    "icon"=>"icon-phone",
-				    "orderby"=>3
-				),
-				array(
-					"ID"=>"4",
-					"group"=>"Phones",
-				    "type"=>"Main",
-				    "icon"=>"icon-phone",
-				    "orderby"=>4
-				),
-				array(
-					"ID"=>"5",
-					"group"=>"Phones",
-				    "type"=>"Other",
-				    "icon"=>"icon-phone",
-				    "orderby"=>5
-				),
-				array(
-					"ID"=>"6",
-					"group"=>"Fax",
-				    "type"=>"Work",
-				    "icon"=>"",
-				    "orderby"=>6
-				),
-				array(
-					"ID"=>"7",
-					"group"=>"Fax",
-				    "type"=>"Home",
-				    "icon"=>"",
-				    "orderby"=>7
-				),
-				array(
-					"ID"=>"8",
-					"group"=>"",
-				    "type"=>"Pager",
-				    "icon"=>"",
-				    "orderby"=>110
-				),
-				array(
-					"ID"=>"9",
-					"group"=>"",
-				    "type"=>"Website",
-				    "icon"=>"",
-				    "orderby"=>101
-				),
-				array(
-					"ID"=>"10",
-					"group"=>"Address",
-				    "type"=>"Address 1",
-				    "icon"=>"",
-				    "orderby"=>10
-				),
-				array(
-					"ID"=>"11",
-					"group"=>"Address",
-				    "type"=>"Address 2",
-				    "icon"=>"",
-				    "orderby"=>11
-				),
-				array(
-					"ID"=>"12",
-					"group"=>"Address",
-				    "type"=>"City/Town",
-				    "icon"=>"",
-				    "orderby"=>12
-				),
-				array(
-					"ID"=>"13",
-					"group"=>"Address",
-				    "type"=>"Suburb",
-				    "icon"=>"",
-				    "orderby"=>13
-				),
-				array(
-					"ID"=>"14",
-					"group"=>"",
-				    "type"=>"Email",
-				    "icon"=>"icon-envelope",
-				    "orderby"=>100
-				),
-				array(
-					"ID"=>"15",
-					"group"=>"Address",
-				    "type"=>"Postal Code",
-				    "icon"=>"",
-				    "orderby"=>14
-				),
-			),
 		    "interaction_types_icons"=>array(
 			    "1"=>"icon-phone",
 			    "2"=>"icon-envelope",
@@ -343,9 +222,6 @@ class settings {
 		);
 	
 
-		usort($return['general']['types'], function($a, $b) {
-				return $a['orderby'] - $b['orderby'];
-			});
 		
 		
 		//test_array($return); 

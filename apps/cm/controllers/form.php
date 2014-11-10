@@ -52,7 +52,7 @@ class form extends \apps\cm\controllers\_ {
 		);
 
 
-		$dt = $app_settings['types'];
+		$dt = models\details_types::getAll("companyID='{$user['company']['ID']}' OR companyID is null","orderby ASC");
 		//test_array($dt); 
 
 		$dt_f = array();
