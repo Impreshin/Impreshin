@@ -12,10 +12,25 @@ $routes[] =	array(
 );
 $routes[] =	array(
 	"method"=>'GET',
+	"path"=>'/app/nf/provisional/print',
+	"controller"=>'apps\nf\controllers\provisional->_print',
+	"a"=>true,
+	"l"=>false,
+);
+
+$routes[] =	array(
+	"method"=>'GET',
 	"path"=>'/app/nf/newsbook',
 	"controller"=>'apps\nf\controllers\newsbook->page',
 	"a"=>true,
 	"l"=>true,
+);
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/nf/newsbook/print',
+	"controller"=>'apps\nf\controllers\newsbook->_print',
+	"a"=>true,
+	"l"=>false,
 );
 $routes[] =	array(
 	"method"=>'GET',

@@ -1,0 +1,17 @@
+<h1>Newsbook - <small> - {{_user['publication']['publication'] }} - {{ data['date'] }} <span style="font-size: 14px;">| Highlight: <strong>{{ settings['highlight']}}</strong>
+	 , Filter: <strong>{{ settings['filter']}}</strong>
+	 </span></small>
+</h1>
+<div style="height: 10px;"></div>
+<em>Printed By:</em>
+{{ _user['fullName'] }} | <em>Printed Date: </em>
+{{ "now"|date("d M Y H:i:s") }}
+
+<div style="height: 10px;"></div>
+
+<div style="height: 10px;"></div>
+
+
+
+
+{% include '_records.tmpl' %}

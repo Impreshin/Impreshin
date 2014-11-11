@@ -97,21 +97,34 @@ class provisional extends \apps\nf\controllers\_ {
 
 		$dataO = new \apps\nf\controllers\data\provisional();
 		$data = $dataO->_list();
+		$stagename = new models\stages();
+		$stagename = $stagename->get($data['stats']['selected_stage']);
 
+
+		$data['stats']['selected_stage_name'] = $stagename['stage'];
+		
+		if ($data['stats']['selected_stage_name']==""){
+			$data['stats']['selected_stage_name'] = "All";
+		}
+		
 		//test_array($data);
 
 		$tmpl = new \template("template.tmpl","apps/nf/ui/print/",true);
 		$tmpl->page = array(
 			"section"=> "bookings",
 			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
+			"template"=> "provisional",
 			"meta"    => array(
-				"title"=> "AB - Print - Provisional",
-			)
+				"title"=> "NF - Provisional",
+			),
 		);
 
 		$tmpl->settings=$settings;
 		$tmpl->data=$data;
+		
+	
+		
+		
 
 		//test_array($data);
 

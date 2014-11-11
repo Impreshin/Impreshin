@@ -95,23 +95,27 @@ class newsbook extends \apps\nf\controllers\_ {
 		$settings = models\settings::_read("provisional", $user['permissions']);
 
 
-		$dataO = new \apps\nf\controllers\data\provisional();
+		$dataO = new \apps\nf\controllers\data\newsbook();
 		$data = $dataO->_list();
-
+		
 		//test_array($data);
 
 		$tmpl = new \template("template.tmpl","apps/nf/ui/print/",true);
 		$tmpl->page = array(
-			"section"=> "bookings",
-			"sub_section"=> "provisional",
-			"template"=> "page_app_provisional",
+			"section"=> "newsbook",
+			"sub_section"=> "newsbook",
+			"template"=> "newsbook",
 			"meta"    => array(
-				"title"=> "AB - Print - Provisional",
-			)
+				"title"=> "NF - Newsbook",
+			),
 		);
 
 		$tmpl->settings=$settings;
 		$tmpl->data=$data;
+
+
+
+
 
 		//test_array($data);
 
