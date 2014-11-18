@@ -44,6 +44,19 @@ class data_company extends data {
 		$interactions = $n;
 		
 		$data['interactions'] = $interactions;
+		
+		
+		
+		
+		$data['watched'] = $this->parent->f3->get("DB")->exec("SELECT global_users.ID, fullName, email, last_activity FROM global_users INNER JOIN cm_watchlist_companies ON cm_watchlist_companies.uID = global_users.ID WHERE cm_watchlist_companies.companyID = '{$data['ID']}' ORDER BY fullname ASC");
+
+		$data['mewatched'] = 0;
+		foreach ($data['watched'] as $item){
+			if ($item['ID']==$this->parent->user['ID']) $data['mewatched'] = 1;
+		}
+		
+		//test_array($data['watched']); 
+		
 
 		//$data['linked'] = models\companies::getAll("","","0,2");
 

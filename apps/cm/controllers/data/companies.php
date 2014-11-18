@@ -139,11 +139,11 @@ class companies extends data {
 				$where_search = " OR c.ID in ({$IDstring}) ";
 			}
 			
-			$where = $where. " AND (c.company LIKE '%{$search}%' $where_search )";
+			$where = $where. " AND (c.company LIKE '%{$search}%' OR c.short LIKE '%{$search}%' $where_search )";
 			
 		}
-		
-		
+
+		$highlight = "watched";
 	//	test_array($where); 
 		
 		//$where = $where . "AND cm_watchlist_companies.uID =";

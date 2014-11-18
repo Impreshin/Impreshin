@@ -9,6 +9,7 @@ class data {
 	protected $f3;
 	function __construct() {
 		$this->f3 = \base::instance();
+		$this->user =  $this->f3->get("user");
 
 		$this->f3->set("json",true);
 		$GLOBALS["output"]['notifications'] = \apps\cm\models\notifications::show();

@@ -194,6 +194,27 @@ class save {
 		echo json_encode(array("result"=> $data));
 		exit();
 	}
+	function watched(){
+		$companyID = (isset($_REQUEST['companyID'])) ? $_REQUEST['companyID'] : "";
+		$uID = (isset($_REQUEST['uID'])) ? $_REQUEST['uID'] : "";
+		$action = (isset($_REQUEST['action'])) ? $_REQUEST['action'] : "";
+
+		$a = new \DB\SQL\Mapper($this->f3->get("DB"),"cm_watchlist_companies");
+		$a->load("companyID='$companyID' AND uID = '$uID'");
+		
+		
+		if ($action=="0"){
+			$a->erase();
+		} else {
+			if ($a->dry()){
+				$a->companyID=$companyID;
+				$a->uID=$uID;
+			}
+		
+			$a->save();
+		}
+		
+	}
 
 
 
