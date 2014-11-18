@@ -360,7 +360,7 @@ class settings {
 					"filter"   => "*",
 					"search" => "",
 				    "watched"=>"*",
-				    "range"=>"5"
+				    "range"=>"0"
 				),
 				"contacts"=>array(
 					"col"        => array(
