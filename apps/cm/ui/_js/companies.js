@@ -9,11 +9,19 @@ $(document).ready(function () {
 	highlight = (highlight) ? highlight : "checked";
 	var filter = $.bbq.getState("filter");
 	filter = (filter) ? filter : "*";
+var watched = $.bbq.getState("watched");
+	watched = (watched) ? watched : "*";
 
 	
 
 	if ($.bbq.getState("modal") == "settings") {
 		$("#settings-modal").modal('show');
+	}
+	if ($.bbq.getState("search") && $.bbq.getState("search")!='') {
+		$("#search").val($.bbq.getState("search"))
+		$("#search-form-toolbar button[type='reset']").show();
+	} else {
+		$("#search-form-toolbar button[type='reset']").hide();
 	}
 
 	if ($.bbq.getState("highlight")) {
@@ -24,6 +32,10 @@ $(document).ready(function () {
 		$("#list-filter-btns button[data-filter].active").removeClass("active");
 		$("#list-filter-btns button[data-filter='" + filter + "']").addClass("active");
 	}
+	if ($.bbq.getState("watched")) {
+		$("#list-watched-btns button[data-value].active").removeClass("active");
+		$("#list-watched-btns button[data-value='" + watched + "']").addClass("active");
+	}
 
 	if ($.bbq.getState("groupBy")) {
 		$("#record-settings li[data-group-records-by].active").removeClass("active");
@@ -33,6 +45,9 @@ $(document).ready(function () {
 		$("#record-settings li[data-order-records-by].active").removeClass("active");
 		$("#record-settings li[data-order-records-by='" + $.bbq.getState("orderBy") + "']").addClass("active");
 	}
+
+	
+	//$( "#amount" ).val( $( "#slider-range-max" ).slider( "value" ) );
 	
 
 	getList();
@@ -73,6 +88,21 @@ $(document).ready(function () {
 		getList();
 		$.bbq.removeState("order");
 
+	});
+	$(document).on("submit", "#search-form-toolbar", function (e) {
+		e.preventDefault();
+
+		$.bbq.pushState({"search":$("#search").val()});
+		getList();
+		
+	});
+	$(document).on("reset", "#search-form-toolbar", function (e) {
+		e.preventDefault();
+		$.bbq.removeState("search");
+		$("#search").val("");
+		$("#search-form-toolbar button[type='reset']").hide();
+		getList();
+		
 	});
 
 
@@ -119,7 +149,7 @@ $(document).ready(function () {
 		}
 
 	});
-	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button", function (e) {
+	$(document).on("click", "#list-highlight-btns button, #list-filter-btns button, #list-watched-btns button", function (e) {
 		e.preventDefault();
 		var $this = $(this);
 
@@ -127,8 +157,10 @@ $(document).ready(function () {
 		highlight = (highlight) ? highlight : "checked";
 		var filter = $("#list-filter-btns button.active").attr("data-filter");
 		filter = (filter) ? filter : "*";
+		var watched = $("#list-watched-btns button.active").attr("data-value");
+		watched = (watched) ? watched : "*";
 
-		$.bbq.pushState({"highlight":highlight, "filter":filter});
+		$.bbq.pushState({"highlight":highlight, "filter":filter, "watched":watched});
 		getList();
 
 	});
@@ -250,17 +282,27 @@ function getList(settings) {
 	var filter = $("#list-filter-btns button.active").attr("data-filter");
 	filter = (filter) ? filter : "";
 
-	var search = $("#record-search").val();
+	var search = $("#search").val();
+	search = (search) ? search : $("#record-search").val();
 	search = (search) ? search : "";
 
 	var orderingactive = (order) ? true : false;
 
+	var watched = $("#list-watched-btns button.active").attr("data-value");
+	watched = (watched) ? watched : "";
 	
-
+	var range = $( "#slider-range-max.ui-slider").length?$( "#slider-range-max" ).slider('value'):"";
+	//range = "";
 	$("#whole-area .loadingmask").show();
 
 
-	$.getData("/app/cm/data/companies/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search}, function (data) {
+	if (search && search!='') {
+		$("#search-form-toolbar button[type='reset']").show();
+	} else {
+		$("#search-form-toolbar button[type='reset']").hide();
+	}
+
+	$.getData("/app/cm/data/companies/_list", {"group": group, "groupOrder": groupOrder, "highlight": highlight, "filter": filter, "order": order, "search": search, "watched": watched, "range": range}, function (data) {
 		var $recordsList = $("#record-list");
 		var $scrollpane = $("#whole-area .scroll-pane");
 		
@@ -295,6 +337,24 @@ function getList(settings) {
 			}
 		}
 
+		
+		
+		$( "#slider-range-max" ).slider({
+			range: "max",
+			min: 0,
+			max: activity_range.length - 1,
+			value: data.range,
+			slide: function( event, ui ) {
+				$( "#slider-range-max-label").html(activity_range[ui.value].label);
+				//$( "#amount" ).val( ui.value );
+			},
+			stop:function(){
+				getList();
+			}
+		});
+
+		$( "#slider-range-max-label").html(data.range_label);
+		
 
 
 		scrollwindow(orderingactive,settings);

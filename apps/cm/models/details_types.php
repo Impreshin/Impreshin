@@ -11,7 +11,29 @@ class details_types {
 		$this->dbStructure = $classname::dbStructure();
 	}
 
+	function get($ID) {
+		$timer = new timer();
+		$f3 = \Base::instance();
+		$user = $f3->get("user");
+		$userID = $user['ID'];
 
+
+		$result = $f3->get("DB")->exec("
+			SELECT *
+			FROM cm_details_types
+			WHERE ID = '$ID';
+
+		");
+
+
+		if (count($result)) {
+			$return = $result[0];
+		} else {
+			$return = $this->dbStructure;
+		}
+		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
+		return $return;
+	}
 
 	
 
@@ -56,6 +78,7 @@ class details_types {
 		$userID = $user['ID'];
 		$a = new \DB\SQL\Mapper($f3->get("DB"), "cm_details_types");
 		$a->load("ID='$ID'");
+		$a->erase();
 		
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
@@ -85,9 +108,9 @@ class details_types {
 			}
 		}
 		if (!$a->dry()) {
-			$label = "Record Edited ($a->section)";
+			$label = "Record Edited ($a->label)";
 		} else {
-			$label = "Record Added (" . $values['section'] . ')';
+			$label = "Record Added (" . $values['label'] . ')';
 		}
 		$a->save();
 

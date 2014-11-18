@@ -48,7 +48,7 @@
 					<% for (var g in this.details[i].records) { %>
 					<li>
 						<div>
-							<span class="dg s span1 r"><%= this.details[i].records[g].type %></span>
+							<span class="dg s span1 r"><%= this.details[i].records[g].label %></span>
 							<span class="contact-details-icon">
 								<i class="dg <%= this.details[i].records[g].icon %>"></i>
 							</span>

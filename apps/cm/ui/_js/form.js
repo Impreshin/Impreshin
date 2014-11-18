@@ -10,6 +10,10 @@ $(document).ready(function () {
 		}
 
 	});
+
+	
+	
+	
 	getFormData();
 
 	$(document).on("submit", "#modal-delete form", function (e) {
@@ -40,10 +44,27 @@ $(document).ready(function () {
 
 	});
 
+	$(document).on('change','.details-select',function(e) {
+		//$("#add-new-contact-field-value").focus();
+		var $row = $(this).find(":selected");
+		var type = $row.attr("data-type");
+		
+		inputbox($(this).closest("tr").find("td > input"),type);
+		
+	});
+	
+	
+	
 	$(document).on('change','#add-new-contact-field-select',function(e) {
 		//$("#add-new-contact-field-value").focus();
-
-	})
+		var $row = $(this).find(":selected");
+		var type = $row.attr("data-type");
+		
+		inputbox($("#add-new-contact-field-value"),type);
+		
+	});
+	
+	
 	$(document).on('select2-close','#add-new-contact-field-select',function(e) {
 		
 		setTimeout(function () {
@@ -87,6 +108,13 @@ $(document).ready(function () {
 		showDragBlocks();
 		$row.find("select").select2('open');
 		$row.find("td>input").val("").trigger("focus");
+
+			var $row = $("#contact-details-cat-"+ID).find(":selected");
+			var type = $row.attr("data-type");
+
+			inputbox($("#contact-details-val-"+ID),type);
+
+		$("#contact-details-val-"+ID).datepicker("hide")
 	});
 	
 	$(document).on("change", "#link-company-select", function () {
@@ -268,9 +296,12 @@ function getFormData() {
 					//.append($item);
 
 
-					
-					
-					
+
+
+					var $row = $("#contact-details-cat-"+vals_id).find(":selected");
+					var type = $row.attr("data-type");
+
+					inputbox($("#contact-details-val-"+vals_id).removeClass("hasDatepicker"),type);
 
 					
 					sorting();
@@ -279,8 +310,18 @@ function getFormData() {
 				}
 					
 			}
+			
+			
 		});
 
+		$(".details-select").each(function(){
+			var $row = $(this).find(":selected");
+			var type = $row.attr("data-type");
+
+			inputbox($(this).closest("tr").find("td > input"),type);
+		})
+		
+		
 		showDragBlocks();
 		formLoaded(data);
 		resizeform();
@@ -507,4 +548,42 @@ function select2remotecompanies(item) {
 	if (!item.id) return item.text; // optgroup
 	
 	return "<div><span class='co'> " + item.text + "</span><span class='pull-right g s'>"+item.short+"</span></div>";
+}
+function inputbox($box,type){
+	$(".hasDatepicker").datepicker("hide");
+	switch(type){
+		case ("2"):
+			$box.datepicker({
+				dateFormat: "yy-mm-dd",
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-100:+0"
+			}).attr("placeholder","YYYY-MM-DD");
+			break;
+		case ("3"):
+			$box.datepicker({
+				dateFormat: "yy-mm-dd H:i:s",
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-20:+20"
+			}).attr("placeholder","YYYY-MM-DD HH:MM:SS");
+			break;
+		case ("4"):
+			$box.datepicker({
+				dateFormat: "yy-mm-dd ",
+				changeYear: true,
+				changeMonth: true,
+				yearRange: "-20:+20"
+			}).attr("placeholder","YYYY-MM-DD");
+			break;
+		default:
+
+			if ($box.has(".hasDatepicker")){
+				$box.show().datepicker("hide").datepicker("destroy")
+			}	
+		$box.show().attr("placeholder","Value");
+			
+	}
+	//console.log($box)
+	
 }

@@ -20,6 +20,7 @@ class companies extends data {
 		$section = 'companies';
 		$av_section = 'companies';
 		$settings = models\settings::_read($section,$av_section);
+		
 
 		$grouping_g = (isset($_REQUEST['group'])&& $_REQUEST['group']!="") ? $_REQUEST['group'] : $settings['group']['g'];
 		$grouping_d = (isset($_REQUEST['groupOrder']) && $_REQUEST['groupOrder'] != "") ? $_REQUEST['groupOrder'] : $settings['group']['o'];
@@ -29,6 +30,8 @@ class companies extends data {
 
 		$highlight = (isset($_REQUEST['highlight']) && $_REQUEST['highlight'] != "") ? $_REQUEST['highlight'] : $settings['highlight'];
 		$filter = (isset($_REQUEST['filter']) && $_REQUEST['filter']!="") ? $_REQUEST['filter'] : $settings['filter'];
+		
+		
 
 		if ((isset($_REQUEST['order']) && $_REQUEST['order'] != "")){
 			if ($settings['order']['c'] == $_REQUEST['order']){
@@ -43,7 +46,9 @@ class companies extends data {
 		}
 
 
-
+		$watched = (isset($_REQUEST['watched']) && $_REQUEST['watched']!="") ? $_REQUEST['watched'] : $settings['watched'];
+		$range = (isset($_REQUEST['range']) && $_REQUEST['range']!="") ? $_REQUEST['range'] : $settings['range'];
+		$search = (isset($_REQUEST['search']) && $_REQUEST['search']!="") ? $_REQUEST['search'] : "";
 
 
 
@@ -65,9 +70,16 @@ class companies extends data {
 
 			"highlight"=> $highlight,
 			"filter"=>$filter,
+			"watched"=>$watched,
+			"range"=>$range,
+			"search"=>$search,
 
 		);
+
 		
+		
+		
+	
 
 		
 		
@@ -80,16 +92,68 @@ class companies extends data {
 		} else {
 			$ordering['c'] = "company";
 		}
+		
 
+		
+
+		$range_label = $DefaultSettings;
 
 
 		$where = "cID = '".$user['company']['ID']."'";
+		
+		if ($watched=='1'){
+			$where = $where  . " AND cm_watchlist_companies.uID is not null";
+		} else if ($watched=='0'){
+			$where = $where  . " AND cm_watchlist_companies.uID is null";
+		}
 
+		$range_label = "";
+		if (isset($DefaultSettings['general']['activity_range'][$range])){
+			$days = $DefaultSettings['general']['activity_range'][$range]['days'];
+			$range_label = $DefaultSettings['general']['activity_range'][$range]['label'];
+
+			if ($range=="0"){
+				
+			} else {
+				if ($range=="10"){
+					$where = $where  . " AND GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')) = '0000-00-00'";
+				} else {
+					$where = $where  . " AND DATEDIFF(now(), REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','')) >= ".$days;
+				}
+				
+			}
+			
+		}
+		
+		if ($search){
+			$IDs = $this->f3->get("DB")->exec("SELECT cm_companies_details.parentID FROM  `cm_companies_details` INNER JOIN cm_companies ON cm_companies_details.parentID = cm_companies.ID WHERE  `value` LIKE  '%{$search}%' AND cm_companies.cID = '".$user['company']['ID']."'");
+			$IDstring = array();
+			foreach ($IDs as $item){
+				if (!in_array($item['parentID'],$IDstring))	$IDstring[] = $item['parentID'];
+			}
+			$IDstring = implode(",",$IDstring);
+
+
+			$where_search = "";
+			if ($IDstring){
+				$where_search = " OR c.ID in ({$IDstring}) ";
+			}
+			
+			$where = $where. " AND (c.company LIKE '%{$search}%' $where_search )";
+			
+		}
+		
+		
+	//	test_array($where); 
+		
+		//$where = $where . "AND cm_watchlist_companies.uID =";
 
 		$records = models\companies::getList($where, $grouping, $ordering);
 
 		$return = array();
 
+		$return['range'] = $range;
+		$return['range_label'] = $range_label;
 		$return['group'] = $grouping;
 		$return['order'] = array("c" => $ordering_c, "o" => $ordering_d);
 

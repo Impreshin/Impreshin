@@ -174,25 +174,47 @@ class companies {
 		}
 		
 		$dtstr = array();
-		$dt = details_types::getAll("companyID='{$user['company']['ID']}' OR companyID is null","orderby ASC");
+		$dt = details_types::getAll("cID='{$user['company']['ID']}' OR cID is null","orderby ASC");
 		foreach ($dt as $item){
 			$dtstr[] = "group_concat(if(catID='{$item['ID']}', cm_companies_details.value, null) separator ', ') `dt_{$item['ID']}`"; 
 		}
 
 		$dtstr = implode(",",$dtstr);
+		if ($dtstr)$dtstr = ','.$dtstr;
 
 
-		$sql = "
-			SELECT DISTINCT cm_companies . * , 
+		$sql = "SELECT DISTINCT
+			c.*,
+			if(cm_watchlist_companies.uID is null,0,1) as watched,
+			c_max_int.lastInteraction,
+			c_max_int.countInteraction,
+			c_max_note.lastNote,
+			c_max_note.countNote,
+			REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','') AS lastActivity,
+			DATEDIFF(now(), REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','')) AS lastActivityDays
 
-				$dtstr
+			$dtstr
 			$select
-			FROM cm_companies LEFT JOIN 
-				cm_companies_details 
-			 ON cm_companies.ID = cm_companies_details.parentID
+			
+			FROM ((cm_companies c
+				LEFT JOIN cm_companies_details
+					ON c.ID = cm_companies_details.parentID)
+				LEFT JOIN (
+						SELECT MAX(datein) AS lastInteraction, parentID, COUNT(ID) AS countInteraction FROM cm_companies_interactions GROUP BY  parentID
+					) c_max_int
+				ON c_max_int.parentID = c.ID
+				LEFT JOIN (
+						SELECT MAX(datein) AS lastNote, parentID, COUNT(ID) AS countNote FROM cm_companies_notes GROUP BY  parentID
+					) c_max_note
+				ON c_max_note.parentID = c.ID
+				)
+				LEFT JOIN 
+					cm_watchlist_companies ON c.ID = cm_watchlist_companies.companyID
+				
+				
 			$where
 			
-			GROUP BY cm_companies.ID
+			GROUP BY c.ID
 			$orderby
 			$limit
 		";
@@ -330,8 +352,8 @@ class companies {
 		$grouping = isset($grouping['g'])?$grouping['g']:'none';
 		switch ($grouping) {
 			case "az":
-				$orderby = "COALESCE(LEFT(cm_companies.company, 1),'zzzzzzz') $ordering, " . $orderby;
-				$arrange = "COALESCE(LEFT(UPPER(cm_companies.company), 1),'None') as heading";
+				$orderby = "COALESCE(LEFT(c.company, 1),'zzzzzzz') $ordering, " . $orderby;
+				$arrange = "COALESCE(LEFT(UPPER(c.company), 1),'None') as heading";
 				break;
 			
 			case "none":
@@ -502,6 +524,7 @@ class companies {
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args()
 		);
 	}
+	
 
 	public static function dbStructure() {
 		$f3 = \Base::instance();

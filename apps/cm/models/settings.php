@@ -120,11 +120,13 @@ class settings extends _ {
 		$t->load("uID='$uID'");
 
 		$t->uID = $uID;
-
-		$v = array_replace_recursive(($t->settings) ? unserialize($t->settings) : array(), $values);
 		
+		$cur = ($t->settings) ? unserialize($t->settings) : array();
 
-		//test_array($v); 
+		$v = array_replace_recursive($cur, $values);
+		if (isset($values['companies']['col'])) $v['companies']['col'] = $values['companies']['col'];
+		if (isset($values['contacts']['col'])) $v['contacts']['col'] = $values['contacts']['col'];
+		//test_array(array("v"=>$v,"t"=>$cur,"values"=>$values)); 
 
 		if (count($values)) $t->settings = serialize($v);
 

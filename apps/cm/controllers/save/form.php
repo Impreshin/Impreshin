@@ -82,7 +82,6 @@ class form extends save {
 		
 		if (isset($_POST['company'])) $values['company'] = $_POST['company'];
 		if (isset($_POST['short'])) $values['short'] = $_POST['short'];
-		if (isset($_POST['taxID'])) $values['taxID'] = $_POST['taxID'];
 
 
 		$values['cID'] = $this->user['company']['ID'];

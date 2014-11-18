@@ -30,7 +30,6 @@ class companies extends \apps\cm\controllers\_ {
 		
 
 
-
 		//test_array($app_settings);
 
 
@@ -88,6 +87,7 @@ class companies extends \apps\cm\controllers\_ {
 
 		$tmpl->settings = $settings;
 		$tmpl->use_pub = false;
+		$tmpl->activity_range = json_encode($app_settings['general']['activity_range']);
 
 		
 		$tmpl->output();

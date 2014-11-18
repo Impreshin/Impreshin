@@ -3,21 +3,27 @@
         <div class="toolbar clearfix  ">
             <ul class="nav nav-pills pull-left">
 
-                <li>
-	                <div class="btn-group" data-toggle="buttons-radio" style="margin-left:10px;">
-		                <button type="button" class="btn span1 btn-mini active" title="Watched"><i class="icon-eye-open"></i></button>
-		                <button type="button" class="btn span1 btn-mini" title="Not-Watched"><i class="icon-eye-close"></i></button>
-		                <button type="button" class="btn span1 btn-mini" data-toggle="dropdown" title="Inactive for" style="height:27px;">7 Days</button>
-
-		                <ul class="dropdown-menu">
-			                <li><a href="">7 Days</a></li>
-			                <li><a href="">30 Days</a></li>
-			                <li><a href="">60 Days</a></li>
-			                <li><a href="">Inactive</a></li>
-		                </ul>
-	                </div>
+                <li >
+                    <div class="btn-group" data-toggle="buttons-radio" id="list-watched-btns" style="margin-left:10px;">
+                        <button data-value="*" class="btn  btn-mini btn-icon {% if settings['watched'] == "*" %}active{% endif %}" style="width:40px;" title="All Records">
+                            <i class="icon-asterisk"></i></button>
+                        <button data-value="1" class="btn  btn-mini btn-icon {% if settings['watched'] == "1" %}active{% endif %}" style="width:40px;" title="Only watched records">
+                            <i class="icon-eye-open"></i></button>
+                        <button data-value="0" class="btn  btn-mini btn-icon {% if settings['watched'] == "0" %}active{% endif %}" style="width:40px;" title="Only NOT watched records">
+                            <i class="icon-eye-close"></i></button>
+                    </div>
                 </li>
                 <li class="divider-vertical"></li>
+                <li style="padding-top:5px; padding-right:5px;" class="g">
+                    Activity:
+                </li>
+                <li style="width:300px; padding-top:9px;">
+                    <div id="slider-range-max"></div>
+                </li>
+                <li style="padding-top:5px; padding-left:10px;">
+                    <div id="slider-range-max-label"></div>
+                </li>
+               
                 <li>
                   
                 </li>
@@ -27,10 +33,14 @@
                
                 <ul class="nav nav-pills pull-right ">
 	                <li>
-		                <div class="input-append" style="margin: 0;">
-			                <input class="span3" id="search" type="text" placeholder="Search">
-			                <button class="btn btn-mini" style="padding: 6px 20px 7px 20px;" type="button">Search</button>
-		                </div>
+                        <form id="search-form-toolbar" action="" style="margin:0;">
+                            <div class="input-append" style="margin: 0;">
+                                <input class="span3" id="search" type="text" placeholder="Search" value="{{ settings['search'] }}">
+                                <button class="btn btn-mini" style="padding: 6px 20px 7px 20px;" type="submit">Search</button>
+                                <button class="btn btn-mini" style="padding: 6px 20px 7px 20px; display:none;" type="reset">Clear</button>
+                            </div>
+                        </form>
+		            
 		                
 		                
 		              
@@ -114,5 +124,7 @@
         </article>
     </div>
 </section>
-
+<script type="text/javascript">
+    var activity_range = {{ activity_range|raw() }};
+</script>
 {% include "_record_settings.tmpl" %}

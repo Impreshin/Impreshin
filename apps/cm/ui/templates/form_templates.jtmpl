@@ -175,13 +175,7 @@
 					<input type="text" id="short" name="short" placeholder="Company Code" class="span2" value="<%= this.details.short||'' %>">
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" for="taxID">Tax ID</label>
-
-				<div class="controls">
-					<input type="text" id="taxID" name="taxID" placeholder="Tax ID" class="span3" value="<%= this.details.taxID||'' %>">
-				</div>
-			</div>
+		
 		</fieldset>
 
 		<fieldset style="margin-top:30px;">
@@ -194,7 +188,7 @@
 							{% for label,items in display_types %}
 								<optgroup label="{{ label|default("General") }}">
 									{% for row in items %}
-										<option value="{{ row['ID'] }}" data-icon="{{ row['icon'] }}">{{ row['type'] }}</option>
+										<option value="{{ row['ID'] }}" data-icon="{{ row['icon'] }}" data-type="{{ row['type'] }}">{{ row['label'] }}</option>
 									{% endfor %}
 								</optgroup>
 							{% endfor %}
@@ -345,7 +339,7 @@
 						{% for label,items in display_types %}
 							<optgroup label="{{ label|default("General") }}">
 								{% for row in items %}
-									<option value="{{ row['ID'] }}" <% if (this.catID=="{{ row['ID'] }}") { %>selected="selected"<% } %> data-icon="{{ row['icon'] }}">{{ row['type'] }}</option>
+									<option value="{{ row['ID'] }}" <% if (this.catID=="{{ row['ID'] }}") { %>selected="selected"<% } %> data-icon="{{ row['icon'] }}" data-type="{{ row['type'] }}">{{ row['label'] }}</option>
 								{% endfor %}
 							</optgroup>
 						{% endfor %}

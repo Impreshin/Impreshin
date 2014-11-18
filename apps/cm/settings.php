@@ -42,14 +42,38 @@ class settings {
 				"h"=> "Date&nbsp;Changed",
 				"d"=>"Date & time when the record was last changed",
 			),
+			"lastInteraction"                 => array(
+				"h"=> "Last&nbsp;Interaction",
+				"d"=>"Date & time of the last interaction",
+			),
+			"countInteraction"                 => array(
+				"h"=> "#&nbsp;Interaction",
+				"d"=>"Number of interactions",
+			),
+			"lastNote"                 => array(
+				"h"=> "Last&nbsp;Note",
+				"d"=>"Date & time of the last note",
+			),
+			"countNote"                 => array(
+				"h"=> "#&nbsp;Notes",
+				"d"=>"Number of notes",
+			),
+			"lastActivity"                 => array(
+				"h"=> "Last&nbsp;Activity",
+				"d"=>"Date & time of the last Activity (note / interaction)",
+			),
+			"lastActivityDays"                 => array(
+				"h"=> "Days&nbsp;L/A",
+				"d"=>"Days since the last Activity (note / interaction)",
+			),
 
 		);
-		$dt = models\details_types::getAll("companyID='{$user['company']['ID']}' OR companyID is null","orderby ASC");
+		$dt = models\details_types::getAll("cID='{$user['company']['ID']}' OR cID is null","orderby ASC");
 		//test_array($dt); 
 		foreach ($dt as $item){
 			$columns["dt_".$item['ID']] = array(
-				"h"=> $item['group'] ? $item['type'] . "&nbsp;(".$item['group']. ")" :$item['type']  ,
-			    "c"=>$item['type'],
+				"h"=> $item['group'] ? $item['label'] . "&nbsp;(".$item['group']. ")" :$item['label']  ,
+			    "c"=>$item['label'],
 			    "d"=> $item['group'] ? "(".$item['group']. ")" :"" 
 			);
 		}
@@ -218,6 +242,48 @@ class settings {
 			    "3"=>"icon-comments-alt",
 			    "4"=>"icon-mobile-phone",
 			    "5"=>"icon-bookmark-empty",
+		    ),
+		    "activity_range" => array(
+			    array(
+				    "label"=>"All",
+				    "days"=>"0"
+			    ),
+			    array(
+				    "label"=>"7 Days",
+				    "days"=>"7"
+			    ),
+			    array(
+				    "label"=>"14 Days",
+				    "days"=>"14"
+			    ),
+			    array(
+				    "label"=>"21 Days",
+				    "days"=>"21"
+			    ),
+			    array(
+				    "label"=>"30 Days",
+				    "days"=>"30"
+			    ),
+			    array(
+				    "label"=>"60 Days",
+				    "days"=>"60"
+			    ),
+			    array(
+				    "label"=>"90 Days",
+				    "days"=>"90"
+			    ),
+			    array(
+				    "label"=>"120 Days",
+				    "days"=>"120"
+			    ),
+			    array(
+				    "label"=>"180 Days",
+				    "days"=>"180"
+			    ),
+			    array(
+				    "label"=>"360 Days",
+				    "days"=>"360"
+			    )
 		    )
 		);
 	
@@ -225,21 +291,23 @@ class settings {
 		
 		
 		//test_array($return); 
-		
+		$settings = $return;
 		
 //test_array(array("section"=>$section,"is"=>isset($return[$section]),"return"=>$return)); 
 
 		
+		
 		if ($section && @isset($return[$section])) {
 			$return = $return[$section];
+			$return['general'] = $settings['general'];
 		} else {
 			
 		}
-	
 
 
-		
-		
+
+		//test_array($return);
+
 
 		$cfg = $f3->get("CFG");
 
@@ -277,10 +345,7 @@ class settings {
 					"col"        => array(
 						"company",
 						"short",
-						"phone",
-						"fax",
-						"email",
-					    "website"
+					    "lastActivity"
 					),
 					"group"      => array(
 						"g"=>"az",
@@ -290,10 +355,12 @@ class settings {
 						"c"=> "company",
 						"o"=> "ASC"
 					),
-					"count"      => "6",
+					"count"      => "3",
 					"highlight"=> "",
 					"filter"   => "*",
-					"search" => ""
+					"search" => "",
+				    "watched"=>"*",
+				    "range"=>"5"
 				),
 				"contacts"=>array(
 					"col"        => array(

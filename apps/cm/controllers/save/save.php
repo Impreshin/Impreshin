@@ -58,11 +58,12 @@ class save {
 		);
 		//$new["order"] = $order;
 
+		
 
 		$values = array();
 		$values[$section]=$new;
+		//test_array($values);
 
-		
 
 		models\settings::save($values);
 

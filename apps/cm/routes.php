@@ -64,6 +64,15 @@ $routes[] =	array(
 
 
 
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/cm/admin/details_types',
+	"controller"=>'apps\cm\controllers\admin\details_types->page',
+	"a"=>true,
+	"l"=>true,
+);
+
+
 
 
 $routes[] =	array(
