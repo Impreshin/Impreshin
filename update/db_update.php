@@ -206,10 +206,17 @@ $sql = array(
        "ALTER TABLE  `cm_details_types` ADD  `type` TINYINT( 2 ) NULL DEFAULT NULL AFTER  `companyID`;",
        "ALTER TABLE  `cm_details_types` CHANGE  `type`  `type` TINYINT( 2 ) NULL DEFAULT  '1';",
        "UPDATE `cm_details_types` SET type ='1' WHERE type is NULL;",
+       
        "TRUNCATE TABLE cm_details_types;",
-       "INSERT INTO `cm_details_types` (`ID`, `cID`, `type`, `group`, `label`, `icon`, `orderby`) VALUES (1, NULL, 1, 'Phones', 'Mobile', 'icon-phone', 1),(2, NULL, 1, 'Phones', 'Work', 'icon-phone', 2),(3, NULL, 1, 'Phones', 'Home', 'icon-phone', 3),(4, NULL, 1, NULL, 'Website', 'icon-desktop', 11),(5, NULL, 1, NULL, 'Email', 'icon-envelope', 10),(6, NULL, 2, NULL, 'Birthday', 'icon-calendar', 20),(7, NULL, 1, 'Address', 'Address 1', NULL, 20),(8, NULL, 1, 'Address', 'Address 2', NULL, 21),(9, NULL, 1, 'Address', 'City/Town', NULL, 22),(10, NULL, 1, 'Address', 'Suburb', NULL, 23),(11, NULL, 1, 'Address', 'Postal Code', NULL, 24);"  ,
-       "ALTER TABLE `cm_companies` DROP `taxID`;",
-       "CREATE TABLE IF NOT EXISTS `cm_watchlist_companies` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `companyID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `companyID` (`companyID`,`uID`));"
+      
+   ),
+   "43"=>array(
+	   "ALTER TABLE  `cm_details_types` CHANGE  `companyID`  `cID` INT( 6 ) NULL DEFAULT NULL;",
+	   "INSERT INTO `cm_details_types` (`ID`, `cID`, `type`, `group`, `label`, `icon`, `orderby`) VALUES (1, NULL, 1, 'Phones', 'Mobile', 'icon-phone', 1),(2, NULL, 1, 'Phones', 'Work', 'icon-phone', 2),(3, NULL, 1, 'Phones', 'Home', 'icon-phone', 3),(4, NULL, 1, NULL, 'Website', 'icon-desktop', 11),(5, NULL, 1, NULL, 'Email', 'icon-envelope', 10),(6, NULL, 2, NULL, 'Birthday', 'icon-calendar', 20),(7, NULL, 1, 'Address', 'Address 1', NULL, 20),(8, NULL, 1, 'Address', 'Address 2', NULL, 21),(9, NULL, 1, 'Address', 'City/Town', NULL, 22),(10, NULL, 1, 'Address', 'Suburb', NULL, 23),(11, NULL, 1, 'Address', 'Postal Code', NULL, 24);"  ,
+	   "ALTER TABLE `cm_companies` DROP `taxID`;",
+	   "CREATE TABLE IF NOT EXISTS `cm_watchlist_companies` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `companyID` int(6) DEFAULT NULL,  `uID` int(6) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `companyID` (`companyID`,`uID`));",
+       "ALTER TABLE cm_details_types DROP INDEX companyID;",
+       "ALTER TABLE  `cm_details_types` ADD INDEX (  `cID` );"
    )
 	
 
