@@ -1,0 +1,10 @@
+{% include '_records.jtmpl' %}
+{% include '_details.jtmpl' %}
+<script type="text/x-jqote-template" id="template-stats-bar">
+	<![CDATA[
+
+
+	
+	]]>
+</script>
+

@@ -66,6 +66,10 @@ class settings {
 				"h"=> "Days&nbsp;L/A",
 				"d"=>"Days since the last Activity (note / interaction)",
 			),
+			"watchedBy"                 => array(
+				"h"=> "Watched&nbsp;By",
+				"d"=>"Users watching this company",
+			),
 
 		);
 		$dt = models\details_types::getAll("cID='{$user['company']['ID']}' OR cID is null","orderby ASC");
@@ -104,6 +108,10 @@ class settings {
 				"n"=> "A-Z",
 				"g"=> "az"
 			),
+			"activity"=>array(
+				"n"=> "Activity (days)",
+				"g"=> "activity"
+			),
 			"none"=> array(
 				"n"=> "No Grouping",
 				"g"=> "none"
@@ -115,7 +123,8 @@ class settings {
 
 
 		$sections = array(
-			"companies"=>array("az","none"),
+			"companies"=>array("az","activity","none"),
+			"watchlist"=>array("az","activity","none"),
 		
 		);
 
@@ -245,42 +254,52 @@ class settings {
 		    ),
 		    "activity_range" => array(
 			    array(
+				    "label_order"=>"0 - 6 Days",
 				    "label"=>"All",
 				    "days"=>"0"
 			    ),
 			    array(
+				    "label_order"=>"7 - 13 Days",
 				    "label"=>"7 Days",
 				    "days"=>"7"
 			    ),
 			    array(
+				    "label_order"=>"14 - 20 Days",
 				    "label"=>"14 Days",
 				    "days"=>"14"
 			    ),
 			    array(
+				    "label_order"=>"21 - 29 Days",
 				    "label"=>"21 Days",
 				    "days"=>"21"
 			    ),
 			    array(
+				    "label_order"=>"30 - 59 Days",
 				    "label"=>"30 Days",
 				    "days"=>"30"
 			    ),
 			    array(
+				    "label_order"=>"60 - 89 Days",
 				    "label"=>"60 Days",
 				    "days"=>"60"
 			    ),
 			    array(
+				    "label_order"=>"90 - 119 Days",
 				    "label"=>"90 Days",
 				    "days"=>"90"
 			    ),
 			    array(
+				    "label_order"=>"120 - 179 Days",
 				    "label"=>"120 Days",
 				    "days"=>"120"
 			    ),
 			    array(
+				    "label_order"=>"180 - 359 Days",
 				    "label"=>"180 Days",
 				    "days"=>"180"
 			    ),
 			    array(
+				    "label_order"=>"360+ Days",
 				    "label"=>"360 Days",
 				    "days"=>"360"
 			    )
@@ -342,6 +361,27 @@ class settings {
 					
 				),
 				"companies"=>array(
+					"col"        => array(
+						"company",
+						"short",
+					    "lastActivity"
+					),
+					"group"      => array(
+						"g"=>"az",
+						"o"=>"ASC"
+					),
+					"order"      => array(
+						"c"=> "company",
+						"o"=> "ASC"
+					),
+					"count"      => "3",
+					"highlight"=> "",
+					"filter"   => "*",
+					"search" => "",
+				    "watched"=>"*",
+				    "range"=>"0"
+				),
+				"watchlist"=>array(
 					"col"        => array(
 						"company",
 						"short",

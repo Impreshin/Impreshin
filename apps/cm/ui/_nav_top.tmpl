@@ -131,7 +131,6 @@
 
 	</li>
 	<li class="divider-vertical"></li>
-	{% if _user['permissions']['administration']['_nav'] %}
 		<li class="dropdown {% if page['section']=="admin" %} active {% endif %}">
 			<a data-toggle="dropdown" class="dropdown-toggle nav-icon-btn" href="#" title="Settings" rel="tooltip" data-placement="bottom"><i class="icon-gears icon-d-grey"></i>
 			</a>
@@ -171,7 +170,6 @@
 				-->
 			</ul>
 		</li>
-	{% endif %}
 		<li class="divider-vertical"></li>
 	<li style="margin-right: -10px;">
 		<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>

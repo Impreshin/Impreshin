@@ -176,42 +176,53 @@ class companies {
 		$dtstr = array();
 		$dt = details_types::getAll("cID='{$user['company']['ID']}' OR cID is null","orderby ASC");
 		foreach ($dt as $item){
-			$dtstr[] = "group_concat(if(catID='{$item['ID']}', cm_companies_details.value, null) separator ', ') `dt_{$item['ID']}`"; 
+			$dtstr[] = "group_concat(DISTINCT if(catID='{$item['ID']}', cm_companies_details.value, null) separator ', ') `dt_{$item['ID']}`"; 
 		}
 
 		$dtstr = implode(",",$dtstr);
 		if ($dtstr)$dtstr = ','.$dtstr;
 
 
-		$sql = "SELECT DISTINCT
+		$sql = "SELECT 
 			c.*,
-			if(cm_watchlist_companies.uID is null,0,1) as watched,
+			if(count(cm_watchlist_companies.ID) >0,1,0) as watched,
 			c_max_int.lastInteraction,
 			c_max_int.countInteraction,
 			c_max_note.lastNote,
 			c_max_note.countNote,
 			REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','') AS lastActivity,
-			DATEDIFF(now(), REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','')) AS lastActivityDays
+			DATEDIFF(now(), REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','')) AS lastActivityDays,
+			GROUP_CONCAT(DISTINCT watchlist.fullName separator ', ') as watchedBy
 
 			$dtstr
 			$select
 			
-			FROM ((cm_companies c
-				LEFT JOIN cm_companies_details
-					ON c.ID = cm_companies_details.parentID)
+			
+			FROM 
+			(cm_companies c
+				LEFT JOIN cm_companies_details	ON c.ID = cm_companies_details.parentID)
+				
+				
 				LEFT JOIN (
-						SELECT MAX(datein) AS lastInteraction, parentID, COUNT(ID) AS countInteraction FROM cm_companies_interactions GROUP BY  parentID
+						SELECT MAX(datein) AS lastInteraction, parentID, COUNT(ID) AS countInteraction FROM cm_companies_interactions GROUP BY  cm_companies_interactions.parentID
 					) c_max_int
 				ON c_max_int.parentID = c.ID
 				LEFT JOIN (
-						SELECT MAX(datein) AS lastNote, parentID, COUNT(ID) AS countNote FROM cm_companies_notes GROUP BY  parentID
+						SELECT MAX(datein) AS lastNote, parentID, COUNT(ID) AS countNote FROM cm_companies_notes GROUP BY  cm_companies_notes.parentID
 					) c_max_note
 				ON c_max_note.parentID = c.ID
-				)
-				LEFT JOIN 
-					cm_watchlist_companies ON c.ID = cm_watchlist_companies.companyID
 				
-				
+				LEFT JOIN (
+						SELECT cm_watchlist_companies.companyID, cm_watchlist_companies.uID, global_users.* FROM cm_watchlist_companies INNER JOIN global_users ON cm_watchlist_companies.uID = global_users.ID GROUP BY  cm_watchlist_companies.companyID, uID
+					) watchlist
+				ON watchlist.companyID = c.ID
+		
+		LEFT JOIN cm_watchlist_companies  ON cm_watchlist_companies.companyID = c.ID
+		
+
+
+
+					
 			$where
 			
 			GROUP BY c.ID
@@ -350,10 +361,42 @@ class companies {
 		$arrange = "";
 		$ordering = isset($grouping['o'])?$grouping['o']:"ASC";
 		$grouping = isset($grouping['g'])?$grouping['g']:'none';
+
+		
+		
+		
 		switch ($grouping) {
 			case "az":
 				$orderby = "COALESCE(LEFT(c.company, 1),'zzzzzzz') $ordering, " . $orderby;
 				$arrange = "COALESCE(LEFT(UPPER(c.company), 1),'None') as heading";
+				break;
+			case "activity":
+
+				$app_settings = \apps\cm\settings::_available("","companies");
+				$activity_range = $app_settings['general']['activity_range'];
+				//$activity_range = array_reverse($activity_range);
+				//lastActivityDays
+				$str = "";
+				$strL = "";
+				$i = 0;
+				$lastActivityDays = "(DATEDIFF(now(), REPLACE(GREATEST(COALESCE(c_max_int.lastInteraction, '0000-00-00'),COALESCE(c_max_note.lastNote, '0000-00-00')),'0000-00-00','')))";
+				//$lastActivityDays = "lastActivityDays";
+				foreach ($activity_range as $item){
+					$i++;
+					if ($item['days']==0){
+						$str = count($activity_range) + 10;
+						$strL = "'None'";
+					}
+					$str = "if($lastActivityDays>='{$item['days']}',$i,$str)";
+					$strL = "if($lastActivityDays>='{$item['days']}','{$item['label_order']}',$strL)";
+				}
+				//$str = implode(",",$str);
+				//$strL = implode(",",$strL);
+			//	test_array($strL); 
+				
+				
+				$orderby = "COALESCE($str,0) $ordering, " . $orderby;
+				$arrange = "COALESCE($strL,'None') as heading";
 				break;
 			
 			case "none":
