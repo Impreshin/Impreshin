@@ -16,6 +16,7 @@ class companies extends data {
 
 	function _list() {
 		$t = new timer();
+		$t2 = new timer();
 		$user = $this->f3->get("user");
 
 		$section = 'companies';
@@ -163,6 +164,7 @@ class companies extends data {
 
 		$return['list'] = models\companies::display_list($records, array("highlight"=>$highlight,"filter"=>$filter));
 		$t->stop("4");
+		$t2->stop("end");
 		
 		//test_array($this->f3->get("json"));
 		return $GLOBALS["output"]['data'] = $return;
