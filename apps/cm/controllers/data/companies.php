@@ -151,7 +151,8 @@ class companies extends data {
 		//$where = $where . "AND cm_watchlist_companies.uID =";
 
 		$records = models\companies::getList($where, $grouping, $ordering);
-
+		$t->stop("3");
+		$t = new timer();
 		$return = array();
 
 		$return['range'] = $range;
@@ -161,7 +162,8 @@ class companies extends data {
 
 
 		$return['list'] = models\companies::display_list($records, array("highlight"=>$highlight,"filter"=>$filter));
-		$t->stop("3");
+		$t->stop("4");
+		
 		//test_array($this->f3->get("json"));
 		return $GLOBALS["output"]['data'] = $return;
 	}
