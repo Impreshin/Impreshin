@@ -185,7 +185,7 @@ class companies {
 
 		$sql = "SELECT 
 			c.*,
-			if(count(cm_watchlist_companies.ID) >0,1,0) as watched,
+			if(count(watchlist.ID) >0,1,0) as watched,
 			c_max_int.lastInteraction,
 			c_max_int.countInteraction,
 			c_max_note.lastNote,
