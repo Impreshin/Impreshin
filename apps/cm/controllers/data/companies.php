@@ -15,6 +15,7 @@ class companies extends data {
 	}
 
 	function _list() {
+		$t = new timer();
 		$user = $this->f3->get("user");
 
 		$section = 'companies';
@@ -77,8 +78,8 @@ class companies extends data {
 		);
 
 		
-		
-		
+		$t->stop("1");
+		$t = new timer();
 	
 
 		
@@ -124,7 +125,8 @@ class companies extends data {
 			}
 			
 		}
-		
+		$t->stop("2");
+		$t = new timer();
 		if ($search){
 			$IDs = $this->f3->get("DB")->exec("SELECT cm_companies_details.parentID FROM  `cm_companies_details` INNER JOIN cm_companies ON cm_companies_details.parentID = cm_companies.ID WHERE  `value` LIKE  '%{$search}%' AND cm_companies.cID = '".$user['company']['ID']."'");
 			$IDstring = array();
@@ -159,7 +161,7 @@ class companies extends data {
 
 
 		$return['list'] = models\companies::display_list($records, array("highlight"=>$highlight,"filter"=>$filter));
-
+		$t->stop("3");
 		//test_array($this->f3->get("json"));
 		return $GLOBALS["output"]['data'] = $return;
 	}
