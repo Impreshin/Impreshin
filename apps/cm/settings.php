@@ -355,7 +355,9 @@ class settings {
 					"type"=>"co"
 				),
 				"front"=>array(
-					
+					"feed_days"=>"14",
+				    "tab"=>"1",
+				    "search"=>""
 				),
 				"calendar"=>array(
 					

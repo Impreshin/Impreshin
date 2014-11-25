@@ -1,64 +1,44 @@
 <section id="maintoolbar">
 	<div class="container">
 		<div class="toolbar clearfix  ">
-			<ul class="nav nav-pills pull-left">
-
+			<ul class="nav nav-pills pull-left" style="margin-left:10px;">
 				<li>
-					<div class="btn-group" data-toggle="buttons-radio" id="list-stage-btns">
-						<button class="btn span1 btn-mini {% if settings['stage'] == '*' %}active{% endif %}" style="margin-left: 10px;" data-stage="*">All</button>
-
-						{% for row in stages %}
-							<button class="btn span1 btn-mini {% if settings['stage'] == row['ID'] %}active{% endif %} " style="width:80px; " data-stage="{{ row['ID'] }}">{{ row['stage'] }}</button>
-						{% endfor %}
-
+					<div class="btn-group" data-toggle="buttons-radio" id="btns-tabs" >
+						<button class="btn btn-mini span2 {% if settings['tab']=="1" %}active{% endif %}" data-tab='1' type="button">Calendar</button>
+						<button class="btn btn-mini span2 {% if settings['tab']=="2" %}active{% endif %}" data-tab='2'  type="button">Tasks</button>
+						<button class="btn btn-mini span2 {% if settings['tab']=="3" %}active{% endif %}" data-tab='3'  type="button">List</button>
+						<button class="btn btn-mini span2 {% if settings['tab']=="4" %}active{% endif %}" data-tab='4'  type="button">Status</button>
+					
 					</div>
+				</li>
+				<li class="divider-vertical"></li>
+			</ul>
+			<ul class="nav nav-pills pull-right">
+				<li >
+					<form id="search-form-toolbar" action="" style="margin:0;">
+						<div class="input-append" style="margin: 0;">
+							<input class="span3" id="search" type="text" placeholder="Search" value="">
+							<button class="btn btn-mini" style="padding: 6px 20px 7px 20px;" type="submit">Search</button>
+							<button class="btn btn-mini" style="padding: 6px 10px 6px 10px; display:none;" type="reset"><i class="icon-ban-circle"></i></button>
+						</div>
+					</form>
 				</li>
 
 
 
 
 				<li class="divider-vertical"></li>
+				<li>
+					<div class="btn-group" data-toggle="buttons-radio" id="btns-feed-days" >
+						<button class="btn btn-mini span2 {% if settings['feed_days']=="1" %}active{% endif %}" type="button" data-days="1">1 Day</button>
+						<button class="btn btn-mini span2 {% if settings['feed_days']=="7" %}active{% endif %}" type="button" data-days="7">7 Days</button>
+						<button class="btn btn-mini span2 {% if settings['feed_days']=="14" %}active{% endif %}" type="button" data-days="14">14 Days</button>
+						<button class="btn btn-mini span2 {% if settings['feed_days']=="30" %}active{% endif %}" type="button" data-days="30">30 Days</button>
+						<button class="btn btn-mini span2 {% if settings['feed_days']=="60" %}active{% endif %}" type="button" data-days="60">60 Days</button>
+					</div>
+				</li>
+				
 			</ul>
-			<div class="pull-right">
-				<ul id="provisional-stats-bar" class="nav nav-pills pull-left">
-
-
-				</ul>
-				<ul class="nav nav-pills pull-right ">
-					<li class="divider-vertical" style="margin-right: 0;"></li>
-
-					{% if _user['permissions']['articles']['checkbox_archive']=='1' or _user['permissions']['articles']['checkbox_add_to_newsbook']=='1' %}
-						
-					<li>
-						<a class="c" href="#" style="width:15px;" id="checkbox-button" data-toggle="button"><i class="icon-check"></i></a>
-					</li>
-					{% endif %}
-
-					<li class="dropdown pull-right">
-						<a data-toggle="dropdown" class="dropdown-toggle c" href="#" style="width:15px;"><i class="icon-wrench"></i></a>
-						<ul class="dropdown-menu" id="record-settings" role="menu">
-							<li class="nav-header">Group By</li>
-							{% for row in settings['groupby'] %}
-								<li data-group-records-by="{{ row['g'] }}" class="{% if settings['group']['g']|default("placing") == row['g'] %}active{% endif %}">
-									<a href="#t">{{ row['n'] }}</a>
-								</li>
-							{% endfor %}
-							<li class="nav-header clearfix">Direction</li>
-							<li data-order-records-by="ASC" class="{% if settings['group']['o'] == "ASC" %}active{% endif %}" style="width: 50%; float:left;">
-								<a href="#"><i class="icon-sort-by-attributes icon-grey"></i> ASC</a></li>
-							<li data-order-records-by="DESC" class="{% if settings['group']['o'] == "DESC" %}active{% endif %} " style="width: 50%; float:right;">
-								<a href="#"><i class="icon-sort-by-attributes-alt icon-grey"></i> DESC</a></li>
-							<li class="clearfix"></li>
-							<li class="divider"></li>
-
-							<li>
-								<a href="javascript:;" id="list-settings"><i class="icon-cog  icon-grey"></i> Settings</a>
-							</li>
-						</ul>
-					</li>
-
-				</ul>
-			</div>
 
 
 		</div>
@@ -71,17 +51,15 @@
 
 	<div class="container">
 
+		<div class="row">
 
-		<article id="whole-area" class="span16">
+		<article id="left-area" class="span10">
 			<div class="content">
 				<div class="scroll-pane">
 
 					<div data-heading="top" id="scroll-container" style="padding-bottom: 30px;  ">
 
-						<table class="table table-condensed table-bordered s records" id="record-list" style="margin-right: 15px;">
-
-
-						</table>
+						<div id="calendar-area"></div>
 					</div>
 
 				</div>
@@ -92,20 +70,28 @@
 
 		
 
-			<div id="search-box">
-				<button type="button" class="btn btn-mini" style="width: 30px;" id="search-box-toggle">
-					<i class="icon-search"></i></button>
-				<form class="form-search " style="margin-right: 40px;">
-					<div class="input-append">
-						<input type="text" class="span3 search-query glow" placeholder="Search..." id="record-search">
-						<button type="submit" class="btn glow">Search</button>
+			
+		</article>
+		<article id="right-area" class="span6 offset10">
+			<div class="content">
+				<div class="scroll-pane" >
 
+					<div data-heading="top" id="scroll-container" style="padding-bottom: 30px;  ">
+
+						<div id="ticker-area"></div>
 					</div>
 
-
-				</form>
+				</div>
 
 			</div>
+
+			<div class="loadingmask wide"></div>
+
+		
+
+			
 		</article>
+		
+	</div>
 	</div>
 </section>

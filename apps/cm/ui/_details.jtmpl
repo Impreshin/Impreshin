@@ -117,23 +117,26 @@
 			<div style="padding-right:10px;" id="interactions-area" class="records-block">
 
 				<% for (var i in this.interactions) { %>
-				<h4>
-					<small><i class="<%= this.interactions[i].icon %>" style="margin-right:8px;"></i></small>
-					<%= this.interactions[i].heading %>
-					<!--<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>-->
-				</h4>
-				<blockquote>
-					<%= this.interactions[i].text %>
-					<div>
+				<article data-ID="<%= this.interactions[i].ID %>">
+					<h4>
+						<small><i class="<%= this.interactions[i].icon %>" style="margin-right:8px;"></i></small>
+						<%= this.interactions[i].heading %>
+						<!--<span class="label label-warning pull-right open-details-link" data-id="pe-1">William Stam</span>-->
+					</h4>
+					<blockquote>
+						<%= this.interactions[i].text %>
+						<div>
 						<span class="pull-right">
 							<a href="#" class="records-block-button edit-interaction" data-id="<%= this.interactions[i].ID %>"><i class="icon-pencil"></i></a> 
 							<a href="#" class="records-block-button delete-interaction" data-id="<%= this.interactions[i].ID %>"><i class="icon-trash"></i></a> 
 						</span>
-						<small><%= this.interactions[i].fullName %>
-							<cite title="<%= this.interactions[i].datein %>"><%= this.interactions[i].timeago %></cite></small>
-					</div>
+							<small><%= this.interactions[i].fullName %>
+								<cite title="<%= this.interactions[i].datein %>"><%= this.interactions[i].timeago %></cite></small>
+						</div>
 
-				</blockquote>
+					</blockquote>
+				</article>
+				
 				<% } %>
 
 			</div>
@@ -159,7 +162,7 @@
 
 			<div id="notes-area" class="records-block">
 				<% for (var i in this.notes) { %>
-
+				<article data-ID="<%= this.notes[i].ID %>">
 				<h4><%= this.notes[i].heading %></h4>
 				<blockquote>
 					<%= this.notes[i].note %>
@@ -173,6 +176,7 @@
 					</div>
 
 				</blockquote>
+					</article>
 				<% } %>
 
 
@@ -870,12 +874,33 @@
 	
 	
 			}
-	
-	
-	
-	
-	
-	
+
+
+
+
+			
+		if ($.bbq.getState("scroll")){
+			
+			setTimeout(function () {
+			//	console.log($("#contact-details-footer").height())
+			//	console.log($.bbq.getState("scroll"))
+
+				var api = $("#cm-details-modal .tab-pane.active .scroll-pane").data("jsp");
+			//	console.log(api)
+				if ($("#cm-details-modal .tab-pane.active .scroll-pane article[data-ID='" + $.bbq.getState("scroll") + "']").length){
+			//		console.log($("article[data-ID='" + $.bbq.getState("scroll") + "']"));
+					
+					$("#cm-details-modal .tab-pane.active .scroll-pane article[data-ID='" + $.bbq.getState("scroll") + "']").addClass("highlight");
+
+					api.scrollToElement("article.highlight", true, true);
+					$.bbq.removeState("scroll");
+				}
+			}, 200);
+			
+				
+			
+			
+		}
 	
 	
 	

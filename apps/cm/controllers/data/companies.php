@@ -148,7 +148,7 @@ class companies extends data {
 
 		$highlight = "watched";
 	//	test_array($where); 
-		
+		//test_array($ordering);
 		//$where = $where . "AND cm_watchlist_companies.uID =";
 
 		$records = models\companies::getList($where, $grouping, $ordering);

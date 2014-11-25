@@ -332,9 +332,7 @@ function getList(settings) {
 				api.scrollToElement("#record-list .record[data-ID='" + ID + "']", false, false);
 			}
 
-			if (!$("#ab-details-modal").is(":visible")) {
-				getDetails();
-			}
+			
 		}
 
 		
@@ -354,8 +352,14 @@ function getList(settings) {
 		});
 
 		$( "#slider-range-max-label").html(data.range_label);
-		
 
+		if ($.bbq.getState("ID")) {
+
+
+			if (!$("#cm-details-modal").is(":visible")) {
+				getDetails();
+			}
+		}
 
 		scrollwindow(orderingactive,settings);
 

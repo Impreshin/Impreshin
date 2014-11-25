@@ -286,6 +286,10 @@
 #cm-details-modal #details-watched-by-list li {
   padding: 3px 8px;
 }
+#cm-details-modal article.highlight {
+  border-top: 3px solid #e1e1e1;
+  border-bottom: 3px solid #e1e1e1;
+}
 #popup-interactions .popup-header .span1 {
   width: 90px;
 }

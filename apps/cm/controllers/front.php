@@ -32,7 +32,7 @@ class front extends \apps\cm\controllers\_ {
 		//test_array($user);
 
 
-		$settings = models\settings::_read("form",$user['permissions']);
+		$settings = models\settings::_read("front",$user['permissions']);
 
 
 		//test_array($settings);

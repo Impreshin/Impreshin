@@ -1,0 +1,76 @@
+{% include '_details.jtmpl' %}
+<script type="text/x-jqote-template" id="template-ticker">
+	<![CDATA[
+
+	<div class="row" style="border-bottom:1px dotted #ccc; margin-bottom:10px;">
+		<h3 class="view-record-btn" data-link-id="<%= this.linkID %>"><%= this.heading %> <small class="pull-right"><span class="label label-info">Company</span></small></h3>
+
+		
+		
+		<ul class="nav nav-list ticker-feed-list">
+			<% for (var i in this.records) { %>
+			<li>
+				<a href="" class="<% if (this.records[i].uID == '{{ _user['ID'] }}'){ %>self<% } %>" data-link-id="<%= this.linkID %>" data-id="<%= this.records[i].ID %>" data-type="<%= this.records[i].type %>">
+					<span class="span1 dg" style="width:30px;">
+						<i class="<%= this.records[i].icon %>"></i>
+						
+					</span>
+					<span class="s"><%= this.records[i].fullName %></span>
+					
+					<span class="pull-right s"><%= this.records[i].timeago %></span>
+				</a>
+				<div class="popover-text">
+					<%= this.records[i].text %>
+				</div>
+				<div class="popover-title">
+					<%= this.records[i].type %>
+				</div>
+			</li>
+			<% } %>
+		</ul>
+		
+		
+	</div>
+
+	
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-left-1">
+	<![CDATA[
+
+calendar
+	
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-left-2">
+	<![CDATA[
+
+Tasks
+	
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-left-3">
+	<![CDATA[
+
+List
+	
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template-left-4">
+	<![CDATA[
+
+Status
+	
+	]]>
+</script>
+<script type="text/x-jqote-template" id="template-left-search">
+	<![CDATA[
+
+Search: <%= this.search %>
+	
+	]]>
+</script>
+

@@ -144,7 +144,7 @@ class watchlist extends data {
 		}
 
 		
-	//	test_array($where); 
+	
 		
 		//$where = $where . "AND cm_watchlist_companies.uID =";
 

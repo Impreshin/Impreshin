@@ -1,0 +1,44 @@
+h3.view-record-btn {
+  cursor: pointer;
+  margin-left: -5px;
+  padding-left: 5px;
+}
+h3.view-record-btn .pull-right {
+  margin-top: 4px;
+  margin-right: 3px;
+}
+h3.view-record-btn:hover {
+  background-color: #eeeeee;
+  text-decoration: none;
+}
+#right-area .nav-list.ticker-feed-list a {
+  color: #444;
+  padding: 2px 15px;
+}
+#right-area .nav-list.ticker-feed-list a.self {
+  color: #999;
+}
+#right-area .nav-list.ticker-feed-list a.self .dg i {
+  color: #ccc;
+}
+#right-area .nav-list.ticker-feed-list .popover-text,
+#right-area .nav-list.ticker-feed-list .popover-title {
+  display: none;
+}
+#btns-feed-days {
+  margin-right: 5px;
+}
+#btns-feed-days .btn {
+  width: 69px;
+}
+#btns-tabs .btn {
+  width: 77px;
+}
+.popover-content {
+  min-width: 200px;
+}
+.no-records-found {
+  margin-top: 30px;
+  text-align: center;
+  color: #999;
+}
