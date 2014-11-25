@@ -40,7 +40,7 @@ class front extends data {
 		
 		if ($feed_days){
 			$dateback = date('Y-m-d',strtotime('-'.$feed_days.' days'));
-			$where = $where . " AND datein >= '$dateback'";
+			$where = $where . " AND DATE_FORMAT(datein, '%Y-%m-%d') >= '$dateback'";
 			
 			
 		}
