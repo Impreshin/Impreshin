@@ -389,22 +389,13 @@
   box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
 }
 #list-tetris article {
-  padding: 5px;
-  border: 1px solid #ccc;
-  margin: 3px;
+  padding: 2px;
+  border-bottom: 1px dotted #ccc;
   cursor: pointer;
-  display: table-row;
-}
-#list-tetris article .span1 {
-  display: table-cell;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
+  margin-left: 4px;
 }
 #list-tetris article .span3 {
   width: 200px;
-  display: table-cell;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
   margin-left: -10px;
 }
 #list-tetris article:hover {

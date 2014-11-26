@@ -39,7 +39,7 @@ $(document).ready(function () {
 		
 		
 			if ($this.attr("data-img")){
-				img  = '<img src="/app/ab/thumb/material/'+$this.attr("data-id")+'/'+$this.attr("data-img")+'?w=260&h=260&c=false&s='+$this.attr("data-img")+'"/>';
+				img  = '<img src="/app/ab/thumb/material/'+$this.attr("data-id")+'/'+$this.attr("data-img")+'?w=260&h=340&c=false&s='+$this.attr("data-img")+'"/>';
 			} else {
 				img = "no material";
 			}

@@ -467,6 +467,7 @@
 						<span class="span1"><%= this.records[i].cm %>x<%= this.records[i].col %></span>
 						<span class="span3"><%= this.records[i].client %></span>
 						<div class="clearfix"></div>
+						
 					</article>
 
 					<% } %>
