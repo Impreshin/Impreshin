@@ -110,8 +110,7 @@ function getLeft(settings) {
 
 	$.getData("/app/cm/data/front/left", {"tab": tab}, function (data) {
 		var $scrollpane = $("#whole-area .scroll-pane");
-		
-		
+
 		
 		
 		
@@ -131,6 +130,9 @@ function getLeft(settings) {
 			}
 		}
 
+		if (data['tab']=='1'){
+			calendar(data);
+		}
 
 		$("#left-area .scroll-pane").jScrollPane(jScrollPaneOptions);
 		$("#left-area .loadingmask").fadeOut(transSpeed);
@@ -195,6 +197,7 @@ function getRight(settings) {
 		}
 
 
+	
 		
 		
 		
@@ -264,5 +267,97 @@ function getSearch(settings) {
 
 	},"left");
 
+
+}
+function calendar(data){
+	
+	
+	
+	var curDate = moment().format("YYYY-MM-DD");
+
+	var blockHight = $("#left-area").innerHeight() - 40;
+
+	//blockHight = 500;
+	
+	$('#calendar').fullCalendar({
+		header: {
+			left: 'prev,next today',
+			center: 'title',
+			right: 'month,agendaWeek,agendaDay'
+		},
+		defaultDate: curDate,
+		height: blockHight ,
+		editable: true,
+
+		selectable: true,
+		selectHelper: true,
+		select: function(start, end) {
+			var title = prompt('Event Title:');
+			var eventData;
+			if (title) {
+				eventData = {
+					title: title,
+					start: start,
+					end: end
+				};
+				$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+			}
+			$('#calendar').fullCalendar('unselect');
+		},
+
+
+		//handleWindowResize: true,
+		eventLimit: true, // allow "more" link when too many events
+		lazyFetching:false,
+		
+		events: function(start, end, timezone, callback) {
+			$.ajax({
+				url: "/app/cm/data/front/left?tab=1",
+				dataType: 'json',
+				data: {
+					// our hypothetical feed requires UNIX timestamps
+					start: start.unix(),
+					end: end.unix()
+				},
+				success: function(data) {
+					//console.log(data['data']['records'])
+					
+					callback(data['data']['records']);
+				}
+			});
+		},
+		dayClick: function(date, jsEvent, view) {
+
+			console.log('Clicked on: ' + date.format());
+			//alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			//alert('Current view: ' + view.name);
+
+			// change the day's background color just for fun
+			$(this).css('background-color', 'red');
+
+		},
+		eventClick: function(calEvent, jsEvent, view) {
+
+			//alert('Event: ' + calEvent.title);
+			//alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			//alert('View: ' + view.name);
+
+			// change the border color just for fun
+			$(this).css('background-color', 'blue');
+
+		},
+		eventRender: function(event, element) {
+			var $element = $(element);
+			
+			
+			if (event.class){
+				$element.addClass(event.class)
+			}
+			//return "hi";
+		}
+		
+	});
+	
+	
 
 }

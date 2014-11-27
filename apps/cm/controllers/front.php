@@ -48,6 +48,8 @@ class front extends \apps\cm\controllers\_ {
 			"meta"    => array(
 				"title"=> "CM - Front",
 			),
+		    "css"=>array("/ui/fullcalendar/fullcalendar.css"),
+		    "js"=>array("/ui/fullcalendar/lib/moment.min.js","/ui/fullcalendar/fullcalendar.js")
 			//"help"=> "/apps/nf/help/bookings"
 		);
 

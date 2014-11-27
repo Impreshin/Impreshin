@@ -38,7 +38,8 @@
 <script type="text/x-jqote-template" id="template-left-1">
 	<![CDATA[
 
-calendar
+	<div id='calendar'></div>
+
 	
 	]]>
 </script>

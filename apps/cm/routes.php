@@ -71,6 +71,13 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/cm/admin/import',
+	"controller"=>'apps\cm\controllers\admin\import->page',
+	"a"=>true,
+	"l"=>true,
+);
 
 
 

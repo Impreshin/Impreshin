@@ -26,10 +26,11 @@ h3.view-record-btn:hover {
   display: none;
 }
 #btns-feed-days {
-  margin-right: 5px;
+  margin-right: 6px;
+  margin-left: -2px;
 }
 #btns-feed-days .btn {
-  width: 69px;
+  width: 71px;
 }
 #btns-tabs .btn {
   width: 77px;
@@ -41,4 +42,10 @@ h3.view-record-btn:hover {
   margin-top: 30px;
   text-align: center;
   color: #999;
+}
+#calendar {
+  margin-top: 20px;
+}
+#calendar-area {
+  margin-bottom: -20px;
 }
