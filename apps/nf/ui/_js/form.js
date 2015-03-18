@@ -582,9 +582,16 @@ function getFormData() {
 
 		//console.log(data.details.priority);
 
-		formLoaded(data);
-		resizeform();
-		lock_unlock();
+
+		setTimeout(function(){
+
+			formLoaded(data);
+			resizeform();
+			lock_unlock();
+		}, 400)
+		
+		
+		
 		//setTimeout(resizeform, 1000)
 		$("#whole-area .loadingmask").fadeOut(transSpeed,function(){}());
 	}, "form_data");
