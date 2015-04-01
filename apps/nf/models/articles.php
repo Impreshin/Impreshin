@@ -308,7 +308,7 @@ class articles {
 
 		
 		
-	//	test_array($options); 
+	//	test_array($where); 
 	//	test_array(array("options"=>$options,"where"=>$where)); 
 
 		
@@ -890,10 +890,11 @@ class articles {
 			$where = " ";
 		}
 
+		
+		//test_array($where); 
+		
 		$timer->stop(array("Models" => array("Class" => __CLASS__, "Method" => __FUNCTION__)), func_get_args());
-
 		return $where;
-
 
 	}
 	public static function getLogs($ID) {

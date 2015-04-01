@@ -199,6 +199,7 @@ class author_submitted extends data {
 		//	test_array($return['records']);
 
 		}
+		if ($yearsSend_str=="")	$yearsSend_str = "null";
 		$return['comp']['years']=$years;
 		$where = " year(nf_articles.datein) in ($yearsSend_str) AND $where_general";
 		$return['comp']['data'] = models\report_figures::figures($where, $yearsSend,$tolerance);

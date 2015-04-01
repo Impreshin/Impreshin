@@ -19,23 +19,27 @@
 	}
 
 	.hide-fade {
-		.opacity(0);
-		.transition(all 0.5s ease-in-out);
-		&:hover {
-			.opacity(100);
-		}
-	}
+		opacity: 0.4;
 
+		-webkit-transition: all 0.5s ease-in-out;
+		-moz-transition: all 0.5s ease-in-out;
+		-o-transition: all 0.5s ease-in-out;
+		transition: all 0.5s ease-in-out;
+		
+		&:hover {
+			opacity: 1;
+		}
+		
+	}			
 	.figure-dir-u {
 		color       : green;
 		font-weight : bold;
-
 	}
 
+	
 	.figure-dir-d {
 		color       : red;
 		font-weight : bold;
-
 	}
 
 	tr:not(.figure-month-details) {
