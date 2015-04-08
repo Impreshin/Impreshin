@@ -4,13 +4,20 @@
 
 			<ul class="nav nav-pills pull-left">
 				<li>
-					<h2 style="padding-left: 30px; margin-bottom: -5px;">About
-						<small style="margin-left: 20px;">Impreshin</small>
+					<h2 style="padding-left: 30px; margin-bottom: -5px;">Impreshin
+						<small style="margin-left:30px;">&nbsp;</small>
 					</h2>
 				</li>
 
-				<li class="divider-vertical"></li>
 
+			</ul>
+			<ul class="nav nav-tabs pull-right" style="margin:-5px 20px -10px 0; border:none;">
+
+				{% for key,row in apps %}
+					<li>
+						<a href="/screenshots/{{ key }}">{{ row['name'] }}</a>
+					</li>
+				{% endfor %}
 			</ul>
 		</div>
 		<div class="toolbar-end"></div>
@@ -19,131 +26,159 @@
 </section>
 <section role="main" id="pagecontent">
 	<div class="container">
+		<article id="whole-area" class="span16">
+			<div class="content">
+				<div class="scroll-pane scrolly">
 
-
-		<div class="row">
-			<article id="left-area" class="span10">
-				<div class="content">
-					<div class="scroll-pane scrolly">
-						<div style="padding-left: 10px; padding-right: 10px;">
-
-
-							<h1 style="margin-top: 20px; margin-bottom:10px;">Applications</h1>
-
-							<h3>AdBooker
-								<small>Advert booking system</small>
-							</h3>
-							<p>This project entails an advert booking and workflow control system which handles the booking, production and lay-out processes and eventually creates a master list for invoicing.</p>
-
-							<p>The original AdBooker system has been operational since 2004 in various newspaper setups. It won the inaugural AIP Innovation awards in 2005. The development focus also moved to projects such as Newsfiler, a news repository system that won the 2010 Telkom Highway Africa award. </p>
-
-
-							<h3>NewsFiler
-								<small>Editorial booking system</small>
-							</h3>
-							<p><em>Coming soon..</em></p>
-
-
-							<h3>DistriBooker
-								<small>Distribution system</small>
-							</h3>
-							<p><em>Coming soon..</em></p>
-
-
-
-							<h2 style="margin-top: 20px; margin-bottom:10px;">The Story of AdBooker</h2>
-
-							<h3>Background </h3>
-
-							<p> AdBooker started, almost by accident, in 2004 when a young website developer, William Stam, approached the local newspaper in Louis Trichardt with the request to redesign their website.</p>
-
-							<p> This privately owned newspaper in the northern part of Limpopo has, interestingly enough, been running one of the oldest news websites in the country with weekly updates since 1998. The 19- year-old designer got the nod, on condition that he made it a fully interactive site, which could be easily updated and which would, at the same time, collect valuable information about users. William took less than three months to convert the static HTML pages to a database driven ASP-site which exceeded all expectations. </p>
-
-							<p> Once the site was finished and up and running, the possibilities of using a browser-based application for other purposes, was discussed. It was felt that William could use his talent to design practical applications that could make life a lot easier for personnel. </p>
-
-							<p> One of the problems newspapers continuously have to deal with, is the implementation of a booking system whereby several users could have access to the booking list, without allowing them to unnecessarily alter or possibly corrupt data. </p>
-
-							<p> The challenge was thus to design a browser-based application that could, among others, handle bookings, distinguish between various types of users (i.e. editorial or advertising) and give reports on marketers’ performances and advertisers’ trends. It also needed to calculate the number of pages the newspaper should be, based upon a set loading percentage. </p>
-
-							<p> A browser-based application was necessary for several reasons. Firstly because browsers are freely available and work on different operating systems such as Mac and Windows. The idea was also to later implement the system on the internet, making the central booking list available to an outside office. A browser-based system means that no additional software is needed and bookings can be made from wherever internet access is available. </p>
-
-							<p> AdBooker was subsequently born and raised by a group of “parents” who seemingly could never agree on just about anything. Poor William had to continuously change the programme to cater for the needs of yet another disgruntled user. The advantage of this was that AdBooker was never a concept forced upon users; the users rather forced the designer to adapt according to their own needs. The concept was literally formed from within the industry and later ended up as a design. </p>
-
-							<h3> A fresh approach (with more bells and whistles) </h3>
-
-							<p> The initial AdBooker went through some “facelifts”, but in general the 2004 version ran patiently in a number of newspaper offices for almost 8 years. During this time development focussed on several other applications such as Newsfiler, an application that handles the news content part of the business. In the beginning of 2012 AdBooker was again put on the design table. Even though the old version was still running, cracks started to appear. Technological advances mean that it was getting more and more difficult to support the software using outdated coding languages. In any case, new coding languages brought with it new possibilities, which could be utilized to make the programme more user-friendly and also offer so much more functionality. </p>
-
-							<p> The revamp effectively meant a total rewrite of the programme. Right from the start AdBooker was built to integrate with the other applications, such as Newsfiler. William, the developer, finished it in less than seven months, which was quite an incredible feat for a single developer. It involved almost 46 000 lines of code, which would even take a much bigger design team probably more than a year to complete. </p>
-
-							<h3> The African challenge </h3>
-
-							<p>In July this year the product was entered for the African News Innovation Challenge (ANIC). Out of the more than 500 screened entries, it was one of the 40 shortlisted entries. The 40 teams from not only Africa, but also Europe and the USA, were invited to a TechCamp in Zanzibar in October. This not only served as a very useful networking session, but the teams also gained valuable knowledge by speaking to experts from Google, WAN Ifra and the International Centre for Journalists. While this was all happening the developers of AdBooker started planning for the future, especially to secure the future of the project. </p>
-
-							<p> “The one dream William and I shared right from the start,” was to make these tools available to more small publishers,” says Anton van Zyl, manager of Zoutnet publishers. “The tools served us well over the past eight years, but it can make a huge difference in the lives of dozens of other small publishers, not only in South Africa, but also elsewhere in Africa. </p>
-
-							<p> Because AdBooker was born out of a “publisher family”, its roots lie in that same quest for independence, whether editorial or financial. “I saw a number of newspapers fail during the two decades that I’ve been in publishing,” says Anton. “In just about all the cases it was a result of bad management. I’ve yet to hear of a newspaper that went under because the stories were not being read.” </p>
-
-							<p> Anton ads that this is where the importance of using good tools come in. “Small publishers do not have the means to pay hundreds of thousands for software developer teams to custom-design tools for them to make sure they are profitable. The profit margins in publishing are unfortunately too low to allow for mistakes. If you miss a booking you’ve not only lost the income, but you’ve also lost the trust,” he says. The same goes for incorrect invoicing and slack credit control measures. “Publishers are notorious for rationalising. They will discount on adverts and convince themselves that they are still making money. AdBooker has powerful reporting tools which show you in real-time what the income is and what your newspaper should look like.” </p>
-
-							<p> According to Anton it gives the small voices in every community the power to compete with the biggest. </p>
-
-							<h3> … but back to the future </h3>
-
-							<p>“The ANIC award motivated us to take decisive steps to roll the tools out to more publishers,” says Anton. The first step was to “formalise” the process and break slightly away from the publisher mould. A separate company, Impreshin, was created with the distinct goal of looking after the development of AdBooker and the other products. “The next step would be to see how the funding grant can be utilised to make the product available to more publishers. “Our first obstacle is to teach publishers how to use the tools. This is a lot more difficult than it sounds, because AdBooker is not a tool that you can ship on a CD and give to a publisher. It’s a tool that drastically changes your workflow and it effectively redefines everyone’s role and job in the company,” says Anton. Both Anton and William are, however, confident that it will make an enormous impact on the longevity of the small voices in the communities. </p>
-
-							<p> With the help of the Association of Independent Publishers, AdBooker as well as other products in the Impreshin Suite will be rolled out to various provinces early in 2013. The tools are being made available to AIP members at a very low monthly subscription rate. The reason for the monthly subscription is to maintain a small team of software developers that can further develop and support the various applications. </p>
-
-							<p> Publishers that are interested in making use of AdBooker and the other tools developed can contact Anton van Zyl or William Stam</p>
-							<p> </p>
-
+					<div class="row">
+						<div class="span10">
+							<h2 style="padding-left:20px;">What we do</h2>
+							<div id="myCarousel" class="carousel slide" data-interval="4000" data-ride="carousel">
+								
+								<!-- Carousel items -->
+								<div class="carousel-inner">
+									{% for i in 1..39 %}
+										<a href="/front/presentation/slides/Impreshin/Slide{{ i }}.jpg" class="item fancybox  {% if loop.first %}active{% endif %}" rel="presentation">
+											<img src="/front/presentation/slides/Slide{{ i }}.jpg" alt="">
+											<div class="carousel-caption c">{{ i }} of 39</div>
+										</a>
+										
+									{% endfor %}
+									
+									
+								</div>
+								<!-- Carousel nav -->
+								<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+								<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+							</div>
+						</div>
+						<div class="span5" style="width:330px;" >
+							<blockquote class="pull-right">
+								<h2 class="r">Who are we</h2>
+								<p>
+									Impreshin is a research & development company catering almost exclusively for small
+									independent publishers.
+								</p>
+								<p>
+									It started off as a project to build productivity tools for a small rural
+									publisher.
+								</p>
+								<p>
+									The aim has always been to make these tools available to a wider
+									audience.
+								</p>
+								<p>
+									As the years progressed more tools were developed and the level of
+									sophistication increased.
+								</p>
+								<p>
+									In 2012 the company was formed to formalise this development unit and
+									also to try and ensure continuity.
+								</p>
+							</blockquote>
 						</div>
 					</div>
-				</div>
-			</article>
-			<article id="right-area" class="span6 offset10">
-				<div class="content">
-					<div class="scroll-pane scrolly">
-						<div style="padding-left: 10px; padding-right: 10px;">
-							<h2>Contact Details</h2>
-							<strong>Anton van Zyl</strong> - anton<span class="goaway"> </span>@<span class="goaway"> </span>impreshin<span class="goaway"> </span>.<span class="goaway"> </span>com<br>
-							<strong>William Stam</strong> - william<span class="goaway"> </span>@<span class="goaway"> </span>impreshin<span class="goaway"> </span>.<span class="goaway"> </span>com<br>
+					<article id="newsflash">
+						<div class="span16 s" style="margin-left: -5px;">
+							<ul id="js-news" class="js-hidden">
 
-							<h2 style="margin-top: 30px;">News</h2>
-
-							<article>
-								AdBooker won in the inaugural African News Innovation Challenge
-								<div class="r s g">28 November 2012</div>
-							</article>
-
-
-							<h2 style="margin-top: 30px;">Awards</h2>
-
-							<ul id="awards">
-								<li>
-									<strong><em>2012</em></strong> - African News Innovation Challenge (ANIC) <br><em>with "AdBooker"</em>
-								</li>
-								<li>
-									<strong><em>2011</em></strong> - 1st in the category Corporate – Highway to Africa new media awards
-									<br><em>with "NewsFiler"</em>
-								</li>
-								<li>
-									<strong><em>2005</em></strong> - 1st in the category Innovative Management, Business Systems
-									<br><em>with “AdBooker”</em>
-								</li>
-								<li>
-									<strong><em>2005</em></strong> - 2nd in the category Innovative Content Systems <br><em>with “Press-store”</em>
-								</li>
 							</ul>
 
+						</div>
 
+
+
+					</article>
+					
+					
+					
+					<div class="row">
+						<div class="span16">
+							<h2 style="margin-left:20px;margin-right:20px;margin-top:30px;">Our Applications</h2>
+							<ul class="nav nav-pills" style="margin-left:50px;;" id="app-list" >
+
+								{% for key,row in apps %}
+									<li class="span7 {% if row['app'] == data['app'] %}active{% endif %}">
+										<a href="/screenshots/{{ key }}">
+											<h4 class="c">
+												{{ row['name'] }}
+												<br>
+												<small>
+													{{ row['description'] }}
+												</small>
+											</h4>
+
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+							
+							<table style="width:920px;  margin-left:15px;" id="about-table"  >
+								<tr>
+									
+									<td>
+										<h1>Why such a development unit?</h1>
+										<ul>
+											<li> Small publishers do not have the means to fund research and
+												development projects.
+											</li>
+											<li>Small publishers are at a disadvantage when it comes to developing and
+												implementing technology, as they cannot afford to experiment.
+											</li>
+											<li>There is a need for long term solutions, not short term fixes.</li>
+											<li>Any such products would need support and further development. This can
+												only be done by a dedicated unit.<br/>
+											</li>
+										</ul>
+									</td>
+									<td>
+										<h1>What makes Impreshin different?</h1>
+										<ul>
+											<li>The products were developed from within the industry, building on dozens
+												of years of experience and best-practice methods.
+											</li>
+											<li>The partners in the development has always been in the small publishing
+												industry.
+											</li>
+											<li> Income generated via Impreshin gets utilized to support existing products
+												and develop new products.
+											</li>
+											<li> The products are browser-based which, among other advantages, mean
+												they can be used on different platforms and interfaces.<br/>
+											</li>
+										</ul>
+									</td>
+									<td>
+										<h1>Awards</h1>
+										<ul>
+											<li> AIP Media Innovation Awards (2005) - AdBooker, Press-Store</li>
+											<li>Highway Africa Awards (2011) - AdBooker</li>
+											<li> ANIC (2012) African News Innovation Challenge – AdBooker</li>
+										</ul>
+										<h1 style="margin-top:20px;">Performance</h1>
+										Web based applications get a lot of flack for not performing optimally. Impreshin’s
+										performance got a lot of tweaking. Data is generated and returned to the client in less than 0.4 seconds*<br/>
+										<div class="s g">* network speed dependent</div>
+										
+									</td>
+								</tr>
+							</table>
 						</div>
 					</div>
+					
+					
+					
 				</div>
-
-			</article>
-		</div>
-
+			</div>
+		</article>
+		
+		
 
 	</div>
 
+
 </section>
+<script type="text/javascript">
+	var path = "{{ _cfg['news']['path'] }}";
+	var news_items = {{ news_items|raw }};
+</script>

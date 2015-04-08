@@ -7986,6 +7986,46 @@ form #form-bottom .form-actions {
   font-variant: small-caps;
   padding: 3px;
 }
+.navbar input {
+  border-color: #707070;
+  background-color: #444;
+  color: #e1e1e1;
+}
+.navbar input::-webkit-input-placeholder {
+  color: #d5d5d5;
+}
+.navbar input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #d5d5d5;
+}
+.navbar input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #d5d5d5;
+}
+.navbar input:-ms-input-placeholder {
+  color: #e1e1e1;
+}
+#s2id_pubSelectID .select2-arrow {
+  background: none!important;
+  border-left: #444;
+  right: 5px;
+  top: 5px;
+}
+.pub-select-drop {
+  margin-left: -90px;
+  margin-top: 7px;
+  width: 290px!important;
+}
+.pub-select-drop .select2-results {
+  max-height: 400px;
+}
+.pub-select-drop .select2-result-unselectable > .select2-result-label {
+  border-bottom: 1px dotted #ccc;
+  color: #999;
+  font-variant: small-caps;
+  margin-top: 5px;
+  padding: 3px;
+}
 table.records .heading th {
   padding-top: 10px;
   border-bottom: 1px solid #eeeeee;

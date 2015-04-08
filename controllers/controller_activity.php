@@ -15,7 +15,7 @@ class controller_activity {
 			"sub_section" => "",
 			"template"    => "page_activity",
 			"meta"        => array(
-				"title" => "Activity",
+				"title" => "Impreshin | Activity",
 			),
 			"js"=>"/ui/_js/plugins/jquery.FeedEk.js"
 		);

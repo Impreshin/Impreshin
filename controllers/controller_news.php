@@ -39,6 +39,9 @@ class controller_news {
 		$selected_folder = $path . $selected_folder;
 		$item = (file_exists($selected_folder . DIRECTORY_SEPARATOR . "index.html")) ? file_get_contents($selected_folder . DIRECTORY_SEPARATOR . "index.html") : "";
 
+		$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
+		$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
+		if (!$username) $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : "";
 
 		//test_array($item);
 
@@ -48,12 +51,13 @@ class controller_news {
 			"sub_section"=> "",
 			"template"   => "page_news",
 			"meta"       => array(
-				"title"=> "News",
+				"title"=> "Impreshin | News",
 			)
 		);
 		$tmpl->items = $d;
 		$tmpl->item = $item;
 		$tmpl->date = $date;
+		$tmpl->username = $username ;
 		$tmpl->output();
 
 	}

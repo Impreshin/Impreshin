@@ -258,6 +258,7 @@ class controller_screenshots {
 			"screenshots"=>array()
 		);
 		
+		
 		$images["pf"]=array(
 			"app"=>"pf",
 			"name"=>$apps['pf']['name'],
@@ -270,7 +271,9 @@ class controller_screenshots {
 		
 		
 		$data= isset($images[$app])?$images[$app]:false;
-
+		$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
+		$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
+		if (!$username) $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : "";
 		//test_array($images['ab']); 
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
 		$tmpl->page = array(
@@ -278,12 +281,13 @@ class controller_screenshots {
 			"sub_section"=> "form",
 			"template"   => "page_screenshots",
 			"meta"       => array(
-				"title"=> "ScreenShots",
+				"title"=> "Impreshin | ScreenShots",
 			)
 		);
 		$tmpl->images = $images;
 		$tmpl->data = $data;
 		$tmpl->apps = $images;
+		$tmpl->username = $username ;
 		$tmpl->output();
 
 	}

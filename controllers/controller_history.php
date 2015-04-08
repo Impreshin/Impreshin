@@ -11,7 +11,9 @@ class controller_history {
 	function page(){
 
 
-
+		$username = isset($_POST['login_email']) ? $_POST['login_email'] : "";
+		$password = isset($_POST['login_password']) ? $_POST['login_password'] : "";
+		if (!$username) $username = isset($_COOKIE['username']) ? $_COOKIE['username'] : "";
 
 
 		$tmpl = new \template("template.tmpl", "ui/front/", true);
@@ -20,10 +22,11 @@ class controller_history {
 			"sub_section"=> "form",
 			"template"   => "page_history",
 			"meta"       => array(
-				"title"=> "History",
+				"title"=> "Impreshin | History",
 			),
 			"js" => "/ui/_js/plugins/FeedEk.js"
 		);
+		$tmpl->username = $username ;
 		$tmpl->output();
 
 	}

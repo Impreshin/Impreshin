@@ -1,24 +1,116 @@
 #pagecontent h2 {
-	border-bottom: 1px dotted #ccc;
-	margin: 10px -10px 10px -10px;
-	padding-left: 10px;
-	padding-right: 10px;
+  border-bottom: 1px dotted #ccc;
+  margin: 10px -10px 10px -10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-variant: small-caps;
 }
 #pagecontent h3 {
-	margin-top: 20px;
-	color: #999;
-	border-bottom: 1px dotted #e1e1e1;
+  margin-top: 20px;
+  color: #999;
+  border-bottom: 1px dotted #e1e1e1;
 }
 #pagecontent h3 small {
-	margin-left:10px;
-
+  margin-left: 10px;
 }
-#awards li {
-	margin-top: 5px;
-	border-bottom: 1px dotted #ccc;
-	padding-bottom: 5px;
+#about-table {
+  margin-left: 15px;
+  margin-top: 30px;
+  -webkit-box-shadow: 2px 2px 4px #ccc;
+  -moz-box-shadow: 2px 2px 4px #ccc;
+  box-shadow: 2px 2px 4px #ccc;
+  border: 1px solid #999;
 }
-.goaway {
-	width: 0px;
-	display: none;
+#about-table td {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  width: 33%;
+  padding: 10px;
+  background-color: rgba(250, 250, 250, 0.7);
+}
+#about-table td:first-child {
+  border-left: none;
+}
+#about-table h1 {
+  font-size: 16px;
+  line-height: 18px;
+  margin-bottom: 10px;
+  font-variant: small-caps;
+  border-bottom: 1px dotted #ccc;
+  padding-bottom: 5px;
+}
+#about-table li {
+  margin-bottom: 6px;
+}
+.card {
+  border: 1px solid #ccc;
+  width: 400px;
+  float: left;
+  margin: 30px;
+  text-align: center;
+  height: 150px;
+  background-color: rgba(250, 250, 250, 0.7);
+}
+#app-list li {
+  margin-bottom: 10px;
+}
+#app-list li a {
+  border: 1px solid #ccc;
+  background-color: rgba(250, 250, 250, 0.7);
+}
+#app-list li a h4 {
+  color: #0088cc;
+}
+#app-list li a:hover {
+  background-color: #e1e1e1;
+}
+blockquote {
+  margin: 0 0 0 10px;
+}
+blockquote p {
+  font-weight: normal;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+#myCarousel {
+  margin-top: 15px;
+  margin-left: 25px;
+  -webkit-box-shadow: 2px 2px 4px #ccc;
+  -moz-box-shadow: 2px 2px 4px #ccc;
+  box-shadow: 2px 2px 4px #ccc;
+  border: 1px solid #a9a9a9;
+}
+#myCarousel .carousel-control {
+  bottom: 0;
+  top: auto;
+  opacity: 0.2;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#myCarousel:hover .carousel-control {
+  opacity: 0.5;
+}
+#myCarousel .carousel-control:hover {
+  opacity: 1;
+}
+#myCarousel .carousel-control.left {
+  left: 0px;
+}
+#myCarousel .carousel-control.right {
+  right: 0;
+}
+#myCarousel .carousel-caption {
+  padding: 5px;
+  color: #fff;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+  left: 230px;
+  right: 230px;
+  border-radius: 10px;
+  font-size: 10px;
+  text-shadow: 0 0 2px #000;
+}
+.ticker {
+  border-bottom: 1px solid #ccc;
 }

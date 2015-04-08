@@ -17,7 +17,7 @@ class controller_login {
 			"sub_section"=> "form",
 			"template"   => "page_login",
 			"meta"       => array(
-				"title"=> "Login",
+				"title"=> "Impreshin | Login",
 			),
 			"css"=>"/ui/_css/plugins/ticker-style.css",
 			"js"=>"/ui/_js/plugins/jquery.ticker.js"
@@ -57,6 +57,8 @@ class controller_login {
 
 		}
 		$d = array_reverse($d);
+
+
 		
 
 		
