@@ -437,9 +437,9 @@ class report_figures {
 			$data[$k]['cm'] = isset($data[$k]['cm'])? $data[$k]['cm'] + $record['totalspace']:$record['totalspace'];
 			$data[$k]['records'] = isset($data[$k]['records'])?$data[$k]['records'] + $record['records']:$record['records'];
 
-			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
-			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
-			$data[$k]['pubs'][$record['pID']]['records'] = $data[$k]['pubs'][$record['pID']]['records'] + $record['records'];
+			$data[$k]['pubs'][$record['pID']]['totals'] = isset($data[$k]['pubs'][$record['pID']]['totals'])?$data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost']:$record['totalCost'];
+			$data[$k]['pubs'][$record['pID']]['cm'] = isset($data[$k]['pubs'][$record['pID']]['cm'])?$data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace']:$record['totalspace'];
+			$data[$k]['pubs'][$record['pID']]['records'] = isset($data[$k]['pubs'][$record['pID']]['records'])?$data[$k]['pubs'][$record['pID']]['records'] + $record['records']:$record['records'];
 
 		}
 
