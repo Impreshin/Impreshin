@@ -433,8 +433,8 @@ class report_figures {
 			$k = date("mY", strtotime($record['publishDate']));
 
 
-			$data[$k]['totals'] = $data[$k]['totals'] + $record['totalCost'];
-			$data[$k]['cm'] = $data[$k]['cm'] + $record['totalspace'];
+			$data[$k]['totals'] = isset($data[$k]['totals'])? $data[$k]['totals'] + $record['totalCost']: $record['totalCost'];
+			$data[$k]['cm'] = isset($data[$k]['cm'])? $data[$k]['cm'] + $record['totalspace']:$record['totalspace'];
 			$data[$k]['records'] = $data[$k]['records'] + $record['records'];
 
 			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
