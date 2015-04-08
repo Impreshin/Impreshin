@@ -435,7 +435,7 @@ class report_figures {
 
 			$data[$k]['totals'] = isset($data[$k]['totals'])? $data[$k]['totals'] + $record['totalCost']: $record['totalCost'];
 			$data[$k]['cm'] = isset($data[$k]['cm'])? $data[$k]['cm'] + $record['totalspace']:$record['totalspace'];
-			$data[$k]['records'] = $data[$k]['records'] + $record['records'];
+			$data[$k]['records'] = isset($data[$k]['records'])?$data[$k]['records'] + $record['records']:$record['records'];
 
 			$data[$k]['pubs'][$record['pID']]['totals'] = $data[$k]['pubs'][$record['pID']]['totals'] + $record['totalCost'];
 			$data[$k]['pubs'][$record['pID']]['cm'] = $data[$k]['pubs'][$record['pID']]['cm'] + $record['totalspace'];
