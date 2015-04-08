@@ -154,7 +154,7 @@ class account_figures extends data {
 		}
 		$yearsSend_str = implode(",", $yearsSend);
 
-
+		if ($yearsSend_str=="")	$yearsSend_str = "null";
 
 		$years = ($y);;
 		$where_general = "checked = '1' AND accountID = '$ID' AND deleted is null ";

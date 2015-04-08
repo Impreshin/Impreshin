@@ -153,7 +153,7 @@ class publication_section_figures extends data {
 			}
 		}
 		$yearsSend_str = implode(",", $yearsSend);
-
+		if ($yearsSend_str=="")	$yearsSend_str = "null";
 
 
 		$years = ($y);;

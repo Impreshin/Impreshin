@@ -175,7 +175,7 @@ class publication_discounts extends data {
 			}
 		}
 		$yearsSend_str = implode(",", $yearsSend);
-
+		if ($yearsSend_str=="")	$yearsSend_str = "null";
 
 
 		if ($dir=="u"){
