@@ -1,0 +1,36 @@
+#whole-area {
+  background: url('/ui/_images/logo-big.png') center center no-repeat;
+}
+.card {
+  border: 1px solid #999;
+  box-shadow: 3px 3px 5px #ccc;
+  height: 240px;
+  width: 420px;
+  position: relative;
+  background: url('/ui/_images/logo-big.png') center center no-repeat #ffffff;
+  margin-left: 40px;
+  float: left;
+}
+.card .logo {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+.card .name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: 45%;
+  font-weight: bold;
+  font-size: 30px;
+  font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+  font-variant: small-caps;
+}
+.card .contact {
+  position: absolute;
+  left: 0;
+  right: 10px;
+  text-align: right;
+  bottom: 10px;
+}
