@@ -164,8 +164,8 @@ class author_newsbook extends data {
 				$placed_sql = " AND nf_article_newsbook.placed='0' ";
 				break;
 		}
-		
 
+		if ($yearsSend_str=='')$yearsSend_str = date("Y");
 		
 
 		$years = ($y);;
@@ -206,6 +206,8 @@ class author_newsbook extends data {
 			//	test_array($return['records']);
 
 		}
+		
+		//test_array($yearsSend_str);
 		$return['comp']['years'] = $years;
 		$where = " year(nf_articles.datein) in ($yearsSend_str) AND $where_general";
 		$return['comp']['data'] = models\report_figures_newsbook::figures($where, $yearsSend, $pID, $tolerance);

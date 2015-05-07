@@ -155,9 +155,9 @@ class author_submitted extends data {
 		}
 		$yearsSend_str = implode(",", $yearsSend);
 
-		
-		
 
+
+		if ($yearsSend_str=='')$yearsSend_str = date("Y");
 
 		$years = ($y);;
 		
