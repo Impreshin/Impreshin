@@ -444,16 +444,16 @@ CASE ab_bookings.typeID WHEN 1 THEN ab_placing.placing WHEN 3 THEN CONCAT('Class
 				$arrange = "COALESCE(ab_marketers.marketer,'None') as heading";
 				break;
 			case "columns":
-				$orderby = "if(typeID='1',ab_bookings.col,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',concat('Columns: ',ab_bookings.col),ab_bookings_types.type) as heading";
+				$orderby = "if(ab_bookings.typeID='1',ab_bookings.col,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(ab_bookings.typeID='1',concat('Columns: ',ab_bookings.col),ab_bookings_types.type) as heading";
 				break;
 			case "pages":
-				$orderby = "if(typeID='1',global_pages.page,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
+				$orderby = "if(ab_bookings.typeID='1',global_pages.page,99999) $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(ab_bookings.typeID='1',COALESCE(concat('Page: ',format(global_pages.page,0)),'Not Planned Yet'),ab_bookings_types.type) as heading";
 				break;
 			case "colours":
-				$orderby = "if(typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
-				$arrange = "if(typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),''),ab_bookings_types.type) as heading";
+				$orderby = "if(ab_bookings.typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),'zzzzzzzzz'),'zzzzzzzzz') $ordering, ab_bookings_types.orderby, " . $orderby;
+				$arrange = "if(ab_bookings.typeID='1',COALESCE(COALESCE(if(ab_placing_sub.placingID=ab_bookings.placingID,system_publishing_colours_2.colourLabel,NULL), system_publishing_colours_1.colourLabel, system_publishing_colours.colourLabel),''),ab_bookings_types.type) as heading";
 				break;
 			case "discountPercent":
 				$orderby = "if((totalShouldbe<>totalCost) AND totalShouldbe>0,if(((totalShouldbe - totalCost))>0,if((totalShouldbe - totalCost)/totalShouldbe>0.5,5,if((totalShouldbe - totalCost)/totalShouldbe>0.2,4,3)),0),1) $ordering, " . $orderby;
@@ -464,8 +464,8 @@ CASE ab_bookings.typeID WHEN 1 THEN ab_placing.placing WHEN 3 THEN CONCAT('Class
 				$arrange = "if(ab_accounts_status.status<>'',concat('Account - ',ab_accounts_status.status),ab_bookings_types.type) as heading";
 				break;
 			case "material_production":
-				$orderby = "if(typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_production.production $ordering,  " . $orderby;
-				$arrange = "if(typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_production.production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
+				$orderby = "if(ab_bookings.typeID='1',(CASE material_source WHEN 1 THEN 0 WHEN 2 THEN 1 END),99999) $ordering, ab_bookings_types.orderby, ab_production.production $ordering,  " . $orderby;
+				$arrange = "if(ab_bookings.typeID='1',COALESCE((CASE material_source WHEN 1 THEN ab_production.production WHEN 2 THEN 'Supplied' END),'None'),ab_bookings_types.type) as heading";
 				break;
 			case "invoicedStatus":
 				$orderby = "if (invoiceNum,1,0) $ordering, " . $orderby;
