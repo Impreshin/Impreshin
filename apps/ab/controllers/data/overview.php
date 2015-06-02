@@ -29,7 +29,7 @@ class overview extends data {
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND ab_bookings.typeID='1' ", "client ASC");
 		$stats = $this->_stats();
 
 		$highlight = isset($_GET['highlight'])? $_GET['highlight']: $settings['highlight'];
@@ -434,7 +434,7 @@ class overview extends data {
 
 
 		$pageID = $page['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.typeID='1'", "client ASC");
 		$bookings = array();
 		foreach ($bookingsRaw as $booking) {
 			if ($booking['pageID'] == $pageID) {
@@ -477,7 +477,7 @@ class overview extends data {
 
 //test_array($currentDate); 
 		if (!is_array($data)) {
-			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND typeID='1' ");
+			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND ab_bookings.typeID='1' ");
 			$statsData = array();
 			$layoutcm = 0;
 			foreach ($data as $item){
