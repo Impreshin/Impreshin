@@ -291,7 +291,7 @@
 					}
 				}
 			}
-
+			$("#nf-details-modal .scroll-pane").jScrollPane(jScrollPaneOptions);
 			setTimeout(function(){
 				$("#nf-details-modal .scroll-pane").jScrollPane(jScrollPaneOptions);
 			},500)
