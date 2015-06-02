@@ -694,7 +694,7 @@ class layout extends data {
 
 
 		if (!is_array($data)) {
-			$data = \apps\ab\models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND typeID='1' ");
+			$data = \apps\ab\models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND ab_bookings.typeID='1' ");
 			$statsData = array();
 			$layoutcm = 0;
 			foreach ($data as $item){

@@ -116,7 +116,7 @@ class layout extends data {
 
 		$currentDate = $user['publication']['current_date'];
 		$dID = $currentDate['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND typeID='1' ", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND checked = '1' AND ab_bookings.typeID='1' ", "client ASC");
 		$stats = $this->_stats();
 
 
@@ -378,7 +378,7 @@ class layout extends data {
 
 
 		$pageID = $page['ID'];
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1'", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.typeID='1'", "client ASC");
 		$bookings = array();
 		foreach ($bookingsRaw as $booking) {
 			$placed="0";
@@ -440,7 +440,7 @@ class layout extends data {
 
 
 		if (!is_array($data)) {
-			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND typeID='1' ");
+			$data = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND ab_bookings.deleted is null AND ab_bookings.typeID='1' ");
 			$statsData = array();
 			$layoutcm = 0;
 			foreach ($data as $item){
@@ -498,7 +498,7 @@ class layout extends data {
 		$page['a']['edit'] = ($user['permissions']['layout']['editpage'])?1:0;
 
 
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1' AND pageID='$pageID'", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.typeID='1' AND pageID='$pageID'", "client ASC");
 		$bookings = array();
 		$cm = 0;
 		$records = 0;
