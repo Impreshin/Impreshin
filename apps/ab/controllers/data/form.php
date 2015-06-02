@@ -168,7 +168,7 @@ class form extends data {
 
 			}
 
-			$d = models\bookings::getAll_select("ab_bookings.ID, client, global_dates.publish_date as publishDate, totalCost, totalspace, cm, col, InsertPO, typeID, account as heading", "accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND deleted is null $extra_where", "global_dates.publish_date DESC LIMIT 0,6");
+			$d = models\bookings::getAll_select("ab_bookings.ID, client, global_dates.publish_date as publishDate, totalCost, totalspace, cm, col, InsertPO, ab_bookings.typeID, account as heading, classifiedWords", "accountID = '$accNum' AND ab_bookings.pID = '$pID' AND ab_bookings.typeID = '$type' AND deleted is null $extra_where", "global_dates.publish_date DESC LIMIT 0,6");
 
 			$d = models\bookings::display($d);
 

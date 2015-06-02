@@ -6,7 +6,7 @@ use \apps\ab\models as models;
 use \models\user as user;
 
 
-class admin_inserts_types extends data {
+class admin_classified_types extends data {
 	function __construct() {
 		parent::__construct();
 
@@ -28,7 +28,7 @@ class admin_inserts_types extends data {
 
 
 
-		$records = models\inserts_types::getAll($where, "orderby ASC");
+		$records = models\classified_types::getAll($where, "orderby ASC");
 
 		$return = array();
 
@@ -47,7 +47,7 @@ class admin_inserts_types extends data {
 				}
 
 
-				$records = models\inserts_types::getAll("pID in (" . implode(",", $pubIDs) . ")", "orderby ASC");
+				$records = models\classified_types::getAll("pID in (" . implode(",", $pubIDs) . ")", "orderby ASC");
 
 				$a = array();
 				foreach ($records as $record){
@@ -84,7 +84,7 @@ class admin_inserts_types extends data {
 
 		$ID = (isset($_REQUEST['ID'])) ? $_REQUEST['ID'] : "";
 
-		$o = new models\inserts_types();
+		$o = new models\classified_types();
 		$details = $o->get($ID);
 
 		$ID = $details['ID'];
@@ -98,7 +98,7 @@ class admin_inserts_types extends data {
 		$return['details'] = $details;
 
 		if ($details['ID']) {
-			$where = "ab_bookings.insertTypeID='" . $details['ID'] . "'";
+			$where = "ab_bookings.classifiedTypeID='" . $details['ID'] . "'";
 			$recordsFound = models\bookings::getAll_count($where);
 		} else {
 			$recordsFound = 0;

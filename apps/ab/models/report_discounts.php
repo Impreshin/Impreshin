@@ -67,7 +67,7 @@ class report_discounts {
 		);
 
 
-		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, ab_bookings.typeID, classifiedWords";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID, typeID");
 
@@ -286,7 +286,7 @@ class report_discounts {
 		$where = $where . "(ab_bookings.pID in ($publications_where)  AND (global_dates.publish_date>='$from' AND global_dates.publish_date<='$to'))";
 
 
-		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, typeID";
+		$select = "global_dates.publish_date as publishDate, sum(totalCost) as totalCost, sum(totalShouldbe) as totalShouldbe, sum(totalspace) as totalspace, count(ab_bookings.ID) as records, ab_bookings.pID as pID, global_publications.publication, ab_bookings.dID, ab_bookings.typeID, classifiedWords";
 
 		$d = bookings::getAll_select($select, $where, "global_dates.publish_date ASC", "ab_bookings.dID");
 

@@ -106,7 +106,8 @@ class controller_app_form extends \apps\ab\controllers\_{
 			"meta"        => array(
 				"title" => "AB - Form - loading..",
 			),
-			"help"        => "/app/ab/documentation/ab/form"
+			"help"        => "/app/ab/documentation/ab/form",
+			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/_js/plugins/jquery.ba-throttle-debounce.min.js","/ui/_js/plugins/Countable.js")
 		);
 
 		$tmpl->dates = array(
@@ -121,12 +122,14 @@ class controller_app_form extends \apps\ab\controllers\_{
 		$tmpl->production = models\production::getAll("pID='$pID' AND ab_production.cID='$cID'", "production ASC");
 		$tmpl->categories = models\categories::getAll("pID='$pID' AND ab_categories.cID='$cID'", "orderby ASC");
 		$tmpl->inserts_types = models\inserts_types::getAll("pID='$pID'", "orderby ASC", "");
+		$tmpl->classifieds_types = models\classified_types::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->placing = models\placing::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->sub_placing = models\sub_placing::getAll("pID='$pID'", "orderby ASC", "");
 		$tmpl->payment_methods = \models\_system::payment_methods_getAll();
 		$tmpl->accounts = $accounts;
 		$tmpl->showsearch = $showsearch;
 		$tmpl->ID = $details['ID'];
+		
 		$tmpl->output();
 
 	}

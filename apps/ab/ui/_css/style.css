@@ -187,7 +187,7 @@
 #ab-details-modal #material-file-area #material-file-area-filename img {
   margin-right: 10px;
 }
-#ab-details-modal #details-pane-material a {
+#ab-details-modal #details-pane-material a.material-dl {
   display: block;
   position: absolute;
   top: 0;
@@ -212,6 +212,18 @@
   box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
   margin-left: auto;
   margin-top: 20px;
+}
+#ab-details-modal #details-pane-material #classifiedText {
+  margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 200px;
+  border: 1px solid #ccc;
+}
+#ab-details-modal #details-pane-material #classifiedMedia {
+  text-align: center;
+  padding: 10px;
 }
 #ab-details-modal #details-advert-size {
   -webkit-box-shadow: 0 0 13px rgba(100, 100, 100, 0.2);

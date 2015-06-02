@@ -90,22 +90,36 @@
 					<% } %>
 				</tr>
 				<% } else if (this.typeID =='2') { %>
+					<tr>
+						<th>Print Order</th>
+						<td colspan="3">:&nbsp;<%= this.InsertPO || "" %></td>
+					</tr>
+					<% if (this.insertLabel) { %>
+					<tr>
+						<th>Insert Type</th>
+						<td colspan="3">:&nbsp;<%= this.insertLabel || "" %></td>
+					</tr>
+					<% } %>
+					<tr>
+						<th>Tariff</th>
+						<td colspan="3">:&nbsp;<%= this.rate_C || "" %></td>
+					</tr>
+				<% } else if (this.typeID =='3') { %>
 				<tr>
-					<th>Print Order</th>
-					<td colspan="3">:&nbsp;<%= this.InsertPO || "" %></td>
-				</tr>
-				<% if (this.insertLabel) { %>
-				<tr>
-					<th>Insert Type</th>
-					<td colspan="3">:&nbsp;<%= this.insertLabel || "" %></td>
-				</tr>
-				<% } %>
-				<tr>
-					<th>Tariff</th>
-					<td colspan="3">:&nbsp;<%= this.rate_C || "" %></td>
-				</tr>
+					<th>Placing</th>
+					<td colspan="3">:&nbsp;<%= this.placing || "" %></td>
 
-				<% } %> <% if (this.totalCost_C) { %>
+				</tr>
+				<tr>
+					<th>Words</th>
+					<td colspan="3">:&nbsp;<%= this.classifiedWords || "" %></td>
+				</tr>
+				<tr>
+					<th>Characters</th>
+					<td colspan="3">:&nbsp;<%= this.classifiedCharacters || "" %></td>
+				</tr>
+				<% } %> 
+				<% if (this.totalCost_C) { %>
 				<tr>
 					<th>Totalcost</th>
 					<td colspan="3">: <%= this.totalCost_C || "" %> &nbsp;&nbsp;&nbsp; <% if (this.percent_diff!="0.00"){ %> (<%= this.totalShouldbe_C || "" %> -
@@ -256,8 +270,11 @@
 <% if (this.a.material_pane=='1') { %>
 <div id="details-pane-material" class="tab-pane">
 	<div class="scroll-pane">
-
-		<a href="/app/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>">
+<% if(this.typeID=='1') { %>
+		
+		
+		
+		<a href="/app/ab/download/material/<%= this.ID %>/<%= this.material_file_filename %>" class="material-dl">
 			<div id="material-pane-header">
 				<h4><%= this.material_file_filename %>&nbsp;
 					<small>&nbsp;(<%= this.material_file_filesize_display %> - <%= this.material_production %>)</small>
@@ -267,7 +284,29 @@
 
 			<img src="/app/ab/thumb/material/<%= this.ID %>/<%= this.material_file_filename %>?w=400&h=400&s=<%= this.material_file_store %>" alt="" class="glow">
 		</a>
-
+<% } else { %>
+		<% if (this.classifiedMedia){ %>
+		
+		<div id="classifiedMedia">
+			
+			<% if (this.classifiedMediaImage){ %>
+			<a href="/app/ab/download/classified/<%= this.ID %>/<%= this.classifiedMediaName %>">
+			<img src="/app/ab/thumb/general/200/200/<%= this.classifiedMediaName||'' %>?file=<%= this.classifiedMediaPath||'' %>" alt=""/>
+			</a>
+			<% } %>
+			<div class="clearfix"></div>
+			<a href="/app/ab/download/classified/<%= this.ID %>/<%= this.classifiedMediaName %>">
+				<em>File:</em>
+				<%= this.classifiedMediaName||'' %>
+			</a>
+			
+		</div>
+		<% } %>
+		<div id="classifiedText">
+			<%= this.classifiedText||'' %>
+		</div>
+		
+		<% } %>
 
 	</div>
 </div>

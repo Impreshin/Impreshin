@@ -1,3 +1,23 @@
+var text_toolbar = [
+	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', , 'Subscript', 'Superscript' ] },
+	{ name: 'tools', items: [ 'Find','Replace' ] },
+	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
+	{ name: 'tools', items: [ 'SpecialChar' ] },
+	{ name: 'tools', items: [ 'Maximize' ] },
+	{ name: 'spellcheck', items: [ 'jQuerySpellChecker' ]}
+
+];
+var caption_settings = {
+	uiColor           : '#FFFFFF',
+	height            : '310px',
+	toolbar           : text_toolbar,
+	removePlugins     : 'elementspath',
+	resize_enabled    : false,
+	
+};
+
+
+
 var right_pane = $("#record-list-middle").jScrollPane(jScrollPaneOptions).data("jsp");
 $(document).ready(function () {
 	getData();
@@ -80,6 +100,12 @@ $(document).ready(function () {
 	$(document).on("shown", "#suggestion-tabs", function () {
 		resizeform();
 	});
+	
+	$(document).on("keyup", "#classifiedText", 
+		$.debounce(250, function() {
+			 display_notes();
+		}));
+
 
 	$(document).on("change", "#sub_placingID", function () {
 		var $this = $(this);
@@ -220,6 +246,14 @@ function getData() {
 		$bookingTypeBtns.find("button[data-type='" + type + "']").trigger("click");
 		//$("#form-diff-"+ type).show();
 
+		var instance = CKEDITOR.replace("classifiedText", caption_settings).on('change', 
+			$.debounce(250, function() {
+				
+				display_notes();
+				
+			})
+		);
+		set_upload_classified_media(data)
 		dropdowns_fn(data);
 		sub_placing_fn(data['details']['sub_placingID']);
 		colours_fn();
@@ -227,6 +261,7 @@ function getData() {
 		account_note();
 		account_lookup_history_suggestions();
 		//resizeform();
+		//classifiedMaths();
 		$("#whole-area .loadingmask").fadeOut(transSpeed);
 	}, "data");
 
@@ -265,9 +300,13 @@ function dropdowns_fn(data) {
 	$("#marketerID").select2({});
 	$("#categoryID").select2({});
 	$("#insertTypeID").select2({});
+	$("#classifiedTypeID").select2({});
 	$("#placingID").select2({});
 	$("#colourID").select2({});
 	$("#payment_methodID").select2({});
+	
+	
+	
 }
 function resizeform() {
 
@@ -447,6 +486,41 @@ function display_notes() {
 			shouldbe_e = (InsertPO) * (exact_rate / 1000);
 
 			break;
+		case "3":
+			classifiedMaths()
+			rate = $("#rate").val();
+			var $ty = $("#classifiedTypeID option:selected");
+			exact_rate = $ty.attr("data-rate");
+			if (!rate) {
+				rate = exact_rate
+			}
+
+			exact_rate = Number(exact_rate).toFixed(2);
+			var area = document.getElementById('classifiedText');
+			
+			
+			switch ($ty.attr("data-type")){
+				case "1":
+					Countable.once(area, function (counter) {
+						shouldbe = (counter.words) * (rate);
+						shouldbe_e = (counter.words) * (exact_rate);
+					})
+					break;
+				case "2":
+					Countable.once(area, function (counter) {
+						shouldbe = (counter.character) * (rate);
+						shouldbe_e = (counter.character) * (exact_rate);
+					})
+					break;
+				case "3":
+					shouldbe = (1) * (rate);
+					shouldbe_e = (1) * (exact_rate);
+					break;
+				
+			}
+			
+			
+			break;
 	}
 	exact_rate = Number(exact_rate).toFixed(2);
 	if (rate) {
@@ -484,13 +558,13 @@ function display_notes() {
 
 	var string = "";
 
-	if (shouldbe) {
+	if (shouldbe>=0) {
 		shouldbe = shouldbe.toFixed(2);
 		$("#totalCost").attr("placeholder", shouldbe).blur();
 		string = '<span class="badge" data-fld="totalCost" data-val="' + shouldbe + '">' + shouldbe + '</span>' + string;
 
 	}
-	if (shouldbe_e) {
+	if (shouldbe_e>=0) {
 		shouldbe_e = shouldbe_e.toFixed(2);
 
 	}
@@ -653,4 +727,115 @@ function account_lookup_history_suggestions() {
 
 	}, "suggestions");
 
+}
+function classifiedMaths(){
+	var $field = $("#classifiedText") 
+	var val = $field.val();
+
+	for(var instanceName in CKEDITOR.instances)
+		CKEDITOR.instances[instanceName].updateElement();
+	
+	
+	
+	var area = document.getElementById('classifiedText')
+	Countable.once(area, function (counter) {
+		$("#classifiedWords").val(counter.words);
+		$("#classifiedCharacters").val(counter.characters);
+		$("#classifiedStats").html(counter.words + " Words | " + counter.characters + " Characters");
+	})
+	
+	
+	
+	//console.log($field.val())
+}
+function set_upload_classified_media(data) {
+	
+	var dspl = data.details.datein.split("-");
+	var ny = dspl[0];
+	var nm = dspl[1];
+
+	var d = new Date();
+	
+	
+	if (!ny)ny = d.getFullYear();
+	if (!nm)nm = ("0"+d.getMonth()).slice(-2);
+	
+	
+//console.log(data)
+	var folder = data['details']['cID'] + "/" + data['details']['pID'] + "/classifieds/" +ny + "/"+nm+"/";
+	
+	
+//console.log(folder)
+	//return false;
+	var uploader = new plupload.Uploader({
+		runtimes      :'html5,gears,flash,silverlight',
+		browse_button :'media-file-area-filename',
+//container          :'container',
+		max_file_size :'200mb',
+		max_file_count:1,
+		chunk_size    :"2MB",
+		url           :'/app/ab/upload/?folder=' + folder,
+
+		flash_swf_url      :'/ui/plupload/js/plupload.flash.swf',
+		silverlight_xap_url:'/ui/plupload/js/plupload.silverlight.xap',
+		filters            :[
+//{title:"Image files", extensions:"jpg,gif,png"},
+//{title:"Zip files", extensions:"zip"}
+		],
+		unique_names       :true
+	});
+
+	if ($("#media-file-area-filename").data("uploader")) {
+		uploader.refresh();
+	} else {
+		$("#media-file-area-filename").data("uploader", true);
+
+		uploader.bind('Init', function (up, params) {
+
+		});
+
+		uploader.bind('FilesAdded', function (up, files) {
+			
+
+			var fileCount = up.files.length, i = 0, ids = $.map(up.files, function (item) {
+				return item.id;
+			});
+
+			for (i = 0; i < fileCount; i++) {
+				uploader.removeFile(uploader.getFile(ids[i]));
+			}
+
+			i = 0;
+		//	$('#material-file-area-filename').html('<div id="' + files[i].id + '" class="g">Uploading: ' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ')</div>');
+
+			setTimeout(function () {
+				$("#media-file-area .progress").fadeIn();
+				uploader.start();
+			}, 100);
+
+		});
+
+		uploader.bind('UploadProgress', function (up, file) {
+			$("#media-file-area .progress .bar").css("width", file.percent + "%");
+		});
+
+		uploader.bind('UploadComplete', function (up, files) {
+			var file = files[0];
+
+			var $material_file_area_filename = $('#media-file-area-filename');
+			
+			$("#media-msg-box").html("file uploaded successfully");
+
+			$("#classifiedMediaName").val(file.name);
+			$("#classifiedMedia").val(file.target_name);
+			
+			$("#classifiedMediaNameDisplay").html(file.name);
+
+			$("#media-file-area .progress").fadeOut(500, function () {
+				$("#media-file-area .progress .bar").css("width", "0%");
+			});
+		});
+
+		uploader.init();
+	}
 }

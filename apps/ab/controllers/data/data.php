@@ -71,6 +71,33 @@ class data {
 				}
 
 			}
+			
+		}
+		
+		if ($return['typeID']=='3'){
+			$allow['material_pane'] = '1';
+			//var folder = data['details']['cID'] + "/" + data['details']['pID'] + "/classifieds/" +ny + "/"+nm+"/";
+			
+			if ($return['classifiedMedia']){
+				$ny = date("Y",strtotime($return['datein']));
+				$nm = date("m",strtotime($return['datein']));
+
+				$folderRel = "/ab/".$return['cID']."/".$return['pID']."/classifieds/".$ny."/".$nm."/".$return['classifiedMedia'];
+
+				$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+				$folder = $upload_folder. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folderRel);
+
+
+				$return['classifiedMediaPath'] = $folderRel;
+				$url=getimagesize($folder);
+
+
+				$return['classifiedMediaImage'] = is_array($url);
+
+			}
+			
+			//test_array($url);
+
 		}
 
 		if ($return['pageID']) {
@@ -87,7 +114,8 @@ class data {
 		}
 
 
-
+//test_array($return); 
+		
 
 		$permissions = $user['permissions'];
 		if ($permissions['details']['actions']['check']=='0') $allow['checked'] = 0;
@@ -134,7 +162,7 @@ class data {
 		
 
 
-		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND typeID='1' AND pageID='$pageID'", "client ASC");
+		$bookingsRaw = models\bookings::getAll("(ab_bookings.pID = '$pID' AND ab_bookings.dID='$dID') AND checked = '1' AND ab_bookings.deleted is null AND ab_bookings.typeID='1' AND ab_bookings.pageID='$pageID'", "client ASC");
 		$bookings = array();
 		$cm = 0;
 		$records = 0;

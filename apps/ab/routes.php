@@ -330,6 +330,13 @@ $routes[] =	array(
 	"a"=>true,
 	"l"=>true,
 );
+$routes[] =	array(
+	"method"=>'GET',
+	"path"=>'/app/ab/admin/classified_types',
+	"controller"=>'apps\ab\controllers\controller_admin_classified_types->page',
+	"a"=>true,
+	"l"=>true,
+);
 
 $routes[] =	array(
 	"method"=>'GET',
@@ -396,6 +403,12 @@ $app->route("GET|POST /app/ab/logs/@function", function ($app, $params) {
 $app->route("GET|POST /app/ab/thumb/page/@dID/@page/*", function ($app, $params) {
 
 		$app->chain("apps\\ab\\app->app; apps\\ab\\controllers\\controller_general_thumb->page");
+
+	}
+);
+$app->route("GET|POST /app/ab/thumb/general/@width/@height/*", function ($app, $params) {
+
+		$app->chain("apps\\ab\\app->app; apps\\ab\\controllers\\controller_general_thumb->general_thumb");
 
 	}
 );

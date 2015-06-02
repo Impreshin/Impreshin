@@ -167,6 +167,9 @@ class permissions {
 					"inserts_types" => array(
 						"page" => 0
 					),
+					"classified_types" => array(
+						"page" => 0
+					),
 				),
 				"system"      => array(
 					"dates"        => array(
@@ -331,6 +334,9 @@ class permissions {
 						"page" => ""
 					),
 					"inserts_types" => array(
+						"page" => ""
+					),
+					"classified_types" => array(
 						"page" => ""
 					),
 				),

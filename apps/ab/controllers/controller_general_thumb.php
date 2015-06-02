@@ -4,8 +4,8 @@
  * Date: 2012/07/04 - 3:17 PM
  */
 namespace apps\ab\controllers;
-use \timer as timer;
-use \apps\ab\models as models;
+
+use apps\ab\models as models;
 
 
 class controller_general_thumb extends \apps\ab\controllers\_ {
@@ -15,23 +15,23 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 	public function material() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");
-		$f3->set("json",False);
+		$f3->set("json", False);
 
 		$data = new models\bookings();
 		$data = $data->get($f3->get("PARAMS.ID"));
 
 
 
-	
 
-	header("Content-Type: image/png");
-	header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
-	header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
-	header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
-	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-		header('HTTP/1.1 304 Not Modified');
-		die();
-	}
+
+		header("Content-Type: image/png");
+		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+		header('Last-Modified: ' . date(DATE_RFC1123, strtotime($data['material_date'])));
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+			header('HTTP/1.1 304 Not Modified');
+			die();
+		}
 
 		$folder = "ab/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/material/";
 		$filename = $data['material_file_store'];
@@ -41,20 +41,20 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		}
 
 
-		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
-		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+		$upload_folder = str_replace(array("/", "\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$folder = str_replace(array("/", "\\"), DIRECTORY_SEPARATOR, $folder);
 
 		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
-		$crop = (isset($_GET['c']) && $_GET['c']=="true") ? true:false;
-		$stretch = (isset($_GET['stretch']) && $_GET['stretch']=="true") ? true:false;
+		$crop = (isset($_GET['c']) && $_GET['c'] == "true") ? true : false;
+		$stretch = (isset($_GET['stretch']) && $_GET['stretch'] == "true") ? true : false;
 
 		$w = round($w);
 		$h = round($h);
 		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
 		if (file_exists($upload_folder . $folder . $filename)) {
 
-			
+
 			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
 
@@ -64,7 +64,7 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 			if ($file_extension == "pdf") {
 				$thumb = "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename);
 
-				if (!file_exists($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR, 01777, true);
+				if (!file_exists($upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR, 01777, true);
 
 				if (!file_exists($upload_folder . $folder . $thumb) && file_exists($upload_folder . $folder . $filename)) {
 					$exportPath = $upload_folder . $folder . $thumb;
@@ -85,11 +85,11 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 				if (file_exists($upload_folder . $folder . $thumb)) {
 					//test_array(array($folder . $thumb));
-					
-					
-					
+
+
+
 					$image = new \Image($folder . $thumb);
-					$image->resize($w,$h,$crop);
+					$image->resize($w, $h, $crop);
 					$image->render();
 					unset($image);
 				}
@@ -99,20 +99,83 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		$f3->set("exit", true);
 
 	}
+
+	public function general_thumb() {
+		$f3 = \base::instance();
+		$cfg = $f3->get("CFG");
+		$f3->set("json", False);
+
+
+
+
+
+
+		header("Content-Type: image/png");
+		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+
+
+		$folder = isset($_GET['file']) ? $_GET['file'] : "";
+		$upload_folder = str_replace(array("/", "\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+
+
+		$file = str_replace(array("/", "\\", "//", "\\\\"), DIRECTORY_SEPARATOR, $upload_folder . $folder);
+
+
+
+
+
+
+
+
+
+
+		$w = ($f3->get("PARAMS['width']")) ? $f3->get("PARAMS['width']") : "500";
+		$h = ($f3->get("PARAMS['height']")) ? $f3->get("PARAMS['height']") : "500";
+
+		$crop = (isset($_GET['c']) && $_GET['c'] == "true") ? true : false;
+		$stretch = (isset($_GET['stretch']) && $_GET['stretch'] == "true") ? true : false;
+
+		$w = round($w);
+		$h = round($h);
+		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
+		if (file_exists($file)) {
+			$file_extension = strtolower(substr(strrchr($file, "."), 1));
+			if ($file_extension == "pdf") {
+				
+			}
+			
+			
+
+//test_array($file); 
+
+
+			$image = new \Image($folder);
+			$image->resize($w, $h, $crop);
+			$image->render();
+			unset($image);
+		}
+
+
+
+		$f3->set("exit", true);
+
+	}
+
 	public function page() {
 		$f3 = \base::instance();
 		$cfg = $f3->get("CFG");
 		$user = $f3->get("user");
-		$f3->set("json",False);
-		
+		$f3->set("json", False);
+
 		$dID = $f3->get("PARAMS.dID");
 		$page = $f3->get("PARAMS.page");
-		
-		
+
+
 
 		$data = $f3->get("DB")->exec("SELECT *, (SELECT cID FROM global_publications WHERE global_publications.ID = global_pages.pID) as cID FROM global_pages WHERE dID = '$dID' AND page = '$page'");
-		
-		if (count($data)){
+
+		if (count($data)) {
 			$data = $data[0];
 		} else {
 			$data['dID'] = $dID;
@@ -125,16 +188,16 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 		//test_array($data); 
 
-	
 
-	
-	header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
-	header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
-	
-	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-		header('HTTP/1.1 304 Not Modified');
-		die();
-	}
+
+
+		header('Cache-control: max-age=' . (60 * 60 * 24 * 365));
+		header('Expires: ' . gmdate(DATE_RFC1123, time() + 60 * 60 * 24 * 365));
+
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+			header('HTTP/1.1 304 Not Modified');
+			die();
+		}
 
 		$folder = "pages/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
 		$filename = $data['pdf'];
@@ -144,19 +207,19 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 		}
 
 
-		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
-		$folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folder);
+		$upload_folder = str_replace(array("/", "\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$folder = str_replace(array("/", "\\"), DIRECTORY_SEPARATOR, $folder);
 
 		$w = (isset($_GET['w'])) ? $_GET['w'] : "500";
 		$h = (isset($_GET['h'])) ? $_GET['h'] : "500";
-		$crop = (isset($_GET['c']) && $_GET['c']=="true") ? true:false;
+		$crop = (isset($_GET['c']) && $_GET['c'] == "true") ? true : false;
 
 		$w = round($w);
 		$h = round($h);
 		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
 		if (file_exists($upload_folder . $folder . $filename)) {
 
-			
+
 			$file_extension = strtolower(substr(strrchr($filename, "."), 1));
 
 
@@ -166,7 +229,7 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 			if ($file_extension == "pdf") {
 				$thumb = "thumb" . DIRECTORY_SEPARATOR . str_replace(".pdf", ".png", $filename);
 
-				if (!file_exists($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb". DIRECTORY_SEPARATOR, 01777, true);
+				if (!file_exists($upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR)) mkdir($upload_folder . $folder . "thumb" . DIRECTORY_SEPARATOR, 01777, true);
 
 				if (!file_exists($upload_folder . $folder . $thumb) && file_exists($upload_folder . $folder . $filename)) {
 					$exportPath = $upload_folder . $folder . $thumb;
@@ -189,11 +252,11 @@ class controller_general_thumb extends \apps\ab\controllers\_ {
 
 				if (file_exists($upload_folder . $folder . $thumb)) {
 					//test_array(array($folder . $thumb));
-					
-					
-					
+
+
+
 					$image = new \Image($folder . $thumb);
-					$image->resize($w,$h,$crop);
+					$image->resize($w, $h, $crop);
 					$image->render();
 					unset($image);
 				}

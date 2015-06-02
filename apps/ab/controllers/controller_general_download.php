@@ -32,6 +32,41 @@ class controller_general_download extends \apps\ab\controllers\_ {
 
 
 	}
+	public static function classified(){
+		$f3 = \base::instance();
+		$cfg = $f3->get("CFG");
+
+		$data = new models\bookings();
+		$data = $data->get($f3->get("PARAMS.ID"));
+
+
+
+		
+
+
+		$ny = date("Y",strtotime($data['datein']));
+		$nm = date("m",strtotime($data['datein']));
+		
+		
+		$folderRel = "/ab/".$data['cID']."/".$data['pID']."/classifieds/".$ny."/".$nm."/".$data['classifiedMedia'];
+
+		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
+		$path = $upload_folder. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folderRel);
+		
+		//test_array($path); 
+		
+
+		if (file_exists($path)){
+			self::download($path,$data['classifiedMediaName']);
+
+		} else {
+			echo "file doesnt exist";
+		}
+		exit();
+
+
+
+	}
 	public static function download($file,$filename){
 		$f3 = \base::instance();
 

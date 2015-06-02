@@ -310,6 +310,11 @@
 						<a href="/app/ab/admin/inserts_types">Inserts Type</a>
 					</li>
 				{% endif %}
+				{% if _user['permissions']['administration']['application']['classified_types']['page'] %}
+					<li class="{% if page['section']=="admin" and page['sub_section'] == "classified_types" %} active {% endif %}">
+						<a href="/app/ab/admin/classified_types">Classified Type</a>
+					</li>
+				{% endif %}
 
 
 				<li class="nav-header">System</li>

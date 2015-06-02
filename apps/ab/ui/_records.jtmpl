@@ -31,7 +31,7 @@
                 <i class="icon-arrow-up icon-l-grey"></i> </a>
             </div>
             <h3><%= this.heading %>
-                <small><%= this.count %> Records | <%= this.cm %> {% if _user['company']['units']=='imperial' %}inches{% else %}cm{% endif %} <% if (this.totalCost) { %>| <%= this.totalCost %><% } %></small>
+                <small><% if (this.count>0) { %><%= this.count %> Records <% } %><% if (this.cm>0) { %>| <%= this.cm %> {% if _user['company']['units']=='imperial' %}inches{% else %}cm{% endif %} <% } %><% if (this.totalCost) { %>| <%= this.totalCost %><% } %></small>
             </h3>
 
 

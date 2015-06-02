@@ -130,6 +130,30 @@ class bookings extends save {
 				$values['pageID'] = null;
 				$values['x_offset'] = null;
 				$values['y_offset'] = null;
+
+				if (isset($_POST['rate'])) $values['InsertRate'] = ($_POST['rate']) ? $_POST['rate'] : $publication['InsertRate'];
+				
+				break;
+			case 3:
+				if (isset($_POST['classifiedText'])) $values['classifiedText'] = ($_POST['classifiedText']) ? $_POST['classifiedText'] : "";
+				if (isset($_POST['classifiedTypeID'])) $values['classifiedTypeID'] = $_POST['classifiedTypeID'];
+				if (isset($_POST['classifiedWords'])) $values['classifiedWords'] = $_POST['classifiedWords']? $_POST['classifiedWords'] : 0;
+				if (isset($_POST['classifiedCharacters'])) $values['classifiedCharacters'] = $_POST['classifiedCharacters']? $_POST['classifiedCharacters']:0;
+				if (isset($_POST['classifiedMediaName'])) $values['classifiedMediaName'] = $_POST['classifiedMediaName']? $_POST['classifiedMediaName']:"";
+				if (isset($_POST['classifiedMedia'])) $values['classifiedMedia'] = $_POST['classifiedMedia']? $_POST['classifiedMedia']:"";
+				$values['placingID'] = null;
+				$values['sub_placingID'] = null;
+				$values['colourID'] = null;
+				$values['cm'] = null;
+				$values['col'] = null;
+				$values['pageID'] = null;
+				$values['x_offset'] = null;
+				$values['y_offset'] = null;
+				$defaultClassifiedRate = 123;
+				
+				
+				if (isset($_POST['rate'])) $values['classifiedRate'] = ($_POST['rate']) ? $_POST['rate'] : $defaultClassifiedRate;
+				
 				break;
 		}
 
@@ -139,7 +163,8 @@ class bookings extends save {
 		if (isset($_POST['categoryID'])) $values['categoryID'] = $_POST['categoryID'];
 
 
-		if (isset($_POST['rate']) && $type == "2") $values['InsertRate'] = ($_POST['rate']) ? $_POST['rate'] : $publication['InsertRate'];
+		
+		
 
 
 		if (isset($_POST['accountID'])) $values['accountID'] = $_POST['accountID'];
