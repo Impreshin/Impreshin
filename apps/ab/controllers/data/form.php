@@ -67,6 +67,10 @@ class form extends data {
 		$settings['printOrder'] = $user['publication']['printOrder'];
 
 		
+		$settings['cID']=$user['company']['ID'];
+		$settings['pID']=$user['publication']['ID'];
+		
+		
 		$return['details'] = $record;
 		$return['settings'] = $settings;
 

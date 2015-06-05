@@ -762,7 +762,7 @@ function set_upload_classified_media(data) {
 	
 	
 //console.log(data)
-	var folder = data['details']['cID'] + "/" + data['details']['pID'] + "/classifieds/" +ny + "/"+nm+"/";
+	var folder = data['settings']['cID'] + "/" + data['settings']['pID'] + "/classifieds/" +ny + "/"+nm+"/";
 	
 	
 //console.log(folder)

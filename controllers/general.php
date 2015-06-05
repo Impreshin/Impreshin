@@ -185,6 +185,7 @@ class general {
 		ini_set('post_max_size', '20M');
 
 
+	//	test_array($tmpFolder); 
 		if (!file_exists($tmpFolder)) @mkdir($tmpFolder, 0777, true);
 		if (!file_exists($folder)) @mkdir($folder, 0777, true);
 
