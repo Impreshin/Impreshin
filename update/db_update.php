@@ -217,12 +217,12 @@ $sql = array(
 		"ALTER TABLE  `cm_details_types` ADD INDEX (  `cID` );"
 	),
 	"44" => array(
-		"INSERT INTO `ab_bookings_types` (`ID`, `type`, `orderby`) VALUES (NULL, 'Classifieds', '0');",
+		"INSERT INTO `ab_bookings_types` (`ID`, `type`, `orderby`) VALUES ('3', 'Classifieds', '0');",
 		"ALTER TABLE  `ab_bookings` ADD  `classifiedText` TEXT NULL DEFAULT NULL AFTER  `insertTypeID` ,ADD  `classifiedTypeID` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedText`;",
-		"CREATE TABLE IF NOT EXISTS `ab_classifieds_types` (`ID` int(6) NOT NULL AUTO_INCREMENT,  `pID` int(6) DEFAULT NULL,  `classifiedLabel` varchar(50) DEFAULT NULL,  `orderby` smallint(6) DEFAULT NULL,  `typeID` int(3) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `pID` (`pID`));",
-	"ALTER TABLE  `ab_classifieds_types` ADD  `rate` DECIMAL( 8, 2 ) NULL DEFAULT NULL;",
-	"ALTER TABLE  `ab_bookings` ADD  `classifiedWords` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedTypeID` , ADD  `classifiedCharacters` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedWords`;",
-	"ALTER TABLE  `ab_bookings` ADD  `classifiedMediaName` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedCharacters` , ADD  `classifiedMedia` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedMediaName`;"
+		"CREATE TABLE IF NOT EXISTS `ab_classifieds_types` (`ID` INT(6) NOT NULL AUTO_INCREMENT,  `pID` INT(6) DEFAULT NULL,  `classifiedLabel` VARCHAR(50) DEFAULT NULL,  `orderby` SMALLINT(6) DEFAULT NULL,  `typeID` INT(3) DEFAULT NULL,  PRIMARY KEY (`ID`),  KEY `pID` (`pID`));",
+		"ALTER TABLE  `ab_classifieds_types` ADD  `rate` DECIMAL( 8, 2 ) NULL DEFAULT NULL;",
+		"ALTER TABLE  `ab_bookings` ADD  `classifiedWords` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedTypeID` , ADD  `classifiedCharacters` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedWords`;",
+		"ALTER TABLE  `ab_bookings` ADD  `classifiedMediaName` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedCharacters` , ADD  `classifiedMedia` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedMediaName`;"
 	)
 
 

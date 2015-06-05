@@ -88,11 +88,15 @@ class data {
 				$folder = $upload_folder. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folderRel);
 
 
-				$return['classifiedMediaPath'] = $folderRel;
-				$url=getimagesize($folder);
+				
+				if (file_exists($folder)){
+					$return['classifiedMediaPath'] = $folderRel;
+					$url=getimagesize($folder);
 
 
-				$return['classifiedMediaImage'] = is_array($url);
+					$return['classifiedMediaImage'] = is_array($url);
+				}
+				
 
 			}
 			
