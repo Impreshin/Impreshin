@@ -99,6 +99,11 @@ class bookings extends save {
 		if (isset($_POST['discount'])) $values['discount'] = $_POST['discount'];
 		if (isset($_POST['agencyDiscount'])) $values['agencyDiscount'] = $_POST['agencyDiscount'];
 
+		
+		if (isset($values['discount'])&&$values['discount']=='')$values['discount'] = null;
+		if (isset($values['agencyDiscount'])&&$values['agencyDiscount']=='')$values['agencyDiscount'] = null;
+		
+		
 		if (isset($_POST['payment_methodID'])) {
 			$values['payment_methodID'] = $_POST['payment_methodID'];
 			if ($_POST['payment_methodID']!='1'){
