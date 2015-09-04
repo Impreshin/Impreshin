@@ -256,7 +256,7 @@
 			<table class="table table-condensed records s">
 				<thead>
 				<tr class="colheading">
-					<th style="width:50px;">Icon</th>
+					<th style="width:75px;">Icon</th>
 					<th>Filename</th>
 					<th style="width:110px;">Date</th>
 					<th class="span1"></th>
@@ -271,7 +271,7 @@
 				<tr class="record log-record" data-file="<%= this.media[f].folder %>/<%= this.media[f].filename %>" data-filename="<%= this.media[f].filename_orig %>" data-log-id="<%= this.media[f].ID %>">
 					<td>
 						<% if (this.media[f].fileType=="1"){ %>
-						<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
+						<img src="/app/nf/thumb/50/50?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
 
 						<% } else { %>
 						<div class="file-icon <%= this.media[f].icon %>"></div>
@@ -785,7 +785,7 @@
 				</td>
 				<td class="span1">
 					<% if (this.media[f].fileType=="1"){ %>
-					<img src="/app/nf/thumb/24/24?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
+					<img src="/app/nf/thumb/75/75?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
 
 					<% } else { %>
 					<div class="file-icon <%= this.media[f].icon %>"></div>
@@ -798,9 +798,7 @@
 				</td>
 
 
-				<td class="c span1">
-					<i class="icon-zoom-in f13"></i>
-				</td>
+			
 
 
 			</tr>

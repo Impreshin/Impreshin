@@ -243,7 +243,7 @@ class settings {
 				"file" => array("txt")
 			),
 			"3"=>array(
-				"vid"=>array("avi")
+				"vid"=>array("avi","mp4")
 			)
 
 		);
