@@ -783,7 +783,7 @@
 				<td class="r span1">
 					<input type="checkbox" value="<%= this.media[f].ID %>" <% if (this.media[f].checked=='1') { %>checked="checked"<% } %> />
 				</td>
-				<td class="span1">
+				<td class="span1" style='width:90px;'>
 					<% if (this.media[f].fileType=="1"){ %>
 					<img src="/app/nf/thumb/75/75?file=<%= this.media[f].folder %>/<%= this.media[f].filename %>" style="margin-left:10px;"/>
 
