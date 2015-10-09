@@ -258,6 +258,21 @@ $app->route("GET|POST /app/nf/thumb/page/@dID/@page/*", function ($app, $params)
 );
 
 // utilities
+foreach (glob("./apps/nf/share/*", GLOB_ONLYDIR) as $folder) {
+	
+	$folder = trim($folder,"./");
+	$file = str_replace('apps/nf/share/','',$folder);
+	//test_array($file); 
+	include_once("{$folder}/{$file}.php");
+	$route_list = \apps\nf\share\send_to_lin::getInstance()->routes();
+	
+	foreach ($route_list as $item){
+		$routes[] = $item;
+	}
+	
+}
+
+
 
 
 

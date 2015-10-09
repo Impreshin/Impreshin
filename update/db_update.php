@@ -223,7 +223,10 @@ $sql = array(
 		"ALTER TABLE  `ab_classifieds_types` ADD  `rate` DECIMAL( 8, 2 ) NULL DEFAULT NULL;",
 		"ALTER TABLE  `ab_bookings` ADD  `classifiedWords` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedTypeID` , ADD  `classifiedCharacters` INT( 6 ) NULL DEFAULT NULL AFTER  `classifiedWords`;",
 		"ALTER TABLE  `ab_bookings` ADD  `classifiedMediaName` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedCharacters` , ADD  `classifiedMedia` VARCHAR( 200 ) NULL DEFAULT NULL AFTER  `classifiedMediaName`;"
-	)
+	),
+		"45"=>array(
+			"ALTER TABLE  `global_companies` ADD  `data` TEXT NULL DEFAULT NULL;"
+		)
 
 
 );

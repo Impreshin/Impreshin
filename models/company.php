@@ -12,13 +12,18 @@ use timer as timer;
 class company {
 	public $ID;
 	private $dbStructure;
-
+	private static $instance;
 	function __construct() {
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 
 	}
-
+	public static function getInstance() {
+		if (is_null(self::$instance)) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 	public function get($ID = "") {
 		$timer = new timer();
 		$f3 = \Base::instance();

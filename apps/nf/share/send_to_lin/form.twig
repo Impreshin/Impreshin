@@ -1,0 +1,226 @@
+<form action="" style='margin:0;' id="send-form" >
+	
+	
+	<section class="modal-body" style='overflow-y:auto'>
+		<div class="row">
+			<div class="span9">
+				<label for="heading" style="margin-top: 0"><h4 style='margin-top:0;'>Heading</h4>
+					<input type="text" id="heading" name="heading" placeholder="heading" class="span9" value="{{ data['record']['title'] }}">
+				</label>
+				<div class="clearfix"></div>
+				
+				<label for="synopsis"><h4>Synopsis</h4>
+				</label>
+				
+				<div class="clearfix"></div>
+				<textarea name="synopsis" id="synopsis" cols="30" rows="5" class="span9" placeholder="Synopsis"></textarea>
+				<div class="clearfix"></div>
+				
+				<label for="article"><h4>Body</h4>
+				</label>
+				
+				<div class="clearfix"></div>
+		<textarea name="article" id="article" cols="30" rows="10" class="span9" placeholder="Article Body">
+			{{ data['record']['body'] }}
+		</textarea>
+				
+				{% if data['record']['media']|length %}
+				<h4>Files</h4>
+				
+				{% for row in data['record']['media'] %}
+					
+					<article class="file-record row">
+						
+						<div class="span2">
+							{% if row['fileType']=='1' %}
+								<img  src="/app/nf/thumb/110/110?file={{ row['folder'] }}{{ row['filename'] }}">
+							
+							{% else %}
+								<div class="file-icon {{ row['icon'] }}"></div>
+							{% endif %}
+							
+							<div class="clearfix"></div>
+							
+							<label class="r">
+								Include this file
+								<input type="checkbox" id="file-include-{{ row['ID'] }}" name="files[]" checked value="{{ row['ID'] }}" />
+							</label>
+						</div>
+						<div class="span7">
+							<textarea name="caption-{{ row['ID'] }}" id="caption-{{ row['ID'] }}" class="span10 file-cation" rows="5">{{ row['caption'] }}</textarea>
+						</div>
+					</article>
+					
+					<div class="clearfix"></div>
+				{% endfor %}
+				{% endif %}
+				
+				
+				
+				
+				
+			</div>
+			<div class="span4" style='margin-right:-30px;'>
+				<label for="authorID" style="margin-top: 0"><h4 style='margin-top:0;'>Author</h4>
+					<select name="authorID" id="authorID" style='width:225px;'>
+						{% for row in data['remote']['authors'] %}
+							<option value="{{ row['ID'] }}" {% if row['selected']=='1' %}selected='selected'{% endif %}>
+								{{ row['name'] }}
+							</option>
+						{% endfor %}
+					</select>
+				</label>
+				
+				<div class="clearfix"></div>
+				<h4>Publish Date and time</h4>
+				
+				<div id="publishDate_field" style='margin-left:-3px;'></div>
+				
+				<input type="hidden" value="" id="publishDate" name="publishDate">
+				
+				<div class="clearfix"></div>
+				<section class="" ><h4>Categories</h4>
+					
+					<div class="highlighthovered">
+						{% for row in data['remote']['categories'] %}
+							<label class="radio" for="cat-{{ row['ID'] }}"><input type="radio" value="{{ row['ID'] }}" id="cat-{{ row['ID'] }}" name="catID"  {% if row['selected']=='1' %}checked='checked'{% endif %}>{{ row['category'] }}
+							</label>
+						{% endfor %}
+					</div>
+				</section>
+				<section class=""><h4>Publications</h4>
+					
+					<div class="highlighthovered">
+						{% for row in data['remote']['publications'] %}
+							<label class="checkbox" for="pub-{{ row['ID'] }}"><input type="checkbox" checked="checked" value="{{ row['ID'] }}" id="pub-{{ row['ID'] }}" name="pubID[]">{{ row['publication'] }}
+							</label>
+						{% endfor %}
+					</div>
+				
+				
+				</section>
+				<section class=""><h4>Flags</h4>
+					
+					<div class="highlighthovered">
+						{% for row in data['remote']['flags'] %}
+							<label class="checkbox" for="flag-{{ row['ID'] }}" title='{{ row['description'] }}'><input type="checkbox" value="{{ row['ID'] }}" id="flag-{{ row['ID'] }}" name="flags[]">{{ row['label'] }}</label>
+						{% endfor %}
+					
+					</div>
+				</section>
+				
+				
+			</div>
+			
+		</div>
+		
+
+		
+		
+		
+		
+		
+		
+		
+	
+	</section>
+	<section class="modal-footer">
+		
+		<button class="btn btn-default pull-left span2" type='button' id="cancel-send-to-btn" >Cancel</button>
+		<button class="btn btn-primary pull-right span4" type='submit'>Send to website</button>
+	</section>
+	<div class="loadingmask"></div>
+</form>
+<style type="text/css">
+	#send-form h4 {
+		margin-top:20px;
+		font-weight: bold;
+	}
+	#send-form .ui-datepicker-inline.ui-widget-content {
+		border:none!important;
+	}
+	#send-form .file-record{
+		margin-top:10px;
+		margin-bottom:10px;
+		padding-bottom :20px;
+		border-bottom:1px dotted #ccc;
+	}
+</style>
+<script type="text/javascript" src='/ui/ckeditor/ckeditor.js'></script>
+<script type="text/javascript" src='/apps/nf/share/send_to_lin/assets/jquery-ui-timepicker-addon.js'></script>
+<script type="text/javascript">
+	var text_toolbar = [
+		{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', 'Subscript', 'Superscript' ] },
+		{ name: 'tools', items: [ 'Find','Replace' ] },
+		{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
+		{ name: 'tools', items: [ 'SpecialChar' ] },
+		{ name: 'tools', items: [ 'Maximize' ] },
+		{ name: 'spellcheck', items: [ 'jQuerySpellChecker' ]}
+	
+	];
+	var text_settings = {
+		uiColor           : '#FFFFFF',
+		height            : '120px',
+		toolbar           : text_toolbar,
+		resize_enabled    : false,
+		extraPlugins      : 'autogrow',
+		autoGrow_minHeight: 120,
+		autoGrow_onStartup:true,
+	};
+	var text_settings_caption = text_settings;
+	text_settings_caption.autoGrow_minHeight = 70;
+	$(document).ready(function(){
+		CKEDITOR.replace('synopsis', text_settings);
+		CKEDITOR.replace('article', text_settings);
+		
+		$(".file-cation").each(function(){
+			var id = $(this).attr("id");
+			CKEDITOR.replace(id, text_settings_caption);
+		})
+		
+		$('#publishDate_field').datetimepicker({
+			altField: "#publishDate",
+			altFieldTimeOnly: false,
+			altTimeFormat: "HH:mm:ss",
+			dateFormat: "yy-mm-dd",
+			showSecond: false,
+			stepMinute: 15,
+			showButtonPanel: false
+		});
+		
+		$("#authorID").select2();
+		
+		$("#send-form .loadingmask").fadeOut();
+		
+	});
+	
+	
+	$(document).on("click",'#cancel-send-to-btn',function(){
+		$.bbq.removeState("send_to_lin");
+		$("#nf-details-modal").addClass("loading")
+		getDetails();
+	});
+	
+	
+	
+	$("#send-form").on("submit",function(e){
+		e.preventDefault();
+		var data = $(this).serialize();
+		$("#send-form .loadingmask").show();
+		$.post("/app/nf/share/send_to_lin/post?ID="+ $.bbq.getState("ID"),data,function(){
+			alert("Article has been sent to the website")
+			$.bbq.removeState("send_to_lin");
+			$("#nf-details-modal").addClass("loading")
+			getDetails();
+			
+		})
+		
+		
+		
+		
+		
+	})
+	
+	
+	
+</script>

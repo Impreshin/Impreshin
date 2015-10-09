@@ -30,7 +30,8 @@ class permissions {
 				"overwrite_locked"         => 0,
 				"placed"         => 0,
 				"archive"         => 0,
-				"stage_jump_list"=>0
+				"stage_jump_list"=>0,
+				"send_to_lin"=>0
 				
 			),
 			"articles"         => array(
@@ -129,6 +130,9 @@ class permissions {
 
 
 		$return['d'] = array(
+			"details"=>array(
+				"send_to_lin"=>"Adds a button to allow the user to send the article to the lin framework"	
+			),
 			"view"=>array(
 				'only_my_records'=>"If this is checked checked then the user will ONLY see their own records (author ID)."
 			),

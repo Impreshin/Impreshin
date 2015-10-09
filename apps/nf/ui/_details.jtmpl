@@ -36,6 +36,9 @@
 		<a href="/app/nf/print/details?ID=<%= this.ID %>" target="_blank" rel="tooltip" data-placement="bottom" title="Print this record"><i class="icon-print icon-d-grey"></i></a>
 		-->
 		<% } %>
+		<% if (this.a.send_to_lin=='1') { %>
+			<a href="#" rel="tooltip" data-placement="bottom" title="Send this record to the LiN website framework" id="send-to-lin-btn" ><i class="icon-share icon-d-grey"></i></a>
+		<% } %>
 	</div>
 
 
@@ -1205,6 +1208,7 @@ $(document).on('hide', '#nf-details-modal', function () {
 	$.bbq.removeState("ID");
 	$.bbq.removeState("history");
 	$.bbq.removeState("historyID");
+	$.bbq.removeState("send_to_lin");
 	$("#record-list .record.active").removeClass("active");
 
 });
@@ -1286,7 +1290,22 @@ $(document).on('click', '.details-record-next', function () {
 });
 
 
-
+$(document).on('click', '#send-to-lin-btn', function (e) {
+	e.preventDefault();
+	$.bbq.pushState({send_to_lin: '1'});
+	send_to_lin()
+	
+});
+function send_to_lin(){
+	if ($.bbq.getState("send_to_lin")=='1'){
+		var ID = $.bbq.getState("ID");
+		
+		$("#nf-details-modal").addClass("loading").load('/app/nf/share/send_to_lin?ID='+ID,function(){
+			
+		});
+	}
+	
+}
 $(document).on('submit', '#form-newsbook', function (e) {
 	e.preventDefault();
 	var $this = $(this);
@@ -1508,6 +1527,7 @@ function getDetails() {
 
 			}
 		}
+		send_to_lin()
 		/*setTimeout(function(){
 		 $("#nf-details-modal .tab-pane.active .scroll-pane").jScrollPane(jScrollPaneOptions);
 		 },500);*/

@@ -46,6 +46,7 @@ foreach (glob("./apps/*", GLOB_ONLYDIR) as $folder) {
 	$autoload[] = $folder;
 	$autoload[] = $folder."controllers/";
 	$autoload[] = $folder."models/";
+	$autoload[] = $folder."share/";
 }
 //test_array($autoload);
 // read the current git version string and convert it to numbers to be used for cache busting
@@ -111,7 +112,11 @@ $app->route('GET /min/js*', 'general->js_min');
 
 
 $app->route('GET|POST /login', 'controllers\controller_login->page');
-$app->route('GET|POST /', 'controllers\controller_about->page');
+if ($cfg['online']==false){
+	$app->route('GET|POST /', 'controllers\controller_login->page');
+} else {
+	$app->route('GET|POST /', 'controllers\controller_about->page');
+}
 
 $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
 $app->route('GET /screenshots/thumb', 'controllers\controller_screenshots->thumb');
@@ -451,20 +456,15 @@ $app->route('GET /map_test', function () {
 		
 	}
 );
-$app->route('GET /maps_test', function () {
-		$map = new \Web\Google\StaticMap();
-		$map->format('png');
-		$map->center("130 Vlei street, benoni");
-		$map->zoom(15);
-		$map->size('1000x560');
-		$map->markers('130+vlei+street,+Benoni'); //
-		//$map->markers('color:blue|label:130 Vlei Street, Benoni'); //
-		$map->scale(1);
-		$map->maptype( 'hybrid' ); // roadmap , satellite , terrain , hybrid
-		$map->sensor( 'false' ); // 'true' or 'false' as a string, not a boolean!
-
-		echo $map->dump();
-		exit();
+$app->route('GET /test', function () {
+		test_array(array(
+			"share"=>array(
+				"send_to_lin"=>array(
+					"domain"=>"http://www.zoutnet.co.za"
+				)
+			)
+			
+		)); 
 		
 	}
 );
@@ -476,81 +476,6 @@ $app->route('GET /redirect', function () {
 		}
 		$f3 = Base::instance();
 		$f3->reroute($url);
-	}
-);
-$app->route('GET /test', function () {
-		$f3 = Base::instance();
-		$a=array();
-		$return=array();
-
-		$oldTZ = 'Africa/Johannesburg'; 
-		$newTZ = 'America/Los_Angeles';
-
-		date_default_timezone_set($oldTZ);
-		
-		$a["real"]["php"]=date("Y-m-d H:i:s");
-		
-		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
-		$a["real"]["mysql"] = $md[0]['datetime'];
-
-		
-		
-
-		date_default_timezone_set($newTZ);
-
-		$a["after"]['php']=date("Y-m-d H:i:s");
-
-		$md = $f3->get("DB")->exec("SELECT now() as datetime;");
-		$a["after"]["mysql"] = $md[0]['datetime'];
-
-
-		
-
-
-		$a['voodoo']['mysql'] =datetime($a["real"]["mysql"],'','America/Los_Angeles');
-		//echo 
-		//echo $time->getOffset();
-
-
-		$return['dates'] = $a;$c = array();
-		
-		$amount = '12345.67';
-
-		$formatter = new \NumberFormatter('en_GB',  NumberFormatter::CURRENCY);
-		
-		$c['UK'] =  array(
-			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
-			$formatter->formatCurrency($amount, 'EUR')
-		);
-
-		$formatter = new \NumberFormatter('de_DE',  NumberFormatter::CURRENCY);
-		$c['DE'] =   array(
-			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
-			$formatter->formatCurrency($amount, 'EUR')
-		);
-		
-		$formatter = new \NumberFormatter('en_ZA',  NumberFormatter::CURRENCY);
-		$c['ZA'] =   array(
-			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
-			$formatter->formatCurrency($amount, 'ZAR')
-		);
-		
-		$formatter = new \NumberFormatter('en_US',  NumberFormatter::CURRENCY);
-		$c['US'] =   array(
-			$formatter->getSymbol(NumberFormatter::INTL_CURRENCY_SYMBOL),
-			$formatter->formatCurrency($amount, 'USD')
-		);
-		
-		
-		
-
-		$return['currency'] = $c;
-		
-		
-		
-		
-		test_array($return); 
-		
 	}
 );
 

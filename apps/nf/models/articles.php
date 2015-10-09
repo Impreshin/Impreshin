@@ -5,12 +5,17 @@ use \timer as timer;
 
 class articles {
 	private $classname;
-
+	private static $instance;
 	function __construct() {
 		$classname = get_class($this);
 		$this->dbStructure = $classname::dbStructure();
 	}
-
+	public static function getInstance() {
+		if (is_null(self::$instance)) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 	private static function _from($options=array()) {
 
 		$newsbook_sql = "";

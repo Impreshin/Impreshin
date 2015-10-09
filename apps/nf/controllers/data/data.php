@@ -41,11 +41,21 @@ class data {
 			"stageNext"=>"0",
 			"stagePrev"=>"0",
 			"stage_jump_list"=>"0",
-			"placed"=>"0"
+			"placed"=>"0",
+				"send_to_lin"=>"0"
 		);
-
-
 		$permissions = $user['permissions'];
+		
+		
+		if ($user['company']['data']&&$permissions['details']['send_to_lin']=='1'){
+			$s = json_decode($user['company']['data'],true);
+			if ($s['share']['send_to_lin']){
+				$allow['send_to_lin']='1';
+			}
+			
+		}
+
+		
 		$stage_permissions = isset($permissions['stages'][$return['stageID']])?$permissions['stages'][$return['stageID']]:array("label"=>"-none-",
 			"edit"=>"0",
 			"to"=>"0",
