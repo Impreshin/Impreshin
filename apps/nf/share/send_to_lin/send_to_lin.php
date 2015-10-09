@@ -123,6 +123,7 @@ class send_to_lin extends share {
 				"flags" => isset($_POST['flags']) ? implode(",", $_POST['flags']) : "",
 				"tags" => isset($_POST['tags']) ? $_POST['tags'] : "",
 				"tags_timeline" => isset($_POST['tags_timeline']) ? $_POST['tags_timeline'] : "",
+				"mainThumbnail" => isset($_POST['mainThumbnail']) ? $_POST['mainThumbnail'] : "",
 		
 		);
 		
@@ -137,7 +138,7 @@ class send_to_lin extends share {
 			}
 		}
 		
-		//test_array($files);
+		//test_array($_POST);
 		
 		$cfg = $this->f3->get("CFG");
 		
@@ -164,6 +165,7 @@ class send_to_lin extends share {
 				
 				$data["file-orig-nf_" . $n] = $item['filename_orig'];
 				$data["file-caption-nf_" . $n] = $item['caption'];
+				$data["mainThumbnail-nf_" . $n] = ($item['ID']==$data['mainThumbnail'])?1:0;
 			}
 			
 		}

@@ -45,6 +45,13 @@
 								Include this file
 								<input type="checkbox" id="file-include-{{ row['ID'] }}" name="files[]" checked value="{{ row['ID'] }}" />
 							</label>
+							{% if row['fileType']=='1' %}
+							<label class="r s">
+								Main Thumbnail
+								<input type="radio" id="mainThumbnail-{{ row['ID'] }}" name="mainThumbnail" checked value="{{ row['ID'] }}" />
+							</label>
+							{% endif %}
+							
 						</div>
 						<div class="span7">
 							<textarea name="caption-{{ row['ID'] }}" id="caption-{{ row['ID'] }}" class="span10 file-cation" rows="5">{{ row['caption'] }}</textarea>
@@ -172,7 +179,7 @@
 		autoGrow_onStartup:true,
 	};
 	var text_settings_caption = text_settings;
-	text_settings_caption.autoGrow_minHeight = 70;
+	text_settings_caption.autoGrow_minHeight = 100;
 	$(document).ready(function(){
 		CKEDITOR.replace('synopsis', text_settings);
 		CKEDITOR.replace('article', text_settings);
@@ -209,6 +216,11 @@
 	
 	$("#send-form").on("submit",function(e){
 		e.preventDefault();
+		for (instance in CKEDITOR.instances) {
+			CKEDITOR.instances[instance].updateElement();
+		}
+		
+		
 		var data = $(this).serialize();
 		$("#send-form .loadingmask").show();
 		$.post("/app/nf/share/send_to_lin/post?ID="+ $.bbq.getState("ID"),data,function(){
