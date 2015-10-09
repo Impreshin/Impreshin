@@ -31,7 +31,7 @@ class permissions {
 				"placed"         => 0,
 				"archive"         => 0,
 				"stage_jump_list"=>0,
-				"send_to_lin"=>0
+				
 				
 			),
 			"articles"         => array(
@@ -130,9 +130,7 @@ class permissions {
 
 
 		$return['d'] = array(
-			"details"=>array(
-				"send_to_lin"=>"Adds a button to allow the user to send the article to the lin framework"	
-			),
+			
 			"view"=>array(
 				'only_my_records'=>"If this is checked checked then the user will ONLY see their own records (author ID)."
 			),
@@ -172,7 +170,8 @@ class permissions {
 					"to"=>"0",
 					"reject"=>"0",
 					"delete"=>"0",
-					"newsbook"=>"0"
+					"newsbook"=>"0",
+					"send_to_lin"=>"0"
 				);
 				$perms_desc[$item['ID']] = array(
 					"edit"=>"Allows the user to edit the record whilst the booking is in the ".$item['stage']." stage.",
@@ -180,6 +179,7 @@ class permissions {
 					"reject"=>"Allows the user to reject the record in this stage",
 					"delete"=>"Allows the user to delete the record whilst the booking is in the ".$item['stage']." stage.",
 					"newsbook"=>"Allows the user to add the booking to a newsbook while in this stage",
+					"send_to_lin"=>"Adds a button to allow the user to send the article to the lin framework"
 				);
 			}
 
