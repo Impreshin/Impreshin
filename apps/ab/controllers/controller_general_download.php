@@ -53,8 +53,8 @@ class controller_general_download extends \apps\ab\controllers\_ {
 		$upload_folder = str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $cfg['upload']['folder']);
 		$path = $upload_folder. str_replace(array("/","\\"), DIRECTORY_SEPARATOR, $folderRel);
 		
-		//test_array($path); 
-		
+		$path = $f3->fixslashes($path);
+		//test_array($path);
 
 		if (file_exists($path)){
 			self::download($path,$data['classifiedMediaName']);
@@ -71,11 +71,11 @@ class controller_general_download extends \apps\ab\controllers\_ {
 		$f3 = \base::instance();
 
 		$file = $f3->fixslashes($file);
-
-
-
-
-
+		
+		
+		
+		
+		
 		$size = filesize($file);
 		$name = rawurldecode($file);
 		$known_mime_types = array(

@@ -810,7 +810,9 @@ function set_upload_classified_media(data) {
 
 			setTimeout(function () {
 				$("#media-file-area .progress").fadeIn();
+				$("#booking-form").find("button[type='submit']").attr("disabled","disabled");
 				uploader.start();
+				
 			}, 100);
 
 		});
@@ -825,7 +827,10 @@ function set_upload_classified_media(data) {
 			var $material_file_area_filename = $('#media-file-area-filename');
 			
 			$("#media-msg-box").html("file uploaded successfully");
-
+			
+			$("#booking-form").find("button[type='submit']").removeAttr("disabled");
+			
+			
 			$("#classifiedMediaName").val(file.name);
 			$("#classifiedMedia").val(file.target_name);
 			
