@@ -436,6 +436,8 @@ $app->route("GET|POST /system/spellcheck", function ($f3, $params) use ($app, $k
 		$classLoader->register();
 
 		new \SpellChecker\Request();
+	
+		exit();
 	}
 );
 

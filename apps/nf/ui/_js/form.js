@@ -1,7 +1,4 @@
-/*
- * Date: 2013/02/19 - 2:31 PM
- */
-//console.log("page"); 
+
 var allowedFileExtentions = [];
 
 $.each(_allowedFiles, function (kk,vv) {
@@ -615,7 +612,7 @@ function formLoaded(data) {
 
 		var instance = CKEDITOR.replace('body', text_settings);
 		instance.on('change', function (e) {
-			var body = e.editor.getData()
+			var body = e.editor.getData();
 			$cm.html(body).trigger("change");
 			//spellchecker.check();
 		});
