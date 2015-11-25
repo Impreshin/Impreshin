@@ -160,8 +160,12 @@ class permissions {
 		if ($cID){
 			$stages = models\stages::getAll("cID='". $cID."' OR cID='0'","orderby ASC");
 
+			$company = \models\company::getInstance()->get($cID);
 			$perms = array();
 			$perms_desc = array();
+			$user = $f3->get("user");
+			$company['data'] = json_decode($company['data'],true);
+		//	test_array($company); 
 
 			foreach ($stages as $item){
 				$perms[$item['ID']] = array(
@@ -171,7 +175,6 @@ class permissions {
 					"reject"=>"0",
 					"delete"=>"0",
 					"newsbook"=>"0",
-					"send_to_lin"=>"0"
 				);
 				$perms_desc[$item['ID']] = array(
 					"edit"=>"Allows the user to edit the record whilst the booking is in the ".$item['stage']." stage.",
@@ -179,8 +182,12 @@ class permissions {
 					"reject"=>"Allows the user to reject the record in this stage",
 					"delete"=>"Allows the user to delete the record whilst the booking is in the ".$item['stage']." stage.",
 					"newsbook"=>"Allows the user to add the booking to a newsbook while in this stage",
-					"send_to_lin"=>"Adds a button to allow the user to send the article to the lin framework"
 				);
+				
+				if (isset($company['data']['share']['send_to_lin']['domain']) && $company['data']['share']['send_to_lin']['domain']){
+					$perms[$item['ID']]['send_to_lin']='0';
+					$perms_desc[$item['ID']]['send_to_lin']='Adds a button to allow the user to send the article to the lin framework';
+				}
 			}
 
 

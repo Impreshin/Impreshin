@@ -156,8 +156,12 @@ class send_to_lin extends share {
 			$mime = $web->mime($item['filename']);
 			$path = $folder. $item['folder'];
 			
-			if (file_exists($path.$filename)) {
-				$cfile = getCurlValue($path . $filename, $mime, "nf_" . $filename);
+			$filepath = $path.$filename;
+			$filepath = $this->f3->fixslashes($filepath);
+			
+			
+			if (file_exists($filepath)) {
+				$cfile = getCurlValue($filepath, $mime, "nf_" . $filename);
 				
 				
 				$data["file$i"] = $cfile;
@@ -202,7 +206,8 @@ class send_to_lin extends share {
 						"sent"=>$header_info,
 						"recieved"=>$header
 				),
-				"body"=>$body
+				"sent"=>$data,
+				"recieved"=>json_decode($body,true)
 		));
 		
 		
