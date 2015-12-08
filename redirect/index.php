@@ -2,7 +2,7 @@
 require_once('../config.default.inc.php');
 require_once('../config.inc.php');
 
-$redirect = "https://".$cfg['HOST_DOMAIN'].$_SERVER['REQUEST_URI'];
+$redirect = "https://".$cfg['HOST_DOMAIN']."/".$_SERVER['REQUEST_URI'];
 header("HTTP/1.1 301 Moved Permanently");
 header("Location: $redirect");
 
