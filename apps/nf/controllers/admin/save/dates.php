@@ -53,6 +53,7 @@ class dates extends \apps\nf\controllers\save\save {
 		);
 
 
+		//test_array($values); 
 
 		if ($submit){
 			$ID = \models\dates::save($ID, $values);

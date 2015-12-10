@@ -163,6 +163,7 @@ class dates {
 		$a = new \DB\SQL\Mapper($f3->get("DB"),"global_dates");
 		$a->load("ID='$ID'");
 
+	//	test_array($values); 
 		foreach ($values as $key => $value) {
 			$old[$key] = isset($a->$key) ? $a->$key : "";
 			if (isset($a->$key)) {
@@ -183,11 +184,13 @@ class dates {
 		$app = $f3->get("app");
 
 		//test_array(array($a->ID,$ID));
-		if (isset($value['current']) && $value['current'] ) {
+		if (isset($values['current']) && $values['current'] ) {
 			$b = new \DB\SQL\Mapper($f3->get("DB"),"global_publications");
 			$b->load("ID='" . $values["pID"] . "'");
 			$column = $app . "_currentDate";
 			$b->$column = $ID;
+			
+			//test_array($b->$column); 
 			if (!$b->dry()) $b->save();
 		}
 
