@@ -16,7 +16,7 @@
 		}
 		var pubdt;
 		$('#' + idd).empty();
-		$.ajax({url:'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=' + def.MaxCount + '&output=json&q=' + encodeURIComponent(def.FeedUrl) + '&callback=?', dataType:'json', success:function (data) {
+		$.ajax({url:'https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=' + def.MaxCount + '&output=json&q=' + encodeURIComponent(def.FeedUrl) + '&callback=?', dataType:'json', success:function (data) {
 			$('#' + idd).empty();
 			var last_date = "";
 			$.each(data.responseData.feed.entries, function (i, entry) {
