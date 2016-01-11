@@ -1,8 +1,5 @@
 <?php
-/**
- * User: William
- * Date: 2012/07/24 - 10:43 AM
- */
+
 
 class update {
 	function __construct($cfg){
@@ -188,17 +185,19 @@ class update {
 
 
 	}
+	
+	
 	static function db_execute($cfg,$sql){
 		$link = mysqli_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password'], $cfg['DB']['database']);
-
+		
 		/* check connection */
 		if (mysqli_connect_errno()) {
 			printf("Connect failed: %s\n", mysqli_connect_error());
 			exit();
 		}
-
+		
 		$query = $sql;
-
+		
 		/* execute multi query */
 		if (mysqli_multi_query($link, $query)) {
 			do {
@@ -213,11 +212,12 @@ class update {
 				if (mysqli_more_results($link)) {
 					//printf("-----------------\n");
 				}
-			} while (mysqli_next_result($link));
+			} while (@mysqli_next_result($link));
 		}
-
+		
 		/* close connection */
 		mysqli_close($link);
-
+		
 	}
+	
 }
