@@ -1,20 +1,39 @@
 <?php
 
 /*
-	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
-	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
+	Copyright (c) 2009-2015 F3::Factory/Bong Cosca, All rights reserved.
 
-	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
-	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-	PURPOSE.
+	This file is part of the Fat-Free Framework (http://fatfreeframework.com).
 
-	Please see the license.txt file for more information.
+	This is free software: you can redistribute it and/or modify it under the
+	terms of the GNU General Public License as published by the Free Software
+	Foundation, either version 3 of the License, or later.
+
+	Fat-Free Framework is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with Fat-Free Framework.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 //! Cache-based session handler
 class Session {
+
+	protected
+		//! Session ID
+		$sid,
+		//! Anti-CSRF token
+		$_csrf,
+		//! User agent
+		$_agent,
+		//! IP,
+		$_ip,
+		//! Suspect callback
+		$onsuspect;
 
 	/**
 	*	Open session
@@ -31,6 +50,7 @@ class Session {
 	*	@return TRUE
 	**/
 	function close() {
+		$this->sid=NULL;
 		return TRUE;
 	}
 
@@ -40,7 +60,20 @@ class Session {
 	*	@param $id string
 	**/
 	function read($id) {
-		return Cache::instance()->exists($id.'.@',$data)?$data['data']:FALSE;
+		$this->sid=$id;
+		if (!$data=Cache::instance()->get($id.'.@'))
+			return FALSE;
+		if ($data['ip']!=$this->_ip || $data['agent']!=$this->_agent) {
+			$fw=Base::instance();
+			if (!isset($this->onsuspect) || FALSE===$fw->call($this->onsuspect,array($this,$id))) {
+				//NB: `session_destroy` can't be called at that stage (`session_start` not completed)
+				$this->destroy($id);
+				$this->close();
+				$fw->clear('COOKIE.'.session_name());
+				$fw->error(403);
+			}
+		}
+		return $data['data'];
 	}
 
 	/**
@@ -51,27 +84,16 @@ class Session {
 	**/
 	function write($id,$data) {
 		$fw=Base::instance();
-		$sent=headers_sent();
-		$headers=$fw->get('HEADERS');
-		$csrf=$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
-			$fw->hash(mt_rand());
 		$jar=$fw->get('JAR');
 		Cache::instance()->set($id.'.@',
 			array(
 				'data'=>$data,
-				'csrf'=>$sent?$this->csrf():$csrf,
-				'ip'=>$fw->get('IP'),
-				'agent'=>isset($headers['User-Agent'])?
-					$headers['User-Agent']:'',
+				'ip'=>$this->_ip,
+				'agent'=>$this->_agent,
 				'stamp'=>time()
 			),
 			$jar['expire']?($jar['expire']-time()):0
 		);
-		if (!$sent) {
-			if (isset($_COOKIE['_']))
-				setcookie('_','',strtotime('-1 year'));
-			call_user_func_array('setcookie',array('_',$csrf)+$jar);
-		}
 		return TRUE;
 	}
 
@@ -82,9 +104,6 @@ class Session {
 	**/
 	function destroy($id) {
 		Cache::instance()->clear($id.'.@');
-		setcookie(session_name(),'',strtotime('-1 year'));
-		unset($_COOKIE[session_name()]);
-		header_remove('Set-Cookie');
 		return TRUE;
 	}
 
@@ -99,50 +118,55 @@ class Session {
 	}
 
 	/**
-	*	Return anti-CSRF tokan associated with specified session ID
-	*	@return string|FALSE
-	*	@param $id string
-	**/
-	function csrf($id=NULL) {
-		return Cache::instance()->exists(($id?:session_id()).'.@',$data)?
-			$data['csrf']:FALSE;
+	 *	Return session id (if session has started)
+	 *	@return string|NULL
+	 **/
+	function sid() {
+		return $this->sid;
 	}
 
 	/**
-	*	Return IP address associated with specified session ID
-	*	@return string|FALSE
-	*	@param $id string
-	**/
-	function ip($id=NULL) {
-		return Cache::instance()->exists(($id?:session_id()).'.@',$data)?
-			$data['ip']:FALSE;
+	 *	Return anti-CSRF token
+	 *	@return string
+	 **/
+	function csrf() {
+		return $this->_csrf;
 	}
 
 	/**
-	*	Return Unix timestamp associated with specified session ID
-	*	@return string|FALSE
-	*	@param $id string
-	**/
-	function stamp($id=NULL) {
-		return Cache::instance()->exists(($id?:session_id()).'.@',$data)?
+	 *	Return IP address
+	 *	@return string
+	 **/
+	function ip() {
+		return $this->_ip;
+	}
+
+	/**
+	 *	Return Unix timestamp
+	 *	@return string|FALSE
+	 **/
+	function stamp() {
+		if (!$this->sid)
+			session_start();
+		return Cache::instance()->exists($this->sid.'.@',$data)?
 			$data['stamp']:FALSE;
 	}
 
 	/**
-	*	Return HTTP user agent associated with specified session ID
-	*	@return string|FALSE
-	*	@param $id string
-	**/
-	function agent($id=NULL) {
-		return Cache::instance()->exists(($id?:session_id()).'.@',$data)?
-			$data['agent']:FALSE;
+	 *	Return HTTP user agent
+	 *	@return string
+	 **/
+	function agent() {
+		return $this->_agent;
 	}
 
 	/**
 	*	Instantiate class
-	*	@return object
+	*	@param $onsuspect callback
+	*	@param $key string
 	**/
-	function __construct() {
+	function __construct($onsuspect=NULL,$key=NULL) {
+		$this->onsuspect=$onsuspect;
 		session_set_save_handler(
 			array($this,'open'),
 			array($this,'close'),
@@ -152,33 +176,14 @@ class Session {
 			array($this,'cleanup')
 		);
 		register_shutdown_function('session_commit');
-		@session_start();
 		$fw=\Base::instance();
 		$headers=$fw->get('HEADERS');
-		if (($csrf=$this->csrf()) &&
-			((!isset($_COOKIE['_']) || $_COOKIE['_']!=$csrf) ||
-			($ip=$this->ip()) && $ip!=$fw->get('IP') ||
-			($agent=$this->agent()) && !isset($headers['User-Agent']) ||
-				$agent!=$headers['User-Agent'])) {
-			$jar=$fw->get('JAR');
-			$jar['expire']=strtotime('-1 year');
-			call_user_func_array('setcookie',
-				array_merge(array('_',''),$jar));
-			unset($_COOKIE['_']);
-			session_destroy();
-			\Base::instance()->error(403);
-		}
-		$csrf=$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
+		$this->_csrf=$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
 			$fw->hash(mt_rand());
-		$jar=$fw->get('JAR');
-		if (Cache::instance()->exists($id=session_id().'.@',$data)) {
-			$data['csrf']=$csrf;
-			Cache::instance()->set($id.'.@',
-				$data,
-				$jar['expire']?($jar['expire']-time()):0
-			);
-			call_user_func_array('setcookie',array('_',$csrf)+$jar);
-		}
+		if ($key)
+			$fw->set($key,$this->_csrf);
+		$this->_agent=isset($headers['User-Agent'])?$headers['User-Agent']:'';
+		$this->_ip=$fw->get('IP');
 	}
 
 }

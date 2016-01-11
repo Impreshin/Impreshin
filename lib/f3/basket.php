@@ -1,20 +1,27 @@
 <?php
 
 /*
-	Copyright (c) 2009-2014 F3::Factory/Bong Cosca, All rights reserved.
 
-	This file is part of the Fat-Free Framework (http://fatfree.sf.net).
+	Copyright (c) 2009-2015 F3::Factory/Bong Cosca, All rights reserved.
 
-	THE SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
-	ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
-	PURPOSE.
+	This file is part of the Fat-Free Framework (http://fatfreeframework.com).
 
-	Please see the license.txt file for more information.
+	This is free software: you can redistribute it and/or modify it under the
+	terms of the GNU General Public License as published by the Free Software
+	Foundation, either version 3 of the License, or later.
+
+	Fat-Free Framework is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with Fat-Free Framework.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 //! Session-based pseudo-mapper
-class Basket {
+class Basket extends Magic {
 
 	//@{ Error messages
 	const
@@ -53,12 +60,12 @@ class Basket {
 	*	@return scalar|FALSE
 	*	@param $key string
 	**/
-	function get($key) {
+	function &get($key) {
 		if ($key=='_id')
 			return $this->id;
 		if (array_key_exists($key,$this->item))
 			return $this->item[$key];
-		user_error(sprintf(self::E_Field,$key));
+		user_error(sprintf(self::E_Field,$key),E_USER_ERROR);
 		return FALSE;
 	}
 
@@ -72,24 +79,25 @@ class Basket {
 	}
 
 	/**
-	*	Return items that match key/value pair
-	*	@return array|FALSE
+	*	Return items that match key/value pair;
+	*	If no key/value pair specified, return all items
+	*	@return array
 	*	@param $key string
 	*	@param $val mixed
 	**/
-	function find($key,$val) {
+	function find($key=NULL,$val=NULL) {
+		$out=array();
 		if (isset($_SESSION[$this->key])) {
-			$out=array();
 			foreach ($_SESSION[$this->key] as $id=>$item)
-				if (array_key_exists($key,$item) && $item[$key]==$val) {
+				if (!isset($key) ||
+					array_key_exists($key,$item) && $item[$key]==$val) {
 					$obj=clone($this);
 					$obj->id=$id;
 					$obj->item=$item;
 					$out[]=$obj;
 				}
-			return $out;
 		}
-		return FALSE;
+		return $out;
 	}
 
 	/**
@@ -181,11 +189,13 @@ class Basket {
 	/**
 	*	Hydrate item using hive array variable
 	*	@return NULL
-	*	@param $key string
+	*	@param $var array|string
 	**/
-	function copyfrom($key) {
-		foreach (\Base::instance()->get($key) as $key=>$val)
-			$this->item[$key]=$val;
+	function copyfrom($var) {
+		if (is_string($var))
+			$var=\Base::instance()->get($var);
+		foreach ($var as $key=>$val)
+			$this->set($key,$val);
 	}
 
 	/**

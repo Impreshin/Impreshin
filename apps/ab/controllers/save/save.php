@@ -163,7 +163,7 @@ class save {
 			} else {
 				$values['checked'] = '0';
 				$values['checked_userID'] = '';
-				$values['checked_date'] = '';
+				$values['checked_date'] = NULL;
 				$values['checked_user'] = '';
 				$values['pageID'] = null;
 			}
