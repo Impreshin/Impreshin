@@ -78,14 +78,37 @@ class update {
 	}
 
 	public static function db($cfg){
-
-		$link = mysql_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password']);
-		mysql_select_db($cfg['DB']['database'], $link);
+		
+		$link = mysqli_connect($cfg['DB']['host'], $cfg['DB']['username'], $cfg['DB']['password'], $cfg['DB']['database']);
+		
+		/* check connection */
+		if (mysqli_connect_errno()) {
+			printf("Connect failed: %s\n", mysqli_connect_error());
+			exit();
+		}
+		
+		
+		
 		$sql = 'SELECT `value` FROM system WHERE `system`="db_version" LIMIT 1';
-		$result = mysql_query($sql, $link) or die(mysql_error());
-		$row = mysql_fetch_assoc($result);
+		$result = mysqli_query($link,$sql);
+		
+		
+		if(empty($result)) {
+			$query = mysqli_query($link,"CREATE TABLE IF NOT EXISTS `system` (  `ID` int(6) NOT NULL AUTO_INCREMENT,  `system` varchar(100) DEFAULT NULL,  `value` varchar(100) DEFAULT NULL,  PRIMARY KEY (`ID`))");
+			
+			$query = mysqli_query($link,"INSERT INTO `system` (`system`,`value`) values ('db_version','0')");
+			
+			$sql = 'SELECT * FROM system WHERE `system`="db_version" LIMIT 1';
+			$result = mysqli_query($link,$sql);
+			
+		}
+		$version = $result->fetch_array();
+		
+		
+		
+		
 
-		$v = $row['value']*1;
+		$v = $version*1;
 
 		include_once("db_update.php");
 
@@ -137,10 +160,8 @@ class update {
 
 
 			if ($v){
-				mysql_query("UPDATE system SET `value`='$uv' WHERE `system`='db_version'", $link) or die(mysql_error());
-			} else {
-				mysql_query("INSERT INTO system(`system`, `value`) VALUES('db_version','$uv')", $link) or die(mysql_error());
-			}
+				mysqli_query($link,"UPDATE system SET `value`='{$uv}' WHERE `system`='db_version'") or die(mysqli_error($link));
+			} 
 
 
 		} else {
