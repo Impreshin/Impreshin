@@ -104,10 +104,16 @@ class update {
 		}
 		$version = $result->fetch_array();
 		
+		if (isset($version['value'])){
+			$version = $version['value'];
+		}
 		
 		
 		
-
+		
+		
+		
+		
 		$v = $version*1;
 
 		include_once("db_update.php");
