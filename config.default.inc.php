@@ -7,18 +7,13 @@ $cfg['localization']['currency'] = "ZAR";
 
 
 
-$cfg['news']['path'] = "http://admin.impreshin.com/news/json";
-
 
 $cfg['DB']['host'] = "127.0.0.1";
 $cfg['DB']['username'] = "username";
 $cfg['DB']['password'] = "password";
 $cfg['DB']['database'] = "adbooker_v5";
 
-$cfg['package']['host'] = "127.0.0.1";
-$cfg['package']['username'] = "username";
-$cfg['package']['password'] = "password";
-$cfg['package']['database'] = "impreshin-admin";
+
 
 
 
@@ -27,7 +22,7 @@ $cfg['upload']['pages'] = false;
 $cfg['upload']['folder'] = $_SERVER['DOCUMENT_ROOT'] .  "/uploads/";
 $cfg['debug']['highlightfrom'] = 0.7;
 
-$cfg['apps'] = array("ab","cm","nf","pf");
+$cfg['apps'] = array("ab","nf","pf");
 $cfg['gzip'] = false;
 
 $cfg['backup'] = $_SERVER['DOCUMENT_ROOT'] . "/backups/";

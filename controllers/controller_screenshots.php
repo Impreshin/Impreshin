@@ -249,7 +249,7 @@ class controller_screenshots {
 			"screenshots"=>$screenshots
 		);
 		
-		
+		/*
 		
 		$images["cm"]=array(
 			"app"=>"cm",
@@ -258,7 +258,7 @@ class controller_screenshots {
 			"screenshots"=>array()
 		);
 		
-		
+		*/
 		$images["pf"]=array(
 			"app"=>"pf",
 			"name"=>$apps['pf']['name'],
