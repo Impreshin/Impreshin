@@ -147,17 +147,13 @@
 <script src="/ui/_js/libs/jquery.{{ _v }}.js"></script>
 <script src="/min/js.{{ _v }}.js"></script>
 
-
 <script type="text/javascript">
 	var highlightfrom = {{ _cfg['debug']['highlightfrom'] }};
 	{% if _user['disable_transitions']=='1' %}
 	jQuery.fx.off = true;
 	{% endif %}
-
-
-
-
 </script>
+
 <script src='/apps/nf/ui/_js/script.{{ _v }}.js'></script>
 {% for row in page['js'] %}
 	<script src='{{ row }}'></script>
