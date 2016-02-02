@@ -366,12 +366,12 @@ $routes[] =	array(
 
 
 $router['ab'] = $routes;
-
-$apps["ab"] = array(
-		"name" => "AdBooker",
-		"description"=>"Advert Management Tool"
-);
-
+if (in_array("ab",$cfg['apps'])) {
+	$apps["ab"] = array(
+			"name" => "AdBooker",
+			"description" => "Advert Management Tool"
+	);
+}
 
 
 

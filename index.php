@@ -221,6 +221,7 @@ foreach (glob("./apps/*/routes.php") as $route) {
 
 	include_once($route);
 	$app->set("applications", $apps);
+	//test_array($apps);
 }
 //test_array($routes);
 

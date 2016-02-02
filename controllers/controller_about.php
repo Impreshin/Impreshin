@@ -1,8 +1,4 @@
 <?php
-/*
- * Date: 2011/11/16
- * Time: 11:16 AM
- */
 namespace controllers;
 class controller_about {
 	function __construct(){
@@ -54,7 +50,7 @@ class controller_about {
 
 		
 		
-		
+		//test_array($apps); 
 
 
 

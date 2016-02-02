@@ -116,11 +116,13 @@ $routes[] =	array(
 
 
 $router['cm'] = $routes;
+if (in_array("cm",$cfg['apps'])){
+	$apps["cm"] = array(
+			"name" => "Contacts",
+			"description"=>"A Contact Manager"
+	);
+}
 
-$apps["cm"] = array(
-		"name" => "Contacts",
-		"description"=>"A Contact Manager"
-);
 
 
 

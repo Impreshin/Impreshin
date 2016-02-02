@@ -279,12 +279,12 @@ foreach (glob("./apps/nf/share/*", GLOB_ONLYDIR) as $folder) {
 
 
 $router['nf'] = $routes;
-
-$apps["nf"] = array(
-		"name" => "NewsFiler",
-		"description"=>"Editorial Content Management Tool"
-);
-
+if (in_array("nf",$cfg['apps'])) {
+	$apps["nf"] = array(
+			"name" => "NewsFiler",
+			"description" => "Editorial Content Management Tool"
+	);
+};
 
 
 ?>

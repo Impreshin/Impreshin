@@ -77,11 +77,12 @@ $app->route("GET|POST /app/pf/download/page/@dID/@page/*", function ($app, $para
 
 
 $router['pf'] = $routes;
-
-$apps["pf"] = array(
-		"name" => "Pages",
-		"description"=>"Page (PDF) Archiving and Download"
-);
+if (in_array("pf",$cfg['apps'])) {
+	$apps["pf"] = array(
+			"name" => "Pages",
+			"description" => "Page (PDF) Archiving and Download"
+	);
+};
 
 
 
