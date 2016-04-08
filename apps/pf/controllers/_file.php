@@ -55,7 +55,7 @@ class _file extends \apps\pf\controllers\_ {
 			die();
 		}
 
-		$folder = "pages/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
+		$folder = "pf/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
 		$filename = $data['pdf'];
 
 		if (isset($_GET['instantrender'])) {
@@ -73,6 +73,7 @@ class _file extends \apps\pf\controllers\_ {
 		$w = round($w);
 		$h = round($h);
 		//test_array(array("w"=>$w,"h"=>$h,"filename"=>$filename));
+		//test_array(file_exists($upload_folder . $folder . $filename));
 		if (file_exists($upload_folder . $folder . $filename)) {
 
 

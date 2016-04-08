@@ -157,7 +157,7 @@ function set_upload(data) {
 
 
 
-	var folder = "../pages/"+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
+	var folder = ""+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
 
 
 	var uploader = new plupload.Uploader({
