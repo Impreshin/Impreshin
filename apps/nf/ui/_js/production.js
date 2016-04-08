@@ -65,7 +65,7 @@ $(document).ready(function () {
 
 
 
-		var folder = "../pages/"+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
+		var folder = "../pf/"+data['cID'] + "/" + data['pID'] + "/" + data['dID'] + "/";
 
 
 		var uploader = new plupload.Uploader({
@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 
 
-			var $img = '<img src="/app/nf/thumb/page/' + data['dID'] + '/'  + data['page'] + '/'+ file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
+			var $img = '<img src="/app/pf/thumb/page/' + data['dID'] + '/'  + data['page'] + '/'+ file.name + '?w=25&h=25&c=true&s=' + file.target_name + '&instantrender=true" alt="">';
 
 			$("#progress-area .span3.l").html($img + "<em class='g'>Rendering: " + file.name + "</em>");
 

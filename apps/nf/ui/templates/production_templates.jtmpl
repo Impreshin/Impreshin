@@ -56,7 +56,7 @@
 
 						<% if (this.spreads[s].pages[i].pdf) { %>
 
-						<img src="/app/ab/thumb/page/<%= this.dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.spreads[s].pages[i].pdf %>" style="height:100%; width:100%;">
+						<img src="/app/pf/thumb/page/<%= this.dID %>/<%= this.spreads[s].pages[i].page %>/<%= this.spreads[s].pages[i].pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.spreads[s].pages[i].pdf %>" style="height:100%; width:100%;">
 
 						<% } %>
 
@@ -114,7 +114,7 @@
 
 		<% if (this.pdf) { %>
 
-		<img src="/app/ab/thumb/page/<%= this.dID %>/<%= this.page %>/<%= this.pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.pdf %>" style="height:100%; width:100%;">
+		<img src="/app/pf/thumb/page/<%= this.dID %>/<%= this.page %>/<%= this.pdf %>?w=<%= width %>&h=<%= (ratio_y * {{ _user['publication']['cmav'] }}) %>&s=<%= this.pdf %>" style="height:100%; width:100%;">
 
 		<% } else { %>
 		<div style="background: url(/ui/_images/question.png) no-repeat bottom center; width:100%; height:100%; opacity:0.5"></div>
