@@ -1,10 +1,5 @@
 <?php
-/*
- * Date: 2012/09/21
- * Time: 12:35 PM
- */
 
-//namespace docs;
 class messages {
 	function __construct() {
 		$this->f3 = \base::instance();
