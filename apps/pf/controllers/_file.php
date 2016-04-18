@@ -196,7 +196,7 @@ class _file extends \apps\pf\controllers\_ {
 
 		}
 
-		$folder = "pages/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
+		$folder = "pf/" . $data['cID'] . "/" . $data['pID'] . "/" . $data['dID'] . "/";
 		$filename = $data['pdf'];
 
 
