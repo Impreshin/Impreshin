@@ -9,5 +9,5 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E';
 	
 	config.removePlugins = 'image,table,tabletools';
-	config.allowedContent = 'b,i,em,strong,p,br,hr';
+	config.allowedContent = 'b,i,em,strong,p,br,hr,sub,sup,u,underline';
 };
