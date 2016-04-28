@@ -428,7 +428,7 @@
 }
 #photo-viewer-tabs a {
   background-color: rgba(250, 250, 250, 0.5);
-  border-color: #dddddd #dddddd rgba(0, 0, 0, 0);
+  border-color: #DDD #DDD rgba(0, 0, 0, 0);
   border-image: none;
   border-style: solid;
   border-width: 1px;
@@ -629,4 +629,7 @@
 }
 .bigdrop {
   width: 270px !important;
+}
+.cke_chrome {
+  box-shadow: none!important;
 }

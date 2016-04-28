@@ -5,7 +5,7 @@ var activityRequest = [];
 var transSpeed = '300';
 
 var text_toolbar = [
-	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline', , 'Subscript', 'Superscript' ] },
+	{ name: 'basicstyles', groups: [ 'basicstyles' ], items: [ 'Bold', 'Italic', 'Underline',  'Subscript', 'Superscript' ] },
 	{ name: 'tools', items: [ 'Find','Replace' ] },
 	{ name: 'tools', items: [ 'Source', 'ShowBlocks' ] },
 	{ name: 'tools', items: [ 'SpecialChar' ] },
