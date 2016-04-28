@@ -8,5 +8,5 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	
-	config.allowedContent = 'b,i,em,strong,p,br,hr,sub,sup,u,underline';
+	config.allowedContent = 'b i em strong p br hr sub sup u underline';
 };
