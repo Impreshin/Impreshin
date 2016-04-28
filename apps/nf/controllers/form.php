@@ -77,10 +77,9 @@ class form extends \apps\nf\controllers\_{
 		if ($details['ID'] && ($details['cID'] != $user['company']['ID'])) {
 			$details = $detailsO->dbStructure();
 		}
-
-
 		
-
+		
+		$v = $this->f3->get("VERSION");
 
 		//test_array(array("stages" => $stages, "current" => $current, "next" => $next));
 
@@ -110,8 +109,8 @@ class form extends \apps\nf\controllers\_{
 			"meta"        => array(
 				"title" => "NF - Form - loading..",
 			),
-			"js"=>array("/ui/ckeditor/ckeditor.js","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js","/ui/fancybox/jquery.fancybox.js","/ui/spellchecker/js/jquery.spellchecker.js"),
-			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css", "/ui/fancybox/jquery.fancybox.css","/ui/spellchecker/css/jquery.spellchecker.css"),
+			"js"=>array("/ui/ckeditor/ckeditor.js?v={$v}","/ui/plupload/js/jquery.plupload.queue/jquery.plupload.queue.{$v}.js","/ui/fancybox/jquery.fancybox.{$v}.js","/ui/spellchecker/js/jquery.spellchecker.{$v}.js"),
+			"css"=>array("/ui/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.{$v}.css", "/ui/fancybox/jquery.fancybox.{$v}.css","/ui/spellchecker/css/jquery.spellchecker.{$v}.css"),
 			//"help"        => "/apps/nf/help/form"
 		);
 
