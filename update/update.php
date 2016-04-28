@@ -18,7 +18,7 @@ class update {
 			shell_exec('git init');
 		} else {
 			
-			shell_exec('git stash');
+			//shell_exec('git stash');
 			shell_exec('git reset --hard HEAD');
 		}
 
