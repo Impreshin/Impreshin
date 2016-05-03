@@ -46,11 +46,7 @@ var text_settings = {
 	resize_enabled    : false,
 	extraPlugins      : 'autogrow,onchange'+extra_plugins_jqueryspellchecker,
 	autoGrow_maxHeight: max_height,
-
-	autoGrow_minHeight: 390 > max_height ? 390 : max_height,
-	autoGrow_fn       : function () {
-		resizeform();
-	},
+	autoGrow_minHeight: 390,
 	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
 	spell_checker: spell_check_config
 	
@@ -65,9 +61,7 @@ var caption_settings = {
 	extraPlugins      : 'autogrow'+extra_plugins_jqueryspellchecker,
 	autoGrow_minHeight: 110,
 	autoGrow_maxHeight: 110 > max_height ? 110 : max_height,
-	autoGrow_fn       : function () {
-		resizeform();
-	},
+	
 	contentsCss: '/ui/spellchecker/css/jquery.spellchecker.css',
 	spell_checker: spell_check_config
 };
@@ -615,6 +609,7 @@ function formLoaded(data) {
 			var body = e.editor.getData();
 			$cm.html(body).trigger("change");
 			//spellchecker.check();
+			resizeform();
 		});
 		instance.on('focus', function (e) {
 			
@@ -645,7 +640,9 @@ function formLoaded(data) {
 	$(".caption_boxes").each(function(){
 		var ID = $(this).attr("id");
 		var instance = CKEDITOR.replace(ID, caption_settings);
-		
+		instance.on('change', function (e) {
+			resizeform();
+		});
 		instance.on('focus', function (e) {
 			var parentID = $("#"+ID).closest(".file-record").attr("ID");
 			api.scrollToElement("#"+parentID, true, true);
@@ -785,12 +782,14 @@ function formLoaded(data) {
 	replace_btn();
 }
 function resizeform() {
-
-	var pane = $(".form-body").jScrollPane(jScrollPaneOptionsMP);
-	var api = pane.data("jsp");
+	
+	
+		var pane = $(".form-body").jScrollPane(jScrollPaneOptionsMP);
+		var api = pane.data("jsp");
 	//api.reinitialise();
 
-	scrolling(api);
+		scrolling(api);
+	
 }
 function filedetails(filename) {
 
