@@ -614,7 +614,7 @@ function formLoaded(data) {
 		instance.on('focus', function (e) {
 			
 				api.scrollToElement("#body-area", true, true);
-
+			resizeform();
 			
 			
 		
@@ -646,8 +646,8 @@ function formLoaded(data) {
 		instance.on('focus', function (e) {
 			var parentID = $("#"+ID).closest(".file-record").attr("ID");
 			api.scrollToElement("#"+parentID, true, true);
-
-
+			
+			resizeform();
 
 
 		});
