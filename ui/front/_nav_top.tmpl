@@ -8,48 +8,45 @@
                 {% endif %}
 				<ul class="nav" id="app-nav">
 					<li class="divider-vertical"></li>
-					<li class="{% if page['section'] == "about" %} active {% endif %}">
-						<a href="/about"> / </a>
-					</li>
 					
-
-
+					<li class="{% if page['section'] == "login" %} active {% endif %}">
+						<a href="/login"> Login </a>
+					</li>
 					
 					<li class="{% if page['section'] == "contact" %} active {% endif %}">
 						<a href="/contact"> Contact </a>
 					</li>
-					<li class="{% if page['section'] == "screenshots" %} active {% endif %}">
-						<a href="/screenshots"> Screenshots </a>
+					<li>
+						<a href="http://www.impreshin.com"> Website </a>
 					</li>
-					<li class="{% if page['section'] == "news" %} active {% endif %}">
-						<a href="/news"> News </a>
-					</li>
-					<li class="{% if page['section'] == "history" %} active {% endif %}">
-						<a href="/history"> Changelog </a>
-					</li>
+					
+					
 				
 				</ul>
 				<ul class="nav pull-right">
 					<li class="divider-vertical"></li>
+					<li class="{% if page['section'] == "history" %} active {% endif %}">
+						<a href="/history"> <i class="icon-archive"></i> </a>
+					</li>
 					<li class="{% if page['section'] == "login" %} active {% endif %}">
 						<a href="/login"> Login </a>
 					</li>
-
-					{% if _user['ID'] %}
-					<li class="divider-vertical"></li>
 					
-					<li style="margin-right: -10px;">
-						<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
-					</li>
+					{% if _user['ID'] %}
+						<li class="divider-vertical"></li>
+						
+						<li style="margin-right: -10px;">
+							<a href="/app/logout" style="padding: 8px 3px 10px 10px;" rel="tooltip" title="Logout" data-placement="bottom"><img src="/ui/_images/logout.png" alt="Logout"></a>
+						</li>
 					{% else %}
-<li>
-	<form class="navbar-form pull-left" method="POST" action="/login">
-		<input type="email" id="login_email" class="span3" name="login_email" placeholder="Email" value="{{ username }}">
-		<input type="password" id="login_password" class="span2" name="login_password" placeholder="Password">
-		<button type="submit" class="btn btn-inverse" style="width:70px;">Login</button>
-	</form>
-</li>
-
+						<li>
+							<form class="navbar-form pull-left" method="POST" action="/login">
+								<input type="email" id="login_email" class="span3" name="login_email" placeholder="Email" value="{{ username }}">
+								<input type="password" id="login_password" class="span2" name="login_password" placeholder="Password">
+								<button type="submit" class="btn btn-inverse" style="width:70px;">Login</button>
+							</form>
+						</li>
+					
 					{% endif %}
 				</ul>
 			</div>
