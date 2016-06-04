@@ -112,11 +112,8 @@ $app->route('GET /min/js*', 'general->js_min');
 
 
 $app->route('GET|POST /login', 'controllers\controller_login->page');
-if ($cfg['online']==false){
-	$app->route('GET|POST /', 'controllers\controller_login->page');
-} else {
-	$app->route('GET|POST /', 'controllers\controller_about->page');
-}
+$app->route('GET|POST /', 'controllers\controller_login->page');
+
 
 $app->route('GET /screenshots', 'controllers\controller_screenshots->page');
 $app->route('GET /screenshots/thumb', 'controllers\controller_screenshots->thumb');
