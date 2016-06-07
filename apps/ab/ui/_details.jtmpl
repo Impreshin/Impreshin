@@ -931,6 +931,7 @@ function set_upload() {
 	var uploader = new plupload.Uploader({
 		runtimes      :'html5,gears,flash,silverlight',
 		browse_button :'material-file-area-filename',
+		drop_element : 'popup-material',
 //container          :'container',
 		max_file_size :'200mb',
 		max_file_count:1,
