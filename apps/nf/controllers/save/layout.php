@@ -106,7 +106,17 @@ class layout extends save {
 			"pageID"=> $pageID
 		);
 
-		$this->f3->get("DB")->exec("UPDATE nf_article_newsbook SET pageID ='$pageID' WHERE aID='$ID' AND pID='$pID' AND dID='$dID'");
+		if ($pageID){
+			$sql = "UPDATE nf_article_newsbook SET pageID = '{$pageID}' WHERE aID='$ID' AND pID='$pID' AND dID='$dID'";
+		} else {
+			$sql = "UPDATE nf_article_newsbook SET pageID = NULL WHERE aID='$ID' AND pID='$pID' AND dID='$dID'";
+		}
+		
+		
+		
+		//test_array($sql); 
+		
+		$this->f3->get("DB")->exec($sql);
 
 		
 
