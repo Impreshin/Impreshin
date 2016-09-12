@@ -59,3 +59,4 @@ $cfg['nf']['languages'] = array(
 
 $cfg['system_messages']=true;
 $cfg['HOST_DOMAIN']="app.impreshin.com";
+$cfg['HOST_DOMAIN_COMPLETE']="https://".$cfg['HOST_DOMAIN'];
