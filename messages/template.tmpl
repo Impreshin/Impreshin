@@ -251,7 +251,7 @@ $(document).ready(function () {
 		var url = $(this).attr("data-url");
 
 		if (url) {
-			parent.window.location = "/redirect?url="+url;
+			parent.window.location = "/redirect?relative=true&url="+url;
 			//console.log(url); 
 		}
 
