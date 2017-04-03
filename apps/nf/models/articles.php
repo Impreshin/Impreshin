@@ -463,6 +463,7 @@ class articles {
 			}
 			$data = $a;
 		}
+
 		$return = array();
 		$a = array();
 		$groups = array();
@@ -500,6 +501,8 @@ class articles {
 				
 			}
 
+			//test_array($record['heading']);
+			if ($record['heading']=="")$record['heading']="none";
 			//$record['show']=$showrecord;
 			//test_array($record); 
 			/*
@@ -522,12 +525,12 @@ class articles {
 					$arr = array(
 						"heading" => $record['heading'], 
 						"count" => "",
-						"articles"=>"",
-						"photos"=>"",
-						"cm"=>""
+						"articles"=>0,
+						"photos"=>0,
+						"cm"=>0
 					);
 					$arr['groups'] = "";
-					$arr['records'] = "";
+					$arr['records'] = array();
 					$a[$record['heading']] = $arr;
 				}
 
@@ -540,14 +543,20 @@ class articles {
 						}
 					}
 				}
+				//test_array($a);
+				//test_array($a[$record['heading']]);
 				$a[$record['heading']]["records"][] = $record;
+				
 				if ($record['typeID']=='1')	$a[$record['heading']]["articles"] = $a[$record['heading']]["articles"] + 1;
 				$a[$record['heading']]["photos"] = $a[$record['heading']]["photos"] + $record['photosCount'];
 				$a[$record['heading']]["cm"] = $a[$record['heading']]["cm"] + $record['cm'];
+
+
 			}
 		}
 		$return = array();
 //exit();
+
 		foreach ($a as $record) {
 			$record['count'] = count($record['records']);
 			$record['groups'] = $groups;

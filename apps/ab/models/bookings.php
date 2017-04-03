@@ -373,10 +373,10 @@ CASE ab_bookings.typeID WHEN 1 THEN ab_placing.placing WHEN 3 THEN CONCAT('Class
 			if ($showrecord) {
 				if (!isset($a[$record['heading']])) {
 					$groups[] = $record['heading'];
-					$arr = array("heading" => $record['heading'], "count" => "", "cm" => 0, "percent" => "", "pages" => "",);
+					$arr = array("heading" => $record['heading'], "count" => 0, "cm" => 0, "percent" => 0, "pages" => "",);
 					$arr['totalCost'] = 0;
 					$arr['groups'] = "";
-					$arr['records'] = "";
+					$arr['records'] = array();
 					$a[$record['heading']] = $arr;
 				}
 				if ($record['typeID'] == '1') {
