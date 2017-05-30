@@ -35,14 +35,16 @@ class front extends data {
 
 		
 	
-		$pdf_dID = $this->f3->get("DB")->exec("SELECT dID FROM `global_pages` WHERE pdf is not null AND pID ='$pID' GROUP BY dID ORDER BY dID DESC");
+		$pdf_dID = $this->f3->get("DB")->exec("SELECT global_pages.dID FROM `global_pages` INNER JOIN global_dates ON global_dates.ID = global_pages.dID WHERE global_pages.pdf is not null AND global_pages.pID ='$pID' GROUP BY dID ORDER BY publish_date DESC");
+
+		//test_array($pdf_dID);
 
 		$n = array();
 		foreach ($pdf_dID as $item){
 			$n[] = $item['dID'];
 		}
 		$pdf_dID = $n;
-		
+		//test_array($pdf_dID);
 		if (!$dID) {
 			if (isset($pdf_dID[0])){
 				$dID = $pdf_dID[0];
