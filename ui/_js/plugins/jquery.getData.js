@@ -14,10 +14,12 @@
 			if (jQuery.isFunction(data)) {
 				type = type || callback;
 				callback = data;
-				data = undefined;
+				data = {"rrr":Math.random()};
 			}
 
-
+			if (jQuery.isEmptyObject(data)){
+				data = {"rrr":Math.random()};
+			}
 
 			return namespaces[namespace].push(jQuery.ajax({
 				url     : url,
