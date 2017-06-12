@@ -103,10 +103,13 @@ class report_figures {
 			if (!isset($data[$year][$month]['totals']['type']["t_" . $record['typeID']])) $data[$year][$month]['totals']['type']["t_" . $record['typeID']] = 0;
 
 			$data[$year][$month]['totals']['total'] = $data[$year][$month]['totals']['total'] + $record['totalCost'];
+			if ($record['typeID']=='1'){
+				$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
+			}
 			$data[$year][$month]['totals']['type']["t_" . $record['typeID']] = $data[$year][$month]['totals']['type']["t_" . $record['typeID']] + $record['totalCost'];
 
 
-			$data[$year][$month]['cm'] = $data[$year][$month]['cm'] + $record['totalspace'];
+
 			$data[$year][$month]['records'] = $data[$year][$month]['records'] + $record['records'];
 
 
