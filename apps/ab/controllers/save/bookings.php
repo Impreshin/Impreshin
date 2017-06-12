@@ -132,6 +132,7 @@ class bookings extends save {
 				$values['colourID'] = null;
 				$values['cm'] = null;
 				$values['col'] = null;
+				$values['totalspace'] = null;
 				$values['pageID'] = null;
 				$values['x_offset'] = null;
 				$values['y_offset'] = null;
@@ -151,6 +152,7 @@ class bookings extends save {
 				$values['colourID'] = null;
 				$values['cm'] = null;
 				$values['col'] = null;
+				$values['totalspace'] = null;
 				$values['pageID'] = null;
 				$values['x_offset'] = null;
 				$values['y_offset'] = null;
