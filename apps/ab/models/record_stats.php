@@ -43,7 +43,7 @@ class record_stats {
 			}
 			$dIDArray[$record['dID']]['cm'] = $dIDArray[$record['dID']]['cm'] + $record['totalspace'];
 
-			if (in_array("cm", $columns)) if ($record['totalspace']) $totals['cm'] = $totals['cm'] + $record['totalspace'];
+			if (in_array("cm", $columns)) if ($record['totalspace'] AND $record['typeID']=='1') $totals['cm'] = $totals['cm'] + $record['totalspace'];
 			if (in_array("checked", $columns)) if ($record['checked']) $totals['checked'] = $totals['checked'] + 1;
 			if (in_array("material", $columns)) if ($record['material']) $totals['material'] = $totals['material'] + 1;
 			if (in_array("planned", $columns)) if ($record['planned']) $totals['planned'] = $totals['planned'] + 1;
