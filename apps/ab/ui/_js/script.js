@@ -3,6 +3,7 @@ var listRequest = [];
 var logsRequest = [];
 var activityRequest = [];
 var transSpeed = '300';
+var highlightfrom = 0.7;
 
 
 $(function () {
