@@ -319,7 +319,7 @@ var jScrollPaneOptionsMP = {
 
 function updatetimerlist(d, page_size) {
 	//console.log(d);
-
+	var highlightfrom = 0.7;
 	// d = jQuery.parseJSON(d);
 
 	if (!d || !typeof d == 'object') {
