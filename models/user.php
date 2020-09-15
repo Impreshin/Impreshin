@@ -346,8 +346,8 @@ class user {
 
 
 		$result = $f3->get("DB")->exec("
-			SELECT ID, email FROM global_users WHERE email ='$username' AND password = '$password_hash'
-		");
+			SELECT ID, email FROM global_users WHERE email =:username AND password = :password
+		",array(":username"=>$username,":password"=>$password_hash));
 
 
 		if (count($result)) {
